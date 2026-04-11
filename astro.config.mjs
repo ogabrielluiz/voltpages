@@ -6,5 +6,5 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
   site: 'https://ogabrielluiz.github.io',
-  base: '/sheets',
+  base: '/voltpages',
 });

@@ -1,4 +1,4 @@
-# Contributing to Eurorack Sheets
+# Contributing to Voltpages
 
 Add cheat sheets for eurorack modules by creating a JSON data file.
 

@@ -132,7 +132,7 @@ async function generateOgImage(module: Module, slug: string, fontData: ArrayBuff
                       letterSpacing: '3px',
                       textTransform: 'uppercase',
                     },
-                    children: 'EURORACK SHEETS',
+                    children: 'VOLTPAGES',
                   },
                 },
               ],
