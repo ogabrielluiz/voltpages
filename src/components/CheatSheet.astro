@@ -14,7 +14,7 @@ const { module } = Astro.props;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<div class="max-w-[1200px] mx-auto bg-bg min-h-screen">
+<div class="max-w-[900px] mx-auto bg-bg min-h-screen">
   <nav class="px-7 pt-4 pb-0">
     <a href={`${basePath}/`} class="text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase">&larr; All modules</a>
   </nav>
@@ -28,17 +28,31 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
   />
   <p class="px-7 pt-3 pb-0 text-sm text-muted leading-relaxed">{module.description}</p>
 
-  <div class="grid grid-cols-1 md:grid-cols-2">
-    <!-- Left column: Controls + I/O -->
-    <div class="px-7 py-5 md:border-r md:border-border">
-      <ControlsTable controls={module.controls} />
-      <IOPanel inputs={module.inputs} outputs={module.outputs} />
-    </div>
+  <!-- Section nav -->
+  <nav class="px-7 pt-5 pb-3 flex gap-2 sticky top-0 bg-bg z-10 border-b border-border" aria-label="Module sections">
+    <a href="#patches" class="text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 py-1.5 border border-border hover:border-border-strong">Patches</a>
+    <a href="#behaviors" class="text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 py-1.5 border border-border hover:border-border-strong">Behaviors</a>
+    <a href="#controls" class="text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 py-1.5 border border-border hover:border-border-strong">Controls</a>
+    <a href="#io" class="text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 py-1.5 border border-border hover:border-border-strong">I/O</a>
+  </nav>
 
-    <!-- Right column: Behaviors + Patch Ideas -->
-    <div class="px-7 py-5">
-      <BehaviorsPanel behaviors={module.behaviors} />
-      <PatchIdeas patchIdeas={module.patchIdeas} />
-    </div>
-  </div>
+  <!-- Patch Ideas -->
+  <section id="patches" class="px-7 py-6 border-b border-border scroll-mt-16">
+    <PatchIdeas patchIdeas={module.patchIdeas} />
+  </section>
+
+  <!-- Behaviors -->
+  <section id="behaviors" class="px-7 py-6 border-b border-border scroll-mt-16">
+    <BehaviorsPanel behaviors={module.behaviors} />
+  </section>
+
+  <!-- Controls -->
+  <section id="controls" class="px-7 py-6 border-b border-border scroll-mt-16">
+    <ControlsTable controls={module.controls} />
+  </section>
+
+  <!-- I/O -->
+  <section id="io" class="px-7 py-6 scroll-mt-16">
+    <IOPanel inputs={module.inputs} outputs={module.outputs} />
+  </section>
 </div>

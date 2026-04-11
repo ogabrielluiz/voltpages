@@ -63,44 +63,94 @@
     {
       "name": "Cycle Mode",
       "trigger": "button press",
-      "description": "Self-triggering LFO. Speed set by Rise + Fall. LED indicates cycle. Syncs to trigger input when patched."
+      "description": "Self-triggering LFO. Speed set by Rise + Fall. LED indicates cycle. Syncs to trigger input when patched — rising edge resets the cycle, enabling clock-locked LFOs."
     },
     {
       "name": "Envelope",
       "trigger": "gate → trig in",
-      "description": "ASR on sustained gate, AD on trigger. Curve knob shapes attack & decay response independently."
+      "description": "Patch gate to TRIG for ASR (sustain during gate high, release on gate low). Patch gate to SIGNAL IN for the same behavior with the signal path active. Patch trigger for AD — rise fires on trigger, fall fires immediately at peak."
     },
     {
       "name": "Slew Limiter",
       "trigger": "cv → signal in",
-      "description": "Portamento / glide. Rise = glide up speed, Fall = glide down. Asymmetric glide when set differently."
+      "description": "Portamento / glide. Patch pitch CV to SIGNAL IN with nothing in TRIG. Rise = glide up speed, Fall = glide down. Set Rise CCW and Fall CW for instant-up, slow-down portamento."
     },
     {
       "name": "Retrigger blocking",
       "trigger": "trigger during Rise phase",
-      "description": "MATHS ignores triggers arriving during Rise. Only retriggers during Fall. Enables analog clock division."
+      "description": "MATHS ignores triggers arriving during Rise. Only retriggers during Fall. Enables analog clock division — set Rise time longer than the incoming clock period to skip every other trigger."
+    },
+    {
+      "name": "Vari-Response curve",
+      "trigger": "Curve knob",
+      "description": "Full CCW = logarithmic curve (slow start, fast finish — sounds natural on decay). Noon = linear. Full CW = exponential (fast start, slow tail — snappy attack feel). Applies to both Rise and Fall simultaneously; use CH2/3 attenuverters to offset the resulting shape asymmetrically."
+    },
+    {
+      "name": "SUM / OR bus normalization",
+      "trigger": "patching CH 1 or CH 4 output",
+      "description": "Patching a cable from CH 1 OUT or CH 4 OUT removes that channel from the SUM and OR buses. You cannot use an individual output AND have it contribute to SUM/OR simultaneously — use a mult or stackable if you need both."
+    },
+    {
+      "name": "CH 2 / CH 3 normalization gotcha",
+      "trigger": "CH 2 or CH 3 attenuverter at non-noon position with nothing patched",
+      "description": "CH 2 Signal In normalizes to an internal ±10V reference; CH 3 normalizes to +5V DC. Attenuverters at non-noon with nothing patched inject DC offset into the SUM output. Set both to noon or insert a dummy cable to eliminate bleed."
+    },
+    {
+      "name": "Analog OR for envelope priority",
+      "trigger": "CH 1 and CH 4 both active",
+      "description": "OR OUT always follows whichever of CH 1 or CH 4 is higher at any moment. Two envelopes with different timing on OR OUT produces a combined shape that always takes the longest/loudest — useful for VCA accent without mixing."
+    },
+    {
+      "name": "EOC / EOR as clock outputs",
+      "trigger": "Cycle mode active on CH 4",
+      "description": "CH 4 EOC fires a gate at the end of every fall — use as clock output or to trigger other modules. CH 1 EOR fires at the peak of its rise. Chaining EOR → CH 4 TRIG and EOC → CH 1 TRIG creates quadrature LFOs (90° phase offset) without Cycle mode."
+    },
+    {
+      "name": "BOTH input normalization",
+      "trigger": "patching to Trigger or Signal In",
+      "description": "The TRIG and SIGNAL IN jacks are normalled — a signal patched to TRIG also acts on SIGNAL IN unless SIGNAL IN is separately patched. This means a gate patched to TRIG controls both timing and signal path simultaneously by default."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Bouncing ball",
-      "patch": "CH1 OUT → CH4 BOTH IN · CH4 Rise CCW · Fall noon · Cycle ON · CH4 OUT → VCA"
+      "name": "Bouncing ball (self-accelerating envelope)",
+      "patch": "CH 1 Cycle ON · CH 1 OUT → CH 1 Fall CV (attenuate via CH 2 attenuverter at ~2 o'clock before patching to Fall CV) · positive feedback shortens fall each cycle · envelope speeds up like a bouncing ball losing energy · adjust CH 2 attenuverter to set acceleration rate"
     },
     {
       "name": "Quadrature LFOs",
-      "patch": "CH1 EOR → CH4 TRIG · CH4 EOC → CH1 TRIG · Cycle OFF · 90° phase offset"
+      "patch": "CH 1 EOR → CH 4 TRIG · CH 4 EOC → CH 1 TRIG · Cycle OFF on both · Rise and Fall matched on both channels · CH 1 OUT and CH 4 OUT = two LFOs 90° apart · patch to filter cutoff + VCA for animated timbral motion"
+    },
+    {
+      "name": "ASR envelope with sustain plateau",
+      "patch": "Gate → CH 1 SIGNAL IN (not TRIG) · Rise = attack time · Fall = release time · while gate is high, output holds at full voltage as a sustain plateau · Gate → TRIG gives AD only; Signal In gives true ASR"
+    },
+    {
+      "name": "Push-pull crossfade",
+      "patch": "CH 1 Cycle ON, slow rate · CH 1 OUT → VCA 1 CV (opens) · CH 1 INV (via CH 2 attenuverter full CW on CH 1 OUT) → VCA 2 CV (closes) · SUM = combined output · MATHS envelope simultaneously fades between two sound sources"
+    },
+    {
+      "name": "Envelope follower",
+      "patch": "Audio source → CH 4 SIGNAL IN · CH 4 Rise at noon · CH 4 Fall adjusted CW for slower tracking or CCW for tighter tracking · OR OUT = positive-only envelope following audio amplitude · use OR OUT to modulate filter cutoff for auto-wah"
+    },
+    {
+      "name": "Complex modulation shape (dual LFO mixer)",
+      "patch": "CH 1 Cycle ON · Rise + Fall set for slow rate (4–8s total) · CH 4 Cycle ON · Rise + Fall set for fast rate (0.5–1s total) · CH 2 attenuverter at 1 o'clock · CH 3 attenuverter at 11 o'clock · SUM OUT = slow + fast LFO combined with offset asymmetry · patch to filter FM"
     },
     {
       "name": "Analog clock divider",
-      "patch": "Clock → TRIG · Rise > clock period · retrigger blocked during Rise · non-integer division"
+      "patch": "Fast clock → CH 1 TRIG · CH 1 Rise set longer than clock period · retrigger blocked during Rise phase · CH 1 EOR = every other trigger · CH 1 OUT → CH 4 TRIG for further division · stack EOR/EOC for /2, /4 outputs from one clock"
     },
     {
-      "name": "Directional portamento",
-      "patch": "Pitch CV → Signal In · Rise = glide up · Fall = glide down · asymmetric glide"
+      "name": "Directional portamento (asymmetric glide)",
+      "patch": "Pitch CV → CH 1 SIGNAL IN · CH 1 Rise CCW (fast up) · CH 1 Fall 2 o'clock (slow down) · Curve noon · CH 1 OUT → VCO V/Oct · pitch snaps up instantly, glides down slowly · reverse Rise/Fall for opposite feel"
     },
     {
-      "name": "Trigger delay",
-      "patch": "Trigger → TRIG · Rise = delay time · EOR = delayed gate · Fall = gate length"
+      "name": "Sub-harmonic generator",
+      "patch": "Audio-rate VCO OUT → CH 4 TRIG · CH 4 Cycle mode ON · CH 4 Rise and Fall short but longer than one VCO cycle · CH 4 EOC = sub-octave pulse output · mix CH 4 EOC with VCO audio at SUM for Trautonium-style bass reinforcement"
+    },
+    {
+      "name": "Voltage comparator / gate extractor",
+      "patch": "Slow CV or audio → CH 2 SIGNAL IN · CH 2 attenuverter full CW · CH 2 OUT → CH 1 SIGNAL IN · CH 1 Rise and Fall both full CCW · CH 1 EOR outputs a gate whenever the input signal exceeds the CH 1 threshold · use EOR to trigger other events from a crossing point"
     }
   ]
 }
