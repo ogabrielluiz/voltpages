@@ -10,43 +10,43 @@ const { inputs, outputs } = Astro.props;
 ---
 
 <div class="mt-6">
-  <h2 class="text-[10px] uppercase tracking-[3px] text-subtle font-mono mb-4">I/O</h2>
-  <table class="w-full border-collapse text-xs">
+  <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">I/O</h2>
+  <table class="w-full border-collapse text-sm">
     <tbody>
-      {inputs.map((input, i) => (
+      {inputs.map((input) => (
         <tr class="border-b border-border">
-          <td class="py-2 w-[120px] align-top">
+          <td class="py-2 w-[140px] align-top">
             <div class="flex items-center gap-2">
-              <div class="w-2 h-2 rounded-full bg-input-green shrink-0"></div>
-              <span class="text-sm font-semibold text-fg">{input.name}</span>
+              <div class="w-2.5 h-2.5 rounded-full bg-input-green shrink-0"></div>
+              <span class="text-[15px] font-semibold text-fg">{input.name}</span>
             </div>
             {input.voltage && (
-              <div class="text-[10px] font-mono text-faint mt-0.5 ml-4">{input.voltage}</div>
+              <div class="text-xs font-mono text-subtle mt-0.5 ml-[18px]">{input.voltage}</div>
             )}
           </td>
           <td class="py-2 text-muted align-top">
             {input.description}
             {input.normalizedTo && (
-              <div class="font-mono text-[10px] text-faint mt-0.5">norm: {input.normalizedTo}</div>
+              <div class="font-mono text-xs text-subtle mt-0.5">norm: {input.normalizedTo}</div>
             )}
           </td>
         </tr>
       ))}
       {outputs.map((output, i) => (
         <tr class={i < outputs.length - 1 ? "border-b border-border" : ""}>
-          <td class="py-2 w-[120px] align-top">
+          <td class="py-2 w-[140px] align-top">
             <div class="flex items-center gap-2">
-              <div class="w-2 h-2 rounded-full bg-output-red shrink-0"></div>
-              <span class="text-sm font-semibold text-fg">{output.name}</span>
+              <div class="w-2.5 h-2.5 rounded-full bg-output-red shrink-0"></div>
+              <span class="text-[15px] font-semibold text-fg">{output.name}</span>
             </div>
             {output.voltage && (
-              <div class="text-[10px] font-mono text-faint mt-0.5 ml-4">{output.voltage}</div>
+              <div class="text-xs font-mono text-subtle mt-0.5 ml-[18px]">{output.voltage}</div>
             )}
           </td>
           <td class="py-2 text-muted align-top">
             {output.description}
             {output.normalizedTo && (
-              <div class="font-mono text-[10px] text-faint mt-0.5">norm: {output.normalizedTo}</div>
+              <div class="font-mono text-xs text-subtle mt-0.5">norm: {output.normalizedTo}</div>
             )}
           </td>
         </tr>

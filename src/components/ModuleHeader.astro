@@ -19,15 +19,15 @@ const { name, manufacturer, hp, tags, verified, firmwareVersion } = Astro.props;
       <span class="text-[13px] text-border">·</span>
       <span class="text-[13px] text-subtle font-mono">{hp}HP</span>
       {firmwareVersion && (
-        <span class="text-[10px] font-mono text-faint">fw {firmwareVersion}</span>
+        <span class="text-xs font-mono text-subtle">fw {firmwareVersion}</span>
       )}
       {!verified && (
-        <span class="text-[9px] font-mono text-faint tracking-wide uppercase">AI-generated</span>
+        <span class="text-[11px] font-mono text-subtle tracking-wide uppercase">AI-generated</span>
       )}
     </div>
     <div class="flex gap-2 flex-wrap">
       {tags.map((tag) => (
-        <span class="text-[10px] font-mono text-muted tracking-[1px] uppercase px-2 py-0.5 border border-tag-border">
+        <span class="text-xs font-mono text-muted tracking-[1px] uppercase px-2 py-0.5 border border-tag-border">
           {tag}
         </span>
       ))}
