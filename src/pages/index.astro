@@ -47,14 +47,13 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
     </div>
 
-    <div class="flex-1"></div>
-
-    <footer class="mt-8 mb-4 flex flex-col items-center gap-3">
-      <a href="https://www.buymeacoffee.com/ogabrielluiz" target="_blank" rel="noopener noreferrer">
-        <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" class="h-[40px] w-[145px]" />
-      </a>
-    </footer>
   </div>
+
+  <footer class="fixed bottom-4 left-0 right-0 flex justify-center pointer-events-none">
+    <a href="https://www.buymeacoffee.com/ogabrielluiz" target="_blank" rel="noopener noreferrer" class="pointer-events-auto">
+      <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" class="h-[40px] w-[145px]" />
+    </a>
+  </footer>
 
   <!-- Pagefind search API (not the UI widget) -->
   <script is:inline define:vars={{ basePath }}>
