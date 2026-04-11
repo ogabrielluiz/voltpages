@@ -56,5 +56,63 @@ const goatcounterCode = import.meta.env.PUBLIC_GOATCOUNTER_CODE || 'ogabrielluiz
         src="//gc.zgo.at/count.js"
       ></script>
     )}
+
+    <!-- Custom event tracking -->
+    <script is:inline>
+      function trackEvent(name, title) {
+        if (window.goatcounter && window.goatcounter.count) {
+          window.goatcounter.count({ path: name, title: title, event: true });
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        // Track section nav clicks (which sections people jump to)
+        document.querySelectorAll('nav[aria-label="Module sections"] a').forEach(link => {
+          link.addEventListener('click', () => {
+            const section = link.getAttribute('href').replace('#', '');
+            const module = document.querySelector('h1')?.textContent || '';
+            trackEvent(`section-${section}`, `${module} → ${section}`);
+          });
+        });
+
+        // Track print button clicks
+        document.querySelectorAll('button[onclick="window.print()"]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const module = document.querySelector('h1')?.textContent || '';
+            trackEvent(`print-${module}`, `Print: ${module}`);
+          });
+        });
+
+        // Track outbound link clicks (contribute, etc.)
+        document.querySelectorAll('a[href^="http"]').forEach(link => {
+          link.addEventListener('click', () => {
+            trackEvent(`outbound-${link.hostname}`, link.textContent.trim());
+          });
+        });
+
+        // Track search usage
+        const searchInput = document.querySelector('.pagefind-ui__search-input');
+        if (searchInput) {
+          let searchTimeout;
+          searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+              const query = searchInput.value.trim();
+              if (query.length >= 2) {
+                trackEvent(`search`, `Search: ${query}`);
+              }
+            }, 1000);
+          });
+        }
+
+        // Track module clicks from home page
+        document.querySelectorAll('a[href*="/modules/"]').forEach(link => {
+          link.addEventListener('click', () => {
+            const module = link.textContent.trim();
+            trackEvent(`open-${module}`, `Open: ${module}`);
+          });
+        });
+      });
+    </script>
   </body>
 </html>
