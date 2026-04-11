@@ -38,7 +38,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
              data-name={module.name.toLowerCase()}
              data-manufacturer={module.manufacturer.toLowerCase()}
              data-tags={module.tags.join(' ').toLowerCase()}
-             class="module-card px-3 py-3 border-r border-b border-border hover:bg-surface no-underline transition-opacity duration-150">
+             class="module-card px-3 py-3 border-r border-b border-border hover:bg-surface no-underline">
             <span class="block text-sm font-semibold text-fg">{module.name}</span>
             <span class="block text-[11px] text-subtle mt-0.5">{module.manufacturer}</span>
             <span class="match-count hidden text-[10px] font-mono text-highlight mt-1"></span>
@@ -81,8 +81,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
         const mfr = card.dataset.manufacturer || '';
         const tags = card.dataset.tags || '';
         const match = name.includes(q) || mfr.includes(q) || tags.includes(q);
-        card.style.opacity = match ? '1' : '0.15';
-        card.style.pointerEvents = match ? '' : 'none';
+        card.style.display = match ? '' : 'none';
         const badge = card.querySelector('.match-count');
         if (badge) { badge.classList.add('hidden'); badge.textContent = ''; }
         if (match) visible++;
@@ -93,8 +92,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
     function resetGrid() {
       const cards = document.querySelectorAll('.module-card');
       cards.forEach(card => {
-        card.style.opacity = '1';
-        card.style.pointerEvents = '';
+        card.style.display = '';
         const badge = card.querySelector('.match-count');
         if (badge) { badge.classList.add('hidden'); badge.textContent = ''; }
       });
@@ -141,8 +139,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
         const localMatch = name.includes(q) || mfr.includes(q) || tags.includes(q);
         const isMatch = pagefindMatch || localMatch;
 
-        card.style.opacity = isMatch ? '1' : '0.15';
-        card.style.pointerEvents = isMatch ? '' : 'none';
+        card.style.display = isMatch ? '' : 'none';
 
         const badge = card.querySelector('.match-count');
         if (badge) {
