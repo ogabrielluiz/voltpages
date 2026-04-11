@@ -1,0 +1,33 @@
+name: Request a module
+description: Request a cheat sheet for a module
+labels: ["module-request"]
+body:
+  - type: input
+    id: module
+    attributes:
+      label: Module name
+      placeholder: e.g. Mimeophon
+    validations:
+      required: true
+  - type: input
+    id: manufacturer
+    attributes:
+      label: Manufacturer
+      placeholder: e.g. Make Noise
+    validations:
+      required: true
+  - type: input
+    id: hp
+    attributes:
+      label: HP width
+      placeholder: e.g. 16
+  - type: input
+    id: manual_url
+    attributes:
+      label: Manual URL (if available)
+      placeholder: https://...
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      placeholder: Any context about why this module would benefit from a sheet
