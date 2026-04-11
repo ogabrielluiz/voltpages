@@ -12,15 +12,13 @@
   "description": "1U MIDI-to-CV converter providing pitch, gate, velocity, mod wheel, aftertouch, clock, and reset outputs. Receives MIDI from Intellijel MIDI 1U via internal ribbon cable.",
   "controls": [
     {
-      "name": "MIDI Channel",
+      "name": "Channel Select",
       "scope": "global",
-      "description": "MIDI channel selection configured via the Intellijel 1U configuration utility app. Not a physical knob.",
-      "detail": "Channels 1–16 · set via software · omni mode available"
+      "description": "MIDI channel configured via Intellijel 1U config app (no physical control).",
+      "detail": "Channels 1–16 · omni mode available · requires Midi 1U connected via ribbon"
     }
   ],
-  "inputs": [
-    { "name": "MIDI In", "description": "MIDI data received internally from Intellijel MIDI 1U module via ribbon cable. No panel jack.", "voltage": "internal ribbon" }
-  ],
+  "inputs": [],
   "outputs": [
     { "name": "Pitch", "description": "1V/oct pitch CV derived from MIDI note number.", "voltage": "0–8V (1V/oct)" },
     { "name": "Gate", "description": "Gate output, high when a MIDI note is held.", "voltage": "0–5V gate" },

@@ -45,25 +45,25 @@
   ],
   "inputs": [
     {
-      "name": "EXT L / EXT R",
-      "description": "1/8\" patch inputs fed from rear-panel balanced or unbalanced line input connectors",
-      "voltage": "line level"
-    },
-    {
       "name": "CUE L / CUE R",
-      "description": "1/8\" patch inputs for cue monitoring feed. Left normals to right for mono sources.",
+      "description": "Patch inputs for cue monitoring feed. Left normals to right for mono.",
       "voltage": "modular level"
     },
     {
       "name": "MAIN L / MAIN R",
-      "description": "1/8\" patch inputs to module output. Left normals to right for mono sources.",
+      "description": "Patch inputs routed to rear balanced line output. Left normals to right.",
       "voltage": "modular level"
     }
   ],
   "outputs": [
     {
+      "name": "EXT L / EXT R",
+      "description": "Rear-panel line input converted to modular level. Gain set by Input Gain Switch.",
+      "voltage": "modular level"
+    },
+    {
       "name": "Headphone Out",
-      "description": "1/8\" TRS stereo headphone output. Source selectable via HP Monitor Switch.",
+      "description": "TRS stereo headphone output. Source selectable via HP Monitor Switch.",
       "voltage": "headphone level"
     }
   ],

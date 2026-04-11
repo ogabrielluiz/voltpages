@@ -9,7 +9,7 @@
   "name": "Bard Quartet",
   "manufacturer": "Shakmat Modular",
   "hp": 10,
-  "tags": ["QUANTIZER", "SEQUENCER", "MIDI"],
+  "tags": ["QUANTIZER", "SEQUENCER"],
   "description": "Quad programmable quantizer with integrated keyboard interface. Four channels, 8 harmonies, 10 memory slots. Supports microtuning, arpeggiator, channel grouping, and harmony progressions for full song structures.",
   "controls": [
     {

@@ -38,16 +38,26 @@
     }
   ],
   "inputs": [
-    { "name": "Trigger", "description": "Gate/trigger fires the envelope", "voltage": "2V+ gate" },
-    { "name": "Signal In", "description": "CV or audio to process", "voltage": "±5V" },
-    { "name": "Rise CV", "description": "Voltage control of rise time", "voltage": "±5V" },
-    { "name": "Fall CV", "description": "Voltage control of fall time", "voltage": "±5V" }
+    { "name": "CH 1 Trigger", "description": "Gate/trigger fires CH 1 envelope", "voltage": "2V+ gate" },
+    { "name": "CH 1 Signal In", "description": "CV/audio processed by CH 1 rise/fall", "voltage": "±5V" },
+    { "name": "CH 1 Rise CV", "description": "Voltage control of CH 1 rise time", "voltage": "±5V" },
+    { "name": "CH 1 Fall CV", "description": "Voltage control of CH 1 fall time", "voltage": "±5V" },
+    { "name": "CH 2 Signal In", "description": "Input to CH 2 attenuverter", "voltage": "±5V", "normalizedTo": "+5V DC when unpatched" },
+    { "name": "CH 3 Signal In", "description": "Input to CH 3 attenuverter", "voltage": "±5V", "normalizedTo": "+5V DC when unpatched" },
+    { "name": "CH 4 Trigger", "description": "Gate/trigger fires CH 4 envelope", "voltage": "2V+ gate" },
+    { "name": "CH 4 Signal In", "description": "CV/audio processed by CH 4 rise/fall", "voltage": "±5V" },
+    { "name": "CH 4 Rise CV", "description": "Voltage control of CH 4 rise time", "voltage": "±5V" },
+    { "name": "CH 4 Fall CV", "description": "Voltage control of CH 4 fall time", "voltage": "±5V" }
   ],
   "outputs": [
-    { "name": "CH 1–4 Out", "description": "Function/envelope output per channel", "voltage": "0–8V" },
-    { "name": "EOR / EOC", "description": "End-of-rise / end-of-cycle gates", "voltage": "0–5V gate" },
-    { "name": "SUM", "description": "Mixed output of CH 2 + 3", "voltage": "±10V" },
-    { "name": "OR", "description": "Max of all 4 channels", "voltage": "0–8V" }
+    { "name": "CH 1 Out", "description": "CH 1 function/envelope output", "voltage": "0–8V" },
+    { "name": "CH 1 EOR", "description": "End-of-rise gate from CH 1", "voltage": "0–5V gate" },
+    { "name": "CH 2 Out", "description": "CH 2 attenuverter output", "voltage": "±5V" },
+    { "name": "CH 3 Out", "description": "CH 3 attenuverter output", "voltage": "±5V" },
+    { "name": "CH 4 Out", "description": "CH 4 function/envelope output", "voltage": "0–8V" },
+    { "name": "CH 4 EOC", "description": "End-of-cycle gate from CH 4", "voltage": "0–5V gate" },
+    { "name": "Unity", "description": "Sum of all 4 channel outputs at unity gain", "voltage": "±10V" },
+    { "name": "OR", "description": "Maximum (analog OR) of CH 1 and CH 4", "voltage": "0–8V" }
   ],
   "behaviors": [
     {
