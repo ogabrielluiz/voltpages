@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Eurorack Module Cheat Sheet",
+  "type": "object",
+  "required": ["_meta", "slug", "name", "manufacturer", "hp", "tags", "description", "controls", "inputs", "outputs", "behaviors", "patchIdeas"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "_meta": {
+      "type": "object",
+      "required": ["schemaVersion", "verified"],
+      "properties": {
+        "schemaVersion": { "type": "number", "const": 1 },
+        "generatedAt": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "firmwareVersion": { "type": "string" }
+      }
+    },
+    "slug": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" },
+    "name": { "type": "string", "minLength": 1 },
+    "manufacturer": { "type": "string", "minLength": 1 },
+    "hp": { "type": "integer", "minimum": 1 },
+    "tags": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "OSCILLATOR", "VCO", "VCA", "VCF", "FILTER", "ENVELOPE", "LFO",
+          "FUNCTION", "SEQUENCER", "CLOCK", "UTILITY", "MIXER", "REVERB",
+          "DELAY", "EFFECTS", "DISTORTION", "GRANULAR", "SAMPLER", "WAVESHAPER",
+          "QUANTIZER", "NOISE", "SLEW", "RANDOM", "LOGIC", "SWITCH",
+          "ATTENUATOR", "ATTENUVERTER", "TRIGGER", "GATE", "DRUM",
+          "COMPRESSOR", "EQ", "PHASER", "CHORUS", "GLITCH", "BUFFER",
+          "RESONATOR", "WAVEFOLDER", "MIDI", "I/O", "MULT"
+        ]
+      }
+    },
+    "description": { "type": "string", "minLength": 10, "maxLength": 300 },
+    "controls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "scope", "description", "detail"],
+        "properties": {
+          "name": { "type": "string" },
+          "scope": { "type": "string" },
+          "description": { "type": "string", "maxLength": 120 },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "description"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "voltage": { "type": "string" },
+          "normalizedTo": { "type": "string" }
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "description"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "voltage": { "type": "string" },
+          "normalizedTo": { "type": "string" }
+        }
+      }
+    },
+    "behaviors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "trigger", "description"],
+        "properties": {
+          "name": { "type": "string" },
+          "trigger": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "patchIdeas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "patch"],
+        "properties": {
+          "name": { "type": "string" },
+          "patch": { "type": "string" }
+        }
+      }
+    }
+  }
+}

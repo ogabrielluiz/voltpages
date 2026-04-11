@@ -1,0 +1,83 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.0"
+  },
+  "slug": "make-noise--maths",
+  "name": "MATHS",
+  "manufacturer": "Make Noise",
+  "hp": 20,
+  "tags": ["FUNCTION", "ENVELOPE", "LFO", "SLEW"],
+  "description": "Analog function generator. Four channels: two full-featured (1 & 4) with rise/fall/curve and cycle, two attenuverter/offset channels (2 & 3) with unity mixing.",
+  "controls": [
+    {
+      "name": "Rise / Fall",
+      "scope": "CH 1 & 4",
+      "description": "Time knobs. CW = longer.",
+      "detail": "0.001s – 10s+ · CV controllable"
+    },
+    {
+      "name": "Curve",
+      "scope": "CH 1 & 4",
+      "description": "Response shape. Noon = linear.",
+      "detail": "CCW: expo · noon: linear · CW: log"
+    },
+    {
+      "name": "Attenuverters",
+      "scope": "CH 2 & 3",
+      "description": "Signal scaling.",
+      "detail": "CCW: invert · noon: zero · CW: unity"
+    },
+    {
+      "name": "Offset",
+      "scope": "CH 2 & 3",
+      "description": "DC offset. Adds to SUM output.",
+      "detail": "±5V range"
+    }
+  ],
+  "inputs": [
+    { "name": "Trigger", "description": "Gate/trigger fires the envelope", "voltage": "2V+ gate" },
+    { "name": "Signal In", "description": "CV or audio to process", "voltage": "±5V" },
+    { "name": "Rise CV", "description": "Voltage control of rise time", "voltage": "±5V" },
+    { "name": "Fall CV", "description": "Voltage control of fall time", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "CH 1–4 Out", "description": "Function/envelope output per channel", "voltage": "0–8V" },
+    { "name": "EOR / EOC", "description": "End-of-rise / end-of-cycle gates", "voltage": "0–5V gate" },
+    { "name": "SUM", "description": "Mixed output of CH 2 + 3", "voltage": "±10V" },
+    { "name": "OR", "description": "Max of all 4 channels", "voltage": "0–8V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Cycle Mode",
+      "trigger": "button press",
+      "description": "Self-triggering LFO. Speed set by Rise + Fall. LED indicates cycle. Syncs to trigger input when patched."
+    },
+    {
+      "name": "Envelope",
+      "trigger": "gate → trig in",
+      "description": "ASR on sustained gate, AD on trigger. Curve knob shapes attack & decay response independently."
+    },
+    {
+      "name": "Slew Limiter",
+      "trigger": "cv → signal in",
+      "description": "Portamento / glide. Rise = glide up speed, Fall = glide down. Asymmetric glide when set differently."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Bouncing ball",
+      "patch": "EOR → TRIG · short Rise · long Fall · Cycle off"
+    },
+    {
+      "name": "Complex LFO",
+      "patch": "CH1 Cycle → CH4 Rise CV · CH4 Cycle → SUM"
+    },
+    {
+      "name": "Voltage-controlled clock",
+      "patch": "Cycle on · ext CV → Rise/Fall CV inputs"
+    }
+  ]
+}
