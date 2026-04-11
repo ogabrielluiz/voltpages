@@ -216,13 +216,13 @@
     },
     {
       "name": "Loopy Mode",
-      "trigger": "LOOPY button",
-      "description": "Live performance feature. 1-finger loopy locks a sub-loop of stages; 2-finger loopy sets loop start and end points interactively. Stage Player sub-mode plays individual stages on demand."
+      "trigger": "hold two stage buttons",
+      "description": "Instantly loops between two held stage buttons. Track 2 in Loopy acts as a live keyboard — press single stages to play individual notes."
     },
     {
-      "name": "ACCUM (Accumulator)",
-      "trigger": "ACCUM stage button",
-      "description": "Stage pitch transposes cumulatively each pass, each pulse, or each ratchet. Range, polarity, and reset behavior are configurable per stage."
+      "name": "Accumulator",
+      "trigger": "per-stage or per-track config",
+      "description": "Adds a pitch interval per pulse, stage, or loop. Creates rising/falling melodic lines, chord arpeggios within a stage, and automatic transposition."
     },
     {
       "name": "Preset Chaining",
@@ -237,20 +237,24 @@
   ],
   "patchIdeas": [
     {
-      "name": "Polyrhythmic counterpoint",
-      "patch": "TRK1 DIV=/1 · TRK2 DIV=/3 · different LEN values · shared scale → instant polyrhythm"
+      "name": "Boards of Canada progression",
+      "patch": "Mod Lane: Pitch Post (both tracks) · /8 division · 4 values: 0, +2, +5, +7 · auto chord progression"
     },
     {
-      "name": "Probability melody",
-      "patch": "PROB < 100% on several stages · SKIP some stages · sequence evolves differently each pass"
+      "name": "Guitar hammer-on",
+      "patch": "Ratchet mode: SINGLE · Ratchets=3 · Stage accumulator +2 semitones · three ascending pitches per stage"
     },
     {
-      "name": "Pitch accumulation",
-      "patch": "ACCUM on one stage · unipolar · low range → slow upward transpose over multiple loops"
+      "name": "Generative brownian melody",
+      "patch": "ORDER: BROWNIAN · 8 stages · quantized to user scale · trends forward but wanders · organic improv feel"
     },
     {
-      "name": "CV mod lane as LFO-replacement",
-      "patch": "MOD Lane → A Out · sine-like values across 8 stages · short DIV → smooth cycling CV"
+      "name": "3/4 inside 4/4",
+      "patch": "Stages 1-3: MULTI pulse 2 · Stage 4: REST · repeat · hemiola against straight Track 1"
+    },
+    {
+      "name": "AUX as manual control",
+      "patch": "Assign AUX to Accum Dir · no cable patched · attenuverter acts as panel control · free extra knob"
     }
   ]
 }

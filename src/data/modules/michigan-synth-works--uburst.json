@@ -98,16 +98,20 @@
   ],
   "patchIdeas": [
     {
-      "name": "Evolving pad from mono source",
-      "patch": "Synth → Left In · LFO → Position CV · long Size · high Density · Blend full wet"
+      "name": "Spectral freeze drone",
+      "patch": "Audio in · Freeze button held · Position + Size sweep frozen buffer · Blend full wet · infinite evolving drone"
     },
     {
-      "name": "Live freeze performance",
-      "patch": "Drum loop → Left In · Trigger → gate input for rhythmic freeze · Density CV from sequencer"
+      "name": "Pitched reverb",
+      "patch": "Mode: Pitch Shifter/Reverb · Density low · Size medium · Blend 70% wet · shimmer wash"
     },
     {
-      "name": "Pitch-tracked granular harmony",
-      "patch": "V/Oct from keyboard → V/Oct in · Pitch knob at center · grains follow played notes"
+      "name": "Granular stutter",
+      "patch": "Mode: Granular · Density high · Size very small · Trigger input from clock · rhythmic micro-slice effect"
+    },
+    {
+      "name": "Looping delay with degradation",
+      "patch": "Mode: Looping Delay · Density = feedback · Texture = filter · Size = delay time · self-degrading loops"
     }
   ]
 }

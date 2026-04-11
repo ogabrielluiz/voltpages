@@ -53,20 +53,34 @@
       "name": "Feedback Waveshaping",
       "trigger": "LFO out → Rate CV",
       "description": "Patching any LFO output back to Rate CV input creates waveshaped, non-linear LFO shapes on all channels."
+    },
+    {
+      "name": "Self-modulation",
+      "trigger": "output → Rate CV",
+      "description": "Patching any output to Rate CV creates waveform folding: exponential curves, pseudo-squares, stepped shapes, or chaotic oscillation depending on attenuverter."
+    },
+    {
+      "name": "Track-and-hold freeze",
+      "trigger": "gate → Rate CV (inverted)",
+      "description": "Gate with attenuverter fully CCW stalls all 8 LFOs at current voltage. Simultaneous track-and-hold on all outputs."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Track & Hold",
-      "patch": "Gate → Rate CV · Attenuverter full CCW · LFO outs → CV destinations"
+      "name": "Feedback waveshaping",
+      "patch": "Any output → Rate CV · attenuverter sets depth · creates exponential curves and pseudo-square waves from triangles"
     },
     {
-      "name": "Feedback waveshaper",
-      "patch": "LFO 4 out → Rate CV · attenuverter at noon · remaining outs to VCF/VCA"
+      "name": "8-parameter granular drifter",
+      "patch": "8 outputs → 8 CV inputs on granular module · each parameter evolves at independent rate · never repeats"
     },
     {
-      "name": "Granular drifter",
-      "patch": "LFO outs → arbhar CV inputs for evolving granular textures"
+      "name": "Audio-rate FM",
+      "patch": "LFO 1 at max Rate (160Hz+) → VCO FM input · organic triangle-wave FM with free-running drift"
+    },
+    {
+      "name": "Rhythmic CV freeze",
+      "patch": "Clock gate → Rate CV · attenuverter fully CCW · all LFOs freeze on gate high · resume on low"
     }
   ]
 }
