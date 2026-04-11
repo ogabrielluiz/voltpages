@@ -92,29 +92,69 @@
     {
       "name": "LFO Mode",
       "trigger": "hold right button + HARMONICS CCW",
-      "description": "Drops to 0.015-16Hz range. All 16 models become complex LFO shapes. OUT and AUX give different waveshapes."
+      "description": "Drops to 0.015–16Hz range. All 16 models become complex LFO shapes. OUT and AUX give different waveshapes from the same model. Model 9 in LFO mode produces two non-repeating random CV streams."
+    },
+    {
+      "name": "MODEL CV latching",
+      "trigger": "trigger edge + MODEL CV",
+      "description": "MODEL CV is only sampled on trigger edges — the model does not change mid-note. A slow CV sweep paired with a rhythmic trigger produces beat-synced model switching rather than continuous morphing."
+    },
+    {
+      "name": "Internal envelope normalization",
+      "trigger": "TRIG patched with CV inputs unpatched",
+      "description": "When TRIG is patched, TIMBRE, FM, and MORPH CV inputs are normalled to the internal decaying envelope. The three attenuverters then control how much envelope depth is applied to each parameter. Patching any CV cable into those jacks breaks the normalling for that parameter only."
+    },
+    {
+      "name": "Color-blind mode",
+      "trigger": "power on while holding right button",
+      "description": "Toggles LED behavior to use brightness levels instead of green/red color coding for the two model banks. Useful in low-light environments or for performers with color vision deficiency."
+    },
+    {
+      "name": "Frequency range narrowing",
+      "trigger": "hold right button + turn HARMONICS",
+      "description": "Default pitch range is 8 octaves. Turning HARMONICS CCW while holding right button narrows the FREQUENCY knob range down to ±7 semitones, enabling fine chromatic tuning without an external attenuverter on the knob."
     }
   ],
   "patchIdeas": [
     {
-      "name": "808 kick",
-      "patch": "Model 14 · HARMONICS low · TIMBRE low · MORPH 10 o'clock · short gate trigger"
+      "name": "808-style kick drum",
+      "patch": "Model 14 (bass drum) · HARMONICS at 9 o'clock (low tuning) · TIMBRE at 9 o'clock (soft click) · MORPH at 10 o'clock (medium decay) · short trigger from sequencer · AUX = distorted variation for layering"
     },
     {
-      "name": "Euclidean drum machine",
-      "patch": "MODEL CV from sequencer (0V/0.31V/0.62V) · TRIG from clock · switches kick/snare/hat per step"
+      "name": "DX7 electric piano",
+      "patch": "Model 4 (Plaits formant bank, select keyboard FM preset) · HARMONICS turned to EP harmonic preset position · TIMBRE at 70% (moderate FM index) · MORPH short (tight decay) · V/Oct from keyboard · internal LPG active · clean playable FM piano voice from one module"
+    },
+    {
+      "name": "Drum machine from one module",
+      "patch": "MODEL CV from 3-step sequencer outputting 0V / 0.31V / 0.62V · TRIG from clock · 0V = kick (Model 14) · 0.31V = snare (Model 15) · 0.62V = hi-hat (Model 16) · sequence all three drum voices with one Plaits and one sequencer"
+    },
+    {
+      "name": "Chiptune arpeggiator",
+      "patch": "Model 8 (speech/LPC bank, orange) · clock → TRIG · TIMBRE swept to select phoneme/arpeggio mode · AUX = NES-style triangle wave bass line · mix OUT + AUX for two independent voices from one module"
+    },
+    {
+      "name": "Granular ambient CV",
+      "patch": "Model 9 · hold right button + HARMONICS full CCW to enter LFO mode · HARMONICS at 2 o'clock (wide pitch spread across grains) · OUT and AUX = two non-repeating, slowly wandering random CV sources · patch to filter FM and reverb send for ambient self-generating textures"
+    },
+    {
+      "name": "Self-patch feedback FM",
+      "patch": "Model 3 (2-op FM) · OUT → MORPH CV input via attenuverter set at 10 o'clock · audio-rate feedback creates metallic, chaotic tones · TIMBRE controls carrier/modulator ratio · HARMONICS adjusts base FM depth · sweep MORPH attenuverter for feedback amount control"
     },
     {
       "name": "Bowed string drone",
-      "patch": "Model 12 · no trigger · MORPH 3 o'clock · V/OCT from keyboard · long LPG decay"
+      "patch": "Model 12 (modal resonator/string) · no trigger patched · MORPH at 3 o'clock (long resonance) · V/Oct from keyboard or fixed pitch CV · LEVEL input from slow LFO for breathing bow pressure · mix OUT + AUX for stereo spread"
     },
     {
-      "name": "Supersaw lead",
-      "patch": "Model 9 · HARMONICS 9 o'clock · TIMBRE full CW · mix OUT + AUX"
+      "name": "Supersaw / unison lead",
+      "patch": "Model 9 (sawtooth grains) · HARMONICS at 9 o'clock (tight unison) · TIMBRE full CW (bright, dense) · V/Oct from sequencer · TRIG from gate · mix OUT + AUX (slightly detuned grain clusters) for wide supersaw sound"
     },
     {
       "name": "Talking bass",
-      "patch": "Model 8 · MORPH at formant position · low pitch via V/OCT · slow LFO on TIMBRE"
+      "patch": "Model 8 (speech synthesis) · MORPH positioned at formant vowel transition · V/Oct set for bass register (0V–1V) · slow LFO on TIMBRE CV at 1 o'clock attenuverter · MORPH CV from envelope for vowel-on-note effect · rhythmic gate triggers for consonant attacks"
+    },
+    {
+      "name": "Beat-synced model switching",
+      "patch": "Slow ascending CV ramp (0–5V over 8 bars) → MODEL CV · clock → TRIG · model only changes on each trigger so switching is always in-time · HARMONICS and TIMBRE stay fixed, timbre character evolves bar by bar as model index advances"
     }
   ]
 }
