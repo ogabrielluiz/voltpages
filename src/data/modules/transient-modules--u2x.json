@@ -1,0 +1,63 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "transient-modules--u2x",
+  "name": "u2X",
+  "manufacturer": "Transient Modules",
+  "hp": 12,
+  "tags": ["UTILITY", "MIXER"],
+  "description": "1U dual 2-channel unity mixer. Two independent sections each combine two signals into one output. Mute switch per section silences the output without disconnecting.",
+  "controls": [
+    {
+      "name": "Mute A",
+      "scope": "Section A",
+      "description": "Toggle switch that mutes the mixed output of section A.",
+      "detail": "up: active · down: muted"
+    },
+    {
+      "name": "Mute B",
+      "scope": "Section B",
+      "description": "Toggle switch that mutes the mixed output of section B.",
+      "detail": "up: active · down: muted"
+    }
+  ],
+  "inputs": [
+    { "name": "A In 1", "description": "First input to section A unity mixer.", "voltage": "±10V" },
+    { "name": "A In 2", "description": "Second input to section A unity mixer.", "voltage": "±10V" },
+    { "name": "B In 1", "description": "First input to section B unity mixer.", "voltage": "±10V" },
+    { "name": "B In 2", "description": "Second input to section B unity mixer.", "voltage": "±10V" }
+  ],
+  "outputs": [
+    { "name": "A Out", "description": "Unity mix of A In 1 and A In 2. Silenced when Mute A is engaged.", "voltage": "±10V" },
+    { "name": "B Out", "description": "Unity mix of B In 1 and B In 2. Silenced when Mute B is engaged.", "voltage": "±10V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Unity Mixing",
+      "trigger": "signals patched",
+      "description": "Each section sums its two inputs at unity gain. No attenuation or amplification — output equals the sum of both inputs."
+    },
+    {
+      "name": "Mute",
+      "trigger": "mute switch",
+      "description": "Toggling the mute switch cuts the output of that section without affecting the input signals or the other section."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Merge two LFOs",
+      "patch": "LFO 1 → A In 1 · LFO 2 → A In 2 · A Out → VCF CV"
+    },
+    {
+      "name": "CV + envelope sum",
+      "patch": "V/Oct → B In 1 · Envelope → B In 2 · B Out → VCO V/Oct for pitch + expression"
+    },
+    {
+      "name": "Live mute performance",
+      "patch": "Two audio sources into section A · mute switch for instant drop-outs"
+    }
+  ]
+}

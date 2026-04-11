@@ -1,0 +1,107 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "alm-busy-circuits--pip-lfo",
+  "name": "Pip LFO",
+  "manufacturer": "ALM Busy Circuits",
+  "hp": 4,
+  "tags": ["LFO", "VCO"],
+  "description": "Compact analog LFO with square, saw, triangle, and sine outputs, each available in bipolar and unipolar versions. VCO mode enables audio-rate 1V/oct tracking over ~5 octaves.",
+  "controls": [
+    {
+      "name": "Freq",
+      "scope": "global",
+      "description": "Sets LFO frequency. Also acts as additional CV input.",
+      "detail": "~0.01Hz (90s) to 30Hz in LFO mode · extends to ultrasonic in VCO mode"
+    },
+    {
+      "name": "VCO Mode Button",
+      "scope": "global",
+      "description": "Toggles between LFO and VCO (audio rate, 1V/oct) mode.",
+      "detail": "LED indicates VCO mode active · V/OCT TRIM on rear for calibration"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Freq (CV)",
+      "description": "Voltage control of frequency, summed with Freq knob.",
+      "voltage": "1V/oct in VCO mode"
+    },
+    {
+      "name": "Rst",
+      "description": "Trigger input resets all waveform cycles. Hard sync in VCO mode.",
+      "voltage": "trigger"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Square",
+      "description": "Unipolar square wave output only.",
+      "voltage": "0–8V"
+    },
+    {
+      "name": "Saw (bipolar)",
+      "description": "Bipolar sawtooth output.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "Saw (unipolar)",
+      "description": "Unipolar sawtooth output.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Triangle (bipolar)",
+      "description": "Bipolar triangle output.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "Triangle (unipolar)",
+      "description": "Unipolar triangle output.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Sine (bipolar)",
+      "description": "Bipolar sine output.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "Sine (unipolar)",
+      "description": "Unipolar sine output.",
+      "voltage": "0–5V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "LFO Mode",
+      "trigger": "default",
+      "description": "Free-running LFO from ~0.01Hz to 30Hz. All waveform outputs available simultaneously in bipolar and unipolar versions."
+    },
+    {
+      "name": "VCO Mode",
+      "trigger": "VCO button press",
+      "description": "Audio-rate oscillator tracking 1V/oct over approx 5 octaves into ultrasonic range. LED lit. Rear trimmer for calibration."
+    },
+    {
+      "name": "Hard Sync",
+      "trigger": "trigger → Rst",
+      "description": "In VCO mode, a trigger to Rst resets the waveform cycle for hard sync effects."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Clocked reset",
+      "patch": "Clock → Rst · LFO rate slower than clock for rhythmic waveshaping"
+    },
+    {
+      "name": "VCO with multiple waveforms",
+      "patch": "V/Oct → Freq · bipolar saw → VCF · unipolar tri → VCA CV"
+    },
+    {
+      "name": "Unipolar modulation",
+      "patch": "0–5V sine → filter cutoff for upward-only modulation sweep"
+    }
+  ]
+}

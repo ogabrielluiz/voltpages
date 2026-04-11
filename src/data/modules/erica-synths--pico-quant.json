@@ -1,0 +1,88 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "erica-synths--pico-quant",
+  "name": "Pico Quant",
+  "manufacturer": "Erica Synths",
+  "hp": 3,
+  "tags": ["QUANTIZER", "UTILITY"],
+  "description": "Advanced 3HP CV quantizer with 8 preset scales, quarter-tone microtonal accuracy, adjustable tolerance and glide. Supports clocked or free-running quantization and user-uploadable scales via web interface.",
+  "controls": [
+    {
+      "name": "Tolerance",
+      "scope": "global",
+      "description": "Sets the CV range around each note at which the quantizer advances to the next step.",
+      "detail": "CCW: 50% tolerance (mid-point advance) · CW: 10% tolerance (close approach needed)"
+    },
+    {
+      "name": "Glide",
+      "scope": "global",
+      "description": "Sets glide (portamento) time between quantized notes.",
+      "detail": "0–1 second · at fast rates acts as wet/dry control"
+    },
+    {
+      "name": "Scale Button",
+      "scope": "global",
+      "description": "Press to cycle through 8 scale slots. Hold 2s to enter scale upload mode (LED blinks red).",
+      "detail": "8 scales: Diatonic, Arabian, Harmonic Minor, Blues, Diminish, Pentatonic, Whole-tone, Chromatic"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "CLK IN",
+      "description": "Clock input for clocked quantization mode. Quantizer updates on each clock pulse.",
+      "voltage": "trigger/gate"
+    },
+    {
+      "name": "CV IN",
+      "description": "Unquantized CV input. Negative voltages are ignored.",
+      "voltage": "-10V to +10V (negative ignored)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "CLK OUT",
+      "description": "Trigger output on each quantized CV change. Free-running trigger if CLK IN unpatched.",
+      "voltage": "trigger"
+    },
+    {
+      "name": "CV OUT",
+      "description": "Quantized CV output.",
+      "voltage": "0–+8V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Free-running quantization",
+      "trigger": "CV IN (no clock)",
+      "description": "Without a clock, quantizer continuously maps incoming CV to the nearest note in the selected scale."
+    },
+    {
+      "name": "Clocked quantization",
+      "trigger": "clock → CLK IN",
+      "description": "Quantizer samples and outputs a new quantized value on each rising clock edge, enabling rhythmically stepped CV."
+    },
+    {
+      "name": "Scale upload",
+      "trigger": "hold Scale button 2s",
+      "description": "Module enters upload mode (LED blinks red). Connect a device's headphone output to CLK IN and use the web interface at ericasynths.lv/quant to transmit custom scales."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Melodic S&H",
+      "patch": "Noise/random CV → CV IN · Clock → CLK IN · CV OUT → VCO 1V/oct"
+    },
+    {
+      "name": "Microtonal melody",
+      "patch": "Upload quarter-tone scale via web · sequencer → CV IN · CV OUT → VCO"
+    },
+    {
+      "name": "Tolerance experiment",
+      "patch": "LFO → CV IN · Tolerance CW (tight) for precise snapping vs CCW for smooth stepping"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "Parasites"
+  },
+  "slug": "michigan-synth-works--uburst",
+  "name": "uBurst",
+  "manufacturer": "Michigan Synth Works",
+  "hp": 8,
+  "tags": ["GRANULAR", "EFFECTS", "DELAY", "REVERB"],
+  "description": "8HP micro clone of Mutable Instruments Clouds running Parasites firmware. Four modes: Granular, Pitch Shifter/Reverb, Looping Delay, and Spectral processing.",
+  "controls": [
+    {
+      "name": "Position",
+      "scope": "global",
+      "description": "Selects playback position within the buffer. CV controllable.",
+      "detail": "CCW: buffer start · CW: buffer end · CV input for modulation"
+    },
+    {
+      "name": "Size",
+      "scope": "global",
+      "description": "Grain or window size. Larger values produce longer, smoother grains.",
+      "detail": "CCW: short grains · CW: long grains · CV controllable"
+    },
+    {
+      "name": "Pitch",
+      "scope": "global",
+      "description": "Grain transposition. Center = unity pitch. V/Oct tracking via V/Oct input.",
+      "detail": "Center: no pitch shift · CV via V/Oct input"
+    },
+    {
+      "name": "Density",
+      "scope": "global",
+      "description": "Grain density and triggering rate. Controls how many grains are generated per second.",
+      "detail": "CCW: sparse · CW: dense · negative values: reverse grains"
+    },
+    {
+      "name": "Texture",
+      "scope": "global",
+      "description": "Grain window shape and overlap. Shapes spectral texture from smooth to grainy.",
+      "detail": "CCW: smooth/sine window · CW: harsh/square window · CV controllable"
+    },
+    {
+      "name": "Blend",
+      "scope": "global",
+      "description": "Wet/dry mix between dry input signal and processed granular output.",
+      "detail": "CCW: fully dry · CW: fully wet"
+    },
+    {
+      "name": "Freeze",
+      "scope": "global",
+      "description": "Button that freezes the audio buffer, looping captured audio indefinitely.",
+      "detail": "Press: freeze · Release: resume recording · also triggerable via gate input"
+    }
+  ],
+  "inputs": [
+    { "name": "Left In", "description": "Left (mono) audio input. Normalled to Right input when Right is unpatched.", "voltage": "±5V" },
+    { "name": "Right In", "description": "Right audio input for stereo operation.", "voltage": "±5V" },
+    { "name": "Trigger", "description": "Triggers a single grain burst or freeze toggle depending on mode.", "voltage": ">2V trigger" },
+    { "name": "V/Oct", "description": "1V/oct pitch input for transposition of grains relative to Pitch knob.", "voltage": "±5V" },
+    { "name": "Position CV", "description": "CV modulates playback Position in the buffer.", "voltage": "±5V" },
+    { "name": "Size CV", "description": "CV modulates grain Size.", "voltage": "±5V" },
+    { "name": "Density CV", "description": "CV modulates grain Density.", "voltage": "±5V" },
+    { "name": "Texture CV", "description": "CV modulates grain Texture.", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "Left Out", "description": "Left channel processed audio output.", "voltage": "±5V" },
+    { "name": "Right Out", "description": "Right channel processed audio output.", "voltage": "±5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Granular Mode",
+      "trigger": "audio in + knobs",
+      "description": "Default mode. Records incoming audio into a buffer and reads it back as overlapping grains. Position, Size, Density, and Texture all affect granular playback."
+    },
+    {
+      "name": "Pitch Shifter / Reverb Mode (Parasites)",
+      "trigger": "mode button",
+      "description": "Uses grain engine for pitch shifting and reverb-like diffusion. Pitch knob shifts without affecting speed. Long Size and high Density creates lush reverb tails."
+    },
+    {
+      "name": "Looping Delay Mode (Parasites)",
+      "trigger": "mode button",
+      "description": "Transforms module into a looping delay with granular characteristics. Position sets delay tap, Density controls feedback."
+    },
+    {
+      "name": "Spectral Mode (Parasites)",
+      "trigger": "mode button",
+      "description": "FFT-based spectral processing. Freezes and manipulates frequency content. Position scrubs spectral frames; Texture blurs frequency bins."
+    },
+    {
+      "name": "Freeze",
+      "trigger": "Freeze button or gate",
+      "description": "Halts buffer recording, looping the captured audio. All grain parameters continue to modulate playback of the frozen buffer."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Evolving pad from mono source",
+      "patch": "Synth → Left In · LFO → Position CV · long Size · high Density · Blend full wet"
+    },
+    {
+      "name": "Live freeze performance",
+      "patch": "Drum loop → Left In · Trigger → gate input for rhythmic freeze · Density CV from sequencer"
+    },
+    {
+      "name": "Pitch-tracked granular harmony",
+      "patch": "V/Oct from keyboard → V/Oct in · Pitch knob at center · grains follow played notes"
+    }
+  ]
+}

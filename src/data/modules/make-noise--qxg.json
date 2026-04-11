@@ -1,0 +1,92 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "make-noise--qxg",
+  "name": "QXG",
+  "manufacturer": "Make Noise",
+  "hp": 12,
+  "tags": ["VCA", "VCF", "MIXER"],
+  "description": "Quad Stereo Gate — four-channel stereo low pass gate and mixer. 100% analog vactrol-free LPG circuit with voltage-controllable stereo spread. Designed to pair with PoliMATHS and MultiWAVE in the N.U.S.S.",
+  "controls": [
+    {
+      "name": "Control Combo Pots 1–4",
+      "scope": "CH 1–4",
+      "description": "Panel controls for each LPG circuit. Attenuates signal at Control Input or normalled N.U.S.S. control signals. Acts as panel control when Control Input is unpatched.",
+      "detail": "CCW=closed · CW=open · Controls both amplitude and filter frequency"
+    },
+    {
+      "name": "XPREAD Panel Control",
+      "scope": "Mix",
+      "description": "Sets stereo spread for the four LPG channels. Noon=all centered. CW=Ch1 left→Ch4 right. CCW=reversed.",
+      "detail": "Noon=center · CW: Ch1=L, Ch2=wL, Ch3=wR, Ch4=R · CCW: reversed"
+    },
+    {
+      "name": "XPREAD CV Input attenuverter",
+      "scope": "Mix",
+      "description": "Bi-polar attenuator for XPREAD CV input.",
+      "detail": "Bipolar"
+    },
+    {
+      "name": "Vactrol Button",
+      "scope": "Global",
+      "description": "Selects response mode: ON=Slow vactrol-emulating decay. OFF=Fast precision response with gentle LPG filtering.",
+      "detail": "ON=slow/vactrol-like · OFF=fast/precise"
+    }
+  ],
+  "inputs": [
+    { "name": "Signal Inputs 1–4", "description": "Signal inputs for the four LPG circuits. Normalled to N.U.S.S. signal input header (MultiWAVE). Patching breaks normalling.", "voltage": "audio" },
+    { "name": "Control Inputs 1–4", "description": "CV inputs for the four LPG circuits. Normalled to N.U.S.S. control input header (PoliMATHS). Patching breaks normalling.", "voltage": "CV" },
+    { "name": "XPREAD CV", "description": "CV input for XPREAD stereo spread parameter.", "voltage": "CV" },
+    { "name": "Left (Mono) Aux Input", "description": "Stereo aux input L for chaining a second QXG or adding audio to mix. Mono use: patch to L only — appears at both mix outputs.", "voltage": "audio" },
+    { "name": "Right Aux Input", "description": "Stereo aux input R for chaining or adding audio to mix.", "voltage": "audio" }
+  ],
+  "outputs": [
+    { "name": "Channel Outputs 1–4", "description": "Individual LPG outputs. Patching an output removes that channel from the stereo Mix.", "voltage": "audio" },
+    { "name": "Left Mix Output", "description": "Stereo mix L of all channels and Aux inputs per control levels and XPREAD.", "voltage": "audio" },
+    { "name": "Right Mix Output", "description": "Stereo mix R of all channels and Aux inputs per control levels and XPREAD.", "voltage": "audio" }
+  ],
+  "behaviors": [
+    {
+      "name": "Low Pass Gate",
+      "trigger": "CV → Control Input or Combo Pot",
+      "description": "CTRL parameter sets both amplitude and frequency of the passing signal simultaneously, giving classic LPG behavior. Analog, vactrol-free circuit."
+    },
+    {
+      "name": "Vactrol Slow Mode",
+      "trigger": "Vactrol button ON",
+      "description": "Emulates the characteristic slow decay time of a vactrol optical element. Useful for plucked or natural decaying sounds."
+    },
+    {
+      "name": "Fast Mode",
+      "trigger": "Vactrol button OFF",
+      "description": "Fast precision response with gentle LPG filtering. Best for quickly-changing functions from PoliMATHS."
+    },
+    {
+      "name": "Stereo Spread",
+      "trigger": "XPREAD control / CV",
+      "description": "Routes all four channels across the stereo field. Individual channel outputs, when patched, remove that channel from the stereo Sum."
+    },
+    {
+      "name": "N.U.S.S. Normalling",
+      "trigger": "header connected",
+      "description": "Signal and Control input headers allow pre-patched connections from MultiWAVE (signal) and PoliMATHS (control) without front-panel cables."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "8-voice N.U.S.S. stereo system",
+      "patch": "Two QXGs + PoliMATHS + MultiWAVE connected via headers · PoliMATHS outputs → QXG control inputs · MultiWAVE → QXG signal inputs"
+    },
+    {
+      "name": "Mono channel in stereo spread",
+      "patch": "Patch a channel output → Left Aux input to hear it in mono while other channels spread"
+    },
+    {
+      "name": "CV-controlled stereo panning",
+      "patch": "LFO → XPREAD CV · XPREAD attenuverter to taste · all channels to mix outputs"
+    }
+  ]
+}

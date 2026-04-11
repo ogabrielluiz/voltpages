@@ -1,0 +1,121 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "intellijel--noise-tools-1u",
+  "name": "Noise Tools 1U",
+  "manufacturer": "Intellijel",
+  "hp": 22,
+  "tags": ["NOISE", "RANDOM", "CLOCK", "UTILITY", "SLEW"],
+  "description": "Multipurpose 1U utility: clock/random pulse generator, pink and white analog noise, sample & hold or track & hold, and analog slew. All sections usable independently and interconnected.",
+  "controls": [
+    {
+      "name": "Pulse Rate",
+      "scope": "Clock / Random",
+      "description": "Sets pulse rate in CLOCK mode or pulse probability in RANDOM mode.",
+      "detail": "CLOCK: 15s/pulse (CCW) to 2.5kHz (CW) · RANDOM: low probability to dense static"
+    },
+    {
+      "name": "Clock/Random Switch",
+      "scope": "Pulse generator",
+      "description": "Selects between steady metrical clock and random-probability pulse generation.",
+      "detail": "CLOCK = regular tempo · RANDOM = probabilistic bursts"
+    },
+    {
+      "name": "Sample/Track Switch",
+      "scope": "S&H",
+      "description": "SAMPLE: samples SAMPLE IN on rising pulse edge, holds until next pulse. TRACK: samples on falling edge, holds while pulse is low.",
+      "detail": "SAMPLE = classic S&H · TRACK = semi-rhythmic passthrough"
+    },
+    {
+      "name": "Slew Time",
+      "scope": "Slew",
+      "description": "Sets slew rate: how quickly output voltage follows input changes.",
+      "detail": "Nearly instant (CCW) to ~1 second per 5V change (CW)"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "TRIG",
+      "description": "External clock/trigger input. Overrides internal pulse generator for S&H clocking.",
+      "voltage": "trigger/gate"
+    },
+    {
+      "name": "SAMPLE IN",
+      "description": "Signal to be sampled or tracked. Defaults to WHITE noise output when unpatched.",
+      "voltage": "any CV or audio",
+      "normalizedTo": "WHITE noise output"
+    },
+    {
+      "name": "SLEW IN",
+      "description": "Signal to be slewed. Defaults to HOLD output when unpatched.",
+      "voltage": "any CV",
+      "normalizedTo": "HOLD output"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "PULSE",
+      "description": "Pulse output from internal clock or random generator.",
+      "voltage": "+5V gate"
+    },
+    {
+      "name": "PINK",
+      "description": "Pink noise output. Equal power per octave; darker, deeper sound.",
+      "voltage": "analog noise"
+    },
+    {
+      "name": "WHITE",
+      "description": "White noise output. Equal power per frequency; brighter, full-spectrum.",
+      "voltage": "analog noise"
+    },
+    {
+      "name": "HOLD",
+      "description": "Sampled (or tracked) output of the sample & hold circuit.",
+      "voltage": "stepped CV"
+    },
+    {
+      "name": "SLEW",
+      "description": "Slewed version of SLEW IN (defaults to HOLD output). Smooth stepped random voltages.",
+      "voltage": "any CV"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Random melody generator",
+      "trigger": "PULSE → TRIG (internal) · WHITE → SAMPLE IN (normal)",
+      "description": "Internal clock triggers S&H which samples white noise, producing stepped random voltages at HOLD. Route to VCO for random notes."
+    },
+    {
+      "name": "Clocked S&H",
+      "trigger": "external clock → TRIG",
+      "description": "External clock replaces internal pulse for S&H sampling. Any signal at SAMPLE IN is sampled on each clock pulse."
+    },
+    {
+      "name": "Smooth random CV",
+      "trigger": "HOLD → SLEW IN (normal)",
+      "description": "SLEW output provides a portamento-smoothed version of the HOLD stepped output. Adjust SLEW TIME to set smoothness."
+    },
+    {
+      "name": "Portamento",
+      "trigger": "pitch CV → SLEW IN",
+      "description": "With a pitch CV patched into SLEW IN, SLEW OUT adds portamento/glide. Adjust SLEW TIME for glide speed."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Random note sequencer",
+      "patch": "PULSE internal clock · WHITE → SAMPLE IN · HOLD → VCO 1V/oct · SLEW → filter CV"
+    },
+    {
+      "name": "Noise modulation source",
+      "patch": "PINK → VCF cutoff CV · WHITE → VCO PWM for noisy, organic timbres"
+    },
+    {
+      "name": "Random gate bursts",
+      "patch": "RANDOM mode · Pulse Rate sets density · PULSE → trigger destinations"
+    }
+  ]
+}

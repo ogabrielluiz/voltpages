@@ -1,0 +1,80 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "intellijel--dual-vca-1u",
+  "name": "Dual VCA 1U",
+  "manufacturer": "Intellijel",
+  "hp": 8,
+  "tags": ["VCA", "UTILITY", "MIXER"],
+  "description": "Dual linear VCA in 1U format. IN A normalizes to IN B; CV A normalizes to CV B. VCA A output normalizes to VCA B for stereo or summed mono operation. Unity gain at 5V CV.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "IN A",
+      "description": "Audio or CV input for VCA A. Normalizes to IN B when IN B is unpatched.",
+      "normalizedTo": "IN B"
+    },
+    {
+      "name": "CV A",
+      "description": "CV control for VCA A gain. 0V = no output, 5V = unity, 10V = +6dB. Normalizes to CV B.",
+      "voltage": "0–10V",
+      "normalizedTo": "CV B"
+    },
+    {
+      "name": "IN B",
+      "description": "Audio or CV input for VCA B.",
+      "voltage": "any"
+    },
+    {
+      "name": "CV B",
+      "description": "CV control for VCA B gain.",
+      "voltage": "0–10V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "VCA A",
+      "description": "Output of VCA A. If unpatched, VCA A mixes into VCA B output.",
+      "normalizedTo": "VCA B (summed)"
+    },
+    {
+      "name": "VCA B",
+      "description": "Output of VCA B. Contains sum of A+B when VCA A jack is unpatched.",
+      "voltage": "follows input scaled by CV"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Stereo VCA",
+      "trigger": "cables → both IN A and IN B",
+      "description": "Both channels operate independently. Patch separate CV to each for independent gain control of a stereo signal."
+    },
+    {
+      "name": "Summing mixer",
+      "trigger": "VCA A output unpatched",
+      "description": "With VCA A jack empty, both channels are summed and appear at VCA B output. Single CV A controls both if CV B is also unpatched."
+    },
+    {
+      "name": "Single-input dual send",
+      "trigger": "IN A patched, IN B unpatched",
+      "description": "IN A normalizes to IN B, so one source can be independently level-controlled to two destinations."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Stereo tremolo",
+      "patch": "Osc L → IN A · Osc R → IN B · LFO → CV A (normalizes to CV B)"
+    },
+    {
+      "name": "Envelope shaping",
+      "patch": "Audio → IN A · Envelope → CV A · VCA A out → mixer"
+    },
+    {
+      "name": "Summed mono with two sources",
+      "patch": "Source1 → IN A · Source2 → IN B · leave VCA A unpatched · VCA B = mix"
+    }
+  ]
+}

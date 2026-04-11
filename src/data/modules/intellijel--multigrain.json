@@ -1,0 +1,146 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.3"
+  },
+  "slug": "intellijel--multigrain",
+  "name": "Multigrain",
+  "manufacturer": "Intellijel",
+  "hp": 20,
+  "tags": ["GRANULAR", "SAMPLER", "REVERB", "RANDOM"],
+  "description": "Live stereo morphing granular sampler with 8 Sounds, two morphable Scenes per Sound, three assignable CV inputs, built-in Blur reverb, looping recorder for live input, and microSD sample storage.",
+  "controls": [
+    {
+      "name": "START",
+      "scope": "Granular",
+      "description": "Starting position of each grain within the sample or live memory.",
+      "detail": "Default: 0 sec · full range across sample length"
+    },
+    {
+      "name": "WRAP",
+      "scope": "Granular",
+      "description": "Defines the scan area width from the START position. Controls how far grains can stray.",
+      "detail": "Default: 100% · 0% = single point · 100% = full buffer"
+    },
+    {
+      "name": "SCAN",
+      "scope": "Granular",
+      "description": "Speed and direction of automatic position scanning through the sample.",
+      "detail": "CCW = reverse scan · center = no scan · CW = forward scan"
+    },
+    {
+      "name": "SHAPE",
+      "scope": "Granular",
+      "description": "Grain window/envelope shape. Controls the amplitude envelope applied to each grain.",
+      "detail": "Options: Tukey, Hann, Decay, Bell, etc."
+    },
+    {
+      "name": "BLUR",
+      "scope": "Granular",
+      "description": "Reverb send amount per grain. Controls decay amount of the built-in Blur reverb effect.",
+      "detail": "0 = dry · CW = more blur reverb"
+    },
+    {
+      "name": "LEVEL",
+      "scope": "Granular",
+      "description": "Grain volume level. Sets the amplitude of generated grains.",
+      "detail": "Default: 100%"
+    },
+    {
+      "name": "RATE",
+      "scope": "Granular",
+      "description": "Grain trigger rate — how frequently new grains are generated.",
+      "detail": "Default: 1 Hz · SIZE-linked by default"
+    },
+    {
+      "name": "SIZE",
+      "scope": "Granular",
+      "description": "Grain length. Duration of each individual grain.",
+      "detail": "Range: 20ms–4sec · Default: 1 sec"
+    },
+    {
+      "name": "PITCH",
+      "scope": "Granular",
+      "description": "Grain playback pitch/speed. Transposes grain playback relative to original sample pitch.",
+      "detail": "Default: 1x (unity) · tracks V/Oct via SELECT or GATE normalling"
+    },
+    {
+      "name": "TONE",
+      "scope": "Granular",
+      "description": "2-pole LP–HP filter applied per grain. Shapes timbral content of each grain independently.",
+      "detail": "CCW = LP · CW = HP"
+    },
+    {
+      "name": "MORPH Fader",
+      "scope": "Scene",
+      "description": "Crossfades all parameters between Scene A and Scene B simultaneously for smooth timbral morphing.",
+      "detail": "Left = Scene A · Right = Scene B · LED shows modulated position"
+    },
+    {
+      "name": "MORPH ATT",
+      "scope": "Scene",
+      "description": "Attenuverter for the MORPH CV input. Controls level and inversion of incoming CV.",
+      "detail": "MORPH fader acts as offset when CV present"
+    }
+  ],
+  "inputs": [
+    { "name": "IN L + IN R", "description": "Stereo audio input for live granular processing via Looping Recorder.", "voltage": "audio" },
+    { "name": "NEXT", "description": "Trigger advances to next Sound (>2V). Normalled to GATE.", "voltage": ">2V" },
+    { "name": "GATE", "description": "Gate input triggers the currently playing Sound. While high, grains generate at RATE.", "voltage": ">2V" },
+    { "name": "X", "description": "Assignable modulation CV input 1. Assign to any granular parameter per Scene.", "voltage": "±10V" },
+    { "name": "Y", "description": "Assignable modulation CV input 2. Assign to any granular parameter per Scene.", "voltage": "±10V" },
+    { "name": "Z", "description": "Assignable modulation CV input 3. Assign to any granular parameter per Scene.", "voltage": "±10V" },
+    { "name": "SELECT", "description": "CV selects active Sound (0–5V maps to Sounds 1–8). Negative voltage mirrored.", "voltage": "±5V" },
+    { "name": "MORPH CV", "description": "CV input for MORPH fader position. Scaled by MORPH ATT attenuverter.", "voltage": "±5V" },
+    { "name": "SYNC", "description": "Clock/trigger input for synchronizing grain rate to external clock.", "voltage": ">2V" }
+  ],
+  "outputs": [
+    { "name": "OUT L", "description": "Left stereo audio output of granular engine (includes Blur reverb).", "voltage": "audio" },
+    { "name": "OUT R", "description": "Right stereo audio output of granular engine (includes Blur reverb).", "voltage": "audio" },
+    { "name": "A", "description": "Assignable CV output 1. Routable to various internal parameters.", "voltage": "±5V" },
+    { "name": "B", "description": "Assignable CV output 2. Routable to various internal parameters.", "voltage": "±5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Granular Playback",
+      "trigger": "SOUND button press or GATE input",
+      "description": "Press or hold a SOUND 1-8 button to generate grains from that Sound's sample at the set RATE. All 8 Sounds can overlap simultaneously. LATCH button sustains grain generation continuously."
+    },
+    {
+      "name": "Scene Morphing",
+      "trigger": "MORPH fader or MORPH CV",
+      "description": "Each Sound stores two Scenes (A and B) with independent knob positions. MORPH fader smoothly interpolates all parameters simultaneously. REVERSE and SHAPE morph probabilistically."
+    },
+    {
+      "name": "Live Sound (Looping Recorder)",
+      "trigger": "hold SOUND + press SAMPLE",
+      "description": "Assigns a Sound to live audio input. Looping Recorder captures up to 32 seconds from IN L/R. Granular engine processes live memory in real time."
+    },
+    {
+      "name": "Modulation Assignment",
+      "trigger": "press RAND / X / Y / Z button",
+      "description": "Assign X, Y, Z CV inputs or internal random to any granular parameter. Attenuversion amounts stored per Scene and morph between Scenes."
+    },
+    {
+      "name": "Sample Loading",
+      "trigger": "ALT → /WAVS page",
+      "description": "Browse and load stereo WAV files from microSD card (≥32GB recommended). Projects and Presets save complete configurations including Scenes and mod assignments."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Evolving pad from single sample",
+      "patch": "SCAN slow CW · BLUR at 50% · RATE ~2Hz · MORPH CV from slow LFO for texture evolution"
+    },
+    {
+      "name": "Live input granular freeze",
+      "patch": "IN L/R → audio · enable Live Sound · SAMPLE button to freeze · SCAN = 0 for static cloud"
+    },
+    {
+      "name": "Rhythmic grain stutters",
+      "patch": "Clock → GATE · RATE-SIZE linked · SIZE short (50ms) · X → PITCH with random for pitch variety"
+    }
+  ]
+}

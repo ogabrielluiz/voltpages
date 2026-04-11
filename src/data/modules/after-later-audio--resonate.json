@@ -1,0 +1,117 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "after-later-audio--resonate",
+  "name": "Resonate",
+  "manufacturer": "After Later Audio",
+  "hp": 14,
+  "tags": ["RESONATOR", "EFFECTS", "FILTER"],
+  "description": "Resonator module (clone of Mutable Instruments Rings). Transforms external excitation audio into pitched sound via modal, sympathetic string, or non-linear string physical modeling. Mono-to-poly polyphony with strumming.",
+  "controls": [
+    {
+      "name": "Polyphony Setting",
+      "scope": "Global",
+      "description": "Selects monophonic, duophonic, or quadraphonic operation. More voices overlap without cutting tails.",
+      "detail": "1, 2, or 4 voice polyphony"
+    },
+    {
+      "name": "Resonator Type",
+      "scope": "Global",
+      "description": "Selects resonator model: modal (bars/plates), sympathetic strings (comb filters), or non-linear/inharmonic string (extended Karplus-Strong).",
+      "detail": "Modal · Sympathetic strings · Non-linear string"
+    },
+    {
+      "name": "Frequency (Coarse)",
+      "scope": "Global",
+      "description": "Coarse frequency control. Quantized in semitones when a cable is patched to the V/OCT input.",
+      "detail": "Quantized in semitones when V/OCT patched"
+    },
+    {
+      "name": "Structure",
+      "scope": "Global",
+      "description": "Harmonic structure. Frequency ratio between partials (modal), detuning of strings (sympathetic), or non-linearity/inharmonicity (string).",
+      "detail": "Behavior varies by resonator type"
+    },
+    {
+      "name": "Brightness",
+      "scope": "Global",
+      "description": "Adjusts level of higher harmonics. Acts simultaneously on LPF of exciter (closed at 8 o'clock) and damping filter on higher modes.",
+      "detail": "8 o'clock=closed · noon=fully open LPF"
+    },
+    {
+      "name": "Damping",
+      "scope": "Global",
+      "description": "Controls the decay time of the sound.",
+      "detail": "Short to long decay"
+    },
+    {
+      "name": "Position",
+      "scope": "Global",
+      "description": "Excitation position on the string/surface. Similar to PWM on a square oscillator or comb-filtering of a phaser.",
+      "detail": "Affects timbre and comb filtering"
+    },
+    {
+      "name": "Attenuverters (4x)",
+      "scope": "CV Inputs",
+      "description": "Attenuverters for the CV inputs (Frequency, Structure, Brightness, Position/Damping).",
+      "detail": "Bipolar · FREQUENCY CV normalized to small constant for fine tune use"
+    }
+  ],
+  "inputs": [
+    { "name": "STRUM", "description": "Strumming trigger input. Freezes current voice, lets it decay, starts next voice. Normalized to step detector on V/OCT and transient detector on IN.", "voltage": "trigger", "normalizedTo": "V/OCT step detector / IN transient detector" },
+    { "name": "V/OCT", "description": "1V/octave CV pitch control for main resonator frequency.", "voltage": "1V/oct" },
+    { "name": "IN", "description": "Audio excitation signal input. Normalized to internal pulse/burst generator that reacts to V/OCT changes or STRUM triggers.", "voltage": "modular level", "normalizedTo": "internal excitation generator" },
+    { "name": "Frequency CV", "description": "CV input for Frequency parameter. Normalized to small constant allowing attenuverter as fine tune when unpatched.", "voltage": "CV", "normalizedTo": "small constant voltage" },
+    { "name": "Structure CV", "description": "CV input for Structure parameter.", "voltage": "CV" },
+    { "name": "Brightness CV", "description": "CV input for Brightness parameter.", "voltage": "CV" },
+    { "name": "Damping CV", "description": "CV input for Damping parameter.", "voltage": "CV" }
+  ],
+  "outputs": [
+    { "name": "ODD", "description": "Odd output. In mono: odd-numbered partials (modal) or one picking position (string). In poly: odd-numbered voices. Mix of both if EVEN is unpatched.", "voltage": "audio" },
+    { "name": "EVEN", "description": "Even output. In mono: even-numbered partials or complementary component. In poly: even-numbered voices. Must be patched to split signals.", "voltage": "audio" }
+  ],
+  "behaviors": [
+    {
+      "name": "Modal Resonator",
+      "trigger": "Resonator type → modal",
+      "description": "Simulates resonance of vibrating structures (bars, plates, strings) using a bank of band-pass filters. Structure sets frequency ratio between partials."
+    },
+    {
+      "name": "Sympathetic Strings",
+      "trigger": "Resonator type → sympathetic",
+      "description": "Simulates strings that vibrate in response to other strings using comb filters. Structure sets tuning ratio between the strings for extra overtones."
+    },
+    {
+      "name": "Non-linear/Inharmonic String",
+      "trigger": "Resonator type → non-linear",
+      "description": "Extended Karplus-Strong with non-linearities and dispersion all-pass filter. Structure sets degree of inharmonicity."
+    },
+    {
+      "name": "Internal Excitation",
+      "trigger": "IN unpatched",
+      "description": "When IN is unpatched, the module generates its own excitation signal (LP-filtered pulse or noise burst depending on resonator type) on each note change or STRUM."
+    },
+    {
+      "name": "Polyphonic Strumming",
+      "trigger": "STRUM input / V/OCT step change",
+      "description": "In 2 or 4-voice polyphony, successive notes overlap without cutting each other's tails. Rapidly send different pitches to create chords by strumming."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Self-contained melodic resonator",
+      "patch": "Sequencer → V/OCT only · no other patches · module generates excitation and strums internally"
+    },
+    {
+      "name": "Drum hits as exciter",
+      "patch": "Snare or click → IN · sequencer → V/OCT · STRUM unpatched · modal resonator"
+    },
+    {
+      "name": "Polyphonic chords",
+      "patch": "4-voice polyphony · sequencer → V/OCT rapidly · ODD + EVEN to mixer for full chord"
+    }
+  ]
+}

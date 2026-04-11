@@ -1,0 +1,83 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "128"
+  },
+  "slug": "alm-busy-circuits--pamelas-pro-workout",
+  "name": "Pamela's PRO Workout",
+  "manufacturer": "ALM Busy Circuits",
+  "hp": 8,
+  "tags": ["CLOCK", "LFO", "SEQUENCER", "RANDOM", "LOGIC", "QUANTIZER", "UTILITY"],
+  "description": "Compact programmable clock-synced modulation source with 8 independent outputs. Each output freely configurable as LFO, trigger, envelope, Euclidean pattern, or random. BPM 10–330, with CV inputs and cross-output modulation.",
+  "controls": [
+    {
+      "name": "Program Knob",
+      "scope": "Main",
+      "description": "Push-turn encoder for all UI navigation. Twist to scroll outputs/values, push to select, push+hold to access extended parameters.",
+      "detail": "Push: select · Twist: adjust · Hold (>1s): extended params"
+    },
+    {
+      "name": "Start / Stop Button",
+      "scope": "Main",
+      "description": "Starts and stops the master clock. Pressing stop also resets clock position.",
+      "detail": "Single press: start/stop & reset"
+    }
+  ],
+  "inputs": [
+    { "name": "CLK", "description": "External clock input. Overrides internal BPM when patched. Rising edge 700mV min.", "voltage": "0–5V pulse" },
+    { "name": "RUN", "description": "Run/stop input. High voltage starts clock, low stops it. Can also act as CV 3 or Reset.", "voltage": "0–5V" },
+    { "name": "CV 1", "description": "Assignable CV input 1. Assignable to any output parameter with individual attenuation and offset.", "voltage": "0–5V" },
+    { "name": "CV 2", "description": "Assignable CV input 2. Assignable to any output parameter with individual attenuation and offset.", "voltage": "0–5V" }
+  ],
+  "outputs": [
+    { "name": "OUT 1–8", "description": "Eight independent clocked CV/gate outputs with LED indicators. Each fully programmable with shape, divisor/multiplier, Euclidean, probability, and cross-modulation.", "voltage": "0–5V · 12-bit · 3.8kHz max update" }
+  ],
+  "behaviors": [
+    {
+      "name": "Per-Output Clock Division / Multiplication",
+      "trigger": "master clock running",
+      "description": "Each output has an independent multiplier or divisor from /16384 to ×192 including non-integer triplet and dotted values. Utility modes: GATE (held high), OFF, START pulse, STOP pulse."
+    },
+    {
+      "name": "Waveform Shapes",
+      "trigger": "per-output setting",
+      "description": "Each output selects from: Gate/Pulse, Ratchet ×2/×4, Triangle, Trapezoid, Sine, Hump, Exp/Log Envelope, Classic Random (S&H), Smooth Random. Width/Slew parameter shapes each waveform."
+    },
+    {
+      "name": "Euclidean Patterns",
+      "trigger": "Euclidean Steps parameter > 0",
+      "description": "Generate Euclidean rhythms per output. Set Steps (total), Triggers (hits), Pad (empty suffix steps), and Shift (rotation). Pattern loops can reset non-4/4 patterns."
+    },
+    {
+      "name": "Probability & Loops",
+      "trigger": "per-output setting",
+      "description": "Probability sets % chance each step fires. Loop specifies reset point in beats. Loop Nap/Wake creates sleeping patterns (output off for N loops, active for M loops)."
+    },
+    {
+      "name": "Cross Operations",
+      "trigger": "CROSS OP parameter set",
+      "description": "Any output can be influenced by another output or CV input via operations: MIX, MULT, ADD, SUB, MIN, MAX, HOLD, S&H, MASK, NOT, OR, XOR, AND, BitOR, BitXOR, BitAND, SEED, and FLEX ops (HUMAN, SWING, RAMP UP/DOWN, HUMP, DELAY, PWR2)."
+    },
+    {
+      "name": "Quantiser",
+      "trigger": "per-output Quantiser setting",
+      "description": "Quantises output to musical scales. Custom scales saveable. Applied after cross operations."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Polyrhythmic drum triggers",
+      "patch": "OUT 1–4 set to Gate/Pulse · different divisors (x1, /2, /3, /4) → drum voices"
+    },
+    {
+      "name": "Random melodic CV",
+      "patch": "OUT 5 = Smooth Random · Euclidean Steps on OUT 6 as gate · OUT 5 → Quantiser → VCO V/Oct"
+    },
+    {
+      "name": "Swung clock with FLEX",
+      "patch": "OUT 1 = x1 gate · FLEX op = SWING → OUT 2 · vary swing amount via CV 1"
+    }
+  ]
+}

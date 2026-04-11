@@ -1,0 +1,127 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "noise-engineering--desmodus-versio",
+  "name": "Desmodus Versio",
+  "manufacturer": "Noise Engineering",
+  "hp": 10,
+  "tags": ["REVERB", "DELAY", "EFFECTS"],
+  "description": "Stereo-in, stereo-out synthetic tail-generator reverb and DSP platform. Sparse-FDN reverberator with LFO modulation, shimmer, and sidechain-style ducking. Firmware-updateable via USB.",
+  "controls": [
+    {
+      "name": "Blend",
+      "scope": "Global",
+      "description": "Dry/wet balance. Full left=dry only, full right=wet only, center=equal mix.",
+      "detail": "Full CCW=dry · Full CW=wet"
+    },
+    {
+      "name": "Tone",
+      "scope": "Global",
+      "description": "Bipolar filter in reverb tank. Left=lowpass, right=highpass, center=disabled.",
+      "detail": "CCW=LP · noon=off · CW=HP"
+    },
+    {
+      "name": "Regen",
+      "scope": "Global",
+      "description": "Feedback in reverb tank. Controls reverb length, infinite tails past noon, and input ducking past 3 o'clock.",
+      "detail": "Full CCW=min · ~11 o'clock=shorter reverbs · past noon=infinite tail · past 3 o'clock=ducking"
+    },
+    {
+      "name": "Speed",
+      "scope": "Global",
+      "description": "Rate of the internal LFO that modulates delay lines (amount set by Index).",
+      "detail": "Slow to fast"
+    },
+    {
+      "name": "Index",
+      "scope": "Global",
+      "description": "Bipolar LFO amount sent to delay lines. Center=disabled. Left=random LFO. Right=sine LFO.",
+      "detail": "CCW=random mod · noon=off · CW=sine mod"
+    },
+    {
+      "name": "Size",
+      "scope": "Global",
+      "description": "Delay time of the reverb. Shorter values = smaller spaces.",
+      "detail": "Short to long · CV controllable"
+    },
+    {
+      "name": "Dense",
+      "scope": "Global",
+      "description": "Spacing of delay lines. Full left=delay-like, full right=smeared reverb.",
+      "detail": "Full CCW=delay · Full CW=dense reverb"
+    },
+    {
+      "name": "FSU Button",
+      "scope": "Global",
+      "description": "Maxes out Regen and mutes input while pressed, creating a wall of infinite reverb.",
+      "detail": "Momentary · also responds to gate input >+2V"
+    },
+    {
+      "name": "LIM/DST/SHM Switch",
+      "scope": "Global",
+      "description": "Reverb style: LIM=clean limiting, DST=saturation distortion, SHM=shimmer with octave-up pitch shift feedback.",
+      "detail": "LIM=clean · DST=saturation · SHM=shimmer"
+    },
+    {
+      "name": "BND/LRP/JMP Switch",
+      "scope": "Global",
+      "description": "Controls how delay lines respond when modulated. BND=crossfade, LRP=interpolate (pitch shift), JMP=instant change.",
+      "detail": "BND=smooth · LRP=pitch shift · JMP=instant"
+    }
+  ],
+  "inputs": [
+    { "name": "In L", "description": "Left audio input. Normalled to right input when R is unpatched (mono in).", "voltage": "±8V (clips ~16V p-p)", "normalizedTo": "In R" },
+    { "name": "In R", "description": "Right audio input. If unpatched, L signal is normalled to both inputs.", "voltage": "±8V (clips ~16V p-p)" },
+    { "name": "FSU Gate", "description": "Gate input. High gate maxes Regen and mutes input, same as FSU button.", "voltage": ">+2V gate" },
+    { "name": "Blend CV", "description": "CV input for Blend parameter. Sums with pot position.", "voltage": "0–5V" },
+    { "name": "Tone CV", "description": "CV input for Tone parameter. Sums with pot position.", "voltage": "0–5V" },
+    { "name": "Regen CV", "description": "CV input for Regen parameter. Sums with pot position.", "voltage": "0–5V" },
+    { "name": "Size CV", "description": "CV input for Size parameter. Sums with pot position.", "voltage": "0–5V" },
+    { "name": "Speed CV", "description": "CV input for Speed parameter. Sums with pot position.", "voltage": "0–5V" },
+    { "name": "Index CV", "description": "CV input for Index parameter. Sums with pot position.", "voltage": "0–5V" },
+    { "name": "Dense CV", "description": "CV input for Dense parameter. Sums with pot position.", "voltage": "0–5V" }
+  ],
+  "outputs": [
+    { "name": "Out L", "description": "Left stereo output.", "voltage": "audio" },
+    { "name": "Out R", "description": "Right stereo output.", "voltage": "audio" }
+  ],
+  "behaviors": [
+    {
+      "name": "Shimmer",
+      "trigger": "LIM/DST/SHM switch → SHM",
+      "description": "Adds a one-octave pitch shift that feeds back into the reverb input, creating ethereal shimmering reverb tails."
+    },
+    {
+      "name": "Infinite Tail / Ducking",
+      "trigger": "Regen past noon",
+      "description": "Past noon the reverb reaches 100% feedback for infinite tail. Past 3 o'clock, new input sounds duck the infinite reverb creating sidechain-style effects."
+    },
+    {
+      "name": "Self-Oscillation",
+      "trigger": "Regen past noon, input unpatched",
+      "description": "With input unpatched and Regen past noon, DV self-oscillates. Manipulate Size, Dense, Tone, and Style to shape the generated tones."
+    },
+    {
+      "name": "Simple Delay",
+      "trigger": "Dense full CCW",
+      "description": "With Dense fully CCW, the effect sounds like a delay rather than reverb. Regen sets feedback time."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Shimmer reverb",
+      "patch": "LIM/DST/SHM → SHM · Regen past noon · Size to taste · BND for smooth modulation"
+    },
+    {
+      "name": "Kick ducker",
+      "patch": "Kick → In L · Regen full CW · Blend noon · each kick ducks the reverb"
+    },
+    {
+      "name": "Instant IDM delay",
+      "patch": "Sequencer → Size CV · BND/LRP/JMP → LRP or JMP · play with all parameters"
+    }
+  ]
+}

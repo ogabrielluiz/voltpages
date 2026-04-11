@@ -1,0 +1,64 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "intellijel--cvx",
+  "name": "CVx",
+  "manufacturer": "Intellijel",
+  "hp": 14,
+  "tags": ["MIDI", "UTILITY"],
+  "description": "1U MIDI-to-CV converter providing pitch, gate, velocity, mod wheel, aftertouch, clock, and reset outputs. Receives MIDI from Intellijel MIDI 1U via internal ribbon cable.",
+  "controls": [
+    {
+      "name": "MIDI Channel",
+      "scope": "global",
+      "description": "MIDI channel selection configured via the Intellijel 1U configuration utility app. Not a physical knob.",
+      "detail": "Channels 1–16 · set via software · omni mode available"
+    }
+  ],
+  "inputs": [
+    { "name": "MIDI In", "description": "MIDI data received internally from Intellijel MIDI 1U module via ribbon cable. No panel jack.", "voltage": "internal ribbon" }
+  ],
+  "outputs": [
+    { "name": "Pitch", "description": "1V/oct pitch CV derived from MIDI note number.", "voltage": "0–8V (1V/oct)" },
+    { "name": "Gate", "description": "Gate output, high when a MIDI note is held.", "voltage": "0–5V gate" },
+    { "name": "Velocity", "description": "CV proportional to MIDI note-on velocity.", "voltage": "0–5V" },
+    { "name": "Mod Wheel", "description": "CV tracking MIDI CC1 (mod wheel) value.", "voltage": "0–5V" },
+    { "name": "Aftertouch", "description": "CV tracking MIDI channel aftertouch pressure.", "voltage": "0–5V" },
+    { "name": "Clock", "description": "Clock pulse output derived from MIDI clock. Rate depends on configuration (typically 1/8th or 1/16th note).", "voltage": "0–5V pulse" },
+    { "name": "Reset", "description": "Pulse output on MIDI Start or Continue messages for syncing sequencers.", "voltage": "0–5V pulse" }
+  ],
+  "behaviors": [
+    {
+      "name": "MIDI Note to CV/Gate",
+      "trigger": "MIDI note-on",
+      "description": "Converts incoming MIDI notes to 1V/oct pitch and gate. Follows standard last-note priority. Gate stays high for held notes."
+    },
+    {
+      "name": "MIDI Clock Sync",
+      "trigger": "MIDI clock",
+      "description": "Outputs clock pulses derived from MIDI timing clock. Useful for synchronizing analog sequencers and clock dividers to MIDI."
+    },
+    {
+      "name": "Expression Outputs",
+      "trigger": "MIDI CC / aftertouch",
+      "description": "Velocity, mod wheel, and aftertouch each output independent CVs for expressive control of VCA, VCF, or other CV destinations."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Keyboard-controlled voice",
+      "patch": "Pitch → VCO V/Oct · Gate → envelope trigger · Velocity → VCA CV for dynamic response"
+    },
+    {
+      "name": "Mod wheel filter sweep",
+      "patch": "Mod Wheel → VCF cutoff CV · play keyboard and use mod wheel for real-time filter control"
+    },
+    {
+      "name": "MIDI-synced sequencer",
+      "patch": "Clock → sequencer clock in · Reset → sequencer reset · sequencer runs in time with DAW"
+    }
+  ]
+}

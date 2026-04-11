@@ -1,0 +1,94 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "doepfer--a-170",
+  "name": "A-170",
+  "manufacturer": "Doepfer",
+  "hp": 8,
+  "tags": ["SLEW", "ENVELOPE", "UTILITY"],
+  "description": "Dual slew limiter (portamento controller). Upper SL has single joint rise/fall time knob. Lower SL has independent rise and fall controls with 3-position time range switch for AR envelope use.",
+  "controls": [
+    {
+      "name": "Time",
+      "scope": "Upper SL",
+      "description": "Sets both rise and fall time jointly for the upper slew limiter.",
+      "detail": "0–10 seconds"
+    },
+    {
+      "name": "Rise (up arrow)",
+      "scope": "Lower SL",
+      "description": "Sets rise time for the lower slew limiter, within range set by Time Range switch.",
+      "detail": "L: 0–0.5s · M: 0–10s · H: 0–minutes"
+    },
+    {
+      "name": "Fall (down arrow)",
+      "scope": "Lower SL",
+      "description": "Sets fall time for the lower slew limiter, within range set by Time Range switch.",
+      "detail": "L: 0–0.5s · M: 0–10s · H: 0–minutes"
+    },
+    {
+      "name": "Time Range",
+      "scope": "Lower SL",
+      "description": "3-position switch sets overall time range for lower SL rise and fall.",
+      "detail": "L = low (fast) · M = medium · H = high (slow)"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "In (Upper SL)",
+      "description": "Signal input for the upper slew limiter.",
+      "voltage": "any CV"
+    },
+    {
+      "name": "In (Lower SL)",
+      "description": "Signal input for the lower slew limiter.",
+      "voltage": "any CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Out (Upper SL)",
+      "description": "Slew-limited output of the upper slew limiter.",
+      "voltage": "follows input"
+    },
+    {
+      "name": "Out (Lower SL)",
+      "description": "Slew-limited output of the lower slew limiter.",
+      "voltage": "follows input (note ~0.5V offset due to diodes)"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Portamento",
+      "trigger": "pitch CV → In",
+      "description": "Smooths pitch CV for glide effect. Upper SL recommended for precision pitch work; lower SL has ~0.5V diode offset unsuitable for 1V/oct."
+    },
+    {
+      "name": "AR Envelope Generator",
+      "trigger": "gate → Lower SL In",
+      "description": "Lower SL with separate rise/fall controls acts as an AR envelope generator when a gate signal is applied."
+    },
+    {
+      "name": "Complex Envelope Mixing",
+      "trigger": "clock sequencer → multiple SLs",
+      "description": "Clock sequencer triggers multiple A-170 units whose envelope outputs are mixed in a linear mixer, creating complex evolving envelopes."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Portamento generator",
+      "patch": "MIDI-CV → Upper SL In · Out → VCO 1V/oct · Time knob sets glide"
+    },
+    {
+      "name": "AR envelope for bass",
+      "patch": "Gate → Lower SL In · Rise/Fall set individually · Out → VCA CV"
+    },
+    {
+      "name": "Glissando AM",
+      "patch": "Pitch CV → VCO1 direct & via Upper SL → VCO2 (modulator) · produces timbral sweep"
+    }
+  ]
+}

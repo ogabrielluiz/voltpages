@@ -1,0 +1,256 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.6"
+  },
+  "slug": "intellijel--metropolix",
+  "name": "Metropolix",
+  "manufacturer": "Intellijel",
+  "hp": 34,
+  "tags": ["SEQUENCER", "CLOCK", "GATE", "TRIGGER"],
+  "description": "Multitrack, performance-oriented pitch, gate and mod sequencer. Two tracks with 8 stages, per-stage pulse count, gate type, slide, skip, ratchet, probability and accumulator. Three assignable MOD lanes.",
+  "controls": [
+    {
+      "name": "Pitch Sliders",
+      "scope": "Stages 1–8",
+      "description": "Set default pitch per stage. Range and root configurable per track.",
+      "detail": "1–4 octave range · scale-quantized · overridable per stage"
+    },
+    {
+      "name": "Pulse Count",
+      "scope": "Stages 1–8",
+      "description": "8-position switch sets how many clock pulses each stage holds.",
+      "detail": "1–8 pulses · interacts with Gate Type and Ratchet"
+    },
+    {
+      "name": "Gate Type",
+      "scope": "Stages 1–8",
+      "description": "4-position switch: HOLD, MULTIPLE, SINGLE, or REST.",
+      "detail": "HOLD=tied · MULTIPLE=gate per pulse · SINGLE=one gate · REST=silent"
+    },
+    {
+      "name": "CTRL 1 / CTRL 2",
+      "scope": "Global",
+      "description": "Assignable performance knobs for real-time modulation of any parameter.",
+      "detail": "User-assignable destination · takes effect immediately"
+    },
+    {
+      "name": "Encoder",
+      "scope": "Screen",
+      "description": "Push-encoder for navigating and editing on-screen parameters.",
+      "detail": "Turn to scroll · press to select/confirm"
+    },
+    {
+      "name": "RUN",
+      "scope": "Transport",
+      "description": "Start or stop sequencer playback.",
+      "detail": "Configurable as Run/Pause or Run/Stop in SETUP"
+    },
+    {
+      "name": "LOOPY (∞)",
+      "scope": "Transport",
+      "description": "Enters Loopy performance mode for live loop manipulation.",
+      "detail": "1-finger or 2-finger loopy · Stage Player sub-mode"
+    },
+    {
+      "name": "RESET",
+      "scope": "Transport",
+      "description": "Returns sequence to starting stage. Long-press sets GATE outputs to 0V.",
+      "detail": "Global or per-track · responds to RESET IN jack"
+    },
+    {
+      "name": "SETUP",
+      "scope": "Global Settings",
+      "description": "Opens global setup menu: clock source, MIDI, presets, display settings.",
+      "detail": "Clock = Internal or External"
+    },
+    {
+      "name": "BPM",
+      "scope": "Global Settings",
+      "description": "Sets internal clock tempo.",
+      "detail": "Tap-tempo supported · range varies"
+    },
+    {
+      "name": "SCALE",
+      "scope": "Global Settings",
+      "description": "Assigns quantization scale and root note to pitch sliders.",
+      "detail": "Many built-in scales + user scales + 14 chord shapes"
+    },
+    {
+      "name": "ORDER",
+      "scope": "Track Settings",
+      "description": "Sets playback order of stages (forward, reverse, ping-pong, random, etc.).",
+      "detail": "Multiple order modes · customizable shortcuts"
+    },
+    {
+      "name": "LEN",
+      "scope": "Track Settings",
+      "description": "Sets number of active stages in the sequence.",
+      "detail": "1–8 stages"
+    },
+    {
+      "name": "DIV",
+      "scope": "Track Settings",
+      "description": "Sets clock division for the track relative to master clock.",
+      "detail": "Multiple divisions available"
+    },
+    {
+      "name": "SWING",
+      "scope": "Track Settings",
+      "description": "Adds swing/shuffle timing to the track.",
+      "detail": "0–99%"
+    },
+    {
+      "name": "SLIDE",
+      "scope": "Track Settings",
+      "description": "Sets portamento (slide) time for the track.",
+      "detail": "Track-level global slide time"
+    },
+    {
+      "name": "GATE (Track)",
+      "scope": "Track Settings",
+      "description": "Sets global gate percentage length for MULTIPLE/SINGLE gate types.",
+      "detail": "% of clock pulse · overridable per stage"
+    },
+    {
+      "name": "SLIDE (Stage)",
+      "scope": "Stage Buttons",
+      "description": "Enables portamento slide into the selected stage.",
+      "detail": "Per-stage on/off"
+    },
+    {
+      "name": "SKIP",
+      "scope": "Stage Buttons",
+      "description": "Skips the selected stage during playback.",
+      "detail": "Per-stage on/off"
+    },
+    {
+      "name": "PITCH (Stage)",
+      "scope": "Stage Buttons",
+      "description": "Overrides slider pitch with a specific note value for the stage.",
+      "detail": "Per-stage pitch override · independent of slider"
+    },
+    {
+      "name": "GATE (Stage)",
+      "scope": "Stage Buttons",
+      "description": "Overrides track gate length for the selected stage.",
+      "detail": "Per-stage gate percentage"
+    },
+    {
+      "name": "RATCH",
+      "scope": "Stage Buttons",
+      "description": "Adds ratcheting (note repeats) within a stage's pulse count.",
+      "detail": "Per-stage · interacts with Gate Stretching"
+    },
+    {
+      "name": "PROB",
+      "scope": "Stage Buttons",
+      "description": "Sets probability that a stage will play on any given pass.",
+      "detail": "Per-stage · 0–100%"
+    },
+    {
+      "name": "ACCUM",
+      "scope": "Stage Buttons",
+      "description": "Cumulative pitch transposition that grows each time stage is visited.",
+      "detail": "Per-stage · polarity, range, and order configurable"
+    },
+    {
+      "name": "CV",
+      "scope": "Stage Buttons",
+      "description": "Assigns a CV value or gate-toggle voltage to a stage for MOD/AUX output.",
+      "detail": "CV Type = CV Value or Gate Toggle"
+    },
+    {
+      "name": "ALT (LOAD/SAVE/A/B/CLK/MX/LIM/TYPE)",
+      "scope": "ALT Buttons",
+      "description": "Hold ALT then press stage button to access alternate functions.",
+      "detail": "LOAD/SAVE presets · A/B output assign · CLK div · MX expander · LIM accum · TYPE cv"
+    },
+    {
+      "name": "TRK 1 / TRK 2 / MOD",
+      "scope": "Track Buttons",
+      "description": "Selects which track or MOD lane is currently being edited.",
+      "detail": "TRK 1 and TRK 2 are pitch/gate tracks · MOD selects mod lanes"
+    },
+    {
+      "name": "EXIT",
+      "scope": "Screen",
+      "description": "Exits current menu and returns to HOME screen.",
+      "detail": "Cycles through 4 HOME screen views when pressed repeatedly"
+    },
+    {
+      "name": "X / Y / Z Attenuverters",
+      "scope": "AUX IN",
+      "description": "Scale and invert the three AUX CV inputs before they modulate assigned parameters.",
+      "detail": "CCW = attenuated/inverted · CW = unity · center = zero"
+    }
+  ],
+  "inputs": [
+    { "name": "Clock In", "description": "External clock input to sync sequencer to outside source", "voltage": "gate/trigger" },
+    { "name": "Reset In", "description": "Trigger resets sequence to start stage (reconfigurable as RUN in SETUP)", "voltage": "trigger" },
+    { "name": "X In", "description": "AUX CV input assignable to any sequencer parameter", "voltage": "-5V to +5V" },
+    { "name": "Y In", "description": "AUX CV input, identical in function to X In", "voltage": "-5V to +5V" },
+    { "name": "Z In", "description": "AUX CV input, identical in function to X In", "voltage": "-5V to +5V" }
+  ],
+  "outputs": [
+    { "name": "A Out", "description": "User-assignable output A: pitch, gate, clock, or mod signal", "voltage": "depends on assignment" },
+    { "name": "B Out", "description": "User-assignable output B: pitch, gate, clock, or mod signal", "voltage": "depends on assignment" },
+    { "name": "Clock Out", "description": "Divided clock output from internal or external clock source", "voltage": "gate" },
+    { "name": "Track 1 Pitch", "description": "1V/oct pitch output for Track 1 (swappable with Track 2 via Trk Out Swap)", "voltage": "1V/oct" },
+    { "name": "Track 1 Gate", "description": "Gate output for Track 1 (off = 0V, on = +5V)", "voltage": "0–5V" },
+    { "name": "Track 2 Pitch", "description": "1V/oct pitch output for Track 2 (swappable with Track 1 via Trk Out Swap)", "voltage": "1V/oct" },
+    { "name": "Track 2 Gate", "description": "Gate output for Track 2 (off = 0V, on = +5V)", "voltage": "0–5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Two Independent Tracks",
+      "trigger": "always",
+      "description": "Tracks 1 and 2 run simultaneously with independent pitch, gate, length, order, div, swing, and slide. Both share the same 8 stage sliders but interpret them independently."
+    },
+    {
+      "name": "MOD Lanes",
+      "trigger": "always",
+      "description": "Three additional CV/gate lanes assignable to any output jack or internal parameter. Each has its own stage voltages, gates, order, length, and clock division."
+    },
+    {
+      "name": "Loopy Mode",
+      "trigger": "LOOPY button",
+      "description": "Live performance feature. 1-finger loopy locks a sub-loop of stages; 2-finger loopy sets loop start and end points interactively. Stage Player sub-mode plays individual stages on demand."
+    },
+    {
+      "name": "ACCUM (Accumulator)",
+      "trigger": "ACCUM stage button",
+      "description": "Stage pitch transposes cumulatively each pass, each pulse, or each ratchet. Range, polarity, and reset behavior are configurable per stage."
+    },
+    {
+      "name": "Preset Chaining",
+      "trigger": "preset load",
+      "description": "64 presets (8 banks x 8) can be chained in sequence. Chain Follow mode auto-advances to next preset after a set number of loops."
+    },
+    {
+      "name": "MIDI",
+      "trigger": "MIDI in via backpack or 7U case",
+      "description": "Receives MIDI clock, start/stop, and CC messages to control most sequencer parameters. MIDI channel and CC assignments fully configurable."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Polyrhythmic counterpoint",
+      "patch": "TRK1 DIV=/1 · TRK2 DIV=/3 · different LEN values · shared scale → instant polyrhythm"
+    },
+    {
+      "name": "Probability melody",
+      "patch": "PROB < 100% on several stages · SKIP some stages · sequence evolves differently each pass"
+    },
+    {
+      "name": "Pitch accumulation",
+      "patch": "ACCUM on one stage · unipolar · low range → slow upward transpose over multiple loops"
+    },
+    {
+      "name": "CV mod lane as LFO-replacement",
+      "patch": "MOD Lane → A Out · sine-like values across 8 stages · short DIV → smooth cycling CV"
+    }
+  ]
+}

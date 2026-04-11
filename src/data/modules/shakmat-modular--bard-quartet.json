@@ -1,0 +1,109 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.1"
+  },
+  "slug": "shakmat-modular--bard-quartet",
+  "name": "Bard Quartet",
+  "manufacturer": "Shakmat Modular",
+  "hp": 10,
+  "tags": ["QUANTIZER", "SEQUENCER", "MIDI"],
+  "description": "Quad programmable quantizer with integrated keyboard interface. Four channels, 8 harmonies, 10 memory slots. Supports microtuning, arpeggiator, channel grouping, and harmony progressions for full song structures.",
+  "controls": [
+    {
+      "name": "Keyboard Buttons",
+      "scope": "Global",
+      "description": "12 keyboard buttons to set notes per scale per channel. Active note shines brighter for real-time note monitoring.",
+      "detail": "One octave of chromatic keys · C# and D# = Load/Save in Memory menu"
+    },
+    {
+      "name": "Harmony Potentiometer",
+      "scope": "Global",
+      "description": "Navigates between 8 different harmony locations for the active channel, enabling harmonic progressions. Also used for microtuning (+/-50 cents).",
+      "detail": "8 harmony positions per channel · ±50 cents in microtuning mode"
+    },
+    {
+      "name": "Channel Buttons",
+      "scope": "Global",
+      "description": "Select the active channel being edited (1–4). Hold + another channel button to create a group that shares scale settings.",
+      "detail": "4 channel buttons · grouped channels share LED illumination"
+    },
+    {
+      "name": "Edit Button",
+      "scope": "Global",
+      "description": "Opens Edit menu for Octave setting, Trigger Out assignment, Gate In assignment, and Transpose mode per channel and harmony.",
+      "detail": "Octave: -3 to +3 · hold 2s for Tuning Mode output"
+    },
+    {
+      "name": "µTune / Option Button",
+      "scope": "Global",
+      "description": "Opens microtuning menu to detune any note ±50 cents. Also used with Edit to access Options menu. Long press with Harmony pot dissociates pot from current harmony.",
+      "detail": "±50 cents per note · Edit+µTune = Options menu"
+    },
+    {
+      "name": "ARPG / Memory Button",
+      "scope": "Global",
+      "description": "Opens Arpeggiator menu (hold channel button to enable arp per channel). With Edit = Memory menu for saving/loading 10 slots.",
+      "detail": "Arpeggiator modes: Up / Down / Pendulum / Spiral / Random · 1–4 octave spread"
+    }
+  ],
+  "inputs": [
+    { "name": "IN 1–4 (Channel CV)", "description": "V/Oct CV inputs for each of the four quantizer channels.", "voltage": "-3 to +7V" },
+    { "name": "TRSP (Transpose CV)", "description": "Transpose CV input. Can work as pre-quantize, post-quantize, or octave transposer per channel (set in Edit menu).", "voltage": "-5 to +5V" },
+    { "name": "Gate Input", "description": "Gate input used as Track & Hold (default) or Sample & Hold (selectable in Options). Assigned per channel in Edit menu.", "voltage": "0 to +5V" },
+    { "name": "Harmony CV", "description": "CV input for Harmony potentiometer position, selecting between the 8 harmony locations.", "voltage": "-5 to +5V" }
+  ],
+  "outputs": [
+    { "name": "OUT 1–4 (Channel CV)", "description": "Quantized V/Oct outputs for each channel. Supports V/Oct, Hz/V, and 1.2V/Oct output norms.", "voltage": "-3 to +7V" },
+    { "name": "HRMN (Harmony CV)", "description": "Harmony CV output mirroring the current harmony position for use with other modules.", "voltage": "-5 to +5V" },
+    { "name": "TRIG OUT", "description": "Trigger output that fires each time a note change is detected on an assigned channel.", "voltage": "0 to +5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Scale Programming",
+      "trigger": "keyboard buttons",
+      "description": "Use keyboard buttons to activate/deactivate notes per channel per harmony. Up to 320 scales storable (4 channels × 8 harmonies × 10 memory slots)."
+    },
+    {
+      "name": "Harmony Progression",
+      "trigger": "Harmony potentiometer / CV",
+      "description": "8 independent harmony settings per channel. Navigate via pot or CV to create chord progressions and song structures. Changes also affect Edit, Arp, microtuning, and grouping."
+    },
+    {
+      "name": "Arpeggiator",
+      "trigger": "trigger → Channel CV input",
+      "description": "Each channel can become an arpeggiator driven by triggers at its CV input instead of continuous voltage. Modes: Up, Down, Pendulum, Spiral, Random. 1–4 octave spread per channel and harmony."
+    },
+    {
+      "name": "Microtuning",
+      "trigger": "µTune button",
+      "description": "Each note in each channel and harmony can be detuned ±50 cents independently. Tuning setting is stored per harmony. Harmony pot navigates freely when µTune held."
+    },
+    {
+      "name": "Channel Grouping",
+      "trigger": "hold Channel button + press another",
+      "description": "Grouped channels share scale settings (and optionally Edit, Microtuning, Arpeggiator settings per Options menu). Indicated by simultaneous LED illumination."
+    },
+    {
+      "name": "Channel Interaction (Normalization / Shift Register)",
+      "trigger": "0V at CV input",
+      "description": "When 0V detected at a channel input, G#=Normalization (follow previous channel), A#=Shift Register (follow previous on gate trigger). Enables cascading voice effects."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Harmonic progression sequencer",
+      "patch": "LFO or sequencer → HRMN CV · all 4 channels play different scale roles · Harmony pot advances through 8 chord positions"
+    },
+    {
+      "name": "Polyphonic arp",
+      "patch": "4 channels as arpeggiatores · clock → all CV inputs · different scales per channel · TRSP for transposition"
+    },
+    {
+      "name": "Shift register melody",
+      "patch": "A# option ON for channels 2-4 · gate sequence → Gate input · channel 1 plays melody · channels 2-4 echo it with delay"
+    }
+  ]
+}

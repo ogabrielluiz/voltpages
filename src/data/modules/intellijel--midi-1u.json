@@ -1,0 +1,116 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.2"
+  },
+  "slug": "intellijel--midi-1u",
+  "name": "MIDI 1U",
+  "manufacturer": "Intellijel",
+  "hp": 14,
+  "tags": ["MIDI", "I/O", "CLOCK", "GATE", "TRIGGER"],
+  "description": "1U USB/DIN MIDI-to-CV interface for Intellijel cases. Converts MIDI pitch, velocity, mod, CC, gate, trigger, and clock to CV. Single or Dual synth mode. Expandable to 10 synths with CVx modules.",
+  "controls": [
+    {
+      "name": "LEARN Button",
+      "scope": "Global",
+      "description": "Cycles through three states to learn MIDI channel and CC/MOD jack assignments.",
+      "detail": "Off = normal · Solid blue = LEARN CC+CH · Flashing blue = LEARN MOD+CH · long-press = toggle Dual Mode"
+    },
+    {
+      "name": "CLK+ Button",
+      "scope": "Global",
+      "description": "Sets MIDI clock division for the CLK output jack.",
+      "detail": "/1 (24ppq) · /3 (32nd) · /6 (16th) · /12 (8th) · /24 (quarter) · /48 (half) · /96 (whole) · LED blinks with division"
+    }
+  ],
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "PITCH",
+      "description": "1V/oct CV pitch output for Synth 1. Note 0 (C-2) = -5V, Note 120 (C8) = +5V.",
+      "voltage": "±5V (1V/oct)"
+    },
+    {
+      "name": "MOD",
+      "description": "In Single mode: MIDI CC or aftertouch CV for Synth 1. In Dual mode: Pitch for Synth 2.",
+      "voltage": "0–5V unipolar or ±5V bipolar"
+    },
+    {
+      "name": "GATE",
+      "description": "Gate output for Synth 1. High when note is held.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "CLK",
+      "description": "Divided MIDI clock output. Division set by CLK+ button.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "VEL",
+      "description": "Velocity CV output for Synth 1, proportional to MIDI velocity.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "CC",
+      "description": "In Single mode: assignable MIDI CC CV output. In Dual mode: Velocity for Synth 2.",
+      "voltage": "0–5V unipolar or ±5V bipolar"
+    },
+    {
+      "name": "TRIG",
+      "description": "In Single mode: note trigger output for Synth 1. In Dual mode: Gate for Synth 2.",
+      "voltage": "0–5V trigger"
+    },
+    {
+      "name": "RST",
+      "description": "RESET output (trigger on MIDI reset) or RUN output (gate high while clock running), configurable in Intellijel Config app.",
+      "voltage": "0–5V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Single Mode",
+      "trigger": "default / LEARN unlit",
+      "description": "Controls one monophonic synth on a user-selected MIDI channel. Outputs PITCH, VEL, MOD, CC, GATE, TRIG, CLK, RST. CC and MOD jacks assignable to any MIDI CC or aftertouch."
+    },
+    {
+      "name": "Dual Mode",
+      "trigger": "long-press LEARN > 2s",
+      "description": "Controls two monophonic synths on separate MIDI channels. PITCH/VEL/GATE = Synth 1; MOD/CC/TRIG repurposed as PITCH/VEL/GATE for Synth 2. LEARN button glows yellow in Dual Mode."
+    },
+    {
+      "name": "MIDI Channel Learning",
+      "trigger": "LEARN button (single press, solid blue)",
+      "description": "Module awaits any incoming MIDI message and locks to that channel, also assigning the CC jack to that CC number. Settings auto-saved after 2 seconds of MIDI inactivity."
+    },
+    {
+      "name": "Portamento",
+      "trigger": "MIDI CC 65 on / CC 5 for time",
+      "description": "Pitch output slews when portamento is enabled via standard MIDI CC messages. Time set by CC 5."
+    },
+    {
+      "name": "CVx Expansion",
+      "trigger": "CVx 1U module connected via I2C",
+      "description": "Up to 4 CVx expanders add 8 assignable outputs each (32 total extra jacks), enabling polyphonic, drum, and multi-channel operation up to 10 synths on 10 MIDI channels."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Basic mono synth",
+      "patch": "PITCH → VCO 1V/oct · GATE → envelope trigger · VEL → VCA CV for velocity-sensitive dynamics"
+    },
+    {
+      "name": "Dual synth layering",
+      "patch": "Dual Mode · Synth 1 PITCH/GATE → VCO 1 · Synth 2 PITCH (MOD jack)/GATE (TRIG jack) → VCO 2"
+    },
+    {
+      "name": "MIDI clock sync",
+      "patch": "CLK (div=/24 = quarter notes) → sequencer clock in · RST → sequencer reset"
+    },
+    {
+      "name": "Mod wheel filter sweep",
+      "patch": "LEARN MOD+CH · move mod wheel · MOD jack → filter cutoff CV"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.2"
+  },
+  "slug": "mutable-instruments--plaits",
+  "name": "Plaits",
+  "manufacturer": "Mutable Instruments",
+  "hp": 12,
+  "tags": ["VCO", "OSCILLATOR", "NOISE", "WAVESHAPER"],
+  "description": "Digital macro-oscillator with 16 synthesis models. Built-in low-pass gate and decaying envelope allow self-contained percussive and melodic voices without external modules.",
+  "controls": [
+    {
+      "name": "Model Selection Buttons",
+      "scope": "A",
+      "description": "Two buttons cycle through 8+8 synthesis models. Bank 1: pitched/tonal. Bank 2: noisy/percussive.",
+      "detail": "Short press: cycle within bank · Long press: switch bank · LEDs indicate active model"
+    },
+    {
+      "name": "Frequency",
+      "scope": "B",
+      "description": "Coarse pitch control. Default range 8 octaves (C0–C8); narrowable to ±7 semitones.",
+      "detail": "Hold button 2 + turn HARMONICS to set range · C0–C8 default"
+    },
+    {
+      "name": "Harmonics",
+      "scope": "C",
+      "description": "Model-dependent tone control. Generally adjusts harmonic content, chord type, or waveform.",
+      "detail": "Function varies per model · CV controllable"
+    },
+    {
+      "name": "Timbre",
+      "scope": "D",
+      "description": "Model-dependent tone control. Generally sweeps spectral content from dark/sparse to bright/dense.",
+      "detail": "Has dedicated attenuverter for FM/envelope · CV controllable"
+    },
+    {
+      "name": "Morph",
+      "scope": "E",
+      "description": "Model-dependent tone control. Explores lateral timbral variations and waveform transitions.",
+      "detail": "Has dedicated attenuverter · LPG decay time in hold mode · CV controllable"
+    },
+    {
+      "name": "FM / Timbre / Morph Attenuverters",
+      "scope": "F",
+      "description": "Three small attenuverters for the FM, Timbre, and Morph CV inputs. Also scale internal envelope amount.",
+      "detail": "CCW: invert · noon: zero · CW: unity · Acts as envelope depth when TRIG patched"
+    }
+  ],
+  "inputs": [
+    { "name": "Model CV", "description": "Voltage selects synthesis model. Two LEDs indicate modulated vs. base value.", "voltage": "0–5V" },
+    { "name": "Timbre CV", "description": "CV input for Timbre parameter, scaled by its attenuverter.", "voltage": "±5V" },
+    { "name": "FM", "description": "CV input for frequency modulation, scaled by FM attenuverter.", "voltage": "±5V" },
+    { "name": "Morph CV", "description": "CV input for Morph parameter, scaled by its attenuverter.", "voltage": "±5V" },
+    { "name": "Harmonics CV", "description": "CV input for Harmonics parameter.", "voltage": "±5V" },
+    { "name": "Trigger", "description": "Triggers internal decaying envelope and LPG. Excites physical/percussive models. Samples MODEL CV.", "voltage": ">2V trigger" },
+    { "name": "Level", "description": "Opens internal low-pass gate directly. Acts as accent when triggering physical models.", "voltage": "0–8V" },
+    { "name": "V/Oct", "description": "1V/oct pitch input. Controls frequency relative to FREQUENCY knob root note.", "voltage": "-3V to +5V" }
+  ],
+  "outputs": [
+    { "name": "OUT", "description": "Main audio output of the active synthesis model.", "voltage": "±5V" },
+    { "name": "AUX", "description": "Auxiliary output: variant, sidekick, or by-product of the main signal depending on model.", "voltage": "±5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Classic Waveforms / Waveshaping (Models 1–2)",
+      "trigger": "V/Oct + gate",
+      "description": "Model 1: virtual-analog pair (pulse/saw). Model 2: asymmetric triangle through waveshaper and wavefolder. HARMONICS selects waveform, TIMBRE folds/shapes, MORPH varies asymmetry."
+    },
+    {
+      "name": "FM / Formant / Harmonic (Models 3–5)",
+      "trigger": "V/Oct + gate",
+      "description": "Model 3: two-op FM with feedback/chaos. Model 4: granular formant simulation via sine segments. Model 5: additive harmonic mixture. HARMONICS controls ratio/count, TIMBRE shapes content."
+    },
+    {
+      "name": "Wavetable / Chords / Speech (Models 6–8)",
+      "trigger": "V/Oct + gate",
+      "description": "Model 6: 4 banks of 8×8 wavetables with interpolation. Model 7: four-note chords via VA or wavetable. Model 8: vowel and LPC speech synthesis. HARMONICS selects bank/chord/vowel type."
+    },
+    {
+      "name": "Granular / Filtered Noise / Particle (Models 9–11, bank 2)",
+      "trigger": "trigger or gate",
+      "description": "Model 9: 8 enveloped sawtooth grains. Model 10: variable-clock white noise through resonant filter. Model 11: dust noise through allpass/bandpass networks. Percussive and textural sources."
+    },
+    {
+      "name": "Internal LPG + Envelope",
+      "trigger": "hold button A",
+      "description": "Hold button A and turn TIMBRE to adjust LPG response (VCFA to VCA). Turn MORPH to set LPG ring time and envelope decay. Settings shown on 4 yellow LEDs."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Self-contained drum voice",
+      "patch": "TRIG → trigger · LEVEL unpatched · Model 9–11 · adjust MORPH for decay"
+    },
+    {
+      "name": "FM bass with envelope brightness",
+      "patch": "Model 3 · Env → FM attenuverter input · short decay for plucked character"
+    },
+    {
+      "name": "Chord pad",
+      "patch": "Model 7 · V/Oct for root · HARMONICS selects chord type · AUX = root note only"
+    }
+  ]
+}

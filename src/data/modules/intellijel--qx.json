@@ -1,0 +1,52 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "intellijel--qx",
+  "name": "Qx",
+  "manufacturer": "Intellijel",
+  "hp": 4,
+  "tags": ["ENVELOPE", "LFO", "UTILITY"],
+  "description": "4HP expander for Quadrax. Adds one CV output per Quadrax channel and enables cascade/linking between channels. Output function is set per channel in Quadrax menus.",
+  "controls": [],
+  "inputs": [],
+  "outputs": [
+    { "name": "CH 1 CV Out", "description": "Auxiliary CV output for Quadrax channel 1. End-of-cycle gate, end-of-rise gate, or linked CV depending on Quadrax channel mode.", "voltage": "0–5V or ±5V" },
+    { "name": "CH 2 CV Out", "description": "Auxiliary CV output for Quadrax channel 2. End-of-cycle gate, end-of-rise gate, or linked CV depending on Quadrax channel mode.", "voltage": "0–5V or ±5V" },
+    { "name": "CH 3 CV Out", "description": "Auxiliary CV output for Quadrax channel 3. End-of-cycle gate, end-of-rise gate, or linked CV depending on Quadrax channel mode.", "voltage": "0–5V or ±5V" },
+    { "name": "CH 4 CV Out", "description": "Auxiliary CV output for Quadrax channel 4. End-of-cycle gate, end-of-rise gate, or linked CV depending on Quadrax channel mode.", "voltage": "0–5V or ±5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "End-of-Cycle Gate",
+      "trigger": "Quadrax channel completes cycle",
+      "description": "When configured in Quadrax, the Qx output fires a short gate at the end of each envelope or LFO cycle — useful for chaining or clocking other modules."
+    },
+    {
+      "name": "End-of-Rise Gate",
+      "trigger": "Quadrax channel reaches peak",
+      "description": "Fires a gate at the peak of the envelope or function, allowing rhythmic or melodic events to be triggered mid-envelope."
+    },
+    {
+      "name": "Channel Cascade / Linking",
+      "trigger": "cascade mode in Quadrax",
+      "description": "Enables daisy-chaining Quadrax channels so the end of one channel triggers the next, creating longer envelope sequences or complex LFO chains."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Envelope cascade sequence",
+      "patch": "Qx CH 1 EOC → Quadrax CH 2 trigger · CH 2 EOC → CH 3 trigger · cascading 4-stage envelope"
+    },
+    {
+      "name": "Synchronized secondary triggers",
+      "patch": "Qx EOC outputs → trigger inputs on drum voices · percussion synced to envelope timing"
+    },
+    {
+      "name": "LFO reset chain",
+      "patch": "Qx CH 1 EOC → Quadrax CH 2 reset · phase-locked polyrhythmic LFOs"
+    }
+  ]
+}

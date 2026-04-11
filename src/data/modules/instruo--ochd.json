@@ -1,0 +1,72 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "instruo--ochd",
+  "name": "ochd",
+  "manufacturer": "Instruo",
+  "hp": 4,
+  "tags": ["LFO", "UTILITY"],
+  "description": "8 free-running analog triangle LFOs in 4HP. Single global rate knob with CV and attenuverter. LFOs arranged fastest-to-slowest top-to-bottom. Negative CV stalls all LFOs (track & hold).",
+  "controls": [
+    {
+      "name": "Rate",
+      "scope": "global",
+      "description": "Sets frequency of all 8 LFOs simultaneously. CW = faster.",
+      "detail": "LFO1 max: 160Hz · LFO8 min: 25min cycle · center: LFO1 at 3–7Hz"
+    },
+    {
+      "name": "Rate Attenuverter",
+      "scope": "CV input",
+      "description": "Scales and/or inverts the Rate CV input signal.",
+      "detail": "CCW: invert · noon: zero · CW: unity"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Rate CV",
+      "description": "Bipolar CV for global rate control. Positive extends range; negative stalls LFOs.",
+      "voltage": "bipolar"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "LFO 1–8",
+      "description": "Eight bipolar triangle LFO outputs, fastest (top) to slowest (bottom).",
+      "voltage": "10Vpp (±5V)"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Organic Phase Drift",
+      "trigger": "free-running",
+      "description": "All 8 cores run independently and phase organically over time, producing natural evolving modulation."
+    },
+    {
+      "name": "LFO Stall / Track & Hold",
+      "trigger": "negative CV → Rate CV",
+      "description": "Applying negative CV stalls all LFOs at their current voltage, acting as a track-and-hold. Gate → Rate CV with attenuverter fully CCW achieves this."
+    },
+    {
+      "name": "Feedback Waveshaping",
+      "trigger": "LFO out → Rate CV",
+      "description": "Patching any LFO output back to Rate CV input creates waveshaped, non-linear LFO shapes on all channels."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Track & Hold",
+      "patch": "Gate → Rate CV · Attenuverter full CCW · LFO outs → CV destinations"
+    },
+    {
+      "name": "Feedback waveshaper",
+      "patch": "LFO 4 out → Rate CV · attenuverter at noon · remaining outs to VCF/VCA"
+    },
+    {
+      "name": "Granular drifter",
+      "patch": "LFO outs → arbhar CV inputs for evolving granular textures"
+    }
+  ]
+}

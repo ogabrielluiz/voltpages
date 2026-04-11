@@ -1,0 +1,100 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "shakmat-modular--dual-dagger",
+  "name": "Dual Dagger",
+  "manufacturer": "Shakmat Modular",
+  "hp": 6,
+  "tags": ["VCF", "FILTER"],
+  "description": "Dual stereo filter with independent LPF and HPF cutoff controls. Four analog -24dB/oct filters, assignable resonance, stereo pan CV per filter type, and Link mode for 8th-order stereo bandpass.",
+  "controls": [
+    {
+      "name": "LPF Potentiometer",
+      "scope": "Low-pass",
+      "description": "Sets cutoff frequency of both low-pass filters (channels 1 and 2).",
+      "detail": "Controls LPF1 and LPF2 simultaneously · -24dB/oct"
+    },
+    {
+      "name": "Link Switch",
+      "scope": "Global",
+      "description": "Links LPF to follow HPF, creating an 8th-order stereo bandpass. HPF = bandpass frequency, LPF = bandwidth.",
+      "detail": "OFF=independent LP+HP · ON=bandpass (HPF=freq, LPF=bandwidth)"
+    },
+    {
+      "name": "Resonance Potentiometer",
+      "scope": "Global",
+      "description": "Shared resonance control. Applies to HPF, LPF, or both per switch settings. Jumper on back sets Lo (no self-oscillation) or Hi (self-oscillation allowed) range.",
+      "detail": "Lo jumper=no self-osc · Hi jumper=self-oscillation"
+    },
+    {
+      "name": "HP Resonance Switch",
+      "scope": "High-pass",
+      "description": "Engages resonance on the high-pass filters.",
+      "detail": "ON=resonance applied to HPF1 and HPF2"
+    },
+    {
+      "name": "LP Resonance Switch",
+      "scope": "Low-pass",
+      "description": "Engages resonance on the low-pass filters.",
+      "detail": "ON=resonance applied to LPF1 and LPF2"
+    },
+    {
+      "name": "HPF Potentiometer",
+      "scope": "High-pass",
+      "description": "Sets cutoff frequency of both high-pass filters (channels 1 and 2). In Link mode, controls center frequency of bandpass.",
+      "detail": "Controls HPF1 and HPF2 simultaneously · -24dB/oct"
+    }
+  ],
+  "inputs": [
+    { "name": "IN1", "description": "Audio input for channel 1.", "voltage": "-5 to +5V" },
+    { "name": "IN2", "description": "Audio input for channel 2. IN1 normalled to IN2.", "voltage": "-5 to +5V", "normalizedTo": "IN1" },
+    { "name": "LPF CV", "description": "CV input for LPF cutoff frequency.", "voltage": "CV" },
+    { "name": "Resonance CV", "description": "CV input for Resonance.", "voltage": "CV" },
+    { "name": "HPF CV", "description": "CV input for HPF cutoff frequency.", "voltage": "CV" },
+    { "name": "PANLP CV", "description": "Pan CV for LPF: positive voltage opens LPF1 and closes LPF2 (opposite for negative).", "voltage": "bipolar" },
+    { "name": "PANHP CV", "description": "Pan CV for HPF: differentiates HPF cutoff between channels 1 and 2.", "voltage": "bipolar" }
+  ],
+  "outputs": [
+    { "name": "OUT1", "description": "Filtered audio output for channel 1 (HPF then LPF in series).", "voltage": "audio" },
+    { "name": "OUT2", "description": "Filtered audio output for channel 2 (HPF then LPF in series).", "voltage": "audio" }
+  ],
+  "behaviors": [
+    {
+      "name": "Dual Stereo Filter",
+      "trigger": "audio → IN1/IN2",
+      "description": "Each audio channel passes through HPF then LPF in series. All four filters are -24dB/oct analog. LPF and HPF frequencies are identical across both channels for precise stereo tracking."
+    },
+    {
+      "name": "Bandpass via Link",
+      "trigger": "Link switch ON",
+      "description": "LPF follows HPF. HPF control sets bandpass center frequency, LPF control sets bandwidth. Creates an 8th-order stereo bandpass with resonance assignable to HP and/or LP edges."
+    },
+    {
+      "name": "Stereo Pan / Detuning",
+      "trigger": "PANLP or PANHP CV",
+      "description": "Pan CV inputs offset the cutoff frequency of channel 1 vs channel 2 in opposite directions. Positive voltage to PANLP opens LPF1 and closes LPF2, creating stereo filter divergence."
+    },
+    {
+      "name": "Self-Oscillation VCO",
+      "trigger": "Hi jumper + Resonance max + HPF CV",
+      "description": "With Hi jumper set and resonance at maximum, the HPF section self-oscillates as a sine-wave VCO tracking V/Oct over several octaves."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Stereo bandpass sweep",
+      "patch": "Link ON · LFO → HPF CV · LPF set bandwidth · resonance on both edges"
+    },
+    {
+      "name": "Dual resonant peak",
+      "patch": "Mono → IN1 · mix OUT1+OUT2 · PANLP CV sets distance between two resonant LP peaks"
+    },
+    {
+      "name": "Sine VCO voice",
+      "patch": "Hi jumper · resonance max → HPF self-oscillates · LPF smooths · second channel FM via PANHP"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.0"
+  },
+  "slug": "happy-nerding--fx-aid-1u",
+  "name": "FX AID 1U",
+  "manufacturer": "Happy Nerding",
+  "hp": 4,
+  "tags": ["EFFECTS", "REVERB", "DELAY", "CHORUS", "PHASER", "DISTORTION", "WAVEFOLDER"],
+  "description": "Compact 1U stereo effects processor with 32 user-loadable programs from a library of 200+. Programs include delays, reverbs, choruses, phasers, filters, pitch shifters, drum emulations, and more. CV-controllable.",
+  "controls": [
+    {
+      "name": "Control 1",
+      "scope": "Main",
+      "description": "Primary parameter knob. Function is program-dependent (e.g. Delay Time, Rate, Frequency, Tune, Threshold).",
+      "detail": "Function labeled in program list · CV assignable"
+    },
+    {
+      "name": "Control 2",
+      "scope": "Main",
+      "description": "Secondary parameter knob. Function is program-dependent (e.g. Feedback, Depth, Resonance, Attack, Chorus).",
+      "detail": "Function labeled in program list · CV assignable"
+    },
+    {
+      "name": "Control 3",
+      "scope": "Main",
+      "description": "Tertiary parameter knob. Function is program-dependent (e.g. Tone, xFade, Decay, Semitone Shift, Knee).",
+      "detail": "Function labeled in program list · CV assignable"
+    },
+    {
+      "name": "D/W (Dry/Wet)",
+      "scope": "Main",
+      "description": "Dry/wet mix knob. Controls blend between dry input signal and processed effect output.",
+      "detail": "Full CCW = dry · Full CW = wet"
+    },
+    {
+      "name": "Bank Button (left)",
+      "scope": "Program Selection",
+      "description": "Selects the active bank (4 banks of 8 programs). Hold 2 seconds to enter preset selection mode.",
+      "detail": "4 banks × 8 programs = 32 slots"
+    },
+    {
+      "name": "Program Button (right)",
+      "scope": "Program Selection",
+      "description": "Advances to the next program within the current bank. Also used to navigate presets.",
+      "detail": "Cycles through 8 programs per bank"
+    }
+  ],
+  "inputs": [
+    { "name": "L (Left)", "description": "Left stereo audio input.", "voltage": "audio ±1V nominal" },
+    { "name": "R (Right)", "description": "Right stereo audio input. Normalled to L for mono-to-stereo processing.", "voltage": "audio ±1V nominal", "normalizedTo": "L" },
+    { "name": "CV / D/W", "description": "Assignable CV input. By default controls Dry/Wet mix. Can be reassigned to Control 1, 2, 3, sample rate reducer, or preset selection.", "voltage": "0–5V" }
+  ],
+  "outputs": [
+    { "name": "L (Left)", "description": "Left stereo audio output.", "voltage": "audio" },
+    { "name": "R (Right)", "description": "Right stereo audio output.", "voltage": "audio" }
+  ],
+  "behaviors": [
+    {
+      "name": "Program Selection",
+      "trigger": "bank + program buttons",
+      "description": "4 banks × 8 programs = 32 user-loadable slots. Factory presets include Delay Tape, Ping Pong, HP/LP delay, Reverb Plate, Reverb Hall, Shimmer, Flanger, Phaser, Pitch Shifter, Wave Folder, Bit Crusher, and 808/909 drum emulations."
+    },
+    {
+      "name": "Preset Storage",
+      "trigger": "hold right button until LEDs off, then left to select",
+      "description": "Store 4 quick presets including current program + Control 1/2/3 + D/W positions. Recall by holding 2 seconds then navigating with right button."
+    },
+    {
+      "name": "CV Assignment",
+      "trigger": "hold right button 2 seconds",
+      "description": "Reassign the CV input to control: Control 1 (LED 1), Control 2 (LED 2), Control 3 (LED 3), Sample Rate Reducer (LED 4), or Preset Selection (LED 1+5). Click through options then hold to confirm."
+    },
+    {
+      "name": "Firmware / Bank Loading",
+      "trigger": "fxaid.app web editor",
+      "description": "Build custom banks of 32 programs from 200+ available algorithms via fxaid.app. Download wave file, play into CV input to flash firmware. USB-C not available on 1U — audio-wave update only."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "CV-controlled reverb decay",
+      "patch": "Load Reverb Hall · assign CV to Control 2 (Decay) · LFO → CV for evolving decay times"
+    },
+    {
+      "name": "Clocked delay",
+      "patch": "Load Delay Clock Sync · clock → CV input (assign CV to Control 1) · clock divides/multiplies delay time"
+    },
+    {
+      "name": "Shimmer pad generator",
+      "patch": "Load Shimmer Input Dual · slow attack source → L input · D/W at 100% for pure shimmer"
+    }
+  ]
+}

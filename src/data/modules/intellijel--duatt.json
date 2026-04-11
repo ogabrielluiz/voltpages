@@ -1,0 +1,105 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "intellijel--duatt",
+  "name": "Duatt",
+  "manufacturer": "Intellijel",
+  "hp": 14,
+  "tags": ["ATTENUVERTER", "ATTENUATOR", "MIXER", "UTILITY"],
+  "description": "Dual attenuator/attenuverter/mixer in 1U format. Each channel switchable between unipolar attenuator and bipolar attenuverter. No input defaults to +5V DC. Channel A has 2x voltage multiplier switch.",
+  "controls": [
+    {
+      "name": "Attenuator A",
+      "scope": "Channel A",
+      "description": "Scales channel A input voltage. Behavior depends on Polarity Switch A setting.",
+      "detail": "UNI: 0–unity · -/+: invert to unity (noon = zero)"
+    },
+    {
+      "name": "Polarity Switch A",
+      "scope": "Channel A",
+      "description": "UNI: standard attenuator (0 to full). -/+: bipolar attenuverter (invert to unity, noon = zero).",
+      "detail": "No input → +5V DC internal source"
+    },
+    {
+      "name": "Ax2 Switch",
+      "scope": "Channel A",
+      "description": "Doubles the voltage at Channel A's input. Enables +10V or -10V DC offset generation.",
+      "detail": "Up = x2 active · works on internal +5V too (gives ±10V)"
+    },
+    {
+      "name": "Attenuator B",
+      "scope": "Channel B",
+      "description": "Scales channel B input voltage. Behavior depends on Polarity Switch B setting.",
+      "detail": "UNI: 0–unity · -/+: invert to unity (noon = zero)"
+    },
+    {
+      "name": "Polarity Switch B",
+      "scope": "Channel B",
+      "description": "UNI: standard attenuator. -/+: bipolar attenuverter.",
+      "detail": "No input → +5V DC internal source"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN A",
+      "description": "Input for Channel A. No cable: internal +5V DC. Doubled if Ax2 switch is on.",
+      "voltage": "any · internal +5V when unpatched"
+    },
+    {
+      "name": "IN B",
+      "description": "Input for Channel B. No cable: internal +5V DC.",
+      "voltage": "any · internal +5V when unpatched"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT A",
+      "description": "Output of Channel A. When unpatched, A is summed into OUT B.",
+      "normalizedTo": "OUT B (summed)"
+    },
+    {
+      "name": "OUT B",
+      "description": "Output of Channel B. Contains A+B sum when OUT A is unpatched.",
+      "voltage": "±10V range"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "CV attenuation",
+      "trigger": "CV → IN A · UNI mode",
+      "description": "Reduces CV amplitude for subtle modulation. Ideal for scaling LFO depth before sending to filter or VCA CV inputs."
+    },
+    {
+      "name": "Signal inversion",
+      "trigger": "CV → IN A · -/+ mode · knob CCW",
+      "description": "Inverts a signal (e.g., turns an ADSR into a falling envelope for inverse VCA or filter control)."
+    },
+    {
+      "name": "CV mixing",
+      "trigger": "OUT A unpatched",
+      "description": "Channels A and B are summed at OUT B, enabling two CV sources to control one destination."
+    },
+    {
+      "name": "DC offset / voltage source",
+      "trigger": "no input · -/+ mode",
+      "description": "With no input, knob generates -5V to +5V DC (or -10V to +10V with Ax2). Useful for pitch offsets or static CV."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "LFO depth control",
+      "patch": "LFO → IN A · UNI mode · dial amount with knob · OUT A → filter CV"
+    },
+    {
+      "name": "Inverted envelope",
+      "patch": "ADSR → IN A · -/+ mode · knob past noon CCW · OUT A → VCA or VCF"
+    },
+    {
+      "name": "Note range + offset",
+      "patch": "S&H → IN B · attenuate range · Channel A (-/+ unpatched) offsets pitch down · OUT B → VCO"
+    }
+  ]
+}

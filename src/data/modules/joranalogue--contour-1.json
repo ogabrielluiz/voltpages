@@ -1,0 +1,165 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true
+  },
+  "slug": "joranalogue--contour-1",
+  "name": "Contour 1",
+  "manufacturer": "Joranalogue",
+  "hp": 8,
+  "tags": ["SLEW", "ENVELOPE", "FUNCTION", "LFO", "VCO"],
+  "description": "Voltage-controlled slew limiter and function generator with independently bendable rise and fall slopes. Generates AR/AD envelopes, LFO, VCO, or envelope follower. Slope times 500µs to 30s.",
+  "controls": [
+    {
+      "name": "Rise Slider",
+      "scope": "slew core",
+      "description": "Sets rising slew rate. Bottom = fast, top = slow.",
+      "detail": "Full mode: 500µs–30s · Audio mode: 500µs–30ms"
+    },
+    {
+      "name": "Fall Slider",
+      "scope": "slew core",
+      "description": "Sets falling slew rate. Bottom = fast, top = slow.",
+      "detail": "Full mode: 500µs–30s · Audio mode: 500µs–30ms"
+    },
+    {
+      "name": "Rise Bend Knob",
+      "scope": "slew core",
+      "description": "Shapes rising slope from concave through linear to convex.",
+      "detail": "CCW: concave · noon: linear · CW: convex"
+    },
+    {
+      "name": "Fall Bend Knob",
+      "scope": "slew core",
+      "description": "Shapes falling slope from concave through linear to convex.",
+      "detail": "CCW: concave · noon: linear · CW: convex"
+    },
+    {
+      "name": "Slew/Loop Switch",
+      "scope": "mode",
+      "description": "Left: slew limiter / envelope. Right: loop mode (LFO/VCO).",
+      "detail": "Loop: output rises to +10V then falls to IN voltage, repeating"
+    },
+    {
+      "name": "Full/Audio Switch",
+      "scope": "mode",
+      "description": "Sets frequency range. Full: LFO/envelope/slew. Audio: VCO/VCF range.",
+      "detail": "Full: 17mHz–1kHz loop · Audio: 17Hz–1kHz loop"
+    },
+    {
+      "name": "Trigger Button",
+      "scope": "manual",
+      "description": "Manually fires trigger: resets output to 0V then executes rise/fall.",
+      "detail": "Creates AD envelope in slew mode"
+    },
+    {
+      "name": "V/Oct Trimmer",
+      "scope": "calibration",
+      "description": "Front-panel trim pot for pitch tracking calibration in VCO mode.",
+      "detail": "Factory calibrated; adjust only when needed"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN",
+      "description": "Analogue signal input for slew limiting. Sets minimum voltage in loop mode (0V default).",
+      "voltage": "any CV/audio"
+    },
+    {
+      "name": "GATE",
+      "description": "In slew mode: switches source to +10V for AR envelopes. In loop mode: gates oscillation.",
+      "voltage": "+2V low / +3V high threshold"
+    },
+    {
+      "name": "TRIG.",
+      "description": "Rising edge resets output to 0V and fires single-shot rise/fall (AD envelope).",
+      "voltage": "+2V low / +3V high threshold"
+    },
+    {
+      "name": "HOLD",
+      "description": "Gate freezes slew core at current voltage until released.",
+      "voltage": "+2V low / +3V high threshold"
+    },
+    {
+      "name": "Rise Rate CV",
+      "description": "Voltage control of rise rate. Normalizes to Fall Rate CV.",
+      "voltage": "1V/oct (when both equal for pitch tracking)",
+      "normalizedTo": "Fall Rate CV"
+    },
+    {
+      "name": "Fall Rate CV",
+      "description": "Voltage control of fall rate.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Rise Bend CV",
+      "description": "Modulates rising slope shape. Normalizes to Fall Bend CV.",
+      "voltage": "±5V",
+      "normalizedTo": "Fall Bend CV"
+    },
+    {
+      "name": "Fall Bend CV",
+      "description": "Modulates falling slope shape.",
+      "voltage": "±5V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT",
+      "description": "Main slew-limited output signal.",
+      "voltage": "0–+10V"
+    },
+    {
+      "name": "INV.",
+      "description": "Inverted output signal.",
+      "voltage": "0–-10V"
+    },
+    {
+      "name": "RISE",
+      "description": "Gate output, high (+5V) while slew core is rising.",
+      "voltage": "0/+5V gate"
+    },
+    {
+      "name": "FALL",
+      "description": "Gate output, high (+5V) while slew core is falling.",
+      "voltage": "0/+5V gate"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "AR Envelope",
+      "trigger": "gate → GATE",
+      "description": "High gate triggers rise to +10V; releasing gate triggers fall. Rise and fall times set by sliders."
+    },
+    {
+      "name": "AD Envelope",
+      "trigger": "trigger → TRIG.",
+      "description": "Rising edge resets to 0V then rises to +10V and falls. Manual button fires envelopes without patching."
+    },
+    {
+      "name": "Slew Limiter / Portamento",
+      "trigger": "CV → IN",
+      "description": "Smooths voltage changes at the IN input. Impedance-compensated output maintains pitch accuracy on 1V/oct sequences."
+    },
+    {
+      "name": "LFO / VCO",
+      "trigger": "loop mode",
+      "description": "Continuously re-triggers, producing variable-shape waveform. Rise/fall sliders set frequency and shape. 1V/oct tracking in audio mode."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Improved saw oscillator",
+      "patch": "Loop mode · FALL → TRIG. · slow rise + fast fall · resets instantly to 0V"
+    },
+    {
+      "name": "Pulse width modifier",
+      "patch": "Slew mode · pulse → TRIG. · RISE output = width-controlled pulse · FALL = delayed pulse"
+    },
+    {
+      "name": "Envelope follower",
+      "patch": "Slew mode · audio → IN · Rise slider max fast · Fall slider moderate"
+    }
+  ]
+}

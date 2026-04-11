@@ -1,0 +1,214 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "4.1.6"
+  },
+  "slug": "make-noise--multiwave",
+  "name": "MultiWAVE",
+  "manufacturer": "Make Noise",
+  "hp": 26,
+  "tags": ["VCO", "OSCILLATOR", "SEQUENCER", "MIDI"],
+  "description": "Eight-channel dual wavetable oscillator for the N.U.S.S. Each channel has two independent wavetable oscillators (Osc A and Osc B) with Spread and Modulation Dissemination for per-channel parameter variation.",
+  "controls": [
+    {
+      "name": "Span",
+      "scope": "Global",
+      "description": "Sets the Channel Span for Activation. Selects channel in Index mode, step size in Round mode, clock divisions in Parallel mode.",
+      "detail": "Modes: Channel Index (White), Round (Yellow), Parallel (Cyan), Shift Register (Magenta)"
+    },
+    {
+      "name": "Span CV Input attenuverter",
+      "scope": "Global",
+      "description": "Bipolar attenuator for Span CV Input. Set CW in Channel Index to translate Channel Index messages from N.U.S.S. modules.",
+      "detail": "Bipolar · CW = unity"
+    },
+    {
+      "name": "Mode Button",
+      "scope": "Global",
+      "description": "Selects Span Mode. Long press = MIDI panic. On Page 2 long press enables/disables MPE.",
+      "detail": "White=Ch.Index · Yellow=Round · Cyan=Parallel · Magenta=Shift Register"
+    },
+    {
+      "name": "Spread Combo Pot",
+      "scope": "Global",
+      "description": "Bipolar panel control for Spread parameter. Sets direction and amount of modulation sent to unpatched Spreadable parameters.",
+      "detail": "Bipolar · When Spread CV patched: operates as attenuverter"
+    },
+    {
+      "name": "Osc A Wave Panel Control",
+      "scope": "Osc A",
+      "description": "Sets wave position in currently loaded wavetable. Spreadable parameter.",
+      "detail": "0–max of wavetable positions"
+    },
+    {
+      "name": "Osc A Wave Attenuverter",
+      "scope": "Osc A",
+      "description": "Bi-polar attenuator for A-Wave Modulation Dissemination or Spread amount.",
+      "detail": "Bipolar · Gold legend = Spreadable"
+    },
+    {
+      "name": "Osc A Pitch Panel Control",
+      "scope": "Osc A",
+      "description": "Sets starting Pitch for Osc A according to selected Follow mode.",
+      "detail": "Follow modes: Off (free), Pink (expo detune), Magenta (linear detune), Cyan (octaves), Green (integer multiply)"
+    },
+    {
+      "name": "Osc A Pitch Attenuverter",
+      "scope": "Osc A",
+      "description": "Bi-polar attenuator for Pitch Modulation Dissemination or Spread. Set full CW for 1v/oct response.",
+      "detail": "Full CW = 1V/oct tracking"
+    },
+    {
+      "name": "Mod Shape Button (Osc A)",
+      "scope": "Osc A",
+      "description": "Selects and denotes Mod Shape for Osc A. Press and hold to reset to OFF.",
+      "detail": "Off/Red(Ramp)/Green(Saw)/Blue(Tri)/Purple(Sine)/Pink(Staircase)/Orange(Stepped Rand)/Yellow(Smooth Rand)"
+    },
+    {
+      "name": "Follow Button",
+      "scope": "Osc A",
+      "description": "Selects and denotes Follow Mode for Osc A relative to Osc B pitch.",
+      "detail": "Off=Free · Pink=Expo Detune · Magenta=Linear Detune · Cyan=Octaves · Green=Integer Multiply"
+    },
+    {
+      "name": "Osc B Pitch Panel Control",
+      "scope": "Osc B",
+      "description": "Sets starting Pitch for Osc B (coarse).",
+      "detail": "1V/oct tracking when attenuverter full CW"
+    },
+    {
+      "name": "Osc B Pitch Fine Tune",
+      "scope": "Osc B",
+      "description": "Fine control of starting Pitch for Osc B.",
+      "detail": "Fine tune range"
+    },
+    {
+      "name": "Osc B Glide Panel Control",
+      "scope": "Osc B",
+      "description": "Sets Glide (portamento) time at 1v/oct input upon each new Activation.",
+      "detail": "Short to long"
+    },
+    {
+      "name": "Osc B Wave Panel Control",
+      "scope": "Osc B",
+      "description": "Sets wave position in currently loaded wavetable for Osc B. Spreadable parameter.",
+      "detail": "0–max of wavetable positions"
+    },
+    {
+      "name": "Osc B Wave Attenuverter",
+      "scope": "Osc B",
+      "description": "Bi-polar attenuator for B-Wave Modulation Dissemination or Spread amount.",
+      "detail": "Bipolar · Gold legend = Spreadable"
+    },
+    {
+      "name": "Mod Shape Button (Osc B)",
+      "scope": "Osc B",
+      "description": "Selects Mod Shape for Osc B. On Page 2, selects Multimod Activation Behavior.",
+      "detail": "Off/Red/Green/Blue/Purple/Pink/Orange/Yellow · Page2: Off=Free / Magenta=Reset / Cyan=One-Shot"
+    },
+    {
+      "name": "Mod Time Panel Control",
+      "scope": "Global",
+      "description": "Sets the rate of read modulation through wavetable. Spreadable parameter.",
+      "detail": "Slow to fast · Gold legend = Spreadable"
+    },
+    {
+      "name": "Mod Time Attenuverter",
+      "scope": "Global",
+      "description": "Bi-polar attenuator for Mod Time Modulation Dissemination or Spread amount.",
+      "detail": "Bipolar"
+    },
+    {
+      "name": "Blend CV Input",
+      "scope": "Global",
+      "description": "Control voltage input for Blend. Live input (not subject to Modulation Dissemination).",
+      "detail": "Sets mix between Osc A and Osc B"
+    },
+    {
+      "name": "Blend Panel Control",
+      "scope": "Global",
+      "description": "Sets output mix between Osc A and Osc B.",
+      "detail": "CCW=Osc A only · CW=Osc B only"
+    },
+    {
+      "name": "Detune Panel Control",
+      "scope": "Global",
+      "description": "Detunes all eight channels of Osc B. CCW=in tune; full CW=harmonic oscillator.",
+      "detail": "Low=chorusing · Full CW=harmonic series"
+    },
+    {
+      "name": "Page 2 Button",
+      "scope": "Global",
+      "description": "Press to enter Page 2 for wavetable selection, output mixing, Multimod and quantization settings.",
+      "detail": "Activity Window lights White when active"
+    }
+  ],
+  "inputs": [
+    { "name": "Activate", "description": "Gate input. Rising edge activates channels per Span and Mode.", "voltage": "gate" },
+    { "name": "Accumulate", "description": "Gate input. Holds Activation messages until gate received; channels display Orange.", "voltage": "gate" },
+    { "name": "Reset", "description": "Gate input. Resets MultiWAVE per current Span Mode.", "voltage": "gate" },
+    { "name": "Span CV", "description": "CV input for Span parameter. Modulate or patch Channel Index from another N.U.S.S. module.", "voltage": "0–4V (0.5V/ch)" },
+    { "name": "Spread CV", "description": "CV input for Spread parameter.", "voltage": "bipolar" },
+    { "name": "A-Wave CV", "description": "CV input for Osc A wave position. Switches to Modulation Dissemination when patched.", "voltage": "CV" },
+    { "name": "Pitch Exponential (Osc A)", "description": "1V/oct pitch input for Osc A. Modulation Dissemination when patched.", "voltage": "1V/oct" },
+    { "name": "Glide CV (Osc B)", "description": "CV input for Glide time.", "voltage": "CV" },
+    { "name": "TRPS (Transpose)", "description": "Live 1V/oct global transpose input for all 8 channels of Osc B. Affects all channels simultaneously.", "voltage": "1V/oct" },
+    { "name": "V/Oct (Osc B)", "description": "Modulation Dissemination input for Osc B pitch. Tracks 1V/oct.", "voltage": "1V/oct" },
+    { "name": "B-Wave CV", "description": "CV input for Osc B wave position. Switches to Modulation Dissemination when patched.", "voltage": "CV" },
+    { "name": "Mod Time CV", "description": "CV input for Mod Time. Switches to Modulation Dissemination when patched.", "voltage": "CV" },
+    { "name": "Blend CV", "description": "Live CV input for Blend between Osc A and Osc B.", "voltage": "CV" },
+    { "name": "Detune CV", "description": "Live CV input for Detune.", "voltage": "CV" }
+  ],
+  "outputs": [
+    { "name": "Channel 1–8 Outputs", "description": "Individual waveform outputs for each MultiWAVE channel. In Page 2 mixing mode, outputs 5-8 carry submixes.", "voltage": "modular level" },
+    { "name": "Channel Index Out", "description": "CV indicating currently Activated channel (0.5V/channel). Patch to Span CV of another N.U.S.S. module.", "voltage": "0–4V (0.5V/ch)" }
+  ],
+  "behaviors": [
+    {
+      "name": "Channel Index Mode",
+      "trigger": "Span control / CV",
+      "description": "SPAN selects channel to Activate. Turn knob or send sequence to Activate channels in any order. Works with N.U.S.S. Channel Index output for module-to-module communication."
+    },
+    {
+      "name": "Round Mode",
+      "trigger": "trigger → Activate",
+      "description": "Each trigger advances activation by Span channels. Span=1 means all 8 channels round-robin one at a time. Reset returns to Channel 1."
+    },
+    {
+      "name": "Parallel Mode",
+      "trigger": "trigger → Activate",
+      "description": "Each channel activates at a clock division of the incoming trigger. Divisions are set by Span. Reset resets all clock division counters."
+    },
+    {
+      "name": "Shift Register Mode",
+      "trigger": "trigger → Activate",
+      "description": "On each Activation, Modulation Dissemination values shift from the selected channel forward. Creates cascading arpeggio effects."
+    },
+    {
+      "name": "Spread Modulation",
+      "trigger": "Spread pot/CV",
+      "description": "Distributes modulation across 8 channels in differing amounts for Rise, Fall, Osc, Wave, Strength parameters simultaneously from a single control."
+    },
+    {
+      "name": "Output Mixing (Page 2)",
+      "trigger": "Page 2 button",
+      "description": "Mode button toggles output mixing. Outputs: 1-4=individual, 5=Osc A mono mix, 6=Osc B mono mix, 7=odd channels, 8=even channels."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "8-voice polyphony with PoliMATHS",
+      "patch": "PoliMATHS Ch.Index Out → MultiWAVE Span CV · PoliMATHS outputs → QXG control inputs via header · MultiWAVE → QXG signal inputs via header"
+    },
+    {
+      "name": "Harmonic oscillator",
+      "patch": "Detune full CW · sequence Transpose instead of 1v/oct"
+    },
+    {
+      "name": "Drifting polyphonic pads",
+      "patch": "Round mode Span=1 · slow LFO → Spread CV · Blend at noon · Mod Time slow"
+    }
+  ]
+}

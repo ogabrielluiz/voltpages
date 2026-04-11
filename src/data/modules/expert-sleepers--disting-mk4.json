@@ -1,0 +1,123 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "4.28"
+  },
+  "slug": "expert-sleepers--disting-mk4",
+  "name": "disting mk4",
+  "manufacturer": "Expert Sleepers",
+  "hp": 4,
+  "tags": ["UTILITY", "OSCILLATOR", "VCO", "LFO", "ENVELOPE", "QUANTIZER", "DELAY", "REVERB", "SAMPLER", "FILTER", "EFFECTS", "RANDOM", "CLOCK", "MIDI", "ATTENUVERTER"],
+  "description": "Compact multi-algorithm module with 100+ algorithms covering VCO, LFO, quantizer, envelope, delay, reverb, sampler, filter, effects, logic and more. Algorithm selected via encoder menu.",
+  "controls": [
+    {
+      "name": "S (Encoder)",
+      "scope": "Global",
+      "description": "Rotary encoder/push button. Press to enter menu; turn to scroll; press to confirm.",
+      "detail": "Hold S + turn = select parameter number · menu: Algorithm / Save / Load / Help / Settings / Calibrate"
+    },
+    {
+      "name": "Z Knob",
+      "scope": "Global",
+      "description": "Algorithm-specific control knob. Also has push-button function for tap-tempo or knob recorder.",
+      "detail": "Summed with Z CV input · press Z = tap tempo or toggle knob recorder in many algorithms"
+    },
+    {
+      "name": "Z CV Input",
+      "scope": "Global",
+      "description": "CV input summed with Z knob for real-time control of Z parameter.",
+      "detail": "Top input jack · LED illuminated (red=positive, blue=negative)"
+    }
+  ],
+  "inputs": [
+    { "name": "Z CV", "description": "Summed with Z knob; controls Z parameter of current algorithm", "voltage": "±5V" },
+    { "name": "X", "description": "Algorithm-specific input; function depends on selected algorithm", "voltage": "±5V typical" },
+    { "name": "Y", "description": "Algorithm-specific input; function depends on selected algorithm", "voltage": "±5V typical" }
+  ],
+  "outputs": [
+    { "name": "A", "description": "Primary output; function depends on selected algorithm", "voltage": "±8V typical" },
+    { "name": "B", "description": "Secondary output; function depends on selected algorithm", "voltage": "±8V typical" }
+  ],
+  "behaviors": [
+    {
+      "name": "Precision Math (A group)",
+      "trigger": "select A1–A8",
+      "description": "A1 Precision Adder (X+Y+offset/A, X-Y-offset/B), A2 Four-Quadrant Multiplier (ring mod/VCA), A3 Full-wave Rectifier, A4 Min/Max, A5 Lin/Exp Converter, A6 Quantizer, A7 Comparator, A8 Dual Waveshaper."
+    },
+    {
+      "name": "Sample, Slew & Tracking (B group)",
+      "trigger": "select B1–B8",
+      "description": "B1 Sample and Hold, B2 Slew Rate Limiter (portamento), B3 Pitch & Envelope Tracker, B4 Clockable Delay/Echo, B5 LFO, B6 Clockable LFO, B7 VCO with linear FM, B8 VCO with waveshaping."
+    },
+    {
+      "name": "Delay & Processing (C–D groups)",
+      "trigger": "select C1–D8",
+      "description": "C1 Counter, C2 Voltage-Controlled Delay, C3–C4 Clockable Ping Pong Delay, C5 Resonator, C6 Vocoder, C7 Phaser, C8 Bit Crusher; D1 DJ Filter, D2 Tape Delay, D3 Waveform Animator, D4 State Variable Filter, D5–D8 LP/HP/BP/Notch Filters."
+    },
+    {
+      "name": "Envelopes & VCA (E–F groups)",
+      "trigger": "select E1–F8",
+      "description": "E1 AR Envelope, E2 AR Envelope+VCA, E3 Dual AR, E4–E6 Compressors, E7 Euro-to-Buchla, E8 Buchla-to-Euro; F1–F4 Clockable AD Envelopes (with mute/gate/trigger/VCA), F5–F8 Shift Register Random CVs/Quantized/Triggers."
+    },
+    {
+      "name": "Pitch Reference & Clock (G group)",
+      "trigger": "select G1–G8",
+      "description": "G1 ES-1 Emulation, G2 ES-2 Emulation, G3–G4 Pitch/Frequency Reference, G5 Tuner, G6 Clock, G7 MIDI/CV, G8 CV/MIDI."
+    },
+    {
+      "name": "Dual & Utility (H group)",
+      "trigger": "select H1–H8",
+      "description": "H1 Crossfade/Pan, H2 Dual Sample & Hold, H3–H4 Dual Quantizer, H5 Euclidean Patterns, H6 Dual Delayed Pulse Generator, H7 Noise, H8 Quantizer 2."
+    },
+    {
+      "name": "Audio Playback & Sampling (I–J groups)",
+      "trigger": "select I1–J8",
+      "description": "I1–I7 Audio Playback variants (basic, clocked, V/Oct, Z speed, reverse, scrub, dual); J1–J3 MIDI File Playback, J4–J6 Audio Playback (end CV, recorder, multisample), J7 Mono Audio Recorder, J8 Crossfade."
+    },
+    {
+      "name": "Wavetable & SD Delay (K group)",
+      "trigger": "select K1–K8",
+      "description": "K1 Wavetable VCO, K2 Clockable Wavetable LFO, K3 Wavetable Waveshaper, K4 Clockable Wavetable Envelope, K5 Programmable Quantizer, K6–K8 Clockable SD Delay variants."
+    },
+    {
+      "name": "Reverb, Filter & Chorus (L group)",
+      "trigger": "select L1–L8",
+      "description": "L1 Stereo Reverb, L2 Mono-to-Stereo Reverb, L3 Dual Reverb, L4 Dual Vowel Filter, L5 Stereo Chorus, L6 Mono Chorus, L7 Mixer, L8 Gate."
+    },
+    {
+      "name": "Logic & Modulation (M–N groups)",
+      "trigger": "select M1–N8",
+      "description": "M1 Delayed LFO, M2 Scaled LFO, M3 Logic, M4 Half-wave Rectifier, M5 Stereo Filter, M6 Stereo Tape Delay, M7 Granular Pitch Shifter, M8 Chaos; N1 Switch, N2 Rotary, N3 Attenuverter/Offset, N4 Low Pass Gate, N5 Pulsar VCO, N6 Phase Shifter, N7 Frequency Shifter, N8 Clockable SD Ping Pong."
+    },
+    {
+      "name": "Knob Recorder",
+      "trigger": "hold Z + turn (in supported algorithms)",
+      "description": "Records Z knob movements into a loop (up to ~14 seconds). Release to begin looped playback. Turn Z slightly to regain manual control."
+    },
+    {
+      "name": "Tap Tempo",
+      "trigger": "press Z (in clockable algorithms)",
+      "description": "Pressing Z sets delay/LFO time from interval between presses. Division is factored in for subdivided algorithms."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Quantized random melody",
+      "patch": "Noise → X · A6 Quantizer · scale via parameter · B output = quantized pitch"
+    },
+    {
+      "name": "Voltage-controlled echo",
+      "patch": "Audio → X · CV → Y (delay time) · B4 Clockable Delay · Z = feedback"
+    },
+    {
+      "name": "Wavetable LFO modulator",
+      "patch": "K2 Wavetable LFO · WAV file on SD card · A out → filter cutoff · Z = rate"
+    },
+    {
+      "name": "Euclidean gate generator",
+      "patch": "H5 Euclidean Patterns · X = clock in · A/B = two rhythmic gate streams · Z = density"
+    }
+  ]
+}

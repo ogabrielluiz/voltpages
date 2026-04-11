@@ -1,0 +1,183 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.6.0"
+  },
+  "slug": "make-noise--polimaths",
+  "name": "PoliMATHS",
+  "manufacturer": "Make Noise",
+  "hp": 20,
+  "tags": ["FUNCTION", "ENVELOPE", "LFO", "SEQUENCER"],
+  "description": "Eight-channel CV and audio event generator for the N.U.S.S. Generates complex Rise-Fall functions with variable-shape oscillations at eight independent outputs using Spread and Modulation Dissemination.",
+  "controls": [
+    {
+      "name": "Span",
+      "scope": "Global",
+      "description": "Sets Channel Span for Activation per current Span Mode. In Channel Index mode, also Activates channel upon selection if Activate is unpatched.",
+      "detail": "Modes: White=Ch.Index · Yellow=Round · Blue=Parallel · Magenta=Binary Counter"
+    },
+    {
+      "name": "Span CV Input attenuverter",
+      "scope": "Global",
+      "description": "Bipolar attenuator for Span CV Input. Set CW in Channel Index mode to translate Channel Index messages from other N.U.S.S. modules.",
+      "detail": "Bipolar"
+    },
+    {
+      "name": "Mode Button",
+      "scope": "Global",
+      "description": "Selects Span Mode shown by Span Activity Window. Long press switches Oscillation Bias (Unipolar/Bipolar).",
+      "detail": "White=Ch.Index · Yellow=Round · Blue=Parallel · Magenta=Binary Counter"
+    },
+    {
+      "name": "Cycle Button",
+      "scope": "Global",
+      "description": "Enables cycling. Hold to switch cycle mode. Hold Cycle + Mode to toggle SubMixing.",
+      "detail": "Off=no cycle · Purple=Cycle ALL · Pink=Follow the Leader"
+    },
+    {
+      "name": "Spread Combo Pot",
+      "scope": "Global",
+      "description": "Bipolar control for Spread parameter. Sets direction and amount of modulation sent to unpatched Spreadable parameters across 8 channels.",
+      "detail": "Bipolar · When Spread CV patched: operates as attenuverter"
+    },
+    {
+      "name": "Curve Panel Control",
+      "scope": "Function",
+      "description": "Sets the Curve of the Activated functions, from logarithmic to linear to exponential.",
+      "detail": "CCW=log · noon=linear · CW=expo · Unity CV in"
+    },
+    {
+      "name": "Rise Panel Control",
+      "scope": "Function",
+      "description": "Sets the Rise time of Activated functions. Spreadable parameter.",
+      "detail": "Short to long · Gold legend = Spreadable"
+    },
+    {
+      "name": "Rise Attenuverter",
+      "scope": "Function",
+      "description": "Bipolar attenuator for Rise CV Input via Modulation Dissemination, or Spread amount if Rise CV is unpatched.",
+      "detail": "Bipolar · Gold legend"
+    },
+    {
+      "name": "Fall Panel Control",
+      "scope": "Function",
+      "description": "Sets the Fall time of Activated functions. Spreadable parameter.",
+      "detail": "Short to long · Gold legend = Spreadable"
+    },
+    {
+      "name": "Fall Attenuverter",
+      "scope": "Function",
+      "description": "Bipolar attenuator for Fall CV Input via Modulation Dissemination, or Spread amount if Fall CV is unpatched.",
+      "detail": "Bipolar · Gold legend"
+    },
+    {
+      "name": "Shape Panel Control",
+      "scope": "Oscillation",
+      "description": "Sets the Shape of oscillations from falling saw to triangle to rising ramp. Unity CV in for live control.",
+      "detail": "CCW=falling saw · noon=triangle · CW=rising ramp · CV extends to noise"
+    },
+    {
+      "name": "Strength Panel Control",
+      "scope": "Oscillation",
+      "description": "Bipolar control for output amplitude and polarity. CCW=negative, noon=zero, CW=positive. Spreadable.",
+      "detail": "±9V range · Gold legend = Spreadable"
+    },
+    {
+      "name": "Strength Attenuverter",
+      "scope": "Oscillation",
+      "description": "Bipolar attenuator for Strength CV via Modulation Dissemination, or Spread amount if Strength CV unpatched.",
+      "detail": "Bipolar · Gold legend"
+    },
+    {
+      "name": "Rate Panel Control",
+      "scope": "Oscillation",
+      "description": "Sets the Rate (frequency) of oscillations superimposed on the Activated function. Spreadable parameter.",
+      "detail": "Slow to fast · Gold legend = Spreadable · Tracks 1V/oct when attenuverter full CW"
+    },
+    {
+      "name": "Rate Attenuverter",
+      "scope": "Oscillation",
+      "description": "Bipolar attenuator for Rate CV via Modulation Dissemination, or Spread amount if Rate CV unpatched.",
+      "detail": "Bipolar · Gold legend"
+    },
+    {
+      "name": "Osc Panel Control",
+      "scope": "Oscillation",
+      "description": "Sets oscillation depth mixed into Activated Functions. CCW=no oscillation (pure envelope). Spreadable.",
+      "detail": "CCW=off · CW=full oscillation · Gold legend = Spreadable"
+    },
+    {
+      "name": "Osc Attenuverter",
+      "scope": "Oscillation",
+      "description": "Bipolar attenuator for Osc CV via Modulation Dissemination, or Spread amount if Osc CV unpatched.",
+      "detail": "Bipolar · Gold legend"
+    }
+  ],
+  "inputs": [
+    { "name": "Activate", "description": "Gate input. Rising edge Activates channels per Span and Mode.", "voltage": "gate" },
+    { "name": "Accumulate", "description": "Gate input. Holds Activation messages until gate received; channels display Orange.", "voltage": "gate" },
+    { "name": "Span CV", "description": "CV input for Span parameter. Also accepts Channel Index output from other N.U.S.S. modules.", "voltage": "0–4V" },
+    { "name": "Spread CV", "description": "CV input for Spread parameter.", "voltage": "bipolar" },
+    { "name": "Curve CV", "description": "Traditional live CV input for Curve — global, not subject to Spread or Modulation Dissemination.", "voltage": "CV" },
+    { "name": "Rise CV", "description": "CV input for Rise time. Switches to Modulation Dissemination when patched.", "voltage": "CV" },
+    { "name": "Fall CV", "description": "CV input for Fall time. Switches to Modulation Dissemination when patched.", "voltage": "CV" },
+    { "name": "Shape CV", "description": "Traditional live CV input for Shape — global, not subject to Spread or Modulation Dissemination.", "voltage": "CV" },
+    { "name": "Strength CV", "description": "CV input for Strength. Switches to Modulation Dissemination when patched.", "voltage": "CV" },
+    { "name": "Rate CV", "description": "CV input for Rate. Switches to Modulation Dissemination when patched.", "voltage": "CV" },
+    { "name": "Osc CV", "description": "CV input for Osc depth. Switches to Modulation Dissemination when patched.", "voltage": "CV" },
+    { "name": "Cycle Input", "description": "Gate input. Engages Cycling while gate is high (ignored if Cycle button is on).", "voltage": "gate" },
+    { "name": "Reset Input", "description": "Gate input. Resets PoliMATHS per current Span Mode.", "voltage": "gate" }
+  ],
+  "outputs": [
+    { "name": "Channel Outputs 1–8", "description": "Individual function/oscillation outputs per channel. When SubMixing ON, patch into outputs to create submixes.", "voltage": "±9V" },
+    { "name": "Channel Index Output", "description": "CV indicating currently Activated channel (0.5V/channel, e.g. Ch1=0.5V, Ch2=1V). Patch to N.U.S.S. Span inputs.", "voltage": "0–4V (0.5V/ch)" }
+  ],
+  "behaviors": [
+    {
+      "name": "Channel Index Mode",
+      "trigger": "Span knob / Span CV",
+      "description": "Span selects channel to Activate. Patching Activate input requires gate to fire; unpatched means channel Activates on selection. Used for N.U.S.S. module-to-module communication."
+    },
+    {
+      "name": "Round Mode",
+      "trigger": "trigger → Activate",
+      "description": "Each trigger advances by Span channels. Span=1 is sequential round-robin through all 8. Reset returns to Channel 1. Lefthand Span values cause leftward motion."
+    },
+    {
+      "name": "Parallel Mode",
+      "trigger": "clock → Activate",
+      "description": "Each channel Activates at a clock division of the Activate input. Divisions set by Span. Reset resets all clock division counters."
+    },
+    {
+      "name": "Cycle ALL",
+      "trigger": "Cycle button (Purple)",
+      "description": "Each channel re-Activates when its own Fall stage completes. Equivalent to patching MATHS EOR → Trig per channel."
+    },
+    {
+      "name": "Follow the Leader Cycle",
+      "trigger": "Cycle button (Pink)",
+      "description": "When a channel's Fall finishes, the channel immediately to its right is Activated, creating a chain through to Channel 8 which loops back to Channel 1."
+    },
+    {
+      "name": "SubMixing",
+      "trigger": "Cycle + Mode long press",
+      "description": "When SubMixing is ON, patching into a channel output removes it from all outputs further down the line, creating submix groups."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "8-voice polyphony with MultiWAVE and QXG",
+      "patch": "Ch.Index Out → MultiWAVE Span CV · PoliMATHS outputs → QXG control headers · MultiWAVE → QXG signal headers"
+    },
+    {
+      "name": "Complex polyrhythm",
+      "patch": "Parallel mode · Span set to spread clock divisions · different Rise/Fall per channel via Spread"
+    },
+    {
+      "name": "Audio-rate oscillator bank",
+      "patch": "Bipolar Oscillation mode · Osc full CW · Rate → 1v/oct pitch · Strength sets amplitude"
+    }
+  ]
+}

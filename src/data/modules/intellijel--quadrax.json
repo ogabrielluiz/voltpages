@@ -1,0 +1,110 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.2.1"
+  },
+  "slug": "intellijel--quadrax",
+  "name": "Quadrax",
+  "manufacturer": "Intellijel",
+  "hp": 18,
+  "tags": ["ENVELOPE", "LFO", "FUNCTION", "RANDOM", "TRIGGER"],
+  "description": "4-channel CV-controllable function generator. Each channel independently operates as AD/AHR envelope, cycling LFO, pulse burst generator, or morphing bipolar LFO. Channels chainable via flexible link options.",
+  "controls": [
+    {
+      "name": "Rise",
+      "scope": "CH 1–4",
+      "description": "Attack time (AD/AHR/CYCLE) or pulse rate (BURST) or LFO rate (LFO). CCW = fastest.",
+      "detail": "AD/AHR: 0.05ms–20s · BURST: 0.05Hz–3.33kHz · LFO: 0.05Hz–3.33kHz"
+    },
+    {
+      "name": "Fall",
+      "scope": "CH 1–4",
+      "description": "Decay/release time (AD/AHR/CYCLE), burst length (BURST), or LFO morph (LFO). CCW = fastest.",
+      "detail": "AD/AHR: 0.05ms–20s · BURST length: 0.3ms–20s · LFO: morph/variance"
+    },
+    {
+      "name": "Shape",
+      "scope": "CH 1–4",
+      "description": "Response curve shape for Rise and Fall. Noon = linear. STANDARD/ALTERNATE alters behavior.",
+      "detail": "STANDARD: CCW = logarithmic · CW = exponential · ALTERNATE: inverts per stage"
+    },
+    {
+      "name": "LED",
+      "scope": "CH 1–4",
+      "description": "Amplitude indicator. Green = positive voltage, red = negative voltage.",
+      "detail": "Brightness indicates output level"
+    },
+    {
+      "name": "LINK/CV Button",
+      "scope": "CH 1–4",
+      "description": "Short press: cycles channel link mode (No Link, Trigger, EOR, EOF, Multiple). Long press: enters CV Assignment mode.",
+      "detail": "CH2 triggered by CH1 · CH3 by CH2 · CH4 by CH3 · CH1 by CH4"
+    },
+    {
+      "name": "MODE/DESTINATION Button",
+      "scope": "CH 1–4",
+      "description": "Short press cycles mode: AD (unlit) → AHR (red) → CYCLE (green) → BURST (yellow) → LFO (magenta). Long press toggles STANDARD/ALTERNATE operation.",
+      "detail": "In CV assign mode: sets destination and attenuversion amount"
+    }
+  ],
+  "inputs": [
+    { "name": "TRIG 1–4", "description": "Trigger/gate input per channel. Fires envelope, resets CYCLE/LFO, clocks BURST. LFO uses as clock for beat-sync.", "voltage": ">2V gate" },
+    { "name": "CV A–D", "description": "Four freely-assignable CV inputs. Each can modulate any/all parameters via internal CV matrix with per-assignment attenuversion.", "voltage": "±5V (clips at ±5V; accepts ±10V)" }
+  ],
+  "outputs": [
+    { "name": "OUT 1–4", "description": "Main output per channel. AD/AHR/CYCLE/BURST: unipolar 0–5V or 0–10V (user selectable). LFO: bipolar ±5V.", "voltage": "0–10V (unipolar) or ±5V (LFO)" }
+  ],
+  "behaviors": [
+    {
+      "name": "AD Mode",
+      "trigger": "trigger → TRIG input",
+      "description": "Classic attack/decay envelope. Completes full cycle on trigger; ignores gate length. RISE = attack, FALL = decay, SHAPE = curve. ALTERNATE mode inverts curve assignment per stage."
+    },
+    {
+      "name": "AHR Mode",
+      "trigger": "gate → TRIG input",
+      "description": "Attack/Hold/Release envelope. Attacks on gate rise, sustains at peak while gate is high, releases on gate fall. RISE = attack, FALL = release, SHAPE = curve."
+    },
+    {
+      "name": "CYCLE Mode",
+      "trigger": "free-running or trigger reset",
+      "description": "Cycling unipolar LFO. RISE + FALL set frequency and shape of cycle. Trigger resets phase. GATE input times ignored."
+    },
+    {
+      "name": "BURST Mode",
+      "trigger": "trigger → TRIG input",
+      "description": "Pulse burst generator. RISE sets pulse rate (0.05Hz–3.33kHz), FALL sets burst envelope length (0.3ms–20s), SHAPE defines individual pulse shape and overall amplitude curve. Alternate: tilting sawtooth shape."
+    },
+    {
+      "name": "LFO Mode (Standard)",
+      "trigger": "free-running or clock → TRIG",
+      "description": "Bipolar ±5V LFO. RISE = rate (free) or clock multiplier/divider (clocked, ±64×). SHAPE selects waveshape, FALL morphs the waveform. Multiple clocked LFOs can phase-sync."
+    },
+    {
+      "name": "LFO Mode (Alternate / LFV)",
+      "trigger": "free-running",
+      "description": "Chaotic Low Frequency Vacillator. RISE = vacillation rate, FALL = max variance per cycle, SHAPE = slew amount. Creates organic, non-repeating modulation."
+    },
+    {
+      "name": "Channel Link",
+      "trigger": "LINK button cycles options",
+      "description": "Chain channels: No Link, Trigger Link (previous triggers this), EOR Link (previous end-of-rise triggers this), EOF Link (previous end-of-fall triggers this), Multiple Triggers (both EOR and EOF)."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Complex multi-stage envelope",
+      "patch": "CH1 AD (attack) → EOF Link → CH2 AHR (sustain) → EOF Link → CH3 AD (tail) · sum OUTs"
+    },
+    {
+      "name": "Burst into VCA for accent rolls",
+      "patch": "CH1 BURST → VCA CV · RISE sets roll speed · FALL sets roll length · external trig"
+    },
+    {
+      "name": "Beat-synced LFOs at harmonic rates",
+      "patch": "Clock → TRIG 1–4 · each CH set to LFO · RISE knob at noon = x1 · turn CW to multiply"
+    }
+  ]
+}

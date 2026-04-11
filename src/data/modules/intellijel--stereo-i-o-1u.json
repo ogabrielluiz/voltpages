@@ -1,0 +1,106 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.0"
+  },
+  "slug": "intellijel--stereo-i-o-1u",
+  "name": "Stereo I/O 1U",
+  "manufacturer": "Intellijel",
+  "hp": 14,
+  "tags": ["I/O", "MIXER", "ATTENUATOR"],
+  "description": "All-in-one stereo audio interface for Intellijel cases. Balanced stereo line input with gain switch, stereo cue and main inputs, headphone output with independent level and source selection, and balanced stereo line output.",
+  "controls": [
+    {
+      "name": "Input Gain Switch",
+      "scope": "EXT Input",
+      "description": "Sets gain for the EXT OUT patch points from rear-panel line input.",
+      "detail": "Down = 0dB · Mid = +6dB · Up = +20dB"
+    },
+    {
+      "name": "HP Monitor Switch",
+      "scope": "Headphone",
+      "description": "Selects headphone source: CUE input only, or module OUT only.",
+      "detail": "Left = CUE In · Right = Module Out"
+    },
+    {
+      "name": "Module Out Switch",
+      "scope": "Main Output",
+      "description": "Sets module output source: CUE + MAIN summed, or MAIN only.",
+      "detail": "Left = CUE + MAIN · Right = MAIN only"
+    },
+    {
+      "name": "Headphone Level",
+      "scope": "Headphone",
+      "description": "Attenuator knob for headphone output level.",
+      "detail": "Log taper attenuator"
+    },
+    {
+      "name": "Main Output Level",
+      "scope": "Main Output",
+      "description": "Attenuator knob for main balanced stereo line output level.",
+      "detail": "Log taper attenuator · controls BAL-OUT and UNBAL-OUT"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "EXT L / EXT R",
+      "description": "1/8\" patch inputs fed from rear-panel balanced or unbalanced line input connectors",
+      "voltage": "line level"
+    },
+    {
+      "name": "CUE L / CUE R",
+      "description": "1/8\" patch inputs for cue monitoring feed. Left normals to right for mono sources.",
+      "voltage": "modular level"
+    },
+    {
+      "name": "MAIN L / MAIN R",
+      "description": "1/8\" patch inputs to module output. Left normals to right for mono sources.",
+      "voltage": "modular level"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Headphone Out",
+      "description": "1/8\" TRS stereo headphone output. Source selectable via HP Monitor Switch.",
+      "voltage": "headphone level"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Line Input to Patch",
+      "trigger": "signal at rear BAL-IN or UNBAL-IN",
+      "description": "External line-level audio (from mixer, FX unit, synth, etc.) enters via rear connectors, gain-adjusted by the Input Gain Switch, and appears at EXT L/R patch points on the front panel."
+    },
+    {
+      "name": "Patch to Line Output",
+      "trigger": "signal at MAIN IN",
+      "description": "Eurorack audio patched into MAIN L/R is attenuated by the Main Output Level knob and sent to the rear balanced (BAL-OUT) and unbalanced (UNBAL-OUT) connectors for connection to mixers or interfaces."
+    },
+    {
+      "name": "Cue Monitoring",
+      "trigger": "signal at CUE IN",
+      "description": "A cue feed patched to CUE L/R can be monitored through headphones (HP Switch = CUE) independently of the main output, or summed with the main output (Module Out Switch = CUE+MAIN)."
+    },
+    {
+      "name": "Headphone Monitoring",
+      "trigger": "headphone plugged in",
+      "description": "Headphone output has its own level control and source selection (CUE or module OUT). Also feeds the rear PHONES-OUT connector for use with compatible Intellijel modules."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Groovebox integration",
+      "patch": "Groovebox stereo out → rear BAL-IN · EXT L/R → effects chain → MAIN L/R → mix out"
+    },
+    {
+      "name": "Silent cue monitoring",
+      "patch": "Pre-mix signal → CUE L/R · HP Switch = CUE · monitor without affecting main out"
+    },
+    {
+      "name": "Live stereo FX insert",
+      "patch": "EXT L/R (from rear input) → reverb module → MAIN L/R → BAL-OUT to PA"
+    }
+  ]
+}

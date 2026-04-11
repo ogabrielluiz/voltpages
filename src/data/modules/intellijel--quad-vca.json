@@ -1,0 +1,111 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.0"
+  },
+  "slug": "intellijel--quad-vca",
+  "name": "Quad VCA",
+  "manufacturer": "Intellijel",
+  "hp": 12,
+  "tags": ["VCA", "MIXER", "ATTENUVERTER"],
+  "description": "Four-channel voltage controlled amplifier with cascaded CV inputs and cascaded mix outputs. Each channel has variable linear-to-exponential response, a level bias knob, and a +6dB boost switch.",
+  "controls": [
+    {
+      "name": "CV Attenuator",
+      "scope": "CH 1–4",
+      "description": "Controls amount of CV modulation applied to the channel's level. Cascades from previous channel if input unpatched.",
+      "detail": "0 = no CV · full CW = unity CV"
+    },
+    {
+      "name": "Linear / Exponential Response",
+      "scope": "CH 1–4",
+      "description": "Sets VCA response curve. Full CCW = exponential. Full CW = linear. In-between = variable blend.",
+      "detail": "CCW: exponential (natural loudness) · CW: linear (CV processing)"
+    },
+    {
+      "name": "Level 1",
+      "scope": "CH 1",
+      "description": "Manual bias level for channel 1. Full CW ≈ +5V CV equivalent, unity gain in linear mode.",
+      "detail": "Summed with CV input · 0–+5V equivalent"
+    },
+    {
+      "name": "Level 2",
+      "scope": "CH 2",
+      "description": "Manual bias level for channel 2. Sets base gain without CV.",
+      "detail": "Summed with CV input"
+    },
+    {
+      "name": "Level 3",
+      "scope": "CH 3",
+      "description": "Manual bias level for channel 3. Sets base gain without CV.",
+      "detail": "Summed with CV input"
+    },
+    {
+      "name": "Level 4",
+      "scope": "CH 4",
+      "description": "Manual bias level for channel 4. Sets base gain without CV.",
+      "detail": "Summed with CV input"
+    },
+    {
+      "name": "BOOST Switch",
+      "scope": "CH 1–4",
+      "description": "Increases output level by approximately +6dB (2:1). Useful for boosting low-level signals or mild overdrive.",
+      "detail": "Left = off (unity max) · Right = +6dB"
+    },
+    {
+      "name": "CV LED",
+      "scope": "CH 1–4",
+      "description": "Bicolor LED shows post-attenuator CV signal level. Green = positive, red = negative voltage.",
+      "detail": "Monitors bipolar CV signals"
+    }
+  ],
+  "inputs": [
+    { "name": "CV 1", "description": "CV input for channel 1 level control.", "voltage": "+5V for unity (linear)" },
+    { "name": "CV 2", "description": "CV input for channel 2. Normalled to CV 1 when unpatched.", "voltage": "+5V for unity", "normalizedTo": "CV 1" },
+    { "name": "CV 3", "description": "CV input for channel 3. Normalled to CV 2 when unpatched.", "voltage": "+5V for unity", "normalizedTo": "CV 2" },
+    { "name": "CV 4", "description": "CV input for channel 4. Normalled to CV 3 when unpatched.", "voltage": "+5V for unity", "normalizedTo": "CV 3" },
+    { "name": "IN 1", "description": "Audio or CV signal input for channel 1.", "voltage": "any" },
+    { "name": "IN 2", "description": "Audio or CV signal input for channel 2.", "voltage": "any" },
+    { "name": "IN 3", "description": "Audio or CV signal input for channel 3.", "voltage": "any" },
+    { "name": "IN 4", "description": "Audio or CV signal input for channel 4.", "voltage": "any" }
+  ],
+  "outputs": [
+    { "name": "OUT 1", "description": "Channel 1 output. Normalled to mix input of OUT 2 when unpatched.", "normalizedTo": "OUT 2 mix" },
+    { "name": "OUT 2", "description": "Channel 2 output. Normalled to mix input of OUT 3 when unpatched.", "normalizedTo": "OUT 3 mix" },
+    { "name": "OUT 3", "description": "Channel 3 output. Normalled to mix input of OUT 4 when unpatched.", "normalizedTo": "OUT 4 mix" },
+    { "name": "OUT 4 / MIX", "description": "Channel 4 output. When OUT 1–3 are unpatched, serves as master mix output of all 4 channels." }
+  ],
+  "behaviors": [
+    {
+      "name": "4 Independent VCAs",
+      "trigger": "CV → CV 1–4",
+      "description": "Each channel operates independently. Connect audio to IN, CV to CV input, take signal from OUT. LEVEL knob biases the gain. Response knob adjusts linear-to-exponential curve."
+    },
+    {
+      "name": "Cascaded CV",
+      "trigger": "single CV source → CV 1",
+      "description": "One CV controls multiple channels. Unpatched CV inputs inherit from the previous channel. Each channel's attenuator and response knob independently shape the cascaded CV amount."
+    },
+    {
+      "name": "4-Channel Mixer",
+      "trigger": "audio → IN 1–4",
+      "description": "Leave OUT 1–3 unpatched; take mix from OUT 4/MIX. LEVEL knobs act as mix faders. CV inputs can automate individual channel levels."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Envelope-controlled VCA with bias",
+      "patch": "Osc → IN 1 · Env → CV 1 · LEVEL at noon for minimal bleed · linear response"
+    },
+    {
+      "name": "Submix + independent voice",
+      "patch": "3 voices → IN 1–3 · OUT 3 → destination (submix) · IN 4 independent → OUT 4 for fourth voice"
+    },
+    {
+      "name": "FM index control",
+      "patch": "Modulator osc → IN 1 · OUT 1 → FM input · LEVEL sets base index · Env → CV 1 for dynamic FM"
+    }
+  ]
+}
