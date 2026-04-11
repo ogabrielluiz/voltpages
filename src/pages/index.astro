@@ -23,13 +23,13 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
     </p>
 
     <!-- All modules, sorted alphabetically -->
-    <div class="mt-8 md:mt-10 w-full max-w-[720px]">
-      <div class="flex flex-wrap gap-1.5">
+    <div class="mt-8 md:mt-10 w-full max-w-[900px]">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 border-t border-l border-border">
         {allModules.map(({ slug, module }) => (
           <a href={`${basePath}/modules/${slug}/`}
-             class="px-2.5 md:px-3 py-1.5 bg-surface border border-border hover:border-border-strong no-underline flex flex-col">
-            <span class="text-[12px] md:text-[13px] font-semibold text-fg">{module.name}</span>
-            <span class="text-[10px] md:text-[11px] text-subtle">{module.manufacturer}</span>
+             class="px-3 py-3 border-r border-b border-border hover:bg-surface no-underline">
+            <span class="block text-sm font-semibold text-fg">{module.name}</span>
+            <span class="block text-[11px] text-subtle mt-0.5">{module.manufacturer}</span>
           </a>
         ))}
       </div>
