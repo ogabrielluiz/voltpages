@@ -14,7 +14,7 @@ const { patchIdeas } = Astro.props;
     {patchIdeas.map((idea) => (
       <div class="pl-3 border-l-2 border-border-strong">
         <div class="text-[13px] font-semibold text-fg">{idea.name}</div>
-        <div class="text-[11px] font-mono text-faint mt-0.5">{idea.patch}</div>
+        <div class="text-[11px] font-mono text-muted mt-0.5">{idea.patch}</div>
       </div>
     ))}
   </div>

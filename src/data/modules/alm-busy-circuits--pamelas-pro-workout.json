@@ -57,8 +57,18 @@
     },
     {
       "name": "Cross Operations",
-      "trigger": "CROSS OP parameter set",
-      "description": "Any output can be influenced by another output or CV input via operations: MIX, MULT, ADD, SUB, MIN, MAX, HOLD, S&H, MASK, NOT, OR, XOR, AND, BitOR, BitXOR, BitAND, SEED, and FLEX ops (HUMAN, SWING, RAMP UP/DOWN, HUMP, DELAY, PWR2)."
+      "trigger": "per-output config",
+      "description": "17 operations between outputs: AND, OR, S&H, MULT, MASK, SEED, FLIP, MIN, MAX, and more. Enables internal modulation routing without cables."
+    },
+    {
+      "name": "FLEX Timing",
+      "trigger": "per-output config",
+      "description": "Micro-timing offsets: HUMAN (random drift), SWING (every-other delay), RAMP UP/DOWN (accelerating/decelerating), HUMP (arc tempo)."
+    },
+    {
+      "name": "Loop Wake/Nap",
+      "trigger": "per-output config",
+      "description": "Output plays for N loops (Wake), then silences for N loops (Nap). Creates call-and-response phrases and automatic fills."
     },
     {
       "name": "Quantiser",
@@ -68,16 +78,24 @@
   ],
   "patchIdeas": [
     {
-      "name": "Polyrhythmic drum triggers",
-      "patch": "OUT 1–4 set to Gate/Pulse · different divisors (x1, /2, /3, /4) → drum voices"
+      "name": "Euclidean clave",
+      "patch": "Steps=16 · Triggers=7 · Rotate=0 · classic bell pattern · Rotate by 1-2 for Cuban feel"
     },
     {
-      "name": "Random melodic CV",
-      "patch": "OUT 5 = Smooth Random · Euclidean Steps on OUT 6 as gate · OUT 5 → Quantiser → VCO V/Oct"
+      "name": "Internal S&H sequencer",
+      "patch": "Out A: Smooth Random · Loop=16 · Out B: gate /4 · Cross Op: S&H · stepped random locked to quarter notes"
     },
     {
-      "name": "Swung clock with FLEX",
-      "patch": "OUT 1 = x1 gate · FLEX op = SWING → OUT 2 · vary swing amount via CV 1"
+      "name": "Generative evolving pattern",
+      "patch": "Classic Random · Loop=8 · Loop Shift=1 · pattern migrates each cycle · never static"
+    },
+    {
+      "name": "Probability ghost notes",
+      "patch": "Triggers=13/16 · Probability=70% · consistent skeleton with random micro-omissions"
+    },
+    {
+      "name": "Quantized arpeggio",
+      "patch": "Sawtooth LFO · slow rate · Scale=pentatonic · Quantize ON · rising arpeggio from ramp"
     }
   ]
 }

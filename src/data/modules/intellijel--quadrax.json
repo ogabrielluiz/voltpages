@@ -88,23 +88,27 @@
       "description": "Chaotic Low Frequency Vacillator. RISE = vacillation rate, FALL = max variance per cycle, SHAPE = slew amount. Creates organic, non-repeating modulation."
     },
     {
-      "name": "Channel Link",
-      "trigger": "LINK button cycles options",
-      "description": "Chain channels: No Link, Trigger Link (previous triggers this), EOR Link (previous end-of-rise triggers this), EOF Link (previous end-of-fall triggers this), Multiple Triggers (both EOR and EOF)."
+      "name": "Channel Linking",
+      "trigger": "link button per channel",
+      "description": "Three modes: Trigger Link (simultaneous fire), EOR Link (fire at attack peak), EOF Link (fire at decay end). Enables multi-stage envelope chains."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Complex multi-stage envelope",
-      "patch": "CH1 AD (attack) → EOF Link → CH2 AHR (sustain) → EOF Link → CH3 AD (tail) · sum OUTs"
+      "name": "Four-stage ADSR chain",
+      "patch": "CH1 AD · EOR link → CH2 · EOF link → CH3 · EOF link → CH4 · one trigger cascades through all"
     },
     {
-      "name": "Burst into VCA for accent rolls",
-      "patch": "CH1 BURST → VCA CV · RISE sets roll speed · FALL sets roll length · external trig"
+      "name": "Polyrhythmic envelope farm",
+      "patch": "CH1 slow Cycle LFO · CH2 EOR link · CH3 EOF link · envelopes at different LFO phases"
     },
     {
-      "name": "Beat-synced LFOs at harmonic rates",
-      "patch": "Clock → TRIG 1–4 · each CH set to LFO · RISE knob at noon = x1 · turn CW to multiply"
+      "name": "Internal PWM",
+      "patch": "CH in LFO mode · Shape = square · modulate Fall (morph) via CV matrix · dynamic pulse width"
+    },
+    {
+      "name": "LFV random CV",
+      "patch": "Alt mode on LFO channel · Rise/Fall control random range and slew · tempo-syncable via clock input"
     }
   ]
 }

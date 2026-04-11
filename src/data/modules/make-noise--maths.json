@@ -42,7 +42,7 @@
     { "name": "CH 1 Signal In", "description": "CV/audio processed by CH 1 rise/fall", "voltage": "±5V" },
     { "name": "CH 1 Rise CV", "description": "Voltage control of CH 1 rise time", "voltage": "±5V" },
     { "name": "CH 1 Fall CV", "description": "Voltage control of CH 1 fall time", "voltage": "±5V" },
-    { "name": "CH 2 Signal In", "description": "Input to CH 2 attenuverter", "voltage": "±5V", "normalizedTo": "+5V DC when unpatched" },
+    { "name": "CH 2 Signal In", "description": "Input to CH 2 attenuverter", "voltage": "±5V", "normalizedTo": "+/-10V reference when unpatched" },
     { "name": "CH 3 Signal In", "description": "Input to CH 3 attenuverter", "voltage": "±5V", "normalizedTo": "+5V DC when unpatched" },
     { "name": "CH 4 Trigger", "description": "Gate/trigger fires CH 4 envelope", "voltage": "2V+ gate" },
     { "name": "CH 4 Signal In", "description": "CV/audio processed by CH 4 rise/fall", "voltage": "±5V" },
@@ -51,11 +51,11 @@
   ],
   "outputs": [
     { "name": "CH 1 Out", "description": "CH 1 function/envelope output", "voltage": "0–8V" },
-    { "name": "CH 1 EOR", "description": "End-of-rise gate from CH 1", "voltage": "0–5V gate" },
+    { "name": "CH 1 EOR", "description": "End-of-rise gate from CH 1 only. Goes high at peak of CH 1 envelope.", "voltage": "0–5V gate" },
     { "name": "CH 2 Out", "description": "CH 2 attenuverter output", "voltage": "±5V" },
     { "name": "CH 3 Out", "description": "CH 3 attenuverter output", "voltage": "±5V" },
     { "name": "CH 4 Out", "description": "CH 4 function/envelope output", "voltage": "0–8V" },
-    { "name": "CH 4 EOC", "description": "End-of-cycle gate from CH 4", "voltage": "0–5V gate" },
+    { "name": "CH 4 EOC", "description": "End-of-cycle gate from CH 4 only. Goes high at end of CH 4 fall stage.", "voltage": "0–5V gate" },
     { "name": "Unity", "description": "Sum of all 4 channel outputs at unity gain", "voltage": "±10V" },
     { "name": "OR", "description": "Maximum (analog OR) of CH 1 and CH 4", "voltage": "0–8V" }
   ],
@@ -74,20 +74,33 @@
       "name": "Slew Limiter",
       "trigger": "cv → signal in",
       "description": "Portamento / glide. Rise = glide up speed, Fall = glide down. Asymmetric glide when set differently."
+    },
+    {
+      "name": "Retrigger blocking",
+      "trigger": "trigger during Rise phase",
+      "description": "MATHS ignores triggers arriving during Rise. Only retriggers during Fall. Enables analog clock division."
     }
   ],
   "patchIdeas": [
     {
       "name": "Bouncing ball",
-      "patch": "EOR → TRIG · short Rise · long Fall · Cycle off"
+      "patch": "CH1 OUT → CH4 BOTH IN · CH4 Rise CCW · Fall noon · Cycle ON · CH4 OUT → VCA"
     },
     {
-      "name": "Complex LFO",
-      "patch": "CH1 Cycle → CH4 Rise CV · CH4 Cycle → SUM"
+      "name": "Quadrature LFOs",
+      "patch": "CH1 EOR → CH4 TRIG · CH4 EOC → CH1 TRIG · Cycle OFF · 90° phase offset"
     },
     {
-      "name": "Voltage-controlled clock",
-      "patch": "Cycle on · ext CV → Rise/Fall CV inputs"
+      "name": "Analog clock divider",
+      "patch": "Clock → TRIG · Rise > clock period · retrigger blocked during Rise · non-integer division"
+    },
+    {
+      "name": "Directional portamento",
+      "patch": "Pitch CV → Signal In · Rise = glide up · Fall = glide down · asymmetric glide"
+    },
+    {
+      "name": "Trigger delay",
+      "patch": "Trigger → TRIG · Rise = delay time · EOR = delayed gate · Fall = gate length"
     }
   ]
 }

@@ -108,20 +108,38 @@
       "name": "Simple Delay",
       "trigger": "Dense full CCW",
       "description": "With Dense fully CCW, the effect sounds like a delay rather than reverb. Regen sets feedback time."
+    },
+    {
+      "name": "FSU (Freeze)",
+      "trigger": "button hold or gate input",
+      "description": "Maxes feedback to 100% and mutes input. Current reverb buffer loops indefinitely. SHM mode causes frozen pad to rise in pitch over time."
+    },
+    {
+      "name": "Self-Sustaining Drone",
+      "trigger": "FSU with no audio input",
+      "description": "FSU injects white noise burst into reverb tank with infinite feedback. Becomes a self-sustaining drone voice. Shape with Tone, Size, Dense."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Shimmer reverb",
-      "patch": "LIM/DST/SHM → SHM · Regen past noon · Size to taste · BND for smooth modulation"
+      "name": "Shimmer pad",
+      "patch": "Mode: SHM · BND switch · Size 1-2 o'clock · Regen just past noon · Tone slightly CW · polyphonic source"
     },
     {
-      "name": "Kick ducker",
-      "patch": "Kick → In L · Regen full CW · Blend noon · each kick ducks the reverb"
+      "name": "Rhythmic ducking reverb",
+      "patch": "Regen past 3 o'clock · rhythmic input · input transients duck the infinite tail · natural sidechain compression"
     },
     {
-      "name": "Instant IDM delay",
-      "patch": "Sequencer → Size CV · BND/LRP/JMP → LRP or JMP · play with all parameters"
+      "name": "Metallic IDM texture",
+      "patch": "BND: JMP · stepped random CV → Size CV · each step hard-jumps delay time · metallic pitch artifacts"
+    },
+    {
+      "name": "Reverb bloom",
+      "patch": "Slow envelope → Blend CV · signal fades from dry into full reverb over time · then snaps back"
+    },
+    {
+      "name": "Frozen pad sculpting",
+      "patch": "FSU to freeze · sweep Tone and Dense while frozen · reshape timbre of frozen sound in real time"
     }
   ]
 }

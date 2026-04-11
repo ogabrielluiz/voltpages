@@ -85,23 +85,36 @@
       "description": "Model 9: 8 enveloped sawtooth grains. Model 10: variable-clock white noise through resonant filter. Model 11: dust noise through allpass/bandpass networks. Percussive and textural sources."
     },
     {
-      "name": "Internal LPG + Envelope",
-      "trigger": "hold button A",
-      "description": "Hold button A and turn TIMBRE to adjust LPG response (VCFA to VCA). Turn MORPH to set LPG ring time and envelope decay. Settings shown on 4 yellow LEDs."
+      "name": "Internal LPG",
+      "trigger": "hold left button",
+      "description": "Built-in low-pass gate. TIMBRE adjusts character (VCFA to VCA). MORPH sets decay time. Active on tonal models when TRIG patched."
+    },
+    {
+      "name": "LFO Mode",
+      "trigger": "hold right button + HARMONICS CCW",
+      "description": "Drops to 0.015-16Hz range. All 16 models become complex LFO shapes. OUT and AUX give different waveshapes."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Self-contained drum voice",
-      "patch": "TRIG → trigger · LEVEL unpatched · Model 9–11 · adjust MORPH for decay"
+      "name": "808 kick",
+      "patch": "Model 14 · HARMONICS low · TIMBRE low · MORPH 10 o'clock · short gate trigger"
     },
     {
-      "name": "FM bass with envelope brightness",
-      "patch": "Model 3 · Env → FM attenuverter input · short decay for plucked character"
+      "name": "Euclidean drum machine",
+      "patch": "MODEL CV from sequencer (0V/0.31V/0.62V) · TRIG from clock · switches kick/snare/hat per step"
     },
     {
-      "name": "Chord pad",
-      "patch": "Model 7 · V/Oct for root · HARMONICS selects chord type · AUX = root note only"
+      "name": "Bowed string drone",
+      "patch": "Model 12 · no trigger · MORPH 3 o'clock · V/OCT from keyboard · long LPG decay"
+    },
+    {
+      "name": "Supersaw lead",
+      "patch": "Model 9 · HARMONICS 9 o'clock · TIMBRE full CW · mix OUT + AUX"
+    },
+    {
+      "name": "Talking bass",
+      "patch": "Model 8 · MORPH at formant position · low pitch via V/OCT · slow LFO on TIMBRE"
     }
   ]
 }

@@ -131,16 +131,24 @@
   ],
   "patchIdeas": [
     {
-      "name": "Evolving pad from single sample",
-      "patch": "SCAN slow CW · BLUR at 50% · RATE ~2Hz · MORPH CV from slow LFO for texture evolution"
+      "name": "Ambient drone cloud",
+      "patch": "Load sustaining pad · SIZE 2-4s · RATE 1-2Hz · BLUR high · SHAPE Bell · LATCH · self-sustaining textural drone"
     },
     {
-      "name": "Live input granular freeze",
-      "patch": "IN L/R → audio · enable Live Sound · SAMPLE button to freeze · SCAN = 0 for static cloud"
+      "name": "Rhythmic grain percussion",
+      "patch": "Load drum loop · RATE clock-synced · SIZE 100-200ms · SCAN forward · RATE-SIZE link 2-4x · rearranged beats"
     },
     {
-      "name": "Rhythmic grain stutters",
-      "patch": "Clock → GATE · RATE-SIZE linked · SIZE short (50ms) · X → PITCH with random for pitch variety"
+      "name": "Scene morph macro",
+      "patch": "Set contrasting Scene A/B · slow LFO → MORPH CV · all parameters evolve simultaneously · one cable"
+    },
+    {
+      "name": "Live granular looper",
+      "patch": "Set SOUND to Live mode · audio in → Looping Recorder · THRSH for auto-freeze · granularize live input"
+    },
+    {
+      "name": "Probability shape mixing",
+      "patch": "Different SHAPE per scene · MORPH 25% from A · 75% chance Shape A / 25% Shape B per grain"
     }
   ]
 }
