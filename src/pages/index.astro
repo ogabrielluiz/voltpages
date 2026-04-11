@@ -27,8 +27,9 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="flex flex-wrap gap-1.5">
         {allModules.map(({ slug, module }) => (
           <a href={`${basePath}/modules/${slug}/`}
-             class="px-2.5 md:px-3 py-1.5 bg-surface text-[12px] md:text-[13px] font-semibold text-fg border border-border hover:border-border-strong no-underline">
-            {module.name}
+             class="px-2.5 md:px-3 py-1.5 bg-surface border border-border hover:border-border-strong no-underline flex flex-col">
+            <span class="text-[12px] md:text-[13px] font-semibold text-fg">{module.name}</span>
+            <span class="text-[10px] md:text-[11px] text-subtle">{module.manufacturer}</span>
           </a>
         ))}
       </div>
