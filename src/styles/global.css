@@ -17,3 +17,61 @@
   --font-sans: -apple-system, "Helvetica Neue", "Arial", sans-serif;
   --font-mono: "SF Mono", "Courier New", monospace;
 }
+
+/* Print mode */
+@media print {
+  /* Hide navigation elements */
+  nav, .pagefind-ui, #search {
+    display: none !important;
+  }
+
+  /* Reset background for ink */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Remove sticky positioning */
+  * {
+    position: static !important;
+  }
+
+  /* Clean section breaks */
+  section {
+    page-break-inside: avoid;
+    border-color: #ccc !important;
+  }
+
+  /* Tighter spacing for paper */
+  section {
+    padding: 12px 0 !important;
+  }
+
+  /* Ensure links show URLs */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 10px;
+    color: #666;
+  }
+
+  /* Hide back link */
+  a[href$="/"]  {
+    display: none !important;
+  }
+
+  /* QR code placeholder - shown only in print */
+  .print-qr {
+    display: block !important;
+  }
+}
+
+/* Hide print-only elements on screen */
+.print-qr {
+  display: none;
+}
+
+/* Focus-visible for keyboard navigation */
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
+}
