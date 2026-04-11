@@ -1,13 +1,110 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllModules } from '../lib/modules';
+import racksData from '../data/racks.json';
 import '../styles/global.css';
+
+const modules = getAllModules();
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout title="Home">
-  <div class="flex items-center justify-center min-h-screen">
-    <div class="text-center">
-      <h1 class="text-[15px] font-semibold tracking-[6px] uppercase text-fg">Eurorack Sheets</h1>
-      <p class="text-subtle text-sm mt-2">Quick-reference cheat sheets for eurorack modules</p>
+  <div class="flex flex-col items-center min-h-screen px-7 py-16">
+    <h1 class="text-[15px] font-semibold tracking-[6px] uppercase text-fg mb-2">
+      Eurorack Sheets
+    </h1>
+    <p class="text-subtle text-xs mb-8">Quick-reference cheat sheets for eurorack modules</p>
+
+    <!-- Pagefind search widget -->
+    <div id="search" class="w-full max-w-[480px]"></div>
+
+    <p class="mt-6 text-[11px] text-subtle tracking-wide">
+      {modules.length} modules ·
+      <a href="https://github.com/ogabrielluiz/sheets" class="underline underline-offset-2 text-faint hover:text-fg">contribute</a>
+    </p>
+
+    <!-- Rack-grouped module list (idle state) -->
+    <div class="mt-10 w-full max-w-[720px]">
+      {racksData.racks.map((rack) => (
+        <div class="mb-7">
+          <div class="flex items-center gap-2.5 mb-3">
+            <span class="text-base font-bold text-fg">{rack.name}</span>
+            <span class="text-[11px] text-subtle font-mono">{rack.specs}</span>
+          </div>
+          {rack.rows.map((row) => (
+            <div class="mb-2">
+              <div class="text-[9px] uppercase tracking-[2px] font-mono mb-1.5"
+                   style={`color: ${row.is1u ? '#c9a96e' : '#888'}`}>
+                {row.label}{row.is1u ? ' · 1U' : ''}
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                {row.modules.map((slug) => {
+                  const mod = modules.find((m) => m.slug === slug);
+                  return mod ? (
+                    <a href={`${basePath}/modules/${slug}/`}
+                       class="px-3 py-1.5 bg-surface text-[13px] font-semibold text-fg border border-border hover:border-border-strong no-underline">
+                      {mod.module.name}
+                    </a>
+                  ) : (
+                    <span class="px-3 py-1.5 text-[13px] text-faint border border-border">
+                      {slug.split('--')[1]?.replace(/-/g, ' ') || slug}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   </div>
+
+  <!-- Pagefind initialization -->
+  <link href={`${basePath}/pagefind/pagefind-ui.css`} rel="stylesheet" />
+  <script is:inline define:vars={{ basePath }}>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof PagefindUI !== 'undefined') {
+        new PagefindUI({
+          element: "#search",
+          showSubResults: false,
+          showImages: false,
+          baseUrl: basePath,
+          pageSize: 8,
+          translations: {
+            placeholder: "Search modules...",
+            zero_results: "No modules found for [SEARCH_TERM]"
+          }
+        });
+      }
+    });
+  </script>
+  <script src={`${basePath}/pagefind/pagefind-ui.js`} is:inline></script>
+
+  <!-- Override Pagefind UI styles to match Rams aesthetic -->
+  <style is:global>
+    .pagefind-ui__search-input {
+      font-family: "SF Mono", "Courier New", monospace !important;
+      font-size: 16px !important;
+      border: 2px solid #1a1a1a !important;
+      border-radius: 0 !important;
+      background: #fff !important;
+      color: #1a1a1a !important;
+      padding: 14px 18px !important;
+    }
+    .pagefind-ui__search-clear {
+      color: #888 !important;
+    }
+    .pagefind-ui__result-link {
+      font-weight: 600 !important;
+      color: #1a1a1a !important;
+    }
+    .pagefind-ui__result-excerpt {
+      color: #555 !important;
+    }
+    .pagefind-ui__button {
+      background: #1a1a1a !important;
+      color: #f7f5f0 !important;
+      border-radius: 0 !important;
+    }
+  </style>
 </BaseLayout>

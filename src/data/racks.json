@@ -1,0 +1,19 @@
+{
+  "racks": [
+    {
+      "name": "Sequence Rack",
+      "specs": "62HP × 2 rows",
+      "rows": [
+        {
+          "label": "Row 1",
+          "modules": [
+            "intellijel--metropolix",
+            "make-noise--maths",
+            "expert-sleepers--disting-mk4",
+            "alm-busy-circuits--pip-lfo"
+          ]
+        }
+      ]
+    }
+  ]
+}
