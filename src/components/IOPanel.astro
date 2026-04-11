@@ -1,0 +1,48 @@
+---
+import type { IO } from '../types/module';
+
+interface Props {
+  inputs: IO[];
+  outputs: IO[];
+}
+
+const { inputs, outputs } = Astro.props;
+---
+
+<div class="mt-6">
+  <h2 class="text-[10px] uppercase tracking-[3px] text-subtle font-mono mb-3">I/O</h2>
+  <div class="grid grid-cols-2 gap-0">
+    <div>
+      <div class="text-[9px] text-subtle font-mono uppercase tracking-[1px] mb-2">Inputs</div>
+      <div class="flex flex-col gap-1">
+        {inputs.map((input) => (
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-input-green shrink-0"></div>
+            <div>
+              <span class="text-[11px] text-fg">{input.name}</span>
+              {input.voltage && (
+                <span class="text-[9px] font-mono text-faint ml-1">{input.voltage}</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div>
+      <div class="text-[9px] text-subtle font-mono uppercase tracking-[1px] mb-2">Outputs</div>
+      <div class="flex flex-col gap-1">
+        {outputs.map((output) => (
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-output-red shrink-0"></div>
+            <div>
+              <span class="text-[11px] text-fg">{output.name}</span>
+              {output.voltage && (
+                <span class="text-[9px] font-mono text-faint ml-1">{output.voltage}</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>

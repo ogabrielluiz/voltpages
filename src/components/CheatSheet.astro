@@ -1,0 +1,39 @@
+---
+import type { Module } from '../types/module';
+import ModuleHeader from './ModuleHeader.astro';
+import ControlsTable from './ControlsTable.astro';
+import IOPanel from './IOPanel.astro';
+import BehaviorsPanel from './BehaviorsPanel.astro';
+import PatchIdeas from './PatchIdeas.astro';
+
+interface Props {
+  module: Module;
+}
+
+const { module } = Astro.props;
+---
+
+<div class="max-w-[1200px] mx-auto bg-bg min-h-screen">
+  <ModuleHeader
+    name={module.name}
+    manufacturer={module.manufacturer}
+    hp={module.hp}
+    tags={module.tags}
+    verified={module._meta.verified}
+    firmwareVersion={module._meta.firmwareVersion}
+  />
+
+  <div class="grid grid-cols-1 md:grid-cols-2">
+    <!-- Left column: Controls + I/O -->
+    <div class="px-7 py-5 md:border-r md:border-border">
+      <ControlsTable controls={module.controls} />
+      <IOPanel inputs={module.inputs} outputs={module.outputs} />
+    </div>
+
+    <!-- Right column: Behaviors + Patch Ideas -->
+    <div class="px-7 py-5">
+      <BehaviorsPanel behaviors={module.behaviors} />
+      <PatchIdeas patchIdeas={module.patchIdeas} />
+    </div>
+  </div>
+</div>

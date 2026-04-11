@@ -1,0 +1,33 @@
+---
+import type { Control } from '../types/module';
+
+interface Props {
+  controls: Control[];
+}
+
+const { controls } = Astro.props;
+---
+
+<div>
+  <h2 class="text-[10px] uppercase tracking-[3px] text-subtle font-mono mb-4">Controls</h2>
+  <table class="w-full border-collapse text-xs">
+    <tbody>
+      {controls.map((control, i) => (
+        <tr class={i < controls.length - 1 ? "border-b border-border" : ""}>
+          <td class="py-2.5 w-[120px] font-semibold text-fg align-top text-sm">
+            {control.name}
+            {control.scope && (
+              <div class="text-[10px] font-mono text-faint font-normal mt-0.5">{control.scope}</div>
+            )}
+          </td>
+          <td class="py-2.5 text-muted align-top">
+            {control.description}
+            {control.detail && (
+              <div class="font-mono text-[10px] text-faint mt-0.5">{control.detail}</div>
+            )}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

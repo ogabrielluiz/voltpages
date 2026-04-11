@@ -1,0 +1,24 @@
+---
+import type { Behavior } from '../types/module';
+
+interface Props {
+  behaviors: Behavior[];
+}
+
+const { behaviors } = Astro.props;
+---
+
+<div>
+  <h2 class="text-[10px] uppercase tracking-[3px] text-subtle font-mono mb-4">Behaviors</h2>
+  <div class="flex flex-col gap-3">
+    {behaviors.map((behavior, i) => (
+      <div class={i > 0 ? "border-t border-border pt-3" : ""}>
+        <div class="flex justify-between items-baseline mb-1">
+          <span class="text-sm font-semibold text-fg">{behavior.name}</span>
+          <span class="text-[10px] font-mono text-faint">{behavior.trigger}</span>
+        </div>
+        <p class="text-xs text-muted leading-relaxed">{behavior.description}</p>
+      </div>
+    ))}
+  </div>
+</div>

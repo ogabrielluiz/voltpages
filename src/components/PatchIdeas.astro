@@ -1,0 +1,21 @@
+---
+import type { PatchIdea } from '../types/module';
+
+interface Props {
+  patchIdeas: PatchIdea[];
+}
+
+const { patchIdeas } = Astro.props;
+---
+
+<div class="mt-7">
+  <h2 class="text-[10px] uppercase tracking-[3px] text-subtle font-mono mb-3">Patch Ideas</h2>
+  <div class="flex flex-col gap-2.5">
+    {patchIdeas.map((idea) => (
+      <div class="pl-3 border-l-2 border-border-strong">
+        <div class="text-[13px] font-semibold text-fg">{idea.name}</div>
+        <div class="text-[11px] font-mono text-faint mt-0.5">{idea.patch}</div>
+      </div>
+    ))}
+  </div>
+</div>
