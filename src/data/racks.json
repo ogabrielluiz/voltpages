@@ -1,9 +1,65 @@
 {
   "racks": [
     {
+      "name": "7U Performance Rack",
+      "specs": "104HP × 3 rows",
+      "rows": [
+        {
+          "label": "Row 0",
+          "modules": [
+            "alm-busy-circuits--pamelas-pro-workout",
+            "qu-bit-electronix--data-bender",
+            "noise-engineering--basimilus-iteritas-alia",
+            "2hp--buff-mult",
+            "make-noise--multiwave",
+            "make-noise--polimaths",
+            "make-noise--qxg"
+          ]
+        },
+        {
+          "label": "Row 1",
+          "is1u": true,
+          "modules": [
+            "intellijel--midi-1u",
+            "intellijel--cvx",
+            "intellijel--noise-tools-1u",
+            "intellijel--duatt",
+            "transient-modules--u2x",
+            "intellijel--dual-vca-1u",
+            "intellijel--stereo-i-o-1u"
+          ]
+        },
+        {
+          "label": "Row 2",
+          "modules": [
+            "intellijel--qx",
+            "intellijel--quadrax",
+            "instruo--ochd",
+            "instruo--ochd-expander",
+            "joranalogue--contour-1",
+            "shakmat-modular--bard-quartet",
+            "intellijel--multigrain",
+            "shakmat-modular--dual-dagger",
+            "noise-engineering--desmodus-versio",
+            "intellijel--quad-vca",
+            "happy-nerding--3x-mia",
+            "happy-nerding--isolator"
+          ]
+        }
+      ]
+    },
+    {
       "name": "Sequence Rack",
       "specs": "62HP × 2 rows",
       "rows": [
+        {
+          "label": "Row 0",
+          "is1u": true,
+          "modules": [
+            "intellijel--steppy-1u",
+            "happy-nerding--fx-aid-1u"
+          ]
+        },
         {
           "label": "Row 1",
           "modules": [
@@ -11,6 +67,33 @@
             "make-noise--maths",
             "expert-sleepers--disting-mk4",
             "alm-busy-circuits--pip-lfo"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RackBrute 6U",
+      "specs": "88HP × 2 rows",
+      "rows": [
+        {
+          "label": "Row 0",
+          "modules": [
+            "arturia--rackbrute-power",
+            "moog--dfam",
+            "make-noise--data"
+          ]
+        },
+        {
+          "label": "Row 1",
+          "modules": [
+            "mutable-instruments--plaits",
+            "intellijel--plonk",
+            "erica-synths--black-3109-vcf-vca",
+            "after-later-audio--resonate",
+            "michigan-synth-works--uburst",
+            "music-thing-modular--turing-machine-mk-ii",
+            "erica-synths--pico-quant",
+            "doepfer--a-170"
           ]
         }
       ]
