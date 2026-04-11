@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CheatSheet from '../../components/CheatSheet.astro';
+import { getAllModules, getModuleBySlug } from '../../lib/modules';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+  const modules = getAllModules();
+  return modules.map(({ slug }) => ({
+    params: { slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const module = getModuleBySlug(slug!);
+
+if (!module) {
+  return Astro.redirect('/sheets/404');
+}
+---
+
+<BaseLayout
+  title={module.name}
+  description={`${module.name} by ${module.manufacturer} — controls, I/O, behaviors, and patch ideas`}
+  ogTitle={`${module.name} — ${module.manufacturer} · ${module.hp}HP`}
+  ogDescription={module.description}
+>
+  <CheatSheet module={module} />
+</BaseLayout>
