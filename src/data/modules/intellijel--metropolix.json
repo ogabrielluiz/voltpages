@@ -207,54 +207,94 @@
     {
       "name": "Two Independent Tracks",
       "trigger": "always",
-      "description": "Tracks 1 and 2 run simultaneously with independent pitch, gate, length, order, div, swing, and slide. Both share the same 8 stage sliders but interpret them independently."
+      "description": "Tracks share the same 8 sliders but interpret them independently. Each has its own order, length, division, swing, slide, and gate settings. Different clock divisions create instant counterpoint."
     },
     {
       "name": "MOD Lanes",
-      "trigger": "always",
-      "description": "Three additional CV/gate lanes assignable to any output jack or internal parameter. Each has its own stage voltages, gates, order, length, and clock division."
-    },
-    {
-      "name": "Loopy Mode",
-      "trigger": "hold two stage buttons",
-      "description": "Instantly loops between two held stage buttons. Track 2 in Loopy acts as a live keyboard — press single stages to play individual notes."
+      "trigger": "MOD button",
+      "description": "Three CV/gate lanes with their own stage values, order, length, and clock div. Assignable to any output or internal parameter. The key to chord progressions and parameter automation."
     },
     {
       "name": "Accumulator",
-      "trigger": "per-stage or per-track config",
-      "description": "Adds a pitch interval per pulse, stage, or loop. Creates rising/falling melodic lines, chord arpeggios within a stage, and automatic transposition."
+      "trigger": "per-stage ACCUM button",
+      "description": "Cumulative pitch offset that grows each pulse, stage, or loop. Direction (up/down/freeze) and polarity assignable to AUX or mod lane. Limit sets ceiling before wrap or stop."
+    },
+    {
+      "name": "Loopy Mode",
+      "trigger": "LOOPY button + stage buttons",
+      "description": "Two-finger: hold two stages to loop between them instantly. One-finger on Track 2: Stage Player keyboard mode — each press plays that stage's pitch once. Shift loop region while held."
+    },
+    {
+      "name": "Ratchet Modes",
+      "trigger": "per-stage RATCH button",
+      "description": "MULTIPLE: each ratchet fires its own gate (machine gun). SINGLE: one overall gate with tremolo subdivisions. GATED: ratchets stretch to fill gate time — rate proportional to gate length."
+    },
+    {
+      "name": "Gate Types",
+      "trigger": "per-stage 4-position switch",
+      "description": "HOLD: ties gate through consecutive stages (legato). MULTI: gate per pulse (staccato). SINGLE: one gate regardless of pulse count (sustained). REST: silence, pitch still advances."
+    },
+    {
+      "name": "Brownian Order",
+      "trigger": "ORDER menu",
+      "description": "50% chance forward, 25% back, 25% stay. Sequence wanders but trends forward. Combined with scale quantize and accumulator limits, produces melodies that feel improvised."
+    },
+    {
+      "name": "Track Output Swap",
+      "trigger": "Trk Out Swp via AUX or mod lane",
+      "description": "Swaps Track 1 and Track 2 pitch/gate outputs instantly. Melody goes to bass voice, bass to melody. Assignable to AUX for a live crossfade surprise."
+    },
+    {
+      "name": "Pitch Pre vs Pitch Post",
+      "trigger": "mod lane or AUX assignment",
+      "description": "Pitch Pre: modulates before quantizer — pushes notes to different scale degrees (voice leading). Pitch Post: adds offset after quantizer — transposes all notes in-scale together."
     },
     {
       "name": "Preset Chaining",
       "trigger": "preset load",
-      "description": "64 presets (8 banks x 8) can be chained in sequence. Chain Follow mode auto-advances to next preset after a set number of loops."
-    },
-    {
-      "name": "MIDI",
-      "trigger": "MIDI in via backpack or 7U case",
-      "description": "Receives MIDI clock, start/stop, and CC messages to control most sequencer parameters. MIDI channel and CC assignments fully configurable."
+      "description": "64 presets (8 banks x 8) chainable in sequence. Chain Follow auto-advances after N loops. Use for song structures with distinct verse/chorus patterns."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Boards of Canada progression",
-      "patch": "Mod Lane: Pitch Post (both tracks) · /8 division · 4 values: 0, +2, +5, +7 · auto chord progression"
+      "name": "Boards of Canada chord progression",
+      "patch": "Mod Lane 1 → Pitch Post (Track 1+2) · clock /8 · length 4 · values: 0, +2, +5, +7 semitones · sequence auto-transposes through diatonic positions every 2 bars · sliders stay fixed, mod lane moves the root"
     },
     {
-      "name": "Guitar hammer-on",
-      "patch": "Ratchet mode: SINGLE · Ratchets=3 · Stage accumulator +2 semitones · three ascending pitches per stage"
+      "name": "Chord arpeggio within a single stage",
+      "patch": "Stage gate: SINGLE · Ratchets=3 · Stage accumulator: +4 semitones · limit +7 · each ratchet increments pitch: root → major third → fifth · sounds like a hammer-on triad"
     },
     {
-      "name": "Generative brownian melody",
-      "patch": "ORDER: BROWNIAN · 8 stages · quantized to user scale · trends forward but wanders · organic improv feel"
+      "name": "Two-voice counterpoint from one sequence",
+      "patch": "Track 1: ORDER=FORWARD · DIV=/1 · Track 2: ORDER=REVERSE · DIV=/2 · same sliders play at two rates in opposite directions · instant melodic counterpoint"
     },
     {
-      "name": "3/4 inside 4/4",
-      "patch": "Stages 1-3: MULTI pulse 2 · Stage 4: REST · repeat · hemiola against straight Track 1"
+      "name": "Generative brownian walk",
+      "patch": "ORDER: BROWNIAN · 8 stages · user scale (pentatonic) · accumulator +1 semitone per loop · limit ±7 · direction via slow LFO on AUX X · melody trends forward but wanders and transposes"
     },
     {
-      "name": "AUX as manual control",
-      "patch": "Assign AUX to Accum Dir · no cable patched · attenuverter acts as panel control · free extra knob"
+      "name": "Live loopy performance",
+      "patch": "Track 1: full 8-stage sequence running · Track 2: enter Loopy · press individual stage buttons to play single notes as a live keyboard over Track 1 · instant lead improv over rhythm"
+    },
+    {
+      "name": "Hemiola (3/4 inside 4/4)",
+      "patch": "Track 1: 8 stages straight · Track 2: Stages 1-3 MULTI pulse 2 · Stage 4 REST · repeat pattern · Track 2 creates a 3+rest feel against Track 1's straight time"
+    },
+    {
+      "name": "Stutter-drop fill",
+      "patch": "Most stages: Ratchet=1 · Stage 6: Ratchet=4 Gate=MULTI · Stage 7: REST · Stage 8: Ratchet=1 · creates burst → silence → resume pattern that sounds performed"
+    },
+    {
+      "name": "100-scale harmonic memory",
+      "patch": "Store different scales in user slots (each tuned to a key/chord area) · Mod Lane → Scale Select · division /8 · lane cycles through scale slots · sequence auto-reharmonizes every few bars"
+    },
+    {
+      "name": "Swing offset between tracks",
+      "patch": "Track 1: SWING=0% (straight) · Track 2: SWING=60% (shuffled) · same melody at two different grooves · jazz-style rhythmic independence between voices"
+    },
+    {
+      "name": "AUX as hidden panel controls",
+      "patch": "Assign AUX X to Accum Dir · AUX Y to Direction · AUX Z to Stage Length · no cables patched · attenuverters act as 3 extra knobs for live tweaking"
     }
   ]
 }

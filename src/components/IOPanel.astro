@@ -13,6 +13,11 @@ const { inputs, outputs } = Astro.props;
   <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">I/O</h2>
   <table class="w-full border-collapse text-sm">
     <tbody>
+      {inputs.length > 0 && (
+        <tr class="border-b border-border">
+          <td colspan="2" class="py-1.5 text-[10px] font-mono text-subtle uppercase tracking-[2px]">Inputs</td>
+        </tr>
+      )}
       {inputs.map((input) => (
         <tr class="border-b border-border">
           <td class="py-2 w-[140px] align-top">
@@ -32,6 +37,11 @@ const { inputs, outputs } = Astro.props;
           </td>
         </tr>
       ))}
+      {outputs.length > 0 && (
+        <tr class="border-b border-border">
+          <td colspan="2" class="py-1.5 text-[10px] font-mono text-subtle uppercase tracking-[2px]">Outputs</td>
+        </tr>
+      )}
       {outputs.map((output, i) => (
         <tr class={i < outputs.length - 1 ? "border-b border-border" : ""}>
           <td class="py-2 w-[140px] align-top">
