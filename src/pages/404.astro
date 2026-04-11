@@ -1,0 +1,35 @@
+---
+// src/pages/404.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/global.css';
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="Not Found">
+  <div class="flex flex-col items-center justify-center min-h-screen px-7">
+    <h1 class="text-[15px] font-semibold tracking-[6px] uppercase text-fg mb-2">
+      Module not found
+    </h1>
+    <p class="text-subtle text-sm mb-8">Try searching instead.</p>
+
+    <div id="search" class="w-full max-w-[480px]"></div>
+  </div>
+
+  <link href={`${basePath}/pagefind/pagefind-ui.css`} rel="stylesheet" />
+  <script is:inline define:vars={{ basePath }}>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof PagefindUI !== 'undefined') {
+        new PagefindUI({
+          element: "#search",
+          showSubResults: false,
+          showImages: false,
+          baseUrl: basePath,
+          pageSize: 8,
+          translations: { placeholder: "Search modules..." }
+        });
+      }
+    });
+  </script>
+  <script src={`${basePath}/pagefind/pagefind-ui.js`} is:inline></script>
+</BaseLayout>
