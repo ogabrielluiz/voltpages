@@ -1,0 +1,22 @@
+{
+  "name": "eurorack-sheets",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && npx pagefind --site dist",
+    "preview": "astro preview",
+    "generate": "bun run scripts/generate-cheatsheet.ts",
+    "validate": "bun run scripts/validate-modules.ts"
+  },
+  "dependencies": {
+    "astro": "^6.1.5",
+    "pagefind": "^1.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^6.0.2"
+  }
+}
