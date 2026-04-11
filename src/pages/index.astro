@@ -1,10 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getAllModules } from '../lib/modules';
-import racksData from '../data/racks.json';
 import '../styles/global.css';
 
-const modules = getAllModules();
+const allModules = getAllModules().sort((a, b) => a.module.name.localeCompare(b.module.name));
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -19,43 +18,20 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div id="search" class="w-full max-w-[480px]"></div>
 
     <p class="mt-6 text-[11px] text-subtle tracking-wide">
-      {modules.length} modules ·
+      {allModules.length} modules ·
       <a href="https://github.com/ogabrielluiz/sheets" class="underline underline-offset-2 text-faint hover:text-fg">contribute</a>
     </p>
 
-    <!-- Rack-grouped module list (idle state) -->
+    <!-- All modules, sorted alphabetically -->
     <div class="mt-10 w-full max-w-[720px]">
-      {racksData.racks.map((rack) => (
-        <div class="mb-7">
-          <div class="flex items-center gap-2.5 mb-3">
-            <span class="text-base font-bold text-fg">{rack.name}</span>
-            <span class="text-[11px] text-subtle font-mono">{rack.specs}</span>
-          </div>
-          {rack.rows.map((row) => (
-            <div class="mb-2">
-              <div class="text-[9px] uppercase tracking-[2px] font-mono mb-1.5"
-                   style={`color: ${row.is1u ? '#c9a96e' : '#888'}`}>
-                {row.label}{row.is1u ? ' · 1U' : ''}
-              </div>
-              <div class="flex flex-wrap gap-1.5">
-                {row.modules.map((slug) => {
-                  const mod = modules.find((m) => m.slug === slug);
-                  return mod ? (
-                    <a href={`${basePath}/modules/${slug}/`}
-                       class="px-3 py-1.5 bg-surface text-[13px] font-semibold text-fg border border-border hover:border-border-strong no-underline">
-                      {mod.module.name}
-                    </a>
-                  ) : (
-                    <span class="px-3 py-1.5 text-[13px] text-faint border border-border">
-                      {slug.split('--')[1]?.replace(/-/g, ' ') || slug}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      ))}
+      <div class="flex flex-wrap gap-1.5">
+        {allModules.map(({ slug, module }) => (
+          <a href={`${basePath}/modules/${slug}/`}
+             class="px-3 py-1.5 bg-surface text-[13px] font-semibold text-fg border border-border hover:border-border-strong no-underline">
+            {module.name}
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 
@@ -89,7 +65,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
       border-radius: 0 !important;
       background: #fff !important;
       color: #1a1a1a !important;
-      padding: 14px 18px !important;
+      padding: 14px 18px 14px 44px !important;
     }
     .pagefind-ui__search-clear {
       color: #888 !important;
