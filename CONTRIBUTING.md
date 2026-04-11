@@ -48,12 +48,6 @@ Point your editor at `modules.schema.json` for autocomplete — add `"$schema": 
 
 Many modules don't have a PDF — that's fine. Write the JSON by hand using the module's panel labels, manufacturer website, or your own knowledge. The schema is the same regardless of source.
 
-## AI-assisted generation (optional)
+## Need help writing a sheet?
 
-If you have an Anthropic API key, you can generate a starting point from a PDF:
-
-```bash
-bun run generate -- --module "Module Name" --manufacturer "Manufacturer"
-```
-
-Review and edit the output before submitting. AI-generated sheets should have `_meta.verified: false`.
+If you have the module's PDF manual or know the module well, you can ask any AI assistant to help structure the JSON. Use the MATHS example as a template to show it what format you need.
