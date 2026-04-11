@@ -68,12 +68,27 @@
     {
       "name": "Loop Wake/Nap",
       "trigger": "per-output config",
-      "description": "Output plays for N loops (Wake), then silences for N loops (Nap). Creates call-and-response phrases and automatic fills."
+      "description": "Output plays for N loops (Wake), then silences for N loops (Nap). Creates call-and-response phrases and automatic fills without any external sequencer or logic."
     },
     {
       "name": "Quantiser",
       "trigger": "per-output Quantiser setting",
       "description": "Quantises output to musical scales. Custom scales saveable. Applied after cross operations."
+    },
+    {
+      "name": "Triggered envelope mode",
+      "trigger": "Output type = Triggered",
+      "description": "Setting an output to Triggered type converts any waveform shape into a one-shot envelope that fires on each rising edge from a CV input. Pamela becomes an 8-channel clocked envelope generator — each channel can have a different shape (exp, log, sine, triangle) and length independent of the master BPM."
+    },
+    {
+      "name": "Loop Shift for evolution",
+      "trigger": "Loop Shift parameter > 0",
+      "description": "Loop Shift advances the start point of a pattern by N steps each time the loop resets. The pattern slowly walks through a longer underlying sequence cycle by cycle, preventing static repetition over long periods. Combine with Euclidean patterns for sequences that feel generative without true randomness."
+    },
+    {
+      "name": "RESEED for controlled randomness",
+      "trigger": "Cross Op: SEED",
+      "description": "One output set to Cross Op SEED with Cross Src pointing to another output: the source output's rising edge resets the random seed of the SEED output, causing it to replay the same random sequence from that reset point. Provides deterministic re-rolls on demand — useful for generative patches that need repeatability at phrase boundaries."
     }
   ],
   "patchIdeas": [
@@ -83,19 +98,39 @@
     },
     {
       "name": "Internal S&H sequencer",
-      "patch": "Out A: Smooth Random · Loop=16 · Out B: gate /4 · Cross Op: S&H · stepped random locked to quarter notes"
+      "patch": "Out A: Smooth Random · Loop=16 · Out B: gate /4 · Out A Cross Op: S&H · Cross Src: Out B · stepped random CV locked to quarter notes · patch Out A to oscillator V/oct for a clocked random melodic sequence with no external S&H module"
     },
     {
-      "name": "Generative evolving pattern",
-      "patch": "Classic Random · Loop=8 · Loop Shift=1 · pattern migrates each cycle · never static"
+      "name": "Polyrhythm with prime divisions",
+      "patch": "Out A: /7 gate · Out B: /11 gate · Out C: /13 gate · LCM = 1001 steps before pattern repeats · run all three to separate drum voices or oscillator triggers · near-infinite rhythmic variation for generative ambient without any randomness"
     },
     {
-      "name": "Probability ghost notes",
-      "patch": "Triggers=13/16 · Probability=70% · consistent skeleton with random micro-omissions"
+      "name": "Gate masking for ghost notes",
+      "patch": "Out A: euclidean Steps=16 Triggers=13 (dense pattern) · Out B: euclidean Steps=16 Triggers=5 (sparse pattern) · Out A Cross Op: MASK · Cross Src: Out B · Out A triggers only fire where Out B pattern allows · dense rhythm filtered down to sparse, syncopated ghost hits"
     },
     {
-      "name": "Quantized arpeggio",
-      "patch": "Sawtooth LFO · slow rate · Scale=pentatonic · Quantize ON · rising arpeggio from ramp"
+      "name": "Boolean rhythm logic",
+      "patch": "Out A: euclidean Steps=16 Triggers=7 Rotate=0 · Out B: euclidean Steps=16 Triggers=5 Rotate=3 · Out C: gate /1 · Out C Cross Op: AND · Cross Src: Out A · Out C fires only where both Out A and Out B coincide · sparse, syncopated intersections that shift with rotations"
+    },
+    {
+      "name": "Wake/Nap call-and-response",
+      "patch": "Out A: melody CV source · Loop=4 · Wake=2 · Nap=1 · Out A plays two phrases then rests for one loop · Out B answers in the gap: Loop=4 · Wake=1 · Nap=2 · plays only while Out A rests · natural musical breathing and dialogue between two voices with no manual muting"
+    },
+    {
+      "name": "Drum fill every 8 bars",
+      "patch": "Out A: main drum trigger running continuously · Out B: fill trigger (Steps=16 Triggers=12) · Out B Loop=8 · Wake=1 · Nap=7 · Out B is silent for 7 bars then fires on bar 8 only · automatic periodic fills locked to musical phrase length"
+    },
+    {
+      "name": "Smooth random portamento",
+      "patch": "Out A: Smooth Random · Rate multiplier ×4 · Loop=8 · Quantize=pentatonic · Out A → oscillator V/oct · gliding voltage snaps to scale degrees with portamento preserved between quantize steps · melodic random with no harsh jumps"
+    },
+    {
+      "name": "Quadrature sine pair",
+      "patch": "Out A: sine LFO · rate /4 · Out B: sine LFO same rate · Phase=90 on Out B · patch Out A and Out B to X/Y inputs of a Lissajous-capable scope or to two VCA/filter parameters · creates circular modulation paths, rotating stereo effects, or smooth 2D parameter sweeps"
+    },
+    {
+      "name": "FLEX humanized hi-hat",
+      "patch": "Out A: euclidean Steps=16 Triggers=12 · FLEX Op: HUMAN · FLEX Amount: 15% · patch Out A to closed hi-hat trigger · subtle random micro-timing drift on every hit · sounds like a real drummer playing a repetitive pattern rather than a machine — increase Amount to 30-40% for obvious drunk-drummer feel"
     }
   ]
 }

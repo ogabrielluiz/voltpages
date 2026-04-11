@@ -68,7 +68,7 @@
     {
       "name": "BND/LRP/JMP Switch",
       "scope": "Global",
-      "description": "Controls how delay lines respond when modulated. BND=crossfade, LRP=interpolate (pitch shift), JMP=instant change.",
+      "description": "Controls how delay lines respond when modulated. BND=smooth crossfade (pitch-neutral), LRP=gradual pitch glide (Doppler effect), JMP=instant hard cut (glitchy artifacts).",
       "detail": "BND=smooth · LRP=pitch shift · JMP=instant"
     }
   ],
@@ -92,54 +92,89 @@
     {
       "name": "Shimmer",
       "trigger": "LIM/DST/SHM switch → SHM",
-      "description": "Adds a one-octave pitch shift that feeds back into the reverb input, creating ethereal shimmering reverb tails."
+      "description": "Adds a one-octave pitch shift that feeds back into the reverb input, creating ethereal shimmering reverb tails. The shimmer intensity is governed by Regen — just past noon gives subtle shimmer; higher values create aggressive, self-building octave stacks."
     },
     {
       "name": "Infinite Tail / Ducking",
       "trigger": "Regen past noon",
-      "description": "Past noon the reverb reaches 100% feedback for infinite tail. Past 3 o'clock, new input sounds duck the infinite reverb creating sidechain-style effects."
+      "description": "Past noon the reverb reaches 100% feedback for infinite tail. Past 3 o'clock, new input sounds duck the infinite reverb — input transients carve space in the frozen tail, creating a natural sidechain compression effect without any external module."
     },
     {
       "name": "Self-Oscillation",
       "trigger": "Regen past noon, input unpatched",
-      "description": "With input unpatched and Regen past noon, DV self-oscillates. Manipulate Size, Dense, Tone, and Style to shape the generated tones."
+      "description": "With input unpatched and Regen past noon, DV self-oscillates. Manipulate Size, Dense, Tone, and Style to shape the generated tones. Pitch is loosely related to Size — smaller values create higher, bell-like tones."
     },
     {
       "name": "Simple Delay",
       "trigger": "Dense full CCW",
-      "description": "With Dense fully CCW, the effect sounds like a delay rather than reverb. Regen sets feedback time."
+      "description": "With Dense fully CCW, the effect sounds like a delay rather than reverb. Regen sets feedback amount. BND/LRP/JMP switch changes how pitch artifacts appear when you sweep delay time."
     },
     {
       "name": "FSU (Freeze)",
       "trigger": "button hold or gate input",
-      "description": "Maxes feedback to 100% and mutes input. Current reverb buffer loops indefinitely. SHM mode causes frozen pad to rise in pitch over time."
+      "description": "Maxes feedback to 100% and mutes input. Current reverb buffer loops indefinitely. SHM mode causes frozen pad to rise in pitch over time. DST mode allows distortion to accumulate inside the frozen buffer each cycle."
     },
     {
       "name": "Self-Sustaining Drone",
       "trigger": "FSU with no audio input",
-      "description": "FSU injects white noise burst into reverb tank with infinite feedback. Becomes a self-sustaining drone voice. Shape with Tone, Size, Dense."
+      "description": "FSU injects white noise burst into reverb tank with infinite feedback. Becomes a self-sustaining drone voice with no audio input required. Shape with Tone (LP/HP filter), Size (pitch/density), Dense (smear vs delay character)."
+    },
+    {
+      "name": "BND switch (delay interpolation)",
+      "trigger": "BND/LRP/JMP switch position",
+      "description": "Three modes control how Size and Dense changes are rendered: BND=smooth crossfade between delay times (pitch-neutral, clean), LRP=gradual pitch glide between times (Doppler-like warble), JMP=instant hard cut to new delay time (digital glitch, metallic artifacts). Applies to both manual knob sweeps and Size CV modulation."
+    },
+    {
+      "name": "Regen past 3 o'clock",
+      "trigger": "Regen knob above 3 o'clock",
+      "description": "Activates sidechain-ducking zone: the infinite tail remains in feedback, but incoming input transients carve dynamic space in it automatically. Acts like a natural compressor/ducker — louder hits create more space. Useful for rhythmic sources that need clarity without losing the infinite tail underneath."
+    },
+    {
+      "name": "Versio firmware platform",
+      "trigger": "USB firmware flash",
+      "description": "The Versio hardware platform runs any compatible Versio firmware — Electus Versio (stereo delay), Ampla Versio (VCA/limiter), Ruina Versio (distortion), and community ports. Reflash via USB in approximately 2 minutes using the Noise Engineering web flasher. Community firmware index at github.com/Maxhodges/noise-engineering-firmware-index."
     }
   ],
   "patchIdeas": [
     {
       "name": "Shimmer pad",
-      "patch": "Mode: SHM · BND switch · Size 1-2 o'clock · Regen just past noon · Tone slightly CW · polyphonic source"
+      "patch": "Mode: SHM · BND switch · Size 1-2 o'clock · Dense 3 o'clock · Regen just past noon · Tone slightly CW · Index noon (no modulation) · Blend 2 o'clock · feed polyphonic chord source · octave-up shimmer feeds back into reverb, building a luminous pad above the dry signal"
+    },
+    {
+      "name": "Dark ambient plate",
+      "patch": "Mode: LIM · BND switch · Size 10-11 o'clock · Dense 2-3 o'clock · Regen 9-11 o'clock · Tone noon or slightly CCW (subtle LP roll-off) · Index center (no LFO) · Blend 1-2 o'clock · short diffuse plate with no modulation artifacts · works as a natural room on any source"
     },
     {
       "name": "Rhythmic ducking reverb",
-      "patch": "Regen past 3 o'clock · rhythmic input · input transients duck the infinite tail · natural sidechain compression"
+      "patch": "Mode: LIM · Regen past 3 o'clock · BND switch · patch kick or rhythmic gate source into In L · Tone slightly CW · Blend full CW · input transients automatically duck the infinite tail · reverb breathes in rhythm with the groove, no VCA or sidechain required"
+    },
+    {
+      "name": "Accumulating distortion freeze",
+      "patch": "Mode: DST · BND switch · Size noon · Dense 2 o'clock · Regen past noon · hold FSU button (or send sustained gate to FSU Gate) · each feedback cycle runs through distortion algorithm, building incrementally · 5-10 seconds: clean frozen buffer → heavy saturation → release FSU for distorted tail decay"
+    },
+    {
+      "name": "Drone voice from nothing",
+      "patch": "No audio patched to In L or In R · Mode: LIM or SHM · Regen past noon · press and hold FSU button (or gate FSU Gate high) · white noise burst sustains indefinitely in infinite feedback · Tone sweeps LP to HP to sculpt harmonic content · Size adjusts apparent pitch density · Dense shifts smear character · full drone synthesizer with no oscillator"
+    },
+    {
+      "name": "Modulated size for chorus-in-reverb",
+      "patch": "Mode: LIM · BND switch set to BND · slow sine LFO (e.g. Pamela's PRO Workout Out A sine, 0.1–0.3 Hz) → Size CV · Size knob at noon · Dense 2-3 o'clock · Regen just past noon · creates lush detuned chorus effect inside the reverb tank — modulation is wet-only, dry signal stays stable"
+    },
+    {
+      "name": "Pitch-rise freeze",
+      "patch": "Mode: SHM · BND switch · Size 11 o'clock · Regen just past noon · Tone noon · hold FSU (or gate FSU Gate) · octave-up shift compounds inside frozen buffer · pad slowly rises in pitch over 10-30 seconds · release FSU before it gets too bright to allow natural shimmer tail to decay · dramatic textural build technique"
+    },
+    {
+      "name": "Gate-sequenced freeze stutter",
+      "patch": "Gate sequencer (e.g. Pamela's PRO Workout euclidean output) → FSU Gate input · Mode: LIM · BND switch · Regen past noon · Blend 3 o'clock · short gates (25ms–100ms): rapid freeze/release creates stuttered rhythmic reverb gating · long gates: sustained freeze pads · gate pattern locks stutter rhythm to clock"
     },
     {
       "name": "Metallic IDM texture",
-      "patch": "BND: JMP · stepped random CV → Size CV · each step hard-jumps delay time · metallic pitch artifacts"
+      "patch": "BND switch: JMP · stepped random CV (S&H) → Size CV · Size knob 9 o'clock · Dense full CW · Mode: DST · Regen 2 o'clock · each random step hard-jumps delay time creating metallic pitch artifacts and digital noise bursts · combine with Tone CV (random or LFO) for evolving spectral texture"
     },
     {
-      "name": "Reverb bloom",
-      "patch": "Slow envelope → Blend CV · signal fades from dry into full reverb over time · then snaps back"
-    },
-    {
-      "name": "Frozen pad sculpting",
-      "patch": "FSU to freeze · sweep Tone and Dense while frozen · reshape timbre of frozen sound in real time"
+      "name": "Filter sweep inside reverb",
+      "patch": "Mode: LIM · BND switch · Regen past noon · Size noon · Dense 3 o'clock · triangle LFO → Tone CV · sweep full range LP to HP · Tone knob at noon (CV takes full control) · wah-like tonal motion happens inside the wet reverb tail itself — dry signal stays unchanged · Speed parameter controls LFO rate if using internal LFO on Index CW instead"
     }
   ]
 }

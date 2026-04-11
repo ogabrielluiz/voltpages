@@ -8,26 +8,26 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout title="Home">
-  <div class="flex flex-col items-center min-h-screen px-7 py-16">
-    <h1 class="text-[15px] font-semibold tracking-[6px] uppercase text-fg mb-2">
+  <div class="flex flex-col items-center min-h-screen px-4 md:px-7 py-10 md:py-16">
+    <h1 class="text-[13px] md:text-[15px] font-semibold tracking-[4px] md:tracking-[6px] uppercase text-fg mb-2">
       Eurorack Sheets
     </h1>
-    <p class="text-subtle text-xs mb-8">Quick-reference cheat sheets for eurorack modules</p>
+    <p class="text-subtle text-xs mb-6 md:mb-8">Quick-reference cheat sheets for eurorack modules</p>
 
     <!-- Pagefind search widget -->
     <div id="search" class="w-full max-w-[480px]"></div>
 
-    <p class="mt-6 text-[11px] text-subtle tracking-wide">
+    <p class="mt-4 md:mt-6 text-[11px] text-subtle tracking-wide">
       {allModules.length} modules ·
       <a href="https://github.com/ogabrielluiz/sheets" class="underline underline-offset-2 text-faint hover:text-fg">contribute</a>
     </p>
 
     <!-- All modules, sorted alphabetically -->
-    <div class="mt-10 w-full max-w-[720px]">
+    <div class="mt-8 md:mt-10 w-full max-w-[720px]">
       <div class="flex flex-wrap gap-1.5">
         {allModules.map(({ slug, module }) => (
           <a href={`${basePath}/modules/${slug}/`}
-             class="px-3 py-1.5 bg-surface text-[13px] font-semibold text-fg border border-border hover:border-border-strong no-underline">
+             class="px-2.5 md:px-3 py-1.5 bg-surface text-[12px] md:text-[13px] font-semibold text-fg border border-border hover:border-border-strong no-underline">
             {module.name}
           </a>
         ))}
