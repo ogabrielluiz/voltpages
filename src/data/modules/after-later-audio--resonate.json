@@ -115,6 +115,16 @@
       "name": "Polyphonic chords",
       "patch": "4-voice polyphony · sequencer → V/OCT rapidly · ODD + EVEN to mixer for full chord",
       "diagram": "RESONATE:\n* Polyphony: 4 voices\n- Sequencer (CV) p> Resonate (V/OCT) // rapid notes strum chord\n- Resonate (ODD) -> Mixer (In)\n- Resonate (EVEN) -> Mixer (In)"
+    },
+    {
+      "name": "Granular exciter chamber",
+      "patch": "Resonator type: sympathetic strings · STRUCTURE past noon · uBurst (granular, small grain size, LFO on Position) feeds continuous bowing-like texture into IN · quantized sequencer drives V/OCT · uBurst replaces percussive exciter with evolving granular cloud · Damping high for long sing",
+      "diagram": "RESONATE:\n* Resonator Type: Sympathetic strings\n* Structure: past noon · Damping: high\n- uBurst (Left Out) -> Resonate (IN) // granular cloud as continuous exciter\n- LFO (Out) >> uBurst (Position CV) // small grain motion\n- Quantizer (CV) p> Resonate (V/OCT)\n- Resonate (ODD) -> Mixer (In L)\n- Resonate (EVEN) -> Mixer (In R)"
+    },
+    {
+      "name": "DV tail as sympathetic resonance",
+      "patch": "Resonator type: sympathetic strings · STRUCTURE ~10 o'clock · Damping high · Desmodus Versio wet tail drives IN · uBurst density envelope modulates POSITION via Damping CV · slow quantized sequencer on V/OCT · DV reverb becomes pitched sympathetic string excitation",
+      "diagram": "RESONATE:\n* Resonator Type: Sympathetic strings\n* Structure: ~10 o'clock · Damping: high\n- Desmodus Versio (Out L) -> Resonate (IN) // wet reverb tail as exciter\n- uBurst (Density Env) >> Resonate (Damping CV) // density shapes decay\n- Slow Quant Seq (CV) p> Resonate (V/OCT)\n- Resonate (ODD) -> Mixer (In L)\n- Resonate (EVEN) -> Mixer (In R)"
     }
   ]
 }

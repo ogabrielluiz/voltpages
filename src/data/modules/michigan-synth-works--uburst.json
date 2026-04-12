@@ -116,6 +116,21 @@
       "name": "Looping delay with degradation",
       "patch": "Mode: Looping Delay · Density = feedback · Texture = filter · Size = delay time · self-degrading loops",
       "diagram": "uBurst:\n* Mode: Looping Delay\n- Source (Out) -> uBurst (Left In)\n- LFO (Out) >> uBurst (Texture CV) // filter motion\n- Envelope (Out) >> uBurst (Density CV) // feedback swells\n- uBurst (Left Out) -> Output (In L)\n- uBurst (Right Out) -> Output (In R)"
+    },
+    {
+      "name": "Freeze-chopped reverb tail",
+      "patch": "Mode: Granular · Desmodus Versio reverb feeds Left In · euclidean gate pattern drives Trigger (freeze toggle) · LFO modulates Position for drift inside each freeze window · Blend full wet · stuttered rhythmic reverb gating with evolving spectral drift between chops",
+      "diagram": "uBurst:\n* Mode: Granular\n* Blend: full wet\n- Desmodus Versio (Out L) -> uBurst (Left In) // reverb tail source\n- Euclidean Gate (Out) t> uBurst (Trigger) // freeze toggle chops tail\n- LFO (Out) >> uBurst (Position CV) // drift inside freeze windows\n- uBurst (Left Out) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
+    },
+    {
+      "name": "Parasites looping delay disintegration",
+      "patch": "Mode: Looping Delay (Parasites) · Density at ~2 o'clock (critical survival feedback) · slow LFO on Position for warble that decays over time · Texture CW for lo-fi grit · Size medium · loop slowly falls apart through pitch warble and digital erosion",
+      "diagram": "uBurst:\n* Mode: Looping Delay (Parasites)\n* Density: ~2 o'clock · Size: medium · Texture: CW (lo-fi)\n- Source (Out) -> uBurst (Left In)\n- Slow LFO (Out) >> uBurst (Position CV) // warble decays over time\n- uBurst (Left Out) -> Output (In L)\n- uBurst (Right Out) -> Output (In R) // loop disintegrates"
+    },
+    {
+      "name": "Clouds-frozen Rings excitation",
+      "patch": "Mode: Granular · Freeze held after capturing 1s drum loop · VCO at audio rate modulates Position CV for FM-style spectral morphing of frozen buffer · uBurst output feeds Resonate IN as continuous texture exciter · frozen grains become living exciter for sympathetic strings",
+      "diagram": "uBurst:\n* Mode: Granular\n* Freeze: held (1s drum loop captured)\n- Drums (Out) -> uBurst (Left In)\n- VCO (Out) >> uBurst (Position CV) // audio-rate spectral morph\n- uBurst (Left Out) -> Resonate (IN) // frozen grains excite strings\n- Resonate (ODD) -> Mixer (In L)\n- Resonate (EVEN) -> Mixer (In R)"
     }
   ]
 }

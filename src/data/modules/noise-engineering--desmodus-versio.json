@@ -238,6 +238,26 @@
       "name": "Filter sweep inside reverb",
       "patch": "Mode: LIM · BND switch · Regen past noon · Size noon · Dense 3 o'clock · triangle LFO → Tone CV · sweep full range LP to HP · Tone knob at noon (CV takes full control) · wah-like tonal motion happens inside the wet reverb tail itself — dry signal stays unchanged · Speed parameter controls LFO rate if using internal LFO on Index CW instead",
       "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Size: noon · Dense: 3 o'clock · Regen: past noon · Tone: noon\n- Source (Out) -> Desmodus Versio (In L)\n- LFO (Triangle) >> Desmodus Versio (Tone CV) // wah-like LP->HP sweep inside wet tail\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
+    },
+    {
+      "name": "Pinged tank drone",
+      "patch": "Mode: DST + BND · Regen below noon for release · inputs unpatched · gate sequencer pings FSU Gate · VCO sine at audio rate modulates Size CV for FM-like pitch · tank self-oscillates into pitched drone voice · Dense 2 o'clock · Tone noon · no audio input required",
+      "diagram": "DESMODUS VERSIO:\n* Mode: DST · BND switch\n* Regen: below noon · Dense: 2 o'clock · Tone: noon · inputs unpatched\n- Gate Seq (Out) g> Desmodus Versio (FSU Gate) // rhythmic tank pings\n- VCO (Sine) >> Desmodus Versio (Size CV) // audio-rate FM of tank size\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // pitched self-oscillating drone"
+    },
+    {
+      "name": "Reverb->delay->reverb shimmer chain",
+      "patch": "Mode: SHM + BND · Size short · DV wet feeds FX Aid (Delay->Shimmer program) · FX Aid return through VCA back into DV In R as feedback mixer ~30% · MATHS cycle envelope modulates return VCA to prevent runaway · infinite shimmer bloom with envelope-gated feedback control",
+      "diagram": "DESMODUS VERSIO:\n* Mode: SHM · BND switch\n* Size: short · Blend: 2 o'clock\n- Source (Out) -> Desmodus Versio (In L)\n- Desmodus Versio (Out L) -> FX AID 1U (In L) // Delay->Shimmer program\n- FX AID 1U (Out L) -> VCA (In)\n- MATHS (CH1 Cycle) >> VCA (CV) // envelope tames runaway\n- VCA (Out) -> Desmodus Versio (In R) // ~30% feedback return\n- Desmodus Versio (Out R) -> Output (In R)"
+    },
+    {
+      "name": "Audio-rate FSU gate bitcrush",
+      "patch": "Mode: DST · BND switch · square VCO at 20-200 Hz clocks FSU Gate as audio-rate pings · slow LFO modulates VCO freq for evolving texture · INDEX hard left for grit · Size 10 o'clock · Dense 2 o'clock · amplitude-modulated buzz carrier glitch",
+      "diagram": "DESMODUS VERSIO:\n* Mode: DST · BND switch\n* Size: 10 o'clock · Dense: 2 o'clock · Index: hard left (grit)\n- Source (Out) -> Desmodus Versio (In L)\n- VCO (Square, 20-200 Hz) g> Desmodus Versio (FSU Gate) // audio-rate pings = AM carrier\n- LFO (Out) p> VCO (V/Oct) // slow freq drift\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
+    },
+    {
+      "name": "Trigger-linked effects chain",
+      "patch": "Mode: LIM · BND switch · Regen past noon · Blend 3 o'clock · DV tail feeds envelope follower · EF gates fire on reverb bloom peaks · gates retrigger uBurst grains and Resonate strum · each tail peak excites downstream texture in self-organizing feedback bloom",
+      "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Regen: past noon · Blend: 3 o'clock\n- Source (Out) -> Desmodus Versio (In L)\n- Desmodus Versio (Out L) -> Env Follower (In)\n- Env Follower (Gate) t> uBurst (Trigger) // grains fire on tail peaks\n- Env Follower (Gate) t> Resonate (STRUM) // sympathetic strings excite\n- Desmodus Versio (Out L) -> Mixer (In L)\n- Desmodus Versio (Out R) -> Mixer (In R)"
     }
   ]
 }

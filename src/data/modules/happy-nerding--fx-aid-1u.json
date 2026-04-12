@@ -95,6 +95,21 @@
       "name": "Shimmer pad generator",
       "patch": "Load Shimmer Input Dual · slow attack source → L input · D/W at 100% for pure shimmer",
       "diagram": "FX AID 1U:\n* Program: Shimmer Input Dual\n* D/W: 100% wet\n- Pad Source (Out) -> FX AID 1U (In L)\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R)"
+    },
+    {
+      "name": "Pitch-shift runaway cascade",
+      "patch": "Load Delay Pitch Shift · CV assigned to Control 3 (Shift) · single percussion hit into L input · envelope ramp drives CV so each repeat transposes upward · Shepard-like climbing cascade from one seed hit · Control 2 (Feedback) near max · D/W 2 o'clock",
+      "diagram": "FX AID 1U:\n* Program: Delay Pitch Shift\n* CV assign: Control 3 (Shift)\n* Control 2 (Feedback): near max · D/W: 2 o'clock\n- Percussion (Out) -> FX AID 1U (In L)\n- Envelope (Ramp) >> FX AID 1U (CV / D/W) // each repeat transposes up\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R) // Shepard-like climbing cascade"
+    },
+    {
+      "name": "LP-delay howl as pitched voice",
+      "patch": "Load LP Delay · Control 2 (Feedback) past unity to self-oscillate · quantized CV to Control 1 (Cutoff via CV input) plays filter as pitched VCO · external gate controls feedback to stop howl between notes · D/W 100% wet · LP Delay becomes monophonic voice",
+      "diagram": "FX AID 1U:\n* Program: LP Delay\n* Control 2 (Feedback): past unity (self-oscillating) · D/W: 100% wet\n* CV assign: Control 1 (Cutoff)\n- Quantizer (Out) p> FX AID 1U (CV / D/W) // plays filter as VCO\n- Gate (Out) g> FX AID 1U (In L) // gate hits break feedback\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R) // pitched howl voice"
+    },
+    {
+      "name": "Karplus-Strong comb drone",
+      "patch": "Load Comb Delay (Karplus-Strong) · CV assigned to Control 1 (Delay Time / V/Oct) · env-gated noise burst into L input seeds string · sequencer drives CV for pitched string sequence · Control 2 (Feedback) near max for sustain · slow LFO on delay time via manual adjust for chorus-beating",
+      "diagram": "FX AID 1U:\n* Program: Comb Delay (Karplus-Strong)\n* CV assign: Control 1 (Delay Time / V/Oct)\n* Control 2 (Feedback): near max · D/W: 100% wet\n- Noise (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV) // short noise burst = string pluck\n- VCA (Out) -> FX AID 1U (In L)\n- Sequencer (CV) p> FX AID 1U (CV / D/W) // plays pitched K-S string\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R)"
     }
   ]
 }
