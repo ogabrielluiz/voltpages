@@ -75,3 +75,94 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   outline: 2px solid var(--color-fg);
   outline-offset: 2px;
 }
+
+/* Diagram lightbox */
+.diagram-container {
+  position: relative;
+}
+
+.diagram-expand-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'SF Mono', monospace;
+  font-size: 14px;
+  color: #666;
+  background: rgba(247, 245, 240, 0.85);
+  border: 1px solid #d5d0c6;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: background 0.1s, color 0.1s;
+  z-index: 1;
+}
+
+.diagram-expand-btn:hover {
+  background: #fff;
+  color: #1a1a1a;
+  border-color: #999;
+}
+
+.diagram-expand-btn:focus-visible {
+  outline: 2px solid #7bafd4;
+  outline-offset: 2px;
+}
+
+.diagram-lightbox {
+  width: 90vw;
+  max-width: 1400px;
+  max-height: 90vh;
+  padding: 0;
+  border: 1px solid #d5d0c6;
+  background: #f7f5f0;
+  overflow: hidden;
+}
+
+.diagram-lightbox::backdrop {
+  background: rgba(20, 18, 14, 0.6);
+}
+
+.diagram-lightbox-close-form {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  margin: 0;
+  z-index: 2;
+}
+
+.diagram-lightbox-close {
+  width: 32px;
+  height: 32px;
+  font-family: 'SF Mono', monospace;
+  font-size: 16px;
+  color: #666;
+  background: #fff;
+  border: 1px solid #d5d0c6;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.diagram-lightbox-close:hover {
+  color: #1a1a1a;
+  border-color: #999;
+}
+
+.diagram-lightbox-body {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 48px 24px 24px;
+  box-sizing: border-box;
+}
+
+.diagram-lightbox-body svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}

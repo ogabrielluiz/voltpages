@@ -20,6 +20,15 @@ for (const idea of patchIdeas) {
     }
   }
 }
+
+// Assign a sequential index across all diagrams on the page
+let globalIndex = 0;
+const ideaIndexes: Map<string, number> = new Map();
+for (const idea of patchIdeas) {
+  if (renderedDiagrams.has(idea.name)) {
+    ideaIndexes.set(idea.name, globalIndex++);
+  }
+}
 ---
 
 <div class="mt-7">
@@ -27,6 +36,7 @@ for (const idea of patchIdeas) {
   <div class="flex flex-col gap-2.5">
     {patchIdeas.map((idea) => {
       const diagramSvg = renderedDiagrams.get(idea.name);
+      const diagramIndex = ideaIndexes.get(idea.name);
       return (
         <div class="pl-3 border-l-2 border-border-strong">
           <div class="text-[15px] font-semibold text-fg">{idea.name}</div>
@@ -38,7 +48,15 @@ for (const idea of patchIdeas) {
                 <span class="group-open:hidden">Show diagram</span>
                 <span class="hidden group-open:inline">Hide diagram</span>
               </summary>
-              <div class="mt-2 p-3 bg-white border border-border overflow-x-auto" set:html={diagramSvg} />
+              <div class="diagram-container mt-2 p-3 bg-white border border-border overflow-x-auto">
+                <button
+                  type="button"
+                  class="diagram-expand-btn"
+                  aria-label="Open diagram in larger view"
+                  data-diagram-index={diagramIndex}
+                >⤢</button>
+                <div class="diagram-svg" set:html={diagramSvg} />
+              </div>
             </details>
           )}
         </div>
@@ -46,3 +64,41 @@ for (const idea of patchIdeas) {
     })}
   </div>
 </div>
+
+<dialog id="diagram-lightbox" class="diagram-lightbox">
+  <form method="dialog" class="diagram-lightbox-close-form">
+    <button type="submit" class="diagram-lightbox-close" aria-label="Close">✕</button>
+  </form>
+  <div id="diagram-lightbox-body" class="diagram-lightbox-body"></div>
+</dialog>
+
+<script is:inline>
+  (function () {
+    const dialog = document.getElementById('diagram-lightbox');
+    const body = document.getElementById('diagram-lightbox-body');
+    if (!dialog || !body) return;
+
+    document.querySelectorAll('.diagram-expand-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const container = btn.closest('.diagram-container');
+        const svg = container && container.querySelector('.diagram-svg');
+        if (!svg) return;
+        body.innerHTML = svg.innerHTML;
+        if (typeof dialog.showModal === 'function') {
+          dialog.showModal();
+        } else {
+          const blob = new Blob([svg.innerHTML], { type: 'image/svg+xml' });
+          window.open(URL.createObjectURL(blob));
+        }
+      });
+    });
+
+    dialog.addEventListener('click', (e) => {
+      const rect = dialog.getBoundingClientRect();
+      const inDialog = e.clientY >= rect.top && e.clientY <= rect.bottom &&
+                       e.clientX >= rect.left && e.clientX <= rect.right;
+      if (!inDialog) dialog.close();
+    });
+  })();
+</script>
