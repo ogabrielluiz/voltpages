@@ -125,6 +125,11 @@
       "name": "DV tail as sympathetic resonance",
       "patch": "Resonator type: sympathetic strings · STRUCTURE ~10 o'clock · Damping high · Desmodus Versio wet tail drives IN · uBurst density envelope modulates POSITION via Damping CV · slow quantized sequencer on V/OCT · DV reverb becomes pitched sympathetic string excitation",
       "diagram": "RESONATE:\n* Resonator Type: Sympathetic strings\n* Structure: ~10 o'clock · Damping: high\n- Desmodus Versio (Out L) -> Resonate (IN) // wet reverb tail as exciter\n- uBurst (Density Env) >> Resonate (Damping CV) // density shapes decay\n- Slow Quant Seq (CV) p> Resonate (V/OCT)\n- Resonate (ODD) -> Mixer (In L)\n- Resonate (EVEN) -> Mixer (In R)"
+    },
+    {
+      "name": "Resonate + uBurst infinite drone loop",
+      "patch": "Closed-loop audio feedback between Resonate and uBurst (Clouds stand-in). Resonate ODD → uBurst IN L · uBurst Out L → envelope follower → Resonate STRUM (self-plucking when cloud peaks) · uBurst Out R → attenuated back to uBurst Freeze CV for self-latching texture · slow sequencer on V/OCT · the loop sustains itself indefinitely, each grain peak re-exciting the resonator.",
+      "diagram": "RESONATE:\n* Resonator Type: Modal · Damping: high\n- Sequencer (CV) p> Resonate (V/OCT)\n- Resonate (ODD) -> uBurst (IN L)\n- uBurst (Out L) -> Env Follower (In)\n- Env Follower (Out) t> Resonate (STRUM) // self-plucking on cloud peaks\n- uBurst (Out R) -> Attenuator (In)\n- Attenuator (Out) >> uBurst (Freeze CV) // self-latching freeze\n- uBurst (Out R) -> Output (In)"
     }
   ]
 }

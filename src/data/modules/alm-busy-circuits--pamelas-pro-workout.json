@@ -201,6 +201,11 @@
       "name": "EOR scene trigger chain",
       "patch": "One output marks end-of-phrase and advances multiple modules at once · OUT 8: E(1,64) rotate=63 width 20ms · fires exactly one pulse at the end of every 64-step phrase · fan out to Marbles t-reset, envelope stages reset, and filter-bank scene advance · automatic phrase-synced scene progression for long-form generative pieces",
       "diagram": "Pamela's PRO Workout:\n* OUT 8: Euclidean 64/1 Rotate=63, width 20ms\n\n- Pamela's PRO Workout (OUT 8) g> Marbles (t Reset)\n- Pamela's PRO Workout (OUT 8) g> Stages (Reset)\n- Pamela's PRO Workout (OUT 8) g> Filter Bank (Scene+) // end-of-phrase scene advance"
+    },
+    {
+      "name": "Multi-envelope rhythm bed (hub-and-spoke)",
+      "patch": "Pam's as the clock brain for an entire drum voice bed · OUT 1 /4 → Env 1 → Kick VCA · OUT 2 /16 probability 60% → Env 2 → Hat VCA · OUT 3 euclidean 16/5 → Env 3 → Perc VCA · OUT 4 sine LFO /2 bars → mixer group level for breathing dynamics · one Pam's drives three separate envelope+VCA paths plus a slow level animator, giving a full rhythm section from a single clock source.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /4\n* OUT 2: Gate /16, p=60%\n* OUT 3: Euclidean 16/5\n* OUT 4: Sine LFO /2 bars\n\n- Pamela's PRO Workout (OUT 1) t> Env 1 (Trig)\n- Pamela's PRO Workout (OUT 2) t> Env 2 (Trig)\n- Pamela's PRO Workout (OUT 3) t> Env 3 (Trig)\n- Env 1 (Out) >> VCA Kick (CV)\n- Env 2 (Out) >> VCA Hat (CV)\n- Env 3 (Out) >> VCA Perc (CV)\n- Kick VCO (Out) -> VCA Kick (In) -> Mixer (In 1)\n- Hat Noise (Out) -> VCA Hat (In) -> Mixer (In 2)\n- Perc Src (Out) -> VCA Perc (In) -> Mixer (In 3)\n- Pamela's PRO Workout (OUT 4) >> Mixer (Level CV) // breathing dynamics"
     }
   ]
 }

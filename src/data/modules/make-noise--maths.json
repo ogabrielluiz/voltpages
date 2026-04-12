@@ -221,6 +221,26 @@
       "name": "Ratchet / burst generator",
       "patch": "Gate → CH 1 TRIG · CH 1 set for short AD envelope · CH 1 OUT → CH 4 Rise CV · CH 4 Cycle ON · CH 4 only cycles while CH 1 envelope is high, accelerating as envelope rises · CH 4 EOC → drum VCA envelope trigger · yields a ratcheted burst per incoming gate",
       "diagram": "MATHS:\n* CH 1: Rise short, Fall short (AD)\n* CH 4: Cycle ON\n\n- Gate Source (Gate) g> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> MATHS.CH 4 (Rise CV) // windows + accelerates CH 4\n- MATHS.CH 4 (EOC) t> VCA Env (Trig) // ratchet bursts"
+    },
+    {
+      "name": "Classic Krell with dual random CVs",
+      "patch": "Todd Barton Krell pattern expanded across MATHS plus two external S&H channels. CH 4 Cycle ON · CH 4 EOR → S&H 1 trig + S&H 2 trig · Noise → both S&H inputs · S&H 1 → CH 4 Rise CV (random attack each cycle) · S&H 2 → CH 4 Fall CV (random decay) · CH 4 OUT through quantizer → VCO V/Oct · CH 4 OUT → VCA CV · self-evolving melody with random attack, decay and pitch on every note.",
+      "diagram": "MATHS:\n* CH 4: Cycle ON\n\n- MATHS.CH 4 (EOR) t> S&H 1 (Trig)\n- MATHS.CH 4 (EOR) t> S&H 2 (Trig)\n- Noise (Out) >> S&H 1 (In)\n- Noise (Out) >> S&H 2 (In)\n- S&H 1 (Out) >> MATHS.CH 4 (Rise CV) // random attack each cycle\n- S&H 2 (Out) >> MATHS.CH 4 (Fall CV) // random decay each cycle\n- MATHS.CH 4 (OUT) >> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- MATHS.CH 4 (OUT) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+    },
+    {
+      "name": "Buchla low-pass-gate bongo",
+      "patch": "West-coast plucked resonance using MATHS as the gate envelope. Clock → CH 1 TRIG · CH 1 Rise very short, Fall medium, Curve CW (expo) · CH 1 OUT → VCA CV (acts as LPG contour) · random CV → VCO pitch · VCO → VCA audio in · short percussive pings follow the envelope's expo decay giving the classic DPO-plus-Optomix bongo character without a dedicated LPG.",
+      "diagram": "MATHS:\n* CH 1: Rise very short, Fall medium, Curve full CW (expo)\n\n- Clock (Out) c> MATHS.CH 1 (Trig)\n- Random CV (Out) p> VCO (V/Oct)\n- VCO (Out) -> VCA (In)\n- MATHS.CH 1 (OUT) >> VCA (CV) // LPG-style plucked contour\n- VCA (Out) -> Output (In) // Buchla bongo"
+    },
+    {
+      "name": "Self-patched Both (CH 1 ↔ CH 4 cross-mod)",
+      "patch": "Classic MATHS illustrated 'Both' patch. CH 1 Cycle ON · CH 4 Cycle ON · CH 1 OUT → CH 4 Rise CV (via CH 3 attenuverter to tame) · CH 4 OUT → CH 1 Fall CV (via CH 2 attenuverter) · each channel reshapes the other's timing, producing warping complex LFO shapes · SUM OUT → VCO V/Oct for chaotic melodic drift.",
+      "diagram": "MATHS:\n* CH 1: Cycle ON\n* CH 4: Cycle ON\n* CH 2 & CH 3: Attenuverters moderate\n\n- MATHS.CH 1 (OUT) >> MATHS.CH 3 (In)\n- MATHS.CH 3 (Out) >> MATHS.CH 4 (Rise CV) // CH 1 warps CH 4\n- MATHS.CH 4 (OUT) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Fall CV) // CH 4 warps CH 1\n- MATHS (Unity) p> VCO (V/Oct) // summed chaotic pitch"
+    },
+    {
+      "name": "Slew + sum + inverter (three jobs, one module)",
+      "patch": "MATHS as a utility swiss-army knife. Sequencer CV → CH 1 SIGNAL IN, Rise short + Fall short = portamento slew → VCO pitch · LFO → CH 4 SIGNAL IN with CH 4 used as inverter via SUM polarity (or mult through CH 2 attenuverter full CCW) → filter cutoff · CH 2 + CH 3 summed = mixed modulation → VCA CV · one MATHS simultaneously provides glide, inversion and CV summing for a whole voice.",
+      "diagram": "MATHS:\n* CH 1: Rise short, Fall short (slew)\n* CH 2: Attenuverter full CCW (invert)\n* CH 3: Attenuverter ~1 o'clock\n\n- Sequencer (Pitch) p> MATHS.CH 1 (Signal In)\n- MATHS.CH 1 (OUT) p> VCO (V/Oct) // slewed pitch\n- LFO (Out) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> Filter (Cutoff) // inverted LFO\n- Mod A (Out) >> MATHS.CH 3 (In)\n- MATHS (Unity) >> VCA (CV) // CH 2+CH 3 summed"
     }
   ]
 }

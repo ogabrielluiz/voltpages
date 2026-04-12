@@ -113,6 +113,16 @@
       "name": "LFV random CV",
       "patch": "Alt mode on LFO channel · Rise/Fall control random range and slew · tempo-syncable via clock input",
       "diagram": "QUADRAX:\n* CH 1: LFO Alternate (LFV)\n- Clock (OUT) c> QUADRAX (TRIG 1) // tempo sync\n- QUADRAX (OUT 1) >> VCO (FM) // chaotic modulation"
+    },
+    {
+      "name": "Sidechain duck envelope",
+      "patch": "CH 1 AD fires kick envelope on kick trigger · CH 2 AD fires a longer envelope on the same trigger and is routed through an inverter (or Quadrax LFO channel set to negative polarity via CV matrix) · inverted envelope → bass VCA CV so the bass ducks every kick hit · kick signal mixed back in parallel · clean sidechain compression feel without a dedicated compressor.",
+      "diagram": "QUADRAX:\n* CH 1: AD (kick env)\n* CH 2: AD long (duck env)\n- Kick Trig (Out) t> QUADRAX (TRIG 1)\n- Kick Trig (Out) t> QUADRAX (TRIG 2)\n- QUADRAX (OUT 1) >> Kick VCA (CV)\n- QUADRAX (OUT 2) >> Inverter (In)\n- Inverter (Out) >> Bass VCA (CV) // bass ducks on each kick\n- Kick VCO (Out) -> Kick VCA (In) -> Mixer (In 1)\n- Bass VCO (Out) -> Bass VCA (In) -> Mixer (In 2)"
+    },
+    {
+      "name": "Envelope ↔ LFO mutual modulation",
+      "patch": "Three-node tight feedback loop using two Quadrax channels. CH 1 in CYCLE mode (self-retriggers via its own EOF link back to its trigger) acts as a self-cycling envelope · CH 2 in LFO mode · CH 1 OUT → CV A assigned to CH 2 rate · CH 2 OUT → CV B assigned to CH 1 Attack · each node's motion deforms the other, producing an evolving, never-repeating modulator · CH 1 OUT → VCA for audible result.",
+      "diagram": "QUADRAX:\n* CH 1: CYCLE (self-cycling env)\n* CH 2: LFO\n* CV A → CH 2 rate · CV B → CH 1 Attack\n- QUADRAX (OUT 1) >> QUADRAX (CV A) // env modulates LFO rate\n- QUADRAX (OUT 2) >> QUADRAX (CV B) // LFO modulates env attack\n- QUADRAX (OUT 1) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
     }
   ]
 }

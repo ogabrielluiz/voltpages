@@ -110,6 +110,11 @@
       "name": "Karplus-Strong comb drone",
       "patch": "Load Comb Delay (Karplus-Strong) · CV assigned to Control 1 (Delay Time / V/Oct) · env-gated noise burst into L input seeds string · sequencer drives CV for pitched string sequence · Control 2 (Feedback) near max for sustain · slow LFO on delay time via manual adjust for chorus-beating",
       "diagram": "FX AID 1U:\n* Program: Comb Delay (Karplus-Strong)\n* CV assign: Control 1 (Delay Time / V/Oct)\n* Control 2 (Feedback): near max · D/W: 100% wet\n- Noise (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV) // short noise burst = string pluck\n- VCA (Out) -> FX AID 1U (In L)\n- Sequencer (CV) p> FX AID 1U (CV / D/W) // plays pitched K-S string\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R)"
+    },
+    {
+      "name": "No-input mixer feedback loop",
+      "patch": "FX Aid closes a no-input feedback loop as its own sound source. Load Delay or Reverb · mixer aux send → external VCF → FX Aid L input → FX Aid Out → back into mixer return (closing the loop, no audio source) · LFO 1 → VCF cutoff · LFO 2 → FX Aid CV (assigned to Time or Size) · the self-feedback generates drones, howls and squeals that evolve as the two LFOs sweep the loop gain and delay time.",
+      "diagram": "FX AID 1U:\n* Program: Delay (or Reverb)\n* CV assign: Control 1 (Time/Size)\n- Mixer (Aux Send) -> Filter (In)\n- Filter (Out) -> FX AID 1U (In L) // no audio source — pure feedback\n- FX AID 1U (Out L) -> Mixer (Return) // closes the loop\n- LFO 1 (Out) >> Filter (Cutoff)\n- LFO 2 (Out) >> FX AID 1U (CV / D/W)\n- Mixer (Main Out) -> Output (In)"
     }
   ]
 }

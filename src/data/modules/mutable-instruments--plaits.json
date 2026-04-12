@@ -225,6 +225,26 @@
       "name": "Grain cloud with env-follower density",
       "patch": "Model 13 (Granular Cloud) · external audio source into envelope follower · follower output drives HARMONICS (grain count) and MORPH (grain density/spread) so louder input = denser cloud · Plaits MAIN into reverb · V/OCT fixed or slow-sequenced for tonal center",
       "diagram": "Plaits:\n* Model: Granular Cloud\n- External Audio (Out) -> Env Follower (In)\n- Env Follower (Out) >> Plaits (Harmonics CV)\n- Env Follower (Out) >> Plaits (Morph CV)\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> Reverb (In) -> Output (In)"
+    },
+    {
+      "name": "DX7-style audio-rate FM pair",
+      "patch": "Plaits as analog carrier with an external VCO as modulator, wired like a 2-op DX7 algorithm. Model 1 (Virtual Analog) · external VCO (modulator) → FM input on Plaits through envelope-scaled VCA (index) · Plaits OUT → modulator VCO lin FM for cross-modulation feedback · V/Oct from sequencer tracks both · envelope drives FM index VCA for evolving DX7-style bell and EP timbres.",
+      "diagram": "Plaits:\n* Model: Virtual Analog\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Sequencer (Pitch) p> VCO Mod (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Index VCA (CV)\n- VCO Mod (Out) -> Index VCA (In)\n- Index VCA (Out) >> Plaits (FM) // modulator into carrier\n- Plaits (OUT) >> VCO Mod (Lin FM) // cross-mod feedback\n- Plaits (OUT) -> VCA Out (In)\n- Envelope (Out) >> VCA Out (CV)\n- VCA Out (Out) -> Output (In)"
+    },
+    {
+      "name": "Three-voice just-intonation drone",
+      "patch": "Plaits plus two external VCOs tuned to just-intonation intervals. Plaits (Model: Virtual Analog or Wavetable) tuned to root · VCO 2 tuned a perfect fifth up (3:2) · VCO 3 tuned a major third up (5:4) · all three into a mixer · slow LFO fans into Plaits FM and both VCO fine-tune inputs via separate attenuators at different depths for shifting beating between partials · no trigger, LEVEL held high for continuous drone.",
+      "diagram": "Plaits:\n* Model: Virtual Analog\n- Offset (+5V) >> Plaits (Level) // continuous drone\n- Plaits (OUT) -> Mixer (In 1) // root\n- VCO 2 (Out) -> Mixer (In 2) // perfect fifth (3:2)\n- VCO 3 (Out) -> Mixer (In 3) // major third (5:4)\n- Slow LFO (Out) >> Plaits (FM) // shallow\n- Slow LFO (Out) >> VCO 2 (Fine Tune CV) // moderate\n- Slow LFO (Out) >> VCO 3 (Fine Tune CV) // deep\n- Mixer (Out) -> Output (In)"
+    },
+    {
+      "name": "Plaits + uBurst granular crossfeed",
+      "patch": "Audio-as-CV feedback loop using uBurst as a Beads stand-in. Plaits (Model: Wavetable or FM) → uBurst IN · uBurst Left Out → Plaits Timbre CV via attenuator (audio-rate modulation) · LFO → Plaits Harmonics CV · random CV → uBurst Density · uBurst Right Out → reverb · crossfeeding granular texture and carrier timbre produces evolving clouds that never settle.",
+      "diagram": "Plaits:\n* Model: Wavetable\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> uBurst (IN L)\n- uBurst (Out L) -> Attenuator (In)\n- Attenuator (Out) >> Plaits (Timbre CV) // audio-as-CV feedback\n- LFO (Out) >> Plaits (Harmonics CV)\n- Random CV (Out) >> uBurst (Density CV)\n- uBurst (Out R) -> Reverb (In) -> Output (In)"
+    },
+    {
+      "name": "Shared S&H chord generator",
+      "patch": "One random value splits into harmonically-related pitches. Noise → S&H IN · Clock → S&H trig + envelope trig · S&H OUT → Quantizer 1 → Plaits V/Oct (voice 1) · same S&H OUT → +5V offset → Quantizer 2 → external VCO V/Oct (voice 2, transposed) · envelope opens both voices simultaneously so each clock pulse produces a fresh two-note chord in the chosen scale.",
+      "diagram": "Plaits:\n- Noise (Out) >> S&H (In)\n- Clock (Out) t> S&H (Trig)\n- Clock (Out) t> Envelope (Trig)\n- S&H (Out) p> Quantizer 1 (In)\n- Quantizer 1 (Out) p> Plaits (V/Oct)\n- S&H (Out) >> Offset (+5V In)\n- Offset (Out) p> Quantizer 2 (In)\n- Quantizer 2 (Out) p> VCO 2 (V/Oct)\n- Envelope (Out) >> Plaits (Level)\n- Envelope (Out) >> VCA 2 (CV)\n- Plaits (OUT) -> Mixer (In 1)\n- VCO 2 (Out) -> VCA 2 (In) -> Mixer (In 2)"
     }
   ]
 }
