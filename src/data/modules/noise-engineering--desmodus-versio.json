@@ -8,7 +8,11 @@
   "name": "Desmodus Versio",
   "manufacturer": "Noise Engineering",
   "hp": 10,
-  "tags": ["REVERB", "DELAY", "EFFECTS"],
+  "tags": [
+    "REVERB",
+    "DELAY",
+    "EFFECTS"
+  ],
   "description": "Stereo-in, stereo-out synthetic tail-generator reverb and DSP platform. Sparse-FDN reverberator with LFO modulation, shimmer, and sidechain-style ducking. Firmware-updateable via USB.",
   "controls": [
     {
@@ -73,20 +77,69 @@
     }
   ],
   "inputs": [
-    { "name": "In L", "description": "Left audio input. Normalled to right input when R is unpatched (mono in).", "voltage": "±8V (clips ~16V p-p)", "normalizedTo": "In R" },
-    { "name": "In R", "description": "Right audio input. If unpatched, L signal is normalled to both inputs.", "voltage": "±8V (clips ~16V p-p)" },
-    { "name": "FSU Gate", "description": "Gate input. High gate maxes Regen and mutes input, same as FSU button.", "voltage": ">+2V gate" },
-    { "name": "Blend CV", "description": "CV input for Blend parameter. Sums with pot position.", "voltage": "0–5V" },
-    { "name": "Tone CV", "description": "CV input for Tone parameter. Sums with pot position.", "voltage": "0–5V" },
-    { "name": "Regen CV", "description": "CV input for Regen parameter. Sums with pot position.", "voltage": "0–5V" },
-    { "name": "Size CV", "description": "CV input for Size parameter. Sums with pot position.", "voltage": "0–5V" },
-    { "name": "Speed CV", "description": "CV input for Speed parameter. Sums with pot position.", "voltage": "0–5V" },
-    { "name": "Index CV", "description": "CV input for Index parameter. Sums with pot position.", "voltage": "0–5V" },
-    { "name": "Dense CV", "description": "CV input for Dense parameter. Sums with pot position.", "voltage": "0–5V" }
+    {
+      "name": "In L",
+      "description": "Left audio input. Normalled to right input when R is unpatched (mono in).",
+      "voltage": "±8V (clips ~16V p-p)",
+      "normalizedTo": "In R"
+    },
+    {
+      "name": "In R",
+      "description": "Right audio input. If unpatched, L signal is normalled to both inputs.",
+      "voltage": "±8V (clips ~16V p-p)"
+    },
+    {
+      "name": "FSU Gate",
+      "description": "Gate input. High gate maxes Regen and mutes input, same as FSU button.",
+      "voltage": ">+2V gate"
+    },
+    {
+      "name": "Blend CV",
+      "description": "CV input for Blend parameter. Sums with pot position.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Tone CV",
+      "description": "CV input for Tone parameter. Sums with pot position.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Regen CV",
+      "description": "CV input for Regen parameter. Sums with pot position.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Size CV",
+      "description": "CV input for Size parameter. Sums with pot position.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Speed CV",
+      "description": "CV input for Speed parameter. Sums with pot position.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Index CV",
+      "description": "CV input for Index parameter. Sums with pot position.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Dense CV",
+      "description": "CV input for Dense parameter. Sums with pot position.",
+      "voltage": "0–5V"
+    }
   ],
   "outputs": [
-    { "name": "Out L", "description": "Left stereo output.", "voltage": "audio" },
-    { "name": "Out R", "description": "Right stereo output.", "voltage": "audio" }
+    {
+      "name": "Out L",
+      "description": "Left stereo output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Out R",
+      "description": "Right stereo output.",
+      "voltage": "audio"
+    }
   ],
   "behaviors": [
     {
@@ -139,52 +192,52 @@
     {
       "name": "Shimmer pad",
       "patch": "Mode: SHM · BND switch · Size 1-2 o'clock · Dense 3 o'clock · Regen just past noon · Tone slightly CW · Index noon (no modulation) · Blend 2 o'clock · feed polyphonic chord source · octave-up shimmer feeds back into reverb, building a luminous pad above the dry signal",
-      "diagram": "DESMODUS VERSIO - Shimmer pad:\n* Mode: SHM · BND switch\n* Size: 1-2 o'clock · Dense: 3 o'clock · Regen: just past noon · Blend: 2 o'clock\n- Chord Source (Out) -> Desmodus Versio (In L) // mono normals to In R\n- Desmodus Versio (Out L) -> Mixer (In L)\n- Desmodus Versio (Out R) -> Mixer (In R) // octave-up shimmer builds above dry"
+      "diagram": "DESMODUS VERSIO:\n* Mode: SHM · BND switch\n* Size: 1-2 o'clock · Dense: 3 o'clock · Regen: just past noon · Blend: 2 o'clock\n- Chord Source (Out) -> Desmodus Versio (In L) // mono normals to In R\n- Desmodus Versio (Out L) -> Mixer (In L)\n- Desmodus Versio (Out R) -> Mixer (In R) // octave-up shimmer builds above dry"
     },
     {
       "name": "Dark ambient plate",
       "patch": "Mode: LIM · BND switch · Size 10-11 o'clock · Dense 2-3 o'clock · Regen 9-11 o'clock · Tone noon or slightly CCW (subtle LP roll-off) · Index center (no LFO) · Blend 1-2 o'clock · short diffuse plate with no modulation artifacts · works as a natural room on any source",
-      "diagram": "DESMODUS VERSIO - Dark ambient plate:\n* Mode: LIM · BND switch\n* Size: 10-11 o'clock · Dense: 2-3 o'clock · Regen: 9-11 o'clock · Blend: 1-2 o'clock\n- Source (Out L) -> Desmodus Versio (In L)\n- Source (Out R) -> Desmodus Versio (In R)\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // short diffuse plate, no modulation"
+      "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Size: 10-11 o'clock · Dense: 2-3 o'clock · Regen: 9-11 o'clock · Blend: 1-2 o'clock\n- Source (Out L) -> Desmodus Versio (In L)\n- Source (Out R) -> Desmodus Versio (In R)\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // short diffuse plate, no modulation"
     },
     {
       "name": "Rhythmic ducking reverb",
       "patch": "Mode: LIM · Regen past 3 o'clock · BND switch · patch kick or rhythmic gate source into In L · Tone slightly CW · Blend full CW · input transients automatically duck the infinite tail · reverb breathes in rhythm with the groove, no VCA or sidechain required",
-      "diagram": "DESMODUS VERSIO - Rhythmic ducking reverb:\n* Mode: LIM · BND switch\n* Regen: past 3 o'clock · Tone: slightly CW · Blend: full CW (wet)\n- Kick (Out) -> Desmodus Versio (In L) // normals to In R\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // transients carve space in infinite tail"
+      "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Regen: past 3 o'clock · Tone: slightly CW · Blend: full CW (wet)\n- Kick (Out) -> Desmodus Versio (In L) // normals to In R\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // transients carve space in infinite tail"
     },
     {
       "name": "Accumulating distortion freeze",
       "patch": "Mode: DST · BND switch · Size noon · Dense 2 o'clock · Regen past noon · hold FSU button (or send sustained gate to FSU Gate) · each feedback cycle runs through distortion algorithm, building incrementally · 5-10 seconds: clean frozen buffer → heavy saturation → release FSU for distorted tail decay",
-      "diagram": "DESMODUS VERSIO - Accumulating distortion freeze:\n* Mode: DST · BND switch\n* Size: noon · Dense: 2 o'clock · Regen: past noon\n- Source (Out) -> Desmodus Versio (In L)\n- Gate Source (Out) g> Desmodus Versio (FSU Gate) // sustained gate freezes buffer\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // distortion compounds each feedback cycle"
+      "diagram": "DESMODUS VERSIO:\n* Mode: DST · BND switch\n* Size: noon · Dense: 2 o'clock · Regen: past noon\n- Source (Out) -> Desmodus Versio (In L)\n- Gate Source (Out) g> Desmodus Versio (FSU Gate) // sustained gate freezes buffer\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // distortion compounds each feedback cycle"
     },
     {
       "name": "Drone voice from nothing",
       "patch": "No audio patched to In L or In R · Mode: LIM or SHM · Regen past noon · press and hold FSU button (or gate FSU Gate high) · white noise burst sustains indefinitely in infinite feedback · Tone sweeps LP to HP to sculpt harmonic content · Size adjusts apparent pitch density · Dense shifts smear character · full drone synthesizer with no oscillator",
-      "diagram": "DESMODUS VERSIO - Drone voice from nothing:\n* Mode: LIM or SHM\n* Regen: past noon · inputs unpatched\n- Gate Source (Out) g> Desmodus Versio (FSU Gate) // injects noise burst, infinite feedback\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // shape with Tone/Size/Dense, no VCO"
+      "diagram": "DESMODUS VERSIO:\n* Mode: LIM or SHM\n* Regen: past noon · inputs unpatched\n- Gate Source (Out) g> Desmodus Versio (FSU Gate) // injects noise burst, infinite feedback\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // shape with Tone/Size/Dense, no VCO"
     },
     {
       "name": "Modulated size for chorus-in-reverb",
       "patch": "Mode: LIM · BND switch set to BND · slow sine LFO (e.g. Pamela's PRO Workout Out A sine, 0.1–0.3 Hz) → Size CV · Size knob at noon · Dense 2-3 o'clock · Regen just past noon · creates lush detuned chorus effect inside the reverb tank — modulation is wet-only, dry signal stays stable",
-      "diagram": "DESMODUS VERSIO - Modulated size for chorus-in-reverb:\n* Mode: LIM · BND switch\n* Size: noon · Dense: 2-3 o'clock · Regen: just past noon\n- Source (Out) -> Desmodus Versio (In L)\n- LFO (Sine) >> Desmodus Versio (Size CV) // slow 0.1-0.3 Hz, wet-only detuned chorus\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
+      "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Size: noon · Dense: 2-3 o'clock · Regen: just past noon\n- Source (Out) -> Desmodus Versio (In L)\n- LFO (Sine) >> Desmodus Versio (Size CV) // slow 0.1-0.3 Hz, wet-only detuned chorus\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
     },
     {
       "name": "Pitch-rise freeze",
       "patch": "Mode: SHM · BND switch · Size 11 o'clock · Regen just past noon · Tone noon · hold FSU (or gate FSU Gate) · octave-up shift compounds inside frozen buffer · pad slowly rises in pitch over 10-30 seconds · release FSU before it gets too bright to allow natural shimmer tail to decay · dramatic textural build technique",
-      "diagram": "DESMODUS VERSIO - Pitch-rise freeze:\n* Mode: SHM · BND switch\n* Size: 11 o'clock · Regen: just past noon · Tone: noon\n- Source (Out) -> Desmodus Versio (In L)\n- Gate Source (Out) g> Desmodus Versio (FSU Gate) // freeze, octave-up compounds\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // pitch rises 10-30s, release for shimmer decay"
+      "diagram": "DESMODUS VERSIO:\n* Mode: SHM · BND switch\n* Size: 11 o'clock · Regen: just past noon · Tone: noon\n- Source (Out) -> Desmodus Versio (In L)\n- Gate Source (Out) g> Desmodus Versio (FSU Gate) // freeze, octave-up compounds\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // pitch rises 10-30s, release for shimmer decay"
     },
     {
       "name": "Gate-sequenced freeze stutter",
       "patch": "Gate sequencer (e.g. Pamela's PRO Workout euclidean output) → FSU Gate input · Mode: LIM · BND switch · Regen past noon · Blend 3 o'clock · short gates (25ms–100ms): rapid freeze/release creates stuttered rhythmic reverb gating · long gates: sustained freeze pads · gate pattern locks stutter rhythm to clock",
-      "diagram": "DESMODUS VERSIO - Gate-sequenced freeze stutter:\n* Mode: LIM · BND switch\n* Regen: past noon · Blend: 3 o'clock\n- Source (Out) -> Desmodus Versio (In L)\n- Gate Seq (Euclidean) g> Desmodus Versio (FSU Gate) // short gates = rhythmic stutter\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
+      "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Regen: past noon · Blend: 3 o'clock\n- Source (Out) -> Desmodus Versio (In L)\n- Gate Seq (Euclidean) g> Desmodus Versio (FSU Gate) // short gates = rhythmic stutter\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
     },
     {
       "name": "Metallic IDM texture",
       "patch": "BND switch: JMP · stepped random CV (S&H) → Size CV · Size knob 9 o'clock · Dense full CW · Mode: DST · Regen 2 o'clock · each random step hard-jumps delay time creating metallic pitch artifacts and digital noise bursts · combine with Tone CV (random or LFO) for evolving spectral texture",
-      "diagram": "DESMODUS VERSIO - Metallic IDM texture:\n* Mode: DST · BND/LRP/JMP: JMP\n* Size: 9 o'clock · Dense: full CW · Regen: 2 o'clock\n- Source (Out) -> Desmodus Versio (In L)\n- S&H (Out) >> Desmodus Versio (Size CV) // hard-jump delay = metallic bursts\n- LFO (Out) >> Desmodus Versio (Tone CV) // evolving spectral texture\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
+      "diagram": "DESMODUS VERSIO:\n* Mode: DST · BND/LRP/JMP: JMP\n* Size: 9 o'clock · Dense: full CW · Regen: 2 o'clock\n- Source (Out) -> Desmodus Versio (In L)\n- S&H (Out) >> Desmodus Versio (Size CV) // hard-jump delay = metallic bursts\n- LFO (Out) >> Desmodus Versio (Tone CV) // evolving spectral texture\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
     },
     {
       "name": "Filter sweep inside reverb",
       "patch": "Mode: LIM · BND switch · Regen past noon · Size noon · Dense 3 o'clock · triangle LFO → Tone CV · sweep full range LP to HP · Tone knob at noon (CV takes full control) · wah-like tonal motion happens inside the wet reverb tail itself — dry signal stays unchanged · Speed parameter controls LFO rate if using internal LFO on Index CW instead",
-      "diagram": "DESMODUS VERSIO - Filter sweep inside reverb:\n* Mode: LIM · BND switch\n* Size: noon · Dense: 3 o'clock · Regen: past noon · Tone: noon\n- Source (Out) -> Desmodus Versio (In L)\n- LFO (Triangle) >> Desmodus Versio (Tone CV) // wah-like LP->HP sweep inside wet tail\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
+      "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Size: noon · Dense: 3 o'clock · Regen: past noon · Tone: noon\n- Source (Out) -> Desmodus Versio (In L)\n- LFO (Triangle) >> Desmodus Versio (Tone CV) // wah-like LP->HP sweep inside wet tail\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
     }
   ]
 }
