@@ -118,43 +118,53 @@
   "patchIdeas": [
     {
       "name": "808-style kick drum",
-      "patch": "Model 14 (bass drum) · HARMONICS at 9 o'clock (low tuning) · TIMBRE at 9 o'clock (soft click) · MORPH at 10 o'clock (medium decay) · short trigger from sequencer · AUX = distorted variation for layering"
+      "patch": "Model 14 (bass drum) · HARMONICS at 9 o'clock (low tuning) · TIMBRE at 9 o'clock (soft click) · MORPH at 10 o'clock (medium decay) · short trigger from sequencer · AUX = distorted variation for layering",
+      "diagram": "Plaits:\n* Model: 14 (bass drum)\n- Sequencer (Trig) t> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (In 1)\n- Plaits (AUX) -> Mixer (In 2) // distorted layer"
     },
     {
       "name": "DX7 electric piano",
-      "patch": "Model 4 (Plaits formant bank, select keyboard FM preset) · HARMONICS turned to EP harmonic preset position · TIMBRE at 70% (moderate FM index) · MORPH short (tight decay) · V/Oct from keyboard · internal LPG active · clean playable FM piano voice from one module"
+      "patch": "Model 4 (Plaits formant bank, select keyboard FM preset) · HARMONICS turned to EP harmonic preset position · TIMBRE at 70% (moderate FM index) · MORPH short (tight decay) · V/Oct from keyboard · internal LPG active · clean playable FM piano voice from one module",
+      "diagram": "Plaits:\n* Model: 4 (FM)\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- Keyboard (Gate) g> Plaits (Trigger) // activates internal LPG\n- Plaits (OUT) -> Output (In)"
     },
     {
       "name": "Drum machine from one module",
-      "patch": "MODEL CV from 3-step sequencer outputting 0V / 0.31V / 0.62V · TRIG from clock · 0V = kick (Model 14) · 0.31V = snare (Model 15) · 0.62V = hi-hat (Model 16) · sequence all three drum voices with one Plaits and one sequencer"
+      "patch": "MODEL CV from 3-step sequencer outputting 0V / 0.31V / 0.62V · TRIG from clock · 0V = kick (Model 14) · 0.31V = snare (Model 15) · 0.62V = hi-hat (Model 16) · sequence all three drum voices with one Plaits and one sequencer",
+      "diagram": "Plaits:\n- Sequencer (CV Out) >> Plaits (Model CV) // 0/0.31/0.62V selects kick/snare/hat\n- Clock (Out) t> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (In)"
     },
     {
       "name": "Chiptune arpeggiator",
-      "patch": "Model 8 (speech/LPC bank, orange) · clock → TRIG · TIMBRE swept to select phoneme/arpeggio mode · AUX = NES-style triangle wave bass line · mix OUT + AUX for two independent voices from one module"
+      "patch": "Model 8 (speech/LPC bank, orange) · clock → TRIG · TIMBRE swept to select phoneme/arpeggio mode · AUX = NES-style triangle wave bass line · mix OUT + AUX for two independent voices from one module",
+      "diagram": "Plaits:\n* Model: 8 (speech/LPC)\n- Clock (Out) c> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (In 1) // arpeggio lead\n- Plaits (AUX) -> Mixer (In 2) // triangle bass"
     },
     {
       "name": "Granular ambient CV",
-      "patch": "Model 9 · hold right button + HARMONICS full CCW to enter LFO mode · HARMONICS at 2 o'clock (wide pitch spread across grains) · OUT and AUX = two non-repeating, slowly wandering random CV sources · patch to filter FM and reverb send for ambient self-generating textures"
+      "patch": "Model 9 · hold right button + HARMONICS full CCW to enter LFO mode · HARMONICS at 2 o'clock (wide pitch spread across grains) · OUT and AUX = two non-repeating, slowly wandering random CV sources · patch to filter FM and reverb send for ambient self-generating textures",
+      "diagram": "Plaits:\n* Model: 9 (LFO mode)\n- Plaits (OUT) >> Filter (FM CV) // random wandering CV\n- Plaits (AUX) >> Reverb (Send CV) // independent second stream"
     },
     {
       "name": "Self-patch feedback FM",
-      "patch": "Model 3 (2-op FM) · OUT → MORPH CV input via attenuverter set at 10 o'clock · audio-rate feedback creates metallic, chaotic tones · TIMBRE controls carrier/modulator ratio · HARMONICS adjusts base FM depth · sweep MORPH attenuverter for feedback amount control"
+      "patch": "Model 3 (2-op FM) · OUT → MORPH CV input via attenuverter set at 10 o'clock · audio-rate feedback creates metallic, chaotic tones · TIMBRE controls carrier/modulator ratio · HARMONICS adjusts base FM depth · sweep MORPH attenuverter for feedback amount control",
+      "diagram": "Plaits:\n* Model: 3 (2-op FM)\n- Plaits (OUT) >> Plaits (Morph CV) // audio-rate self feedback\n- Plaits (OUT) -> Output (In)"
     },
     {
       "name": "Bowed string drone",
-      "patch": "Model 12 (modal resonator/string) · no trigger patched · MORPH at 3 o'clock (long resonance) · V/Oct from keyboard or fixed pitch CV · LEVEL input from slow LFO for breathing bow pressure · mix OUT + AUX for stereo spread"
+      "patch": "Model 12 (modal resonator/string) · no trigger patched · MORPH at 3 o'clock (long resonance) · V/Oct from keyboard or fixed pitch CV · LEVEL input from slow LFO for breathing bow pressure · mix OUT + AUX for stereo spread",
+      "diagram": "Plaits:\n* Model: 12 (modal)\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- LFO (Out) >> Plaits (Level) // breathing bow pressure\n- Plaits (OUT) -> Mixer (L)\n- Plaits (AUX) -> Mixer (R)"
     },
     {
       "name": "Supersaw / unison lead",
-      "patch": "Model 9 (sawtooth grains) · HARMONICS at 9 o'clock (tight unison) · TIMBRE full CW (bright, dense) · V/Oct from sequencer · TRIG from gate · mix OUT + AUX (slightly detuned grain clusters) for wide supersaw sound"
+      "patch": "Model 9 (sawtooth grains) · HARMONICS at 9 o'clock (tight unison) · TIMBRE full CW (bright, dense) · V/Oct from sequencer · TRIG from gate · mix OUT + AUX (slightly detuned grain clusters) for wide supersaw sound",
+      "diagram": "Plaits:\n* Model: 9 (grains)\n- Sequencer (CV) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (L)\n- Plaits (AUX) -> Mixer (R) // detuned grain cluster"
     },
     {
       "name": "Talking bass",
-      "patch": "Model 8 (speech synthesis) · MORPH positioned at formant vowel transition · V/Oct set for bass register (0V–1V) · slow LFO on TIMBRE CV at 1 o'clock attenuverter · MORPH CV from envelope for vowel-on-note effect · rhythmic gate triggers for consonant attacks"
+      "patch": "Model 8 (speech synthesis) · MORPH positioned at formant vowel transition · V/Oct set for bass register (0V–1V) · slow LFO on TIMBRE CV at 1 o'clock attenuverter · MORPH CV from envelope for vowel-on-note effect · rhythmic gate triggers for consonant attacks",
+      "diagram": "Plaits:\n* Model: 8 (speech)\n- Sequencer (CV) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Plaits (Trigger)\n- LFO (Out) >> Plaits (Timbre CV)\n- Envelope (Out) >> Plaits (Morph CV) // vowel-on-note\n- Plaits (OUT) -> Output (In)"
     },
     {
       "name": "Beat-synced model switching",
-      "patch": "Slow ascending CV ramp (0–5V over 8 bars) → MODEL CV · clock → TRIG · model only changes on each trigger so switching is always in-time · HARMONICS and TIMBRE stay fixed, timbre character evolves bar by bar as model index advances"
+      "patch": "Slow ascending CV ramp (0–5V over 8 bars) → MODEL CV · clock → TRIG · model only changes on each trigger so switching is always in-time · HARMONICS and TIMBRE stay fixed, timbre character evolves bar by bar as model index advances",
+      "diagram": "Plaits:\n- LFO (Ramp) >> Plaits (Model CV) // 0-5V over 8 bars\n- Clock (Out) c> Plaits (Trigger) // samples Model CV on edge\n- Plaits (OUT) -> Output (In)"
     }
   ]
 }
