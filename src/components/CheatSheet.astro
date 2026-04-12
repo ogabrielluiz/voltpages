@@ -8,9 +8,10 @@ import PatchIdeas from './PatchIdeas.astro';
 
 interface Props {
   module: Module;
+  expanders?: Module[];
 }
 
-const { module } = Astro.props;
+const { module, expanders = [] } = Astro.props;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -35,6 +36,9 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
     <a href="#behaviors" class="text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-2.5 md:px-3 py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0">Behaviors</a>
     <a href="#controls" class="text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-2.5 md:px-3 py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0">Controls</a>
     <a href="#io" class="text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-2.5 md:px-3 py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0">I/O</a>
+    {expanders.length > 0 && (
+      <a href="#expanders" class="text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-2.5 md:px-3 py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0">Expanders</a>
+    )}
   </nav>
 
   <!-- Patch Ideas -->
@@ -53,9 +57,46 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
   </section>
 
   <!-- I/O -->
-  <section id="io" class="px-4 md:px-7 py-5 md:py-6 scroll-mt-12">
+  <section id="io" class="px-4 md:px-7 py-5 md:py-6 scroll-mt-12 border-b border-border">
     <IOPanel inputs={module.inputs} outputs={module.outputs} />
   </section>
+
+  {expanders.length > 0 && (
+    <section id="expanders" class="px-4 md:px-7 py-5 md:py-6 scroll-mt-12">
+      <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">Expanders</h2>
+      <div class="flex flex-col gap-6">
+        {expanders.map((exp) => (
+          <details class="border border-border">
+            <summary class="px-3 py-2 cursor-pointer bg-surface text-sm font-semibold text-fg flex justify-between items-baseline">
+              <span>{exp.name}</span>
+              <span class="text-[11px] font-mono text-subtle tracking-wide uppercase">{exp.hp}HP</span>
+            </summary>
+            <div class="px-3 py-3 border-t border-border">
+              <p class="text-sm text-muted leading-relaxed mb-4">{exp.description}</p>
+              {exp.behaviors.length > 0 && (
+                <div class="mb-4">
+                  <BehaviorsPanel behaviors={exp.behaviors} />
+                </div>
+              )}
+              {exp.patchIdeas.length > 0 && (
+                <div class="mb-4">
+                  <PatchIdeas patchIdeas={exp.patchIdeas} />
+                </div>
+              )}
+              {(exp.inputs.length > 0 || exp.outputs.length > 0) && (
+                <div class="mb-4">
+                  <IOPanel inputs={exp.inputs} outputs={exp.outputs} />
+                </div>
+              )}
+              {exp.controls.length > 0 && (
+                <ControlsTable controls={exp.controls} />
+              )}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  )}
 
   <!-- Print-only brand footer (hidden on screen) -->
   <footer class="print-footer px-4 md:px-7 pb-6">

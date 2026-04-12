@@ -12,7 +12,16 @@
         "schemaVersion": { "type": "number", "const": 1 },
         "generatedAt": { "type": "string" },
         "verified": { "type": "boolean" },
-        "firmwareVersion": { "type": "string" }
+        "firmwareVersion": { "type": "string" },
+        "sources": {
+          "type": "array",
+          "description": "URLs consulted while building this sheet (manual, ModularGrid, Modwiggler threads, Reddit, etc.). Used to audit and re-verify.",
+          "items": { "type": "string", "format": "uri" }
+        },
+        "expanderOf": {
+          "type": "string",
+          "description": "Slug of the parent module this one expands. When set, this sheet is rendered inline on the parent's page and hidden from the top-level module listing."
+        }
       }
     },
     "slug": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" },

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CheatSheet from '../../components/CheatSheet.astro';
-import { getAllModules, getModuleBySlug } from '../../lib/modules';
+import { getAllModules, getModuleBySlug, getExpandersFor } from '../../lib/modules';
 import '../../styles/global.css';
 
 export function getStaticPaths() {
@@ -17,6 +17,8 @@ const module = getModuleBySlug(slug!);
 if (!module) {
   return Astro.redirect('/sheets/404');
 }
+
+const expanders = getExpandersFor(slug!);
 ---
 
 <BaseLayout
@@ -26,5 +28,5 @@ if (!module) {
   ogDescription={module.description}
   ogImage={`/og/${slug}.png`}
 >
-  <CheatSheet module={module} />
+  <CheatSheet module={module} expanders={expanders} />
 </BaseLayout>

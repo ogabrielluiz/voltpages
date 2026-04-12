@@ -29,6 +29,8 @@ export interface ModuleMeta {
   generatedAt?: string;
   verified: boolean;
   firmwareVersion?: string;
+  sources?: string[];
+  expanderOf?: string;
 }
 
 export interface Module {
