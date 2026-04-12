@@ -99,19 +99,23 @@
   "patchIdeas": [
     {
       "name": "Spectral freeze drone",
-      "patch": "Audio in · Freeze button held · Position + Size sweep frozen buffer · Blend full wet · infinite evolving drone"
+      "patch": "Audio in · Freeze button held · Position + Size sweep frozen buffer · Blend full wet · infinite evolving drone",
+      "diagram": "uBurst:\n* Mode: Spectral\n* Blend: full wet\n* Freeze: held\n- Source (Out) -> uBurst (Left In)\n- LFO (Out) >> uBurst (Position CV) // slow sweep\n- LFO (Out) >> uBurst (Size CV)\n- uBurst (Left Out) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
     },
     {
       "name": "Pitched reverb",
-      "patch": "Mode: Pitch Shifter/Reverb · Density low · Size medium · Blend 70% wet · shimmer wash"
+      "patch": "Mode: Pitch Shifter/Reverb · Density low · Size medium · Blend 70% wet · shimmer wash",
+      "diagram": "uBurst:\n* Mode: Pitch Shifter/Reverb\n* Density: low\n* Size: medium\n* Blend: 70% wet\n- VCO (Out) -> uBurst (Left In)\n- Quantizer (Out) p> uBurst (V/Oct) // pitched shimmer\n- uBurst (Left Out) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
     },
     {
       "name": "Granular stutter",
-      "patch": "Mode: Granular · Density high · Size very small · Trigger input from clock · rhythmic micro-slice effect"
+      "patch": "Mode: Granular · Density high · Size very small · Trigger input from clock · rhythmic micro-slice effect",
+      "diagram": "uBurst:\n* Mode: Granular\n* Density: high\n* Size: very small\n- Source (Out) -> uBurst (Left In)\n- Clock (Out) c> uBurst (Trigger) // rhythmic slices\n- uBurst (Left Out) -> Output (In L)\n- uBurst (Right Out) -> Output (In R)"
     },
     {
       "name": "Looping delay with degradation",
-      "patch": "Mode: Looping Delay · Density = feedback · Texture = filter · Size = delay time · self-degrading loops"
+      "patch": "Mode: Looping Delay · Density = feedback · Texture = filter · Size = delay time · self-degrading loops",
+      "diagram": "uBurst:\n* Mode: Looping Delay\n- Source (Out) -> uBurst (Left In)\n- LFO (Out) >> uBurst (Texture CV) // filter motion\n- Envelope (Out) >> uBurst (Density CV) // feedback swells\n- uBurst (Left Out) -> Output (In L)\n- uBurst (Right Out) -> Output (In R)"
     }
   ]
 }

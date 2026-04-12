@@ -151,15 +151,18 @@
   "patchIdeas": [
     {
       "name": "Improved saw oscillator",
-      "patch": "Loop mode · FALL → TRIG. · slow rise + fast fall · resets instantly to 0V"
+      "patch": "Loop mode · FALL → TRIG. · slow rise + fast fall · resets instantly to 0V",
+      "diagram": "Contour 1:\n* Slew/Loop: Loop\n* Full/Audio: Audio\n* Rise: slow\n* Fall: fast\n- Contour 1 (FALL) t> Contour 1 (TRIG.) // self-reset for clean saw\n- Contour 1 (OUT) -> VCF (In)"
     },
     {
       "name": "Pulse width modifier",
-      "patch": "Slew mode · pulse → TRIG. · RISE output = width-controlled pulse · FALL = delayed pulse"
+      "patch": "Slew mode · pulse → TRIG. · RISE output = width-controlled pulse · FALL = delayed pulse",
+      "diagram": "Contour 1:\n* Slew/Loop: Slew\n- Pulse LFO (Out) t> Contour 1 (TRIG.)\n- Contour 1 (RISE) g> VCA (Gate) // width-controlled pulse\n- Contour 1 (FALL) g> Drum (Trig) // delayed pulse"
     },
     {
       "name": "Envelope follower",
-      "patch": "Slew mode · audio → IN · Rise slider max fast · Fall slider moderate"
+      "patch": "Slew mode · audio → IN · Rise slider max fast · Fall slider moderate",
+      "diagram": "Contour 1:\n* Slew/Loop: Slew\n* Rise: max fast\n* Fall: moderate\n- Audio Source (Out) -> Contour 1 (IN)\n- Contour 1 (OUT) >> VCF (Cutoff) // envelope follower CV"
     }
   ]
 }
