@@ -107,6 +107,81 @@
       "name": "Shift register melody",
       "patch": "A# option ON for channels 2-4 · gate sequence → Gate input · channel 1 plays melody · channels 2-4 echo it with delay",
       "diagram": "BARD QUARTET:\n* CH 2-4: A# shift register mode\n- Sequencer (Pitch) p> Bard Quartet (IN 1)\n- Clock (Gate) g> Bard Quartet (Gate Input) // advances shift register\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "SATB Vocal Quartet (Bass/Tenor/Alto/Soprano)",
+      "patch": "Four-part chorale · each harmony stores a root-position 4-note chord · harmony sequencer walks the song · clock gates Track & Hold · TRIG OUT retriggers envelopes on all voices",
+      "diagram": "BARD QUARTET:\n* Arp: OFF · 8 harmonies = 4-note chord voicings\n- Sequencer (Out) >> Bard Quartet (HRMN) // walks chord changes\n- Clock (Out) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> Bass VCO (V/Oct)\n- Bard Quartet (OUT 2) p> Tenor VCO (V/Oct)\n- Bard Quartet (OUT 3) p> Alto VCO (V/Oct)\n- Bard Quartet (OUT 4) p> Soprano VCO (V/Oct)\n- Bard Quartet (TRIG) t> Envelope (Trig) // retrigger all voices"
+    },
+    {
+      "name": "Harmonic Orbit (HRMN-driven progression)",
+      "patch": "Slow LFO sweeps 8 harmonies programmed as I-vi-IV-V-iii-IV-ii-V · lead melody plays over auto-changing S&H pad voicings from CH2-4",
+      "diagram": "BARD QUARTET:\n* Harmonies 1-8: I-vi-IV-V-iii-IV-ii-V\n- Slow LFO (Out) >> Bard Quartet (HRMN)\n- Sequencer (Out) p> Bard Quartet (IN 1)\n- Clock (Out) g> Bard Quartet (Gate) // S&H pads\n- Bard Quartet (OUT 1) p> Lead VCO (V/Oct)\n- Bard Quartet (OUT 2) p> Pad VCO 1 (V/Oct)\n- Bard Quartet (OUT 3) p> Pad VCO 2 (V/Oct)\n- Bard Quartet (OUT 4) p> Pad VCO 3 (V/Oct)"
+    },
+    {
+      "name": "Shift Register Chord Crawler",
+      "patch": "Single melody cascades CH1→CH2→CH3→CH4 via A# shift register · each channel offset +0/+5/+7/+12 semis · rolling 4-note voicing from one CV line",
+      "diagram": "BARD QUARTET:\n* CH 2-4: A# shift register · octaves +0/+5/+7/+12\n- Sequencer (Out) p> Bard Quartet (IN 1)\n- Clock (Out) g> Bard Quartet (Gate) // rising edge shifts\n- Bard Quartet (OUT 1) -> Mixer (In 1)\n- Bard Quartet (OUT 2) -> Mixer (In 2)\n- Bard Quartet (OUT 3) -> Mixer (In 3)\n- Bard Quartet (OUT 4) -> Mixer (In 4)"
+    },
+    {
+      "name": "Polytonal Quartet (4 keys at once)",
+      "patch": "Each channel locked to different key center for deliberate polytonal drift · CH1 C major · CH2 F# major · CH3 Bb Dorian · CH4 E minor pentatonic · no TRSP, no grouping",
+      "diagram": "BARD QUARTET:\n* CH1=C maj · CH2=F# maj · CH3=Bb Dor · CH4=E min pent\n- LFO 1 (Out) >> Bard Quartet (IN 1)\n- LFO 2 (Out) >> Bard Quartet (IN 2)\n- LFO 3 (Out) >> Bard Quartet (IN 3)\n- LFO 4 (Out) >> Bard Quartet (IN 4)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Parallel Harmonizer (Root/3rd/5th/Octave)",
+      "patch": "Melody CV multed to all 4 channels · same scale with degree offsets +0/+2/+4/+7 · Harmony knob morphs chord qualities across I-IV-V banks",
+      "diagram": "BARD QUARTET:\n* Same scale all CH · offsets +0/+3rd/+5th/+oct\n- Melody VCO (CV) -> Mult (In)\n- Mult (Out1) p> Bard Quartet (IN 1)\n- Mult (Out2) p> Bard Quartet (IN 2)\n- Mult (Out3) p> Bard Quartet (IN 3)\n- Mult (Out4) p> Bard Quartet (IN 4)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Arp + 3 Drones",
+      "patch": "CH1-3 hold root/3rd/5th per harmony · CH4 arpeggiates same chord UP with octave spread 2 · sequencer walks HRMN for progression · TRIG OUT doubles as drum accent",
+      "diagram": "BARD QUARTET:\n* CH4: Arp UP · octave spread 2\n- Clock (Out) c> Bard Quartet (IN 4) // arp clock\n- Sequencer (Out) >> Bard Quartet (HRMN)\n- Bard Quartet (OUT 1) p> Drone VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> Drone VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> Drone VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> Arp VCO (V/Oct)\n- Bard Quartet (TRIG) t> Drum (Accent)"
+    },
+    {
+      "name": "Quad Arp Polyrhythm",
+      "patch": "All 4 channels in Arp mode · clock divider /3 /5 /7 /8 feeds Expander gate ins · HRMN walks chords · octave spreads 1/2/3/4 for cascading polyrhythm · requires Bard Quartet Expand",
+      "diagram": "BARD QUARTET:\n* All CH: Arp · spreads 1/2/3/4 · Expander required\n- Clock Divider (/3) c> Expander (Gate 1)\n- Clock Divider (/5) c> Expander (Gate 2)\n- Clock Divider (/7) c> Expander (Gate 3)\n- Clock Divider (/8) c> Expander (Gate 4)\n- LFO (Out) >> Bard Quartet (HRMN)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Microtonal Raga Channel",
+      "patch": "CH1 retuned to 22-shruti raga via µTune ±50¢ · CH2-4 stay 12-TET Ionian pad · TRSP routed POST-quantize on CH1 so raga intervals survive transposition",
+      "diagram": "BARD QUARTET:\n* CH1: raga scale + µTune · TRSP=POST · CH2-4=Ionian\n- Drone VCO (CV) p> Bard Quartet (IN 1)\n- Keyboard (CV) >> Bard Quartet (TRSP)\n- Clock (Out) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> Sitar VCO (V/Oct)\n- Bard Quartet (OUT 2) p> Pad VCO 1 (V/Oct)\n- Bard Quartet (OUT 3) p> Pad VCO 2 (V/Oct)\n- Bard Quartet (OUT 4) p> Pad VCO 3 (V/Oct)"
+    },
+    {
+      "name": "TRIG-OUT Percussion Conductor",
+      "patch": "Random S&H CV feeds CH1 · every detected note-change fires drums via TRIG OUT · GATE IN from sequencer shapes deliberate melodic cadence over chaotic percussion",
+      "diagram": "BARD QUARTET:\n- S&H (Out) >> Bard Quartet (IN 1)\n- Sequencer (Gate) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> Lead VCO (V/Oct)\n- Bard Quartet (TRIG) t> Drum Envelope (Trig) // fires on note change\n- Bard Quartet (TRIG) c> Rhythm Sequencer (Clock)"
+    },
+    {
+      "name": "Split TRSP Routing (Pre/Post/Octave)",
+      "patch": "One keyboard CV into TRSP produces 4 simultaneous results · CH1=PRE (chromatic) · CH2=POST (diatonic) · CH3=OCTAVE · CH4=OFF static drone · shared Clock gates all",
+      "diagram": "BARD QUARTET:\n* CH1 TRSP=PRE · CH2=POST · CH3=OCT · CH4=OFF\n- Keyboard (CV) >> Bard Quartet (TRSP)\n- Clock (Out) g> Bard Quartet (Gate)\n- Sequencer (Out) p> Bard Quartet (IN 1)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Grouped Wide Chord + Independent Bass/Lead",
+      "patch": "CH2+CH3 grouped for wide pad sharing scale at +octave · CH1 independent bassline · CH4 independent lead · slow seq walks HRMN for chord changes",
+      "diagram": "BARD QUARTET:\n* CH2+CH3 grouped (+oct) · CH1=bass · CH4=lead\n- Bass Seq (Out) p> Bard Quartet (IN 1)\n- Pad Trig (Gate) g> Bard Quartet (Gate)\n- Melody Seq (Out) p> Bard Quartet (IN 4)\n- Slow Seq (Out) >> Bard Quartet (HRMN)\n- Bard Quartet (OUT 1) p> Bass VCO (V/Oct)\n- Bard Quartet (OUT 2) p> Pad VCO A (V/Oct)\n- Bard Quartet (OUT 3) p> Pad VCO B (V/Oct)\n- Bard Quartet (OUT 4) p> Lead VCO (V/Oct)"
+    },
+    {
+      "name": "Generative Feedback Patch",
+      "patch": "CH1 OUT attenuated feeds CH2 IN · CH2 feeds CH3 · CH3 feeds CH4 · quantized feedback network · all channels on different scales (Pentatonic/Whole Tone/Blues/Dorian) · TRIG cascades S&H",
+      "diagram": "BARD QUARTET:\n* CH1=Pent · CH2=Whole · CH3=Blues · CH4=Dorian\n- Random LFO (Out) >> Bard Quartet (IN 1)\n- Bard Quartet (OUT 1) -> Attenuator (In) // ~0.3 gain\n- Attenuator (Out) >> Bard Quartet (IN 2)\n- Bard Quartet (OUT 2) >> Bard Quartet (IN 3)\n- Bard Quartet (OUT 3) >> Bard Quartet (IN 4)\n- Bard Quartet (TRIG) c> Clock Divider (In)\n- Clock Divider (Out) g> Bard Quartet (Gate)"
+    },
+    {
+      "name": "Chord Quality Morph via Microtune",
+      "patch": "Static root/3rd/5th/7th CVs on CH1-4 · same notes across all 8 harmonies · 3rd-degree note detuned +0¢ (major) through -17¢ (neutral) to -50¢ (minor) across harmonies · HRMN LFO morphs chord quality",
+      "diagram": "BARD QUARTET:\n* 3rd detune 0¢→-17¢→-50¢ across H1-8\n- Static CV 1 (Out) p> Bard Quartet (IN 1)\n- Static CV 2 (Out) p> Bard Quartet (IN 2)\n- Static CV 3 (Out) p> Bard Quartet (IN 3)\n- Static CV 4 (Out) p> Bard Quartet (IN 4)\n- Slow LFO (Out) >> Bard Quartet (HRMN) // morphs maj↔min\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Scene Recall Song Mode",
+      "patch": "10 memory slots = 10 song sections · drum trigger → Counter → CV steps slot recall · HRMN walks chord within each scene · Slot 1 intro / 2 verse / 3 chorus etc.",
+      "diagram": "BARD QUARTET:\n* 10 memory slots = song sections\n- Drum (Trig) t> Counter (Clock)\n- Counter (CV) >> Bard Quartet (Memory Recall) // section stepping\n- Sequencer (Out) >> Bard Quartet (HRMN)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Quad S&H Chord Cloud",
+      "patch": "Four incommensurate LFOs (0.1/0.13/0.17/0.23 Hz) → CH1-4 · slow clock gates T&H · pentatonic all channels · octaves -2/-1/0/+1 · TRIG OUT taps tape delay for shimmering chord cloud",
+      "diagram": "BARD QUARTET:\n* Pentatonic all CH · oct -2/-1/0/+1\n- LFO 1 (0.10Hz) >> Bard Quartet (IN 1)\n- LFO 2 (0.13Hz) >> Bard Quartet (IN 2)\n- LFO 3 (0.17Hz) >> Bard Quartet (IN 3)\n- LFO 4 (0.23Hz) >> Bard Quartet (IN 4)\n- Slow Clock (Out) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)\n- Bard Quartet (TRIG) t> Tape Delay (Tap)"
     }
   ]
 }
