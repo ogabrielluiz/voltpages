@@ -125,6 +125,12 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   border: 1px solid #d5d0c6;
   background: #f7f5f0;
   overflow: hidden;
+}
+
+/* Only apply flex layout when the dialog is actually open — otherwise the
+   UA's display:none for closed <dialog> is overridden and the element
+   takes space in the layout (breaking mobile page flow). */
+.diagram-lightbox[open] {
   display: flex;
   flex-direction: column;
 }
