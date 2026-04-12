@@ -74,15 +74,18 @@
   "patchIdeas": [
     {
       "name": "Melodic S&H",
-      "patch": "Noise/random CV → CV IN · Clock → CLK IN · CV OUT → VCO 1V/oct"
+      "patch": "Noise/random CV → CV IN · Clock → CLK IN · CV OUT → VCO 1V/oct",
+      "diagram": "PICO QUANT:\n* Scale: Pentatonic\n- Noise (Out) >> Pico Quant (CV IN)\n- Clock (Out) c> Pico Quant (CLK IN) // samples on clock\n- Pico Quant (CV OUT) p> VCO (V/Oct)\n- Pico Quant (CLK OUT) t> Envelope (Trig)"
     },
     {
       "name": "Microtonal melody",
-      "patch": "Upload quarter-tone scale via web · sequencer → CV IN · CV OUT → VCO"
+      "patch": "Upload quarter-tone scale via web · sequencer → CV IN · CV OUT → VCO",
+      "diagram": "PICO QUANT:\n* Scale: Custom quarter-tone (uploaded)\n- Sequencer (CV) >> Pico Quant (CV IN)\n- Pico Quant (CV OUT) p> VCO (V/Oct) // microtonal pitches"
     },
     {
       "name": "Tolerance experiment",
-      "patch": "LFO → CV IN · Tolerance CW (tight) for precise snapping vs CCW for smooth stepping"
+      "patch": "LFO → CV IN · Tolerance CW (tight) for precise snapping vs CCW for smooth stepping",
+      "diagram": "PICO QUANT:\n* Tolerance: CW (tight)\n* Glide: low\n- LFO (Out) >> Pico Quant (CV IN)\n- Pico Quant (CV OUT) p> VCO (V/Oct) // stepped melody from smooth LFO\n- Pico Quant (CLK OUT) t> Envelope (Trig)"
     }
   ]
 }

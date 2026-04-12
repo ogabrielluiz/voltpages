@@ -93,15 +93,18 @@
   "patchIdeas": [
     {
       "name": "Clocked reset",
-      "patch": "Clock → Rst · LFO rate slower than clock for rhythmic waveshaping"
+      "patch": "Clock → Rst · LFO rate slower than clock for rhythmic waveshaping",
+      "diagram": "PIP LFO:\n* Mode: LFO\n* Freq: slower than clock\n- Clock (Out) t> Pip LFO (Rst) // resets cycle rhythmically\n- Pip LFO (Triangle bipolar) >> VCF (Cutoff CV)"
     },
     {
       "name": "VCO with multiple waveforms",
-      "patch": "V/Oct → Freq · bipolar saw → VCF · unipolar tri → VCA CV"
+      "patch": "V/Oct → Freq · bipolar saw → VCF · unipolar tri → VCA CV",
+      "diagram": "PIP LFO:\n* Mode: VCO\n- Sequencer (CV) p> Pip LFO (Freq CV) // 1V/oct tracking\n- Pip LFO (Saw bipolar) -> VCF (In)\n- Pip LFO (Triangle unipolar) >> VCA (CV)"
     },
     {
       "name": "Unipolar modulation",
-      "patch": "0–5V sine → filter cutoff for upward-only modulation sweep"
+      "patch": "0–5V sine → filter cutoff for upward-only modulation sweep",
+      "diagram": "PIP LFO:\n* Mode: LFO\n- Pip LFO (Sine unipolar) >> VCF (Cutoff CV) // 0-5V sweep opens filter only upward"
     }
   ]
 }

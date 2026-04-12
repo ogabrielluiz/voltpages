@@ -103,15 +103,18 @@
   "patchIdeas": [
     {
       "name": "Self-contained melodic resonator",
-      "patch": "Sequencer → V/OCT only · no other patches · module generates excitation and strums internally"
+      "patch": "Sequencer → V/OCT only · no other patches · module generates excitation and strums internally",
+      "diagram": "RESONATE:\n* Resonator Type: Modal\n* Polyphony: 1 voice\n- Sequencer (CV) p> Resonate (V/OCT) // step changes trigger internal excitation\n- Resonate (ODD) -> Mixer (In)"
     },
     {
       "name": "Drum hits as exciter",
-      "patch": "Snare or click → IN · sequencer → V/OCT · STRUM unpatched · modal resonator"
+      "patch": "Snare or click → IN · sequencer → V/OCT · STRUM unpatched · modal resonator",
+      "diagram": "RESONATE:\n* Resonator Type: Modal\n- Drum (Out) -> Resonate (IN) // percussive exciter\n- Sequencer (CV) p> Resonate (V/OCT)\n- Resonate (ODD) -> Mixer (In)\n- Resonate (EVEN) -> Mixer (In)"
     },
     {
       "name": "Polyphonic chords",
-      "patch": "4-voice polyphony · sequencer → V/OCT rapidly · ODD + EVEN to mixer for full chord"
+      "patch": "4-voice polyphony · sequencer → V/OCT rapidly · ODD + EVEN to mixer for full chord",
+      "diagram": "RESONATE:\n* Polyphony: 4 voices\n- Sequencer (CV) p> Resonate (V/OCT) // rapid notes strum chord\n- Resonate (ODD) -> Mixer (In)\n- Resonate (EVEN) -> Mixer (In)"
     }
   ]
 }
