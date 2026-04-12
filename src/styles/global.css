@@ -176,6 +176,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 
 .diagram-lightbox-body svg {
   width: 100%;
+  min-width: 900px;
   height: auto;
   display: block;
 }
