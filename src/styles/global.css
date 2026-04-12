@@ -221,6 +221,8 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 .diagram-mark svg {
   flex-shrink: 0;
   display: block;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .diagram-mark--lightbox {
