@@ -5,7 +5,7 @@
     "": {
       "name": "eurorack-sheets",
       "dependencies": {
-        "@ogabrielluiz/patchflow": "^0.1.4",
+        "@ogabrielluiz/patchflow": "^0.1.5",
         "astro": "^6.1.5",
         "pagefind": "^1.5.0",
       },
@@ -161,7 +161,7 @@
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
-    "@ogabrielluiz/patchflow": ["@ogabrielluiz/patchflow@0.1.4", "", { "dependencies": { "@dagrejs/dagre": "^1.1.4" } }, "sha512-mQpqPwBtCUBQ5woClS/hg1HFvY31ILVIXUqZBTOPaJACcGs1cd1q3rWAq+5WEUEP97r2kUXEFxu6fBaCVvIIKA=="],
+    "@ogabrielluiz/patchflow": ["@ogabrielluiz/patchflow@0.1.5", "", { "dependencies": { "@dagrejs/dagre": "^1.1.4" } }, "sha512-sYXlnxjzDpfSONX9Ed+RtoeX7Y5OPgFkEZdyiYrWQxWy0HGEZjIaXOa+dHcrYVOFkfWUV4oSm6zinX1c2XjciQ=="],
 
     "@oslojs/encoding": ["@oslojs/encoding@1.1.0", "", {}, "sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ=="],
 
