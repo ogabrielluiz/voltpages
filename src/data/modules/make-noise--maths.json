@@ -124,35 +124,43 @@
     },
     {
       "name": "ASR envelope with sustain plateau",
-      "patch": "Gate → CH 1 SIGNAL IN (not TRIG) · Rise = attack time · Fall = release time · while gate is high, output holds at full voltage as a sustain plateau · Gate → TRIG gives AD only; Signal In gives true ASR"
+      "patch": "Gate → CH 1 SIGNAL IN (not TRIG) · Rise = attack time · Fall = release time · while gate is high, output holds at full voltage as a sustain plateau · Gate → TRIG gives AD only; Signal In gives true ASR",
+      "diagram": "MATHS:\n* CH 1: Rise = attack, Fall = release\n\n- Gate Source (Gate) g> MATHS.CH 1 (Signal In) // not TRIG — gives true ASR\n- MATHS.CH 1 (OUT) >> VCA (CV)"
     },
     {
       "name": "Push-pull crossfade",
-      "patch": "CH 1 Cycle ON, slow rate · CH 1 OUT → VCA 1 CV (opens) · CH 1 INV (via CH 2 attenuverter full CW on CH 1 OUT) → VCA 2 CV (closes) · SUM = combined output · MATHS envelope simultaneously fades between two sound sources"
+      "patch": "CH 1 Cycle ON, slow rate · CH 1 OUT → VCA 1 CV (opens) · CH 1 INV (via CH 2 attenuverter full CW on CH 1 OUT) → VCA 2 CV (closes) · SUM = combined output · MATHS envelope simultaneously fades between two sound sources",
+      "diagram": "MATHS:\n* CH 1: Cycle ON, slow rate\n* CH 2: Attenuverter full CCW (invert)\n\n- MATHS.CH 1 (OUT) >> VCA 1 (CV) // opens\n- MATHS.CH 1 (OUT) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> VCA 2 (CV) // inverted — closes\n- VCA 1 (Out) -> Mixer (In)\n- VCA 2 (Out) -> Mixer (In)"
     },
     {
       "name": "Envelope follower",
-      "patch": "Audio source → CH 4 SIGNAL IN · CH 4 Rise at noon · CH 4 Fall adjusted CW for slower tracking or CCW for tighter tracking · OR OUT = positive-only envelope following audio amplitude · use OR OUT to modulate filter cutoff for auto-wah"
+      "patch": "Audio source → CH 4 SIGNAL IN · CH 4 Rise at noon · CH 4 Fall adjusted CW for slower tracking or CCW for tighter tracking · OR OUT = positive-only envelope following audio amplitude · use OR OUT to modulate filter cutoff for auto-wah",
+      "diagram": "MATHS:\n* CH 4: Rise noon, Fall CW for slower tracking\n\n- Audio Source (Out) -> MATHS.CH 4 (Signal In)\n- MATHS (OR) >> Filter (Cutoff) // auto-wah envelope"
     },
     {
       "name": "Complex modulation shape (dual LFO mixer)",
-      "patch": "CH 1 Cycle ON · Rise + Fall set for slow rate (4–8s total) · CH 4 Cycle ON · Rise + Fall set for fast rate (0.5–1s total) · CH 2 attenuverter at 1 o'clock · CH 3 attenuverter at 11 o'clock · SUM OUT = slow + fast LFO combined with offset asymmetry · patch to filter FM"
+      "patch": "CH 1 Cycle ON · Rise + Fall set for slow rate (4–8s total) · CH 4 Cycle ON · Rise + Fall set for fast rate (0.5–1s total) · CH 2 attenuverter at 1 o'clock · CH 3 attenuverter at 11 o'clock · SUM OUT = slow + fast LFO combined with offset asymmetry · patch to filter FM",
+      "diagram": "MATHS:\n* CH 1: Cycle ON, slow (4-8s)\n* CH 4: Cycle ON, fast (0.5-1s)\n* CH 2: Attenuverter ~1 o'clock\n* CH 3: Attenuverter ~11 o'clock\n\n- MATHS.CH 1 (OUT) >> MATHS.CH 2 (In)\n- MATHS.CH 4 (OUT) >> MATHS.CH 3 (In)\n- MATHS (Unity) >> Filter (FM) // combined dual-LFO shape"
     },
     {
       "name": "Analog clock divider",
-      "patch": "Fast clock → CH 1 TRIG · CH 1 Rise set longer than clock period · retrigger blocked during Rise phase · CH 1 EOR = every other trigger · CH 1 OUT → CH 4 TRIG for further division · stack EOR/EOC for /2, /4 outputs from one clock"
+      "patch": "Fast clock → CH 1 TRIG · CH 1 Rise set longer than clock period · retrigger blocked during Rise phase · CH 1 EOR = every other trigger · CH 1 OUT → CH 4 TRIG for further division · stack EOR/EOC for /2, /4 outputs from one clock",
+      "diagram": "MATHS:\n* CH 1: Rise longer than clock period\n* CH 4: Rise longer than CH 1 OUT period\n\n- Clock Source (Clk) c> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (EOR) g> Destination (/2 Clock)\n- MATHS.CH 1 (OUT) g> MATHS.CH 4 (Trig)\n- MATHS.CH 4 (EOC) g> Destination (/4 Clock)"
     },
     {
       "name": "Directional portamento (asymmetric glide)",
-      "patch": "Pitch CV → CH 1 SIGNAL IN · CH 1 Rise CCW (fast up) · CH 1 Fall 2 o'clock (slow down) · Curve noon · CH 1 OUT → VCO V/Oct · pitch snaps up instantly, glides down slowly · reverse Rise/Fall for opposite feel"
+      "patch": "Pitch CV → CH 1 SIGNAL IN · CH 1 Rise CCW (fast up) · CH 1 Fall 2 o'clock (slow down) · Curve noon · CH 1 OUT → VCO V/Oct · pitch snaps up instantly, glides down slowly · reverse Rise/Fall for opposite feel",
+      "diagram": "MATHS:\n* CH 1: Rise CCW (fast up), Fall ~2 o'clock (slow down), Curve noon\n\n- Sequencer (Pitch) p> MATHS.CH 1 (Signal In)\n- MATHS.CH 1 (OUT) p> VCO (V/Oct) // snaps up, glides down"
     },
     {
       "name": "Sub-harmonic generator",
-      "patch": "Audio-rate VCO OUT → CH 4 TRIG · CH 4 Cycle mode ON · CH 4 Rise and Fall short but longer than one VCO cycle · CH 4 EOC = sub-octave pulse output · mix CH 4 EOC with VCO audio at SUM for Trautonium-style bass reinforcement"
+      "patch": "Audio-rate VCO OUT → CH 4 TRIG · CH 4 Cycle mode ON · CH 4 Rise and Fall short but longer than one VCO cycle · CH 4 EOC = sub-octave pulse output · mix CH 4 EOC with VCO audio at SUM for Trautonium-style bass reinforcement",
+      "diagram": "MATHS:\n* CH 4: Cycle ON, Rise + Fall short (> 1 VCO cycle)\n\n- VCO (Out) -> MATHS.CH 4 (Trig) // audio-rate trigger\n- MATHS.CH 4 (EOC) -> Mixer (In) // sub-octave pulse"
     },
     {
       "name": "Voltage comparator / gate extractor",
-      "patch": "Slow CV or audio → CH 2 SIGNAL IN · CH 2 attenuverter full CW · CH 2 OUT → CH 1 SIGNAL IN · CH 1 Rise and Fall both full CCW · CH 1 EOR outputs a gate whenever the input signal exceeds the CH 1 threshold · use EOR to trigger other events from a crossing point"
+      "patch": "Slow CV or audio → CH 2 SIGNAL IN · CH 2 attenuverter full CW · CH 2 OUT → CH 1 SIGNAL IN · CH 1 Rise and Fall both full CCW · CH 1 EOR outputs a gate whenever the input signal exceeds the CH 1 threshold · use EOR to trigger other events from a crossing point",
+      "diagram": "MATHS:\n* CH 2: Attenuverter full CW\n* CH 1: Rise + Fall full CCW (instant)\n\n- CV Source (Out) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Signal In)\n- MATHS.CH 1 (EOR) g> Destination (Trig) // gate on threshold crossing"
     }
   ]
 }

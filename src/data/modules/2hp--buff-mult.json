@@ -63,11 +63,13 @@
   "patchIdeas": [
     {
       "name": "Pitch CV distribution",
-      "patch": "Sequencer CV → Input 1 · Outputs 1–6 → VCO 1V/oct inputs"
+      "patch": "Sequencer CV → Input 1 · Outputs 1–6 → VCO 1V/oct inputs",
+      "diagram": "Buff Mult:\n- Sequencer (CV) p> Buff Mult (Input 1)\n- Buff Mult (Output 1) p> VCO 1 (V/Oct)\n- Buff Mult (Output 2) p> VCO 2 (V/Oct)\n- Buff Mult (Output 3) p> VCO 3 (V/Oct)\n- Buff Mult (Output 4) p> VCO 4 (V/Oct) // Input 1 normalized to Input 2"
     },
     {
       "name": "Clock splitting",
-      "patch": "Clock → Input 1 · distribute to multiple modules needing sync"
+      "patch": "Clock → Input 1 · distribute to multiple modules needing sync",
+      "diagram": "Buff Mult:\n- Clock Source (Clk) c> Buff Mult (Input 1)\n- Buff Mult (Output 1) c> Sequencer (Clk)\n- Buff Mult (Output 2) c> Drum (Trig)\n- Buff Mult (Output 3) c> LFO (Sync)"
     }
   ]
 }
