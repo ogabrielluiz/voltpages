@@ -37,15 +37,18 @@
   "patchIdeas": [
     {
       "name": "Polyrhythmic drums",
-      "patch": "T1 Gates 1–4 → drum triggers · T2 Gates 1–4 → additional percussion voices · different patterns per lane"
+      "patch": "T1 Gates 1–4 → drum triggers · T2 Gates 1–4 → additional percussion voices · different patterns per lane",
+      "diagram": "GX:\n- Gx (T1 Gate 1) g> Kick (Trig)\n- Gx (T1 Gate 2) g> Snare (Trig)\n- Gx (T1 Gate 3) g> Hat (Trig)\n- Gx (T2 Gate 1) g> Clap (Trig)\n- Gx (T2 Gate 2) g> Perc (Trig) // program distinct patterns per lane in Metropolix"
     },
     {
       "name": "Envelope stacking",
-      "patch": "Multiple gate lanes → multiple envelope inputs · layered attacks on a single voice"
+      "patch": "Multiple gate lanes → multiple envelope inputs · layered attacks on a single voice",
+      "diagram": "GX:\n- Gx (T1 Gate 1) g> Env 1 (Trig)\n- Gx (T1 Gate 2) g> Env 2 (Trig)\n- Gx (T1 Gate 3) g> Env 3 (Trig)\n- Env 1 (Out) >> VCA (CV)\n- Env 2 (Out) >> Filter (Cutoff)\n- Env 3 (Out) >> VCO (FM) // layered attacks on one voice"
     },
     {
       "name": "Rhythmic modulation",
-      "patch": "Gate lanes → trigger inputs on function generators for rhythmic CV modulation synchronized to Metropolix"
+      "patch": "Gate lanes → trigger inputs on function generators for rhythmic CV modulation synchronized to Metropolix",
+      "diagram": "GX:\n- Gx (T2 Gate 1) t> Maths (Ch1 Trig)\n- Gx (T2 Gate 2) t> Maths (Ch4 Trig)\n- Maths (Ch1 Out) >> Filter (Cutoff)\n- Maths (Ch4 Out) >> VCA (CV) // function gens clocked by Metropolix lanes"
     }
   ]
 }

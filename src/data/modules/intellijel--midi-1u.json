@@ -98,19 +98,23 @@
   "patchIdeas": [
     {
       "name": "Basic mono synth",
-      "patch": "PITCH → VCO 1V/oct · GATE → envelope trigger · VEL → VCA CV for velocity-sensitive dynamics"
+      "patch": "PITCH → VCO 1V/oct · GATE → envelope trigger · VEL → VCA CV for velocity-sensitive dynamics",
+      "diagram": "MIDI 1U:\n- MIDI 1U (PITCH) p> VCO (1V/oct)\n- MIDI 1U (GATE) g> Envelope (Trig)\n- MIDI 1U (VEL) >> VCA (CV)\n- Envelope (Out) >> VCA (CV) // velocity-sensitive dynamics"
     },
     {
       "name": "Dual synth layering",
-      "patch": "Dual Mode · Synth 1 PITCH/GATE → VCO 1 · Synth 2 PITCH (MOD jack)/GATE (TRIG jack) → VCO 2"
+      "patch": "Dual Mode · Synth 1 PITCH/GATE → VCO 1 · Synth 2 PITCH (MOD jack)/GATE (TRIG jack) → VCO 2",
+      "diagram": "MIDI 1U:\n* Mode: Dual (long-press LEARN)\n- MIDI 1U (PITCH) p> VCO 1 (1V/oct)\n- MIDI 1U (GATE) g> Env 1 (Trig)\n- MIDI 1U (MOD) p> VCO 2 (1V/oct) // Synth 2 pitch in Dual Mode\n- MIDI 1U (TRIG) g> Env 2 (Trig) // Synth 2 gate in Dual Mode"
     },
     {
       "name": "MIDI clock sync",
-      "patch": "CLK (div=/24 = quarter notes) → sequencer clock in · RST → sequencer reset"
+      "patch": "CLK (div=/24 = quarter notes) → sequencer clock in · RST → sequencer reset",
+      "diagram": "MIDI 1U:\n* CLK+: /24 (quarter notes)\n- MIDI 1U (CLK) c> Sequencer (Clock In)\n- MIDI 1U (RST) t> Sequencer (Reset)"
     },
     {
       "name": "Mod wheel filter sweep",
-      "patch": "LEARN MOD+CH · move mod wheel · MOD jack → filter cutoff CV"
+      "patch": "LEARN MOD+CH · move mod wheel · MOD jack → filter cutoff CV",
+      "diagram": "MIDI 1U:\n* LEARN: MOD+CH (flashing blue, move mod wheel)\n- MIDI 1U (PITCH) p> VCO (1V/oct)\n- MIDI 1U (GATE) g> Envelope (Trig)\n- MIDI 1U (MOD) >> Filter (Cutoff) // mod wheel sweeps filter"
     }
   ]
 }
