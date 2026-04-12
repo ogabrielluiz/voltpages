@@ -114,11 +114,13 @@
   "patchIdeas": [
     {
       "name": "Bouncing ball (self-accelerating envelope)",
-      "patch": "CH 1 Cycle ON · CH 1 OUT → CH 1 Fall CV (attenuate via CH 2 attenuverter at ~2 o'clock before patching to Fall CV) · positive feedback shortens fall each cycle · envelope speeds up like a bouncing ball losing energy · adjust CH 2 attenuverter to set acceleration rate"
+      "patch": "CH 1 Cycle ON · CH 1 OUT → CH 1 Fall CV (attenuate via CH 2 attenuverter at ~2 o'clock before patching to Fall CV) · positive feedback shortens fall each cycle · envelope speeds up like a bouncing ball losing energy · adjust CH 2 attenuverter to set acceleration rate",
+      "diagram": "MATHS:\n* CH 1: Cycle ON\n* CH 2: Attenuverter ~2 o'clock\n\n- MATHS.CH 1 (OUT) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Fall CV) // shortens fall each cycle"
     },
     {
       "name": "Quadrature LFOs",
-      "patch": "CH 1 EOR → CH 4 TRIG · CH 4 EOC → CH 1 TRIG · Cycle OFF on both · Rise and Fall matched on both channels · CH 1 OUT and CH 4 OUT = two LFOs 90° apart · patch to filter cutoff + VCA for animated timbral motion"
+      "patch": "CH 1 EOR → CH 4 TRIG · CH 4 EOC → CH 1 TRIG · Cycle OFF on both · Rise and Fall matched on both channels · CH 1 OUT and CH 4 OUT = two LFOs 90° apart · patch to filter cutoff + VCA for animated timbral motion",
+      "diagram": "MATHS:\n* CH 1: Cycle OFF, Rise + Fall matched\n* CH 4: Cycle OFF, Rise + Fall matched\n\n- MATHS.CH 1 (EOR) g> MATHS.CH 4 (Trig)\n- MATHS.CH 4 (EOC) g> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> Filter (Cutoff)\n- MATHS.CH 4 (OUT) >> VCA (CV)"
     },
     {
       "name": "ASR envelope with sustain plateau",

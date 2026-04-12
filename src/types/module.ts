@@ -21,6 +21,7 @@ export interface Behavior {
 export interface PatchIdea {
   name: string;
   patch: string;
+  diagram?: string;
 }
 
 export interface ModuleMeta {

@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from 'fs';
 import { join, basename } from 'path';
+import { parse as parseDiagram } from 'patchflow';
 
 const MODULES_DIR = join(import.meta.dir, '..', 'src', 'data', 'modules');
 const SCHEMA = JSON.parse(readFileSync(join(import.meta.dir, '..', 'modules.schema.json'), 'utf-8'));
@@ -122,6 +123,15 @@ for (const file of files) {
     for (const [i, p] of data.patchIdeas.entries()) {
       for (const f of ['name', 'patch']) {
         if (!p[f]) err(file, `patchIdeas[${i}] missing field: ${f}`);
+      }
+      if (p.diagram) {
+        const diagResult = parseDiagram(p.diagram);
+        for (const e of diagResult.errors) {
+          err(file, `patch "${p.name}" diagram line ${e.line}: ${e.message}`);
+        }
+        for (const w of diagResult.warnings) {
+          warn(file, `patch "${p.name}" diagram line ${w.line}: ${w.message}`);
+        }
       }
     }
   }

@@ -1,21 +1,48 @@
 ---
 import type { PatchIdea } from '../types/module';
+import { render as renderPatchflow } from 'patchflow';
 
 interface Props {
   patchIdeas: PatchIdea[];
 }
 
 const { patchIdeas } = Astro.props;
+
+// Pre-render diagrams at build time
+const renderedDiagrams: Map<string, string> = new Map();
+for (const idea of patchIdeas) {
+  if (idea.diagram) {
+    try {
+      const svg = renderPatchflow(idea.diagram);
+      renderedDiagrams.set(idea.name, svg);
+    } catch (err) {
+      console.warn(`[PatchIdeas] Failed to render diagram for "${idea.name}":`, (err as Error).message);
+    }
+  }
+}
 ---
 
 <div class="mt-7">
   <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-3">Patch Ideas</h2>
   <div class="flex flex-col gap-2.5">
-    {patchIdeas.map((idea) => (
-      <div class="pl-3 border-l-2 border-border-strong">
-        <div class="text-[15px] font-semibold text-fg">{idea.name}</div>
-        <div class="text-[13px] font-mono text-muted mt-0.5">{idea.patch}</div>
-      </div>
-    ))}
+    {patchIdeas.map((idea) => {
+      const diagramSvg = renderedDiagrams.get(idea.name);
+      return (
+        <div class="pl-3 border-l-2 border-border-strong">
+          <div class="text-[15px] font-semibold text-fg">{idea.name}</div>
+          <div class="text-[13px] font-mono text-muted mt-0.5">{idea.patch}</div>
+          {diagramSvg && (
+            <details class="mt-2 group">
+              <summary class="text-[11px] font-mono text-subtle cursor-pointer tracking-wide uppercase hover:text-fg select-none list-none inline-flex items-center gap-1 py-1">
+                <span class="inline-block transition-transform group-open:rotate-90">▸</span>
+                <span class="group-open:hidden">Show diagram</span>
+                <span class="hidden group-open:inline">Hide diagram</span>
+              </summary>
+              <div class="mt-2 p-3 bg-white border border-border overflow-x-auto" set:html={diagramSvg} />
+            </details>
+          )}
+        </div>
+      );
+    })}
   </div>
 </div>

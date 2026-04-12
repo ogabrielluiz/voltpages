@@ -94,7 +94,11 @@
         "required": ["name", "patch"],
         "properties": {
           "name": { "type": "string" },
-          "patch": { "type": "string" }
+          "patch": { "type": "string" },
+          "diagram": {
+            "type": "string",
+            "description": "Patchflow notation for rendering a signal flow diagram"
+          }
         }
       }
     }
