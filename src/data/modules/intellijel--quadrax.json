@@ -96,19 +96,23 @@
   "patchIdeas": [
     {
       "name": "Four-stage ADSR chain",
-      "patch": "CH1 AD · EOR link → CH2 · EOF link → CH3 · EOF link → CH4 · one trigger cascades through all"
+      "patch": "CH1 AD · EOR link → CH2 · EOF link → CH3 · EOF link → CH4 · one trigger cascades through all",
+      "diagram": "QUADRAX:\n* CH 1: AD, EOR link\n* CH 2-4: AD, EOF link\n- Gate Source (OUT) t> QUADRAX (TRIG 1)\n- QUADRAX (OUT 1) >> VCA 1 (CV)\n- QUADRAX (OUT 2) >> VCA 2 (CV)\n- QUADRAX (OUT 3) >> Filter (Cutoff)\n- QUADRAX (OUT 4) >> VCA Final (CV)"
     },
     {
       "name": "Polyrhythmic envelope farm",
-      "patch": "CH1 slow Cycle LFO · CH2 EOR link · CH3 EOF link · envelopes at different LFO phases"
+      "patch": "CH1 slow Cycle LFO · CH2 EOR link · CH3 EOF link · envelopes at different LFO phases",
+      "diagram": "QUADRAX:\n* CH 1: CYCLE (slow)\n* CH 2: AD, EOR link\n* CH 3: AD, EOF link\n- QUADRAX (OUT 1) >> Filter (Cutoff)\n- QUADRAX (OUT 2) >> VCA A (CV)\n- QUADRAX (OUT 3) >> VCA B (CV)"
     },
     {
       "name": "Internal PWM",
-      "patch": "CH in LFO mode · Shape = square · modulate Fall (morph) via CV matrix · dynamic pulse width"
+      "patch": "CH in LFO mode · Shape = square · modulate Fall (morph) via CV matrix · dynamic pulse width",
+      "diagram": "QUADRAX:\n* CH 1: LFO, Shape=square\n* CH 2: CYCLE slow, CV assigned to CH1 Fall\n- QUADRAX (OUT 1) -> Mixer (IN) // square with dynamic PWM\n- QUADRAX (OUT 2) >> QUADRAX (CV A) // internal morph modulation"
     },
     {
       "name": "LFV random CV",
-      "patch": "Alt mode on LFO channel · Rise/Fall control random range and slew · tempo-syncable via clock input"
+      "patch": "Alt mode on LFO channel · Rise/Fall control random range and slew · tempo-syncable via clock input",
+      "diagram": "QUADRAX:\n* CH 1: LFO Alternate (LFV)\n- Clock (OUT) c> QUADRAX (TRIG 1) // tempo sync\n- QUADRAX (OUT 1) >> VCO (FM) // chaotic modulation"
     }
   ]
 }

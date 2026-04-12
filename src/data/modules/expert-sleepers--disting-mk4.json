@@ -105,19 +105,23 @@
   "patchIdeas": [
     {
       "name": "Quantized random melody",
-      "patch": "Noise → X · A6 Quantizer · scale via parameter · B output = quantized pitch"
+      "patch": "Noise → X · A6 Quantizer · scale via parameter · B output = quantized pitch",
+      "diagram": "DISTING:\n* Algorithm: A6 Quantizer\n- Noise (OUT) >> DISTING (X)\n- DISTING (B) p> VCO (1V/Oct) // quantized pitch"
     },
     {
       "name": "Voltage-controlled echo",
-      "patch": "Audio → X · CV → Y (delay time) · B4 Clockable Delay · Z = feedback"
+      "patch": "Audio → X · CV → Y (delay time) · B4 Clockable Delay · Z = feedback",
+      "diagram": "DISTING:\n* Algorithm: B4 Clockable Delay\n- Source (OUT) -> DISTING (X)\n- LFO (OUT) >> DISTING (Y) // delay time CV\n- DISTING (A) -> Mixer (IN)"
     },
     {
       "name": "Wavetable LFO modulator",
-      "patch": "K2 Wavetable LFO · WAV file on SD card · A out → filter cutoff · Z = rate"
+      "patch": "K2 Wavetable LFO · WAV file on SD card · A out → filter cutoff · Z = rate",
+      "diagram": "DISTING:\n* Algorithm: K2 Wavetable LFO\n- DISTING (A) >> Filter (Cutoff)\n- DISTING (B) >> VCA (CV) // second wavetable phase"
     },
     {
       "name": "Euclidean gate generator",
-      "patch": "H5 Euclidean Patterns · X = clock in · A/B = two rhythmic gate streams · Z = density"
+      "patch": "H5 Euclidean Patterns · X = clock in · A/B = two rhythmic gate streams · Z = density",
+      "diagram": "DISTING:\n* Algorithm: H5 Euclidean Patterns\n- Clock (OUT) c> DISTING (X)\n- DISTING (A) g> Envelope 1 (Trig)\n- DISTING (B) g> Envelope 2 (Trig)"
     }
   ]
 }
