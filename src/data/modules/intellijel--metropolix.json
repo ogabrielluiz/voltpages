@@ -304,6 +304,56 @@
     {
       "name": "AUX as hidden panel controls",
       "patch": "Assign AUX X to Accum Dir · AUX Y to Direction · AUX Z to Stage Length · no cables patched · attenuverters act as 3 extra knobs for live tweaking"
+    },
+    {
+      "name": "Divergent dual-voice polymetric counterpoint",
+      "patch": "Track A: LEN=7 · Track B: LEN=5 · both forward at same clock div · phrases slip against each other and only re-align every 35 steps · pair with different scales via Scala for harmonic tension · evolving counterpoint from a single pattern",
+      "diagram": "Metropolix:\n* TRK 1: LEN=7 · scale minor\n* TRK 2: LEN=5 · scale minor pentatonic\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // 7 vs 5 realigns every 35 steps"
+    },
+    {
+      "name": "MOD lane as filter envelope accent",
+      "patch": "Route MOD 1 to a mod output and send it to filter cutoff · program higher values on accent stages for per-step filter opening · enable slew on MOD for smooth sweeps between steps · no AUX input needed, accent pattern lives inside the sequencer",
+      "diagram": "Metropolix:\n* MOD 1: stepped values · slew ON → B Out\n* TRK 1: pitch/gate to voice\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate)\n- ENV (Out) >> VCA (CV)\n- Metropolix (B Out) >> VCF (Cutoff) // MOD 1 paints per-step accents"
+    },
+    {
+      "name": "AUX-gated ratchet noise bursts",
+      "patch": "MOD lane assigned as AUX/gate output fires only on ratcheted stages · route to noise VCA for snare-roll or hi-hat bursts that track the ratchet pattern · main voice plays PITCH A / GATE A normally · place ratchets on steps 4, 8, 16 for fills",
+      "diagram": "Metropolix:\n* TRK 1: pitch/gate normal · ratchets on S4,S8\n* MOD 1: fires on ratcheted steps → A Out\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (A Out) g> Noise VCA ENV (Gate)\n- Noise (Out) -> Noise VCA (In) // bursts only on ratchets"
+    },
+    {
+      "name": "Self-modulating microtonal drift",
+      "patch": "Sum PITCH A with MOD 2 through a precision adder before the VCO · MOD 2 range set tiny (~50-100mV) and on a different length than Track A · pitches shift microtonally stage by stage, drifting in and out of tune without breaking the melody",
+      "diagram": "Metropolix:\n* TRK 1: LEN=8 · pitch melody\n* MOD 2: LEN=5 · small range ±100mV → B Out\n\n- Metropolix (Track 1 Pitch) p> Precision Adder (In1)\n- Metropolix (B Out) p> Precision Adder (In2)\n- Precision Adder (Out) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // microtonal drift, 8 vs 5"
+    },
+    {
+      "name": "Polyrhythmic kick and bass split",
+      "patch": "Track A drives bass voice at DIV /1 LEN 16 · Track B drives kick drum at DIV /1 LEN 6 · kick hits on a 6-step cycle against a 16-step bass line · polyrhythm resolves every 48 steps · GATE B goes straight to kick trigger input",
+      "diagram": "Metropolix:\n* TRK 1: DIV /1 · LEN 16 (bass)\n* TRK 2: DIV /1 · LEN 6 (kick)\n\n- Metropolix (Track 1 Pitch) p> Bass VCO (V/oct)\n- Metropolix (Track 1 Gate) g> Bass ENV (Gate)\n- Metropolix (Track 2 Gate) t> Kick (Trig) // 16 vs 6 → resolves at 48"
+    },
+    {
+      "name": "Acid slide with MOD-driven resonance sweep",
+      "patch": "Enable per-stage SLIDE on Track A for a 303-style glide pattern · MOD 1 programmed as ramp/random over 16 steps drives filter resonance · MOD 2 provides per-step VCA accents · voice goes through a screaming resonant LPF for acid lead",
+      "diagram": "Metropolix:\n* TRK 1: slides on S2,S5,S7 · pitch pattern\n* MOD 1: resonance ramp → A Out\n* MOD 2: VCA accents → B Out\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- VCO (Out) -> LPF (In)\n- Metropolix (Track 1 Gate) g> ENV (Gate)\n- ENV (Out) >> VCA (CV)\n- Metropolix (A Out) >> LPF (Res)\n- Metropolix (B Out) >> VCA (CV) // acid squelch"
+    },
+    {
+      "name": "Convergent chord stabs on two VCOs",
+      "patch": "Track A pitches VCO1 · Track B pitches VCO2 transposed +5 or +7 semitones via scale offset · both VCOs through the same filter/VCA · OR the gate outputs so either track fires the shared envelope · ratchets on stab stages create flams",
+      "diagram": "Metropolix:\n* TRK 1: melody · TRK 2: +7st transpose\n* ratchets on S3,S7 for flams\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 1 Gate) g> OR Logic (In1)\n- Metropolix (Track 2 Gate) g> OR Logic (In2)\n- OR Logic (Out) g> ENV (Gate)\n- VCO1 (Out) -> Mixer (In1)\n- VCO2 (Out) -> Mixer (In2)\n- Mixer (Out) -> VCF (In)\n- VCF (Out) -> VCA (In) // stacked stabs"
+    },
+    {
+      "name": "AUX as clocked Turing reset",
+      "patch": "MOD lane programmed to fire only on step 1 of the phrase · routed to Turing Machine reset input · Turing's random CV feeds a secondary VCO · randomness locks to the phrase boundary so the texture mutates in time with Track A",
+      "diagram": "Metropolix:\n* MOD 1: pulse on S1 only → A Out\n* TRK 1: main melody\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (A Out) t> Turing Machine (Clock/Reset)\n- Turing Machine (CV Out) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // phrase-locked randomness"
+    },
+    {
+      "name": "MOD-driven wavefolder timbre evolution",
+      "patch": "Track A drives VCO through a wavefolder · MOD 1 programmed as its own melodic sequence (different length than Track A) feeds fold amount · timbre shifts independently from pitch, so identical notes sound different each time they recur",
+      "diagram": "Metropolix:\n* TRK 1: LEN=8 · pitch melody\n* MOD 1: LEN=5 · fold sequence → A Out\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- VCO (Out) -> Wavefolder (In)\n- Metropolix (A Out) >> Wavefolder (Fold)\n- Wavefolder (Out) -> VCA (In)\n- Metropolix (Track 1 Gate) g> ENV (Gate)\n- ENV (Out) >> VCA (CV) // timbre sequence decoupled from pitch"
+    },
+    {
+      "name": "Buzz-roll fill with pitch dive",
+      "patch": "Program the last two stages with max ratchets (x8) and per-stage slide into a descending pitch · MOD 1 shortens envelope decay across those stages · creates an end-of-phrase snare-roll fill that dives pitch-wise before the pattern loops",
+      "diagram": "Metropolix:\n* TRK 1: S7-S8 RATCH=8 · slide ON · descending pitch\n* MOD 1: decay shortens on S7-S8 → B Out\n\n- Metropolix (Track 1 Pitch) p> Drum (Pitch CV)\n- Metropolix (Track 1 Gate) t> Drum (Trig)\n- Metropolix (B Out) >> ENV (Decay) // buzz-roll dive fill"
     }
   ]
 }
