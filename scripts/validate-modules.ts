@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from 'fs';
 import { join, basename } from 'path';
-import { parse as parseDiagram } from 'patchflow';
+import { parse as parseDiagram } from '@ogabrielluiz/patchflow';
 
 const MODULES_DIR = join(import.meta.dir, '..', 'src', 'data', 'modules');
 const SCHEMA = JSON.parse(readFileSync(join(import.meta.dir, '..', 'modules.schema.json'), 'utf-8'));
