@@ -130,5 +130,29 @@ for (const idea of patchIdeas) {
                        e.clientX >= rect.left && e.clientX <= rect.right;
       if (!inDialog) dialog.close();
     });
+
+    // Open all <details> for print (CSS alone can't override the UA's
+    // collapsed-content behavior) and restore their state after.
+    const previousOpenState = new WeakMap();
+    function openAllForPrint() {
+      document.querySelectorAll('details').forEach((d) => {
+        previousOpenState.set(d, d.open);
+        d.open = true;
+      });
+    }
+    function restoreAfterPrint() {
+      document.querySelectorAll('details').forEach((d) => {
+        if (previousOpenState.has(d)) d.open = previousOpenState.get(d);
+      });
+    }
+    window.addEventListener('beforeprint', openAllForPrint);
+    window.addEventListener('afterprint', restoreAfterPrint);
+    // Safari / older browsers only expose matchMedia('print') transitions.
+    if (window.matchMedia) {
+      const mql = window.matchMedia('print');
+      const onChange = (e) => (e.matches ? openAllForPrint() : restoreAfterPrint());
+      if (mql.addEventListener) mql.addEventListener('change', onChange);
+      else if (mql.addListener) mql.addListener(onChange);
+    }
   })();
 </script>

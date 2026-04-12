@@ -64,12 +64,14 @@
     display: block !important;
   }
 
-  /* Force-open collapsed diagrams so they print */
+  /* Hide the summary toggle; diagrams are force-opened by JS beforeprint. */
   details > summary {
     display: none !important;
   }
-  details .diagram-container {
-    display: block !important;
+
+  /* Hide the interactive zoom affordance on paper */
+  .diagram-expand-btn {
+    display: none !important;
   }
 
   /* Keep each diagram + its attribution on the same page */
@@ -84,6 +86,37 @@
     border-top-color: #bdbdbd !important;
     font-size: 8.5px;
   }
+
+  /* Print-only brand footer at the end of each sheet */
+  .print-footer {
+    display: flex !important;
+  }
+}
+
+/* Print-only brand footer — hidden on screen, flex in print */
+.print-footer {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 12px;
+  border-top: 1px solid #bdbdbd;
+  font-family: 'SF Mono', 'Courier New', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+.print-footer .lockup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.print-footer svg {
+  flex-shrink: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 /* Hide print-only elements on screen */
