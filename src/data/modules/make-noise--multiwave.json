@@ -200,15 +200,18 @@
   "patchIdeas": [
     {
       "name": "8-voice polyphony with PoliMATHS",
-      "patch": "PoliMATHS Ch.Index Out → MultiWAVE Span CV · PoliMATHS outputs → QXG control inputs via header · MultiWAVE → QXG signal inputs via header"
+      "patch": "PoliMATHS Ch.Index Out → MultiWAVE Span CV · PoliMATHS outputs → QXG control inputs via header · MultiWAVE → QXG signal inputs via header",
+      "diagram": "MULTIWAVE:\n* Mode: Channel Index\n- PoliMATHS (Channel Index Output) >> MultiWAVE (Span CV) // selects voice\n- MIDI/Keys (Pitch) p> MultiWAVE (TRPS) // global 1V/oct\n- MultiWAVE (Channel 1–8 Outputs) -> QXG (Signal Inputs 1–4) // via N.U.S.S. header\n- PoliMATHS (Channel Outputs 1–8) >> QXG (Control Inputs 1–4) // via N.U.S.S. header"
     },
     {
       "name": "Harmonic oscillator",
-      "patch": "Detune full CW · sequence Transpose instead of 1v/oct"
+      "patch": "Detune full CW · sequence Transpose instead of 1v/oct",
+      "diagram": "MULTIWAVE:\n* Detune: Full CW\n* Blend: noon\n- Sequencer (CV Out) p> MultiWAVE (TRPS) // transpose harmonic series\n- MultiWAVE (Channel 1–8 Outputs) -> Mixer (In)"
     },
     {
       "name": "Drifting polyphonic pads",
-      "patch": "Round mode Span=1 · slow LFO → Spread CV · Blend at noon · Mod Time slow"
+      "patch": "Round mode Span=1 · slow LFO → Spread CV · Blend at noon · Mod Time slow",
+      "diagram": "MULTIWAVE:\n* Mode: Round\n* Span: 1\n* Blend: noon\n* Mod Time: slow\n- Clock (Trig) g> MultiWAVE (Activate) // round-robin voices\n- LFO (Out) >> MultiWAVE (Spread CV) // drift across channels\n- MultiWAVE (Channel 1–8 Outputs) -> Mixer (In)"
     }
   ]
 }

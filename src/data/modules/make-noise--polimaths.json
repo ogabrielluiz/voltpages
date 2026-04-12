@@ -169,15 +169,18 @@
   "patchIdeas": [
     {
       "name": "8-voice polyphony with MultiWAVE and QXG",
-      "patch": "Ch.Index Out → MultiWAVE Span CV · PoliMATHS outputs → QXG control headers · MultiWAVE → QXG signal headers"
+      "patch": "Ch.Index Out → MultiWAVE Span CV · PoliMATHS outputs → QXG control headers · MultiWAVE → QXG signal headers",
+      "diagram": "POLIMATHS:\n* Mode: Channel Index\n* Cycle: Off\n- Keys (Gate) g> PoliMATHS (Activate) // fire envelope for selected voice\n- PoliMATHS (Channel Index Output) >> MultiWAVE (Span CV) // route voice\n- PoliMATHS (Channel Outputs 1–8) >> QXG (Control Inputs 1–4) // via header\n- MultiWAVE (Channel 1–8 Outputs) -> QXG (Signal Inputs 1–4) // via header"
     },
     {
       "name": "Complex polyrhythm",
-      "patch": "Parallel mode · Span set to spread clock divisions · different Rise/Fall per channel via Spread"
+      "patch": "Parallel mode · Span set to spread clock divisions · different Rise/Fall per channel via Spread",
+      "diagram": "POLIMATHS:\n* Mode: Parallel\n* Cycle: Off\n- Clock (Out) c> PoliMATHS (Activate) // divided per channel by Span\n- PoliMATHS (Channel Outputs 1–8) >> QXG (Control Inputs 1–4) // polyrhythmic VCAs"
     },
     {
       "name": "Audio-rate oscillator bank",
-      "patch": "Bipolar Oscillation mode · Osc full CW · Rate → 1v/oct pitch · Strength sets amplitude"
+      "patch": "Bipolar Oscillation mode · Osc full CW · Rate → 1v/oct pitch · Strength sets amplitude",
+      "diagram": "POLIMATHS:\n* Osc: Full CW\n* Oscillation Bias: Bipolar\n* Rate Attenuverter: Full CW\n- Keys (Pitch) p> PoliMATHS (Rate CV) // 1V/oct tracking\n- PoliMATHS (Channel Outputs 1–8) -> Mixer (In) // 8-osc bank"
     }
   ]
 }

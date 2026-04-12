@@ -78,15 +78,18 @@
   "patchIdeas": [
     {
       "name": "8-voice N.U.S.S. stereo system",
-      "patch": "Two QXGs + PoliMATHS + MultiWAVE connected via headers · PoliMATHS outputs → QXG control inputs · MultiWAVE → QXG signal inputs"
+      "patch": "Two QXGs + PoliMATHS + MultiWAVE connected via headers · PoliMATHS outputs → QXG control inputs · MultiWAVE → QXG signal inputs",
+      "diagram": "QXG:\n* Vactrol: ON\n* XPREAD: noon\n- MultiWAVE (Channel 1–8 Outputs) -> QXG (Signal Inputs 1–4) // via header (voices 1-4)\n- PoliMATHS (Channel Outputs 1–8) >> QXG (Control Inputs 1–4) // via header\n- QXG (Left Mix Output) -> Output (L)\n- QXG (Right Mix Output) -> Output (R)"
     },
     {
       "name": "Mono channel in stereo spread",
-      "patch": "Patch a channel output → Left Aux input to hear it in mono while other channels spread"
+      "patch": "Patch a channel output → Left Aux input to hear it in mono while other channels spread",
+      "diagram": "QXG:\n* XPREAD: CW\n- VCO (Out) -> QXG (Signal Inputs 1–4) // channel 1\n- QXG (Channel Outputs 1–4) -> QXG (Left (Mono) Aux Input) // ch1 re-entered as mono centre\n- QXG (Left Mix Output) -> Output (L)\n- QXG (Right Mix Output) -> Output (R)"
     },
     {
       "name": "CV-controlled stereo panning",
-      "patch": "LFO → XPREAD CV · XPREAD attenuverter to taste · all channels to mix outputs"
+      "patch": "LFO → XPREAD CV · XPREAD attenuverter to taste · all channels to mix outputs",
+      "diagram": "QXG:\n* XPREAD: noon\n- LFO (Out) >> QXG (XPREAD CV) // animate stereo field\n- VCOs (Out) -> QXG (Signal Inputs 1–4)\n- QXG (Left Mix Output) -> Output (L)\n- QXG (Right Mix Output) -> Output (R)"
     }
   ]
 }
