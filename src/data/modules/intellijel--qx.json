@@ -38,15 +38,18 @@
   "patchIdeas": [
     {
       "name": "Envelope cascade sequence",
-      "patch": "Qx CH 1 EOC → Quadrax CH 2 trigger · CH 2 EOC → CH 3 trigger · cascading 4-stage envelope"
+      "patch": "Qx CH 1 EOC → Quadrax CH 2 trigger · CH 2 EOC → CH 3 trigger · cascading 4-stage envelope",
+      "diagram": "QX:\n* CH 1-3: End-of-Cycle mode\n- Qx (CH 1 CV Out) t> Quadrax (CH 2 Trig)\n- Qx (CH 2 CV Out) t> Quadrax (CH 3 Trig)\n- Qx (CH 3 CV Out) t> Quadrax (CH 4 Trig) // 4-stage cascaded envelope"
     },
     {
       "name": "Synchronized secondary triggers",
-      "patch": "Qx EOC outputs → trigger inputs on drum voices · percussion synced to envelope timing"
+      "patch": "Qx EOC outputs → trigger inputs on drum voices · percussion synced to envelope timing",
+      "diagram": "QX:\n* All channels: End-of-Cycle mode\n- Qx (CH 1 CV Out) t> Kick (Trig)\n- Qx (CH 2 CV Out) t> Snare (Trig)\n- Qx (CH 3 CV Out) t> Hat (Trig)\n- Qx (CH 4 CV Out) t> Perc (Trig) // percussion follows envelope endings"
     },
     {
       "name": "LFO reset chain",
-      "patch": "Qx CH 1 EOC → Quadrax CH 2 reset · phase-locked polyrhythmic LFOs"
+      "patch": "Qx CH 1 EOC → Quadrax CH 2 reset · phase-locked polyrhythmic LFOs",
+      "diagram": "QX:\n* CH 1: LFO with EOC\n- Qx (CH 1 CV Out) t> Quadrax (CH 2 Reset) // phase-locks CH 2 LFO to CH 1\n- Quadrax (CH 2 Out) >> VCA (CV)"
     }
   ]
 }

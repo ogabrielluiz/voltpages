@@ -92,15 +92,18 @@
   "patchIdeas": [
     {
       "name": "Groovebox integration",
-      "patch": "Groovebox stereo out → rear BAL-IN · EXT L/R → effects chain → MAIN L/R → mix out"
+      "patch": "Groovebox stereo out → rear BAL-IN · EXT L/R → effects chain → MAIN L/R → mix out",
+      "diagram": "STEREO I/O 1U:\n* Input Gain Switch: 0dB\n- Groovebox (Out L) -> Stereo I/O (rear BAL-IN L)\n- Groovebox (Out R) -> Stereo I/O (rear BAL-IN R)\n- Stereo I/O (EXT L) -> FX (In L)\n- Stereo I/O (EXT R) -> FX (In R)\n- FX (Out L) -> Stereo I/O (MAIN L)\n- FX (Out R) -> Stereo I/O (MAIN R) // groovebox processed through modular FX"
     },
     {
       "name": "Silent cue monitoring",
-      "patch": "Pre-mix signal → CUE L/R · HP Switch = CUE · monitor without affecting main out"
+      "patch": "Pre-mix signal → CUE L/R · HP Switch = CUE · monitor without affecting main out",
+      "diagram": "STEREO I/O 1U:\n* HP Monitor Switch: CUE In\n- Mixer (Aux L) -> Stereo I/O (CUE L)\n- Mixer (Aux R) -> Stereo I/O (CUE R) // audition in headphones, silent on main"
     },
     {
       "name": "Live stereo FX insert",
-      "patch": "EXT L/R (from rear input) → reverb module → MAIN L/R → BAL-OUT to PA"
+      "patch": "EXT L/R (from rear input) → reverb module → MAIN L/R → BAL-OUT to PA",
+      "diagram": "STEREO I/O 1U:\n* Input Gain Switch: +6dB\n- Stereo I/O (EXT L) -> Reverb (In L)\n- Stereo I/O (EXT R) -> Reverb (In R)\n- Reverb (Out L) -> Stereo I/O (MAIN L)\n- Reverb (Out R) -> Stereo I/O (MAIN R) // live stereo reverb send to PA via BAL-OUT"
     }
   ]
 }
