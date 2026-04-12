@@ -63,6 +63,27 @@
   .print-qr {
     display: block !important;
   }
+
+  /* Force-open collapsed diagrams so they print */
+  details > summary {
+    display: none !important;
+  }
+  details .diagram-container {
+    display: block !important;
+  }
+
+  /* Keep each diagram + its attribution on the same page */
+  .diagram-container {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Promote the attribution mark on paper — full ink, darker text */
+  .diagram-mark {
+    color: #1a1a1a !important;
+    border-top-color: #bdbdbd !important;
+    font-size: 8.5px;
+  }
 }
 
 /* Hide print-only elements on screen */
@@ -174,9 +195,43 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   box-sizing: border-box;
 }
 
-.diagram-lightbox-body svg {
+.diagram-lightbox-body > svg {
   width: 100%;
   min-width: 900px;
   height: auto;
   display: block;
+}
+
+/* Diagram attribution mark (small logo + wordmark under each diagram) */
+.diagram-mark {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed #e5e2d8;
+  font-family: 'SF Mono', 'Courier New', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #9a9a9a;
+}
+
+.diagram-mark svg {
+  flex-shrink: 0;
+  display: block;
+}
+
+.diagram-mark--lightbox {
+  position: absolute;
+  bottom: 16px;
+  right: 24px;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+  background: rgba(247, 245, 240, 0.9);
+  padding: 4px 8px;
+  font-size: 10px;
+  color: #666;
 }

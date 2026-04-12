@@ -126,13 +126,45 @@ async function generateOgImage(module: Module, slug: string, fontData: ArrayBuff
                   type: 'div',
                   props: {
                     style: {
-                      fontSize: 20,
-                      fontFamily: 'JetBrains Mono',
-                      color: '#767676',
-                      letterSpacing: '3px',
-                      textTransform: 'uppercase',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '14px',
                     },
-                    children: 'VOLTPAGES',
+                    children: [
+                      {
+                        type: 'svg',
+                        props: {
+                          width: 34,
+                          height: 34,
+                          viewBox: '0 0 48 48',
+                          xmlns: 'http://www.w3.org/2000/svg',
+                          children: [
+                            { type: 'rect', props: { x: 5, y: 5, width: 38, height: 38, rx: 2, fill: '#1a1a1a' } },
+                            { type: 'circle', props: { cx: 10, cy: 10, r: 1.8, fill: 'none', stroke: '#f7f5f0', 'stroke-width': 1.2 } },
+                            { type: 'circle', props: { cx: 38, cy: 10, r: 1.8, fill: 'none', stroke: '#f7f5f0', 'stroke-width': 1.2 } },
+                            { type: 'circle', props: { cx: 10, cy: 38, r: 1.8, fill: 'none', stroke: '#f7f5f0', 'stroke-width': 1.2 } },
+                            { type: 'circle', props: { cx: 38, cy: 38, r: 1.8, fill: 'none', stroke: '#f7f5f0', 'stroke-width': 1.2 } },
+                            { type: 'line', props: { x1: 15, y1: 24, x2: 33, y2: 24, stroke: '#f7f5f0', 'stroke-width': 0.6, opacity: 0.3 } },
+                            { type: 'line', props: { x1: 24, y1: 15, x2: 24, y2: 33, stroke: '#f7f5f0', 'stroke-width': 0.6, opacity: 0.3 } },
+                            { type: 'path', props: { d: 'M 13 24 C 16 24, 17 32, 20 32 C 23 32, 23 16, 26 16 C 29 16, 30 24, 35 24', fill: 'none', stroke: '#f7f5f0', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' } },
+                            { type: 'circle', props: { cx: 26, cy: 16, r: 2, fill: '#d9571f' } },
+                          ],
+                        },
+                      },
+                      {
+                        type: 'div',
+                        props: {
+                          style: {
+                            fontSize: 20,
+                            fontFamily: 'JetBrains Mono',
+                            color: '#767676',
+                            letterSpacing: '3px',
+                            textTransform: 'uppercase',
+                          },
+                          children: 'VOLTPAGES',
+                        },
+                      },
+                    ],
                   },
                 },
               ],
@@ -168,8 +200,13 @@ const [fontData, fontBoldData, monoFontData] = await Promise.all([
   loadFont(FONT_MONO_URL),
 ]);
 
-const files = readdirSync(MODULES_DIR).filter((f) => f.endsWith('.json'));
-console.log(`Generating OG images for ${files.length} modules...\n`);
+const allFiles = readdirSync(MODULES_DIR).filter((f) => f.endsWith('.json'));
+const files = allFiles.filter((file) => {
+  const data = JSON.parse(readFileSync(join(MODULES_DIR, file), 'utf-8'));
+  return data._meta?.verified === true;
+});
+const skipped = allFiles.length - files.length;
+console.log(`Generating OG images for ${files.length} verified modules${skipped ? ` (skipping ${skipped} drafts)` : ''}...\n`);
 
 for (const file of files) {
   const slug = basename(file, '.json');
