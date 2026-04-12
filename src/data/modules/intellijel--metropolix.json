@@ -258,39 +258,48 @@
   "patchIdeas": [
     {
       "name": "Boards of Canada chord progression",
-      "patch": "Mod Lane 1 → Pitch Post (Track 1+2) · clock /8 · length 4 · values: 0, +2, +5, +7 semitones · sequence auto-transposes through diatonic positions every 2 bars · sliders stay fixed, mod lane moves the root"
+      "patch": "Mod Lane 1 → Pitch Post (Track 1+2) · clock /8 · length 4 · values: 0, +2, +5, +7 semitones · sequence auto-transposes through diatonic positions every 2 bars · sliders stay fixed, mod lane moves the root",
+      "diagram": "Metropolix:\n* MOD 1: DIV /8 · LEN 4 · values 0,+2,+5,+7 → Pitch Post\n* TRK 1: running · TRK 2: running\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // mod lane transposes both tracks in-scale"
     },
     {
       "name": "Chord arpeggio within a single stage",
-      "patch": "Stage gate: SINGLE · Ratchets=3 · Stage accumulator: +4 semitones · limit +7 · each ratchet increments pitch: root → major third → fifth · sounds like a hammer-on triad"
+      "patch": "Stage gate: SINGLE · Ratchets=3 · Stage accumulator: +4 semitones · limit +7 · each ratchet increments pitch: root → major third → fifth · sounds like a hammer-on triad",
+      "diagram": "Metropolix:\n* Stage: Gate=SINGLE · RATCH=3 · ACCUM +4st · LIM +7st\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> VCA (CV) // ratchets step pitch root→3rd→5th"
     },
     {
       "name": "Two-voice counterpoint from one sequence",
-      "patch": "Track 1: ORDER=FORWARD · DIV=/1 · Track 2: ORDER=REVERSE · DIV=/2 · same sliders play at two rates in opposite directions · instant melodic counterpoint"
+      "patch": "Track 1: ORDER=FORWARD · DIV=/1 · Track 2: ORDER=REVERSE · DIV=/2 · same sliders play at two rates in opposite directions · instant melodic counterpoint",
+      "diagram": "Metropolix:\n* TRK 1: ORDER=FWD · DIV=/1\n* TRK 2: ORDER=REV · DIV=/2\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // same sliders, opposite directions"
     },
     {
       "name": "Generative brownian walk",
-      "patch": "ORDER: BROWNIAN · 8 stages · user scale (pentatonic) · accumulator +1 semitone per loop · limit ±7 · direction via slow LFO on AUX X · melody trends forward but wanders and transposes"
+      "patch": "ORDER: BROWNIAN · 8 stages · user scale (pentatonic) · accumulator +1 semitone per loop · limit ±7 · direction via slow LFO on AUX X · melody trends forward but wanders and transposes",
+      "diagram": "Metropolix:\n* TRK 1: ORDER=BROWNIAN · LEN 8 · pentatonic\n* ACCUM: +1st/loop · LIM ±7 · AUX X → Accum Dir\n\n- LFO (Out) >> Metropolix (X In)\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // wanders but trends forward"
     },
     {
       "name": "Live loopy performance",
-      "patch": "Track 1: full 8-stage sequence running · Track 2: enter Loopy · press individual stage buttons to play single notes as a live keyboard over Track 1 · instant lead improv over rhythm"
+      "patch": "Track 1: full 8-stage sequence running · Track 2: enter Loopy · press individual stage buttons to play single notes as a live keyboard over Track 1 · instant lead improv over rhythm",
+      "diagram": "Metropolix:\n* TRK 1: 8-stage sequence running\n* TRK 2: LOOPY Stage Player mode\n\n- Metropolix (Track 1 Pitch) p> Bass VCO (V/oct)\n- Metropolix (Track 1 Gate) g> Bass ENV (Gate)\n- Metropolix (Track 2 Pitch) p> Lead VCO (V/oct)\n- Metropolix (Track 2 Gate) g> Lead ENV (Gate) // Track 2 played live as keyboard"
     },
     {
       "name": "Hemiola (3/4 inside 4/4)",
-      "patch": "Track 1: 8 stages straight · Track 2: Stages 1-3 MULTI pulse 2 · Stage 4 REST · repeat pattern · Track 2 creates a 3+rest feel against Track 1's straight time"
+      "patch": "Track 1: 8 stages straight · Track 2: Stages 1-3 MULTI pulse 2 · Stage 4 REST · repeat pattern · Track 2 creates a 3+rest feel against Track 1's straight time",
+      "diagram": "Metropolix:\n* TRK 1: 8 stages straight\n* TRK 2: S1-3 MULTI p=2 · S4 REST\n\n- Metropolix (Track 1 Gate) g> Kick (Trig)\n- Metropolix (Track 2 Gate) g> Snare (Trig) // 3+rest against 4/4"
     },
     {
       "name": "Stutter-drop fill",
-      "patch": "Most stages: Ratchet=1 · Stage 6: Ratchet=4 Gate=MULTI · Stage 7: REST · Stage 8: Ratchet=1 · creates burst → silence → resume pattern that sounds performed"
+      "patch": "Most stages: Ratchet=1 · Stage 6: Ratchet=4 Gate=MULTI · Stage 7: REST · Stage 8: Ratchet=1 · creates burst → silence → resume pattern that sounds performed",
+      "diagram": "Metropolix:\n* TRK 1: S1-5 RATCH=1 · S6 RATCH=4 MULTI · S7 REST · S8 RATCH=1\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // burst → silence → resume"
     },
     {
       "name": "100-scale harmonic memory",
-      "patch": "Store different scales in user slots (each tuned to a key/chord area) · Mod Lane → Scale Select · division /8 · lane cycles through scale slots · sequence auto-reharmonizes every few bars"
+      "patch": "Store different scales in user slots (each tuned to a key/chord area) · Mod Lane → Scale Select · division /8 · lane cycles through scale slots · sequence auto-reharmonizes every few bars",
+      "diagram": "Metropolix:\n* MOD 1: DIV /8 · assigned to Scale Select\n* TRK 1: running · user scale slots loaded\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // scale changes every /8 loop"
     },
     {
       "name": "Swing offset between tracks",
-      "patch": "Track 1: SWING=0% (straight) · Track 2: SWING=60% (shuffled) · same melody at two different grooves · jazz-style rhythmic independence between voices"
+      "patch": "Track 1: SWING=0% (straight) · Track 2: SWING=60% (shuffled) · same melody at two different grooves · jazz-style rhythmic independence between voices",
+      "diagram": "Metropolix:\n* TRK 1: SWING=0%\n* TRK 2: SWING=60%\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // two grooves, same notes"
     },
     {
       "name": "AUX as hidden panel controls",
