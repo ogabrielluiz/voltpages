@@ -114,6 +114,9 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 }
 
 .diagram-lightbox {
+  position: fixed;
+  inset: 0;
+  margin: auto;
   width: 90vw;
   max-width: 1400px;
   max-height: 90vh;
