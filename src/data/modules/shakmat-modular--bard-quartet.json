@@ -95,15 +95,18 @@
   "patchIdeas": [
     {
       "name": "Harmonic progression sequencer",
-      "patch": "LFO or sequencer → HRMN CV · all 4 channels play different scale roles · Harmony pot advances through 8 chord positions"
+      "patch": "LFO or sequencer → HRMN CV · all 4 channels play different scale roles · Harmony pot advances through 8 chord positions",
+      "diagram": "BARD QUARTET:\n- Sequencer (CV) >> Bard Quartet (Harmony CV) // advances 8 chord positions\n- Sequencer (Pitch) p> Bard Quartet (IN 1)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
       "name": "Polyphonic arp",
-      "patch": "4 channels as arpeggiatores · clock → all CV inputs · different scales per channel · TRSP for transposition"
+      "patch": "4 channels as arpeggiatores · clock → all CV inputs · different scales per channel · TRSP for transposition",
+      "diagram": "BARD QUARTET:\n* ARPG: enabled on CH 1-4\n- Clock (Out) c> Bard Quartet (IN 1)\n- Clock (Out) c> Bard Quartet (IN 2)\n- Clock (Out) c> Bard Quartet (IN 3)\n- Clock (Out) c> Bard Quartet (IN 4)\n- LFO (CV) >> Bard Quartet (TRSP) // transposes all channels\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)"
     },
     {
       "name": "Shift register melody",
-      "patch": "A# option ON for channels 2-4 · gate sequence → Gate input · channel 1 plays melody · channels 2-4 echo it with delay"
+      "patch": "A# option ON for channels 2-4 · gate sequence → Gate input · channel 1 plays melody · channels 2-4 echo it with delay",
+      "diagram": "BARD QUARTET:\n* CH 2-4: A# shift register mode\n- Sequencer (Pitch) p> Bard Quartet (IN 1)\n- Clock (Gate) g> Bard Quartet (Gate Input) // advances shift register\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     }
   ]
 }

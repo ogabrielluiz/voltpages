@@ -49,15 +49,18 @@
   "patchIdeas": [
     {
       "name": "Merge two LFOs",
-      "patch": "LFO 1 → A In 1 · LFO 2 → A In 2 · A Out → VCF CV"
+      "patch": "LFO 1 → A In 1 · LFO 2 → A In 2 · A Out → VCF CV",
+      "diagram": "U2X:\n- LFO 1 (CV) >> u2X (A In 1)\n- LFO 2 (CV) >> u2X (A In 2)\n- u2X (A Out) >> VCF (Cutoff CV) // summed modulation"
     },
     {
       "name": "CV + envelope sum",
-      "patch": "V/Oct → B In 1 · Envelope → B In 2 · B Out → VCO V/Oct for pitch + expression"
+      "patch": "V/Oct → B In 1 · Envelope → B In 2 · B Out → VCO V/Oct for pitch + expression",
+      "diagram": "U2X:\n- Keyboard (Pitch) p> u2X (B In 1)\n- Envelope (CV) >> u2X (B In 2) // adds pitch expression\n- u2X (B Out) p> VCO (V/Oct)"
     },
     {
       "name": "Live mute performance",
-      "patch": "Two audio sources into section A · mute switch for instant drop-outs"
+      "patch": "Two audio sources into section A · mute switch for instant drop-outs",
+      "diagram": "U2X:\n- Drum Loop (OUT) -> u2X (A In 1)\n- Synth (OUT) -> u2X (A In 2)\n- u2X (A Out) -> Mixer (CH) // Mute A for drop-outs"
     }
   ]
 }

@@ -86,15 +86,18 @@
   "patchIdeas": [
     {
       "name": "Stereo bandpass sweep",
-      "patch": "Link ON · LFO → HPF CV · LPF set bandwidth · resonance on both edges"
+      "patch": "Link ON · LFO → HPF CV · LPF set bandwidth · resonance on both edges",
+      "diagram": "DUAL DAGGER:\n* Link: ON\n* HP Resonance: ON\n* LP Resonance: ON\n- VCO L (OUT) -> Dual Dagger (IN1)\n- VCO R (OUT) -> Dual Dagger (IN2)\n- LFO (CV) >> Dual Dagger (HPF CV) // sweeps bandpass center\n- Dual Dagger (OUT1) -> Mixer (L)\n- Dual Dagger (OUT2) -> Mixer (R)"
     },
     {
       "name": "Dual resonant peak",
-      "patch": "Mono → IN1 · mix OUT1+OUT2 · PANLP CV sets distance between two resonant LP peaks"
+      "patch": "Mono → IN1 · mix OUT1+OUT2 · PANLP CV sets distance between two resonant LP peaks",
+      "diagram": "DUAL DAGGER:\n* LP Resonance: ON\n- Noise (OUT) -> Dual Dagger (IN1) // IN2 normalled from IN1\n- LFO (CV) >> Dual Dagger (PANLP CV) // splits the two LP peaks\n- Dual Dagger (OUT1) -> Mixer (CH1)\n- Dual Dagger (OUT2) -> Mixer (CH2)"
     },
     {
       "name": "Sine VCO voice",
-      "patch": "Hi jumper · resonance max → HPF self-oscillates · LPF smooths · second channel FM via PANHP"
+      "patch": "Hi jumper · resonance max → HPF self-oscillates · LPF smooths · second channel FM via PANHP",
+      "diagram": "DUAL DAGGER:\n* HP Resonance: ON (Hi jumper, max)\n- Keyboard (Pitch) p> Dual Dagger (HPF CV) // V/Oct tracking\n- LFO (CV) >> Dual Dagger (PANHP CV) // FM channel 2\n- Dual Dagger (OUT1) -> Output (L)\n- Dual Dagger (OUT2) -> Output (R)"
     }
   ]
 }
