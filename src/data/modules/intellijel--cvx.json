@@ -48,15 +48,18 @@
   "patchIdeas": [
     {
       "name": "Keyboard-controlled voice",
-      "patch": "Pitch → VCO V/Oct · Gate → envelope trigger · Velocity → VCA CV for dynamic response"
+      "patch": "Pitch → VCO V/Oct · Gate → envelope trigger · Velocity → VCA CV for dynamic response",
+      "diagram": "CVx:\n- CVx (Pitch) p> VCO (V/Oct)\n- CVx (Gate) g> Envelope (Trig)\n- CVx (Velocity) >> VCA (CV) // dynamic response\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In)"
     },
     {
       "name": "Mod wheel filter sweep",
-      "patch": "Mod Wheel → VCF cutoff CV · play keyboard and use mod wheel for real-time filter control"
+      "patch": "Mod Wheel → VCF cutoff CV · play keyboard and use mod wheel for real-time filter control",
+      "diagram": "CVx:\n- CVx (Pitch) p> VCO (V/Oct)\n- CVx (Gate) g> Envelope (Trig)\n- CVx (Mod Wheel) >> VCF (Cutoff) // real-time sweep\n- VCO (Out) -> VCF (In)"
     },
     {
       "name": "MIDI-synced sequencer",
-      "patch": "Clock → sequencer clock in · Reset → sequencer reset · sequencer runs in time with DAW"
+      "patch": "Clock → sequencer clock in · Reset → sequencer reset · sequencer runs in time with DAW",
+      "diagram": "CVx:\n- CVx (Clock) c> Sequencer (Clock)\n- CVx (Reset) t> Sequencer (Reset) // DAW-synced\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)"
     }
   ]
 }

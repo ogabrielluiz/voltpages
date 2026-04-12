@@ -91,15 +91,18 @@
   "patchIdeas": [
     {
       "name": "LFO depth control",
-      "patch": "LFO → IN A · UNI mode · dial amount with knob · OUT A → filter CV"
+      "patch": "LFO → IN A · UNI mode · dial amount with knob · OUT A → filter CV",
+      "diagram": "Duatt:\n* Polarity Switch A: UNI\n- LFO (Out) >> Duatt (IN A)\n- Duatt (OUT A) >> VCF (Cutoff) // depth via knob"
     },
     {
       "name": "Inverted envelope",
-      "patch": "ADSR → IN A · -/+ mode · knob past noon CCW · OUT A → VCA or VCF"
+      "patch": "ADSR → IN A · -/+ mode · knob past noon CCW · OUT A → VCA or VCF",
+      "diagram": "Duatt:\n* Polarity Switch A: -/+\n- ADSR (Out) >> Duatt (IN A)\n- Duatt (OUT A) >> VCF (Cutoff) // knob CCW inverts"
     },
     {
       "name": "Note range + offset",
-      "patch": "S&H → IN B · attenuate range · Channel A (-/+ unpatched) offsets pitch down · OUT B → VCO"
+      "patch": "S&H → IN B · attenuate range · Channel A (-/+ unpatched) offsets pitch down · OUT B → VCO",
+      "diagram": "Duatt:\n* Polarity Switch A: -/+\n* Polarity Switch B: UNI\n- S&H (Out) p> Duatt (IN B)\n- Duatt (OUT B) p> VCO (V/Oct) // A offsets, B attenuates"
     }
   ]
 }

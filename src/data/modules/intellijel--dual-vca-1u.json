@@ -66,15 +66,18 @@
   "patchIdeas": [
     {
       "name": "Stereo tremolo",
-      "patch": "Osc L → IN A · Osc R → IN B · LFO → CV A (normalizes to CV B)"
+      "patch": "Osc L → IN A · Osc R → IN B · LFO → CV A (normalizes to CV B)",
+      "diagram": "Dual VCA 1U:\n- Osc L (Out) -> Dual VCA 1U (IN A)\n- Osc R (Out) -> Dual VCA 1U (IN B)\n- LFO (Out) >> Dual VCA 1U (CV A) // normalizes to CV B\n- Dual VCA 1U (VCA A) -> Mixer (L)\n- Dual VCA 1U (VCA B) -> Mixer (R)"
     },
     {
       "name": "Envelope shaping",
-      "patch": "Audio → IN A · Envelope → CV A · VCA A out → mixer"
+      "patch": "Audio → IN A · Envelope → CV A · VCA A out → mixer",
+      "diagram": "Dual VCA 1U:\n- VCO (Out) -> Dual VCA 1U (IN A)\n- Envelope (Out) >> Dual VCA 1U (CV A)\n- Dual VCA 1U (VCA A) -> Mixer (In)"
     },
     {
       "name": "Summed mono with two sources",
-      "patch": "Source1 → IN A · Source2 → IN B · leave VCA A unpatched · VCA B = mix"
+      "patch": "Source1 → IN A · Source2 → IN B · leave VCA A unpatched · VCA B = mix",
+      "diagram": "Dual VCA 1U:\n- Source1 (Out) -> Dual VCA 1U (IN A)\n- Source2 (Out) -> Dual VCA 1U (IN B)\n- Envelope (Out) >> Dual VCA 1U (CV A)\n- Envelope2 (Out) >> Dual VCA 1U (CV B)\n- Dual VCA 1U (VCA B) -> Mixer (In) // A sums into B"
     }
   ]
 }
