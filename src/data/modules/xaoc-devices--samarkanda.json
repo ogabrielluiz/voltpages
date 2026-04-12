@@ -1,0 +1,264 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1953/1.0",
+    "sources": [
+      "https://xaocdevices.com/manuals/xaoc_samarkanda_manual_A4.pdf",
+      "https://xaocdevices.com/main/samarkanda/",
+      "https://modulargrid.net/e/xaoc-devices-samarkanda",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=275000",
+      "https://www.perfectcircuit.com/xaoc-devices-samarkanda.html"
+    ]
+  },
+  "slug": "xaoc-devices--samarkanda",
+  "name": "Samarkanda",
+  "manufacturer": "Xaoc Devices",
+  "hp": 42,
+  "tags": [
+    "DELAY",
+    "EFFECTS",
+    "GRANULAR",
+    "SAMPLER"
+  ],
+  "description": "Quadruple resampling performance delay. Four channels (A·B·C·D) of 0.5ms–15s each, with analog (tape/BBD-like pitch-shifting) and digital (granular crossfade) behaviours, freeze, reverse, 1V/oct loop playback, linkable groups, and lossless digital stacking.",
+  "controls": [
+    {
+      "name": "TIME",
+      "scope": "per channel (A·B·C·D)",
+      "description": "Large rotary delay-time dial. Exponential scale tied to the RANGE switch. Also doubles as loop-length control while HOLD is engaged.",
+      "detail": "X1: 0.5–150ms · X10: 5–1500ms · X100: 50–15000ms · in sync/tap shows discrete factors 1:8…8:1"
+    },
+    {
+      "name": "RANGE",
+      "scope": "per channel",
+      "description": "Three-position TIME scale selector. Ignored when the channel is externally synced (factor scale replaces it).",
+      "detail": "X1 · X10 · X100 · overlaps at boundaries"
+    },
+    {
+      "name": "BEHAVIOUR",
+      "scope": "per channel",
+      "description": "Switches the delay algorithm between tape/BBD-like resampling and granular crossfade. Can change at any time.",
+      "detail": "DIGITAL = crossfade between read positions, no pitch change · ANALOG = variable sample rate with tape/BBD pitch shift"
+    },
+    {
+      "name": "FBCK",
+      "scope": "per channel",
+      "description": "Feedback amount. Full-turn ≈ 10V of CV equivalent. Nonlinear response — sharp from 0% toward 80%, slow over the last few % toward full.",
+      "detail": "0–10 · beyond 50% invokes ANALOG soft-clip or DIGITAL compressor · 10 = infinite (use HOLD for true sound-on-sound)"
+    },
+    {
+      "name": "MIX",
+      "scope": "per channel",
+      "description": "Dry/wet balance at MIX OUT. Bipolar CV offset via MIX jack.",
+      "detail": "0 = dry · 10 = wet · CV ±10V"
+    },
+    {
+      "name": "REVERSE",
+      "scope": "per channel",
+      "description": "Lit button toggling reverse-delay playback. Also a gate/trigger input on the associated jack — rising edge flips state.",
+      "detail": "rising edge flips state · on reverses buffer playback"
+    },
+    {
+      "name": "HOLD",
+      "scope": "per channel",
+      "description": "Lit button freezing the buffer into a loop. Also a gate/trigger input. Loop length = current TIME; TIME/RANGE/CV then act on loop length.",
+      "detail": "freezes buffer · TIME becomes loop-length · with ANALOG + 1V/oct = tuned loop playback"
+    },
+    {
+      "name": "TAP TEMPO",
+      "scope": "per channel",
+      "description": "Lit button — taps set the time base. Also indicates sync state via colour.",
+      "detail": "green = continuous · yellow = tap · red = external sync"
+    },
+    {
+      "name": "LINK",
+      "scope": "between adjacent channels",
+      "description": "Button linking a channel to its left neighbour as follower. Leftmost linked channel = master. Can extend groups (A+B+C+D) or pair into A+B · C+D etc.",
+      "detail": "linked TIME dial becomes ±relative around 1:1 at noon · ranges X1/X10/X100 rescale relative span"
+    },
+    {
+      "name": "PURGE / SHIFT",
+      "scope": "Global",
+      "description": "Multi-function button. Momentary hold + release = clear every buffer. Also the SHIFT modifier for secondary functions.",
+      "detail": "hold+release = purge · SHIFT + REVERSE = invert feedback polarity · SHIFT + HOLD = invert TIME CV polarity"
+    },
+    {
+      "name": "IN / MIX LEDs",
+      "scope": "per channel",
+      "description": "Dual multicolour peak indicators for analog input and mix-out levels, with PPM-style discharge.",
+      "detail": "green safe · yellow hot · red soft-clip engaged · LED off = no analog cable (digital normalised)"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "INPUT",
+      "description": "Audio input for the channel. With no cable, digital MIX data from the previous channel is virtually passed in lossless — enabling clean stacking.",
+      "voltage": "0–20Vpp · recommended 10Vpp",
+      "normalizedTo": "previous channel's digital MIX (when unpatched)"
+    },
+    {
+      "name": "FB INPUT",
+      "description": "Return for the external feedback loop. Digitally normalised to the WET OUT of the same channel — patch breaks normalisation to insert external processing.",
+      "voltage": "0–20Vpp",
+      "normalizedTo": "WET OUT (same channel, digital)"
+    },
+    {
+      "name": "TIME",
+      "description": "CV over delay time. 1V ≈ ×2 in the continuous ranges (effectively 1V/oct in loop-playback mode).",
+      "voltage": "-5V to +10V"
+    },
+    {
+      "name": "SYNC",
+      "description": "External clock input. Patching activates sync mode (TAP TEMPO red); RANGE switch is ignored and factor scale replaces it.",
+      "voltage": "any clock signal, rec. 5V"
+    },
+    {
+      "name": "REVERSE",
+      "description": "Gate/trigger input. Rising edge flips the REVERSE button state.",
+      "voltage": "+5V standard trigger or gate"
+    },
+    {
+      "name": "HOLD",
+      "description": "Gate/trigger input. Rising edge flips the HOLD button state.",
+      "voltage": "+5V standard trigger or gate"
+    },
+    {
+      "name": "FBCK",
+      "description": "Bipolar CV added to the feedback knob. Full 10V step equals a full-knob turn.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "MIX",
+      "description": "Bipolar CV offsetting the dry/wet knob.",
+      "voltage": "-10V to +10V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "MIX OUT",
+      "description": "Dry + wet blend per MIX controls. Also the source of digital stacking into the next channel's INPUT when that channel has no cable patched.",
+      "voltage": "0–20Vpp"
+    },
+    {
+      "name": "WET OUT",
+      "description": "Direct access to the delayed signal only. Source of the normalised internal feedback loop (broken by patching FB INPUT).",
+      "voltage": "0–20Vpp"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Analog vs digital time-change behaviour",
+      "trigger": "BEHAVIOUR switch",
+      "description": "ANALOG models a fixed-rate buffer read at a variable sample rate — every change of TIME squeezes/stretches what is in the buffer, pitching it tape/BBD-style. DIGITAL crossfades between buffer read positions at a fixed rate — delay time can jump without pitch change. Switchable live; HOLD additionally changes the switch into a loop-playback style selector."
+    },
+    {
+      "name": "Lossless digital channel stacking",
+      "trigger": "no cable in INPUT of channel B/C/D",
+      "description": "When INPUT is unpatched, the MIX OUT of the previous channel is passed digitally (skipping D/A + A/D) into the next channel. Four channels default to a stacked cascade of delays with intricate compounding echoes, and the feedback paths follow the same smart normalisation."
+    },
+    {
+      "name": "Linked channels relative to a master",
+      "trigger": "LINK button between channels",
+      "description": "Linked channels follow the master's TIME/MIX/FBCK controls relatively — knobs act as bipolar offsets around the master value. TIME range switch on linked channel scales the offset span (X100 = broad, X1 = very fine). Eight link permutations possible; two independent pairs (A+B and C+D) is a common stereo layout."
+    },
+    {
+      "name": "Continuous / tap-tempo / external sync per channel",
+      "trigger": "TAP TEMPO button colour",
+      "description": "Each channel independently operates in free (green), tap-tempo (yellow), or external-sync (red) mode. Patching a cable to SYNC forces sync; unplug returns to free. In synced modes, TIME knob jumps between factor 1:8 to 8:1 and RANGE is ignored."
+    },
+    {
+      "name": "Reverse delay (buffer played backwards)",
+      "trigger": "REVERSE button/gate ON",
+      "description": "Segments of the buffer are played backwards — periodic discontinuity when the read pointer meets the oldest sample, masked by short fades. Adding feedback re-reverses the sound on the second repetition; to keep directional reverse with feedback, stack two channels: first reverse/dry, second forward with feedback."
+    },
+    {
+      "name": "HOLD freezes and loops the buffer",
+      "trigger": "HOLD button/gate ON",
+      "description": "Captures the current buffer as a loop. In DIGITAL, TIME sweeps loop length without pitch. In ANALOG, TIME resamples the frozen loop — so TIME CV + 1V/oct lets you play the loop chromatically from a sequencer (Samarkanda as a crude tuned sampler)."
+    },
+    {
+      "name": "1V/oct tuned loop playback",
+      "trigger": "HOLD ON · BEHAVIOUR = ANALOG · SHIFT+HOLD combo to set CV polarity if needed",
+      "description": "Manual PURGE+HOLD sets TIME CV to +1V/oct sensitivity. Freeze a single-cycle or short phrase into the buffer, then play it via a keyboard/sequencer → TIME. Different initial TIME knob settings yield different loop lengths = different 'patches' to play."
+    },
+    {
+      "name": "Feedback polarity inversion",
+      "trigger": "SHIFT + REVERSE (hold PURGE + press REVERSE)",
+      "description": "Flips feedback polarity from positive to negative for that channel. Subtle on long delays but dramatic on very short delays — shifts the notch/peak positions of the resonator-like comb pattern. Per-channel and persistent across power cycles."
+    },
+    {
+      "name": "TIME CV polarity inversion",
+      "trigger": "SHIFT + HOLD (hold PURGE + press HOLD)",
+      "description": "Inverts the direction of TIME CV for that channel (factory +1V/oct → -1V/oct). Useful for playing tuned loops from sequencers that output negative voltages, or inverting sweep direction. Big TIME knob direction is unchanged."
+    },
+    {
+      "name": "External feedback loops per channel",
+      "trigger": "cable into FB INPUT",
+      "description": "Breaks the digital normalisation from WET OUT back to FBCK and lets you insert any external processing into the repeat path — filters, distortions, reverbs, even another Samarkanda channel for feedback-delay-network (FDN) reverb topologies."
+    },
+    {
+      "name": "Soft-clip (ANALOG) vs compressor (DIGITAL) on feedback overdrive",
+      "trigger": "FBCK > ~50%",
+      "description": "ANALOG applies a modeled soft-clip to emulate classic analog saturation at the repeat stage. DIGITAL applies a transparent compressor to tame amplitude buildup without audible colour. Gain structure behaviour thus differs sharply between the two modes."
+    },
+    {
+      "name": "PURGE clears all buffers",
+      "trigger": "hold PURGE then release without pressing other buttons",
+      "description": "Instantly wipes all four buffers. Handy after runaway feedback or when changing sources — no need to power-cycle. Holding PURGE alone while pressing REVERSE/HOLD invokes the secondary (polarity) functions instead."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Two independent stereo delays (A+B, C+D)",
+      "patch": "LINK A↔B and C↔D · set knobs in B and D to noon (1:1) · channels B/D follow A/C. Delay-time, feedback, mix changes in A/C affect both pairs · patch stereo L/R into A and C",
+      "diagram": "Samarkanda:\n* LINK A-B: ON\n* LINK C-D: ON\n* BEHAVIOUR A/B: ANALOG\n* BEHAVIOUR C/D: ANALOG\n\n- SourceL (Out) -> Samarkanda (INPUT A)\n- SourceR (Out) -> Samarkanda (INPUT C)\n- Samarkanda (MIX OUT B) -> Output (L)\n- Samarkanda (MIX OUT D) -> Output (R)"
+    },
+    {
+      "name": "Stacked granular cascade with compounding echoes",
+      "patch": "Default stacked config · all four channels DIGITAL · each TIME at a different subdivision of clock · MIX at 100% per channel · cascading taps produce dense, overlapping granular texture",
+      "diagram": "Samarkanda:\n* BEHAVIOUR A/B/C/D: DIGITAL\n* TIME A: 1/4\n* TIME B: 1/8\n* TIME C: 3/8\n* TIME D: 1/2\n\n- ClockSrc (Out) c> Samarkanda (SYNC A)\n- ClockSrc (Out) c> Samarkanda (SYNC B)\n- ClockSrc (Out) c> Samarkanda (SYNC C)\n- ClockSrc (Out) c> Samarkanda (SYNC D)\n- Voice (Out) -> Samarkanda (INPUT A)\n- Samarkanda (MIX OUT D) -> Output (L)\n- Samarkanda (MIX OUT D) -> Output (R)"
+    },
+    {
+      "name": "Tuned loop sampler (1V/oct loop playback)",
+      "patch": "Record a phrase into A · press HOLD · BEHAVIOUR ANALOG · PURGE+HOLD combo to ensure +1V/oct polarity · keyboard → TIME A · TIME knob sets base loop length",
+      "diagram": "Samarkanda:\n* A BEHAVIOUR: ANALOG\n* A HOLD: ON\n* A RANGE: X10\n\n- Voice (Out) -> Samarkanda (INPUT A)\n- Kbd (Pitch) p> Samarkanda (TIME A)\n- Samarkanda (MIX OUT A) -> Output (In)"
+    },
+    {
+      "name": "Ping-pong with cross-coupled feedback",
+      "patch": "Patch WET OUT A → FB INPUT B and WET OUT B → FB INPUT A · link off · different TIMEs per channel · stereo bounces between sides",
+      "diagram": "Samarkanda:\n* LINK: OFF\n* BEHAVIOUR A/B: ANALOG\n\n- Voice (Out) -> Samarkanda (INPUT A)\n- Samarkanda (WET OUT A) -> Samarkanda (FB INPUT B)\n- Samarkanda (WET OUT B) -> Samarkanda (FB INPUT A)\n- Samarkanda (MIX OUT A) -> Output (L)\n- Samarkanda (MIX OUT B) -> Output (R)"
+    },
+    {
+      "name": "Reverse verb via two stacked channels",
+      "patch": "Channel A: REVERSE ON, no feedback, full wet · Channel B: forward with long feedback, picks up A's reversed tail · gives true reversed-with-decay effect",
+      "diagram": "Samarkanda:\n* A REVERSE: ON\n* A FBCK: 0\n* A MIX: 10 (wet)\n* B REVERSE: OFF\n* B FBCK: 7\n\n- Voice (Out) -> Samarkanda (INPUT A)\n- Samarkanda (MIX OUT B) -> Output (In)"
+    },
+    {
+      "name": "Tuned resonator",
+      "patch": "BEHAVIOUR ANALOG · RANGE X1 · FBCK near max · keyboard into TIME at 1V/oct · PURGE+HOLD set if needed · plucky resonant tones track pitch",
+      "diagram": "Samarkanda:\n* A BEHAVIOUR: ANALOG\n* A RANGE: X1\n* A FBCK: 9\n* A MIX: 10\n\n- Kbd (Pitch) p> Samarkanda (TIME A)\n- Trig (Trig) t> VCA (CV)\n- Noise (Out) -> VCA (In)\n- VCA (Out) -> Samarkanda (INPUT A)\n- Samarkanda (MIX OUT A) -> Output (In)"
+    },
+    {
+      "name": "Real-time granulator on one channel",
+      "patch": "BEHAVIOUR DIGITAL · RANGE X10 · FBCK 0 · MIX fully wet · random CV source into TIME CV · continuous grain scatter · increase FBCK for denser cloud",
+      "diagram": "Samarkanda:\n* A BEHAVIOUR: DIGITAL\n* A RANGE: X10\n* A FBCK: 3\n* A MIX: 10\n\n- Pad (Out) -> Samarkanda (INPUT A)\n- Noise (SlewRnd) >> Samarkanda (TIME A)\n- Samarkanda (MIX OUT A) -> Reverb (In)\n- Reverb (Out) -> Output (In)"
+    },
+    {
+      "name": "Buffer freeze pad from live source",
+      "patch": "Play material into A · gate into HOLD jack captures on the fly · slow LFO into TIME CV creates drifting sustained pad · add ANALOG for tape drift, DIGITAL for stable pitch",
+      "diagram": "Samarkanda:\n* A BEHAVIOUR: DIGITAL\n* A RANGE: X100\n\n- Voice (Out) -> Samarkanda (INPUT A)\n- Gate (Out) g> Samarkanda (HOLD A)\n- Slow LFO (Out) >> Samarkanda (TIME A)\n- Samarkanda (MIX OUT A) -> Output (In)"
+    },
+    {
+      "name": "Maximum 60-second delay line",
+      "patch": "Stacked default · all RANGE X100 · all TIME max · MIX 100% · FBCK 0 in B/C/D · feedback only from D WET OUT back to A FB INPUT · effective ~60s delay",
+      "diagram": "Samarkanda:\n* A/B/C/D RANGE: X100\n* A/B/C/D TIME: max\n* A FBCK: 0\n* B/C FBCK: 0\n* D FBCK: 0\n\n- Voice (Out) -> Samarkanda (INPUT A)\n- Samarkanda (WET OUT D) -> Samarkanda (FB INPUT A)\n- Samarkanda (MIX OUT D) -> Output (In)"
+    },
+    {
+      "name": "FDN-style reverb across four channels",
+      "patch": "All four stacked with short differing TIMEs · external matrix mixer cross-feeds WET OUTs into each channel's FB INPUT with different gains · shimmering dense early reflections",
+      "diagram": "Samarkanda:\n* A TIME: 37ms\n* B TIME: 53ms\n* C TIME: 71ms\n* D TIME: 97ms\n* A/B/C/D BEHAVIOUR: DIGITAL\n\n- Voice (Out) -> Samarkanda (INPUT A)\n- Samarkanda (WET OUT A) -> Matrix (In1)\n- Samarkanda (WET OUT B) -> Matrix (In2)\n- Samarkanda (WET OUT C) -> Matrix (In3)\n- Samarkanda (WET OUT D) -> Matrix (In4)\n- Matrix (Out1) -> Samarkanda (FB INPUT A)\n- Matrix (Out2) -> Samarkanda (FB INPUT B)\n- Matrix (Out3) -> Samarkanda (FB INPUT C)\n- Matrix (Out4) -> Samarkanda (FB INPUT D)\n- Samarkanda (MIX OUT D) -> Output (In)"
+    }
+  ]
+}

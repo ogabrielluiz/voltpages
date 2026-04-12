@@ -1,0 +1,182 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "firmwareVersion": "V4 (2025)",
+    "sources": [
+      "https://www.befaco.org/abc/",
+      "https://befaco.org/docs/AB+C/AB+C_User_Manual.pdf",
+      "https://www.befaco.org/docs/AB+C/A_B+C_V4_Assembly_Manual.pdf",
+      "https://modulargrid.net/e/befaco-a-b-c-v4",
+      "https://synthanatomy.com/2025/03/befaco-axbc-atte-slew-mixer-and-mudi-new-wave-of-utility-modules-for-eurorack.html",
+      "https://schneidersladen.de/en/befaco-a-b-c-2025"
+    ]
+  },
+  "slug": "befaco--a-b-plus-c",
+  "name": "A*B+C",
+  "manufacturer": "Befaco",
+  "hp": 6,
+  "tags": ["VCA", "UTILITY", "MIXER", "WAVESHAPER", "ATTENUVERTER"],
+  "description": "Dual four-quadrant multiplier with VC offset. Each channel computes A·B+C · exponential attenuverters on B (-2…+2) and C (-1…+1) · OUT 1 normalizes to OUT 2 for chained four-channel mixing.",
+  "controls": [
+    {
+      "name": "B Level",
+      "scope": "CH 1 & 2",
+      "description": "Attenuverter on the B input before multiplication. Exponential taper — gain change concentrated at the knob extremes.",
+      "detail": "×-2 … 0 … ×+2 · noon = multiply by zero (mutes A·B term)"
+    },
+    {
+      "name": "C Level",
+      "scope": "CH 1 & 2",
+      "description": "Attenuverter on the C input before summing with A·B. Exponential taper.",
+      "detail": "×-1 … 0 … ×+1 · noon = zero offset"
+    },
+    {
+      "name": "B gain switch",
+      "scope": "CH 1 & 2 (V4 only)",
+      "description": "Three-position slide switch per B input, expanding the per-channel gain range beyond what the attenuverter alone allows.",
+      "detail": "three positions (up/centre/down) including unity, x2 and inverting stages — see panel silkscreen for V4 rev"
+    },
+    {
+      "name": "C gain switch",
+      "scope": "CH 1 & 2 (V4 only)",
+      "description": "Three-position slide switch per C input, extending the offset range.",
+      "detail": "three positions (up/centre/down) · combines with C Level exponential attenuverter"
+    },
+    {
+      "name": "Mode switch",
+      "scope": "Global (V4 only)",
+      "description": "Two-position switch between multiplier mode and four-channel mixer mode. Mixer mode routes A1 into the OUT 2 sum, exposing four attenuated inputs to one master.",
+      "detail": "MULT: (A1·B1+C1) at OUT 1 · MIX: A1+A2 summed with B1,C1,B2,C2 attenuators into OUT 2"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "A 1",
+      "description": "Signal input for channel 1, multiplied by B1. Audio or CV.",
+      "voltage": "±10V · DC coupled"
+    },
+    {
+      "name": "B 1",
+      "description": "Second multiplicand for channel 1. Audio or CV. Multiplies A1 via the B1 attenuverter.",
+      "voltage": "±10V · DC coupled",
+      "normalizedTo": "+5V DC when unpatched, so B1 Level alone sets a static gain on A1"
+    },
+    {
+      "name": "C 1",
+      "description": "Offset / summing input for channel 1. Added to A1·B1 through the C1 attenuverter.",
+      "voltage": "±10V · DC coupled",
+      "normalizedTo": "+10V DC when unpatched, so C1 Level alone generates a bipolar offset (±10V)"
+    },
+    {
+      "name": "A 2",
+      "description": "Signal input for channel 2, multiplied by B2.",
+      "voltage": "±10V · DC coupled"
+    },
+    {
+      "name": "B 2",
+      "description": "Second multiplicand for channel 2.",
+      "voltage": "±10V · DC coupled",
+      "normalizedTo": "+5V DC when unpatched"
+    },
+    {
+      "name": "C 2",
+      "description": "Offset / summing input for channel 2.",
+      "voltage": "±10V · DC coupled",
+      "normalizedTo": "+10V DC when unpatched"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT 1",
+      "description": "Channel 1 result: A1·B1 + C1. Bicolour LED above the jack glows red for positive output, green for negative.",
+      "voltage": "±10V clipped"
+    },
+    {
+      "name": "OUT 2",
+      "description": "Master output. When OUT 1 is unpatched, OUT 2 = (A1·B1+C1) + (A2·B2+C2). When OUT 1 is patched it leaves the sum, so OUT 2 carries channel 2 alone. Bicolour LED.",
+      "voltage": "±10V clipped",
+      "normalizedTo": "channel 1 result summed into OUT 2 when OUT 1 is unpatched"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Four-quadrant multiplier",
+      "trigger": "audio into A and B of the same channel",
+      "description": "True four-quadrant multiplication: sign of A and sign of B both affect the output polarity. With bipolar audio on A and B the module produces classic ring-modulation sum/difference sidebands rather than a VCA's one-sided amplitude modulation."
+    },
+    {
+      "name": "Exponential attenuverter response",
+      "trigger": "sweeping B Level or C Level",
+      "description": "Both attenuverters use exponential tapers, concentrating gain change near the full-CW and full-CCW ends. Small moves around noon have subtle effect; the last 20% of rotation produces the bulk of the amplitude change. Useful for fine-setting modulation depth then slamming it wide on demand."
+    },
+    {
+      "name": "Normalised B = manual VCA",
+      "trigger": "B input unpatched, A patched, C unused (noon)",
+      "description": "B1 and B2 normalize to +5V DC. With nothing in B the attenuverter acts as a manual bipolar VCA on A: CCW inverts A, noon mutes, CW passes A at up to ×2 gain. No VC needed for static amplitude or polarity control."
+    },
+    {
+      "name": "Normalised C = bipolar offset generator",
+      "trigger": "A and B unpatched, C unpatched, C Level in use",
+      "description": "C1 and C2 normalize to +10V DC. With nothing patched the channel outputs a clean ±10V manual offset scaled by C Level. Two independent bipolar DC sources per module — handy for tuning, thresholds or biasing CV signals."
+    },
+    {
+      "name": "Output chaining for 4-channel mixing",
+      "trigger": "OUT 1 unpatched while using OUT 2",
+      "description": "OUT 1 is internally normalized into the OUT 2 summing node. With OUT 1 empty, OUT 2 = channel 1 result + channel 2 result. Patch four signals into A1,C1,A2,C2 with all B inputs/attenuverters set appropriately and OUT 2 becomes a four-input mixer with attenuverters."
+    },
+    {
+      "name": "Dual ring modulator",
+      "trigger": "audio on A1/B1 and A2/B2, both with B Level near full CW",
+      "description": "Each channel acts as an independent ring mod. Feed two pairs of audio sources and take OUT 1 and (with OUT 1 patched) OUT 2 for two independent metallic/clangorous timbres. With OUT 1 unpatched both ring-mod outputs sum at OUT 2."
+    },
+    {
+      "name": "V4 per-input gain switches",
+      "trigger": "flipping SWB / SWC slide switches on V4 panel",
+      "description": "V4 adds a three-position slide switch per B and per C input extending gain range beyond the attenuverter alone. Positions include unity and doubled/inverted stages, widening headroom for cross-modulation and allowing more dramatic summing at OUT 2 without overdriving the multiplier stage."
+    },
+    {
+      "name": "V4 mixer mode",
+      "trigger": "Mode switch flipped from MULT to MIX on V4",
+      "description": "V4 adds a global Mix switch. In MIX mode routing reconfigures so A1 joins A2 at the channel-2 sum, turning the module into a straightforward four-channel mixer (A1, A2, B1·C1-scaled, B2·C2-scaled) at OUT 2 with the multipliers acting as scalers rather than four-quadrant stages."
+    },
+    {
+      "name": "LED polarity indicator",
+      "trigger": "bipolar signal at OUT 1 / OUT 2",
+      "description": "Bicolour LEDs glow red on positive excursion, green on negative. At audio rate both illuminate equally — a solid orange glow means the output is symmetrically bipolar. A persistent red or green suggests a DC offset from C input or a unipolar A signal."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Ring modulator pair",
+      "patch": "VCO 1 → A1 · VCO 2 → B1 · B1 Level full CW · C1 Level noon (no offset) · OUT 1 = four-quadrant product = classic ring-mod sum/difference tones · second voice on CH2 for parallel ring mod · detune the B VCOs for beating sidebands",
+      "diagram": "ABC:\n* B1 Level: full CW\n* C1 Level: noon\n* B2 Level: full CW\n* C2 Level: noon\n\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\n\n- VCO 1 (Out) -> ABC (A 1)\n- VCO 2 (Out) -> ABC (B 1)\n- ABC (OUT 1) -> Output (A) // ring mod 1\n- VCO 3 (Out) -> ABC (A 2)\n- VCO 4 (Out) -> ABC (B 2)\n- ABC (OUT 2) -> Output (B) // ring mod 2 (patch OUT 1 to break sum)"
+    },
+    {
+      "name": "Dual VCA with bipolar depth",
+      "patch": "Audio → A · CV envelope → B · B Level sets depth, CCW side inverts the envelope action · C Level adjusts static offset (volume without CV) · exponential taper makes the last 20% of the knob the loud zone · OUT = VCA with voltage-controlled bipolar depth and manual bias",
+      "diagram": "ABC:\n* B1 Level: set depth\n* C1 Level: static bias\n\nVCO:\nEnvelope:\n\n- VCO (Out) -> ABC (A 1)\n- Envelope (Out) >> ABC (B 1)\n- ABC (OUT 1) -> Output (In) // VCA with depth + bias"
+    },
+    {
+      "name": "Crossfader (CV-controlled)",
+      "patch": "Voice A → A1 · Voice B → A2 · bipolar LFO → B1 and (via attenuverter invert) B2 so one channel opens while the other closes · OUT 1 unpatched so OUT 2 sums both · smooth CV-controlled crossfade between two sources",
+      "diagram": "ABC:\n* B1 Level: full CW (non-inverted)\n* B2 Level: full CCW (inverted)\n* C1 & C2: noon\n\nLFO:\nMult:\nVoice A:\nVoice B:\n\n- Voice A (Out) -> ABC (A 1)\n- Voice B (Out) -> ABC (A 2)\n- LFO (Out) >> Mult (In)\n- Mult (Out 1) >> ABC (B 1) // opens CH1\n- Mult (Out 2) >> ABC (B 2) // inverted = closes CH2\n- ABC (OUT 2) -> Output (In) // crossfaded sum"
+    },
+    {
+      "name": "Four-input attenuverting mixer",
+      "patch": "Four CV sources → A1, C1, A2, C2 · B1 and B2 unpatched (norm +5V) so B·A = A times the B1/B2 Level setting · C1 and C2 Levels act as attenuverters on their inputs · OUT 1 unpatched · OUT 2 = sum of all four with independent bipolar scaling · instant modulation mixer with inversion",
+      "diagram": "ABC:\n* B1 & B2 Level: set A1/A2 scale (B unpatched)\n* C1 & C2 Level: set C1/C2 attenuverter\n\nMod A:\nMod B:\nMod C:\nMod D:\nFilter:\n\n- Mod A (Out) >> ABC (A 1)\n- Mod B (Out) >> ABC (C 1)\n- Mod C (Out) >> ABC (A 2)\n- Mod D (Out) >> ABC (C 2)\n- ABC (OUT 2) >> Filter (Cutoff) // 4-input attenuverting sum"
+    },
+    {
+      "name": "Dual bipolar offset generator",
+      "patch": "Nothing in A, B or C on either channel · C normalized to +10V · C1 and C2 Level knobs become two independent ±10V manual offsets at OUT 1 and OUT 2 · patch OUT 1 to break the sum and get two discrete offsets · tune oscillators, bias filters, set S&H thresholds without a dedicated offset module",
+      "diagram": "ABC:\n* C1 Level: offset 1 amount\n* C2 Level: offset 2 amount\n\nVCO 1:\nVCO 2:\n\n- ABC (OUT 1) >> VCO 1 (V/Oct) // offset 1, ±10V\n- ABC (OUT 2) >> VCO 2 (V/Oct) // offset 2 (OUT 1 patched breaks sum)"
+    },
+    {
+      "name": "Tremolo with voltage-controlled inversion",
+      "patch": "Audio → A1 · LFO → B1 · B1 Level at ~1 o'clock · C1 at noon · classic LFO tremolo · sweep B1 Level across noon manually or via SUM through another B2 path to flip tremolo polarity live · exponential taper keeps depth changes feeling musical at the extremes",
+      "diagram": "ABC:\n* B1 Level: ~1 o'clock (tremolo depth)\n* C1 Level: noon\n\nVCO:\nLFO:\n\n- VCO (Out) -> ABC (A 1)\n- LFO (Out) >> ABC (B 1)\n- ABC (OUT 1) -> Output (In) // tremolo"
+    }
+  ]
+}

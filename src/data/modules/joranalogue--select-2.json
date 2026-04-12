@@ -1,0 +1,137 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://joranalogue.com/products/select-2",
+      "https://joranalogue.com/select-2/manual",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=202409",
+      "https://en.clockfacemodular.com/products/joranalogue-select-2"
+    ]
+  },
+  "slug": "joranalogue--select-2",
+  "name": "Select 2",
+  "manufacturer": "Joranalogue",
+  "hp": 6,
+  "tags": ["SWITCH", "UTILITY", "ATTENUVERTER", "MIXER"],
+  "description": "Dual gated precision CV processor. Per channel: 2-input selector, low-droop track-and-hold, and gated polariser. Switches, mutes, holds, inverts, attenuates, offsets, mixes and subtracts CV or audio.",
+  "controls": [
+    {
+      "name": "Polariser Knob",
+      "scope": "A & B",
+      "description": "Attenuverter at the end of each signal chain. Min = inverted, centre = zero, max = unity.",
+      "detail": "−1 (min) · 0 (noon) · +1 (max) · bypassable via UNITY gate"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "SIG. INPUTS (left)",
+      "description": "Default signal input for the channel. Processed by hold and polariser.",
+      "voltage": "any CV/audio",
+      "normalizedTo": "+5V precision reference"
+    },
+    {
+      "name": "SIG. INPUTS (right)",
+      "description": "Alternate signal input, routed when SELECT gate is high.",
+      "voltage": "any CV/audio",
+      "normalizedTo": "0V"
+    },
+    {
+      "name": "HOLD",
+      "description": "Rising edge freezes current input voltage. Holds accurately for several minutes (low-droop design).",
+      "voltage": "+2V low / +3V high · Schmitt trigger"
+    },
+    {
+      "name": "SELECT",
+      "description": "Low = left signal input routed. High = right signal input routed.",
+      "voltage": "+2V low / +3V high · Schmitt trigger"
+    },
+    {
+      "name": "UNITY",
+      "description": "High disables the polariser (forces unity gain through). Low enables polariser knob.",
+      "voltage": "+2V low / +3V high · Schmitt trigger"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "A OUT",
+      "description": "Channel A processor output. If left unpatched, signal is mixed into B OUT.",
+      "voltage": "impedance-compensated CV/audio"
+    },
+    {
+      "name": "B OUT",
+      "description": "Channel B processor output. Sums in A's signal when A OUT is unpatched.",
+      "voltage": "impedance-compensated CV/audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Constant voltage generator",
+      "trigger": "all jacks unpatched",
+      "description": "Left SIG IN normalises to +5V reference. Polariser knob then outputs a manual −5V to +5V CV. Adds a precision offset source to any rack."
+    },
+    {
+      "name": "Gated attenuverter / muter",
+      "trigger": "signal on left IN + gate on SELECT",
+      "description": "High SELECT switches to right IN (normalised 0V), muting the signal. Low SELECT routes the processed audio/CV. Unity gate disables the attenuverter."
+    },
+    {
+      "name": "Low-droop track-and-hold",
+      "trigger": "gate on HOLD",
+      "description": "While HOLD is high the output holds the captured voltage. Leakage low enough to store pitch-accurate CV for minutes. Works on audio too (sample-and-hold at audio rate)."
+    },
+    {
+      "name": "A→B mix summing",
+      "trigger": "A OUT unpatched",
+      "description": "A processor's signal automatically mixes into B OUT via the dashed normalisation. Enables attenuverter+offset in a single channel pair and −10V to +10V generation."
+    },
+    {
+      "name": "Schmitt-trigger gate inputs",
+      "trigger": "weak or slow modulation into gate jacks",
+      "description": "HOLD, SELECT and UNITY all use +2V/+3V Schmitt thresholds. Slow LFOs, audio sine waves or bipolar signals reliably clock the digital features without buffering."
+    },
+    {
+      "name": "Gate-to-audio converter",
+      "trigger": "audio-rate gate into UNITY",
+      "description": "Polariser at min, gate into UNITY, all other inputs unused: output becomes a 10Vpp square wave (−5V to +5V), non-inverted from the source gate."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Manual 10V offset",
+      "patch": "All jacks empty · A polariser sweeps −5V to +5V from the +5V ref · B polariser does the same, summed via A→B normal · together generate −10V to +10V offsets with no cables",
+      "diagram": "Select 2:\n* A Polariser: taste\n* B Polariser: taste\n\n- Select 2 (B OUT) >> VCO (FM) // A normalises into B OUT for ±10V range"
+    },
+    {
+      "name": "CV sequence selector",
+      "patch": "Sequence 1 → left IN · sequence 2 → right IN · gate pattern → SELECT (same clock) · low picks sequence 1, high picks sequence 2 · quickly generate hybrid melodies from two sources",
+      "diagram": "Select 2:\n* A Polariser: max\n\n- Sequencer 1 (Pitch) p> Select 2.A (SIG left)\n- Sequencer 2 (Pitch) p> Select 2.A (SIG right)\n- Gate Seq (Out) g> Select 2.A (SELECT)\n- Select 2 (A OUT) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Pitch memory with clock",
+      "patch": "S&H-style pitch latch: melody CV → left IN · clock → HOLD · held voltage stays put for entire rest · drives VCO with a frozen melody note during pauses or section breaks",
+      "diagram": "Select 2:\n* A Polariser: max\n\n- Melody CV (Out) p> Select 2.A (SIG left)\n- Clock (Out) g> Select 2.A (HOLD)\n- Select 2 (A OUT) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Ring-mod via UNITY gate",
+      "patch": "Carrier audio → left IN · pulse modulator → UNITY · polariser at minimum · UNITY flip toggles between inverted and unity output, producing classic square-wave ring mod · knob scales depth",
+      "diagram": "Select 2:\n* A Polariser: min\n\n- VCO (Out) -> Select 2.A (SIG left)\n- Modulator (Pulse) g> Select 2.A (UNITY)\n- Select 2 (A OUT) -> Mixer (In)"
+    },
+    {
+      "name": "Audio track-and-hold downsampler",
+      "patch": "Carrier audio → left IN · pulse wave → HOLD (audio rate) · output freezes during pulse-high · classic lo-fi/digital texture · sweep modulator pulse width to morph from subtle to full S&H",
+      "diagram": "Select 2:\n* A Polariser: max\n\n- VCO (Out) -> Select 2.A (SIG left)\n- Modulator (Pulse) g> Select 2.A (HOLD)\n- Select 2 (A OUT) -> VCA (In)"
+    },
+    {
+      "name": "Variable wavemorpher",
+      "patch": "Sine → left IN · saw → right IN · same VCO's pulse → SELECT · output morphs between the two waveshapes per period · VCO pulse-width sweep varies the morph ratio",
+      "diagram": "Select 2:\n* A Polariser: max\n\n- VCO (Sine) -> Select 2.A (SIG left)\n- VCO (Saw) -> Select 2.A (SIG right)\n- VCO (Pulse) g> Select 2.A (SELECT)\n- Select 2 (A OUT) -> Filter (In)"
+    },
+    {
+      "name": "Attenuvert + offset in one pair",
+      "patch": "Signal → B left IN · A polariser sets −5V to +5V offset (from +5V ref) · B polariser attenuverts the signal · A OUT unpatched so it sums into B OUT · one knob pair handles both jobs",
+      "diagram": "Select 2:\n* A Polariser: offset amount\n* B Polariser: attenuversion\n\n- Modulation (Out) >> Select 2.B (SIG left)\n- Select 2 (B OUT) >> VCO (FM) // A OUT unpatched → sums into B"
+    }
+  ]
+}

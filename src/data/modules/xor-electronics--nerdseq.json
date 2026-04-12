@@ -1,0 +1,191 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.27",
+    "sources": [
+      "https://xor-electronics.com/nerdseq/",
+      "https://xor-electronics.com/wp-content/uploads/2023/01/nerdseq_manual_1_27.pdf",
+      "https://modulargrid.net/e/xor-electronics-nerdseq",
+      "https://www.perfectcircuit.com/xor-nerdseq-tracker.html"
+    ]
+  },
+  "slug": "xor-electronics--nerdseq",
+  "name": "NerdSEQ",
+  "manufacturer": "XOR Electronics",
+  "hp": 32,
+  "tags": ["SEQUENCER", "CLOCK", "SAMPLER", "MIDI", "I/O"],
+  "description": "Hardware tracker sequencer. 6 modular CV/trigger tracks plus 2 audio tracks, 175 patterns, 176 patches, 32 tables, 8 automators, 8 envelopes, 12 sample slots. Expander ecosystem for MIDI, triggers, CV16, video.",
+  "controls": [
+    {
+      "name": "SEQUENCER / PATTERN / PATCH / TABLE / AUTOMATE / PROJECT",
+      "scope": "Global",
+      "description": "Six top-row half-size navigation buttons. Each opens its corresponding screen. Hold PATTERN while in Pattern screen to page between patterns with cursor keys.",
+      "detail": "6 half-size buttons · context menu via NERD"
+    },
+    {
+      "name": "MARK / COPY / DELETE / RECORD / NERD / SETUP",
+      "scope": "Global",
+      "description": "Second-row edit functions (via SHIFT). MARK starts selection, COPY/DELETE act on clipboard, RECORD toggles live recording, NERD opens context menu, SETUP global settings.",
+      "detail": "Hold SHIFT + top-row button"
+    },
+    {
+      "name": "START / STOP",
+      "scope": "Global",
+      "description": "Starts/queues patterns. SHIFT+STOP stops sequencer (security: press STOP twice). SHIFT+STOP while stopped resets all gates and issues a reset pulse.",
+      "detail": "LED indicates playback"
+    },
+    {
+      "name": "SHIFT / OK / DOWN",
+      "scope": "Global",
+      "description": "SHIFT accesses secondary button roles and enables fine/coarse value editing. OK confirms/creates patterns and patches. DOWN pages 16 rows (with SHIFT).",
+      "detail": "SHIFT+CURSOR LEFT/RIGHT = ±1 · SHIFT+CURSOR UP/DOWN = ±16 or ±octave"
+    },
+    {
+      "name": "Cursor keys (4)",
+      "scope": "Global",
+      "description": "Navigate rows/columns on all screens. Combined with SHIFT to edit values in place.",
+      "detail": "UP/DOWN/LEFT/RIGHT"
+    },
+    {
+      "name": "OFFSET switch (CV)",
+      "scope": "CV outputs",
+      "description": "Toggle switch that flips the CV output range between -5V/+5V and 0V/+10V for all 12 CV outputs.",
+      "detail": "2 positions"
+    },
+    {
+      "name": "OFFSET switch (MOD)",
+      "scope": "MOD outputs",
+      "description": "Toggle switch for MOD output range, independent of CV offset.",
+      "detail": "2 positions"
+    }
+  ],
+  "inputs": [
+    { "name": "INPUT 1–4 (CV)", "description": "Four free-assignable CV inputs for live manipulation, CV recording, or parameter routing.", "voltage": "0V – +10V" },
+    { "name": "CLOCK IN", "description": "External clock input. Accepts 1/16 ticks, 24 PPQN, or DIN-sync depending on setup.", "voltage": "5V" },
+    { "name": "RESET IN", "description": "Reset pulse input. Resets all tracks to first row.", "voltage": "5V" }
+  ],
+  "outputs": [
+    { "name": "CV 1–6", "description": "Six CV outputs — one per modular track. Supports 1V/Oct, 1.2V/Oct, and Volt/Hz ranges per track.", "voltage": "-5V/+5V or 0V/+10V (OFFSET switch)" },
+    { "name": "TRIGGER 1–6", "description": "Six trigger/gate outputs — one per modular track. Gate length configurable per step.", "voltage": "5V" },
+    { "name": "MOD 1–6", "description": "Six modulation outputs — routable to envelopes, automators, or pattern data.", "voltage": "-5V/+5V or 0V/+10V (OFFSET switch)" },
+    { "name": "SAMPLE OUT 1 / 2", "description": "Two audio outputs from the sample/synth tracks. AC-coupled.", "voltage": "-5V/+5V · AC-coupled" },
+    { "name": "CLOCK OUT", "description": "Regular modular clock output. Can emit reset pulse on stop.", "voltage": "5V" },
+    { "name": "RESET OUT", "description": "Reset pulse output. Fires on sequencer start or SHIFT+STOP.", "voltage": "5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Tracker row-based editing",
+      "trigger": "enter pattern screen",
+      "description": "Patterns are vertical lists of rows, each row a step. Tracks are columns with note, patch, trigger, FX sub-columns. Workflow inspired by Fasttracker 2 / OctaMED — type notes as 'C-3', 'F#5' rows, not piano-roll. Up to 64 steps per pattern, 175 patterns available."
+    },
+    {
+      "name": "Independent track playback",
+      "trigger": "assign different pattern lengths/dividers per track",
+      "description": "All 8 tracks run independently — mix 16-step and 13-step patterns, divide clock per track (÷32 to ×8), or let tracks free-run. Muted tracks still advance (maintain phase) so unmuting returns them in sync; Break commands still fire."
+    },
+    {
+      "name": "Patches as macros",
+      "trigger": "PATCH button · assign patch number per step",
+      "description": "176 patches store complete parameter snapshots (velocity, attack, envelope, FX settings) recallable per step. Patches can be cloned and edited live. Effectively step-level macros for complex-per-note behavior."
+    },
+    {
+      "name": "Tables (sequencer within)",
+      "trigger": "TABLE button · call table from pattern",
+      "description": "32 tables, each a 16-row micro-sequencer that triggers per step. Tables transpose, scale, randomize, or FX the parent track — synced or free-running from main clock. Great for arpeggios, microrhythms, or per-note modulation cycles."
+    },
+    {
+      "name": "Automators as LFOs/randoms",
+      "trigger": "AUTOMATE button · assign source and destination",
+      "description": "8 automator slots generate LFOs, randomness, noise, or envelopes routed via modulation matrix to any internal parameter or external CV/MOD output. Automators operate without consuming track resources."
+    },
+    {
+      "name": "8 ADSR envelopes",
+      "trigger": "AUTOMATE button · envelope screen",
+      "description": "Eight full ADSR envelopes with rich trigger/gate source options — sequencer gates, CV inputs, tables, other automators. Route to CV, MOD, sample volume, or FM parameters."
+    },
+    {
+      "name": "Audio tracks as synths",
+      "trigger": "set audio track to oscillator/FM/sample",
+      "description": "Two sample outputs can run samples, waveform oscillators, or 4-operator FM synthesis — each audio track has 2 voices (2×2 for 4-voice total). Pitch set per step in note scale; FX include bitcrush, distortion, delay, wavefolder."
+    },
+    {
+      "name": "Playback modes",
+      "trigger": "per-track playback mode setting",
+      "description": "Forward, backward, pingpong, random, snake, spiral, even, odd, and more — each track independently configurable. Combined with pattern chaining, creates non-linear sequencing without live intervention."
+    },
+    {
+      "name": "Probability + ratcheting",
+      "trigger": "per-step / per-function probability",
+      "description": "0–100% probability (1% resolution) assignable to any sequencer row or dedicated functions (CV, Mod, Trigger/Gate, Tables, Samples, FX). Advanced ratcheting settings per step. Per-step groove adds step-length micro-variation for polyrhythms."
+    },
+    {
+      "name": "Live pattern launching",
+      "trigger": "Live mode",
+      "description": "Patterns can be triggered, muted, and soloed independently from sequencer. SHIFT+DOWN+START mutes; SHIFT+UP+START solos. Live editing while playing — pattern creation, recording, and nearly all functions stay accessible during playback."
+    },
+    {
+      "name": "CV input recording",
+      "trigger": "RECORD + patch CV source to INPUT jack",
+      "description": "Free-routing of CV inputs to record into CV sub-columns or trigger parameters. Enables CV capture from external sources (keyboards, LFOs) directly onto steps without menu diving."
+    },
+    {
+      "name": "Expander ecosystem",
+      "trigger": "connect IO/Trigger16/CV16/Video/NSA expander",
+      "description": "Ribbon connector adds MIDI I/O + Sega gamepad (IO-Expander), 16 trigger outs (Trigger16), 16 CV outs (CV16), HDMI/composite video of the screen (Video-IO), or cartridge-based synth engines (NSA). Up to 64 total outputs with expanders."
+    },
+    {
+      "name": "OFFSET range switch",
+      "trigger": "flip hardware toggle",
+      "description": "Two panel toggles change CV and MOD output ranges between bipolar (-5V/+5V) and unipolar (0V/+10V) globally. Useful to match Volt/Hz gear or unipolar modulation destinations without per-track config."
+    },
+    {
+      "name": "MIDI polyphonic sequencing",
+      "trigger": "IO-Expander attached",
+      "description": "Per-track: 4 polyphonic notes, Velocity, CC, Pitch bend, Program Change, Channel/Poly Aftertouch, NRPN. Sequences MIDI gear and records MIDI in; recording accepts poly input."
+    },
+    {
+      "name": "Launchpad integration",
+      "trigger": "connect Launchpad via IO/MIDI expander",
+      "description": "Launchpad maps pattern rows to grid for finger-drum style entry and step edit. Launchpad Mini/S/Pro/X families supported — mute/solo and step-input layers switch via side buttons."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic tracker voice",
+      "patch": "track 1 CV 1V/Oct to VCO · track 1 TRIGGER to envelope · envelope to VCA · 16-step pattern with melodic notes · patches add per-step velocity via MOD 1 to VCA CV",
+      "diagram": "NerdSEQ:\n* Track 1: CV/Gate, 1V/Oct\n* Pattern: 16 steps\n\nVCO:\nVCA:\nEnvelope:\n\n- NerdSEQ (CV 1) p> VCO (V/Oct)\n- NerdSEQ (TRIGGER 1) t> Envelope (Trig)\n- NerdSEQ (MOD 1) >> VCA (CV)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Polyrhythm per track",
+      "patch": "tracks 1-4 pattern lengths 16/13/7/11 · track dividers ÷2, ÷3, ÷4 mixed · shared clock · each TRIGGER feeds a drum · evolving polyrhythmic pattern from same pattern numbers",
+      "diagram": "NerdSEQ:\n* Track 1: 16 steps, /2\n* Track 2: 13 steps, /3\n* Track 3: 7 steps, /4\n* Track 4: 11 steps, /1\n\nDrum 1:\nDrum 2:\nDrum 3:\nDrum 4:\n\n- NerdSEQ (TRIGGER 1) t> Drum 1 (Trig)\n- NerdSEQ (TRIGGER 2) t> Drum 2 (Trig)\n- NerdSEQ (TRIGGER 3) t> Drum 3 (Trig)\n- NerdSEQ (TRIGGER 4) t> Drum 4 (Trig)"
+    },
+    {
+      "name": "Table-driven arpeggio",
+      "patch": "pattern plays held C note every bar · table 01 transposes: 0, +4, +7, +12 synced to track clock · creates arpeggio from single pattern note · modulate table choice via automator for evolving chords",
+      "diagram": "NerdSEQ:\n* Track 1: CV/Gate\n* Table 01: 0 · +4 · +7 · +12\n* Pattern row 1: C-3 + T01\n\nVCO:\n\n- NerdSEQ (CV 1) p> VCO (V/Oct)\n- NerdSEQ (TRIGGER 1) t> Envelope (Trig)"
+    },
+    {
+      "name": "CV-recorded performance",
+      "patch": "external keyboard CV into INPUT 1 · track 1 set to record INPUT 1 to CV 1 · RECORD armed · play keyboard live · sequence captures performance with quantization options",
+      "diagram": "NerdSEQ:\n* Track 1: record from INPUT 1\n\nKeyboard:\n\n- Keyboard (CV) p> NerdSEQ (INPUT 1)\n- Keyboard (Gate) g> NerdSEQ (INPUT 2)\n- NerdSEQ (CV 1) p> VCO (V/Oct)\n- NerdSEQ (TRIGGER 1) t> Envelope (Trig)"
+    },
+    {
+      "name": "Probability-driven hats",
+      "patch": "track 4 16-step pattern · every even step 100% · every odd 30% probability · table 02 ratchets chosen steps 2-4x at random · generates organic hat variation",
+      "diagram": "NerdSEQ:\n* Track 4: 16 steps\n* Even steps: 100% prob\n* Odd steps: 30% prob · Table 02 ratchet\n\nHats:\n\n- NerdSEQ (TRIGGER 4) t> Hats (Trig)\n- NerdSEQ (MOD 4) >> Hats (Accent)"
+    },
+    {
+      "name": "Audio track FM synth",
+      "patch": "audio track A set to 4-op FM · sequence notes per step · automator 1 LFO on operator ratio · automator 2 envelope to modulation index · mix with modular CV tracks via SAMPLE OUT 1",
+      "diagram": "NerdSEQ:\n* Audio Track A: 4-op FM\n* Automator 1: LFO → op ratio\n* Automator 2: ADSR → mod index\n\n- NerdSEQ (SAMPLE OUT 1) -> Output (L)\n- NerdSEQ (SAMPLE OUT 2) -> Output (R)\n- NerdSEQ (TRIGGER 1) t> External Drum (Trig)"
+    },
+    {
+      "name": "Pattern launch set",
+      "patch": "8 tracks · 8 different patterns queued via OK · live mute/solo per track using SHIFT+DOWN+START · SHIFT+UP+START solo · build arrangement by pattern chaining · Break command stops individual tracks",
+      "diagram": "NerdSEQ:\n* All tracks: queued patterns\n\n- NerdSEQ (CV 1) p> VCO 1 (V/Oct)\n- NerdSEQ (CV 2) p> VCO 2 (V/Oct)\n- NerdSEQ (TRIGGER 1) t> Drum 1 (Trig)\n- NerdSEQ (TRIGGER 2) t> Drum 2 (Trig)\n- NerdSEQ (SAMPLE OUT 1) -> Mixer (In 1)\n- NerdSEQ (CLOCK OUT) c> External (Clock)"
+    }
+  ]
+}

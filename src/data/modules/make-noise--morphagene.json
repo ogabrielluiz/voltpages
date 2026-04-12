@@ -1,0 +1,201 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "MG203",
+    "sources": [
+      "https://www.makenoisemusic.com/modules/morphagene/",
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/morphagene-manual.pdf",
+      "https://modulargrid.net/e/make-noise-morphagene"
+    ]
+  },
+  "slug": "make-noise--morphagene",
+  "name": "Morphagene",
+  "manufacturer": "Make Noise",
+  "hp": 20,
+  "tags": ["SAMPLER", "GRANULAR", "DELAY", "EFFECTS"],
+  "description": "Stereo tape and microsound buffer. Records up to 2.9 minutes per Reel at 48kHz/32-bit, divides audio into Splices, granulates them into Genes. Vari-Speed, Slide, Morph, and Organize deliver granular manipulation, time-stretch, and tape-speed effects.",
+  "controls": [
+    {
+      "name": "Gene-Size",
+      "scope": "Global",
+      "description": "Nondestructively shrinks the playback window within the current Splice. Full CCW plays the whole Splice; turning CW extracts progressively smaller Genes down to microsound clicks.",
+      "detail": "CCW: full splice · CW: microsound grains"
+    },
+    {
+      "name": "Gene-Size CV IN Attenuverter",
+      "scope": "Global",
+      "description": "Bipolar attenuator for Gene-Size CV.",
+      "detail": "Bipolar"
+    },
+    {
+      "name": "Vari-Speed",
+      "scope": "Global",
+      "description": "Bipolar playback speed and direction. 12:00 stops playback; CW speeds forward, CCW reverses. Higher resolution near center. Does not affect record speed.",
+      "detail": "±12 semitones up · −26 down · Green LED = 1/1 · Blue = +1 oct · Peach = −1 oct"
+    },
+    {
+      "name": "Vari-Speed CV Attenuverter",
+      "scope": "Global",
+      "description": "Bipolar attenuator for Vari-Speed CV input.",
+      "detail": "Bipolar · trims for 1V/oct when vsop option enabled"
+    },
+    {
+      "name": "Morph",
+      "scope": "Global",
+      "description": "Sets overlap between consecutive Gene instances. Full CCW inserts silence between Genes; noon = seamless 1/1 loop; CW layers up to four overlapping Genes with random pitch and panning.",
+      "detail": "CCW: gaps · noon: 1/1 · CW: stacked layers + pan/pitch · opposite Vari-Speed LED shows state"
+    },
+    {
+      "name": "Slide",
+      "scope": "Global",
+      "description": "Offsets where in the current Splice the first Gene begins playing. Continuously variable scrubbing across the captured audio, independent of Gene-Size.",
+      "detail": "Continuous · also changes Play Reset/Start point and EOSG position"
+    },
+    {
+      "name": "Slide CV Attenuverter",
+      "scope": "Global",
+      "description": "Bipolar attenuator for Slide CV input.",
+      "detail": "Bipolar"
+    },
+    {
+      "name": "Organize",
+      "scope": "Global",
+      "description": "Stepped selector for the next Splice to play. Current Splice plays to its end before the next Splice becomes active. In Reel Mode, selects the Reel to load.",
+      "detail": "Evenly distributed across Splices regardless of relative length"
+    },
+    {
+      "name": "Sound On Sound (S.O.S.)",
+      "scope": "Global",
+      "description": "Combo pot. Unpatched: sets mix between live input and recorded loop. With signal patched to SOS CV IN: acts as attenuator for that CV. Full CCW during record allows clean sampling with no prior-loop feedback.",
+      "detail": "CCW: live only · CW: loop only · 0V–+8V CV range"
+    },
+    {
+      "name": "REC Button",
+      "scope": "Global",
+      "description": "Starts/stops recording. Press alone: Time Lag Accumulate into current Splice. Hold REC + press Splice: record into new Splice at end of Reel. Hold REC + press Shift: Auto-Level (replaced by 4-step gain on MG203).",
+      "detail": "Illuminated · flashes while waiting for clock sync"
+    },
+    {
+      "name": "Splice Button",
+      "scope": "Global",
+      "description": "Drops a Splice Marker at the current playback position. Lights at end of Splice/Gene. Hold Shift + Splice: delete current Splice Marker. Hold 3s with Shift: delete all markers.",
+      "detail": "Illuminated · max 299 markers / 300 Splices"
+    },
+    {
+      "name": "Shift Button",
+      "scope": "Global",
+      "description": "Increments to next Splice. Also mounts microSD when unmounted. Flashes while SD card is busy writing — do not remove card when flashing.",
+      "detail": "Illuminated · flash = SD busy"
+    }
+  ],
+  "inputs": [
+    { "name": "Audio In L (Mono) / R", "description": "Stereo audio inputs, AC coupled. L is normalized to the R channel when R is unpatched. No analog gain pot — use Auto-Level (MG155) or 4-step gain (MG203).", "voltage": "line to modular (~10Vpp)" },
+    { "name": "Sound On Sound CV IN", "description": "Unipolar CV for S.O.S. parameter, linear response.", "voltage": "0 to +8V", "normalizedTo": "+8V" },
+    { "name": "Gene-Size CV IN", "description": "Bipolar CV for Gene-Size. Through the attenuverter.", "voltage": "0 to +8V" },
+    { "name": "Vari-Speed CV Input", "description": "Bipolar CV for playback speed and direction. With vsop=1 firmware option and trimmed attenuverter: 1V/oct tracking.", "voltage": "±4V" },
+    { "name": "Morph CV Input", "description": "Unipolar CV for Morph level, unity gain.", "voltage": "0 to +5V" },
+    { "name": "Slide CV Input", "description": "Unipolar CV for Slide position. Through the attenuverter.", "voltage": "0 to +8V" },
+    { "name": "Organize CV Input", "description": "Unipolar CV for Splice selection. Designed for sequencer ranges (5Vpp), narrower than other CVs. Unpatch in Reel Mode.", "voltage": "0 to +5V" },
+    { "name": "CLK Input", "description": "Clock/gate input. Syncs REC start/stop, drives Gene Shift or Time Stretch depending on Morph setting (or ckop firmware option).", "voltage": "≥2.5V clock/gate" },
+    { "name": "Play Gate Input", "description": "Gate HIGH triggers/retriggers playback from start of current Splice. HIGH = loop; LOW = stop at end of splice. Slide offsets the start point.", "voltage": "≥2.5V gate", "normalizedTo": "HIGH (splice loops when unpatched)" },
+    { "name": "REC Gate Input", "description": "Clock/gate toggles Record ON/OFF, enabling SOS overdubs at the rate of incoming pulses.", "voltage": "≥2.5V clock/gate" },
+    { "name": "Splice Gate Input", "description": "Gate drops a Splice Marker at current playback position. Useful for rhythmic slicing against a clock.", "voltage": "≥2.5V clock/gate" },
+    { "name": "Shift Gate Input", "description": "Gate increments Splice selection. Combines with Play input for step-through playback of percussive loops.", "voltage": "≥2.5V clock/gate" }
+  ],
+  "outputs": [
+    { "name": "Audio Out L (Mono) / R", "description": "Stereo audio outputs, AC coupled.", "voltage": "~10Vpp" },
+    { "name": "CV Output", "description": "Envelope follower of the audio output — voltage rises with louder output. Option cvop=1 changes it to a Gene-Size-timed ramp wave.", "voltage": "CV" },
+    { "name": "End of Splice / Gene Gate (EOSG)", "description": "Gate at the end of each Splice and each Gene. Fires more frequently as Gene-Size and Morph increase.", "voltage": "0 to 10Vpp" }
+  ],
+  "behaviors": [
+    {
+      "name": "Reels / Splices / Genes hierarchy",
+      "trigger": "audio organization",
+      "description": "A Reel holds up to 2.9 min of stereo audio. A Reel is divided by up to 299 Splice Markers into Splices. Each Splice is granulated by Gene-Size into Genes. Up to 32 Reels per microSD card (mg1.wav … mgw.wav)."
+    },
+    {
+      "name": "Time Lag Accumulate (TLA)",
+      "trigger": "REC Button press with existing Splice",
+      "description": "Overdubs onto the currently-selected Splice with SOS-controlled feedback. Combined with Gene-Size + Morph, builds slowly-evolving microsound textures. Vari-Speed <1/1 forward eventually loses signal."
+    },
+    {
+      "name": "Record into New Splice",
+      "trigger": "Hold REC + press Splice",
+      "description": "Captures all audible manipulations (SOS, Vari-Speed, Slide, Morph) as a fresh Splice at the end of the Reel. Recording is always at fixed speed/direction — the manipulations become baked-in content."
+    },
+    {
+      "name": "Time Stretch mode",
+      "trigger": "CLK In patched + Morph ≥ 2/1 (or ckop=2)",
+      "description": "External clock drives Time Stretch/Compression. Vari-Speed controls pitch independently of time. Max clock ~18Hz; below 1 pulse/3.5s won't compress further. Morph Activity LED = Blue."
+    },
+    {
+      "name": "Gene Shift mode",
+      "trigger": "CLK In patched + Morph ≤ 2/1 (or ckop=1)",
+      "description": "Each clock pulse increments to the next Gene in the Splice, in chronological order. Modulate Vari-Speed and Gene-Size for evolving timbral shifts in sync with a clock. Morph LED = Red."
+    },
+    {
+      "name": "Auto-Level / 4-step gain (MG203)",
+      "trigger": "Hold REC + press Shift",
+      "description": "MG155 analyzes incoming signal for a few seconds and sets optimal gain. MG203 replaces this with 4-step input gain: Blue −3dB, Green 0dB, Orange +6dB, Purple +12dB. Press Shift repeatedly to cycle."
+    },
+    {
+      "name": "Reel Mode",
+      "trigger": "Hold Splice + press REC",
+      "description": "Enters Reel Mode — Organize and its CV select the Reel to load from the microSD card. Final (Pink/White pulsing) Reel is Empty: exit with it to create a new Reel. Hold Shift + REC while in Reel Mode to delete a Reel."
+    },
+    {
+      "name": "Sound On Sound crossfader",
+      "trigger": "no live input",
+      "description": "With no signal patched to Audio In, SOS becomes a voltage-controlled crossfader between silence and the loop — functions as a VCA for the loop via the SOS CV input."
+    },
+    {
+      "name": "options.txt firmware tweaks",
+      "trigger": "edit options.txt on microSD (MG155+)",
+      "description": "SD card stores per-option flags: vsop (1V/oct Vari-Speed), inop (input-only recording = delay mode), omod (immediate Organize), gnsm (extended Gene smoothing), rsop (record-button inversion), pmod (momentary/trigger Play), ckop (force Shift or Stretch mode), cvop (envelope vs ramp CV out), and mcr1–3 (Morph chord ratios)."
+    },
+    {
+      "name": "Organize stepping behavior",
+      "trigger": "Organize knob/CV change",
+      "description": "Organize waits for the currently-playing Splice/Gene to finish before switching, generating EOSG at the handoff. Option omod=1 makes Organize and Shift switch immediately regardless of playback position (may introduce clicks)."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic 1/1 loop playback",
+      "patch": "Gene-Size CCW · Morph at noon (amber LED = 1/1) · Vari-Speed at 2:30 (green = 1/1 forward) · SOS full CW · nothing in Play · hear full splice loop",
+      "diagram": "MORPHAGENE:\n* Gene-Size: full CCW\n* Morph: noon (1/1)\n* Vari-Speed: 2:30 (Green)\n* S.O.S.: full CW\n\n- Sound Source (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (In)"
+    },
+    {
+      "name": "Clocked synchronous granulation",
+      "patch": "Clock → CLK In · Morph ≤ 2/1 · Gene-Size turned up · each clock pulse jumps to next Gene in chronological order · modulate Slide for timbral sweep",
+      "diagram": "MORPHAGENE:\n* Gene-Size: ~2:00\n* Morph: 10:00 (Red, Gene Shift)\n\n- Clock (Out) c> Morphagene (CLK In)\n- LFO (Out) >> Morphagene (Slide CV)\n- Morphagene (Audio Out L) -> Output (In)"
+    },
+    {
+      "name": "Time-stretch dub",
+      "patch": "Morph past 2/1 (Blue LED) · clock → CLK · Vari-Speed controls pitch independent of time · slow the clock to stretch a phrase without pitch-shifting",
+      "diagram": "MORPHAGENE:\n* Morph: 3:00 (Blue, Time Stretch)\n* Vari-Speed: noon (pitch control)\n\n- Clock (Out) c> Morphagene (CLK In)\n- Source (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (In)"
+    },
+    {
+      "name": "Tron bike race",
+      "patch": "Record a noisy Wogglebug + Erbe-Verb source into a new splice, using Wogglebug Freeze to sustain partials · SOS full CW · Vari-Speed 1/1 · Morph full CW for random pitch/pan on four overlapping Genes",
+      "diagram": "MORPHAGENE:\n* S.O.S.: full CW\n* Vari-Speed: 2:30 (1/1)\n* Morph: full CW (4 Genes, random pitch/pan)\n\n- Wogglebug (Ring Mod) -> Erbe-Verb (In)\n- Erbe-Verb (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (L)\n- Morphagene (Audio Out R) -> Output (R)"
+    },
+    {
+      "name": "Touch-sliced sample player",
+      "patch": "Pressure Points Common Gate → Play · Row Y → Organize · each touchplate both triggers playback and selects a splice via its Y voltage",
+      "diagram": "MORPHAGENE:\n* Gene-Size: CCW (full splice)\n\n- Pressure Points (CH 4 Gate) g> Morphagene (Play)\n- Pressure Points (Tuned Voltage Out Y) >> Morphagene (Organize CV)\n- Morphagene (Audio Out L) -> Output (In)"
+    },
+    {
+      "name": "Synchronous percussive stepper",
+      "patch": "Splice a percussive loop into 16 slices · clock → Shift In · clock/2 → Play In · each beat increments splice while the loop retriggers",
+      "diagram": "MORPHAGENE:\n* Gene-Size: CCW\n* Organize: step through splices\n\n- Clock (Out) c> Morphagene (Shift Gate)\n- Clock ÷2 (Out) g> Morphagene (Play)\n- Morphagene (Audio Out L) -> Output (In)"
+    },
+    {
+      "name": "Single-repeat microsound delay",
+      "patch": "Requires MG155+ with inop=1 in options.txt · create a short empty Splice · SOS as wet/dry · Morphagene becomes an always-recording input delay · tweak Vari-Speed for pitch-shifted echoes",
+      "diagram": "MORPHAGENE:\n* Firmware option: inop=1\n* Splice: short empty splice as delay length\n* S.O.S.: wet/dry\n\n- Source (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (In)\n- LFO (Out) >> Morphagene (Vari-Speed CV) // pitched echoes"
+    }
+  ]
+}

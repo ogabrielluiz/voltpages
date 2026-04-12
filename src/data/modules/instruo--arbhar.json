@@ -1,0 +1,253 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "firmwareVersion": "2.0",
+    "sources": [
+      "https://www.instruomodular.com/product/arbhar/",
+      "https://www.instruomodular.com/wp-content/uploads/2023/10/Arbhar-Manual-Firmware-2.0-A5.pdf"
+    ]
+  },
+  "slug": "instruo--arbhar",
+  "name": "arbhar",
+  "manufacturer": "Instruo",
+  "hp": 18,
+  "tags": ["GRANULAR", "SAMPLER", "EFFECTS", "DELAY", "REVERB"],
+  "description": "Granular processor with six 10-second buffers, two grain engines, 1V/oct pitch tracking, onboard capture and onset detection, and mono or stereo input paths. Built-in microphone and USB sample import turn it into a live recorder as well as an effect.",
+  "controls": [
+    {
+      "name": "Input Level",
+      "scope": "Global",
+      "description": "Sets input gain before the limiter. Around 10 o'clock is unity; clockwise drives the preamp.",
+      "detail": "unity at ~10:00 · analogue limiting on high levels"
+    },
+    {
+      "name": "Dry/Wet",
+      "scope": "Global",
+      "description": "Crossfades between the dry input and the granular engines.",
+      "detail": "equal-power crossfade"
+    },
+    {
+      "name": "Output Level",
+      "scope": "Global",
+      "description": "Sets the level at both outputs.",
+      "detail": "post-granular output trim"
+    },
+    {
+      "name": "Capture",
+      "scope": "Global",
+      "description": "Starts and stops recording to the selected layer.",
+      "detail": "press to record · press again to stop"
+    },
+    {
+      "name": "Shift",
+      "scope": "Global",
+      "description": "Accesses secondary functions such as capture modes, track-and-hold, and mode selection.",
+      "detail": "holds secondary state · used with Capture and Layer"
+    },
+    {
+      "name": "Layer",
+      "scope": "Global",
+      "description": "Selects one of the six layers, or omega to link them through Scan.",
+      "detail": "alpha through zeta · omega = scan all layers"
+    },
+    {
+      "name": "Intensity",
+      "scope": "Continuous engine",
+      "description": "Sets grain density and asynchronous versus synchronous grain generation.",
+      "detail": "centre = max grains · extremes disable continuous engine"
+    },
+    {
+      "name": "Strike",
+      "scope": "Global",
+      "description": "Generates a single accent grain from the strike engine.",
+      "detail": "button and trigger input both fire a grain"
+    },
+    {
+      "name": "Grain Window",
+      "scope": "Shared grain engine",
+      "description": "Shapes the grain envelope from square to Gaussian to sawtooth.",
+      "detail": "CCW: square · noon: Gaussian · CW: descending saw"
+    },
+    {
+      "name": "Grain Direction",
+      "scope": "Shared grain engine",
+      "description": "Sets the probability of forward versus reverse playback.",
+      "detail": "CCW: forward · noon: 50/50 · CW: reverse"
+    },
+    {
+      "name": "Length",
+      "scope": "Shared grain engine",
+      "description": "Sets grain duration.",
+      "detail": "~4 ms to 3 s · center around 750 ms"
+    },
+    {
+      "name": "Scan",
+      "scope": "Shared grain engine",
+      "description": "Sets the playback position inside the active layer.",
+      "detail": "sets grain start position at grain onset"
+    },
+    {
+      "name": "Spray",
+      "scope": "Shared grain engine",
+      "description": "Adds random offset around Scan.",
+      "detail": "CCW: tight cluster · CW: fully random layer access"
+    },
+    {
+      "name": "Pitch",
+      "scope": "Shared grain engine",
+      "description": "Sets the base grain transposition.",
+      "detail": "applied at grain onset"
+    },
+    {
+      "name": "Pitch Deviation",
+      "scope": "Shared grain engine",
+      "description": "Adds per-grain random or quantized pitch offsets.",
+      "detail": "CCW: unquantized random · CW: quantized intervals"
+    },
+    {
+      "name": "Sensitivity",
+      "scope": "Onset analysis",
+      "description": "Sets onset detector sensitivity or Input 2 level in stereo mode.",
+      "detail": "shared with onset analysis threshold"
+    },
+    {
+      "name": "Hold",
+      "scope": "Onset analysis",
+      "description": "Sets the minimum time between onset detections or recorded events.",
+      "detail": "5 ms to 10 s"
+    },
+    {
+      "name": "Dub",
+      "scope": "Capture",
+      "description": "Sets sound-on-sound attenuation for overdub capture.",
+      "detail": "CCW: replace · noon: half-old/half-new · CW: full layering"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Input",
+      "description": "AC-coupled audio input for capture and playback processing.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Onset Input",
+      "description": "Audio input for onset detection and stereo capture analysis.",
+      "voltage": "audio",
+      "normalizedTo": "Input"
+    },
+    {
+      "name": "Capture Pulse Input",
+      "description": "Gate or trigger input that starts, stops, or retriggers capture.",
+      "voltage": "pulse / gate"
+    },
+    {
+      "name": "Intensity CV Input",
+      "description": "CV over grain density and amplitude distribution.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "Length CV Input",
+      "description": "CV over grain duration.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "Scan CV Input",
+      "description": "CV over layer position.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "Strike Input",
+      "description": "Trigger or gate input for the strike granular engine.",
+      "voltage": "pulse / gate"
+    },
+    {
+      "name": "1V/Octave Input",
+      "description": "Pitch tracking input for grain transposition.",
+      "voltage": "1V/oct"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Output 1",
+      "description": "Audio output. Grains are coin-tossed between both outputs by default.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Output 2",
+      "description": "Second audio output. Unpatched, it normalizes to Output 1 for mono playback.",
+      "voltage": "audio",
+      "normalizedTo": "Output 1"
+    },
+    {
+      "name": "Pulse Output",
+      "description": "Trigger or gate output from the onset engine.",
+      "voltage": "+5V trigger / gate"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Two grain engines",
+      "trigger": "Intensity above minimum or Strike input",
+      "description": "The continuous engine runs from Length and Intensity, while the strike engine fires on Capture Button or Strike Input. Together they can generate up to 88 grains polyphonically."
+    },
+    {
+      "name": "Layered capture",
+      "trigger": "Capture Button with Layer selected",
+      "description": "arbhar records into one of six 10-second layers. Accumulative capture can pause and resume within a layer, turning one buffer into a composed collage."
+    },
+    {
+      "name": "Scan and follow",
+      "trigger": "Layer omega or follow mode",
+      "description": "In omega, the Scan knob addresses all layers through position. In follow mode, the playback head tracks the record head, keeping grains anchored to captured motion."
+    },
+    {
+      "name": "Onset-driven capture",
+      "trigger": "audio into Onset Input",
+      "description": "Onset analysis can arm capture and also generate triggers or gates from detected attacks. The Pulse Output becomes a usable event stream for external timing."
+    },
+    {
+      "name": "Pitch deviation",
+      "trigger": "Pitch Deviation knob",
+      "description": "Counterclockwise adds random pitch drift. Clockwise adds quantized interval offsets, so each grain can move in a repeatable harmonic family instead of pure noise."
+    },
+    {
+      "name": "Stereo and mono paths",
+      "trigger": "Output 2 patched or left open",
+      "description": "With only Output 1 patched, Output 2 normalizes to mono. Patching Output 2 opens stereo imaging and lets each side take independent grain distribution."
+    },
+    {
+      "name": "Audio capture from the panel mic",
+      "trigger": "no cable at Input or Onset Input",
+      "description": "The onboard condenser microphone normalizes into the capture path. The module becomes a self-contained field recorder without external cabling."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Frozen cloud",
+      "patch": "Layer alpha selected · Intensity near center · Length around 1/2 s · Scan around noon · Dry/Wet mostly wet · feed a slow pad into Input and let arbhar turn it into a stable frozen cloud with stereo spread.",
+      "diagram": "arbhar:\n* Layer: alpha\n* Intensity: noon\n* Length: ~1/2 s\n* Scan: noon\n* Dry/Wet: mostly wet\n\nVCO:\n\nMixer:\n\n- VCO (Out) -> arbhar (Input)\n- arbhar (Output 1) -> Mixer (L)\n- arbhar (Output 2) -> Mixer (R)"
+    },
+    {
+      "name": "Onset sampler",
+      "patch": "Onset Input listens to a drum loop · Capture Pulse Input stays unpatched · Hold set short · Sensitivity turned up · detected attacks trigger fresh grains and the Pulse Output can clock an external envelope for a synced stutter.",
+      "diagram": "arbhar:\n* Sensitivity: high\n* Hold: short\n* Capture: armed\n\nDrum Loop:\nEnvelope:\nMixer:\n\n- Drum Loop (Out) -> arbhar (Onset Input)\n- Drum Loop (Out) -> arbhar (Input)\n- arbhar (Pulse Output) t> Envelope (Trig)\n- arbhar (Output 1) -> Mixer (L)\n- arbhar (Output 2) -> Mixer (R)"
+    },
+    {
+      "name": "Wavetable sweep",
+      "patch": "Layer omega linked · Scan CV from a slow LFO · Grain Window around Gaussian · Grain Direction centered · Pitch Deviation slightly clockwise · the buffer becomes a moving wavetable that slides through all layers as the LFO rises and falls.",
+      "diagram": "arbhar:\n* Layer: omega\n* Grain Window: noon\n* Grain Direction: noon\n* Pitch Deviation: slight CW\n\nLFO:\n\nOutput:\n\n- LFO (Out) >> arbhar (Scan CV Input)\n- arbhar (Output 1) -> Output (In)"
+    },
+    {
+      "name": "Sound-on-sound smear",
+      "patch": "Dub set just past noon · Intensity at the low edge of continuous mode · Length long · Pitch at unity · repeated capture builds a smear of the original source while the dry path stays present under the wet grains.",
+      "diagram": "arbhar:\n* Dub: just past noon\n* Intensity: low continuous\n* Length: long\n* Pitch: unity\n\nVCO:\nOutput:\n\n- VCO (Saw) -> arbhar (Input)\n- arbhar (Output 1) -> Output (In)"
+    },
+    {
+      "name": "Pitch-shifted percussion",
+      "patch": "Strike engine active · Capture pulse from a sequencer gate · Pitch knob down an octave · Pitch Deviation turned up · each strike produces short pitched grains that sit on top of the dry rhythm as a pitched granular accent.",
+      "diagram": "arbhar:\n* Strike: ready\n* Pitch: -1 octave\n* Pitch Deviation: moderate CW\n\nSequencer:\nOutput:\n\n- Sequencer (Gate) g> arbhar (Capture Pulse Input)\n- Sequencer (Gate) t> arbhar (Strike Input)\n- arbhar (Output 1) -> Output (In)"
+    }
+  ]
+}

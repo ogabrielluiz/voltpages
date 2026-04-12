@@ -1,0 +1,186 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.0.1",
+    "sources": [
+      "https://intellijel.com/downloads/manuals/scales_manual_1.01_2021.05.11.pdf",
+      "https://intellijel.com/shop/eurorack/scales/",
+      "https://modwiggler.com/forum/viewtopic.php?t=212673"
+    ]
+  },
+  "slug": "intellijel--scales",
+  "name": "Scales",
+  "manufacturer": "Intellijel",
+  "hp": 8,
+  "tags": ["QUANTIZER", "SEQUENCER", "TRIGGER"],
+  "description": "Dual-channel note quantizer and SH-101-style step sequencer. Two independent quantized outputs, 35 scale slots across 5 banks, per-output shift modes (PRE/POST/DIATONIC), learn-mode scale capture, DUAL quantizer or 128-step sequencer modes.",
+  "controls": [
+    {
+      "name": "Multifunction buttons (12)",
+      "scope": "context-dependent",
+      "description": "12 vertical buttons arranged as a one-octave keyboard (5 black + 7 white). Function depends on active mode: scale edit, root select, interval set, bank/slot select, or config options.",
+      "detail": "Green = active · red = OUT A quantize target · yellow = OUT B · colour blends by shift settings"
+    },
+    {
+      "name": "LEARN",
+      "scope": "Scale entry",
+      "description": "Short-press retains active scale and adds played notes. Long-press (>1s) clears the scale first. Exit by pressing again.",
+      "detail": "Blue when active · In SEQ: octave down (-)"
+    },
+    {
+      "name": "CONFIG",
+      "scope": "Mode",
+      "description": "Enters CONFIG mode — selects SHIFT behaviour, per-output shift enable, A→TRIG / B→TRIG triggers, and OUT B mode (CHROM / DIATONIC / DUAL / SEQ).",
+      "detail": "Blue when active · In SEQ: octave up (+)"
+    },
+    {
+      "name": "ROOT",
+      "scope": "Mode",
+      "description": "Enter Root mode. Short-press note button transposes the scale pattern to that root; long-press sets root without transposing (changes mode).",
+      "detail": "Blue when active · In SEQ: insert rest"
+    },
+    {
+      "name": "INTRVL",
+      "scope": "Mode",
+      "description": "Enter Interval mode. Sets OUT B's offset relative to OUT A in semitones (CHROM) or scale degrees (DIATONIC). Long-press = Tuning mode (0V + gate).",
+      "detail": "Blue when active · In SEQ: tie to previous note"
+    },
+    {
+      "name": "SAVE",
+      "scope": "Memory",
+      "description": "Save active scale to one of 35 slots (5 banks × 7 slots). Long-press = save sequence.",
+      "detail": "Lit red · black key selects bank · white key selects slot"
+    },
+    {
+      "name": "LOAD",
+      "scope": "Memory",
+      "description": "Load scale from memory. Long-press = load sequence / toggle SEQ record on-off.",
+      "detail": "Red lit while selecting"
+    },
+    {
+      "name": "SHIFT MODE select (PRE/DIATONIC/POST/OUT A/OUT B/ROOT/SCALE)",
+      "scope": "CONFIG mode",
+      "description": "Seven shift-mode options for how SHIFT jack affects output. See Behaviors for each mode's logic.",
+      "detail": "Blue-label buttons · SHIFT jack drives the shift"
+    },
+    {
+      "name": "A→TRIG / B→TRIG",
+      "scope": "CONFIG mode",
+      "description": "When enabled, TRIG OUT pulses whenever OUT A (or OUT B) changes pitch. When both disabled, TRIG IN passes through to TRIG OUT.",
+      "detail": "Red-label buttons"
+    },
+    {
+      "name": "CHROMATIC / DIATONIC / DUAL|SEQ",
+      "scope": "CONFIG mode · OUT B",
+      "description": "Configures OUT B mode: chromatic interval, diatonic interval, DUAL quantizer, or SEQ sequencer. See Behaviors.",
+      "detail": "Grey-label buttons · DUAL|SEQ button: solid red=DUAL, flashing=SEQ"
+    },
+    {
+      "name": "Trigger LED",
+      "scope": "TRIG out",
+      "description": "Lights whenever TRIG OUT emits a trigger or gate.",
+      "detail": "Yellow"
+    }
+  ],
+  "inputs": [
+    { "name": "PITCH", "description": "Voltage to quantize. Range ±10V quantizes to active scale notes over 20 octaves.", "voltage": "±10V" },
+    { "name": "TRIG", "description": "Trigger/gate input. With no patch, Scales quantizes continuously. When patched, Scales samples PITCH only on rising edge. In SEQ mode, acts as clock in.", "voltage": "gate/trig", "normalizedTo": "continuous sampling when unpatched" },
+    { "name": "SHIFT", "description": "Shift modulation input (±10V). Usage depends on SHIFT MODE: pre-sum, diatonic, post-sum, root select, or scale select. In DUAL = second pitch input for OUT B. In SEQ = reset trigger.", "voltage": "±10V" }
+  ],
+  "outputs": [
+    { "name": "OUT A", "description": "Quantized pitch output for PITCH input (1V/oct)", "voltage": "1V/oct · ±10V range" },
+    { "name": "OUT B", "description": "Second quantized output — mode determined by CONFIG: chromatic/diatonic interval of OUT A, independent DUAL quantizer, or SEQ sequencer output", "voltage": "1V/oct · ±10V range" },
+    { "name": "TRIG", "description": "Trigger/gate output. Pass-through of TRIG IN, or A/B change detector, or SEQ clock pass.", "voltage": "gate/trig" }
+  ],
+  "behaviors": [
+    {
+      "name": "Trigger vs untriggered quantization",
+      "trigger": "TRIG patched vs unpatched",
+      "description": "Unpatched: Scales continuously samples and outputs new quantized pitches whenever the input crosses a threshold. Patched: output only updates on TRIG rising edge — lets you time quantization to external rhythm."
+    },
+    {
+      "name": "SHIFT MODE: PRE",
+      "trigger": "CONFIG + PRE button",
+      "description": "SHIFT voltage is summed with PITCH (both chromatically pre-quantized), then the sum is quantized to the active scale. Shifted output always conforms to the scale."
+    },
+    {
+      "name": "SHIFT MODE: DIATONIC",
+      "trigger": "CONFIG + DIATONIC button",
+      "description": "SHIFT is interpreted as scale degrees, not semitones. A +3 shift moves the quantized note up 3 scale degrees — preserves diatonic transposition regardless of scale interval pattern."
+    },
+    {
+      "name": "SHIFT MODE: POST",
+      "trigger": "CONFIG + POST button",
+      "description": "PITCH is quantized first, then SHIFT is added after quantization. Output can land on any chromatic note — allows detuning shifted output off the scale."
+    },
+    {
+      "name": "DUAL quantizer mode",
+      "trigger": "CONFIG + DUAL|SEQ (solid red)",
+      "description": "Module splits into two quantizers. PITCH → OUT A, SHIFT → OUT B. Both conform to the same active scale. Ideal for polyphonic quantization with one instance."
+    },
+    {
+      "name": "SEQ mode (SH-101 style)",
+      "trigger": "CONFIG + DUAL|SEQ (flashing red)",
+      "description": "OUT B becomes a 128-step sequencer. TRIG IN = clock · SHIFT = reset. RECORD (LOAD) + multifunction buttons step-enter notes, rests and ties. 35 sequence slots saveable."
+    },
+    {
+      "name": "INTRVL mode",
+      "trigger": "INTRVL button",
+      "description": "Sets OUT B's interval relative to OUT A. Press a multifunction note once = positive interval (green), twice = negative (red). CHROMATIC config = semitones, DIATONIC = scale degrees."
+    },
+    {
+      "name": "LEARN scale capture",
+      "trigger": "LEARN + external pitch/gate source",
+      "description": "Plays notes from external keyboard into PITCH (with TRIG gate) — Scales adds each played note to the active scale. Long-press LEARN first clears scale, so played notes define it entirely."
+    },
+    {
+      "name": "Root vs transpose",
+      "trigger": "ROOT + short vs long press",
+      "description": "Short-press a note = transpose the scale pattern to that new root (intervals preserved). Long-press = change root without transposing (same notes, new tonal centre)."
+    },
+    {
+      "name": "Trigger delay",
+      "trigger": "long-press A→TRIG",
+      "description": "Scales has a programmable incoming trigger delay to compensate for sluggish pitch-source stabilization. Multifunction LEDs indicate delay time — prevents false quantization readings."
+    },
+    {
+      "name": "Sequence transpose via ROOT",
+      "trigger": "SEQ playing + ROOT button + note",
+      "description": "While a sequence plays, Root-mode note-press transposes the playback by that amount (relative to C). Immediate live transposition of the running sequence."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "LFO to arpeggio",
+      "patch": "Slow triangle LFO → PITCH · clock → TRIG · active scale = minor pentatonic · clock samples LFO into steps along the scale · one LFO becomes a melodic arpeggio that follows the LFO shape",
+      "diagram": "Scales:\n* Scale: minor pentatonic\n\nLFO:\n\nClock:\n\nVCO:\n\nENV:\n\n- LFO (Out) >> Scales (PITCH)\n- Clock (Out) t> Scales (In TRIG)\n- Scales (OUT A) p> VCO (V/Oct)\n- Scales (Out TRIG) g> ENV (Gate)"
+    },
+    {
+      "name": "Two-voice harmony",
+      "patch": "Sequencer pitch → PITCH · INTRVL DIATONIC + 2 · OUT A drives VCO 1 (melody) · OUT B drives VCO 2 (third above) · instant two-voice harmony that follows scale contour · no matter the scale, intervals stay diatonic",
+      "diagram": "Scales:\n* Scale: major · INTRVL DIATONIC +2\n\nSequencer:\n\n- Sequencer (Pitch) p> Scales (PITCH)\n- Sequencer (Gate) g> Scales (In TRIG)\n- Scales (OUT A) p> VCO 1 (V/Oct)\n- Scales (OUT B) p> VCO 2 (V/Oct)\n- Sequencer (Gate) g> ENV (Gate)"
+    },
+    {
+      "name": "Dual quantizer polyphony",
+      "patch": "CONFIG · DUAL mode · PITCH = voice 1 pitch source · SHIFT = voice 2 pitch source · both quantize to shared scale · OUT A + OUT B feed two VCOs · shared scale change affects both voices",
+      "diagram": "Scales:\n* OUT B: DUAL\n* Scale: dorian\n\nSequencer 1:\n\nSequencer 2:\n\n- Sequencer 1 (Out) >> Scales (PITCH)\n- Sequencer 2 (Out) >> Scales (SHIFT)\n- Scales (OUT A) p> VCO 1 (V/Oct)\n- Scales (OUT B) p> VCO 2 (V/Oct)"
+    },
+    {
+      "name": "Turing Machine tamed",
+      "patch": "Turing Machine CV → PITCH · Turing clock → TRIG · scale = user-defined (e.g., C blues) · random voltages turn into generative melody constrained to the blues scale · slowly morph scale notes on/off during performance",
+      "diagram": "Scales:\n* Scale: C blues (user)\n\nTuring Machine:\n\nClock:\n\nVCO:\n\nENV:\n\n- Turing Machine (CV Out) >> Scales (PITCH)\n- Clock (Out) t> Turing Machine (Clock)\n- Clock (Out) t> Scales (In TRIG)\n- Scales (OUT A) p> VCO (V/Oct)\n- Scales (Out TRIG) g> ENV (Gate)"
+    },
+    {
+      "name": "Diatonic transpose via LFO",
+      "patch": "Sequencer pitch → PITCH · CONFIG · SHIFT MODE = DIATONIC · slow LFO → SHIFT · OUT A stays in scale but modulates up/down by whole scale degrees as LFO wanders · automatic in-scale modulation",
+      "diagram": "Scales:\n* SHIFT MODE: DIATONIC\n* Scale: C major\n\nSequencer:\n\nLFO:\n\nVCO:\n\n- Sequencer (Pitch) p> Scales (PITCH)\n- LFO (Out) >> Scales (SHIFT)\n- Sequencer (Gate) g> Scales (In TRIG)\n- Scales (OUT A) p> VCO (V/Oct)"
+    },
+    {
+      "name": "SH-101 sequencer voice",
+      "patch": "CONFIG · SEQ mode · record 16-note sequence via note buttons · external clock → TRIG · OUT B plays the sequence · TRIG OUT fires on each step to envelope gate · no CV source needed — Scales is the whole sequencer",
+      "diagram": "Scales:\n* OUT B: SEQ · 16-step sequence recorded\n\nClock:\n\nVCO:\n\nENV:\n\n- Clock (Out) c> Scales (In TRIG)\n- Scales (OUT B) p> VCO (V/Oct)\n- Scales (Out TRIG) g> ENV (Gate)"
+    }
+  ]
+}

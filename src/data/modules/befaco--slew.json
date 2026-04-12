@@ -1,0 +1,142 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.befaco.org/slew/",
+      "https://www.befaco.org/docs/Slew/SLEW_User_manual.pdf",
+      "https://www.befaco.org/slew-limiter/",
+      "https://modulargrid.net/e/befaco-slew",
+      "https://synthanatomy.com/2025/03/befaco-axbc-atte-slew-mixer-and-mudi-new-wave-of-utility-modules-for-eurorack.html"
+    ]
+  },
+  "slug": "befaco--slew",
+  "name": "SLEW",
+  "manufacturer": "Befaco",
+  "hp": 4,
+  "tags": ["SLEW", "FUNCTION", "UTILITY"],
+  "description": "Voltage-controlled lag processor with independent rise and fall faders · three-position speed range · linear-to-time-compensated SHAPE · rising and falling gate outputs from onboard slope detector · <1mV pitch tracking error.",
+  "controls": [
+    {
+      "name": "RISE",
+      "scope": "Global",
+      "description": "Fader sets rise slew time. Also attenuates CV IN when the CV selector routes to rise.",
+      "detail": "bottom: instant · top: max range · doubles as CV attenuator"
+    },
+    {
+      "name": "FALL",
+      "scope": "Global",
+      "description": "Fader sets fall slew time. Also attenuates CV IN when the CV selector routes to fall.",
+      "detail": "bottom: instant · top: max range · doubles as CV attenuator"
+    },
+    {
+      "name": "SHAPE",
+      "scope": "Global",
+      "description": "Morphs curve from linear to time-compensated. CW increases the rate of change as the gap between IN and OUT grows.",
+      "detail": "CCW: linear (constant dV/dt) · CW: distance-driven · time-compensated portamento at full CW"
+    },
+    {
+      "name": "RANGE",
+      "scope": "Global",
+      "description": "Three-position switch selecting the overall slew time scale.",
+      "detail": "left: fastest · middle · right: slowest"
+    },
+    {
+      "name": "R / RF / F",
+      "scope": "CV IN routing",
+      "description": "Three-position switch selecting whether CV IN modulates RISE only, both, or FALL only.",
+      "detail": "up (R): rise · center (RF): both · down (F): fall"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN",
+      "description": "Signal to be slewed. Tracks pitch CV with <1mV error so portamento stays in tune.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "CV",
+      "description": "CV over slew time. Destination set by the R/RF/F switch; attenuated by the matching fader.",
+      "voltage": "0 to +10V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT",
+      "description": "Slew-limited copy of IN. Converts a gate into an ASR-style envelope when RISE and FALL are set to taste."
+    },
+    {
+      "name": "RISING",
+      "description": "Gate high while OUT is rising. Slope detector sits after the slew so sensitivity scales with the current slew time."
+    },
+    {
+      "name": "FALLING",
+      "description": "Gate high while OUT is falling. Same detector as RISING, mirrored polarity."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Time-compensated portamento",
+      "trigger": "SHAPE turned fully clockwise with pitch CV on IN",
+      "description": "Rate of change scales with note-to-note distance so wide intervals glide in roughly the same time as small ones. Keeps acid-line slides musical across the keyboard instead of dragging on large leaps."
+    },
+    {
+      "name": "Gate-to-ASR envelope",
+      "trigger": "gate patched to IN with RISE and FALL set above zero",
+      "description": "Rising edge climbs at the rise rate, gate-high holds at the gate voltage (sustain), falling edge decays at the fall rate. One fader per segment gives attack and release without a dedicated envelope module."
+    },
+    {
+      "name": "Slope-driven event gates",
+      "trigger": "signal moving on IN",
+      "description": "RISING outputs a gate while OUT climbs, FALLING while it drops. Use to trigger envelopes or advance a counter whenever a melody moves up or down. Sensitivity rises with the RANGE switch toward fastest — tighten RISE/FALL to kill ghost gates from ripple."
+    },
+    {
+      "name": "Faders as CV attenuators",
+      "trigger": "CV patched to CV input",
+      "description": "RISE and FALL faders stop being absolute times and become attenuators scaling CV IN into that parameter. Lower the fader to reduce modulation depth without needing an external attenuator."
+    },
+    {
+      "name": "Ghost-gate taming",
+      "trigger": "RANGE on fastest with quiet source",
+      "description": "At minimum slew the detector catches sub-mV ripple and outputs unwanted gates. Raise slew time or the RANGE switch until the gates lock to intentional transitions only."
+    },
+    {
+      "name": "Linear vs distance-driven response",
+      "trigger": "SHAPE position",
+      "description": "CCW keeps dV/dt constant — classic slew. As SHAPE opens, larger input jumps become proportionally faster, preventing long glides from feeling flat. Mid-position sits between the two for hybrid behaviour."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic acid slide",
+      "patch": "Sequencer pitch → IN · RISE low · FALL low · SHAPE full CW for time-compensated glide · OUT → VCO V/Oct · short glides between steps regardless of interval size · sub-mV tracking keeps tuning locked",
+      "diagram": "SLEW:\n* RISE: low\n* FALL: low\n* SHAPE: full CW\n* RANGE: middle\n\nSequencer:\nVCO:\n\n- Sequencer (Pitch) p> SLEW (IN)\n- SLEW (OUT) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Gate into ASR envelope",
+      "patch": "Gate → IN · RISE = attack · FALL = release · OUT → VCA CV · sustain = gate voltage · free AR/ASR envelope from any gate source · use RANGE middle for musical timings",
+      "diagram": "SLEW:\n* RISE: attack time\n* FALL: release time\n* SHAPE: CCW (linear)\n* RANGE: middle\n\nClock:\nVCA:\nVCO:\n\n- Clock (Out) g> SLEW (IN)\n- VCO (Out) -> VCA (In)\n- SLEW (OUT) >> VCA (CV)"
+    },
+    {
+      "name": "Up/down event detector",
+      "patch": "LFO → IN · RISING and FALLING gates drive separate envelopes · each half of the LFO fires a different event · use on slow random CV to generate rhythmic triggers tied to voltage direction",
+      "diagram": "SLEW:\n* RISE: low\n* FALL: low\n* RANGE: fastest\n\nLFO:\nEnvelope A:\nEnvelope B:\n\n- LFO (Out) >> SLEW (IN)\n- SLEW (RISING) t> Envelope A (Trig)\n- SLEW (FALLING) t> Envelope B (Trig)"
+    },
+    {
+      "name": "Voltage-controlled glide depth",
+      "patch": "Sequencer pitch → IN · OUT → VCO · expression pedal or LFO into CV · switch to RF to modulate both rise and fall · RISE and FALL faders set max glide time · dynamic portamento that opens and closes under CV",
+      "diagram": "SLEW:\n* RISE: mid\n* FALL: mid\n* CV switch: RF\n* SHAPE: 2 o'clock\n\nSequencer:\nLFO:\nVCO:\n\n- Sequencer (Pitch) p> SLEW (IN)\n- LFO (Out) >> SLEW (CV)\n- SLEW (OUT) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Asymmetric kick envelope",
+      "patch": "Trigger → IN · RISE almost zero for punchy attack · FALL moderate for body · SHAPE CCW for linear decay · OUT → VCA and filter cutoff · no dedicated envelope needed for simple percussive shapes",
+      "diagram": "SLEW:\n* RISE: 0 (instant)\n* FALL: mid\n* SHAPE: CCW\n* RANGE: fastest\n\nClock:\nVCO:\nFilter:\nVCA:\n\n- Clock (Out) t> SLEW (IN)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- SLEW (OUT) >> VCA (CV)\n- SLEW (OUT) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Smooth sample-and-hold",
+      "patch": "S&H output → IN · RANGE middle, RISE and FALL matched · OUT → filter cutoff · stepped random becomes smooth random contour · SHAPE 2 o'clock so big jumps still arrive on time",
+      "diagram": "SLEW:\n* RISE: mid\n* FALL: mid\n* SHAPE: 2 o'clock\n* RANGE: middle\n\nS&H:\nFilter:\n\n- S&H (Out) >> SLEW (IN)\n- SLEW (OUT) >> Filter (Cutoff)"
+    }
+  ]
+}

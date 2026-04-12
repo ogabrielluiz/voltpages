@@ -1,0 +1,121 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://happynerding.com/category/3xmia/",
+      "https://modulargrid.net/e/happy-nerding-3x-mia",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=162109",
+      "https://www.analoguehaven.com/happy-nerding/3x-mia/"
+    ]
+  },
+  "slug": "happy-nerding--3x-mia",
+  "name": "3x MIA",
+  "manufacturer": "Happy Nerding",
+  "hp": 6,
+  "tags": ["MIXER", "ATTENUVERTER", "UTILITY"],
+  "description": "Three independent 2-channel attenuverting mixers using concentric pots. DC-coupled for audio or CV. Chain switches reconfigure as 2-2-2, 4-2, or 6-into-1. Offsets normalized when inputs unpatched.",
+  "controls": [
+    {
+      "name": "A knob (inner)",
+      "scope": "Block 1-3",
+      "description": "Inner concentric pot — attenuverter for A input of each block. Center = silent; CCW inverts; CW passes positive.",
+      "detail": "bipolar attenuverter · center: zero · ±unity at extremes"
+    },
+    {
+      "name": "B knob (outer)",
+      "scope": "Block 1-3",
+      "description": "Outer concentric pot — attenuverter for B input of each block. Matches A knob behavior.",
+      "detail": "bipolar attenuverter · center: zero · ±unity at extremes"
+    },
+    {
+      "name": "Chain switch",
+      "scope": "Block 1-2",
+      "description": "Two 2-way switches between blocks 1/2 and 2/3. Down routes that block into the next block's mix; up isolates the block's output. Combinations produce 2-2-2 (both up), 4-2 (one down), or 6-into-1 (both down) configurations.",
+      "detail": "up: isolate · down: chain into next block"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "A 1-3",
+      "description": "Inner input per block. When unpatched, an internal offset voltage is normalized, turning the A knob into a manual bipolar offset source.",
+      "normalizedTo": "internal offset voltage"
+    },
+    {
+      "name": "B 1-3",
+      "description": "Outer input per block. When unpatched, an internal offset is normalized, turning the B knob into a manual bipolar offset.",
+      "normalizedTo": "internal offset voltage"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Out 1-3",
+      "description": "Summed output of A+B in that block. If the chain switch below the output is down, this output is muted and its signal is instead summed into the next block."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Attenuverter per channel",
+      "trigger": "knob position",
+      "description": "Each of the six pots is a full attenuverter: CCW inverts and scales, center zeroes the signal, CW passes non-inverted. DC-coupled so identical behavior on audio, CV, pitch, or gate signals. Useful as six bipolar scalers on a single 6 HP module."
+    },
+    {
+      "name": "Normalled offset source",
+      "trigger": "input jack unpatched",
+      "description": "Unpatched input receives an internal DC voltage. The knob then becomes a bipolar offset generator — CCW gives negative offset, CW gives positive. Perfect for adding a pitch transpose, bias, or gate-threshold voltage to a signal on another channel via chain."
+    },
+    {
+      "name": "2-2-2 configuration",
+      "trigger": "both chain switches up",
+      "description": "Three fully independent 2-channel attenuverting mixers. Each Out carries its own A+B sum. Behaves like three compact stereo-pannable attenuverting mixers in 6 HP."
+    },
+    {
+      "name": "4-2 configuration",
+      "trigger": "one chain switch down",
+      "description": "One block (4 channels worth) sums into a single output while the remaining block stays independent. Convenient when three modulation sources need summing onto one line while a fourth CV stays separate."
+    },
+    {
+      "name": "6-into-1 configuration",
+      "trigger": "both chain switches down",
+      "description": "All three blocks daisy-chain into the bottom block's output. Produces a 6-input attenuverting mixer with one output — useful for dense polyphonic sum or combining multiple LFOs into one complex CV shape."
+    },
+    {
+      "name": "Audio or CV identical",
+      "trigger": "any signal type",
+      "description": "DC coupling plus high-fidelity pots means 3x MIA behaves identically on audio (handles eurorack ±5V line level) and on CV (keeps 1V/oct accuracy, pitch-summable). Mix audio and CV freely across blocks without worrying about coupling caps."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Six-LFO complex modulator",
+      "patch": "Six LFO outputs → A1/B1/A2/B2/A3/B3 · both chain switches down (6-into-1) · Out 3 → filter cutoff · per-LFO attenuverter sets contribution and polarity · slow evolving complex CV from six simple sources in 6 HP",
+      "diagram": "3x MIA:\n* Chain switches: both down (6-into-1)\n\nLFO 1:\nLFO 2:\nLFO 3:\nLFO 4:\nLFO 5:\nLFO 6:\nFilter:\n\n- LFO 1 (Out) >> 3x MIA (A 1)\n- LFO 2 (Out) >> 3x MIA (B 1)\n- LFO 3 (Out) >> 3x MIA (A 2)\n- LFO 4 (Out) >> 3x MIA (B 2)\n- LFO 5 (Out) >> 3x MIA (A 3)\n- LFO 6 (Out) >> 3x MIA (B 3)\n- 3x MIA (Out 3) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Stereo panner from one source",
+      "patch": "Mono source → A1 (full CW) · same source multed → B1 (full CCW inverts) · Out 1 L/R pair behaves like ±1 stereo · invert polarity with knobs to swap · adds simple stereo width without a dedicated panner",
+      "diagram": "3x MIA:\n* A1: full CW · B1: full CCW (invert)\n\nMono Source:\nMult:\n\n- Mono Source (Out) -> Mult (In)\n- Mult (Out 1) -> 3x MIA (A 1)\n- Mult (Out 2) -> 3x MIA (B 1)\n- 3x MIA (Out 1) -> Output (L)\n- 3x MIA (Out 2) -> Output (R) // use Out 2 as inverted mirror"
+    },
+    {
+      "name": "CV transpose with attenuated modulation",
+      "patch": "Sequencer 1V/oct → A1 (full CW for tracking) · B1 unpatched (normalled offset, set to desired octave) · LFO vibrato → A2 · chain switch 1 down · Out 2 → VCO · sums pitch + transpose + vibrato with per-element polarity control",
+      "diagram": "3x MIA:\n* Chain 1: down · A1: full CW · B1: manual offset · A2: vibrato depth\n\nSequencer:\nLFO:\nVCO:\n\n- Sequencer (Pitch) p> 3x MIA (A 1)\n- LFO (Sine) >> 3x MIA (A 2)\n- 3x MIA (Out 2) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Polarity flipper for envelope",
+      "patch": "Envelope → A1 · A1 full CCW · Out 1 → VCA CV (down-expression) · same envelope multed → B1 full CW · Out 1 → filter (up-expression) · one envelope drives two parameters in opposite directions for instant ducking behavior",
+      "diagram": "3x MIA:\n* A1: full CCW (invert) · B1: full CW\n\nEnvelope:\nMult:\nVCA:\nFilter:\n\n- Envelope (Out) -> Mult (In)\n- Mult (Out 1) >> 3x MIA (A 1)\n- Mult (Out 2) >> 3x MIA (B 1)\n- 3x MIA (Out 1) >> VCA (CV) // inverted = ducking\n- 3x MIA (Out 2) >> Filter (Cutoff) // positive = swell"
+    },
+    {
+      "name": "Manual offset bank",
+      "patch": "All six inputs unpatched · each knob delivers a bipolar offset from normalized voltage · Out 1/2/3 → three destinations needing bias · use as a compact 6-source voltage source for thresholds, octave selects, or initial filter cutoff",
+      "diagram": "3x MIA:\n* all inputs unpatched · knobs set manual offsets\n\nFilter:\nVCO:\nComparator:\n\n- 3x MIA (Out 1) >> Filter (Cutoff) // A1+B1 offset = bias\n- 3x MIA (Out 2) p> VCO (V/Oct) // octave offset\n- 3x MIA (Out 3) >> Comparator (Threshold)"
+    },
+    {
+      "name": "Mid/side audio summer",
+      "patch": "Stereo L → A1 full CW · stereo R → B1 full CW · Out 1 = L+R (mid) · L → A2 full CW · R → B2 full CCW · Out 2 = L-R (side) · DC-coupled pots preserve stereo imaging for side-chain tricks or M/S processing",
+      "diagram": "3x MIA:\n* A1: full CW · B1: full CW\n* A2: full CW · B2: full CCW (invert)\n\nStereo L:\nStereo R:\nMult:\n\n- Stereo L (Out) -> Mult (In L)\n- Stereo R (Out) -> Mult (In R)\n- Mult (L) -> 3x MIA (A 1)\n- Mult (R) -> 3x MIA (B 1)\n- Mult (L) -> 3x MIA (A 2)\n- Mult (R) -> 3x MIA (B 2)\n- 3x MIA (Out 1) -> Output (Mid)\n- 3x MIA (Out 2) -> Output (Side)"
+    }
+  ]
+}

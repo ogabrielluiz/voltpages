@@ -1,0 +1,103 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/shop/eurorack/1u/buff-mult-1u/",
+      "https://intellijel.com/downloads/manuals/buff-mult-1u_manual_2018.09.13.pdf",
+      "https://intellijel.com/support/"
+    ]
+  },
+  "slug": "intellijel--buff-mult-1u",
+  "name": "Buff Mult 1U",
+  "manufacturer": "Intellijel",
+  "hp": 14,
+  "tags": ["MULT", "BUFFER", "UTILITY"],
+  "description": "Dual 1x4 buffered multiple. The upper input normals to the lower section, so one source can fan out to eight accurate, isolated copies for pitch-critical or high-impedance routing.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "Top IN",
+      "description": "Upper section input. Normalled to the lower section input when the lower jack is empty.",
+      "normalizedTo": "Bottom IN"
+    },
+    {
+      "name": "Bottom IN",
+      "description": "Lower section input. Receives its own 1x4 buffered copy set."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Top OUT 1",
+      "description": "Buffered copy of Top IN."
+    },
+    {
+      "name": "Top OUT 2",
+      "description": "Buffered copy of Top IN."
+    },
+    {
+      "name": "Top OUT 3",
+      "description": "Buffered copy of Top IN."
+    },
+    {
+      "name": "Top OUT 4",
+      "description": "Buffered copy of Top IN."
+    },
+    {
+      "name": "Bottom OUT 1",
+      "description": "Buffered copy of Bottom IN."
+    },
+    {
+      "name": "Bottom OUT 2",
+      "description": "Buffered copy of Bottom IN."
+    },
+    {
+      "name": "Bottom OUT 3",
+      "description": "Buffered copy of Bottom IN."
+    },
+    {
+      "name": "Bottom OUT 4",
+      "description": "Buffered copy of Bottom IN."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Eight accurate copies",
+      "trigger": "patch a source into Top IN with Bottom IN empty",
+      "description": "The module behaves as a single 1x8 buffered mult and preserves voltage accuracy across all eight outputs."
+    },
+    {
+      "name": "Dual-source mode",
+      "trigger": "patch both inputs",
+      "description": "The upper and lower sections become two independent 1x4 buffered multiples."
+    },
+    {
+      "name": "Pitch-safe fanout",
+      "trigger": "route 1V/oct signals through the module",
+      "description": "Buffered outputs are isolated and stable enough for oscillator pitch distribution."
+    },
+    {
+      "name": "Fault isolation",
+      "trigger": "short or load one output heavily",
+      "description": "The buffered design keeps faults or unusual loads from directly collapsing the source signal."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Pitch bus splitter",
+      "patch": "One sequencer pitch CV fans out to four oscillators without drift · bottom section can carry a second melody or transpose bus.",
+      "diagram": "Buff Mult 1U:\n* Top IN: pitch bus\n* Bottom IN: transpose bus\n\nSequencer:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\n\n- Sequencer (Pitch) p> Buff Mult 1U (Top IN)\n- Buff Mult 1U (Top OUT 1) p> VCO 1 (V/Oct)\n- Buff Mult 1U (Top OUT 2) p> VCO 2 (V/Oct)\n- Buff Mult 1U (Top OUT 3) p> VCO 3 (V/Oct)\n- Buff Mult 1U (Top OUT 4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "One LFO, many destinations",
+      "patch": "One LFO drives cutoff, pan, and VCA CV at the same time · buffered copies keep the modulation shape stable across multiple loads.",
+      "diagram": "Buff Mult 1U:\n* Top IN: LFO\n\nLFO:\nFilter:\nVCA:\nPan:\nOutput:\n\n- LFO (Out) >> Buff Mult 1U (Top IN)\n- Buff Mult 1U (Top OUT 1) >> Filter (Cutoff)\n- Buff Mult 1U (Top OUT 2) >> VCA (CV)\n- Buff Mult 1U (Top OUT 3) >> Pan (CV)\n- Buff Mult 1U (Top OUT 4) >> Output (CV)"
+    },
+    {
+      "name": "Dual pitch lane",
+      "patch": "Two independent sequencer outputs feed two oscillator banks · one module handles both pitch lanes without a passive mult.",
+      "diagram": "Buff Mult 1U:\n* Top IN: voice A pitch\n* Bottom IN: voice B pitch\n\nSequencer A:\nSequencer B:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\n\n- Sequencer A (Pitch) p> Buff Mult 1U (Top IN)\n- Sequencer B (Pitch) p> Buff Mult 1U (Bottom IN)\n- Buff Mult 1U (Top OUT 1) p> VCO 1 (V/Oct)\n- Buff Mult 1U (Top OUT 2) p> VCO 2 (V/Oct)\n- Buff Mult 1U (Bottom OUT 1) p> VCO 3 (V/Oct)\n- Buff Mult 1U (Bottom OUT 2) p> VCO 4 (V/Oct)"
+    }
+  ]
+}

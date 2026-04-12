@@ -1,0 +1,114 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/downloads/manuals/uvca-2_manual_2021.08.03.pdf",
+      "https://intellijel.com/shop/eurorack/uvca-2/"
+    ]
+  },
+  "slug": "intellijel--uvca-ii",
+  "name": "µVCA II",
+  "manufacturer": "Intellijel",
+  "hp": 6,
+  "tags": ["VCA", "MIXER", "UTILITY"],
+  "description": "Dual DC-coupled VCA with continuously variable linear-to-exponential response per channel. CV attenuator, bias knob for above-unity gain, cascaded mixing output when OUT A is unpatched.",
+  "controls": [
+    {
+      "name": "CV A",
+      "scope": "Channel A",
+      "description": "Attenuates the CV A input before it sums with BIAS A.",
+      "detail": "CCW: zero · CW: unity · LED tracks resulting CV level"
+    },
+    {
+      "name": "BIAS A",
+      "scope": "Channel A",
+      "description": "Sets initial gain of amp A before CV is applied. Max bias = 5V = gain of 1.",
+      "detail": "Use as manual level when no CV patched · summed with CV A"
+    },
+    {
+      "name": "EXP-LIN A",
+      "scope": "Channel A",
+      "description": "Blends response curve between linear and exponential.",
+      "detail": "CCW: linear (audio VCA feel) · CW: exponential (CV/envelope feel)"
+    },
+    {
+      "name": "CV B",
+      "scope": "Channel B",
+      "description": "CV attenuator for channel B. Identical to CV A.",
+      "detail": "CCW: zero · CW: unity"
+    },
+    {
+      "name": "BIAS B",
+      "scope": "Channel B",
+      "description": "Manual level / bias offset for amp B.",
+      "detail": "5V = unity gain · summed with CV B"
+    },
+    {
+      "name": "EXP-LIN B",
+      "scope": "Channel B",
+      "description": "Blends channel B response between linear and exponential.",
+      "detail": "CCW: linear · CW: exponential"
+    }
+  ],
+  "inputs": [
+    { "name": "CV A", "description": "Level CV for amp A, summed with BIAS A. Voltages above 5V give above-unity gain", "voltage": "0–5V typical · above 5V boosts" },
+    { "name": "IN A", "description": "Signal input for amp A. DC-coupled so audio or CV can pass", "voltage": "audio/CV" },
+    { "name": "CV B", "description": "Level CV for amp B, summed with BIAS B", "voltage": "0–5V typical · above 5V boosts" },
+    { "name": "IN B", "description": "Signal input for amp B. DC-coupled", "voltage": "audio/CV" }
+  ],
+  "outputs": [
+    { "name": "OUT A", "description": "Amp A output. When unpatched, signal is normalized into OUT B for cascaded mixing", "voltage": "audio/CV" },
+    { "name": "OUT B", "description": "Amp B output. Sums OUT A when OUT A is unpatched — acts as simple 2-channel mixer output", "voltage": "audio/CV" }
+  ],
+  "behaviors": [
+    {
+      "name": "Cascaded Mixer Mode",
+      "trigger": "OUT A unpatched",
+      "description": "With nothing plugged into OUT A, amp A's signal is internally normalized into OUT B. Two VCA channels become a CV-controlled 2-channel mixer from a single jack."
+    },
+    {
+      "name": "Above-Unity Gain",
+      "trigger": "CV > 5V or BIAS past noon",
+      "description": "Both BIAS and CV sum; voltages above 5V drive gain past 1. Useful for reviving weak signals, boosting envelope shapes, or fattening up synth outs before a filter."
+    },
+    {
+      "name": "Continuous Linear/Exp Blend",
+      "trigger": "EXP-LIN knob per channel",
+      "description": "Sweep smoothly between linear (audio-accurate level control) and exponential (envelope-following that feels punchy). The middle region is a subtle response that works well as a DC-coupled CV attenuator."
+    },
+    {
+      "name": "DC-Coupled Signal Path",
+      "trigger": "always",
+      "description": "CV can be passed through the amp as easily as audio. Scale envelopes, attenuate pitch sequences, or amplitude-modulate one CV with another — this is a VCA that doubles as a utility processor."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic envelope + audio VCA",
+      "patch": "VCO into IN A · envelope into CV A · EXP-LIN A fully clockwise for expo response · BIAS A at zero · punchy plucked note shaping",
+      "diagram": "µVCA II:\n* EXP-LIN A=CW (expo) · BIAS A=0\n\n- VCO (Out) -> µVCA II (IN A)\n- Envelope (Out) >> µVCA II (CV A)\n- µVCA II (OUT A) -> Output (In) // expo VCA pluck"
+    },
+    {
+      "name": "Two-source mixer via cascade",
+      "patch": "VCO 1 into IN A · VCO 2 into IN B · leave OUT A unpatched · take sum at OUT B · BIAS knobs set mix levels · CV inputs act as individual automation for each source",
+      "diagram": "µVCA II:\n* BIAS A noon · BIAS B noon · OUT A unpatched\n\n- VCO 1 (Out) -> µVCA II (IN A)\n- VCO 2 (Out) -> µVCA II (IN B)\n- LFO (Out) >> µVCA II (CV A)\n- µVCA II (OUT B) -> Filter (In) // cascaded mix of A+B"
+    },
+    {
+      "name": "Dual-envelope AM",
+      "patch": "VCO into IN A · LFO sine into IN B · envelope on CV A for amplitude shape · slower LFO on CV B modulates the modulator · OUT A out OUT B provides tremolo layer · ring-mod-like amplitude interaction",
+      "diagram": "µVCA II:\n* EXP-LIN A=LIN · EXP-LIN B=LIN\n\n- VCO (Out) -> µVCA II (IN A)\n- Audio LFO (Out) -> µVCA II (IN B)\n- Envelope (Out) >> µVCA II (CV A)\n- Slow LFO (Out) >> µVCA II (CV B)\n- µVCA II (OUT A) -> Mixer (In 1)\n- µVCA II (OUT B) -> Mixer (In 2) // AM layering"
+    },
+    {
+      "name": "CV scaler for sequencer",
+      "patch": "Sequencer CV into IN A (DC-coupled) · BIAS A at zero · CV A attenuator sets scaling · EXP-LIN at linear · use OUT A as pre-scaled pitch CV to a second VCO for tracking offsets",
+      "diagram": "µVCA II:\n* EXP-LIN A=LIN (for clean CV) · BIAS A=0\n\n- Sequencer (Pitch) p> µVCA II (IN A)\n- Offset Source (Out) >> µVCA II (CV A)\n- µVCA II (OUT A) p> VCO 2 (V/Oct) // scaled pitch CV"
+    },
+    {
+      "name": "Side-chain ducking",
+      "patch": "Pad into IN A · inverted envelope from kick drum trigger into CV A · BIAS A around 3 V so pad sits at ~unity when nothing plays · each kick briefly ducks the pad · classic dance-floor pump",
+      "diagram": "µVCA II:\n* EXP-LIN A=LIN · BIAS A ~3V\n\n- Pad (Out) -> µVCA II (IN A)\n- Kick Trigger (Out) t> Envelope (Trig)\n- Envelope (Out) >> Inverter (In)\n- Inverter (Out) >> µVCA II (CV A)\n- µVCA II (OUT A) -> Output (In) // side-chain duck"
+    }
+  ]
+}

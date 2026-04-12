@@ -1,0 +1,117 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.befaco.org/mudi/",
+      "https://www.befaco.org/docs/MuDi/MuDi_User_Manual.pdf",
+      "https://modulargrid.net/e/befaco-mudi",
+      "https://www.perfectcircuit.com/befaco-mudi.html",
+      "https://synthanatomy.com/2025/03/befaco-axbc-atte-slew-mixer-and-mudi-new-wave-of-utility-modules-for-eurorack.html"
+    ]
+  },
+  "slug": "befaco--mudi",
+  "name": "MuDi",
+  "manufacturer": "Befaco",
+  "hp": 2,
+  "tags": ["CLOCK", "MULT", "UTILITY", "BUFFER"],
+  "description": "2HP active clock multiple, trigger conditioner and divider · three buffered 10V copies plus 1/2, 1/4, 1/8, 1/16 divisions · TRS input with clock on tip and reset on ring · accepts any pulse over 2V.",
+  "controls": [
+    {
+      "name": "(no panel controls)",
+      "scope": "Global",
+      "description": "MuDi has no knobs, switches or buttons. Behaviour is fully determined by the incoming clock and reset.",
+      "detail": "all logic is firmware-free active buffering + divide-by-2 chain"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "CLK/RST",
+      "description": "TRS combo jack. Tip carries the clock; ring carries reset. With a mono cable only the clock side is used. Any pulse above 2V is accepted and conditioned; audio-rate square waves produce suboctaves on the division outs.",
+      "voltage": ">2V trigger threshold (tip) · rising-edge reset (ring)",
+      "normalizedTo": "reset line tied low when mono cable is used"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "F (×3)",
+      "description": "Three buffered conditioned copies of the input at the same frequency, each rescaled to a clean 10V pulse. Active topology — hot-patching does not drop the master clock.",
+      "voltage": "0V / +10V pulse"
+    },
+    {
+      "name": "1/2F",
+      "description": "Half the input frequency. Toggles every rising edge of CLK.",
+      "voltage": "0V / +10V pulse"
+    },
+    {
+      "name": "1/4F",
+      "description": "Quarter the input frequency.",
+      "voltage": "0V / +10V pulse"
+    },
+    {
+      "name": "1/8F",
+      "description": "One eighth the input frequency.",
+      "voltage": "0V / +10V pulse"
+    },
+    {
+      "name": "1/16F",
+      "description": "One sixteenth the input frequency. Good for long bar-level pulses or slow triggers.",
+      "voltage": "0V / +10V pulse"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Active clock multiple",
+      "trigger": "patching multiple destinations from the three F outputs",
+      "description": "Unlike a passive mult, MuDi buffers every output. Patching and unpatching cables on the fly does not disturb the timing at other outputs — clocks stay locked while you reroute the system."
+    },
+    {
+      "name": "Trigger conditioner",
+      "trigger": "weak or non-square pulse at CLK input",
+      "description": "The internal comparator fires on any signal crossing 2V and emits a clean 10V pulse at every output. Use MuDi to rescue low-voltage drum-machine clicks, MIDI-clock LFO pulses or rounded LFO peaks into rack-clean clocks."
+    },
+    {
+      "name": "Binary divider chain",
+      "trigger": "pulse stream at CLK",
+      "description": "Divisions are a flip-flop cascade — 1/2, 1/4, 1/8, 1/16 — each toggling on the rising edge of the one above. Duty cycle at each division is 50% regardless of the input duty cycle."
+    },
+    {
+      "name": "Reset via TRS ring",
+      "trigger": "rising edge on the ring contact of the CLK/RST jack",
+      "description": "Resets the divider chain to its initial state so all divisions align with the next clock. Supplied splitter cable breaks out a second 3.5mm jack (red) for the reset. With a mono cable the reset is grounded and never fires."
+    },
+    {
+      "name": "Audio-rate suboctaves",
+      "trigger": "square-wave VCO patched into CLK",
+      "description": "Because the divider is logic-fast, a square at audio rate produces −1, −2, −3, −4 octave suboctaves at the division outs. The F outs pass the original square through the conditioner — useful as a hard-edged squarer before a mixer."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Master clock distribution",
+      "patch": "Master clock → CLK/RST · three F outs feed sequencer clock, drum clock, modulation trigger source · 1/2F drives snare on the offbeat · 1/4F drives a slow arpeggiator · 2HP of clock routing without a dedicated hub",
+      "diagram": "MuDi:\n\nClock Source:\nSequencer:\nDrums:\nLFO Trig:\nSnare:\nArp:\n\n- Clock Source (Out) c> MuDi (CLK/RST)\n- MuDi (F 1) c> Sequencer (Clock)\n- MuDi (F 2) c> Drums (Clock)\n- MuDi (F 3) c> LFO Trig (Trig)\n- MuDi (1/2F) c> Snare (Trig)\n- MuDi (1/4F) c> Arp (Clock)"
+    },
+    {
+      "name": "Square-wave suboctave generator",
+      "patch": "VCO square → CLK/RST · F out passes the squared original · 1/2F = one octave down · 1/4F = two · 1/8F = three · mix all into a stack · 4-octave organ-style bass from one oscillator",
+      "diagram": "MuDi:\n\nVCO:\nMixer:\n\n- VCO (Square) -> MuDi (CLK/RST)\n- MuDi (F 1) -> Mixer (In 1) // root\n- MuDi (1/2F) -> Mixer (In 2) // -1 oct\n- MuDi (1/4F) -> Mixer (In 3) // -2 oct\n- MuDi (1/8F) -> Mixer (In 4) // -3 oct"
+    },
+    {
+      "name": "Phrase-length trigger",
+      "patch": "Pam's or master clock at 16 PPQN → CLK/RST · 1/16F out fires once per bar at that resolution · use to trigger a chord-change envelope or reset a long sequencer · saves a divider/euclidean module when you just need a slow pulse",
+      "diagram": "MuDi:\n\nClock:\nChord Envelope:\nLong Sequencer:\n\n- Clock (Out) c> MuDi (CLK/RST)\n- MuDi (1/16F) t> Chord Envelope (Trig)\n- MuDi (1/16F) t> Long Sequencer (Reset)"
+    },
+    {
+      "name": "MIDI clock cleanup",
+      "patch": "MIDI-to-CV module clock pulse (often low-voltage or rounded) → CLK/RST · MuDi rescales every output to 10V · F outs distribute clean rack clocks · divisions now reliably trigger envelope modules that previously missed quiet edges",
+      "diagram": "MuDi:\n\nMIDI Interface:\nEnvelope 1:\nEnvelope 2:\nSequencer:\n\n- MIDI Interface (Clock) c> MuDi (CLK/RST)\n- MuDi (F 1) c> Sequencer (Clock)\n- MuDi (1/2F) t> Envelope 1 (Trig)\n- MuDi (1/4F) t> Envelope 2 (Trig)"
+    },
+    {
+      "name": "Reset-locked polyrhythm",
+      "patch": "Clock → tip of CLK/RST via splitter · bar-length reset → ring · three division outs drive separate voices · reset pulls every division back to phase zero each bar so polyrhythms repeat identically instead of drifting",
+      "diagram": "MuDi:\n\nClock:\nBar Reset:\nVoice 1:\nVoice 2:\nVoice 3:\n\n- Clock (Out) c> MuDi (CLK/RST) // tip via splitter\n- Bar Reset (Out) t> MuDi (CLK/RST) // ring via splitter\n- MuDi (1/2F) t> Voice 1 (Trig)\n- MuDi (1/4F) t> Voice 2 (Trig)\n- MuDi (1/8F) t> Voice 3 (Trig)"
+    }
+  ]
+}

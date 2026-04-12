@@ -1,0 +1,172 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.2",
+    "sources": [
+      "https://mutable-instruments.net/modules/rings/manual/",
+      "https://mutable-instruments.net/modules/rings/",
+      "https://www.modulargrid.net/e/mutable-instruments-rings",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=138753",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/rings/manual/"
+    ]
+  },
+  "slug": "mutable-instruments--rings",
+  "name": "Rings",
+  "manufacturer": "Mutable Instruments",
+  "hp": 14,
+  "tags": ["RESONATOR", "OSCILLATOR", "EFFECTS"],
+  "description": "Resonator built on three physical models: modal (bells/bars), sympathetic strings (Karplus network), and inharmonic strings. Excited by trigger button, internal noise, or external audio input.",
+  "controls": [
+    {
+      "name": "Resonator",
+      "scope": "Global",
+      "description": "Three-position button cycles model: modal · sympathetic strings · inharmonic/FM string (stock firmware). Long-press toggles polyphony 1/2/4.",
+      "detail": "Orange = modal · green = sympathetic · red = inharmonic · LEDs also show polyphony count"
+    },
+    {
+      "name": "Polyphony",
+      "scope": "Global",
+      "description": "Long-press of Resonator button cycles polyphony: 1 / 2 / 4 voices. Higher polyphony reduces per-voice DSP so longer decays shorten.",
+      "detail": "Note-stealing assigns new triggers to oldest voice · 1V/Oct tracks last played"
+    },
+    {
+      "name": "Frequency",
+      "scope": "Global",
+      "description": "Coarse pitch of the resonator fundamental. Covers full audio range.",
+      "detail": "±4 octaves around C3 · Attenuverter-free; pair with external offset for fine trim"
+    },
+    {
+      "name": "Structure",
+      "scope": "Global",
+      "description": "Modal: inharmonicity of partials. Sympathetic: ratio between sympathetic strings. Inharmonic: stiffness/tension of the string.",
+      "detail": "Has bipolar attenuverter for STRUCTURE CV input · 0–1 normalized range"
+    },
+    {
+      "name": "Brightness",
+      "scope": "Global",
+      "description": "Spectral tilt and excitation color. Low = dull mallet, high = bright/ringing.",
+      "detail": "Has bipolar attenuverter · also shapes internal noise exciter when IN unpatched"
+    },
+    {
+      "name": "Damping",
+      "scope": "Global",
+      "description": "Decay time of resonant modes. CW extends decay toward infinite sustain/feedback.",
+      "detail": "Has bipolar attenuverter · at maximum + modal mode the resonator self-oscillates"
+    },
+    {
+      "name": "Position",
+      "scope": "Global",
+      "description": "Pickup/strike position on the virtual body. Shifts which partials are emphasized.",
+      "detail": "Has bipolar attenuverter · sweeping produces comb-filter-like motion"
+    }
+  ],
+  "inputs": [
+    { "name": "V/OCT", "description": "1V/oct pitch input tracking the resonator fundamental.", "voltage": "-3V to +5V" },
+    { "name": "STRUCTURE CV", "description": "CV for Structure parameter, scaled by its attenuverter.", "voltage": "±5V" },
+    { "name": "BRIGHTNESS CV", "description": "CV for Brightness parameter.", "voltage": "±5V" },
+    { "name": "DAMPING CV", "description": "CV for Damping parameter.", "voltage": "±5V" },
+    { "name": "POSITION CV", "description": "CV for Position parameter.", "voltage": "±5V" },
+    { "name": "STRUM", "description": "Trigger input. Plucks/strikes the resonator and samples V/OCT for the new voice.", "voltage": ">1V trigger", "normalizedTo": "rising-edge detector on V/OCT when unpatched" },
+    { "name": "IN", "description": "Audio input that excites the resonator. When unpatched, an internal noise+mallet exciter is used and STRUM drives it.", "voltage": "±8V audio", "normalizedTo": "internal noise/mallet exciter" }
+  ],
+  "outputs": [
+    { "name": "ODD", "description": "Odd partials / one pickup of the resonator. Dry+wet mix when IN is patched.", "voltage": "±8V" },
+    { "name": "EVEN", "description": "Even partials / opposite pickup. Complementary to ODD — sum for full signal, pan for stereo.", "voltage": "±8V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Modal resonator",
+      "trigger": "Resonator button orange",
+      "description": "Modal synthesis from 24–64 tuned partials. STRUCTURE inharmonicity, BRIGHTNESS damps higher modes, DAMPING sets decay. Excellent for metal bars, bells, glass, gongs."
+    },
+    {
+      "name": "Sympathetic strings",
+      "trigger": "Resonator button green",
+      "description": "Network of Karplus-Strong strings with sympathetic resonance. STRUCTURE sets inter-string ratios (perfect fifth/octave/etc.). Produces sitar, koto, piano-like textures."
+    },
+    {
+      "name": "Modal / non-linear string (Inharmonic)",
+      "trigger": "Resonator button red",
+      "description": "Stiff string with non-linear terminator. STRUCTURE controls stiffness: low = nylon pluck, high = bell-like FM string. High DAMPING produces self-oscillating FM drones."
+    },
+    {
+      "name": "Easter-egg alternate models",
+      "trigger": "long-press Polyphony combo",
+      "description": "Holding Polyphony button while selecting mode exposes FM string, Western chord, and disastrous peace modes (stock firmware v1.2). Use to access drone, organ, and reverb behaviors not labelled on the panel."
+    },
+    {
+      "name": "External excitation",
+      "trigger": "patch audio into IN",
+      "description": "Any audio source (drum, voice, synth) excites the resonator. STRUM no longer re-strikes — the external signal continuously drives the modes. Breaks the internal mallet normalling."
+    },
+    {
+      "name": "Self-triggering from V/OCT",
+      "trigger": "STRUM unpatched + changing pitch CV",
+      "description": "When STRUM is not patched Rings watches V/OCT for sudden voltage jumps and auto-triggers the exciter on pitch change. Enables playing from a sequencer with no separate gate cable."
+    },
+    {
+      "name": "Self-oscillation / drone",
+      "trigger": "DAMPING full CW + modal/sympathetic model",
+      "description": "Maximum damping brings the resonator to infinite decay so it sings without external excitation. Modal mode turns into a tuned sine bank; sympathetic becomes a string drone."
+    },
+    {
+      "name": "Polyphony note-stealing",
+      "trigger": "more triggers than voices",
+      "description": "In 2- or 4-voice mode each STRUM allocates the oldest voice. Voices share DSP, so decay times shrink as polyphony rises. Tracks the last-played V/OCT for unpatched STRUM mode."
+    },
+    {
+      "name": "Stereo ODD/EVEN spread",
+      "trigger": "use both outputs",
+      "description": "ODD and EVEN carry the same note with complementary partial content. Panned hard L/R they produce a natural stereo image without any external effect."
+    },
+    {
+      "name": "Chord mode (easter-egg model 4)",
+      "trigger": "Polyphony hold + 4th mode",
+      "description": "Model 4 plays a 4-note diatonic chord per STRUM, with STRUCTURE choosing chord type. Effectively turns Rings into a chord-voice resonator."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Karplus pluck sequencer",
+      "patch": "Sympathetic mode (green) · polyphony 1 · DAMPING ~2 o'clock · sequencer CV → V/OCT · gate → STRUM · BRIGHTNESS attenuverter modulated by envelope for evolving timbre · ODD/EVEN panned for stereo",
+      "diagram": "Rings:\n* Resonator: Sympathetic (green)\n* Polyphony: 1\n* Damping: ~2 o'clock\n\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Sequencer (Gate) t> Rings (STRUM)\n- Envelope (Out) >> Rings (BRIGHTNESS CV)\n- Rings (ODD) -> Mixer (L)\n- Rings (EVEN) -> Mixer (R)"
+    },
+    {
+      "name": "Bell model drone",
+      "patch": "Modal mode (orange) · DAMPING full CW (self-oscillation) · STRUCTURE swept slowly by LFO for inharmonicity · no STRUM patched · POSITION modulated by second LFO for shifting partials · ODD into reverb for infinite bell drones",
+      "diagram": "Rings:\n* Resonator: Modal (orange)\n* Damping: full CW // self-oscillation\n\n- LFO 1 (Out) >> Rings (STRUCTURE CV)\n- LFO 2 (Out) >> Rings (POSITION CV)\n- Rings (ODD) -> Reverb (In) -> Output (In)"
+    },
+    {
+      "name": "Drum resonator body",
+      "patch": "Any model · external drum loop into IN · breaks internal exciter normalling · V/OCT sequenced to pitch the resonance per beat · DAMPING short (0.5–1s) so the drum body doesn't smear · Rings sings the loop back as tuned resonant percussion",
+      "diagram": "Rings:\n* Resonator: Modal or Inharmonic\n* Damping: short\n\n- Drum Loop (Out) -> Rings (IN)\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Rings (ODD) -> Mixer (In 1)\n- Rings (EVEN) -> Mixer (In 2)"
+    },
+    {
+      "name": "No-strum pitch-triggered lead",
+      "patch": "Sympathetic mode · STRUM unpatched · Rings auto-triggers on V/OCT jumps · sequencer with legato rests keeps some notes tied without re-plucking · produces guitar-like hammer-on phrasing",
+      "diagram": "Rings:\n* Resonator: Sympathetic\n* STRUM: unpatched // auto-trigger on V/OCT change\n\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Rings (ODD) -> Delay (In) -> Output (In)"
+    },
+    {
+      "name": "Inharmonic FM string",
+      "patch": "Inharmonic mode (red) · STRUCTURE ~3 o'clock (high stiffness) · DAMPING ~1 o'clock · envelope into BRIGHTNESS for plucky attack · LFO into POSITION for bell-like shimmer · single-voice polyphony for longest decay",
+      "diagram": "Rings:\n* Resonator: Inharmonic (red)\n* Structure: ~3 o'clock\n* Polyphony: 1\n\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Sequencer (Gate) t> Rings (STRUM)\n- Envelope (Out) >> Rings (BRIGHTNESS CV)\n- LFO (Out) >> Rings (POSITION CV)\n- Rings (ODD) -> Mixer (L)\n- Rings (EVEN) -> Mixer (R)"
+    },
+    {
+      "name": "Polyphonic piano chords",
+      "patch": "Sympathetic mode · polyphony 4 · sequencer outputs arpeggiated V/OCT · gate on every step strums each note into its own voice · DAMPING ~2 o'clock for piano decay · ODD/EVEN into chorus for piano body",
+      "diagram": "Rings:\n* Resonator: Sympathetic\n* Polyphony: 4\n* Damping: ~2 o'clock\n\n- Sequencer (Arp CV) p> Rings (V/OCT)\n- Clock (Out) t> Rings (STRUM)\n- Rings (ODD) -> Chorus (L)\n- Rings (EVEN) -> Chorus (R)\n- Chorus (Out L/R) -> Output (L/R)"
+    },
+    {
+      "name": "External feedback shimmer",
+      "patch": "Modal mode · Rings ODD → reverb → back into IN via attenuator (set at ~10 o'clock to avoid runaway) · STRUM from slow clock · infinite recursive bell shimmer that tracks V/OCT",
+      "diagram": "Rings:\n* Resonator: Modal\n\n- Clock (Out) t> Rings (STRUM)\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Rings (ODD) -> Reverb (In)\n- Reverb (Out) -> Attenuator (In) // ~10 o'clock, avoid runaway\n- Attenuator (Out) -> Rings (IN) // feedback excitation\n- Rings (EVEN) -> Output (In)"
+    },
+    {
+      "name": "Rings as stereo reverb",
+      "patch": "Modal mode · DAMPING near max (long tail) · BRIGHTNESS ~2 o'clock · external audio into IN · V/OCT fixed at 0V · Rings acts as a tuneable resonant reverb with ODD/EVEN as stereo outputs",
+      "diagram": "Rings:\n* Resonator: Modal\n* Damping: near max\n* V/OCT: 0V fixed\n\n- External Audio (Out) -> Rings (IN)\n- Rings (ODD) -> Mixer (L)\n- Rings (EVEN) -> Mixer (R)"
+    }
+  ]
+}

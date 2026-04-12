@@ -1,0 +1,124 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/links/manual/",
+      "https://web.archive.org/web/20221207151255/https://mutable-instruments.net/modules/links/manual/",
+      "https://web.archive.org/web/20221229082649/https://mutable-instruments.net/modules/links/",
+      "https://modulargrid.net/e/mutable-instruments-links",
+      "https://modwiggler.com/forum/viewforum.php?f=32"
+    ]
+  },
+  "slug": "mutable-instruments--links",
+  "name": "Links",
+  "manufacturer": "Mutable Instruments",
+  "hp": 4,
+  "tags": ["UTILITY", "MULT", "MIXER", "BUFFER"],
+  "description": "Three-in-one utility: buffered 1:3 multiple, precision 2:2 adder/multiple, and 3:1 averaging mixer. DC-coupled throughout, accepts audio rate, 0.1% resistors on the adder for note-CV transposition duties.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "1:3 IN",
+      "description": "Input to the buffered multiple. Signal is duplicated with no voltage drop across three OUT jacks.",
+      "voltage": "DC-coupled · audio rate OK · 1MΩ input impedance"
+    },
+    {
+      "name": "2:2 IN A",
+      "description": "First input of the precision 2-in summer. Summed with IN B with unity gain on each.",
+      "voltage": "DC-coupled · 100kΩ input impedance"
+    },
+    {
+      "name": "2:2 IN B",
+      "description": "Second input of the precision 2-in summer. Leave unpatched to use the section as a 1:2 multiple of IN A.",
+      "voltage": "DC-coupled · 100kΩ input impedance"
+    },
+    {
+      "name": "3:1 IN 1",
+      "description": "First input of the 3-in averaging mixer. Signal contributes with gain of 1/3 to the sum.",
+      "voltage": "DC-coupled · 100kΩ input impedance"
+    },
+    {
+      "name": "3:1 IN 2",
+      "description": "Second input of the averaging mixer. Contributes 1/3 to the sum.",
+      "voltage": "DC-coupled · 100kΩ input impedance"
+    },
+    {
+      "name": "3:1 IN 3",
+      "description": "Third input of the averaging mixer. Contributes 1/3 to the sum.",
+      "voltage": "DC-coupled · 100kΩ input impedance"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "1:3 OUT (×3)",
+      "description": "Three identical buffered copies of the 1:3 IN signal. Low offset error — suitable for splitting 1V/oct to multiple VCOs.",
+      "voltage": "unity gain · DC-coupled"
+    },
+    {
+      "name": "2:2 OUT (×2)",
+      "description": "Two identical copies of the sum of 2:2 IN A + IN B. 0.1% precision resistors preserve pitch accuracy.",
+      "voltage": "A + B · unity gains · DC-coupled"
+    },
+    {
+      "name": "3:1 OUT",
+      "description": "Single output carrying (IN 1 + IN 2 + IN 3) / 3. Averaging prevents clipping when mixing modular-level audio.",
+      "voltage": "(A+B+C)/3 · DC-coupled"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Precision 1V/oct distribution",
+      "trigger": "note CV into 1:3 IN",
+      "description": "The 1:3 buffered multiple is designed for splitting a pitch CV across multiple VCOs without tuning drift. Passive stackcables and unbuffered mults can slump at the third tap; Links preserves the voltage identically at all three outputs."
+    },
+    {
+      "name": "Precision adder / transposer",
+      "trigger": "two note CVs into 2:2",
+      "description": "0.1% resistors make the 2:2 section a precision summer: sequencer CV into IN A plus keyboard CV into IN B gives a transposed sequence at OUT. Unlike many mixers, the unity gains are exact — musical intervals stay musical."
+    },
+    {
+      "name": "1:2 mult via unused input",
+      "trigger": "2:2 IN B left unpatched",
+      "description": "When only IN A is patched, the 2:2 section becomes a buffered 1:2 multiple (two identical copies of IN A). Combined with the 1:3 section, one Links gives 5 buffered copies of a single note CV."
+    },
+    {
+      "name": "Averaging prevents audio clipping",
+      "trigger": "three oscillators into 3:1",
+      "description": "The 3:1 section applies a gain of 1/3 per input. Three full-scale VCOs sum to full scale at the output — no soft-clip, no distortion, no attenuators needed upstream. The trade-off is 9.5dB less gain than a unity-gain mixer."
+    },
+    {
+      "name": "DC-coupled across all sections",
+      "trigger": "modulation or pitch signals through any section",
+      "description": "Every section is DC-coupled. CVs, LFOs, envelopes, and audio all pass without filtering. The averager works equally well as a 3-source CV mixer (three modulations combined into one control voltage) as it does as an audio bus."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Split pitch to three VCOs",
+      "patch": "Sequencer pitch CV → 1:3 IN · three OUTs → V/Oct of three VCOs for a detuned unison or stacked intervals · since 1:3 is buffered with 0.1% precision, all three stay in tune after hours without the usual passive-mult sag.",
+      "diagram": "Links:\n\nSequencer:\nVCO 1:\nVCO 2:\nVCO 3:\n\n- Sequencer (Pitch) p> Links (1:3 IN)\n- Links (1:3 OUT 1) p> VCO 1 (V/Oct)\n- Links (1:3 OUT 2) p> VCO 2 (V/Oct)\n- Links (1:3 OUT 3) p> VCO 3 (V/Oct)"
+    },
+    {
+      "name": "Keyboard transposes a sequence",
+      "patch": "Sequencer pitch → 2:2 IN A · keyboard CV → 2:2 IN B · 2:2 OUT → VCO V/Oct · the 2:2 adder sums them exactly, so playing a C on the keyboard shifts the running sequence up by a fifth to the ear · unplug keyboard to return to original pitch.",
+      "diagram": "Links:\n\nSequencer:\nKeyboard:\nVCO:\n\n- Sequencer (Pitch) p> Links (2:2 IN A)\n- Keyboard (CV) p> Links (2:2 IN B)\n- Links (2:2 OUT) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Three-oscillator drone mix",
+      "patch": "Three VCOs tuned to root, fifth, octave · each into 3:1 IN 1/2/3 · 3:1 OUT → filter → output · averaging keeps the sum below clipping; raise output volume at the mixer downstream · ideal for drone voices built from raw oscillator outputs.",
+      "diagram": "Links:\n\nVCO 1:\nVCO 2:\nVCO 3:\nFilter:\n\n- VCO 1 (Saw) -> Links (3:1 IN 1)\n- VCO 2 (Saw) -> Links (3:1 IN 2)\n- VCO 3 (Saw) -> Links (3:1 IN 3)\n- Links (3:1 OUT) -> Filter (In) -> Output (In)"
+    },
+    {
+      "name": "Modulation averaging",
+      "patch": "Three slow LFOs at different rates → 3:1 · output becomes a compound modulation that never repeats · 3:1 OUT → filter cutoff · the averaged CV stays centered (sum of three bipolar sources averages toward zero) unlike a unity summer which accumulates.",
+      "diagram": "Links:\n\nLFO 1:\nLFO 2:\nLFO 3:\nFilter:\n\n- LFO 1 (Out) >> Links (3:1 IN 1)\n- LFO 2 (Out) >> Links (3:1 IN 2)\n- LFO 3 (Out) >> Links (3:1 IN 3)\n- Links (3:1 OUT) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Five-way buffered pitch mult",
+      "patch": "Sequencer → 1:3 IN · take three buffered copies · route Sequencer also into 2:2 IN A (leave IN B unpatched) · 2:2 gives two more precision copies · total five in-tune pitch CVs from a single Links · use for stacked VCO rig or sending the same pitch to multiple quantizers/shifters.",
+      "diagram": "Links:\n\nSequencer:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\nVCO 5:\n\n- Sequencer (Pitch) p> Links (1:3 IN)\n- Links (1:3 OUT 1) p> VCO 1 (V/Oct)\n- Links (1:3 OUT 2) p> VCO 2 (V/Oct)\n- Links (1:3 OUT 3) p> VCO 3 (V/Oct)\n- Sequencer (Pitch) p> Links (2:2 IN A) // IN B unpatched\n- Links (2:2 OUT A) p> VCO 4 (V/Oct)\n- Links (2:2 OUT B) p> VCO 5 (V/Oct)"
+    }
+  ]
+}

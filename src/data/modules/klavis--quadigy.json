@@ -1,0 +1,197 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.klavis.com/all-products/quadigy",
+      "https://www.klavis.com/images/Klavis_-_Quadigy_User_Manual_V15.pdf",
+      "https://www.analoguehaven.com/klavis/quadigy/"
+    ]
+  },
+  "slug": "klavis--quadigy",
+  "name": "Quadigy",
+  "manufacturer": "Klavis",
+  "hp": 14,
+  "tags": ["ENVELOPE", "FUNCTION", "LFO", "CLOCK", "UTILITY"],
+  "description": "Quad 7-stage envelope generator with presets, live/studio modes, cycle control, and a 156-point CV matrix. It stretches to clock, morphs between saved states, and doubles as a complex multi-envelope modulation source.",
+  "controls": [
+    {
+      "name": "Env 1-4 Buttons",
+      "scope": "Global",
+      "description": "Select one or more envelopes for editing and multi-editing.",
+      "detail": "hold one button and add others to edit several envelopes at once"
+    },
+    {
+      "name": "Preset/Edit",
+      "scope": "Global",
+      "description": "Opens preset functions and editing pages.",
+      "detail": "load, save, clear, or edit depending on mode"
+    },
+    {
+      "name": "Live",
+      "scope": "Global",
+      "description": "Switches between studio and live behavior.",
+      "detail": "long press Global to toggle live mode"
+    },
+    {
+      "name": "Global",
+      "scope": "Global",
+      "description": "Enters global settings and mode changes.",
+      "detail": "long press toggles studio/live mode"
+    },
+    {
+      "name": "Cycle",
+      "scope": "Global",
+      "description": "Enters cycle-related settings and clocked looping behavior.",
+      "detail": "cycle mode can be fit to external or internal clocks"
+    },
+    {
+      "name": "CV Matrix",
+      "scope": "Global",
+      "description": "Enables modulation assignment and CV source selection.",
+      "detail": "sources: CV A, CV B, User knob"
+    },
+    {
+      "name": "Encoder",
+      "scope": "Global",
+      "description": "Navigates menus and edits parameter pages.",
+      "detail": "press to edit · turn to change · press again to confirm"
+    },
+    {
+      "name": "Faders 1-4",
+      "scope": "Menu pages",
+      "description": "Adjust the current page's four parameters.",
+      "detail": "page-dependent assignments: ADSR, timing, curves, or output-related values"
+    },
+    {
+      "name": "User Knob",
+      "scope": "Global",
+      "description": "Assignable modulation source and edit control.",
+      "detail": "acts as CV U in the matrix"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "G/T 1",
+      "description": "Gate, trigger, or cycle input for envelope 1.",
+      "voltage": "gate / trigger"
+    },
+    {
+      "name": "G/T 2",
+      "description": "Gate, trigger, or cycle input for envelope 2.",
+      "voltage": "gate / trigger"
+    },
+    {
+      "name": "G/T 3",
+      "description": "Gate, trigger, or cycle input for envelope 3.",
+      "voltage": "gate / trigger"
+    },
+    {
+      "name": "G/T 4",
+      "description": "Gate, trigger, or cycle input for envelope 4.",
+      "voltage": "gate / trigger"
+    },
+    {
+      "name": "CV A",
+      "description": "External modulation source A.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "CV B",
+      "description": "External modulation source B.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "Clock",
+      "description": "External clock input for cycle and fit-to-clock behavior.",
+      "voltage": "clock / gate"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Env 1",
+      "description": "Envelope output 1.",
+      "voltage": "0 to +8V typical"
+    },
+    {
+      "name": "Env 2",
+      "description": "Envelope output 2.",
+      "voltage": "0 to +8V typical"
+    },
+    {
+      "name": "Env 3",
+      "description": "Envelope output 3.",
+      "voltage": "0 to +8V typical"
+    },
+    {
+      "name": "Env 4",
+      "description": "Envelope output 4.",
+      "voltage": "0 to +8V typical"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Live and studio modes",
+      "trigger": "Global long press",
+      "description": "Studio mode exposes every setting. Live mode hides or simplifies editing so a performance patch can be adjusted without exposing the full complexity on stage."
+    },
+    {
+      "name": "Multi-editing",
+      "trigger": "select several envelopes at once",
+      "description": "Several envelopes can be edited together as absolute values. The leftmost selected envelope drives the display, which makes polyphonic alignment fast."
+    },
+    {
+      "name": "Manual gate",
+      "trigger": "encoder press in EG pages",
+      "description": "The encoder button doubles as a manual gate for the selected envelopes. It is a fast way to audition a shape without an external trigger source."
+    },
+    {
+      "name": "Cycle with fit-to-clock",
+      "trigger": "Cycle mode with clock input",
+      "description": "The module can time-stretch or compress its envelopes to fit an internal or external clock. Each channel can also be clock-divided, multiplied, or offset."
+    },
+    {
+      "name": "Preset morphing",
+      "trigger": "preset recall or CV matrix",
+      "description": "Presets store envelope shapes and routing state, then morph over time rather than snapping. That makes the module useful for long evolving structures, not just static ADSR work."
+    },
+    {
+      "name": "Seven-stage envelopes",
+      "trigger": "gate or trigger input",
+      "description": "Each envelope can use pre-delay, hold, attack, punch, decay, sustain, and release. Curve shaping, inversion, and output level all remain independently controllable."
+    },
+    {
+      "name": "Mod matrix routing",
+      "trigger": "CV Matrix button",
+      "description": "CV A, CV B, and the User knob can be assigned in amplitude and polarity to many destinations. The matrix is deep enough to turn one envelope into a self-modulating system."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Four-envelope drum rack",
+      "patch": "Four triggers into G/T 1-4 · Env 1-4 each drive a separate VCA or filter · one Quadigy covers the kick, snare, hat, and accent envelopes in a compact drum voice.",
+      "diagram": "Quadigy:\n* Live: on\n* Cycle: off\n\nSequencer:\nVCO:\nVCA:\nOutput:\n\n- Sequencer (Trig 1) t> Quadigy (G/T 1)\n- Sequencer (Trig 2) t> Quadigy (G/T 2)\n- Sequencer (Trig 3) t> Quadigy (G/T 3)\n- Sequencer (Trig 4) t> Quadigy (G/T 4)\n- Quadigy (Env 1) >> VCA (CV)\n- Quadigy (Env 2) >> Filter (Cutoff)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Clocked cycling pad",
+      "patch": "Cycle mode on · external clock into Clock · Env 1 and Env 2 set to long shapes · fit-to-clock enabled · the module behaves like two tempo-locked low-frequency function generators that stay musically aligned.",
+      "diagram": "Quadigy:\n* Cycle: on\n* Live: on\n\nClock:\nVCO:\nFilter:\nVCA:\nOutput:\n\n- Clock (Out) c> Quadigy (Clock)\n- Quadigy (Env 1) >> Filter (Cutoff)\n- Quadigy (Env 2) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Morphing swell",
+      "patch": "Preset A holds a slow swell · Preset B holds a fast punch · morph between them with CV A assigned to preset morph · the same chord blooms or snaps depending on where the matrix sits.",
+      "diagram": "Quadigy:\n* Preset: A\n* CV Matrix: preset morph\n* Cycle: off\n\nSequencer:\nVCO:\nVCA:\nOutput:\n\n- Sequencer (Gate) g> Quadigy (G/T 1)\n- Quadigy (Env 1) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Polyphonic multi-edit",
+      "patch": "Select Env 1-4 together and push the same curve or timing changes across all four channels · one set of gestures keeps a four-voice patch aligned while still leaving the outputs independent.",
+      "diagram": "Quadigy:\n* Live: off\n* Cycle: off\n\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\nVCA:\nVCA 2:\nVCA 3:\nVCA 4:\nMixer:\nOutput:\n\n- Quadigy (Env 1) >> VCA (CV)\n- Quadigy (Env 2) >> VCA 2 (CV)\n- Quadigy (Env 3) >> VCA 3 (CV)\n- Quadigy (Env 4) >> VCA 4 (CV)\n- VCO 1 (Out) -> VCA (In)\n- VCO 2 (Out) -> VCA 2 (In)\n- VCO 3 (Out) -> VCA 3 (In)\n- VCO 4 (Out) -> VCA 4 (In)\n- VCA (Out) -> Mixer (In 1)\n- VCA 2 (Out) -> Mixer (In 2)\n- VCA 3 (Out) -> Mixer (In 3)\n- VCA 4 (Out) -> Mixer (In 4)\n- Mixer (Out) -> Output (In)"
+    },
+    {
+      "name": "Envelope chain",
+      "patch": "Use EOR or EOF-style linking in the envelope settings and let one channel trigger the next · the module becomes a complex attack engine that steps through related stages without a separate logic module.",
+      "diagram": "Quadigy:\n* Live: on\n* Cycle: on\n\nClock:\nVCO:\nFilter:\nVCA:\nOutput:\n\n- Clock (Out) c> Quadigy (G/T 1)\n- Quadigy (Env 1) >> Quadigy (CV A)\n- Quadigy (Env 2) >> Filter (Cutoff)\n- Quadigy (Env 3) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    }
+  ]
+}

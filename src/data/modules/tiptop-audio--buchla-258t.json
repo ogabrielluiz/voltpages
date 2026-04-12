@@ -1,0 +1,206 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://tiptopaudio.com/buchla/",
+      "https://tiptopaudio.com/manuals/Buchla_&_Tiptop_Audio_258t.pdf",
+      "https://www.perfectcircuit.com/tiptop-buchla-258t.html",
+      "https://modulargrid.net/e/tiptop-audio-buchla-258t",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=283189",
+      "https://lame.buanzo.org/eurorack_blog/exploring-the-dual-oscillator-model-258t-a-comprehensive-guide-to-tiptop-audios-buchla-module.html"
+    ]
+  },
+  "slug": "tiptop-audio--buchla-258t",
+  "name": "Buchla 258t Dual Oscillator",
+  "manufacturer": "Tiptop Audio",
+  "hp": 18,
+  "tags": ["OSCILLATOR", "VCO"],
+  "description": "Licensed Eurorack reissue of the Buchla 200-series 258 dual VCO. Two independent oscillators, 5Hz-20kHz with no range switching, voltage-controlled waveshape (OSC1 sine-to-saw, OSC2 sine-to-square) and a processing-input attenuverter per side.",
+  "controls": [
+    {
+      "name": "FREQ (coarse)",
+      "scope": "OSC 1 / OSC 2",
+      "description": "Sets base frequency · spans 5Hz to 20kHz continuously · no range switch",
+      "detail": "Original panel graphic '5cps 20kc' is approximate per manual"
+    },
+    {
+      "name": "FINE",
+      "scope": "OSC 1 / OSC 2",
+      "description": "Fine-tune offset · small range around coarse setting for beating/detune between the two oscillators",
+      "detail": "Use for subtle detune against the paired oscillator"
+    },
+    {
+      "name": "FM attenuverter",
+      "scope": "OSC 1 / OSC 2",
+      "description": "Bipolar attenuator on FM input · CCW negative, center zero, CW positive",
+      "detail": "Zero position silences FM input regardless of source level"
+    },
+    {
+      "name": "Processing attenuverter",
+      "scope": "OSC 1 / OSC 2",
+      "description": "Scales/inverts processing input · lets sequencer or keyboard CV be compressed, expanded or inverted without an external processor",
+      "detail": "Implements the classic Buchla 'processing' scaling in-module"
+    },
+    {
+      "name": "Waveshape (OSC 1 sine↔saw)",
+      "scope": "OSC 1",
+      "description": "Morphs OSC 1 output from sine through asymmetric shapes to sawtooth · voltage-controllable via waveshape input",
+      "detail": "Icons on panel show target shapes"
+    },
+    {
+      "name": "Waveshape (OSC 2 sine↔square)",
+      "scope": "OSC 2",
+      "description": "Morphs OSC 2 output from sine to square · voltage-controllable via waveshape input",
+      "detail": "Square end gives PWM-like timbres; sine end is clean"
+    },
+    {
+      "name": "1V/oct trimmer (rear)",
+      "scope": "OSC 1 / OSC 2",
+      "description": "Octave-tracking trim · factory-calibrated with precision instruments · rarely needs adjustment",
+      "detail": "Access from back of module"
+    },
+    {
+      "name": "SHAPE trimmer (rear)",
+      "scope": "OSC 1 / OSC 2",
+      "description": "Trims sine-wave purity by setting the core waveshaper · paired with VC WAVE SHAPE for clean sines",
+      "detail": "Rear-access; adjust by ear or scope for lowest harmonic content"
+    },
+    {
+      "name": "VC WAVE SHAPE trimmer (rear)",
+      "scope": "OSC 1 / OSC 2",
+      "description": "Sets waveshaper response to incoming CV on the waveshape input",
+      "detail": "Paired with SHAPE trimmer to dial in sine purity under CV"
+    },
+    {
+      "name": "VPP1 / VPP2 trimmers (rear, V1.2+)",
+      "scope": "OSC 1 / OSC 2",
+      "description": "Sets waveshape output peak-to-peak amplitude · added from firmware V1.2",
+      "detail": "Rear-access; used for output-level matching"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "1V/oct",
+      "description": "Precision pitch input · Eurorack-standard 1V/oct (original Buchla was 1.2V/oct)",
+      "voltage": "1V per octave"
+    },
+    {
+      "name": "FM",
+      "description": "Linear FM input · amount and polarity set by FM attenuverter · audio-rate for clangorous/bell timbres, sub-audio for vibrato",
+      "voltage": "AC-coupled audio"
+    },
+    {
+      "name": "Processing input",
+      "description": "Auxiliary pitch/CV input routed through the processing attenuverter for scaling/inversion before summing with 1V/oct",
+      "voltage": "DC-coupled CV"
+    },
+    {
+      "name": "Waveshape CV",
+      "description": "Voltage control over waveshape morph · sine↔saw on OSC 1, sine↔square on OSC 2",
+      "voltage": "0-5V typical"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OSC 1 OUT (×2)",
+      "description": "Main audio output of OSC 1 · two duplicated jacks for splitting without a mult",
+      "voltage": "~10Vpp"
+    },
+    {
+      "name": "OSC 2 OUT (×2)",
+      "description": "Main audio output of OSC 2 · two duplicated jacks for splitting without a mult",
+      "voltage": "~10Vpp"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Full audio-range sweep, no range switch",
+      "trigger": "turn FREQ knob across range",
+      "description": "Each oscillator covers 5Hz to 20kHz continuously with no octave-range switch. Allows a single knob turn to move from LFO-like sub-audio into full audio-range FM territory · useful for live frequency sweeps and gestural timbral moves."
+    },
+    {
+      "name": "Complementary waveshapers per oscillator",
+      "trigger": "patch waveshape CV",
+      "description": "OSC 1 morphs sine↔saw while OSC 2 morphs sine↔square. Patching the same CV to both waveshape inputs creates a spectrum that sweeps through complementary harmonic series — saw (odd+even) from OSC 1 against square (odd only) from OSC 2."
+    },
+    {
+      "name": "Built-in processing scaling",
+      "trigger": "patch keyboard/sequencer CV to Processing input",
+      "description": "The per-oscillator Processing attenuverter removes the need for an external attenuverter or processor to scale, invert or compress incoming CV. Sequencer patched to Processing with the attenuverter at CCW inverts the melody; at 12 o'clock the input is muted; CW passes positive with adjustable depth."
+    },
+    {
+      "name": "Low-harmonic sine core",
+      "trigger": "waveshape at full sine",
+      "description": "Manual notes 'low sine wave harmonic content' · the two rear trimmers (SHAPE, VC WAVE SHAPE) are specifically for tuning the waveshaper to produce clean sines. Critical for West Coast-style FM where sine purity affects spectral cleanliness of the resulting modulation."
+    },
+    {
+      "name": "Temperature-stable tracking",
+      "trigger": "rack warm-up or ambient temperature drift",
+      "description": "Manual highlights 'negligible settling error and high short and long-term stability, even with rapidly changing ambient temperatures.' Allows reliable V/oct tracking in gig environments and after rack open/close without constant retune."
+    },
+    {
+      "name": "Duplicated outputs",
+      "trigger": "need two copies of OSC output",
+      "description": "Each oscillator has two OUT jacks — route one to audio path and one to modulation path (e.g., OSC 1 to filter audio and to OSC 2 FM) without using a buffered mult."
+    },
+    {
+      "name": "Cross-modulation between OSC 1 and OSC 2",
+      "trigger": "patch OSC 2 OUT to OSC 1 FM (or vice versa)",
+      "description": "The dual layout is designed for classic Buchla two-oscillator West Coast voices: one oscillator modulates the other's frequency or waveshape, producing complex timbres that evolve as the modulator's pitch tracks. Use FM attenuverter at center for no modulation; set off-center for depth/polarity."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Two-operator West Coast FM",
+      "patch": "OSC 2 (modulator) FM-modulates OSC 1 (carrier) · both tracked from same 1V/oct source via mult · FM attenuverter on OSC 1 sets index · brighter partials as index rises · waveshape CV brings in saw/square harmonics on top of the FM spectrum",
+      "diagram": "258t:\n* OSC 1: waveshape center (sine-to-saw midway)\n* OSC 2: FM attenuverter 2 o'clock\n\nSequencer:\nMult:\nLPG:\n\n- Sequencer (Pitch) p> Mult (In)\n- Mult (Out 1) p> 258t.OSC 1 (1V/oct)\n- Mult (Out 2) p> 258t.OSC 2 (1V/oct)\n- 258t.OSC 2 (OUT) -> 258t.OSC 1 (FM) // modulator into carrier\n- 258t.OSC 1 (OUT) -> LPG (In)"
+    },
+    {
+      "name": "Detuned duo drone",
+      "patch": "OSC 1 and OSC 2 same root note · OSC 2 FINE offset a few cents · patch waveshape LFO to both waveshape inputs for slow timbral drift · mix outputs · produces slowly-evolving detuned drone with moving harmonic spectrum",
+      "diagram": "258t:\n* OSC 1: FREQ = low A\n* OSC 2: FREQ = low A, FINE +5 cents\n\nLFO:\nMixer:\n\n- LFO (Out) >> 258t.OSC 1 (Waveshape CV)\n- LFO (Out) >> 258t.OSC 2 (Waveshape CV)\n- 258t.OSC 1 (OUT) -> Mixer (In 1)\n- 258t.OSC 2 (OUT) -> Mixer (In 2)"
+    },
+    {
+      "name": "Bell/clang via audio-rate FM",
+      "patch": "OSC 2 FREQ set independent of OSC 1 (non-integer ratio) · OSC 2 OUT to OSC 1 FM · FM attenuverter high · resulting inharmonic partials are bell-like · shape with envelope on VCA",
+      "diagram": "258t:\n* OSC 1: FREQ mid-audio\n* OSC 2: FREQ ~1.47× OSC 1\n* OSC 1: FM attenuverter CW\n\nEnvelope:\nVCA:\n\n- 258t.OSC 2 (OUT) -> 258t.OSC 1 (FM)\n- 258t.OSC 1 (OUT) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Inverted melody via Processing",
+      "patch": "sequencer to OSC 1 Processing input · Processing attenuverter at full CCW · sequence plays inverted (descending instead of ascending) · add regular 1V/oct sequence to OSC 2 for counterpoint between mirror-image lines",
+      "diagram": "258t:\n* OSC 1: Processing attenuverter full CCW (invert)\n\nSequencer:\nLPG:\n\n- Sequencer (Pitch) p> 258t.OSC 1 (Processing In)\n- Sequencer (Pitch) p> 258t.OSC 2 (1V/oct) // same notes\n- 258t.OSC 1 (OUT) -> LPG (In 1) // inverted melody\n- 258t.OSC 2 (OUT) -> LPG (In 2) // original"
+    },
+    {
+      "name": "LFO-speed sweep to audio-rate",
+      "patch": "exploit the 5Hz-20kHz no-switch range · start OSC 1 at full CCW (sub-audio) · slowly turn FREQ clockwise during performance · output goes from clicky LFO pulses through zipper audio into drone then pitched tone · capture via effects",
+      "diagram": "258t:\n* OSC 1: waveshape at square-end (OSC 2 position) / saw (OSC 1)\n\nFX:\n\n- 258t.OSC 1 (OUT) -> FX (In) // knob-sweep across whole audio band"
+    },
+    {
+      "name": "Waveshape as timbral envelope",
+      "patch": "function generator (e.g. MARF or envelope) to waveshape CV · envelope opens brings in saw harmonics on attack, decays back to sine on release · creates built-in timbral envelope without a filter",
+      "diagram": "258t:\n* OSC 1: waveshape sine at rest\n\nEnvelope:\nVCA:\nTrigger:\n\n- Trigger (Out) t> Envelope (Trig)\n- Envelope (Out) >> 258t.OSC 1 (Waveshape CV) // timbral envelope\n- Envelope (Out) >> VCA (CV)\n- 258t.OSC 1 (OUT) -> VCA (In)"
+    },
+    {
+      "name": "Stereo dual-oscillator patch",
+      "patch": "OSC 1 hard left, OSC 2 hard right · same 1V/oct to both via mult · independent waveshape CV per side (e.g. two LFOs at different rates) · stereo image breathes as each oscillator's harmonics drift independently",
+      "diagram": "258t:\n* OSC 1: waveshape midway\n* OSC 2: waveshape midway\n\nLFO 1:\nLFO 2:\nSequencer:\nMult:\nStereo Output:\n\n- Sequencer (Pitch) p> Mult (In)\n- Mult (Out 1) p> 258t.OSC 1 (1V/oct)\n- Mult (Out 2) p> 258t.OSC 2 (1V/oct)\n- LFO 1 (Out) >> 258t.OSC 1 (Waveshape CV)\n- LFO 2 (Out) >> 258t.OSC 2 (Waveshape CV)\n- 258t.OSC 1 (OUT) -> Stereo Output (L)\n- 258t.OSC 2 (OUT) -> Stereo Output (R)"
+    },
+    {
+      "name": "Vibrato via FM sub-audio",
+      "patch": "slow LFO (3-7Hz) into OSC 1 FM input · FM attenuverter at ~9 o'clock for subtle musical vibrato · attenuverter polarity chooses up-vs-down first · deeper FM attenuverter sweeps vibrato into siren/chorus territory",
+      "diagram": "258t:\n* OSC 1: FM attenuverter 9 o'clock\n\nLFO:\n\n- LFO (Out) >> 258t.OSC 1 (FM) // ~5Hz vibrato"
+    },
+    {
+      "name": "CV-scaled microtonal sequence",
+      "patch": "use Processing input + attenuverter as a microtonal scaler · sequencer to Processing · attenuverter near 12 o'clock compresses the sequence into fractional-octave steps · independent 1V/oct carries the root · result is microtonal or quarter-tone melody",
+      "diagram": "258t:\n* OSC 1: Processing attenuverter ~1 o'clock (compressed)\n\nSequencer:\nRoot CV:\nLPG:\n\n- Sequencer (Pitch) p> 258t.OSC 1 (Processing In) // compressed steps\n- Root CV (Out) p> 258t.OSC 1 (1V/oct) // transposable root\n- 258t.OSC 1 (OUT) -> LPG (In)"
+    },
+    {
+      "name": "Dual-detune lead with crossfade",
+      "patch": "OSC 1 saw · OSC 2 square · detuned a few cents · external VCA crossfade between them driven by envelope · note attacks open to saw, sustain shifts to square timbre · classic dual-osc lead with timbre motion",
+      "diagram": "258t:\n* OSC 1: waveshape full saw\n* OSC 2: waveshape full square\n* OSC 2: FINE +7 cents\n\nCrossfader:\nEnvelope:\nVCA:\nSequencer:\nMult:\n\n- Sequencer (Pitch) p> Mult (In)\n- Mult (Out 1) p> 258t.OSC 1 (1V/oct)\n- Mult (Out 2) p> 258t.OSC 2 (1V/oct)\n- 258t.OSC 1 (OUT) -> Crossfader (A)\n- 258t.OSC 2 (OUT) -> Crossfader (B)\n- Envelope (Out) >> Crossfader (CV)\n- Crossfader (Out) -> VCA (In)"
+    }
+  ]
+}

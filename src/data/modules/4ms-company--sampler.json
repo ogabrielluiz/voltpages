@@ -1,0 +1,183 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.0.x",
+    "sources": [
+      "https://4mscompany.com/sampler",
+      "https://4mscompany.com/media/SAMPLER/manual/Sampler-manual-v2.0.pdf",
+      "https://modulargrid.net/e/4ms-company-sampler-12hp"
+    ]
+  },
+  "slug": "4ms-company--sampler",
+  "name": "Sampler",
+  "manufacturer": "4ms Company",
+  "hp": 12,
+  "tags": ["SAMPLER", "GRANULAR", "EFFECTS"],
+  "description": "Stereo WAV recorder/player from microSD. 60 banks × 10 samples, CV over pitch (1V/oct ±9oct), sample select, start, length, bank. Length knob sweeps loop → percussive envelope → grains.",
+  "controls": [
+    {
+      "name": "Pitch",
+      "scope": "Global",
+      "description": "Playback speed/pitch. Combines additively with Pitch CV.",
+      "detail": "knob: ±4 oct · knob+CV clamped to -9 oct / +4 oct"
+    },
+    {
+      "name": "Sample",
+      "scope": "Global",
+      "description": "Selects one of 10 sample slots in the current bank. Play LED flickers to confirm new selection.",
+      "detail": "10 positions · Auto Stop On Sample Change: Yes (default)"
+    },
+    {
+      "name": "Start Pos.",
+      "scope": "Global",
+      "description": "Sets the playback start point as percentage of sample file. Shifts start and end together, keeping Length constant.",
+      "detail": "0–100% of file"
+    },
+    {
+      "name": "Length",
+      "scope": "Global",
+      "description": "Sets loop end / playback duration. Crosses three zones with different envelope behavior.",
+      "detail": "100%: full file · 50–99%: 200ms–5s, fade env · <50%: ~250–8ms, percussive env · <1%: ms-grain"
+    },
+    {
+      "name": "Play",
+      "scope": "Global",
+      "description": "Tap: start/retrigger. Hold 0.5s: toggle loop (LED blue=looping, green/yellow=not). Record mode: tap to start/stop recording.",
+      "detail": "combos: +Bank (1s) stereo/mono · +Reverse (2s) enter/exit record"
+    },
+    {
+      "name": "Reverse",
+      "scope": "Global",
+      "description": "Toggles forward/backward playback. LED blue when reversing. Holds bank-nav and hidden-volume combos.",
+      "detail": "combos: Reverse+Bank prev bank · Reverse+Start Pos volume · Reverse+Length fade time"
+    },
+    {
+      "name": "Bank",
+      "scope": "Global",
+      "description": "Tap: advance to next non-empty bank. Color + blink count encodes bank number (10 colors × 6 blink states = 60 banks).",
+      "detail": "hold+Sample: pick color · hold+Length: pick blink count (Quick Bank Select)"
+    }
+  ],
+  "inputs": [
+    { "name": "Pitch", "description": "1V/oct pitch CV. Sums with Pitch knob. Factory-calibrated; user-recalibratable via Bank+Reverse hold.", "voltage": "-5V to +5V (10-oct range)", "normalizedTo": "0V" },
+    { "name": "Start Pos.", "description": "CV over start position. Adds to knob.", "voltage": "0 to +5V" },
+    { "name": "Length", "description": "CV over loop length. Adds to knob.", "voltage": "0 to +5V" },
+    { "name": "Sample", "description": "CV selects sample slot. 0.5V per slot across 10 slots.", "voltage": "0 to +5V" },
+    { "name": "Bank", "description": "CV selects bank. 1/12V per bank — responds to semitone steps from a keyboard (C0–B5 = 60 banks).", "voltage": "0 to +5V" },
+    { "name": "Play/Rec", "description": "Trigger input. In play mode: fires Play. In record mode: starts/stops recording. Rising edge detected.", "voltage": ">1.6V trigger" },
+    { "name": "Reverse", "description": "Trigger input. Toggles forward/backward playback on rising edge.", "voltage": ">1.6V trigger" },
+    { "name": "Left RECORD", "description": "Audio input for left channel recording. Line-level optimal. Monitored through Out jacks when in record mode.", "voltage": "21Vpp max · -84dB noise floor unpatched" },
+    { "name": "Right RECORD", "description": "Audio input for right channel recording. Always stereo to file regardless of Stereo/Mono playback mode.", "voltage": "21Vpp max" }
+  ],
+  "outputs": [
+    { "name": "Left OUT", "description": "Left channel audio. In Mono Mode, sums L+R of stereo files. Mono files always output identically on both jacks.", "voltage": "21Vpp max · DC–22kHz" },
+    { "name": "Right OUT", "description": "Right channel audio. In Mono Mode, sums L+R.", "voltage": "21Vpp max" },
+    { "name": "End Out", "description": "Trigger pulse on loop restart, sample end, or stop. Use as playback-synced clock output.", "voltage": "+8V trigger" }
+  ],
+  "behaviors": [
+    {
+      "name": "Length-zone envelopes",
+      "trigger": "Length knob position",
+      "description": "Above 50% a short Fade In/Out envelope (0–39ms, adjustable) smooths loop points. Below 50% a percussive decay envelope is applied automatically; in Reverse it becomes an attack envelope. Below 1% the output is a single grain repeated — tame buzziness with higher Length or slow Length CV."
+    },
+    {
+      "name": "Pitch-independent loop tempo",
+      "trigger": "Length > 50%",
+      "description": "Above 50% Length, audio is stretched/shrunk so loop period stays constant regardless of Pitch. Below 50%, loop period tracks Pitch. Use the >50% zone for clock-locked loops you want to pitch-shift without re-syncing."
+    },
+    {
+      "name": "End Out as playback clock",
+      "trigger": "sample loops, restarts, or stops",
+      "description": "End Out fires a +8V pulse on every loop restart and on sample end. Patch to a sequencer clock input for a sample-synced master clock; patch to Reverse for ping-pong loops; split through a clock divider to reverse every N loops."
+    },
+    {
+      "name": "Quantized Pitch jack",
+      "trigger": "QUANTIZE CHANNEL 1 1V/OCT JACK in settings.txt",
+      "description": "Default No: Pitch CV is continuous, suited to LFO scrubbing. Set Yes to snap Pitch CV to semitones for melodic playback from unquantized CV sources."
+    },
+    {
+      "name": "Hidden Channel Volume",
+      "trigger": "hold Reverse + turn Start Pos.",
+      "description": "Not saved across power-down. While Reverse is held, Start Pos. knob sets channel output volume instead of start position and the Reverse button will not toggle direction. Returns to 100% on boot."
+    },
+    {
+      "name": "Record mode enable",
+      "trigger": "hold Play + Reverse for 2s",
+      "description": "Play LED flashes red. Play button (or Play/Rec jack) starts/stops a recording into whatever bank+slot the Sample knob is pointing at when recording begins — changing Bank/Sample mid-record has no effect. 48kHz/16- or 24-bit stereo WAV written directly to SD. Hold Bank+Play+Reverse 3s to save slot assignments permanently."
+    },
+    {
+      "name": "Pitch jack range clamping",
+      "trigger": "Pitch knob + Pitch CV combined",
+      "description": "Knob alone spans ±4 octaves, CV alone spans ±5. Combined range is clamped to -9/+4 octaves — positive CV plus CW knob can only reach +4, but negative CV plus CCW knob reaches -9. Bias for downward pitch sweeps."
+    },
+    {
+      "name": "Startup bank persistence",
+      "trigger": "settings.txt [STARTUP BANK CHANNEL 1]",
+      "description": "Value 0–59 selects the bank loaded at power-on, encoded as color (ones digit) + blink count (tens digit). 15 = Cyan-1, 41 = Red-4. Sample list cache is rebuilt the first 3 seconds after each bank change — initial playback latency is ~0.7ms after that window."
+    },
+    {
+      "name": "Folder-to-bank color loading",
+      "trigger": "folder name starts with a color",
+      "description": "On boot the module scans the SD root. Folders beginning with White, Red, Orange, Yellow, Green, Cyan, Blue, Magenta, Lavender, Pearl auto-load into the matching color bank. Collisions bump to the next blink level (Orange, Orange-1, Orange-2...). Sub-folders ignored — files must be root-level inside the color folder."
+    },
+    {
+      "name": "Trigger delay compensation",
+      "trigger": "settings.txt [TRIG DELAY]",
+      "description": "Default 8ms. Play/Rec trigger is delayed by this many ms so slew-lagged CV from sequencers has time to settle at Pitch and Start Pos. before playback fires. Reduce to 1 for snappy drum triggering; increase up to 20 for glide-heavy keyboards."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Melodic sample playback from sequencer",
+      "patch": "Set Length to ~40% so each trigger plays a percussive slice · sequencer gate → Play/Rec · sequencer pitch → Pitch · same sample replays at sequencer pitch per step · add second CV output to Sample jack for multi-timbral sequencing across 10 slots",
+      "diagram": "Sampler:\n* Length: ~40%\n* Start Pos: 0\n\nSequencer:\n\n- Sequencer (Gate) t> Sampler (Play/Rec)\n- Sequencer (Pitch) p> Sampler (In Pitch)\n- Sequencer (CV 2) >> Sampler (In Sample)\n- Sampler (Left OUT) -> Output (L)\n- Sampler (Right OUT) -> Output (R)"
+    },
+    {
+      "name": "Self-clocked sample chain",
+      "patch": "End Out → sequencer clock · set sequencer to external clock · tap Play once to start · each sample end advances the sequencer which fires Play again via its gate → variable-tempo chain where Length per step controls the beat · patch sequencer CV to Sample jack for multi-slot medleys",
+      "diagram": "Sampler:\n* Length: ~60%\n\nSequencer:\n* Clock: external\n\n- Sampler (End Out) c> Sequencer (Clock)\n- Sequencer (Gate) t> Sampler (Play/Rec)\n- Sequencer (CV 1) >> Sampler (In Sample)\n- Sampler (Left OUT) -> Output (L)"
+    },
+    {
+      "name": "Granular scrubbing with LFO sweep",
+      "patch": "Length knob <1% so output is a grain · hold Play to loop · slow ramp LFO (0–5V, period several seconds) → Start Pos. · grain window sweeps through file at LFO speed · time-stretch without pitch change · attenuate LFO for partial-file scrubbing · pitch stays independent on Pitch knob",
+      "diagram": "Sampler:\n* Length: <1% (grain)\n* Start Pos: 0\n* Play: looping (hold 0.5s)\n\nSlow LFO:\n* Wave: ramp up 0-5V\n* Period: several seconds\n\n- Slow LFO (Out) >> Sampler (In Start Pos.)\n- Sampler (Left OUT) -> Output (L)\n- Sampler (Right OUT) -> Output (R)"
+    },
+    {
+      "name": "Random grains (time + pitch independence)",
+      "patch": "Length <1% · random source (S&H of noise) → Start Pos · attenuated random/LFO → Length CV · grains play in random order · Pitch knob independently sets grain pitch · separately animate Pitch with slow LFO for cloud texture",
+      "diagram": "Sampler:\n* Length: <1%\n* Play: looping\n\nS&H:\n\nNoise:\n\nClock:\n\nLFO:\n* Attenuated\n\n- Noise (Out) >> S&H (In)\n- Clock (Out) c> S&H (Trig)\n- S&H (Out) >> Sampler (In Start Pos.)\n- LFO (Out) >> Sampler (In Length) // attenuate heavily\n- Sampler (Left OUT) -> Output (L)"
+    },
+    {
+      "name": "Ping-pong loop",
+      "patch": "Find rhythmic sample · hold Play to loop · Length 50–90% for shorter loop · patch End Out → Reverse · each loop end flips direction: forward, backward, forward, backward · clock-divide End Out to reverse every N loops for asymmetric patterns",
+      "diagram": "Sampler:\n* Length: 50-90%\n* Play: looping\n\n- Sampler (End Out) t> Sampler (Reverse)\n- Sampler (Left OUT) -> Output (L)\n- Sampler (Right OUT) -> Output (R)"
+    },
+    {
+      "name": "Shifting ping-pong loop",
+      "patch": "Loop rhythmic sample · very slow LFO (period many bars) → Start Pos. · Start Pos. jumps to new position only at the moment the loop restarts — cache refreshes per restart · End Out → Reverse for alternating direction · slowly-drifting window across the file without tempo change",
+      "diagram": "Sampler:\n* Length: ~70%\n* Play: looping\n\nSlow LFO:\n* Period: many bars\n\n- Slow LFO (Out) >> Sampler (In Start Pos.)\n- Sampler (End Out) t> Sampler (Reverse)\n- Sampler (Left OUT) -> Output (L)\n- Sampler (Right OUT) -> Output (R)"
+    },
+    {
+      "name": "Clock-synced loop",
+      "patch": "Master clock → Play/Rec · hold Play first to enable loop · Length <100% so loop period is shorter than clock interval · sample restarts on every clock tick, resetting any drift · change Pitch freely above 50% Length — loop tempo stays locked to clock",
+      "diagram": "Sampler:\n* Length: 60-90%\n* Play: looping (preset)\n\nClock:\n\n- Clock (Out) c> Sampler (Play/Rec)\n- Sampler (Left OUT) -> Output (L)\n- Sampler (Right OUT) -> Output (R)"
+    },
+    {
+      "name": "Drum machine from one bank",
+      "patch": "Load 10 drum hits into one color bank · Length ~30% for percussive envelope · trigger sequencer gates → Play/Rec · CV per step → Sample (0–5V / 10 steps = 0.5V each) · one module becomes 10-voice drum sampler with per-hit pitch via Pitch CV",
+      "diagram": "Sampler:\n* Length: ~30%\n* Start Pos: 0\n\nSequencer:\n\n- Sequencer (Gate) t> Sampler (Play/Rec)\n- Sequencer (CV Sample) >> Sampler (In Sample)\n- Sequencer (CV Pitch) p> Sampler (In Pitch)\n- Sampler (Left OUT) -> Mixer (In)"
+    },
+    {
+      "name": "Live looper with instant recall",
+      "patch": "Hold Play+Reverse 2s to enter record · patch mic/line source via Listen IO → Left/Right RECORD · tap Play to record, tap to stop · exit record mode (hold Play+Reverse) · Sample knob scrolls takes · hold Bank+Play+Reverse 3s to persist slot assignments across power-down",
+      "diagram": "Sampler:\n* Mode: record (hold Play+Reverse 2s)\n\nListen IO:\n\nLine Source:\n\n- Line Source (Out L) -> Listen IO (In L)\n- Line Source (Out R) -> Listen IO (In R)\n- Listen IO (Out L) -> Sampler (Left RECORD)\n- Listen IO (Out R) -> Sampler (Right RECORD)"
+    },
+    {
+      "name": "CV-slice sequencer",
+      "patch": "Load one long sample (speech, field recording) · sequencer CV per step → Start Pos. · sequencer gate → Play/Rec · Length ~20% for percussive slice · each step plays a different point in the source file · pair with quantized CV for tempo-grid slicing, unquantized for glitch",
+      "diagram": "Sampler:\n* Length: ~20%\n\nSequencer:\n\n- Sequencer (Gate) t> Sampler (Play/Rec)\n- Sequencer (CV Step) >> Sampler (In Start Pos.)\n- Sampler (Left OUT) -> Output (L)\n- Sampler (Right OUT) -> Output (R)"
+    }
+  ]
+}

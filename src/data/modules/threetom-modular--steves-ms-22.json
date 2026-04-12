@@ -1,0 +1,169 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.threetom.com/product/steves-ms-22-dual-vcf-module/",
+      "https://modulargrid.net/e/threetom-modular-steve-s-ms-22",
+      "https://www.perfectcircuit.com/threetom-steves-ms-22.html",
+      "https://modwiggler.com/forum/viewtopic.php?t=224559",
+      "https://medium.com/@sohear/review-steves-ms-22-a-eurorack-filter-by-threetom-modular-86cd2950e235"
+    ]
+  },
+  "slug": "threetom-modular--steves-ms-22",
+  "name": "Steve's MS-22",
+  "manufacturer": "ThreeTom Modular",
+  "hp": 4,
+  "tags": ["VCF", "FILTER", "WAVESHAPER"],
+  "description": "MS-20-inspired dual VCF in 4 HP. 12 dB low-pass feeds 6 dB high-pass in series. Link switch couples both cutoffs for bandpass. Modulation matrix routes one aux CV to HP, gain or resonance with bipolar polarity.",
+  "controls": [
+    {
+      "name": "FREQUENCY",
+      "scope": "LP stage",
+      "description": "Low-pass cutoff. Covers sub to above audio range. Into self-oscillation when resonance is cranked, producing a sine at the cutoff.",
+      "detail": "12 dB/oct LP · self-oscillates at high resonance · tracks 1V/oct via FCV"
+    },
+    {
+      "name": "SPREAD",
+      "scope": "HP stage",
+      "description": "High-pass cutoff when Link=0%. In linked modes it becomes a bandwidth/offset control for the resulting bandpass response.",
+      "detail": "6 dB/oct HP · offset in BP modes · bandwidth set by Link position"
+    },
+    {
+      "name": "RESONANCE",
+      "scope": "LP stage",
+      "description": "Emphasis around LP cutoff. Pushed well past the MS-20 — from gentle to screaming self-oscillation. Thins bass when maxed.",
+      "detail": "mild to self-oscillation · past the MS-20's range · CV-able via matrix"
+    },
+    {
+      "name": "GAIN",
+      "scope": "Input stage",
+      "description": "Input drive into the LP stage. Low values stay warm; high values push into asymmetric saturation (MS-20-style overdrive). Functions as a VCA when CV'd via matrix.",
+      "detail": "warm → asymmetrical drive · doubles as VCA when under aux CV"
+    },
+    {
+      "name": "FCV attenuator",
+      "scope": "FCV input",
+      "description": "Attenuates the frequency CV input which tracks the LP cutoff. Set CCW for pure audio-rate listening; CW for full 1V/oct tracking.",
+      "detail": "±5V → full range · calibrated for 1V/oct when full CW"
+    },
+    {
+      "name": "ACV attenuator",
+      "scope": "ACV input",
+      "description": "Attenuates the auxiliary CV. Routed to HP/SPREAD, GAIN or RESONANCE via the matrix switches. Independent per destination.",
+      "detail": "±5V range · shared by all matrix destinations"
+    },
+    {
+      "name": "LINK switch",
+      "scope": "Global",
+      "description": "Three-way couples HP cutoff to LP cutoff. 0% = independent; 50% = wide bandpass; 100% = narrow bandpass tracking LP.",
+      "detail": "0% · 50% · 100% coupling · SPREAD becomes BP offset in linked modes"
+    },
+    {
+      "name": "Modulation matrix switches",
+      "scope": "ACV routing",
+      "description": "Three-position switches assign ACV polarity per destination (HP / GAIN / RES). Off, +ACV or -ACV (inverted). Internal patch without cables.",
+      "detail": "per destination: +ACV · OFF · -ACV · three independent switches"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN",
+      "description": "Audio input into the GAIN stage. Accepts Eurorack line levels; overdrive starts around halfway on GAIN.",
+      "voltage": "±5V nominal · overdrives above"
+    },
+    {
+      "name": "FCV",
+      "description": "Frequency CV input tracking the LP cutoff. Calibrated for 1V/oct when the attenuator is full CW.",
+      "voltage": "±5V nominal · accepts ±10V"
+    },
+    {
+      "name": "ACV",
+      "description": "Auxiliary CV input. Routed via the modulation matrix to any combination of HP/SPREAD, GAIN, RESONANCE with selectable polarity.",
+      "voltage": "±5V nominal · accepts ±10V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT",
+      "description": "Main filter output, taken after the HP stage. Produces LP, HP or BP depending on Link switch and SPREAD settings.",
+      "voltage": "±5V audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Serial LP→HP topology",
+      "trigger": "signal into IN",
+      "description": "Audio passes through the 12 dB LP then the 6 dB HP. With Link=0% the two cutoffs are independent and you sculpt a bandpass by squeezing between them."
+    },
+    {
+      "name": "Linked bandpass",
+      "trigger": "Link switch → 50% / 100%",
+      "description": "HP cutoff tracks LP cutoff at 50% or 100%. FREQUENCY sweeps both together; SPREAD offsets the HP relative to the LP, giving wide or narrow BP. FCV modulates the whole band."
+    },
+    {
+      "name": "Resonance self-oscillation",
+      "trigger": "RESONANCE → past ~3 o'clock",
+      "description": "LP stage self-oscillates into a clean sine wave at cutoff. Track with FCV for a playable sine VCO. Thins bass as resonance rises — classic MS-20 behaviour."
+    },
+    {
+      "name": "GAIN as VCA",
+      "trigger": "ACV matrix → GAIN",
+      "description": "Route an envelope to GAIN via the matrix. GAIN becomes a CV-controlled input level / overdrive, turning the module into filter+VCA voice-card in 4 HP."
+    },
+    {
+      "name": "Matrix polarity flip",
+      "trigger": "matrix switch → -ACV",
+      "description": "Inverts ACV at that destination. Envelope opens LP but simultaneously closes HP, or vice versa, for sweeps that move in opposite directions from one CV source."
+    },
+    {
+      "name": "MS-20 drive character",
+      "trigger": "high GAIN",
+      "description": "Discrete OTA core clips asymmetrically when driven. Adds even-order harmonics on transients. Pair with resonance for the characteristic MS-20 squelch."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic MS-20 lead",
+      "patch": "Saw VCO into IN · FCV from envelope · RES past 3 o'clock · GAIN mid for bite · Link=0% for pure LP squelch",
+      "diagram": "Steve's MS-22:\n* Link: 0% · Res: 3 o'clock · Gain: noon\n\nEnvelope:\n\n- VCO (Saw) -> Steve's MS-22 (IN)\n- Envelope (Out) >> Steve's MS-22 (FCV)\n- Steve's MS-22 (OUT) -> VCA (In)"
+    },
+    {
+      "name": "Self-oscillating sine voice",
+      "patch": "No input · RES maxed · LP self-oscillates · sequencer into FCV tracks 1V/oct · sine voice in 4 HP · add drive via GAIN for overtones",
+      "diagram": "Steve's MS-22:\n* Res: max · Link: 0% · FCV attn: full CW\n\nSequencer:\n\n- Sequencer (Pitch) p> Steve's MS-22 (FCV)\n- Envelope (Out) >> VCA (CV)\n- Steve's MS-22 (OUT) -> VCA (In)"
+    },
+    {
+      "name": "CV-swept bandpass wah",
+      "patch": "Link=100% · SPREAD sets narrow band · slow LFO into FCV sweeps the whole bandpass · guitar-through-eurorack wah",
+      "diagram": "Steve's MS-22:\n* Link: 100% · Spread: narrow\n\nLFO:\n\n- Guitar (Out) -> Steve's MS-22 (IN)\n- LFO (Out) >> Steve's MS-22 (FCV)\n- Steve's MS-22 (OUT) -> Output (In)"
+    },
+    {
+      "name": "Envelope → LP open / HP close",
+      "trigger": "matrix inverted on HP",
+      "patch": "Matrix: HP=-ACV, GAIN=OFF, RES=OFF · envelope into ACV · same envelope into FCV · LP opens while HP closes → formant-like sweep with one EG",
+      "diagram": "Steve's MS-22:\n* Link: 0% · Matrix HP: -ACV\n\nEnvelope:\n\n- VCO (Saw) -> Steve's MS-22 (IN)\n- Envelope (Out) >> Steve's MS-22 (FCV)\n- Envelope (Out) >> Steve's MS-22 (ACV)\n- Steve's MS-22 (OUT) -> VCA (In)"
+    },
+    {
+      "name": "Filter + VCA voice card",
+      "patch": "Matrix: GAIN=+ACV · envelope → ACV · GAIN doubles as VCA · saves one VCA module for a full voice in 4 HP",
+      "diagram": "Steve's MS-22:\n* Matrix Gain: +ACV · Res: 2 o'clock\n\nEnvelope:\n\n- VCO (Saw) -> Steve's MS-22 (IN)\n- Envelope (Out) >> Steve's MS-22 (ACV) // acts as VCA CV\n- Keyboard (Pitch) p> Steve's MS-22 (FCV)\n- Steve's MS-22 (OUT) -> Output (In)"
+    },
+    {
+      "name": "Resonance accents",
+      "patch": "Matrix: RES=+ACV · accent trigger → envelope → ACV · resonance jumps on accented steps · drum-machine style squelchy bass",
+      "diagram": "Steve's MS-22:\n* Matrix Res: +ACV · base Res: 1 o'clock\n\nAccent EG:\n\nSequencer:\n\n- Sub VCO (Saw) -> Steve's MS-22 (IN)\n- Sequencer (Pitch) p> Steve's MS-22 (FCV)\n- Accent EG (Out) >> Steve's MS-22 (ACV)\n- Steve's MS-22 (OUT) -> Output (In)"
+    },
+    {
+      "name": "Audio-rate screamer",
+      "patch": "Audio-rate sine into FCV · GAIN high · RES high · FM screams and drive clip mix for metallic industrial tones · Link=50% for spectral twist",
+      "diagram": "Steve's MS-22:\n* Gain: 3 o'clock · Res: max · Link: 50%\n\nModulator VCO:\n\n- Carrier VCO (Saw) -> Steve's MS-22 (IN)\n- Modulator VCO (Sine) >> Steve's MS-22 (FCV)\n- Steve's MS-22 (OUT) -> VCA (In)"
+    },
+    {
+      "name": "Stereo split via matrix",
+      "patch": "Two identical patches through one MS-22 isn't stereo — but flipping matrix polarities (+/-ACV on HP vs RES) from one shared CV creates wide spectral movement · pan the result by patching dry IN to left and MS-22 OUT to right",
+      "diagram": "Steve's MS-22:\n* Matrix HP: +ACV · Matrix Res: -ACV\n\nVCO:\n\nLFO:\n\nMult:\n\n- VCO (Saw) -> Mult (In)\n- Mult (Out 1) -> Steve's MS-22 (IN)\n- Mult (Out 2) -> Output (L)\n- LFO (Out) >> Steve's MS-22 (ACV)\n- Steve's MS-22 (OUT) -> Output (R)"
+    }
+  ]
+}

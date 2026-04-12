@@ -1,0 +1,188 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1974/5.3",
+    "sources": [
+      "http://xaocdevices.com/manuals/xaoc_batumi_manual.pdf",
+      "https://xaocdevices.com/main/batumi/",
+      "https://modulargrid.net/e/xaoc-devices-batumi",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=122334",
+      "https://xaocdevices.com/main/poti/"
+    ]
+  },
+  "slug": "xaoc-devices--batumi",
+  "name": "Batumi",
+  "manufacturer": "Xaoc Devices",
+  "hp": 10,
+  "tags": ["LFO", "CLOCK", "UTILITY"],
+  "description": "Quadruple digital LFO with four sync modes: free, quadrature, variable phase, and division. Per-channel sine, saw/assignable, square outputs. V/oct-capable frequency CV extends range to 28 hours.",
+  "controls": [
+    {
+      "name": "Slider 1",
+      "scope": "CH 1",
+      "description": "In FREE mode sets CH 1 frequency. In QUAD / PHASE / DIVIDE modes sets master frequency for all four channels.",
+      "detail": "0.01Hz – 100Hz · master in synced modes"
+    },
+    {
+      "name": "Slider 2–4",
+      "scope": "CH 2–4",
+      "description": "Role depends on global mode. FREE: per-channel frequency. QUAD: per-channel amplitude. PHASE: per-channel phase shift (0°–360°). DIVIDE: per-channel division of master (÷2, ÷3, ÷4, ÷8, ÷16, ÷32).",
+      "detail": "mode-dependent · zoom scales travel around current value"
+    },
+    {
+      "name": "Mode button",
+      "scope": "Global",
+      "description": "Central button cycles sync mode: FREE (red) → QUAD (yellow) → PHASE (yellow) → DIVIDE (blue). Hold 1s to enter zoom mode for fine slider control.",
+      "detail": "short press: cycle mode · long press: toggle zoom"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "FRQ / FRQ·PH·DIV",
+      "description": "Per-channel CV input for the parameter that the corresponding slider controls in the current mode. On CH 1 this is always frequency; on CH 2–4 follows mode (frequency / amplitude / phase / division).",
+      "voltage": "-5V to +5V · 1V/oct"
+    },
+    {
+      "name": "RESET / SYNC",
+      "scope": "CH 1",
+      "description": "Jumper- or Poti-selectable. RESET: hard-sync the LFO cycle to 0 on incoming trigger. SYNC: slave LFO frequency to external clock / tap tempo; waveform phase aligns to clock.",
+      "voltage": "trigger / clock"
+    },
+    {
+      "name": "RESET / SYNC 2",
+      "scope": "CH 2",
+      "description": "In QUAD / PHASE / DIVIDE modes only: gate holds (pauses) all four LFOs while high. Inactive in FREE mode.",
+      "voltage": "gate"
+    },
+    {
+      "name": "RESET / SYNC 3",
+      "scope": "CH 3",
+      "description": "In QUAD / PHASE / DIVIDE modes only: trigger reverses the direction of all four LFO waveforms. Inactive in FREE mode.",
+      "voltage": "trigger"
+    },
+    {
+      "name": "RESET / SYNC 4",
+      "scope": "CH 4",
+      "description": "In QUAD / PHASE / DIVIDE modes only: trigger selects the next assignable waveform on all four saw/asgn outputs. Inactive in FREE mode.",
+      "voltage": "trigger"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "SINE 1–4",
+      "description": "Bipolar sine output per channel. In QUAD mode shifted 0°/90°/180°/270°; in PHASE mode shifted per slider 2–4.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "SAW / ASGN 1–4",
+      "description": "Assignable waveform output. Default stock firmware: saw-up, saw-down, triangle, or trapezoid, selected via rear jumper cluster or Poti. Switches to next shape when RESET/SYNC 4 fires in synced modes.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "SQUARE 1–4",
+      "description": "Bipolar square wave per channel. Tracks the same frequency/phase/division as the sine output.",
+      "voltage": "-5V to +5V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "FREE mode",
+      "trigger": "mode button · red FREE LED",
+      "description": "All four LFOs run independently. Each slider sets its own channel's frequency from 0.01Hz to 100Hz. Each FRQ CV input is 1V/oct on its own channel. RESET/SYNC 2–4 inputs are inactive."
+    },
+    {
+      "name": "QUAD mode",
+      "trigger": "mode button · yellow QUAD LED",
+      "description": "CH 1 is master frequency. CH 2–4 sines run at master rate but phase-shifted 90°/180°/270°. Sliders 2–4 set per-channel amplitude, and FRQ·PH·DIV 2–4 CV inputs modulate amplitude."
+    },
+    {
+      "name": "PHASE mode",
+      "trigger": "mode button · yellow PHASE LED",
+      "description": "CH 1 is master frequency. Sliders 2–4 set arbitrary phase shifts (0°–360°) for channels 2–4. CV inputs modulate phase. Patching a Batumi LFO into another channel's phase input creates complex composite waveforms."
+    },
+    {
+      "name": "DIVIDE mode",
+      "trigger": "mode button · blue DIVIDE LED",
+      "description": "CH 1 is master frequency. Sliders 2–4 select a division of master cycle: ÷2, ÷3, ÷4, ÷8, ÷16, or ÷32. CV inputs modulate the ratio. Extends effective low end to 28 hours per cycle with V/oct on CH 1."
+    },
+    {
+      "name": "Zoom mode",
+      "trigger": "hold mode button ~1s · current mode LED blinks",
+      "description": "Fine-adjust mode. Slider travel is remapped around the current value for precise tuning. In DIVIDE mode, zoom adds ±0–3 to the base division. Exiting zoom with a slider position mismatch leaves the LED flashing until slider catches up."
+    },
+    {
+      "name": "Reset vs Sync jumper",
+      "trigger": "rear jumper 8 · or Poti switch",
+      "description": "Selects behavior of RESET/SYNC 1 input. Jumper removed = RESET (hard-sync cycle to 0 on trigger). Jumper installed = SYNC (slave frequency to external clock, phase-aligned). Same choice is available live from the Poti expander."
+    },
+    {
+      "name": "Assignable waveform jumpers",
+      "trigger": "rear jumper cluster 9",
+      "description": "Configures the SAW/ASGN output shape. Stock firmware offers saw-up, saw-down, triangle, trapezoid. Jumper pattern on the cluster picks one as default on power-up. Mode-switch or RESET/SYNC 4 in synced modes resets/advances selection."
+    },
+    {
+      "name": "Synced-mode auxiliary triggers",
+      "trigger": "RESET/SYNC 2–4 while in QUAD / PHASE / DIVIDE",
+      "description": "When any synced mode is active, the three normally-idle RESET/SYNC jacks become global modifiers: #2 pauses all LFOs, #3 reverses direction, #4 advances to the next assignable waveform. All four channels respond simultaneously."
+    },
+    {
+      "name": "Extended frequency via CV",
+      "trigger": "CV into FRQ input · 1V/oct response",
+      "description": "Slider sets only the base rate (0.01Hz–100Hz). Feeding -5V to +5V on the FRQ input expands the overall range to 500Hz on the top end and, via DIVIDE mode stacking, down to one cycle per 28 hours. Above ~100Hz amplitude and shape precision degrade."
+    },
+    {
+      "name": "Alternate firmware option",
+      "trigger": "firmware reflash via miniUSB",
+      "description": "Xaoc publishes an alternate firmware with different waveform banks and interaction behavior. Flash is done through the miniUSB port 10 with the UPDATE jumper 11 in the correct position. Manual's stock firmware is 1974/5.3."
+    },
+    {
+      "name": "Poti / Samara expanders",
+      "trigger": "rear connector to Poti or Samara II",
+      "description": "Poti breaks out the rear jumper settings (reset/sync choice, assignable waveform selection) to front-panel switches. Samara II adds attenuation, inversion, offset, mixing, min/max, and waveshaping across four channels for processing Batumi outputs."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Quadrature stereo modulation",
+      "patch": "QUAD mode · slider 1 sets LFO rate · SINE 1 → left filter cutoff, SINE 3 → right filter cutoff (180° out of phase) · creates swirling stereo filter motion · sliders 2/3 attenuate per-side depth",
+      "diagram": "Batumi:\n* Mode: QUAD\n* Slider 1: slow\n\n- Batumi (SINE 1) >> Filter L (Cutoff)\n- Batumi (SINE 3) >> Filter R (Cutoff) // 180° phase\n- Batumi (SINE 2) >> VCA L (CV)\n- Batumi (SINE 4) >> VCA R (CV)"
+    },
+    {
+      "name": "Clocked polyrhythm LFO",
+      "patch": "DIVIDE mode · CH 1 RESET/SYNC jumper = SYNC · master clock → RESET/SYNC 1 · sliders 2–4 pick /2, /3, /8 · square outputs act as clock-locked polyrhythmic triggers · sine outputs modulate four different destinations locked to tempo",
+      "diagram": "Batumi:\n* Mode: DIVIDE\n* Jumper 8: SYNC\n* Slider 2: /2\n* Slider 3: /3\n* Slider 4: /8\n\n- Clock (Out) c> Batumi (RESET/SYNC 1)\n- Batumi (SQUARE 2) t> Drum A (Trig)\n- Batumi (SQUARE 3) t> Drum B (Trig)\n- Batumi (SQUARE 4) t> Drum C (Trig)\n- Batumi (SINE 1) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Stacked complex LFO",
+      "patch": "PHASE mode · CH 2 SINE → CH 3 FRQ·PH·DIV (phase CV) · sliders 2/3/4 set base phase offsets · adding one LFO into another's phase modulation produces evolving non-sinusoidal composite shapes on CH 3 and CH 4 · use as drone modulator",
+      "diagram": "Batumi:\n* Mode: PHASE\n* Slider 2: 90°\n* Slider 3: 180°\n\n- Batumi (SINE 2) >> Batumi (FRQ·PH·DIV 3) // self-patch phase mod\n- Batumi (SINE 3) >> VCA (CV)\n- Batumi (SINE 4) >> Filter (Cutoff)"
+    },
+    {
+      "name": "V/oct LFO pitch tracking",
+      "patch": "FREE mode · keyboard V/oct → FRQ 1 input · slider 1 sets base rate · LFO now tracks pitch 1V/oct up to ~500Hz · use as sub-audio vibrato source that follows the melody, or as a tracked FM source for a VCO at audio rate",
+      "diagram": "Batumi:\n* Mode: FREE\n* Slider 1: mid\n\n- Keyboard (CV) p> Batumi (FRQ 1)\n- Batumi (SINE 1) >> VCO (FM)\n- Keyboard (CV) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Pause-and-reverse performance",
+      "patch": "QUAD mode · manual gate (hold button) → RESET/SYNC 2 pauses all four LFOs mid-phrase · separate trigger → RESET/SYNC 3 reverses direction · creates glitch freezes and retrograde swells during performance",
+      "diagram": "Batumi:\n* Mode: QUAD\n\n- Button (Gate) g> Batumi (RESET/SYNC 2) // pause\n- Button (Trig) t> Batumi (RESET/SYNC 3) // reverse\n- Batumi (SINE 1) >> Filter (Cutoff)\n- Batumi (SINE 2) >> VCA (CV)"
+    },
+    {
+      "name": "Drone with trapezoid gates",
+      "patch": "Rear jumper cluster sets SAW/ASGN to trapezoid · DIVIDE mode · SAW/ASGN outputs 1–4 → four VCA CV inputs · drone VCOs mixed through those VCAs · gated polyrhythmic crossfades create a slow evolving drone without an external sequencer",
+      "diagram": "Batumi:\n* Mode: DIVIDE\n* ASGN: Trapezoid\n* Slider 2: /2\n* Slider 3: /3\n\n- Batumi (SAW/ASGN 1) >> VCA 1 (CV)\n- Batumi (SAW/ASGN 2) >> VCA 2 (CV)\n- Batumi (SAW/ASGN 3) >> VCA 3 (CV)\n- Batumi (SAW/ASGN 4) >> VCA 4 (CV)\n- VCO 1 (Out) -> VCA 1 (In)\n- VCO 2 (Out) -> VCA 2 (In)"
+    },
+    {
+      "name": "Phase-sweep chorus",
+      "patch": "PHASE mode · audio rate on CH 1 via V/oct into FRQ 1 (slider 1 high, +5V on FRQ 1 pushes into audio) · sliders 2–4 set phase offsets · slow external LFO modulates FRQ·PH·DIV 2 for moving phase · sum sine outputs through a mixer for a phase-shifter-style chorus on the composite tone",
+      "diagram": "Batumi:\n* Mode: PHASE\n* Slider 1: high (audio rate)\n\n- Pitch CV (Out) p> Batumi (FRQ 1)\n- Slow LFO (Out) >> Batumi (FRQ·PH·DIV 2) // phase sweep\n- Batumi (SINE 1) -> Mixer (In 1)\n- Batumi (SINE 2) -> Mixer (In 2)\n- Batumi (SINE 3) -> Mixer (In 3)\n- Batumi (SINE 4) -> Mixer (In 4)"
+    },
+    {
+      "name": "Tap-tempo modulation bank",
+      "patch": "Jumper 8 = SYNC · manual tap-gate on RESET/SYNC 1 sets master rate · DIVIDE mode fans the tempo into /2, /3, /8 on the other channels · four tempo-locked modulation voices from a single tap",
+      "diagram": "Batumi:\n* Mode: DIVIDE\n* Jumper 8: SYNC\n\n- Tap Button (Gate) c> Batumi (RESET/SYNC 1)\n- Batumi (SINE 1) >> Delay (Time)\n- Batumi (SINE 2) >> Filter (Cutoff)\n- Batumi (SQUARE 3) t> Envelope (Trig)\n- Batumi (SAW/ASGN 4) >> Pan (CV)"
+    }
+  ]
+}

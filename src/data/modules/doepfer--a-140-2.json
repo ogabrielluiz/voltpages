@@ -1,0 +1,170 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://doepfer.de/a1402.htm",
+      "https://doepfer.de/a100_man/A140_man.pdf",
+      "https://doepfer.de/a100_man/A140_2_jumper.pdf"
+    ]
+  },
+  "slug": "doepfer--a-140-2",
+  "name": "A-140-2 Dual Mini ADSR",
+  "manufacturer": "Doepfer",
+  "hp": 8,
+  "tags": ["ENVELOPE", "FUNCTION", "UTILITY"],
+  "description": "Dual ADSR envelope generator with retrigger inputs, a shared CV time input per channel, and jumper-selectable normal/inverted second outputs. Gate 1 can be normalled to Gate 2.",
+  "controls": [
+    {
+      "name": "Attack",
+      "scope": "ADSR 1 / ADSR 2",
+      "description": "Sets rise time for the envelope.",
+      "detail": "1ms to 30s-ish depending on range"
+    },
+    {
+      "name": "Decay",
+      "scope": "ADSR 1 / ADSR 2",
+      "description": "Sets fall from attack peak to sustain level.",
+      "detail": "1ms to 30s-ish depending on range"
+    },
+    {
+      "name": "Sustain",
+      "scope": "ADSR 1 / ADSR 2",
+      "description": "Sets sustain level while gate stays high.",
+      "detail": "0V to full level"
+    },
+    {
+      "name": "Release",
+      "scope": "ADSR 1 / ADSR 2",
+      "description": "Sets fall time after gate closes.",
+      "detail": "1ms to 30s-ish depending on range"
+    },
+    {
+      "name": "CVT Attenuator",
+      "scope": "ADSR 1 / ADSR 2",
+      "description": "Scales the time-control voltage input.",
+      "detail": "bipolar via internal jumpers"
+    },
+    {
+      "name": "LED",
+      "scope": "ADSR 1 / ADSR 2",
+      "description": "Displays envelope activity.",
+      "detail": "follows envelope voltage"
+    },
+    {
+      "name": "Time Range",
+      "scope": "Global",
+      "description": "Selects the attack/decay/release time range.",
+      "detail": "H / L / M"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Gate 1",
+      "description": "Gate input for envelope 1.",
+      "voltage": "+5V to +12V gate"
+    },
+    {
+      "name": "Retrig 1",
+      "description": "Retriggers envelope 1 while gate remains high.",
+      "voltage": "+5V to +12V trigger"
+    },
+    {
+      "name": "CVT 1",
+      "description": "Time-control voltage for envelope 1.",
+      "voltage": "0V to +10V"
+    },
+    {
+      "name": "Gate 2",
+      "description": "Gate input for envelope 2. Can be normalled from Gate 1 by jumper.",
+      "voltage": "+5V to +12V gate"
+    },
+    {
+      "name": "Retrig 2",
+      "description": "Retriggers envelope 2 while gate remains high.",
+      "voltage": "+5V to +12V trigger"
+    },
+    {
+      "name": "CVT 2",
+      "description": "Time-control voltage for envelope 2.",
+      "voltage": "0V to +10V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Output 1",
+      "description": "Normal envelope output for envelope 1.",
+      "voltage": "0V to 10V"
+    },
+    {
+      "name": "Output 2",
+      "description": "Normal or inverted envelope output for envelope 1, selected by jumper.",
+      "voltage": "0V to 10V"
+    },
+    {
+      "name": "Output 3",
+      "description": "Normal envelope output for envelope 2.",
+      "voltage": "0V to 10V"
+    },
+    {
+      "name": "Output 4",
+      "description": "Normal or inverted envelope output for envelope 2, selected by jumper.",
+      "voltage": "0V to 10V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Gate bus normalisation",
+      "trigger": "Gate 1 -> Gate 2 jumper installed",
+      "description": "Gate 1 also starts envelope 2. That makes the module behave like a paired dual ADSR until the jumper is removed."
+    },
+    {
+      "name": "Retrigger while open",
+      "trigger": "pulse Retrig while Gate stays high",
+      "description": "The current envelope restarts without needing a new gate low-high cycle. Useful for ratchets and repeated accents."
+    },
+    {
+      "name": "Time CV routing by jumper",
+      "trigger": "CVT jumper configuration",
+      "description": "Internal jumpers decide whether CVT acts on A, D, S, R, and whether rising CV shortens or stretches those stages."
+    },
+    {
+      "name": "Inverted second output",
+      "trigger": "Output 2 polarity jumper",
+      "description": "The second output can be normal or inverted, which is convenient for paired VCA/filter movement from one envelope source."
+    },
+    {
+      "name": "Bus gate access",
+      "trigger": "rear bus jumper installed",
+      "description": "The module can receive gate from the A-100 bus instead of only the front-panel gate jack."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Paired VCA envelopes",
+      "patch": "Gate 1 from keyboard or sequencer drives both ADSRs via the normalled gate bus; Output 1 opens a VCA, Output 4 opens a second voice, and the inverted output shapes a complementary filter envelope. The two voices stay locked but move differently.",
+      "diagram": "A-140-2 Dual Mini ADSR:\n* Gate 1 -> Gate 2 normalled\n* Output 2 = inverted\n\nKeyboard:\nVCA 1:\nVCA 2:\nVCO 1:\nVCO 2:\nFilter:\nMixer:\n\n- Keyboard (Gate) g> A-140-2 Dual Mini ADSR (Gate 1)\n- Keyboard (Pitch) p> VCO 1 (V/Oct)\n- Keyboard (Pitch) p> VCO 2 (V/Oct)\n- A-140-2 Dual Mini ADSR (Output 1) >> VCA 1 (CV)\n- A-140-2 Dual Mini ADSR (Output 4) >> VCA 2 (CV)\n- A-140-2 Dual Mini ADSR (Output 2) >> Filter (Cutoff)\n- VCO 1 (Out) -> VCA 1 (In)\n- VCO 2 (Out) -> VCA 2 (In)\n- VCA 1 (Out) -> Mixer (In 1)\n- VCA 2 (Out) -> Mixer (In 2)"
+    },
+    {
+      "name": "Retrig percussion",
+      "patch": "A short gate opens the first ADSR, and a faster trigger train into Retrig 1 restarts the decay while the note is still held. The result is a single envelope that can spit ratcheted accents without extra logic.",
+      "diagram": "A-140-2 Dual Mini ADSR:\n* Time Range: M\n\nClock:\nEnvelope:\nVCA:\n\n- Keyboard (Gate) g> A-140-2 Dual Mini ADSR (Gate 1)\n- Clock (Out) t> A-140-2 Dual Mini ADSR (Retrig 1)\n- A-140-2 Dual Mini ADSR (Output 1) >> Envelope (Trig)\n- A-140-2 Dual Mini ADSR (Output 1) >> VCA (CV)\n- Envelope (Out) >> VCA (CV)\n- Noise (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Slow dual contour",
+      "patch": "CVT is jumpered to A, D, and R on both channels, with the attenuator set low and the time range on H. A slow LFO into CVT lengthens and shortens both envelopes together for long drone swells and fades.",
+      "diagram": "A-140-2 Dual Mini ADSR:\n* Time Range: H\n* CVT affects: A+D+R\n\nLFO:\nVCO:\nFilter:\nVCA:\n\n- LFO (Out) >> A-140-2 Dual Mini ADSR (CVT 1)\n- LFO (Out) >> A-140-2 Dual Mini ADSR (CVT 2)\n- A-140-2 Dual Mini ADSR (Output 1) >> Filter (Cutoff)\n- A-140-2 Dual Mini ADSR (Output 4) >> VCA (CV)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Inverted filter pair",
+      "patch": "Output 1 drives the amp while Output 2, set inverted by jumper, drives the filter cutoff in the opposite direction. The same gate creates a louder note with a closing filter sweep instead of the usual opening sweep.",
+      "diagram": "A-140-2 Dual Mini ADSR:\n* Output 2 = inverted\n\nVCO:\nFilter:\nVCA:\n\n- Sequencer (Gate) g> A-140-2 Dual Mini ADSR (Gate 1)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- A-140-2 Dual Mini ADSR (Output 1) >> VCA (CV)\n- A-140-2 Dual Mini ADSR (Output 2) >> Filter (Cutoff)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Manual dual pulse",
+      "patch": "A fingered gate into Gate 2 leaves envelope 1 free for the main note while envelope 2 is used as a manual accent or percussion contour. The two ADSRs can run with the same trigger source or with separate timings for call-and-response patches.",
+      "diagram": "A-140-2 Dual Mini ADSR:\n* Gate 1 -> Gate 2 normalled off\n\nClock:\nButton:\nVCO:\nVCA:\nEnvelope:\n\n- Clock (Out) g> A-140-2 Dual Mini ADSR (Gate 1)\n- Button (Gate) g> A-140-2 Dual Mini ADSR (Gate 2)\n- A-140-2 Dual Mini ADSR (Output 1) >> VCA (CV)\n- A-140-2 Dual Mini ADSR (Output 3) >> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    }
+  ]
+}

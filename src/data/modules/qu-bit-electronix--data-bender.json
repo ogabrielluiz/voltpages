@@ -1,0 +1,190 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.4.5",
+    "sources": [
+      "https://www.qubitelectronix.com/shop/p/data-bender",
+      "https://www.analoguehaven.com/qu-bit-electronix/data-bender/manual.pdf",
+      "https://modulargrid.net/e/qu-bit-electronix-data-bender",
+      "https://www.modwiggler.com/forum/viewforum.php?f=16"
+    ]
+  },
+  "slug": "qu-bit-electronix--data-bender",
+  "name": "Data Bender",
+  "manufacturer": "Qu-Bit Electronix",
+  "hp": 14,
+  "tags": ["GLITCH", "EFFECTS", "SAMPLER", "DISTORTION", "WAVESHAPER"],
+  "description": "Circuit-bent stereo audio buffer. 96kHz/24-bit buffer of ~1 minute feeds clocked Bend, Break, Corrupt and Freeze manipulations modeled on failing tape, skipping CDs and crashing software.",
+  "controls": [
+    {
+      "name": "Time",
+      "scope": "Global",
+      "description": "Sets sample period of the processed buffer slice. Internal: frequency. External: clock divide/multiply.",
+      "detail": "Internal: 80Hz – 16s · External: /16, /8, /4, /2, x1, x2, x3, x4, x8 · CV ±5V"
+    },
+    {
+      "name": "Repeats",
+      "scope": "Global",
+      "description": "Subdivides the active buffer into smaller stutter slices. CCW = one slice, CW = many short slices.",
+      "detail": "CV ±5V · adds to knob"
+    },
+    {
+      "name": "Mix",
+      "scope": "Global",
+      "description": "Dry/wet balance between live input and processed buffer.",
+      "detail": "CV ±5V · Freeze forces mix fully wet"
+    },
+    {
+      "name": "Bend",
+      "scope": "Macro / Micro",
+      "description": "Macro: probabilistic varispeed, reverse, tape-stop, vinyl pops on each clock division. Micro: direct playback speed ±3 octaves.",
+      "detail": "Macro CCW: off · Micro CCW: reverse · LED cyan/gold at octave multiples"
+    },
+    {
+      "name": "Break",
+      "scope": "Macro / Micro",
+      "description": "Macro: probabilistic buffer-section jumps, added repeats, up to 90% silence. Micro: Traverse buffer sections or duty-cycle silence.",
+      "detail": "Micro mode toggled by button press · LED blips gold on slice change"
+    },
+    {
+      "name": "Corrupt",
+      "scope": "Global",
+      "description": "Button steps Decimate → Dropout → Destroy. Knob sets intensity of the active mode.",
+      "detail": "Decimate: bitcrush + downsample · Dropout: random muted frames · Destroy: soft sat → hard clip · CV ±5V"
+    },
+    {
+      "name": "Mode",
+      "scope": "Global",
+      "description": "Toggles Bend and Break between Macro (automated, clock-synced) and Micro (direct manual control).",
+      "detail": "Blue LED: Macro · Green LED: Micro"
+    },
+    {
+      "name": "Clock",
+      "scope": "Global",
+      "description": "Selects internal or external clock source for Time. Blue: internal. White: external.",
+      "detail": "Dim white = external clock lost · runs at last rate until new pulse"
+    },
+    {
+      "name": "Shift",
+      "scope": "Global",
+      "description": "Hold to access edit layer for windowing, stereo mode, gate behavior, corrupt-as-reset, freeze mode, restore defaults.",
+      "detail": "SHIFT + Break = restore defaults · SHIFT + Time = glitch windowing"
+    },
+    {
+      "name": "Freeze",
+      "scope": "Global",
+      "description": "Stops writing new audio to the buffer; manipulations keep running on frozen material.",
+      "detail": "Latching (blue) quantizes to next clock · Momentary (green) engages instantly"
+    }
+  ],
+  "inputs": [
+    { "name": "clock", "description": "External clock input for Time / external clock mode", "voltage": "0–5V rising edge" },
+    { "name": "left", "description": "Stereo left audio input · normalized to right when unpatched", "voltage": "modular ±5V · tolerates line level", "normalizedTo": "right input when unpatched" },
+    { "name": "right", "description": "Stereo right audio input", "voltage": "modular ±5V" },
+    { "name": "bend cv", "description": "CV control over Bend knob", "voltage": "±5V · sums with knob" },
+    { "name": "break cv", "description": "CV control over Break knob", "voltage": "±5V · sums with knob" },
+    { "name": "corrupt cv", "description": "CV control over Corrupt intensity · reassignable to Reset with SHIFT + Corrupt", "voltage": "±5V" },
+    { "name": "bend gate", "description": "Gate enables/disables Bend effect · latching or momentary per edit menu", "voltage": "2V+ gate" },
+    { "name": "break gate", "description": "Gate enables/disables Break effect · repurposable via SHIFT + Corrupt", "voltage": "2V+ gate" },
+    { "name": "corrupt gate", "description": "Gate enables/disables Corrupt", "voltage": "2V+ gate" },
+    { "name": "mix", "description": "CV over wet/dry mix", "voltage": "±5V" },
+    { "name": "repeats", "description": "CV over Repeats divisor", "voltage": "±5V" },
+    { "name": "time", "description": "CV over Time control · sums with knob in both clock modes", "voltage": "±5V" },
+    { "name": "freeze", "description": "Gate engages Freeze · latching or momentary per edit menu", "voltage": "2V+ gate" }
+  ],
+  "outputs": [
+    { "name": "left", "description": "Processed stereo left", "voltage": "modular level · up to 14Vpp with heavy corruption" },
+    { "name": "right", "description": "Processed stereo right", "voltage": "modular level · up to 14Vpp with heavy corruption" }
+  ],
+  "behaviors": [
+    {
+      "name": "Macro vs Micro mode",
+      "trigger": "Mode button",
+      "description": "Macro fires Bend/Break probabilistically on each clock division — knobs scale the amount of automated chaos. Micro turns Bend into direct playback speed (±3 oct, reverse below noon) and Break into manual buffer-slice selection (Traverse) or silence duty-cycle. Use Macro for hands-off generative glitch, Micro for performative control."
+    },
+    {
+      "name": "Background buffer",
+      "trigger": "any change to Time",
+      "description": "Writes continue outside the current Time window. Sweeping Time down after Freeze drags up to a minute of older recorded audio back into playback — expect discontinuities and fragments of earlier material."
+    },
+    {
+      "name": "Freeze forces wet mix",
+      "trigger": "Freeze engaged with Mix CCW",
+      "description": "Engaging Freeze while Mix is fully dry instantly pushes Mix to fully wet. Lets the patch run clean until Freeze fires, then slams into the queued glitch state — performative stutter gate."
+    },
+    {
+      "name": "Corrupt as Reset",
+      "trigger": "SHIFT + Corrupt button",
+      "description": "Green LED on Corrupt turns the Corrupt Gate input into a buffer/clock reset. In internal clock mode it restarts the clock and reloads the buffer (can click). In external mode it aligns the subdivision counter to an external beat — useful for DAW sync."
+    },
+    {
+      "name": "Glitch windowing",
+      "trigger": "SHIFT + Time knob",
+      "description": "Sets envelope on stutter edges. CCW: hard edges and clicks — glitch beats, SFX. CW: fully windowed fades — ambient textures. Default is 2% minimal window; restored by SHIFT + Break."
+    },
+    {
+      "name": "Stereo unique vs shared",
+      "trigger": "SHIFT + Bend button",
+      "description": "Blue: Macro Bend/Break make independent random decisions per channel — wide decorrelated glitch. Green: both channels share identical automation — image stays centered. Only affects Macro mode."
+    },
+    {
+      "name": "Gate latch vs momentary",
+      "trigger": "SHIFT + Clock button",
+      "description": "Blue: each trigger into bend/break/corrupt Gate toggles the effect. Green: effect is held on only while the gate is high. Applies to all three effect gates simultaneously."
+    },
+    {
+      "name": "Destroy output level",
+      "trigger": "Corrupt in Destroy with high knob",
+      "description": "Second half of the Corrupt knob in Destroy mode moves from soft saturation into hard clip with large gain boost. Output can hit 14Vpp — attenuate before downstream modules, especially with line-level input."
+    },
+    {
+      "name": "Settings persist",
+      "trigger": "Shift button release",
+      "description": "Bend/Break state, Corrupt mode, clock source, Macro/Micro, stereo mode, windowing, gate behaviors and corrupt-as-reset are stored to memory every time SHIFT is released (at most every 2 seconds). Restore defaults with SHIFT + Break."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Clocked beat mangler",
+      "patch": "Macro Mode · external clock driving clock in · Time knob near x1 · Bend and Break both enabled at ~2 o'clock · Stereo Unique · feed drum bus in, get a re-timed, occasionally reversed, pop-strewn variant that stays on grid",
+      "diagram": "Data Bender:\n* Mode: Macro\n* Time: x1 (match input clock)\n* Bend: ~2 o'clock (enabled)\n* Break: ~2 o'clock (enabled)\n* Stereo: Unique\n\nClock:\n\nDrums:\n\n- Clock (Out) c> Data Bender (clock)\n- Drums (L) -> Data Bender (In left)\n- Drums (R) -> Data Bender (In right)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
+    },
+    {
+      "name": "Tape-stop freeze stab",
+      "patch": "Micro Mode · Bend knob CCW (reverse) · Freeze set to momentary (SHIFT + Freeze green) · Mix fully dry · gate into Freeze input on snare hits · each snare fires a frozen reversed stutter over the dry signal",
+      "diagram": "Data Bender:\n* Mode: Micro\n* Bend: CCW (reverse)\n* Mix: fully dry\n* Freeze: momentary (green)\n\nGate Source:\n\n- Source (L) -> Data Bender (In left)\n- Gate Source (Out) g> Data Bender (freeze)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
+    },
+    {
+      "name": "Krell destruction feedback",
+      "patch": "Random CV into time CV and repeats CV · Corrupt in Destroy at ~1 o'clock · LFO into corrupt cv · self-modulating glitch texture from a single sustained pad",
+      "diagram": "Data Bender:\n* Corrupt: Destroy · ~1 o'clock\n* Time: slow\n* Mix: fully wet\n\nPad:\n\nRandom:\n\nLFO:\n\n- Pad (Out) -> Data Bender (In left)\n- Random (Out) >> Data Bender (time)\n- Random (Out) >> Data Bender (repeats)\n- LFO (Out) >> Data Bender (corrupt cv)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
+    },
+    {
+      "name": "DAW-locked buffer reset",
+      "patch": "External clock mode · SHIFT + Corrupt to enable Corrupt-as-Reset · send DAW bar clock to corrupt gate · Time at /4 · buffer rebuilds cleanly on every downbeat · drop glitch in without phase drift",
+      "diagram": "Data Bender:\n* Clock: External\n* Time: /4\n* Corrupt gate: Reset (SHIFT+Corrupt)\n\nDAW Clock:\n\nBar Trig:\n\nSource:\n\n- DAW Clock (Out) c> Data Bender (clock)\n- Bar Trig (Out) t> Data Bender (corrupt gate) // buffer/clock reset\n- Source (Out) -> Data Bender (In left)\n- Data Bender (Out left) -> Output (L)"
+    },
+    {
+      "name": "Micro scrub instrument",
+      "patch": "Micro Mode · Freeze latched on · manual keyboard CV into bend cv for playable ±3 oct scrubbing · Break knob selects the buffer slice to scrub · Repeats medium for short loops · turn the buffer into a playable sampler",
+      "diagram": "Data Bender:\n* Mode: Micro\n* Freeze: latched ON\n* Repeats: ~noon\n* Break: Traverse\n\nKeyboard:\n\nSource:\n\n- Source (Out) -> Data Bender (In left)\n- Keyboard (CV) p> Data Bender (bend cv) // scrub pitch\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
+    },
+    {
+      "name": "Skipping CD pad",
+      "patch": "Macro Mode · Bend OFF · Break ~3 o'clock · Corrupt in Dropout at ~11 o'clock · SHIFT+Time CW for fully windowed edges · gentle random slice skips and momentary dropouts over an ambient pad without clicks",
+      "diagram": "Data Bender:\n* Mode: Macro\n* Bend: OFF\n* Break: ~3 o'clock\n* Corrupt: Dropout · ~11 o'clock\n* Windowing: max (SHIFT+Time CW)\n\nClock:\n\nPad:\n\n- Pad (Out) -> Data Bender (In left)\n- Clock (Out) c> Data Bender (clock)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
+    },
+    {
+      "name": "Wide stereo decorrelator",
+      "patch": "Mono source into left input · right input unpatched (normalized from left) · Stereo Unique mode (SHIFT+Bend blue) · Macro Bend and Break low · clock at x4 · tiny independent per-channel glitches widen a mono signal into a decorrelated stereo field",
+      "diagram": "Data Bender:\n* Mode: Macro\n* Stereo: Unique (SHIFT+Bend blue)\n* Bend: ~9 o'clock\n* Break: ~9 o'clock\n* Time: x4\n\nClock:\n\nMono Source:\n\n- Mono Source (Out) -> Data Bender (In left) // normalizes to right\n- Clock (Out) c> Data Bender (clock)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
+    },
+    {
+      "name": "Sidechain dropout gate",
+      "patch": "Corrupt in Dropout at ~2 o'clock · gate into corrupt gate from kick envelope follower · Corrupt Gate set to momentary · dropouts punch holes on every kick, leaving the signal clean between beats",
+      "diagram": "Data Bender:\n* Corrupt: Dropout · ~2 o'clock\n* Gate behavior: momentary (SHIFT+Clock green)\n* Mix: fully wet\n\nKick Envelope:\n\nSynth:\n\n- Synth (Out) -> Data Bender (In left)\n- Kick Envelope (Out) g> Data Bender (corrupt gate) // hole on each kick\n- Data Bender (Out left) -> Output (L)"
+    }
+  ]
+}

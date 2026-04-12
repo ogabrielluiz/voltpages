@@ -1,0 +1,246 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.0",
+    "sources": [
+      "https://ime-assets.s3.amazonaws.com/uploads/manual/manual/34/kermitmk3manual_1.pdf",
+      "https://modulargrid.net/e/industrial-music-electronics-kermit-mk-iii",
+      "https://www.perfectcircuit.com/ime-kermit-mkiii.html",
+      "https://modwiggler.com/forum/viewtopic.php?t=224219"
+    ]
+  },
+  "slug": "industrial-music-electronics--kermit-mk-iii",
+  "name": "Kermit mk III",
+  "manufacturer": "Industrial Music Electronics",
+  "hp": 12,
+  "tags": ["LFO", "ENVELOPE", "RANDOM", "OSCILLATOR", "FUNCTION"],
+  "description": "4-channel tempo-synced wavetable modulator. Each channel selects from LFO/Oscillator/Envelope/Random/S&H types, each with three modes. Internal modulation matrix, 8 morphing presets, microSD wavetable import.",
+  "controls": [
+    {
+      "name": "Frequency",
+      "scope": "CH A, B",
+      "description": "Coarse frequency of channels A and B. Acts as tempo divider in tempo-synced modes, V/oct-scaled in Oscillator modes. Holding the channel button accesses Fine Tune.",
+      "detail": "LFO: rate · Osc: pitch · Env/Random: rate/division"
+    },
+    {
+      "name": "Amplitude",
+      "scope": "CH A, B",
+      "description": "Output level for channels A and B. Attenuates toward zero in bipolar bias modes. Hold channel button to access Phase parameter.",
+      "detail": "attenuator · 12Vpp bipolar, 0-6V unipolar, or 1Vpp video mode"
+    },
+    {
+      "name": "Waveform",
+      "scope": "CH A, B",
+      "description": "Selects wave within the active bank and morphs between adjacent waves. Hold channel button to jump between wave banks.",
+      "detail": "8 banks × 8 waves · morphs between adjacent"
+    },
+    {
+      "name": "A / B buttons",
+      "scope": "CH A, B",
+      "description": "Hotkey buttons. Hold + turn other knobs to access deep parameters (Fine Tune, Phase, Bank). Hold while turning a destination knob on another channel to assign A or B as cross-modulation source.",
+      "detail": "hotkey modifier · source for mod matrix"
+    },
+    {
+      "name": "C knob",
+      "scope": "CH C",
+      "description": "Single knob for channel C. Default: coarse frequency. Other parameters accessed via button-combo hotkeys (hold combinations to scan Amplitude, Waveform, Fine Tune, Phase, Bank).",
+      "detail": "multi-function · hotkeys select parameter"
+    },
+    {
+      "name": "D knob",
+      "scope": "CH D",
+      "description": "Single knob for channel D. Same hotkey scheme as C knob but requires the Tap button as an extra modifier to reach D parameters.",
+      "detail": "multi-function · Tap button extends hotkeys"
+    },
+    {
+      "name": "C/D button",
+      "scope": "CH C, D",
+      "description": "Shared channel button for C and D. Hold + other buttons to reach C or D parameter slots. Scrolls past C into D options in the channel menu.",
+      "detail": "shared hotkey modifier"
+    },
+    {
+      "name": "Encoder (push)",
+      "scope": "Global",
+      "description": "Rotary encoder with click. Turns to navigate menus and change values. Holding and turning a knob assigns that channel's CV input to that parameter as an attenuverter.",
+      "detail": "navigate · assign CV · center=no mod"
+    },
+    {
+      "name": "Preset / Edit button",
+      "scope": "Global",
+      "description": "Enables the 8-slot preset manager. Press again for Morph mode (smooth CV-driven interpolation). Double-click encoder while preset is active to enter edit-save mode.",
+      "detail": "off / Preset / Morph"
+    },
+    {
+      "name": "Tap button",
+      "scope": "Global",
+      "description": "Master tap-tempo button. Tap rhythmically to set global BPM. Hold encoder + press Tap to re-sync all tempo-aware channels on the next event.",
+      "detail": "tap tempo · sync reset combo"
+    },
+    {
+      "name": "Preset CV attenuator",
+      "scope": "Global",
+      "description": "Attenuates or offsets the Preset CV input — behavior set by CTL menu (CV+Offset, CV+Atten, Trig+Offset, Trig Random).",
+      "detail": "role set by global CTL option"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "1V/Oct (CH A, B)",
+      "description": "Per-channel 1V/oct input in Oscillator modes. In LFO Reset or Tempo mode acts as sync trigger. In Envelope/S&H modes acts as gate/trigger input.",
+      "voltage": "1V/oct in Osc, trigger in other modes"
+    },
+    {
+      "name": "CV (CH A, B)",
+      "description": "Per-channel assignable modulation input. Hold encoder + turn destination knob to route CV to Frequency, Amplitude, or Waveform with attenuverter amount.",
+      "voltage": "±10V (±5V musically optimal)"
+    },
+    {
+      "name": "CV (CH C, D)",
+      "description": "Shared CV input per channel. Assignable via hotkey combos. In Envelope/S&H modes doubles as trigger/voltage-to-sample input.",
+      "voltage": "±10V (±5V musically optimal)"
+    },
+    {
+      "name": "Tap",
+      "description": "External clock input for global tempo. Feeds into the tempo-aware modes across all four channels.",
+      "voltage": "trigger/clock"
+    },
+    {
+      "name": "Preset CV",
+      "description": "Scans through the 8 preset slots. Behavior set by CTL option: direct CV scan, trig-advance, or trig-random.",
+      "voltage": "±10V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "A",
+      "description": "Main output for channel A. Voltage range set by Voltage Range menu (12Vpp bipolar, 0-6V unipolar, or 1Vpp video).",
+      "voltage": "±6V (12Vpp) typical"
+    },
+    {
+      "name": "B",
+      "description": "Main output for channel B. Voltage range per channel-B menu setting.",
+      "voltage": "±6V (12Vpp) typical"
+    },
+    {
+      "name": "C",
+      "description": "Main output for channel C.",
+      "voltage": "±6V (12Vpp) typical"
+    },
+    {
+      "name": "D",
+      "description": "Main output for channel D.",
+      "voltage": "±6V (12Vpp) typical"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "LFO modes",
+      "trigger": "channel Type → LFO",
+      "description": "Three LFO modes: Free (runs freely, 1V/oct on input), Reset (resets to Phase on trigger at 1V/oct jack), Tap Tempo (rate is division/multiplication of master BPM; 1V/oct jack resets on next tempo tick). Wavetable shape selectable across 512 waves."
+    },
+    {
+      "name": "Oscillator modes",
+      "trigger": "channel Type → Oscillator",
+      "description": "Three audio-rate modes: Oscillator (tracks 1V/oct, character slightly fuzzy), Unison (detuned internal second voice for thicker tone), Code Scan (reads the module's own program code as waveform data — harsh, glitchy). 16 Hz to ~1 kHz useful range."
+    },
+    {
+      "name": "Envelope modes",
+      "trigger": "channel Type → Envelope · trigger → 1V/oct (A/B) or CV (C/D) jack",
+      "description": "Three modes: 1-shot (plays selected wave once per trigger, retriggers freely), Gated Repeat (cycles while gate is high), Tempo Envelope (auto-fires at master-clock divisions). Factory wave banks 6-7 are unipolar shapes intended for 0-6V bias Envelope use."
+    },
+    {
+      "name": "Random modes",
+      "trigger": "channel Type → Random",
+      "description": "Three flavors: Smooth Random (fluctuating voltages at frequency-controlled rate), Stepped Random (new value each cycle), Tempo Random (stepped values at master-clock divisions). Waveform control has no effect in random modes."
+    },
+    {
+      "name": "Sample & Hold modes (A/B only)",
+      "trigger": "channel Type → S+H · channel is A or B",
+      "description": "Trigger into 1V/oct, voltage to sample into CV input. Three modes: Sample+Hold (snapshot on trig), Track+Hold (pass while gate high, hold when low), Tempo S+H (samples at clock divisions). CV path is not calibrated — artifacts are part of the character. Not available on C/D."
+    },
+    {
+      "name": "Osc Copy (C/D only)",
+      "trigger": "channel Type → Osc Copy on C or D",
+      "description": "Channels C or D copy all parameters except Phase from any other channel. Lets you set up quadrature LFOs, offset phases, or detuned unisons without duplicating modulation assignments. Unique to C/D."
+    },
+    {
+      "name": "Internal modulation matrix",
+      "trigger": "hold source channel button + turn destination knob",
+      "description": "Any channel output can modulate Frequency, Amplitude, or Waveform of any other channel. Assignment is an attenuverter — center=zero, CCW inverts, CW adds. Enables cross-modulation, self-patching-free complex modulation, and AM/FM between channels. Hold encoder on main screen to see all active assignments."
+    },
+    {
+      "name": "CV input assignment",
+      "trigger": "hold encoder + turn destination knob",
+      "description": "The per-channel CV input is not hardwired to a parameter. Instead it's routed as an attenuverter to whatever parameter you assign. Holding encoder + turning Freq, Amp, or Waveform assigns the CV to that destination. Clear via menu or return the knob to center."
+    },
+    {
+      "name": "Preset morph via CV",
+      "trigger": "Preset button pressed twice (Morph mode active)",
+      "description": "In Morph mode all managed controls lock; the Preset CV input smoothly crossfades between stored slots. Use the encoder to pick the base preset (sets menu/mode settings that can't morph). Apply CV to interpolate analog parameters across 8 snapshots. Ideal for live performance scenes."
+    },
+    {
+      "name": "Character menu",
+      "trigger": "channel menu → Character",
+      "description": "Per-channel distortion flavor: Clean (16-bit), 12bit, 8bit, NoMorph (hard wave transitions), Depraved (8-bit + 32-sample resolution, SCC chip-like). Most audible in Oscillator modes. NoMorph forces glitchy stepped waveform selection instead of smooth interpolation."
+    },
+    {
+      "name": "Voltage range bias",
+      "trigger": "channel menu → Voltage Range",
+      "description": "Three bias modes: 12Vpp (±6V bipolar, default for LFO/Osc/Random), 0-6V (unipolar — recommended for Envelope mode so output rests at 0V between hits), 1Vpp (attenuated, intended for video synth modules). Changing bias affects the relationship between amplitude and envelope rest voltage."
+    },
+    {
+      "name": "microSD wavetable loading",
+      "trigger": "insert SD with 1.wav · Global menu → Load Waves from SD",
+      "description": "Accepts one 1-channel 16-bit WAV containing 64 waveforms × 256 samples (32KB total). Organized internally as 8 banks × 8 waves. WaveEdit from Synthesis Technology recommended for authoring. Module reboots after load; presets survive firmware updates."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Quadrature LFOs from one source",
+      "patch": "CH A: Free LFO, sine wave · CH C: Osc Copy A · Hold C + turn encoder to set Phase +90° · CH D: Osc Copy A, Phase 180° · three synced phase-offset LFOs for quadrature panning or phase-modulated swarms without patch cables",
+      "diagram": "Kermit mk III:\n* CH A: LFO Free, sine\n* CH C: Osc Copy A, Phase 90°\n* CH D: Osc Copy A, Phase 180°\n\nVCA L:\nVCA R:\n\n- Kermit mk III (A) >> VCA L (CV)\n- Kermit mk III (C) >> VCA R (CV)\n- Kermit mk III (D) >> Filter (Cutoff) // phase-offset vibrato"
+    },
+    {
+      "name": "Clocked envelope bank",
+      "patch": "Global tap tempo synced to master clock · CH A: Tempo Envelope, bank 6 shapes, ÷8 · CH B: Tempo Envelope ÷4 · CH C: Tempo Envelope ÷2 · three rhythmic envelopes at related divisions feed VCAs across a drum bus · morph wave for different envelope shapes",
+      "diagram": "Kermit mk III:\n* CH A: Tempo Env ÷8, bank 6\n* CH B: Tempo Env ÷4, bank 6\n* CH C: Tempo Env ÷2, bank 6\n\nClock:\nVCA 1:\nVCA 2:\nVCA 3:\n\n- Clock (Out) c> Kermit mk III (Tap)\n- Kermit mk III (A) >> VCA 1 (CV)\n- Kermit mk III (B) >> VCA 2 (CV)\n- Kermit mk III (C) >> VCA 3 (CV)"
+    },
+    {
+      "name": "FM pair with cross-modulation",
+      "patch": "CH A: Oscillator mode, pitched by sequencer · CH B: Oscillator mode, Unison · hold A button + turn B Frequency knob (center → CW) to route A output as FM into B · hold B button + turn A Waveform to route B as wavetable mod on A · entwined dual VCO with no cables · C-D free for further modulation",
+      "diagram": "Kermit mk III:\n* CH A: Oscillator\n* CH B: Oscillator Unison\n* Mod matrix: A→B Freq, B→A Waveform\n\nSequencer:\n\n- Sequencer (Pitch) p> Kermit mk III (1V/Oct A)\n- Sequencer (Pitch) p> Kermit mk III (1V/Oct B)\n- Kermit mk III (A) -> Mixer (In 1)\n- Kermit mk III (B) -> Mixer (In 2)"
+    },
+    {
+      "name": "Tempo-synced random voltages",
+      "patch": "CH A: Tempo Random ÷16 (chord CV) · CH B: Tempo Random ÷4 (filter CV) · CH C: Stepped Random free-running (velocity) · CH D: Smooth Random (slow pad modulation) · quantizer downstream on A · four rhythmic random sources from one module — replaces a Turing plus Pam's plus S&H",
+      "diagram": "Kermit mk III:\n* CH A: Tempo Random ÷16\n* CH B: Tempo Random ÷4\n* CH C: Stepped Random\n* CH D: Smooth Random (slow)\n\nClock:\nQuantizer:\nVCO:\nFilter:\nVCA:\n\n- Clock (Out) c> Kermit mk III (Tap)\n- Kermit mk III (A) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Kermit mk III (B) >> Filter (Cutoff)\n- Kermit mk III (C) >> VCA (CV)"
+    },
+    {
+      "name": "Preset morph performance scene",
+      "patch": "Configure 8 preset slots from sparse → dense modulation · Preset scope: all params · CTL: CV+Offset · slow ramp (Maths cycle) → Preset CV · press Preset button twice (Morph) · complete modulation scene evolves across 8 stored states · single CV drives a live performance progression",
+      "diagram": "Kermit mk III:\n* 8 presets stored (sparse to dense)\n* Preset mode: Morph · CTL: CV+Offset\n\nMATHS:\n* CH 1: slow ramp, cycle ON\n\n- MATHS.CH 1 (OUT) >> Kermit mk III (Preset CV)\n- Kermit mk III (A) >> Filter (Cutoff)\n- Kermit mk III (B) >> VCA (CV)\n- Kermit mk III (C) p> VCO (V/Oct)\n- Kermit mk III (D) >> FX (Time)"
+    },
+    {
+      "name": "Gated-repeat burst generator",
+      "patch": "CH A: Gated Repeat envelope, bank 6, rate at audio-rate range · gate source → 1V/oct A · length of gate = length of burst · CH A output → drum module accent CV · generates rapid envelope bursts only while gate is high · classic jungle snare roll generator",
+      "diagram": "Kermit mk III:\n* CH A: Gated Repeat Env, bank 6, fast rate\n* CH A Voltage Range: 0-6V\n\nGate Seq:\nDrum:\n\n- Gate Seq (Out) g> Kermit mk III (1V/Oct A) // gate length = burst length\n- Kermit mk III (A) >> Drum (Accent CV)\n- Drum (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Self-modulating complex LFO",
+      "patch": "CH A: slow Free LFO sine · hold A + turn B Frequency (mod amount 50%) → A modulates B's rate · CH B: medium Tap Tempo LFO, saw · hold B + turn A Waveform → B modulates A's wavetable position · feedback complex motion between two channels — single CV out that never repeats",
+      "diagram": "Kermit mk III:\n* CH A: Free LFO sine, slow\n* CH B: Tap LFO saw, medium\n* Mod matrix: A→B Freq (50%), B→A Waveform (40%)\n\nFilter:\n\n- Kermit mk III (A) >> Filter (Cutoff)\n- Kermit mk III (B) >> Filter (Res)"
+    },
+    {
+      "name": "Code Scan noise voice",
+      "patch": "CH A: Oscillator mode Code Scan · Character: Depraved · pitched by sequencer · audible as harsh digital noise that changes timbre with Waveform knob (scans program memory) · CH B: Envelope for amplitude · one channel noise source, one channel VCA envelope, from one module",
+      "diagram": "Kermit mk III:\n* CH A: Osc Code Scan, Character Depraved\n* CH B: 1-shot Env, bank 6\n\nSequencer:\nVCA:\n\n- Sequencer (Pitch) p> Kermit mk III (1V/Oct A)\n- Sequencer (Gate) t> Kermit mk III (1V/Oct B)\n- Kermit mk III (A) -> VCA (In)\n- Kermit mk III (B) >> VCA (CV)\n- VCA (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Four-voice chord sample & hold",
+      "patch": "CH A: S+H, trigger on 1V/oct A, noise source → CV A · CH B: Osc Copy A, phase 90° so it samples on A's B-equivalent · CH C/D: Random/Random tempo · four quantized voices out feed four VCOs for polyphonic chord sequencing · gate from clock drives all",
+      "diagram": "Kermit mk III:\n* CH A: S+H\n* CH B: S+H (offset trigger)\n* CH C: Tempo Random ÷4\n* CH D: Tempo Random ÷2\n\nClock:\nNoise:\nQuantizer:\nVCO 1:\nVCO 2:\n\n- Clock (Out) t> Kermit mk III (1V/Oct A)\n- Noise (Out) >> Kermit mk III (CV A)\n- Kermit mk III (A) p> Quantizer (In)\n- Quantizer (Out) p> VCO 1 (V/Oct)\n- Kermit mk III (C) p> VCO 2 (V/Oct)"
+    }
+  ]
+}

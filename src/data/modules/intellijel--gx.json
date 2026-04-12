@@ -2,25 +2,62 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "expanderOf": "intellijel--midi-1u"
   },
   "slug": "intellijel--gx",
   "name": "Gx",
   "manufacturer": "Intellijel",
   "hp": 4,
-  "tags": ["SEQUENCER", "GATE", "UTILITY"],
+  "tags": [
+    "SEQUENCER",
+    "GATE",
+    "UTILITY"
+  ],
   "description": "4HP gate expander for the Metropolix sequencer. Connects via ribbon cable and provides 8 additional gate/trigger outputs — 4 per track — for accessing all Metropolix gate lanes.",
   "controls": [],
   "inputs": [],
   "outputs": [
-    { "name": "T1 Gate 1", "description": "Gate output for Metropolix Track 1, Gate Lane 1.", "voltage": "0–5V gate" },
-    { "name": "T1 Gate 2", "description": "Gate output for Metropolix Track 1, Gate Lane 2.", "voltage": "0–5V gate" },
-    { "name": "T1 Gate 3", "description": "Gate output for Metropolix Track 1, Gate Lane 3.", "voltage": "0–5V gate" },
-    { "name": "T1 Gate 4", "description": "Gate output for Metropolix Track 1, Gate Lane 4.", "voltage": "0–5V gate" },
-    { "name": "T2 Gate 1", "description": "Gate output for Metropolix Track 2, Gate Lane 1.", "voltage": "0–5V gate" },
-    { "name": "T2 Gate 2", "description": "Gate output for Metropolix Track 2, Gate Lane 2.", "voltage": "0–5V gate" },
-    { "name": "T2 Gate 3", "description": "Gate output for Metropolix Track 2, Gate Lane 3.", "voltage": "0–5V gate" },
-    { "name": "T2 Gate 4", "description": "Gate output for Metropolix Track 2, Gate Lane 4.", "voltage": "0–5V gate" }
+    {
+      "name": "T1 Gate 1",
+      "description": "Gate output for Metropolix Track 1, Gate Lane 1.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "T1 Gate 2",
+      "description": "Gate output for Metropolix Track 1, Gate Lane 2.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "T1 Gate 3",
+      "description": "Gate output for Metropolix Track 1, Gate Lane 3.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "T1 Gate 4",
+      "description": "Gate output for Metropolix Track 1, Gate Lane 4.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "T2 Gate 1",
+      "description": "Gate output for Metropolix Track 2, Gate Lane 1.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "T2 Gate 2",
+      "description": "Gate output for Metropolix Track 2, Gate Lane 2.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "T2 Gate 3",
+      "description": "Gate output for Metropolix Track 2, Gate Lane 3.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "T2 Gate 4",
+      "description": "Gate output for Metropolix Track 2, Gate Lane 4.",
+      "voltage": "0–5V gate"
+    }
   ],
   "behaviors": [
     {

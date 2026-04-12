@@ -1,0 +1,313 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.30",
+    "sources": [
+      "https://intellijel.com/downloads/manuals/metropolis_manual_1.30_2020.05.12.pdf",
+      "https://intellijel.com/shop/eurorack/metropolis/"
+    ]
+  },
+  "slug": "intellijel--metropolis",
+  "name": "Metropolis",
+  "manufacturer": "Intellijel",
+  "hp": 34,
+  "tags": ["SEQUENCER", "CLOCK", "GATE", "QUANTIZER"],
+  "description": "8-stage Ryk M-185-inspired pitch and gate sequencer. Per-stage slider pitch, pulse count 1-8, gate mode (hold/repeat/single/rest), ratcheting, slide, skip. 30 scales, 9 direction modes, TB-303 slide, dual AUX CV inputs.",
+  "controls": [
+    {
+      "name": "PITCH Sliders (1-8)",
+      "scope": "Stages 1-8",
+      "description": "Sets quantized pitch for each stage. LED reflects current gate state during playback.",
+      "detail": "Quantized to active SCALE · range set by CONFIG → OCT (1-3 octaves)"
+    },
+    {
+      "name": "PULSE COUNT Sliders (1-8)",
+      "scope": "Stages 1-8",
+      "description": "Sets how many clock pulses each stage holds before advancing.",
+      "detail": "Range 1-8 · interacts with GATE MODE and STEP/DIV"
+    },
+    {
+      "name": "GATE MODE Switches (1-8)",
+      "scope": "Stages 1-8",
+      "description": "4-position: HOLD, REPEAT, SINGLE, or REST.",
+      "detail": "HOLD: gate tied for all pulses · REPEAT: gate per STEP/DIV subdivision · SINGLE: one gate at start · REST: silent"
+    },
+    {
+      "name": "SLIDE / SKIP Buttons (1-8)",
+      "scope": "Stages 1-8",
+      "description": "Single click toggles pitch glide into the stage; double click toggles skip; hold+encoder sets ratchet count 1-4.",
+      "detail": "Solid green=slide · blinking green=skip · button-combo shortcuts trigger menu actions"
+    },
+    {
+      "name": "GATE TIME",
+      "scope": "Global",
+      "description": "Sets gate length from short click to full pulse width. Summed with AUX if assigned to G.LEn.",
+      "detail": "CCW: shortest · CW: longest · affects SINGLE and REPEAT modes"
+    },
+    {
+      "name": "SLIDE TIME",
+      "scope": "Global",
+      "description": "Sets portamento time for stages with SLIDE enabled. Constant-time like TB-303 regardless of pitch interval.",
+      "detail": "CCW: ~0 s · CW: ~1 s"
+    },
+    {
+      "name": "DATA Encoder",
+      "scope": "Menus",
+      "description": "Turn to adjust values, click to confirm or enter submenus.",
+      "detail": "Most menus are one level deep · click returns to main display"
+    },
+    {
+      "name": "EXIT Button",
+      "scope": "Menus",
+      "description": "Returns to default sequencer display immediately.",
+      "detail": "Escapes any menu without committing uncommitted selections"
+    },
+    {
+      "name": "RUN",
+      "scope": "Transport",
+      "description": "Starts or stops the sequence.",
+      "detail": "State preserved on power-down if saved"
+    },
+    {
+      "name": "RESET",
+      "scope": "Transport",
+      "description": "Resets sequence to stage 1 per CONFIG → rST mode.",
+      "detail": "rST_n: next clock · rST_F: on clock-aligned RST · rST_r: RESET input functions as RUN gate"
+    },
+    {
+      "name": "PREV",
+      "scope": "Transport",
+      "description": "Running: stays on current stage. Stopped: scrolls stages backward to preview pitches.",
+      "detail": "Hold+encoder for fine scrub"
+    },
+    {
+      "name": "NEXT",
+      "scope": "Transport",
+      "description": "Running: jumps one stage ahead. Stopped: scrolls forward to preview.",
+      "detail": "Useful for skipping to drop point live"
+    },
+    {
+      "name": "BPM",
+      "scope": "Timing",
+      "description": "Sets internal clock tempo 20-320 BPM. Tap tempo supported.",
+      "detail": "Click to enter menu, tap to set, encoder adjusts · BPM lock available"
+    },
+    {
+      "name": "SWING",
+      "scope": "Timing",
+      "description": "Shuffle amount applied to odd clock pulses (INT CLK only).",
+      "detail": "50 = 0% swing · 72 = 33% swing"
+    },
+    {
+      "name": "INT/EXT",
+      "scope": "Timing",
+      "description": "Selects clock source: internal, external trigger, or DIN Sync 24 PPQ.",
+      "detail": "C_InT · C_EXT · C_d24 (requires reset pin 5 of DIN-Sync)"
+    },
+    {
+      "name": "DIV",
+      "scope": "Timing",
+      "description": "Sets incoming clock division (di) and outgoing CLK division (do). Allowed values set by CONFIG → d.",
+      "detail": "di: 1-64 · do: ALL/Odd/Even or per-stage pulse (d_STA)"
+    },
+    {
+      "name": "MODE",
+      "scope": "Pattern",
+      "description": "Direction mode: Forward, Reverse, Ping-Pong, Brownian, Random, plus Fixed variants where STAGES counts pulses instead of stages.",
+      "detail": "Frd · rEv · PnG · brn · rnd · plus -F fixed-length variants"
+    },
+    {
+      "name": "STAGES",
+      "scope": "Pattern",
+      "description": "Sets sequence length in stages (or pulses in -F fixed modes).",
+      "detail": "1-8 stages in default modes"
+    },
+    {
+      "name": "STEP/DIV",
+      "scope": "Pattern",
+      "description": "Subdivides the pulse for REPEAT gate mode.",
+      "detail": "STEP1-STEP4 · STEP4 means gate fires every 4th clock pulse"
+    },
+    {
+      "name": "SCALE",
+      "scope": "Pattern",
+      "description": "Selects quantization scale. 30 scales from chromatic through modes to microtonal.",
+      "detail": "Includes Bhairav, Pelog, Hirojoshi, Prometheus, Enigmatic, and more"
+    },
+    {
+      "name": "ROOT",
+      "scope": "Pattern",
+      "description": "Sets root note of the current scale. No effect when scale is Chromatic.",
+      "detail": "12 chromatic root positions"
+    },
+    {
+      "name": "SAVE",
+      "scope": "System",
+      "description": "Saves full panel state to one of 8 EEPROM slots. Last saved slot recalls on power-up.",
+      "detail": "8 slots · encoder to choose, click to commit"
+    },
+    {
+      "name": "LOAD",
+      "scope": "System",
+      "description": "Recalls a saved settings slot.",
+      "detail": "8 slots"
+    },
+    {
+      "name": "MODE Button (black)",
+      "scope": "Pattern Shortcut",
+      "description": "Holds for mode shortcut assignments via SLIDE/SKIP buttons.",
+      "detail": "Configured via CONFIG → ModES"
+    },
+    {
+      "name": "CONFIG",
+      "scope": "System",
+      "description": "Opens system submenu: OCT, d, SYn, rST, rPC, ScAlE, ModES, b, TunE, CALib, Vr.",
+      "detail": "All global settings live here including AUX calibration"
+    },
+    {
+      "name": "AUX A Button",
+      "scope": "AUX A",
+      "description": "Assigns AUX A destination: G.LEn (gate length), STAGE (length), STEPd, d.In (clock div), rATch, P.PrE (pitch pre-quantizer 1V/oct), P.PrEL (semitones pre), P.OCT (octave shift), P.PoST, P.PoSL, rooT (1V/oct root), rooTL (root semitones).",
+      "detail": "P.PrE and rooT require CALib first"
+    },
+    {
+      "name": "AUX B Button",
+      "scope": "AUX B",
+      "description": "Assigns AUX B destination. Same list as AUX A.",
+      "detail": "Two independent AUX modulation paths"
+    }
+  ],
+  "inputs": [
+    { "name": "AUX A", "description": "±5V CV input modulating the sequencer parameter assigned to AUX A", "voltage": "-5V to +5V" },
+    { "name": "AUX B", "description": "±5V CV input modulating the sequencer parameter assigned to AUX B", "voltage": "-5V to +5V" },
+    { "name": "RESET", "description": "Gate (0-5V) resets sequence per CONFIG → rST mode. Can function as RUN gate in rST_r", "voltage": "0-5V gate" },
+    { "name": "CLK", "description": "External clock input. Active only in C_EXT or C_d24 modes. Accepts 0-5V pulses or LFO", "voltage": "0-5V" }
+  ],
+  "outputs": [
+    { "name": "GATE", "description": "Gate output: 0V off, +5V on. Length set by GATE TIME and gate mode", "voltage": "0-5V gate" },
+    { "name": "PITCH", "description": "Quantized 1V/oct pitch CV. 0-5V range (5 octaves)", "voltage": "0-5V, 1V/oct" },
+    { "name": "SYNC", "description": "Pulse at first or last clock of sequence (CONFIG → SYn). Yellow LED indicates state", "voltage": "0-5V gate" },
+    { "name": "CLK", "description": "Internal clock out when INT CLK, or divided external clock when EXT. CONFIG → d_STA emits pulse per new stage instead", "voltage": "0-5V clock" }
+  ],
+  "behaviors": [
+    {
+      "name": "Pulse Count x Gate Mode Matrix",
+      "trigger": "per-stage PULSE COUNT + GATE MODE",
+      "description": "PULSE COUNT sets how long a stage stays active in clock pulses; GATE MODE sets what the gate does during that time. HOLD ties gates across pulses (legato), REPEAT fires a gate per STEP/DIV subdivision, SINGLE fires once, REST silences. Massive rhythmic variety per stage."
+    },
+    {
+      "name": "TB-303 Constant-Time Slide",
+      "trigger": "SLIDE button enabled on a stage",
+      "description": "When a stage has slide active, PITCH output glides from previous pitch to current over SLIDE TIME — constant time regardless of interval size. Signature acid-bassline feel. Works in parallel with gate events."
+    },
+    {
+      "name": "Ratcheting",
+      "trigger": "hold SLIDE/SKIP button + turn encoder",
+      "description": "Per stage, ratchet value 1-4 subdivides each pulse into that many gates (half the GATE TIME each). Combines with PULSE COUNT and STEP/DIV to produce rolling, machine-gun fills. Clear all ratchets with EXIT+encoder until r_Clr."
+    },
+    {
+      "name": "Skip as Pattern Editor",
+      "trigger": "double-click SLIDE/SKIP button",
+      "description": "Skipped stages are bypassed entirely and don't count toward STAGES length. Create odd-meter patterns (5, 7 active stages) without changing STAGES. Blinking LED = skipped."
+    },
+    {
+      "name": "AUX Pitch Pre vs Post Quantizer",
+      "trigger": "AUX → P.PrE / P.PrEL / P.PoST / P.PoSL",
+      "description": "P.PrE (1V/oct) or P.PrEL (semitone) shift pitch BEFORE the quantizer — so CV pushes notes to different scale degrees (voice leading). P.PoST / P.PoSL add offset AFTER quantizer — moves whole sequence chromatically. Two totally different musical effects."
+    },
+    {
+      "name": "AUX Root/Scale Transpose",
+      "trigger": "AUX → rooT or rooTL",
+      "description": "Shifts scale root while keeping slider positions. rooT is 1V/oct-calibrated (chord-root sequencer drives modulation); rooTL is ±12 semitones. Use to auto-harmonize sequence around a chord progression from a second sequencer."
+    },
+    {
+      "name": "30 Scales",
+      "trigger": "SCALE menu",
+      "description": "Chromatic, Major, minor, modes, blues, pentatonics, harmonic/melodic minors, Japanese/Gypsy/Arabic modes, Pelog, Tritone, Prometheus, Augmented, Enigmatic. Scale plus ROOT instantly reharmonizes sliders without manual note-picking."
+    },
+    {
+      "name": "Brownian Direction",
+      "trigger": "MODE → brn",
+      "description": "Drunken walk: 50% forward, 25% stay, 25% back. Combined with scale quantize and small slider range, produces evolving melodies that trend forward but meander. Fixed variant (brn-F) locks total pulse count."
+    },
+    {
+      "name": "Reset Mode Variants",
+      "trigger": "CONFIG → rST",
+      "description": "rST_n resets on next clock (DAW-style start). rST_F requires RESET to be high simultaneously with CLK (prevents glitch resets from noisy gates). rST_r makes RESET input a RUN gate — sequence only plays while gate is high."
+    },
+    {
+      "name": "DIN-Sync Mode",
+      "trigger": "INT/EXT → C_d24",
+      "description": "Expects 24 PPQ clock on CLK and uses RESET input as a run/stop signal per Roland DIN-Sync spec. Lets Metropolis slave to vintage 808/909/303 setups with a DIN-Sync adapter cable."
+    },
+    {
+      "name": "CLK Output Per-Stage Mode",
+      "trigger": "CONFIG → d → d_STA",
+      "description": "CLK output emits a pulse at the start of each new stage instead of dividing the clock. Perfect for driving a second sequencer that advances once per Metropolis stage — hierarchical stepping."
+    },
+    {
+      "name": "Tuning Mode",
+      "trigger": "CONFIG → TunE",
+      "description": "Pitch output locks at 0V, gate stays high. Use to tune a connected VCO's base pitch without running the sequence."
+    },
+    {
+      "name": "Rest Pitch Behavior",
+      "trigger": "CONFIG → rPC",
+      "description": "rPC_Y: PITCH output updates even on REST stages. rPC_n: PITCH holds previous value during rest. rPC_Y is classic TB-303 feel where rests still change pitch silently; rPC_n keeps the last note ringing in connected delays/reverbs."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Acid 303 bassline",
+      "patch": "MODE=Frd · SCALE=Minor · slides on stages 2, 5, 7 · PULSE COUNT mostly 1, one stage at 2 for a tied note · GATE MODE mostly SINGLE · one REST · short GATE TIME · quick SLIDE TIME · route PITCH to VCO, GATE to envelope, envelope to resonant LPF · signature acid squelch",
+      "diagram": "Metropolis:\n* MODE=Frd · SCALE=Minor · SLIDE on S2,S5,S7\n* PULSE mostly 1 · one REST · GATE=SINGLE\n\n- Metropolis (PITCH) p> VCO (V/Oct)\n- Metropolis (GATE) g> Envelope (Trig)\n- VCO (Out) -> LPF (In)\n- Envelope (Out) >> LPF (Cutoff)\n- Envelope (Out) >> VCA (CV)\n- LPF (Out) -> VCA (In) // 303 acid slide bass"
+    },
+    {
+      "name": "Polyrhythmic ratchet snare fill",
+      "patch": "Main voice uses PITCH+GATE · separate ratchet snare driven by AUX A assigned to rATch · program ratchets 4 on stages 4 and 8 · snare trigger comes from GATE · each 4th/8th stage becomes a 4-gate machine-gun roll while the pitch line continues normally",
+      "diagram": "Metropolis:\n* Ratchet=4 on S4,S8 · AUX A=rATch\n\n- Metropolis (PITCH) p> VCO (V/Oct)\n- Metropolis (GATE) t> Snare (Trig)\n- Metropolis (GATE) g> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV) // machine-gun fills S4/S8"
+    },
+    {
+      "name": "Brownian generative lead",
+      "patch": "MODE=brn · SCALE=Minor Pentatonic · STAGES=8 · short GATE TIME · AUX A → P.OCT driven by slow random S&H · every few bars the sequence jumps an octave randomly · pairs with long reverb on the lead voice for ambient evolution",
+      "diagram": "Metropolis:\n* MODE=brn · SCALE=PEnT-\n* AUX A=P.OCT\n\n- S&H (Out) >> Metropolis (AUX A)\n- Slow Clock (Out) t> S&H (Trig)\n- Metropolis (PITCH) p> VCO (V/Oct)\n- Metropolis (GATE) g> Envelope (Trig)\n- VCO (Out) -> Reverb (In) // brownian + octave randomizer"
+    },
+    {
+      "name": "Chord progression via AUX root shift",
+      "patch": "Second sequencer (or quantized CV source) outputs chord roots as 1V/oct · calibrate Metropolis AUX (CONFIG → CALib) · AUX A → rooT · Metropolis slider pattern stays fixed but entire scale retunes to each new root · instant diatonic progressions",
+      "diagram": "Metropolis:\n* CALib done · AUX A=rooT · SCALE=Major\n\n- Chord Sequencer (CV) p> Metropolis (AUX A)\n- Metropolis (PITCH) p> VCO (V/Oct)\n- Metropolis (GATE) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In) // root-follows-chord"
+    },
+    {
+      "name": "Polymetric kick driven by stage clock",
+      "patch": "CONFIG → d → d_STA so CLK output pulses once per new stage · STAGES=5 · standard 4/4 kick pattern clocks main sequence · CLK output fires kick drum · kick plays on a 5-stage cycle against a 4/4 bass line · resolves every 20 steps",
+      "diagram": "Metropolis:\n* STAGES=5 · d_STA enabled\n\n- Master Clock (Out) c> Metropolis (CLK In)\n- Metropolis (PITCH) p> Bass VCO (V/Oct)\n- Metropolis (GATE) g> Bass Envelope (Trig)\n- Metropolis (CLK Out) t> Kick (Trig) // kick on each new stage"
+    },
+    {
+      "name": "Dual Metropolis master-slave song structure",
+      "patch": "Metropolis #1: SYnL (sync on last stage) · main melodic sequence · SYNC output to CLK of Metropolis #2 in EXT mode · Metropolis #2 runs slow chord-root sequence · PITCH of #2 → AUX A of #1 (set to rooT) · 8-stage melody transposes every time it loops",
+      "diagram": "Metropolis #1:\n* SYnL · AUX A=rooT\nMetropolis #2:\n* EXT CLK · 4 stages FRD\n\n- Metropolis #1 (SYNC) c> Metropolis #2 (CLK)\n- Metropolis #2 (PITCH) p> Metropolis #1 (AUX A)\n- Metropolis #1 (PITCH) p> VCO (V/Oct)\n- Metropolis #1 (GATE) g> Envelope (Trig) // song-form chord progression"
+    },
+    {
+      "name": "Swing-heavy trap hat",
+      "patch": "SWING=68 (30% shuffle) · all stages PULSE=2 GATE=REPEAT STEP/DIV=STEP1 · some stages ratchet=3 for rolls · GATE to hi-hat trigger · classic trap hat syncopation with human-feel swing",
+      "diagram": "Metropolis:\n* SWING=68 · PULSE=2 · REPEAT STEP1\n* Ratchet 3 on S3,S7\n\n- Metropolis (GATE) t> Hi-Hat (Trig)\n- Metropolis (PITCH) >> Filter (Cutoff) // pitch CV modulates hat tuning"
+    },
+    {
+      "name": "Ping-pong arp with gate-time automation",
+      "patch": "MODE=PnG · SCALE=Major · 4 stages · AUX A=G.LEn driven by slow LFO · gates stretch and shorten over time · arp accelerates to sustained pads then back to plucks · dynamic performance without touching knobs",
+      "diagram": "Metropolis:\n* MODE=PnG · STAGES=4 · AUX A=G.LEn\n\n- Slow LFO (Out) >> Metropolis (AUX A)\n- Metropolis (PITCH) p> VCO (V/Oct)\n- Metropolis (GATE) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In) // gate-length breathing"
+    },
+    {
+      "name": "Skip-driven odd meter",
+      "patch": "STAGES=8 · skip stages 3 and 6 (double-click SKIP/SLIDE) · 6 active stages · 4/4 clock but sequence is 6 beats long · instant 6/8 feel over 4/4 drums · swap skips on the fly for live meter changes",
+      "diagram": "Metropolis:\n* STAGES=8 · S3,S6 skipped\n\n- Metropolis (PITCH) p> VCO (V/Oct)\n- Metropolis (GATE) g> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV) // 6-step cycle against 4/4"
+    },
+    {
+      "name": "DIN-sync to vintage drum machine",
+      "patch": "INT/EXT=C_d24 · TR-808 DIN-Sync output → DIN cable adapter → CLK (pin 1) and RESET (pin 5) · Metropolis runs locked to 808 transport · SYNC out can trigger a second polyphonic voice · keeps analog drum timing intact",
+      "diagram": "Metropolis:\n* INT/EXT=C_d24\n\n- TR-808 (DIN Sync pin1) c> Metropolis (CLK)\n- TR-808 (DIN Sync pin5) g> Metropolis (RESET)\n- Metropolis (PITCH) p> VCO (V/Oct)\n- Metropolis (GATE) g> Envelope (Trig) // vintage DIN-Sync slave"
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.1",
+    "sources": [
+      "https://ime-assets.s3.amazonaws.com/uploads/manual/manual/24/phmk3manual11.pdf",
+      "https://modulargrid.net/e/industrial-music-electronics-piston-honda-mk-iii",
+      "https://www.perfectcircuit.com/harvestman-piston-honda-mk3.html",
+      "https://waveformmagazine.com/waveform-reviews/industrial-music-electronics-piston-honda-mk-iii/"
+    ]
+  },
+  "slug": "industrial-music-electronics--piston-honda-mk-iii",
+  "name": "Piston Honda mk III",
+  "manufacturer": "Industrial Music Electronics",
+  "hp": 17,
+  "tags": ["OSCILLATOR", "VCO", "WAVESHAPER"],
+  "description": "Dual wavetable oscillator with 512-wave 8×8×8 morphing cube. Per-oscillator thru-zero FM, unison detune, waveshaper input mode, 8-slot preset manager. Shared X/Y/Z sliders with per-osc select and lock.",
+  "controls": [
+    {
+      "name": "Frequency (large)",
+      "scope": "Osc A, Osc B",
+      "description": "Primary tune knob per oscillator. Default is coarse tune; swappable with the small knob in the Global menu. In External In mode this knob becomes the waveshaper Gain control.",
+      "detail": "coarse (default) or fine · doubles as Ext In Gain"
+    },
+    {
+      "name": "Frequency (small)",
+      "scope": "Osc A, Osc B",
+      "description": "Secondary tune knob. Default fine tune; roles reversible via Freq Knob Mode.",
+      "detail": "fine (default) or coarse"
+    },
+    {
+      "name": "CV attenuverter (Freq/Gain)",
+      "scope": "Osc A, Osc B",
+      "description": "Bipolar attenuverter for the oscillator CV input. Center = no modulation; CCW inverts, CW adds. In Ext In mode controls VCA amount on the external gain.",
+      "detail": "center: zero · nonlinear curve · ±full swing"
+    },
+    {
+      "name": "FM/Ext In attenuator",
+      "scope": "Osc A, Osc B",
+      "description": "Attenuator for the audio-rate thru-zero FM / external-input jack. Keep fully CCW if FM is not desired — normalled from the other oscillator.",
+      "detail": "thru-zero FM depth · Ext In gain in waveshaper mode"
+    },
+    {
+      "name": "Mode button",
+      "scope": "Osc A, Osc B",
+      "description": "Toggles between Oscillator mode (internal wavetable VCO) and External In mode (wavetable waveshaper processing the FM/Ext In signal).",
+      "detail": "Osc ↔ Ext · display shows 'Ext' in Ext mode"
+    },
+    {
+      "name": "Select button",
+      "scope": "Osc A, Osc B",
+      "description": "Selects which oscillator receives motion from the shared X/Y/Z sliders and attenuverters. Both may be selected; at least one must be selected. Pressing locks the sliders to prevent accidental cross-editing.",
+      "detail": "routes X/Y/Z · auto-locks on press/preset change"
+    },
+    {
+      "name": "Link button",
+      "scope": "Osc B",
+      "description": "Links Osc B's coarse frequency to Osc A. Fine tune and CV remain active on B. Enables one-touch 2× or 4× unison fat sounds via the Mix output.",
+      "detail": "B follows A · B's Fine/CV still active"
+    },
+    {
+      "name": "X slider",
+      "scope": "Waveform selection",
+      "description": "Manual position on the X axis of the 8×8×8 wavetable cube. Moves across 8 waves within the current Y/Z plane.",
+      "detail": "8 positions · morphs between"
+    },
+    {
+      "name": "Y slider",
+      "scope": "Waveform selection",
+      "description": "Manual position on the Y axis. Scans a new plane of X-axis waveforms.",
+      "detail": "8 positions · morphs between"
+    },
+    {
+      "name": "Z slider",
+      "scope": "Waveform selection",
+      "description": "Manual position on the Z axis — selects between the 8 loaded wavetable banks (each a user-loadable .wav file on the SD card).",
+      "detail": "8 banks · morphs between (disable for hard transitions)"
+    },
+    {
+      "name": "X/Y/Z attenuverter",
+      "scope": "Waveform selection",
+      "description": "One attenuverter per axis CV input. Center = no CV; CCW/CW adds or subtracts from the slider position.",
+      "detail": "center: zero · ±full swing"
+    },
+    {
+      "name": "Preset / Edit button",
+      "scope": "Global",
+      "description": "Enables the 8-slot preset manager. Second press enters Morph mode (smooth CV-driven interpolation). Click rotary encoder while preset is active to enter edit-save state.",
+      "detail": "off / Preset / Morph"
+    },
+    {
+      "name": "Preset CV attenuator",
+      "scope": "Global",
+      "description": "Attenuates or offsets the Preset CV input. Role depends on CTL option (CV+Offset, CV+Atten, Trig+Offset, Trig Random).",
+      "detail": "behavior per CTL menu"
+    },
+    {
+      "name": "Rotary encoder",
+      "scope": "Global",
+      "description": "Menu navigation and preset selection. Hold + button combos reach the three main menus (Osc A, Osc B, Global, Preset). Hold + Select to change Octave; hold + Mode to change Unison.",
+      "detail": "menu nav · preset scan · hotkeys"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "1V/Oct (Osc A, Osc B)",
+      "description": "Tracked pitch input per oscillator. 0V at C0 convention — input voltage maps directly to displayed note name.",
+      "voltage": "0-8V (1V/oct)"
+    },
+    {
+      "name": "CV (Osc A, Osc B)",
+      "description": "Bipolar frequency CV per oscillator, scaled by the attenuverter. In Ext In mode controls waveshaper gain.",
+      "voltage": "±8V"
+    },
+    {
+      "name": "FM / Ext In (Osc A, Osc B)",
+      "description": "AC-coupled audio-rate input. In Oscillator mode provides thru-zero FM. In External In mode provides the signal to be waveshaped through the selected wavetable. Normalized from the other oscillator when unpatched.",
+      "voltage": "AC 10Vpp",
+      "normalizedTo": "other oscillator's output"
+    },
+    {
+      "name": "Sync (Osc A, Osc B)",
+      "description": "Hard-sync input per oscillator. Rising edge resets oscillator phase.",
+      "voltage": "0-5V"
+    },
+    {
+      "name": "X CV",
+      "description": "CV input for X-axis waveform position. Shared between oscillators (can be disabled per-osc via Waveform CV menu).",
+      "voltage": "±8V"
+    },
+    {
+      "name": "Y CV",
+      "description": "CV input for Y-axis waveform position. Shared/toggleable.",
+      "voltage": "±8V"
+    },
+    {
+      "name": "Z CV",
+      "description": "CV input for Z-axis (bank) selection. Shared/toggleable.",
+      "voltage": "±8V"
+    },
+    {
+      "name": "Preset CV",
+      "description": "Scans or triggers the 8 preset slots. Behavior set via CTL (CV+Offset, CV+Atten, Trig+Offset, Trig Random).",
+      "voltage": "±8V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "A",
+      "description": "Main audio output of oscillator A.",
+      "voltage": "audio"
+    },
+    {
+      "name": "B",
+      "description": "Main audio output of oscillator B.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Mix",
+      "description": "Sum of oscillators A and B. Useful for one-cable unison/link patches.",
+      "voltage": "audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "8×8×8 wavetable cube",
+      "trigger": "X/Y/Z slider or CV movement",
+      "description": "512 16-bit waveforms arranged as a 3D cube. X/Y scan 64 waveforms within a Z bank; Z selects one of 8 SD-loaded .wav banks. Smooth morphing on all axes by default. Per-axis morph disable turns smooth interpolation into hard wave transitions, useful for glitchy wavetable scanning or for hearing stored waves un-mixed."
+    },
+    {
+      "name": "Shared X/Y/Z with Select lock",
+      "trigger": "Select button state · preset change",
+      "description": "Sliders and X/Y/Z attenuverters are shared — Select buttons determine which oscillator(s) receive slider motion. After pressing Select or loading a preset, sliders lock until moved. Unlocking per-oscillator prevents editing the wrong voice by accident. Deselecting both is prevented."
+    },
+    {
+      "name": "Thru-zero FM",
+      "trigger": "audio signal patched to FM / Ext In · Mode: Oscillator",
+      "description": "Each FM input implements thru-zero FM, keeping pitch stable around zero hertz during deep modulation. Normalled from the other oscillator — attenuator fully CCW disables unintentional self-FM. True through-zero means classic DX-style bell and metallic tones without detuning."
+    },
+    {
+      "name": "External Input (waveshaper) mode",
+      "trigger": "Mode button on osc · Ext appears on display",
+      "description": "Large Frequency knob becomes manual Gain; CV attenuverter becomes VCA for gain. Internal oscillator silences; instead the signal at FM/Ext In is dynamically waveshaped through the selected wavetable — classic digital waveshaper sound. Feed a sine for the cleanest harmonic sculpting. Both oscs in Ext mode with nothing patched causes unpleasant feedback."
+    },
+    {
+      "name": "Link follows A",
+      "trigger": "Link button on Osc B",
+      "description": "Osc B coarse tune disables; B copies A's pitch. B's Fine Tune and CV still apply — use Fine for unison detune. Combined with per-oscillator Unison, you get up to 4-oscillator stacked sounds through the Mix output with one pitch CV."
+    },
+    {
+      "name": "Unison detune",
+      "trigger": "Oscillator menu → Unison · or hold encoder + Mode button",
+      "description": "Doubles the oscillator with a detuned copy summed internally. Detune amount or ±octave settings give thick 2-voice sounds per oscillator. Stacking on both oscs plus Link mode gives a huge 4-voice unison without extra cables."
+    },
+    {
+      "name": "Morph enable per axis",
+      "trigger": "Oscillator menu → Morph Enable",
+      "description": "Turn off morph on X, Y, or Z to produce hard wave switching instead of smooth interpolation. Z-off is particularly useful for hearing a single loaded wavetable file without neighbor-bank bleed. Display shows missing colon on a given axis label when morph is disabled there."
+    },
+    {
+      "name": "Tone quantization menu",
+      "trigger": "Oscillator menu → Tone",
+      "description": "Introduces subtle quantization distortion for 'classic' digital character reminiscent of prior Piston Hondas. Orthodox is full 16-bit clean. Other modes fold high-frequency aliases back into the audible range — most audible at low frequencies on sine-like waves."
+    },
+    {
+      "name": "Octave shift hotkey",
+      "trigger": "hold Select button + turn encoder",
+      "description": "Shifts oscillator pitch across ±2 octaves. Works without menu. Pitch falls silent if you exceed the ~14 Hz minimum."
+    },
+    {
+      "name": "Preset morph",
+      "trigger": "Preset button pressed twice (Morph mode)",
+      "description": "Morph mode locks all managed controls. Encoder selects the base preset (fixes non-morphable menu settings like Unison/Mode). Preset CV interpolates smoothly across 8 stored sound-design states. Preset Scope chooses between Waves Only (stable pitch) and All Params (full morph including pitch)."
+    },
+    {
+      "name": "microSD wavetable loading",
+      "trigger": "8 files named 1.wav–8.wav on SD · Global menu → Load Waves from SD",
+      "description": "All 8 Z-axis banks load at once. Each file: 1-channel 16-bit WAV, 32 KB, 64 waveforms × 256 samples. WaveEdit by Synthesis Technology is the recommended authoring tool. Factory wave set still downloadable from industrialmusicelectronics.com for re-filling missing banks."
+    },
+    {
+      "name": "Sync hard-reset",
+      "trigger": "rising edge at Sync jack",
+      "description": "Classic hard sync. Phase resets to zero on each trigger. Combined with X/Y/Z CV, produces sync-scream timbres that also scan wavetables — a sonic region unique to this module."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Wavetable lead with Link unison",
+      "patch": "Osc B Link ON · Osc B Fine Tune slightly off center (~10 cents) · X slider 3 · Y slider 4 · Z slider 2 · slow LFO → Y CV (depth ~30%) · Mix output → filter → VCA · detuned dual-osc lead with slowly morphing wavetable position across the Y plane",
+      "diagram": "Piston Honda mk III:\n* Osc B: Link ON · Fine: +10 cents\n* X: 3 · Y: 4 · Z: 2\n\nSequencer:\nLFO:\nFilter:\nVCA:\nEnvelope:\n\n- Sequencer (Pitch) p> Piston Honda mk III (1V/Oct Osc A)\n- LFO (Out) >> Piston Honda mk III (Y CV)\n- Piston Honda mk III (Mix) -> Filter (In)\n- Envelope (Out) >> VCA (CV)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Thru-zero FM bell",
+      "patch": "Osc A as carrier · Osc B Link OFF · Osc B output normalled to Osc A FM (no cable) · Osc A FM attenuator ~1 o'clock · Osc B Frequency set ~ratio 1:2.76 for bell · X 2 Y 1 Z 1 (sine-like carrier) · envelope → Osc A CV (modulating FM index via attenuverter) · DX-style bell voice from the internal normal",
+      "diagram": "Piston Honda mk III:\n* Osc A: carrier · FM attn: ~1 o'clock\n* Osc B: Link OFF · Freq ratio ~2.76\n* X: 2 · Y: 1 · Z: 1\n\nSequencer:\nEnvelope:\n\n- Sequencer (Pitch) p> Piston Honda mk III (1V/Oct Osc A)\n- Envelope (Out) >> Piston Honda mk III (CV Osc A) // FM index swell\n- Piston Honda mk III (A) -> VCA (In)"
+    },
+    {
+      "name": "Waveshaper on external sine",
+      "patch": "External sine VCO → Osc A FM/Ext In · Osc A Mode: Ext In · large Osc A knob = manual gain · envelope → Osc A CV (VCA gain) · X slider scans harmonic complexity per note · classic FM waveshaping voice using the wavetable cube as nonlinear shaper",
+      "diagram": "Piston Honda mk III:\n* Osc A: Mode Ext In\n* X: scan 1-8 · Y: 3 · Z: 1\n\nVCO:\n* Wave: Sine\n\nEnvelope:\n\n- VCO (Sine) -> Piston Honda mk III (FM/Ext In Osc A)\n- Envelope (Out) >> Piston Honda mk III (CV Osc A) // VCA gain\n- Piston Honda mk III (A) -> Output (In)"
+    },
+    {
+      "name": "Hard-sync wavetable scream",
+      "patch": "Osc A: master pitch · Osc B: Sync input patched from Osc A (use a mult or patch Osc A out to Osc B Sync) · Osc B Frequency 1 octave above A · sweep LFO → Y CV (both oscs selected) · Osc B Select only for knob edits · classic sync-sweep plus moving wavetable = aggressive lead",
+      "diagram": "Piston Honda mk III:\n* Osc A: base pitch\n* Osc B: one octave up, Link OFF\n\nSequencer:\nMult:\nLFO:\n\n- Sequencer (Pitch) p> Piston Honda mk III (1V/Oct Osc A)\n- Piston Honda mk III (A) -> Mult (In)\n- Mult (Out) t> Piston Honda mk III (Sync Osc B)\n- LFO (Out) >> Piston Honda mk III (Y CV)\n- Piston Honda mk III (B) -> Output (In)"
+    },
+    {
+      "name": "Stereo dual-osc patch",
+      "patch": "Osc A pitched at unison with Osc B but separate 1V/oct inputs for chord · X/Y/Z different per osc (select one at a time to tweak independently) · Osc A → stereo L · Osc B → stereo R · Waveform CV disabled on Osc B (menu) so X/Y/Z only affects A · Z CV (slow LFO) scans banks on A only — asymmetric stereo morph",
+      "diagram": "Piston Honda mk III:\n* Osc A: selected · X 4 Y 2 Z 1\n* Osc B: deselected, Waveform CV Off · X 1 Y 5 Z 3\n\nChord Seq A:\nChord Seq B:\nLFO:\n\n- Chord Seq A (Pitch) p> Piston Honda mk III (1V/Oct Osc A)\n- Chord Seq B (Pitch) p> Piston Honda mk III (1V/Oct Osc B)\n- LFO (Out) >> Piston Honda mk III (Z CV)\n- Piston Honda mk III (A) -> Output (L)\n- Piston Honda mk III (B) -> Output (R)"
+    },
+    {
+      "name": "Preset morph performance",
+      "patch": "8 presets authored with increasing harmonic density · Preset Scope: Waves Only (pitch stays musical) · CTL: CV+Offset · slow sequencer ramp → Preset CV · Morph mode ON · each note transitions voice character across 8 snapshots · stable pitch, fluid timbre — Star Wars organ territory",
+      "diagram": "Piston Honda mk III:\n* 8 presets: low → high density\n* Preset Scope: Waves Only · CTL: CV+Offset · Morph ON\n\nSequencer:\nRamp:\n\n- Sequencer (Pitch) p> Piston Honda mk III (1V/Oct Osc A)\n- Ramp (Out) >> Piston Honda mk III (Preset CV)\n- Piston Honda mk III (Mix) -> Output (In)"
+    },
+    {
+      "name": "Glitchy wavetable drum",
+      "patch": "Osc A: percussive envelope on CV · Morph Enable: Z off (hard bank transitions) · stepped random → Z CV · each trigger lands on a different wavetable bank · Fast X/Y slow modulation · Unison: +OCT for thickness · produces an ever-mutating digital drum voice",
+      "diagram": "Piston Honda mk III:\n* Osc A: Morph Enable Z off · Unison +OCT\n* X: 2 · Y: 3\n\nTrigger:\nEnvelope:\nS&H:\nNoise:\n\n- Trigger (Out) t> Envelope (Trig)\n- Trigger (Out) t> S&H (Trig)\n- Noise (Out) >> S&H (In)\n- Envelope (Out) >> Piston Honda mk III (CV Osc A)\n- S&H (Out) >> Piston Honda mk III (Z CV) // each hit = new bank\n- Piston Honda mk III (A) -> Output (In)"
+    },
+    {
+      "name": "Cross-modulated pair",
+      "patch": "Osc A out → Osc B FM In (attenuator ~11 o'clock) · Osc B Mix/A out patched to Osc A FM In (via a mult) · small attenuation both ways · two-way FM creates complex quasi-stable timbres · X/Y/Z mild modulation · pitch tracked on Osc A only, Osc B at ratio by ear",
+      "diagram": "Piston Honda mk III:\n* Osc A: Mode Osc · FM attn: 11 o'clock\n* Osc B: Mode Osc, Link OFF · FM attn: 11 o'clock\n\nSequencer:\nMult A:\nMult B:\n\n- Sequencer (Pitch) p> Piston Honda mk III (1V/Oct Osc A)\n- Piston Honda mk III (A) -> Mult A (In)\n- Mult A (Out) -> Piston Honda mk III (FM/Ext In Osc B)\n- Piston Honda mk III (B) -> Mult B (In)\n- Mult B (Out) -> Piston Honda mk III (FM/Ext In Osc A) // two-way FM\n- Piston Honda mk III (Mix) -> Output (In)"
+    },
+    {
+      "name": "Trig-Random preset on accent",
+      "patch": "CTL: Trig Random · accent trigger → Preset CV · preset randomizes on every accented note · Preset Scope: Waves Only · pitch stays stable, voice character changes unpredictably on accents · use Reload Presets to return to known states between performances",
+      "diagram": "Piston Honda mk III:\n* CTL: Trig Random · Preset Scope: Waves Only\n\nSequencer:\nAccent Seq:\n\n- Sequencer (Pitch) p> Piston Honda mk III (1V/Oct Osc A)\n- Accent Seq (Gate) t> Piston Honda mk III (Preset CV) // randomize on accent\n- Piston Honda mk III (Mix) -> Output (In)"
+    },
+    {
+      "name": "Dual waveshaper stereo",
+      "patch": "Osc A Mode: Ext · Osc B Mode: Ext · different external sources patched to each FM In (breaks the self-feedback warning) · Select buttons flip between A and B independently so X/Y/Z can be dialed per-osc before locking · Osc A → L · Osc B → R · stereo waveshaping rig with independent wavetable processing per side",
+      "diagram": "Piston Honda mk III:\n* Osc A: Mode Ext · X/Y/Z set while only A selected\n* Osc B: Mode Ext · X/Y/Z set while only B selected\n\nVCO L:\nVCO R:\nEnvelope:\n\n- VCO L (Out) -> Piston Honda mk III (FM/Ext In Osc A)\n- VCO R (Out) -> Piston Honda mk III (FM/Ext In Osc B)\n- Envelope (Out) >> Piston Honda mk III (CV Osc A)\n- Envelope (Out) >> Piston Honda mk III (CV Osc B)\n- Piston Honda mk III (A) -> Output (L)\n- Piston Honda mk III (B) -> Output (R)"
+    }
+  ]
+}

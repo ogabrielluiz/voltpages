@@ -1,0 +1,140 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/ears/manual/",
+      "https://web.archive.org/web/20221207150410/https://mutable-instruments.net/modules/ears/manual/",
+      "https://web.archive.org/web/20211001000000*/mutable-instruments.net/modules/ears/",
+      "https://modwiggler.com/forum/viewtopic.php?t=168185",
+      "https://modulargrid.net/e/mutable-instruments-ears",
+      "https://www.perfectcircuit.com/mutable-instruments-ears.html"
+    ]
+  },
+  "slug": "mutable-instruments--ears",
+  "name": "Ears",
+  "manufacturer": "Mutable Instruments",
+  "hp": 4,
+  "tags": ["I/O", "ENVELOPE", "UTILITY", "GATE"],
+  "description": "Contact microphone with preamp, envelope follower, and gate detector. Mutable's take on Tom Whitwell's open-source Mikrophonie design. Turns physical touches, taps, and external audio into modular CV and gates.",
+  "controls": [
+    {
+      "name": "GAIN",
+      "scope": "Global",
+      "description": "Preamp gain for contact mic or Hi-Z input. Covers line-level boost to tiny contact-mic transients.",
+      "detail": "0 to +40dB · CW = more gain · clipping lit by red LED at OUT"
+    },
+    {
+      "name": "Contact microphone (piezo disc)",
+      "scope": "Panel-mounted sensor",
+      "description": "Large piezo pad on the front panel. Scratch, tap, rub, brush, or press objects against it for acoustic excitation sources.",
+      "detail": "Hi-Z jack overrides the mic when a cable is inserted"
+    },
+    {
+      "name": "Envelope follower jumpers",
+      "scope": "Rear of PCB",
+      "description": "Three-position jumper for envelope follower attack/release. Third setting (jumper removed) is the longest time.",
+      "detail": "3 presets: fast · medium · slow (no jumper = longest)"
+    },
+    {
+      "name": "Gate detector jumpers",
+      "scope": "Rear of PCB",
+      "description": "Three-position jumper for the gate threshold. Third setting (jumper removed) is the highest threshold voltage.",
+      "detail": "3 presets: low · medium · high (no jumper = highest)"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN",
+      "description": "Hi-Z audio input. Patching here disconnects the contact microphone and routes the external source through the same preamp.",
+      "voltage": "line-level to instrument-level · Hi-Z"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT",
+      "description": "Amplified audio output of the contact mic or external IN. Red LED lights on clipping.",
+      "voltage": "modular level (~±5V clean before clip)"
+    },
+    {
+      "name": "ENV",
+      "description": "Envelope follower CV. Tracks the amplitude of the amplified signal. White LED shows CV level.",
+      "voltage": "~0 to +5V · attack/release set by rear jumpers"
+    },
+    {
+      "name": "GATE",
+      "description": "Gate output. Goes high whenever the envelope crosses the threshold set by the rear gate-detector jumpers. Orange LED mirrors activity.",
+      "voltage": "+8V gate · threshold jumper-selectable"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Contact mic normalization",
+      "trigger": "IN unpatched",
+      "description": "The piezo contact pad on the panel is normalled into the preamp. Patching any cable into IN disconnects the piezo — useful for using Ears as a clean Hi-Z amp for guitar, bass, or line-level sources without mic crosstalk."
+    },
+    {
+      "name": "Envelope follower time jumpers",
+      "trigger": "rear jumper position",
+      "description": "Three discrete attack/release presets. Fastest tracks individual transients for percussive triggering; slowest smooths to a pad-like CV. Removing the jumper entirely selects the longest setting — there is no front-panel access, so set once for the session."
+    },
+    {
+      "name": "Gate threshold jumpers",
+      "trigger": "rear jumper position",
+      "description": "Three gate-detector thresholds. Lowest fires on subtle taps or ambient noise (good for self-triggering). Highest ignores all but hard hits. Removing the jumper gives the highest threshold, useful as a noise gate for loud external signals."
+    },
+    {
+      "name": "Envelope + audio simultaneity",
+      "trigger": "GAIN turned up with audio applied",
+      "description": "OUT carries the clean amplified audio while ENV and GATE run in parallel. A single guitar or drum can drive a VCF cutoff (ENV) while being processed as audio (OUT) and triggering an envelope (GATE) at the same time — Ears acts as a three-way gateway from the acoustic world."
+    },
+    {
+      "name": "Speaker-feedback chain",
+      "trigger": "monitor/speaker bleeding into the piezo",
+      "description": "With nothing patched to IN, a monitor or speaker near the Ears panel couples vibration into the piezo. Feeding modular output back into monitors creates a physical acoustic feedback loop controllable via GAIN — Mutable explicitly advertises speaker feedback as a use case."
+    },
+    {
+      "name": "Gate from non-percussive audio",
+      "trigger": "sustained signal + low threshold jumper",
+      "description": "When gate threshold is set to the lowest jumper setting and envelope follower to a slow release, sustained pads or bowed sources produce a hold-high gate that only drops when the source goes silent. Effectively turns Ears into a voice-activated gate for patch routing."
+    },
+    {
+      "name": "No S/H or auto-gain",
+      "trigger": "reading the panel",
+      "description": "Despite rumours, Ears has no sample-and-hold mode and no automatic gain control — GAIN is manual, and the envelope/gate path is analog. All adaptive behaviour lives in the jumper presets at the rear of the PCB."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Percussive envelope from taps",
+      "patch": "Fast-attack/fast-release envelope jumper · GAIN at noon · tap the piezo pad · ENV → filter cutoff (attenuverter-scaled) · GATE → percussive envelope trigger on a VCA · taps on Ears become plucked notes with dynamic filter sweep.",
+      "diagram": "Ears:\n* Envelope jumper: fast\n* Gate jumper: medium\n* GAIN: noon\n\nVCO:\nFilter:\nEnvelope:\nVCA:\n\n- VCO (Out) -> Filter (In) -> VCA (In) -> Output (In)\n- Ears (ENV) >> Filter (Cutoff)\n- Ears (GATE) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Voice-controlled vocoder-style filter",
+      "patch": "External microphone (or spoken voice picked up by piezo) · slow envelope jumper · GAIN high for sensitivity · ENV → VCF cutoff with attenuverter at 2 o'clock · drone VCO into the filter · voice dynamics open the filter, producing a crude wah/vocoder effect without any digital processing.",
+      "diagram": "Ears:\n* Envelope jumper: slow\n* GAIN: ~3 o'clock\n\nVCO:\nFilter:\n\n- Microphone (Out) -> Ears (IN)\n- VCO (Drone) -> Filter (In) -> Output (In)\n- Ears (ENV) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Acoustic clock source",
+      "patch": "Metronome, kick drum, or clapping hands near the piezo · medium gate threshold · GATE → clock input of a sequencer · Ears converts acoustic rhythm into modular clocks so a live drummer or a metronome app can clock a patch without a MIDI interface.",
+      "diagram": "Ears:\n* Gate jumper: medium\n\nSequencer:\n\n- Ears (GATE) c> Sequencer (Clock)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)"
+    },
+    {
+      "name": "Guitar into modular",
+      "patch": "Electric guitar → IN (disconnects piezo) · GAIN at 3 o'clock to hit modular level · OUT → wavefolder → filter → VCA · ENV → wavefolder amount so playing harder pushes into folding · GATE → envelope trigger for note-on dynamics.",
+      "diagram": "Ears:\n* GAIN: ~3 o'clock\n\nGuitar:\nWavefolder:\nFilter:\nEnvelope:\nVCA:\n\n- Guitar (Out) -> Ears (IN)\n- Ears (OUT) -> Wavefolder (In) -> Filter (In) -> VCA (In) -> Output (In)\n- Ears (ENV) >> Wavefolder (Fold CV)\n- Ears (GATE) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Speaker-feedback resonator",
+      "patch": "Patch a VCO through a high-Q filter into a nearby monitor speaker · speaker vibration couples through case into Ears' piezo · Ears (OUT) → filter FM input · closes an acoustic feedback loop · GAIN knob controls the onset of howl · tapping the case modulates the resonance.",
+      "diagram": "Ears:\n\nVCO:\nFilter:\nMonitor:\n\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> Monitor (In) // physical speaker near Ears\n- Monitor (Acoustic) -> Ears (Piezo)\n- Ears (OUT) >> Filter (FM CV) // acoustic feedback loop"
+    },
+    {
+      "name": "Dual-path envelope and audio",
+      "patch": "Contact-mic scrape → OUT → granular processor for audio texture · same signal's ENV → granular density CV · GATE → trigger freeze on the granular · single physical gesture drives audio, texture density, and freeze behaviour simultaneously.",
+      "diagram": "Ears:\n* Envelope jumper: medium\n* Gate jumper: high\n\nGranular:\n\n- Ears (OUT) -> Granular (In)\n- Ears (ENV) >> Granular (Density CV)\n- Ears (GATE) g> Granular (Freeze)\n- Granular (Out) -> Output (In)"
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/downloads/manuals/morgasmatron_manual_2021.08.03.pdf",
+      "https://intellijel.com/shop/eurorack/morgasmatron/",
+      "https://www.perfectcircuit.com/intellijel-morgasmatron.html"
+    ]
+  },
+  "slug": "intellijel--morgasmatron",
+  "name": "Morgasmatron",
+  "manufacturer": "Intellijel",
+  "hp": 20,
+  "tags": ["VCF", "FILTER", "VCA", "DISTORTION", "EFFECTS"],
+  "description": "Dual 6-mode self-oscillating multimode VCF (LP2/LP1/BP1/HP1/HP2/BR1) with series/parallel routing, built-in crossfader, Q-drive soft saturation, ProCo Rat-style overdrive on Filter A and phase-invert ring modulation. MS-20-inspired Korgasmatron lineage.",
+  "controls": [
+    {
+      "name": "CUTOFF",
+      "scope": "Filter A / Filter B",
+      "description": "Sets filter cutoff frequency. Sums with FM1 and FM2 CV inputs and the dedicated 1V/OCT input.",
+      "detail": "Full sweep · dedicated V/oct tracking"
+    },
+    {
+      "name": "FM1",
+      "scope": "Filter A / Filter B",
+      "description": "Unipolar attenuator for FM1 CV input. FM1 tracks 1V/oct when fully CW.",
+      "detail": "0–unity · attenuator"
+    },
+    {
+      "name": "FM2",
+      "scope": "Filter A / Filter B",
+      "description": "Bipolar attenuverter for FM2 CV. Noon = no effect · CW = positive · CCW = inverted.",
+      "detail": "Attenuverter · ±unity"
+    },
+    {
+      "name": "MODE",
+      "scope": "Filter A / Filter B",
+      "description": "Cycles through six filter modes: LP2, LP1, BP1, HP1, HP2, BR1 (notch).",
+      "detail": "Six-position select"
+    },
+    {
+      "name": "Q",
+      "scope": "Filter A / Filter B",
+      "description": "Sets resonance. Self-oscillates at maximum, producing a pitched sine that tracks 1V/OCT.",
+      "detail": "Sums with Q CV input · self-osc at max"
+    },
+    {
+      "name": "Q-DRIVE",
+      "scope": "Filter A / Filter B",
+      "description": "Drives resonance path to keep Q high as input gain rises. Adds warming growl at mid-Q and soft-clips self-oscillating sine into squarer wave at high Q.",
+      "detail": "Requires some Q to work · soft-clips sine"
+    },
+    {
+      "name": "IN",
+      "scope": "Filter A / Filter B",
+      "description": "Input gain. Unity at ~12 o'clock (10Vpp eurorack). Past noon induces soft clipping.",
+      "detail": "Unity at noon · soft-clip past noon"
+    },
+    {
+      "name": "OVERLOAD LED",
+      "scope": "Filter A / Filter B",
+      "description": "Lights when the filter output begins to soft-clip.",
+      "detail": "Red · per filter"
+    },
+    {
+      "name": "OVERDRIVE switch",
+      "scope": "Filter A",
+      "description": "Engages ProCo Rat-style aggressive overdrive circuit on Filter A's output. Up = on · down = clean.",
+      "detail": "A-only · pre-XFADE"
+    },
+    {
+      "name": "DRY switch A",
+      "scope": "Filter A → XFADE",
+      "description": "Up = bypass Filter A at XFADE (raw IN A feeds the crossfader). Enables wet/dry blends and parallel distortion tricks.",
+      "detail": "Up = dry · down = wet"
+    },
+    {
+      "name": "DRY switch B",
+      "scope": "Filter B → XFADE",
+      "description": "Up = bypass Filter B at XFADE (raw IN B feeds the crossfader).",
+      "detail": "Up = dry · down = wet"
+    },
+    {
+      "name": "PHASE INVERT",
+      "scope": "Filter B → XFADE",
+      "description": "Inverts Filter B's phase before XFADE. Enables ring modulation via phase cancellation and subtly different parallel colours.",
+      "detail": "Up = inverted"
+    },
+    {
+      "name": "SERIES / PARALLEL switch",
+      "scope": "Filter A ↔ Filter B",
+      "description": "Up = Series (A's output feeds B's input — steeper slope or tone-staging). Down = Parallel (both process inputs independently).",
+      "detail": "Two-position"
+    },
+    {
+      "name": "XFADE",
+      "scope": "MIX out",
+      "description": "Crossfades between Filter A and Filter B at the MIX output. Sums with XFADE CV.",
+      "detail": "CCW = A · CW = B · noon = equal"
+    },
+    {
+      "name": "XFADE attenuverter",
+      "scope": "XFADE CV",
+      "description": "Attenuates/inverts the XFADE CV input. Noon = no CV effect.",
+      "detail": "Bipolar"
+    },
+    {
+      "name": "XFADE BALANCE LEDs",
+      "scope": "MIX out",
+      "description": "Two LEDs (green) show Filter A and Filter B contribution to MIX in real time.",
+      "detail": "Dual LED"
+    }
+  ],
+  "inputs": [
+    { "name": "IN A", "description": "Audio input to Filter A", "voltage": "10Vpp typical" },
+    { "name": "IN B", "description": "Audio input to Filter B", "voltage": "10Vpp typical" },
+    { "name": "1V/OCT (A)", "description": "Dedicated pitch tracking CV for Filter A — tracks over several octaves at self-oscillation", "voltage": "1V/oct", "normalizedTo": "feeds Filter B's 1V/OCT when B is unpatched" },
+    { "name": "1V/OCT (B)", "description": "Dedicated pitch tracking CV for Filter B", "voltage": "1V/oct", "normalizedTo": "Filter A's 1V/OCT when unpatched" },
+    { "name": "FM1 (A)", "description": "First cutoff CV for Filter A (attenuator)", "voltage": "CV" },
+    { "name": "FM1 (B)", "description": "First cutoff CV for Filter B (attenuator)", "voltage": "CV" },
+    { "name": "FM2 (A)", "description": "Second cutoff CV for Filter A (attenuverter)", "voltage": "CV", "normalizedTo": "feeds B's FM2 when B unpatched" },
+    { "name": "FM2 (B)", "description": "Second cutoff CV for Filter B (attenuverter)", "voltage": "CV", "normalizedTo": "Filter A's FM2 when unpatched" },
+    { "name": "Q (A)", "description": "CV for Filter A resonance (external attenuator recommended)", "voltage": "CV" },
+    { "name": "Q (B)", "description": "CV for Filter B resonance", "voltage": "CV" },
+    { "name": "XFADE CV", "description": "CV for crossfader — scaled by XFADE attenuverter", "voltage": "CV" }
+  ],
+  "outputs": [
+    { "name": "OUT A", "description": "Filter A direct output (post-overdrive if switched on)", "voltage": "10Vpp" },
+    { "name": "OUT B", "description": "Filter B direct output", "voltage": "10Vpp" },
+    { "name": "MIX", "description": "Crossfaded A/B mix with DRY switches and PHASE INVERT applied", "voltage": "10Vpp" }
+  ],
+  "behaviors": [
+    {
+      "name": "Six filter modes",
+      "trigger": "MODE knob per filter",
+      "description": "LP2 (2-pole low), LP1 (1-pole low), BP1 (1-pole band), HP1 (1-pole high), HP2 (2-pole high), BR1 (notch/band-reject). Modes are instant-switchable — makes live timbre morphs easy."
+    },
+    {
+      "name": "Dual sine oscillator",
+      "trigger": "Q at max, IN unpatched, 1V/OCT patched",
+      "description": "Each filter self-oscillates at max Q, producing a pitched sine that tracks 1V/oct. Two independent pitched sines — useable as a full duophonic VCO pair."
+    },
+    {
+      "name": "Q-Drive squaring",
+      "trigger": "self-oscillate + crank Q-Drive",
+      "description": "Q-Drive soft-clips the resonant sine, adding harmonics and gradually squaring the waveform. Fattens self-oscillation from pure sine toward reed/brass territory without breaking tracking."
+    },
+    {
+      "name": "Series cutoff stacking",
+      "trigger": "SERIES/PARALLEL up",
+      "description": "A's output → B's input. Two same-mode filters in series steepen the slope (e.g., LP2 + LP2 = 4-pole). Mixed modes create formant-like peaks when cutoffs sit close."
+    },
+    {
+      "name": "Overdrive tone-control chain",
+      "trigger": "OVERDRIVE ON · Series mode · Filter B as tone",
+      "description": "Filter A distorts aggressively; Filter B becomes a tone control sculpting the saturated signal. Modulating B's cutoff under performance control adds dynamic distortion tone."
+    },
+    {
+      "name": "Ring modulation via phase null",
+      "trigger": "Parallel · DRY both · PHASE INVERT ON · XFADE noon · XFADE CV drives modulation",
+      "description": "With the two filter paths bypassed and Filter B phase-inverted, the XFADE knob nulls the signal. CV at XFADE CV jack multiplies in — yields ring modulation at MIX."
+    },
+    {
+      "name": "Wet/dry distortion",
+      "trigger": "Parallel · DRY B ON · OVERDRIVE A ON",
+      "description": "XFADE knob becomes a wet/dry blend between distorted Filter A and untouched Filter B input. Parallel saturation without losing low-end clarity."
+    },
+    {
+      "name": "1V/OCT normal between filters",
+      "trigger": "leave B's 1V/OCT unpatched",
+      "description": "A single pitch CV to Filter A's 1V/OCT tracks both filters (Filter B's jack normals from Filter A). Dummy-cable Filter B's 1V/OCT to break the normal for dual voices."
+    },
+    {
+      "name": "FM2 normal between filters",
+      "trigger": "leave B's FM2 unpatched",
+      "description": "FM2 also normals A → B. One CV source can sweep both filter cutoffs simultaneously."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Duophonic sine voices",
+      "patch": "Filter A Q max · 1V/OCT from sequencer A · OUT A · Filter B Q max · 1V/OCT from sequencer B (breaks normal) · OUT B · two pitched sines with independent tuning — CUTOFF knobs act as coarse tune",
+      "diagram": "Morgasmatron:\n* Filter A: Q max · CUTOFF ≈ C3\n* Filter B: Q max · CUTOFF ≈ C4\n\nSequencer A:\n\nSequencer B:\n\n- Sequencer A (Pitch) p> Morgasmatron (1V/OCT A)\n- Sequencer B (Pitch) p> Morgasmatron (1V/OCT B)\n- Morgasmatron (OUT A) -> Mixer (L)\n- Morgasmatron (OUT B) -> Mixer (R)"
+    },
+    {
+      "name": "Self-osc kick",
+      "patch": "Filter A Q max · trigger → short AD → FM2 A (attenuverter positive) for pitch thump · second short AD → VCA after OUT A for amp · Q-Drive cranked for squarer attack · fat self-oscillated kick",
+      "diagram": "Morgasmatron:\n* Filter A: Q max · Q-Drive high · LP2\n\nENV A:\n\nENV B:\n\nSequencer:\n\n- Sequencer (Trig) t> ENV A (Trig)\n- Sequencer (Trig) t> ENV B (Trig)\n- ENV A (Out) >> Morgasmatron (FM2 A)\n- Morgasmatron (OUT A) -> VCA (In)\n- ENV B (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "4-pole stacked LP",
+      "patch": "Both filters LP2 · Series ON · same CUTOFF, same Q · CV to FM2 A normals to B · single envelope opens both simultaneously — steep 4-pole slope with extra squelch from cascaded resonance",
+      "diagram": "Morgasmatron:\n* Series ON\n* Filter A: LP2 · Filter B: LP2\n* FM2 attenuverters: matched\n\nVCO:\n\nENV:\n\n- VCO (Out) -> Morgasmatron (IN A)\n- ENV (Out) >> Morgasmatron (FM2 A) // normals to FM2 B\n- Morgasmatron (OUT B) -> Output (In)"
+    },
+    {
+      "name": "Contrary motion notch/bandpass",
+      "patch": "Filter A BR1 · Filter B BP1 · Parallel · same LFO → FM2 A positive · FM2 B attenuverter inverted · as notch rises, bandpass descends · MIX sweeps between hollow and focused timbres",
+      "diagram": "Morgasmatron:\n* Parallel · Filter A: BR1 · Filter B: BP1\n* FM2 A: +atten · FM2 B: -atten (inverted)\n\nVCO:\n\nLFO:\n\n- VCO (Out) -> Morgasmatron (IN A)\n- VCO (Out) -> Morgasmatron (IN B)\n- LFO (Out) >> Morgasmatron (FM2 A) // normals to FM2 B inverted\n- Morgasmatron (MIX) -> Output (In)"
+    },
+    {
+      "name": "Rat-overdrive synth lead",
+      "patch": "Saw VCO → IN A · Filter A LP2 · OVERDRIVE ON · Series · Filter B HP1 to tame bass · envelope → FM2 A with positive attenuation · modulate B's cutoff by hand for live tone sculpting over aggressive distortion",
+      "diagram": "Morgasmatron:\n* Series · OVERDRIVE A: ON\n* Filter A: LP2 · Filter B: HP1\n\nVCO:\n\nENV:\n\n- VCO (Saw) -> Morgasmatron (IN A)\n- ENV (Out) >> Morgasmatron (FM2 A)\n- Morgasmatron (OUT B) -> Output (In)"
+    },
+    {
+      "name": "Ring-mod voice",
+      "patch": "Carrier osc → IN A · modulator osc → XFADE CV · Parallel · both DRY switches up · PHASE INVERT ON · XFADE knob noon to null · clangorous ring modulation at MIX",
+      "diagram": "Morgasmatron:\n* Parallel · DRY A: ON · DRY B: ON\n* PHASE INVERT: ON · XFADE: noon\n\nVCO 1:\n\nVCO 2:\n\n- VCO 1 (Saw) -> Morgasmatron (IN A)\n- VCO 2 (Sine) >> Morgasmatron (XFADE CV)\n- Morgasmatron (MIX) -> Output (In)"
+    },
+    {
+      "name": "Wet/dry parallel distortion",
+      "patch": "Bass VCO → IN A · IN B same source · Parallel · OVERDRIVE A ON · DRY B ON · XFADE = wet/dry blend · keeps bass weight while adding grit",
+      "diagram": "Morgasmatron:\n* Parallel · OVERDRIVE A: ON · DRY B: ON\n* Filter A: LP2 · cutoff open\n\nVCO:\n\nMult:\n\n- VCO (Out) -> Mult (In)\n- Mult (1) -> Morgasmatron (IN A)\n- Mult (2) -> Morgasmatron (IN B)\n- Morgasmatron (MIX) -> Output (In) // XFADE = distortion amount"
+    },
+    {
+      "name": "Formant vocalizer",
+      "patch": "Parallel · both BP1 · cutoffs set to two vowel formants (e.g., 800Hz + 1200Hz for 'ah') · slow LFO >> FM2 A only (no normal to B) for animated vowel morph · XFADE noon",
+      "diagram": "Morgasmatron:\n* Parallel · Filter A: BP1 · Filter B: BP1\n* Cutoffs: formant pair\n\nVCO:\n\nLFO:\n\n- VCO (Saw) -> Morgasmatron (IN A)\n- VCO (Saw) -> Morgasmatron (IN B)\n- LFO (Out) >> Morgasmatron (FM2 A) // vowel morph on A only\n- Morgasmatron (MIX) -> Output (In)"
+    },
+    {
+      "name": "Send-FX with XFADE wet/dry",
+      "patch": "Drum mix → IN A · Parallel · heavy Q + OVERDRIVE on A · DRY B on · XFADE CV from slow LFO >> wet/dry breathing · dynamic FX send effect",
+      "diagram": "Morgasmatron:\n* Parallel · OVERDRIVE A: ON · DRY B: ON\n* Filter A: BP1 · high Q\n\nLFO:\n\n- Drums (Out) -> Morgasmatron (IN A)\n- Drums (Out) -> Morgasmatron (IN B)\n- LFO (Out) >> Morgasmatron (XFADE CV)\n- Morgasmatron (MIX) -> Output (In)"
+    }
+  ]
+}

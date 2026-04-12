@@ -1,0 +1,183 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/ripples_2020/manual/",
+      "https://web.archive.org/web/20221006172303/https://mutable-instruments.net/modules/ripples/manual/",
+      "https://modwiggler.com/forum/viewtopic.php?t=232563",
+      "https://www.gearnews.com/mutable-instruments-refresh-ripples-and-shades-for-2020/",
+      "https://synthanatomy.com/2020/05/mutable-instruments-relaunches-ripples-filter-shapes-for-2020.html",
+      "https://modulargrid.net/e/mutable-instruments-ripples-2020",
+      "https://www.perfectcircuit.com/mutable-ripples-v2.html"
+    ]
+  },
+  "slug": "mutable-instruments--ripples",
+  "name": "Ripples (2020)",
+  "manufacturer": "Mutable Instruments",
+  "hp": 8,
+  "tags": ["VCF", "FILTER", "VCA", "DISTORTION"],
+  "description": "Analog multimode filter. HP, BP, LP outputs with switchable 2/4-pole slope on BP/LP. Quad-VCA core with OTA resonance, LP through a final VCA, soft-clipping drive on input 1 — Japanese-classic voicing.",
+  "controls": [
+    {
+      "name": "FREQ",
+      "scope": "Global",
+      "description": "Cutoff frequency. Full audio sweep from sub to treble.",
+      "detail": "20Hz – 20kHz · CV summed with FM and V/OCT inputs"
+    },
+    {
+      "name": "Slope switch",
+      "scope": "BP / LP outputs",
+      "description": "Toggles between 12 dB/oct (2-pole) and 24 dB/oct (4-pole) response on the BP and LP outputs. HP output is unaffected.",
+      "detail": "Down: 2-pole · Up: 4-pole · HP slope tracks resonance"
+    },
+    {
+      "name": "RES",
+      "scope": "Global",
+      "description": "Resonance amount. Self-oscillation occurs around 75% of rotation upward. Loudness-compensated so level doesn't drop as resonance rises.",
+      "detail": "0 – 12 o'clock: clean · ~75% onward: self-oscillation · liquid coloration near the edge"
+    },
+    {
+      "name": "IN 1 GAIN",
+      "scope": "Input 1 only",
+      "description": "Input 1 pre-gain into the soft-clip stage. Low = clean, high = overdrive. Modular-level signals saturate at full; line-level sources find unity here.",
+      "detail": "Gain 0 – 5 · CW: soft-clip drive"
+    },
+    {
+      "name": "FM attenuverter",
+      "scope": "FM CV",
+      "description": "Bipolar attenuverter for the FM CV input. Centre zeroes the FM path.",
+      "detail": "CCW: invert · noon: zero · CW: unity · ±depth for FM input"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN 1",
+      "description": "Audio input through the soft-clipping drive stage. Gain set by IN 1 GAIN knob. Mixed internally with IN 2.",
+      "voltage": "modular to line level · overdrives at high gain"
+    },
+    {
+      "name": "IN 2",
+      "description": "Clean audio input matching the tonal character of Ripples mkI. Always unity gain, no drive. Mixed internally with IN 1.",
+      "voltage": "modular level · clean path"
+    },
+    {
+      "name": "FM",
+      "description": "Frequency modulation CV, scaled by the FM attenuverter. Non-tracking — use V/OCT for pitch.",
+      "voltage": "±5V typical · attenuverted"
+    },
+    {
+      "name": "V/OCT",
+      "description": "1V/octave tracking cutoff CV. Trimmer-calibrated for ~4 octaves of musical response when self-oscillating. Improved tracking over Ripples mkI.",
+      "voltage": "1V/oct · 4-octave tracking range"
+    },
+    {
+      "name": "RES CV",
+      "description": "CV input for resonance amount. Adds to front-panel RES knob.",
+      "voltage": "0 – +5V · positive-going"
+    },
+    {
+      "name": "VCA CV",
+      "description": "CV input for the final VCA on the LP output. 0V silences, +5V gives unity, above +5V is progressively compressed. Normalled to +7V when unpatched.",
+      "voltage": "0 – +5V linear · > +5V compressed · +7V normal",
+      "normalizedTo": "+7V (LP output always open when unpatched)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "HP",
+      "description": "High-pass output. Slope shifts with resonance (not affected by the slope switch). Quad-VCA core gives a bright but not harsh character.",
+      "voltage": "modular level · resonance-dependent slope"
+    },
+    {
+      "name": "BP",
+      "description": "Band-pass output. Slope (2-pole or 4-pole) follows the front-panel switch.",
+      "voltage": "modular level"
+    },
+    {
+      "name": "LP",
+      "description": "Low-pass output through the internal VCA. Slope follows the switch. This is the primary voice output.",
+      "voltage": "modular level · VCA-controlled"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Two input paths",
+      "trigger": "patching IN 1 vs IN 2",
+      "description": "IN 1 feeds a soft-clip drive stage (GAIN-scaled) for coloured overdrive; IN 2 is a clean path that matches the tone of Ripples mkI. Both are summed internally — patch a clean source to IN 2 and drive a second source through IN 1 for blended parallel processing on a single filter."
+    },
+    {
+      "name": "Switchable slope (BP/LP only)",
+      "trigger": "slope toggle",
+      "description": "2-pole (12 dB/oct) is punchy and present, 4-pole (24 dB/oct) is rounder and more classic-LP. HP output ignores the switch and its slope instead moves with resonance — useful for resonant whistles that stay out of the way of a simultaneous LP voice."
+    },
+    {
+      "name": "Loudness-compensated resonance",
+      "trigger": "raising RES knob",
+      "description": "Unlike most ladder designs, the OTA feedback stage keeps perceived loudness flat as resonance rises — no loss of body at high Q. The compensation introduces a slight liquid coloration at the resonant peak, intentionally evoking Japanese 80s filters (JP-8, Polysix)."
+    },
+    {
+      "name": "Clean self-oscillation sine",
+      "trigger": "RES beyond ~75%",
+      "description": "A soft-limiter OTA in the feedback path keeps self-oscillation clean — the LP output emits a pure sine wave above 75% resonance. With V/OCT patched, Ripples works as a sine-wave VCO over about four octaves of musical tracking."
+    },
+    {
+      "name": "Improved V/OCT tracking over mkI",
+      "trigger": "V/OCT calibration",
+      "description": "The 2020 revision has dedicated, trimmer-calibrated V/OCT with ~4 octaves of musical tracking — the mkI had no V/OCT input at all. Set FREQ ~10 o'clock, RES to max, dial the trimmer while playing octaves on a calibrated keyboard (filter is not temperature-stabilised, expect drift on long sessions)."
+    },
+    {
+      "name": "LP VCA always open",
+      "trigger": "VCA CV unpatched",
+      "description": "VCA CV is normalled to +7V internally, so the LP output is always open by default. Patching any CV breaks the normal. Great when you want the filter to double as the VCA for a voice — one envelope replaces a separate VCA module."
+    },
+    {
+      "name": "VCA soft-compression overhead",
+      "trigger": "VCA CV above +5V",
+      "description": "The VCA on LP is linear up to +5V (unity gain). Above +5V, additional voltage is progressively compressed rather than linearly scaling — so a hot envelope peaking at +8V doesn't overdrive the output. Useful headroom when patching raw envelope modules into VCA CV."
+    },
+    {
+      "name": "IN 1 as overdriving preamp",
+      "trigger": "IN 1 GAIN near max · clean source",
+      "description": "The IN 1 soft-clip stage with gain up to 5× serves as a line-level-to-modular preamp with built-in saturation. A guitar or synth output patched to IN 1 gets amplified and overdriven before filtering, giving a vintage drive character that's independent of filter resonance."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Clean voice + drive send",
+      "patch": "VCO saw → IN 2 (clean path) · same VCO → IN 1 via attenuator → IN 1 GAIN high (drive path) · envelope → VCA CV · slope to 4-pole · play with the IN 1 attenuator to blend clean and overdriven tones through one filter without leaving Ripples.",
+      "diagram": "Ripples (2020):\n* Slope: 4-pole\n\nVCO:\nEnvelope:\nAttenuator:\n\n- VCO (Saw) -> Ripples (2020) (IN 2)\n- VCO (Saw) -> Attenuator (In)\n- Attenuator (Out) -> Ripples (2020) (IN 1)\n- Envelope (Out) >> Ripples (2020) (VCA CV)\n- Ripples (2020) (LP) -> Output (In)"
+    },
+    {
+      "name": "Self-oscillating sine VCO",
+      "patch": "No audio input · RES full CW · V/OCT from sequencer · FREQ sets octave · LP out is a pure sine · use Ripples as a second VCO for kick drums or sub layers · VCA CV from envelope to gate the sine on and off.",
+      "diagram": "Ripples (2020):\n* RES: full CW (self-oscillating)\n* Slope: 4-pole\n\nSequencer:\nEnvelope:\n\n- Sequencer (Pitch) p> Ripples (2020) (V/OCT)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Ripples (2020) (VCA CV)\n- Ripples (2020) (LP) -> Output (In)"
+    },
+    {
+      "name": "Parallel HP + LP split",
+      "patch": "Drum loop → IN 2 · HP → stereo L (transients, hats, cymbals) · LP → stereo R (body, kick) · independent effects on each bus · slope to 2-pole so both bands stay wide · the HP's resonance-dependent slope lets RES sculpt how much mid leaks into the HP channel.",
+      "diagram": "Ripples (2020):\n* Slope: 2-pole\n* RES: ~11 o'clock\n\n- Drum Loop (Out) -> Ripples (2020) (IN 2)\n- Ripples (2020) (HP) -> Reverb L (In)\n- Ripples (2020) (LP) -> Delay R (In)"
+    },
+    {
+      "name": "Ping filter with no audio",
+      "patch": "No audio input · RES around 70% (just below self-oscillation) · envelope → FM input with FM attenuverter at 2 o'clock · trigger pings the filter to produce plucked, tuned percussion · V/OCT for pitch per step · short envelope decay sharpens the ping.",
+      "diagram": "Ripples (2020):\n* RES: ~70%\n* FM attenuverter: ~2 o'clock\n\nSequencer:\nEnvelope:\n\n- Sequencer (Pitch) p> Ripples (2020) (V/OCT)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Ripples (2020) (FM)\n- Ripples (2020) (LP) -> Output (In)"
+    },
+    {
+      "name": "Filter-FM cross-modulation",
+      "patch": "VCO1 → IN 2 as carrier · VCO2 audio-rate → FM input · FM attenuverter controls depth · self-oscillating RES adds sideband colour · slope to 4-pole for heavier spectrum · unorthodox FM voice that blends filter resonance with oscillator modulation.",
+      "diagram": "Ripples (2020):\n* Slope: 4-pole\n* RES: high\n\nVCO 1:\nVCO 2:\n\n- VCO 1 (Saw) -> Ripples (2020) (IN 2)\n- VCO 2 (Sine) >> Ripples (2020) (FM) // audio-rate FM\n- Ripples (2020) (LP) -> Output (In)"
+    },
+    {
+      "name": "No-VCA voice",
+      "patch": "VCO → IN 2 · envelope directly to VCA CV (unpatched = +7V, so patching gates the voice) · skip an external VCA entirely · the LP output's internal VCA handles both filter and amp stages · great for space-constrained racks or a simple synth voice.",
+      "diagram": "Ripples (2020):\n* Slope: 4-pole\n* RES: ~noon\n\nVCO:\nEnvelope:\n\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)\n- VCO (Saw) -> Ripples (2020) (IN 2)\n- Envelope (Out) >> Ripples (2020) (VCA CV) // replaces VCA\n- Ripples (2020) (LP) -> Output (In)"
+    },
+    {
+      "name": "Line-level guitar preamp",
+      "patch": "Guitar → IN 1 · IN 1 GAIN at 3 o'clock for overdrive · slow envelope follower → FM with attenuverter at 1 o'clock · played harder opens the filter (auto-wah) · LP with light resonance to shape · LP VCA held open with nothing patched.",
+      "diagram": "Ripples (2020):\n* IN 1 GAIN: ~3 o'clock\n* Slope: 4-pole\n\nGuitar:\nEnv Follower:\n\n- Guitar (Out) -> Ripples (2020) (IN 1)\n- Guitar (Out) -> Env Follower (In)\n- Env Follower (Out) >> Ripples (2020) (FM) // auto-wah\n- Ripples (2020) (LP) -> Output (In)"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/downloads/manuals/quadra_manual_2018.09.13.pdf",
+      "https://intellijel.com/shop/eurorack/quadrax/",
+      "https://www.perfectcircuit.com/intellijel-quadra-envelope-generator.html"
+    ]
+  },
+  "slug": "intellijel--quadra",
+  "name": "Quadra",
+  "manufacturer": "Intellijel",
+  "hp": 12,
+  "tags": ["ENVELOPE", "LFO", "FUNCTION"],
+  "description": "Quad analog function generator. Each channel runs AD, ASR, or Cycle mode with per-channel exponential/linear switch. Optional Quadra Expander adds EOC outs, CV over A/D, analog OR logic outs and Quadrature mode.",
+  "controls": [
+    {
+      "name": "ATTACK",
+      "scope": "CH 1–4",
+      "description": "Attack time — rise from zero to peak. CCW = fastest. Fastest times achieved in linear mode.",
+      "detail": "0.5ms – 30s+"
+    },
+    {
+      "name": "DECAY",
+      "scope": "CH 1–4",
+      "description": "Decay/release time. In AD mode = fall-to-zero · in ASR = release after gate · in Cycle = sum with Attack sets LFO rate.",
+      "detail": "0.5ms – 30s+"
+    },
+    {
+      "name": "Exp / Linear switch",
+      "scope": "CH 1–4",
+      "description": "Selects curve shape. Linear = straight ramps · Exponential = classic percussive curve. Linear mode permits fastest envelope times.",
+      "detail": "Per-channel toggle"
+    },
+    {
+      "name": "Mode switch (AD / ASR / Cycle)",
+      "scope": "CH 1–4",
+      "description": "AD = one-shot on trigger (ignores gate length). ASR = attack/sustain/release following the gate. Cycle = AD loops as unipolar LFO.",
+      "detail": "Three-position slide switch"
+    },
+    {
+      "name": "Amplitude LED",
+      "scope": "CH 1–4",
+      "description": "Visual indicator of each channel's current envelope level.",
+      "detail": "Brighter = higher amplitude"
+    },
+    {
+      "name": "A CV attenuator (Expander)",
+      "scope": "CH 1–4 · requires Quadra Expander",
+      "description": "Attenuates the Attack CV input for the channel. Normalized to the D CV attenuator so one CV can control both.",
+      "detail": "Unipolar attenuator"
+    },
+    {
+      "name": "D CV attenuator (Expander)",
+      "scope": "CH 1–4 · requires Quadra Expander",
+      "description": "Attenuates the Decay CV input for the channel.",
+      "detail": "Unipolar attenuator"
+    },
+    {
+      "name": "QUAD 1+2 switch (Expander)",
+      "scope": "CH 1+2 pair · requires Expander",
+      "description": "Engages Quadrature mode for 1+2. CH 1's end-of-attack triggers CH 2. Creates interdependent looping envelopes that resemble 90°-shifted waveforms.",
+      "detail": "On/off"
+    },
+    {
+      "name": "QUAD 3+4 switch (Expander)",
+      "scope": "CH 3+4 pair · requires Expander",
+      "description": "Engages Quadrature mode for 3+4.",
+      "detail": "On/off"
+    },
+    {
+      "name": "OR amount (ENV 2 / ENV 3)",
+      "scope": "OR 1+2 / OR 3+4 · requires Expander",
+      "description": "Sets how much of ENV 2 (or ENV 3) is summed into the OR 1+2 (or OR 3+4) output. Used to dial sustain level when constructing ADSR from AD+ASR pairs.",
+      "detail": "Unipolar attenuator"
+    }
+  ],
+  "inputs": [
+    { "name": "TRIG 1–4", "description": "Gate/trigger input per channel. Triggers AD, gates ASR, resets/syncs Cycle.", "voltage": "gate" },
+    { "name": "A CV 1–4 (Expander)", "description": "Voltage control of attack time. Normalized to D CV jack of same channel.", "voltage": "CV", "normalizedTo": "D CV of same channel" },
+    { "name": "D CV 1–4 (Expander)", "description": "Voltage control of decay time.", "voltage": "CV" }
+  ],
+  "outputs": [
+    { "name": "ENV 1–4", "description": "Per-channel function output, unipolar", "voltage": "0–8V" },
+    { "name": "EOC 1–4 (Expander)", "description": "End-of-Cycle gate — high when the channel completes its decay phase", "voltage": "gate" },
+    { "name": "OR 1+2 (Expander)", "description": "Analog OR (peak) of ENV 1 and ENV 2 (ENV 2 scaled by OR amount). Used to fabricate ADSR shapes.", "voltage": "0–8V" },
+    { "name": "OR 3+4 (Expander)", "description": "Analog OR (peak) of ENV 3 and ENV 4 (ENV 3 scaled by OR amount)", "voltage": "0–8V" }
+  ],
+  "behaviors": [
+    {
+      "name": "AD mode",
+      "trigger": "TRIG input",
+      "description": "One-shot AD envelope, completes full cycle regardless of gate length. Ideal for sequencer-driven percussive and pluck envelopes."
+    },
+    {
+      "name": "ASR mode",
+      "trigger": "gate at TRIG",
+      "description": "Attack on gate rise, sustains at peak while gate is high, releases on gate fall. Used for keyboard-style voices where note length matters."
+    },
+    {
+      "name": "Cycle mode",
+      "trigger": "mode switch → Cycle",
+      "description": "AD loops continuously as a unipolar LFO. Total rate = Attack + Decay times. No trigger required; TRIG input still resets phase."
+    },
+    {
+      "name": "ADSR via OR output",
+      "trigger": "CH 1 = AD · CH 2 = ASR · both triggered by same gate → OR 1+2",
+      "description": "Triggering an AD and ASR channel simultaneously produces an ADSR shape at the OR output. ENV 2 OR attenuator sets sustain level. Fabricates classic ADSR from two Quadra channels."
+    },
+    {
+      "name": "Quadrature mode",
+      "trigger": "QUAD 1+2 switch ON (Expander)",
+      "description": "CH 1 self-cycles via its own EOC. CH 2 triggers on CH 1's end-of-attack but won't decay until CH 1 finishes its decay. Creates phase-shifted looping envelopes; great for OR-mixed complex LFO shapes."
+    },
+    {
+      "name": "A/D CV normal",
+      "trigger": "unpatched D CV jack (Expander)",
+      "description": "Attack CV jack is normalized to Decay CV — patching to A CV only modulates both attack and decay together. Patching D CV breaks the normal for independent control."
+    },
+    {
+      "name": "Linear mode speeds up",
+      "trigger": "exp/lin switch → Linear",
+      "description": "Linear curves permit the fastest envelope times. Exponential mode produces classic VCA-friendly percussive curves but has a speed floor."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic ADSR keyboard voice",
+      "patch": "CH 1 = AD · CH 2 = ASR · both triggered by keyboard gate · ENV 2 OR attenuator sets sustain · OR 1+2 → VCA CV · one-knob sustain control with true ADSR shape",
+      "diagram": "Quadra:\n* CH 1: AD mode · linear\n* CH 2: ASR mode · linear\n* Expander: ENV 2 OR atten = sustain level\n\nKeyboard:\n\n- Keyboard (Gate) g> Quadra (TRIG 1)\n- Keyboard (Gate) g> Quadra (TRIG 2)\n- Quadra Expander (OR 1+2) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+    },
+    {
+      "name": "Kick drum (West Coast)",
+      "patch": "Sine VCO → VCA 2 · CH 1 AD (fast A, med D) → VCO pitch CV via attenuator (pitch sweep) · CH 2 AD (fast A, slightly shorter D) → VCA CV (amp) · both triggered from sequencer · snappy boomy kick",
+      "diagram": "Quadra:\n* CH 1: AD · exp · fast A, medium D\n* CH 2: AD · exp · pitch decay < amp decay\n\nVCO:\n\nVCA:\n\nAttenuator:\n\nSequencer:\n\n- Sequencer (Trig) t> Quadra (TRIG 1)\n- Sequencer (Trig) t> Quadra (TRIG 2)\n- Quadra (ENV 1) >> Attenuator (In)\n- Attenuator (Out) p> VCO (FM)\n- VCO (Sine) -> VCA (In)\n- Quadra (ENV 2) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Quadrature LFO pair",
+      "patch": "QUAD 1+2 switch ON · CH 1 + CH 2 in AD mode, short A and D · OR 1+2 → complex looping LFO shape · ENV 1 and ENV 2 individually drive two filter cutoffs for stereo motion that never phases together identically",
+      "diagram": "Quadra:\n* CH 1: AD · CH 2: AD\n* Expander: QUAD 1+2 ON\n\n- Quadra (ENV 1) >> Filter L (Cutoff)\n- Quadra (ENV 2) >> Filter R (Cutoff)\n- Quadra Expander (OR 1+2) >> VCA (CV) // complex composite shape"
+    },
+    {
+      "name": "Chained four-stage envelope",
+      "patch": "CH 1 AD · EOC 1 → TRIG 2 · CH 2 AD · EOC 2 → TRIG 3 · continue through CH 4 · single trigger fires four sequential envelopes to four destinations (filter, VCA, pan, wavefolder)",
+      "diagram": "Quadra:\n* CH 1-4: AD\n\nSequencer:\n\n- Sequencer (Trig) t> Quadra (TRIG 1)\n- Quadra Expander (EOC 1) t> Quadra (TRIG 2)\n- Quadra Expander (EOC 2) t> Quadra (TRIG 3)\n- Quadra Expander (EOC 3) t> Quadra (TRIG 4)\n- Quadra (ENV 1) >> Filter (Cutoff)\n- Quadra (ENV 2) >> VCA (CV)\n- Quadra (ENV 3) >> Pan (CV)\n- Quadra (ENV 4) >> Wavefolder (Fold)"
+    },
+    {
+      "name": "Self-cycling kick with ducking",
+      "patch": "CH 1 Cycle mode (A+D = tempo) = tempo clock · CH 2 AD fires envelope on each EOC 1 pulse · CH 2 → inverter → bass VCA CV for sidechain ducking against the self-cycling kick on CH 1",
+      "diagram": "Quadra:\n* CH 1: CYCLE · A+D = tempo\n* CH 2: AD · longer D\n\n- Quadra Expander (EOC 1) t> Quadra (TRIG 2)\n- Quadra (ENV 1) >> Kick VCA (CV)\n- Quadra (ENV 2) >> Inverter (In)\n- Inverter (Out) >> Bass VCA (CV)\n- Kick VCO (Out) -> Kick VCA (In)\n- Bass VCO (Out) -> Bass VCA (In)"
+    },
+    {
+      "name": "Internal A/D CV sweep",
+      "patch": "CH 3 Cycle as slow LFO · ENV 3 → CH 1 A CV (Expander · unpatched D CV normals through) · as LFO rises, both attack and decay of CH 1 lengthen together — envelope on CH 1 gets progressively lazier over minutes",
+      "diagram": "Quadra:\n* CH 1: AD · CH 3: CYCLE (very slow)\n\nSequencer:\n\n- Sequencer (Trig) t> Quadra (TRIG 1)\n- Quadra (ENV 3) >> Quadra Expander (A CV 1) // D CV normals from A CV\n- Quadra (ENV 1) >> VCA (CV)"
+    }
+  ]
+}

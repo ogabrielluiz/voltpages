@@ -1,0 +1,223 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://joranalogue.com/products/orbit-3",
+      "https://joranalogue.com/orbit-3/manual",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=253204",
+      "https://waveformmagazine.com/waveform-reviews/orbit-3-joranalogue/",
+      "https://www.perfectcircuit.com/joranalogue-orbit-3.html"
+    ]
+  },
+  "slug": "joranalogue--orbit-3",
+  "name": "Orbit 3",
+  "manufacturer": "Joranalogue",
+  "hp": 10,
+  "tags": ["OSCILLATOR", "VCO", "LFO", "RANDOM", "NOISE"],
+  "description": "Analogue double-scroll chaos oscillator. Six phase-offset outputs describe a 3D orbit around two equilibrium points. Ranges from 2.4mHz to 22kHz with 1V/oct tracking; deterministic yet irregular modulation or audio.",
+  "controls": [
+    {
+      "name": "AUDIO/LOW Range Switch",
+      "scope": "Global",
+      "description": "Selects audio VCO range or low frequency VCLFO range.",
+      "detail": "AUDIO: 22Hz–22kHz · LOW: 2.4mHz–180Hz · 1Hz at centre in LOW"
+    },
+    {
+      "name": "FREQUENCY",
+      "scope": "core",
+      "description": "Sets underlying oscillation rate that drives the chaos.",
+      "detail": "Audio: 22Hz–22kHz · Low: 2.4mHz–180Hz"
+    },
+    {
+      "name": "FREQ. MOD.",
+      "scope": "FM CV",
+      "description": "Polariser for the FREQ. CV input. Sets exponential FM depth and direction.",
+      "detail": "noon: 0 · max: +1V/oct · min: −1V/oct · ~0.6V/oct in LOW"
+    },
+    {
+      "name": "DISTRIBUTION",
+      "scope": "attractor",
+      "description": "Widens the orbit paths. CW = orbits dwell longer near each equilibrium point before flipping.",
+      "detail": "Interacts with TAME/WILD to set scroll character"
+    },
+    {
+      "name": "DIST. MOD.",
+      "scope": "distribution CV",
+      "description": "Polariser for the DIST. CV input. Depth of distribution modulation.",
+      "detail": "bipolar · +5V at CV = max distribution"
+    },
+    {
+      "name": "TAME/WILD Switch",
+      "scope": "attractor",
+      "description": "Tame: two distinct scrolls, more structured. Wild: scrolls blur, more irregular.",
+      "detail": "Flip to affect spending-time behaviour and scroll-flip rate"
+    },
+    {
+      "name": "EQUILIBRIUM POINTS − / +",
+      "scope": "attractor",
+      "description": "Two knobs set the two equilibrium point positions. CW = further from origin.",
+      "detail": "Asymmetric settings produce asymmetric attractors · affect output amplitudes (3–12Vpp)"
+    },
+    {
+      "name": "V/OCT Trimmer",
+      "scope": "calibration",
+      "description": "Front-panel trim for pitch tracking. Factory calibrated.",
+      "detail": "Target: 4 octaves between 0V and +4V · settings: wild, dist 9 o'clock, EPs max CW"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "V/OCT.",
+      "description": "Exponential FM input at 1V/oct in audio range (0.66V/oct in low).",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "FREQ.",
+      "description": "Second exponential FM input, scaled by FREQ. MOD. polariser.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "DIST.",
+      "description": "Distribution modulation input, scaled by DIST. MOD. polariser.",
+      "voltage": "bipolar CV · +5V = max"
+    },
+    {
+      "name": "EP−",
+      "description": "CV for the negative equilibrium point position.",
+      "voltage": "0V–+5V (min to max)"
+    },
+    {
+      "name": "EP+",
+      "description": "CV for the positive equilibrium point position.",
+      "voltage": "0V–+5V (min to max)"
+    },
+    {
+      "name": "RESET",
+      "description": "Rising edge resets the chaos core (hard-sync style). May flip oscillation direction → octave-down at audio rate.",
+      "voltage": "+2V low / +3V high · Schmitt trigger"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "+X",
+      "description": "Chaos axis X. Near-sine in stable regimes.",
+      "voltage": "3–12Vpp · 0° phase"
+    },
+    {
+      "name": "+Y",
+      "description": "Chaos axis Y. 60° phase-shifted from +X.",
+      "voltage": "3–12Vpp · 60°"
+    },
+    {
+      "name": "+Z",
+      "description": "Chaos axis Z. 120° phase-shifted from +X.",
+      "voltage": "3–12Vpp · 120°"
+    },
+    {
+      "name": "−X",
+      "description": "Inverted +X.",
+      "voltage": "3–12Vpp · 180°"
+    },
+    {
+      "name": "−Y",
+      "description": "Inverted +Y.",
+      "voltage": "3–12Vpp · 240°"
+    },
+    {
+      "name": "−Z",
+      "description": "Inverted +Z.",
+      "voltage": "3–12Vpp · 300°"
+    },
+    {
+      "name": "EP",
+      "description": "Gate output tracking which equilibrium is being orbited. +5V for positive scroll, 0V for negative. Pseudo-random gate in LOW; square sound source in audio.",
+      "voltage": "0V / +5V gate"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Double-scroll attractor",
+      "trigger": "normal operation",
+      "description": "Oscillation traces a 3D orbit around two equilibrium points. Depending on DISTRIBUTION/EP/TAME-WILD, behaviour ranges from stable periodic orbits to bistable cycling to full chaos. Deterministic — same settings yield same trajectories."
+    },
+    {
+      "name": "Tame vs wild modes",
+      "trigger": "TAME/WILD switch",
+      "description": "TAME: two clearly-separated scrolls, pitched oscillation with periodic scroll flips. WILD: scroll boundaries blur, scroll-changes become frequent and irregular, higher entropy."
+    },
+    {
+      "name": "Scroll-flip gate",
+      "trigger": "EP output",
+      "description": "EP toggles every time the orbit jumps from one scroll to the other. Use as pseudo-random clock divider in LOW mode, or as a square sub-oscillator in audio mode."
+    },
+    {
+      "name": "Asymmetric attractor",
+      "trigger": "EP− ≠ EP+ settings",
+      "description": "Setting the two equilibrium points to different positions tilts the attractor. Asymmetric scrolls have different amplitudes; one may dominate, biasing the EP gate duty cycle."
+    },
+    {
+      "name": "Reset forces stable mode",
+      "trigger": "EP → RESET self-patch",
+      "description": "Feeding EP back into RESET locks the core into stable oscillation. Frequency knob sets pitch; DISTRIBUTION/EP knobs produce stepped pitch changes — a chaotic quantizer."
+    },
+    {
+      "name": "Reset octave-down",
+      "trigger": "pulse → RESET at audio rate",
+      "description": "RESET can flip oscillation direction on each edge. At audio rate this produces octave-down sync artefacts, unlike conventional hard sync's timbral shift."
+    },
+    {
+      "name": "60° phase bank",
+      "trigger": "six outputs simultaneous",
+      "description": "Successive outputs are 60° apart. In stable regime, provides a six-phase sine bank for chorus/phaser-style patches; in chaos, six correlated-but-distinct modulation streams."
+    },
+    {
+      "name": "Wide audio range",
+      "trigger": "AUDIO range + 1V/oct",
+      "description": "Temperature-compensated 1V/oct tracking over at least 5 octaves. Usable as a playable VCO whose timbre morphs with DISTRIBUTION/EP between near-sine and noise."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Slow chaotic modulation bus",
+      "patch": "LOW range · TAME · moderate DISTRIBUTION · six outputs drive six destinations (filter, VCA, pan, FX, etc.) · correlated-yet-different modulations give organic motion without six separate LFOs",
+      "diagram": "Orbit 3:\n* Range: LOW\n* TAME/WILD: TAME\n* DISTRIBUTION: noon\n\n- Orbit 3 (+X) >> Filter (Cutoff)\n- Orbit 3 (+Y) >> VCA (CV)\n- Orbit 3 (+Z) >> Pan (CV)\n- Orbit 3 (−X) >> FX (Time)\n- Orbit 3 (−Y) >> VCO (FM)\n- Orbit 3 (−Z) >> Filter (Res)"
+    },
+    {
+      "name": "Chaotic duet via EP",
+      "patch": "LOW range · +Z → VCO FM (chaotic pitch drift) · EP gate → signal switch · switch alternates between two voice waveforms per scroll flip · each equilibrium hosts its own timbre for a call-and-response duet",
+      "diagram": "Orbit 3:\n* Range: LOW\n* TAME/WILD: TAME\n\n- Orbit 3 (+Z) >> VCO (FM)\n- Orbit 3 (EP) g> Switch (CV)\n- VCO (Saw) -> Switch (In A)\n- VCO (Square) -> Switch (In B)\n- Switch (Out) -> Filter (In)"
+    },
+    {
+      "name": "Saw-wave chaos VCO",
+      "patch": "AUDIO range · 1V/oct sequencer → V/OCT · +X → FREQ. input at max FREQ. MOD. · feedback warps the sine core · Z outputs become saw/ramp-like · chaotic overtones bend with DISTRIBUTION",
+      "diagram": "Orbit 3:\n* Range: AUDIO\n* FREQ. MOD.: max\n\n- Sequencer (Pitch) p> Orbit 3 (V/OCT.)\n- Orbit 3 (+X) >> Orbit 3 (FREQ.) // self-FM feedback\n- Orbit 3 (+Z) -> Filter (In)\n- Envelope (Out) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Stepped tone quantizer",
+      "patch": "AUDIO range · TAME · EP → RESET self-patch forces stable oscillation · sweep DISTRIBUTION or EP knobs · perceived pitch jumps in stepped intervals — a deterministic melodic quantizer without a quantizer module",
+      "diagram": "Orbit 3:\n* Range: AUDIO\n* TAME/WILD: TAME\n\n- Orbit 3 (EP) t> Orbit 3 (RESET) // forces stable\n- LFO (Out) >> Orbit 3 (DIST.)\n- Orbit 3 (+Z) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Pseudo-random gate stream",
+      "patch": "LOW range · WILD · moderate speed · EP output streams irregular 0/5V gates · use as rhythmic trigger or section switcher · modulate DIST to vary density",
+      "diagram": "Orbit 3:\n* Range: LOW\n* TAME/WILD: WILD\n\n- Orbit 3 (EP) g> Drum (Trig)\n- LFO (Out) >> Orbit 3 (DIST.)\n- Orbit 3 (+Y) >> Drum (Pitch)"
+    },
+    {
+      "name": "Six-phase chorus/phaser",
+      "patch": "AUDIO range · TAME · low DISTRIBUTION · near-stable six-phase sine bank · mix pairs of ± outputs through VCAs and sum to approximate vintage 6-phase chorus · small drift gives natural motion",
+      "diagram": "Orbit 3:\n* Range: AUDIO\n* TAME/WILD: TAME\n* DISTRIBUTION: low\n\n- Orbit 3 (+X) -> Mixer (In 1)\n- Orbit 3 (+Y) -> Mixer (In 2)\n- Orbit 3 (+Z) -> Mixer (In 3)\n- Orbit 3 (−X) -> Mixer (In 4)\n- Orbit 3 (−Y) -> Mixer (In 5)\n- Orbit 3 (−Z) -> Mixer (In 6)\n- Mixer (Out) -> Output (In)"
+    },
+    {
+      "name": "Chaotic S&H source",
+      "patch": "LOW range · WILD · +X feeds S&H input · clock samples at steady rate · resulting voltages are correlated-but-irregular · feed to quantizer for deterministic melodic sequences",
+      "diagram": "Orbit 3:\n* Range: LOW\n* TAME/WILD: WILD\n\n- Orbit 3 (+X) >> S&H (In)\n- Clock (Out) c> S&H (Trig)\n- S&H (Out) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Oscilloscope XY art",
+      "patch": "AUDIO range · send any output pair to scope XY inputs · real-time Lissajous-style chaos figures · tweak DISTRIBUTION/EP/TAME-WILD to sculpt the visual attractor · musical AND visual module",
+      "diagram": "Orbit 3:\n* Range: AUDIO\n* TAME/WILD: WILD\n\n- Orbit 3 (+X) -> Scope (X)\n- Orbit 3 (+Y) -> Scope (Y)"
+    }
+  ]
+}

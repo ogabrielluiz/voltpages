@@ -1,0 +1,316 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.0.9.0",
+    "sources": [
+      "https://intellijel.com/shop/eurorack/swells/",
+      "https://intellijel.com/downloads/manuals/swells_quick_start.pdf",
+      "https://intellijel.com/downloads/manuals/swells_manual_v1.0_2026.04.09.pdf"
+    ]
+  },
+  "slug": "intellijel--swells",
+  "name": "Swells",
+  "manufacturer": "Intellijel",
+  "hp": 20,
+  "tags": ["REVERB", "EFFECTS", "MIXER", "UTILITY"],
+  "description": "Multi-model stereo reverb with a built-in SWELL generator, nine models, lo-fi variants, freeze and reverse modes, and extensive CV control over both reverb and modulation behavior.",
+  "controls": [
+    {
+      "name": "MODEL X / Y / Z",
+      "scope": "Global",
+      "description": "Selects the reverb bank.",
+      "detail": "three-position switch"
+    },
+    {
+      "name": "MODEL 1 / 2 / 3",
+      "scope": "Global",
+      "description": "Selects the model within the active bank.",
+      "detail": "three-position switch"
+    },
+    {
+      "name": "LO-FI",
+      "scope": "Global",
+      "description": "Selects the amount of model-specific degradation or modification.",
+      "detail": "OFF · MIN · MAX"
+    },
+    {
+      "name": "PREDLY",
+      "scope": "Reverb",
+      "description": "Sets pre-delay time.",
+      "detail": "slider"
+    },
+    {
+      "name": "SIZE",
+      "scope": "Reverb",
+      "description": "Sets the virtual room size or delay scale.",
+      "detail": "slider"
+    },
+    {
+      "name": "DECAY",
+      "scope": "Reverb",
+      "description": "Sets decay or feedback amount.",
+      "detail": "slider"
+    },
+    {
+      "name": "LO-DAMP",
+      "scope": "Reverb",
+      "description": "Sets low-frequency damping.",
+      "detail": "slider"
+    },
+    {
+      "name": "HI-DAMP",
+      "scope": "Reverb",
+      "description": "Sets high-frequency damping.",
+      "detail": "slider"
+    },
+    {
+      "name": "EBB",
+      "scope": "Model-specific",
+      "description": "First model-specific slider; function depends on the selected model and lo-fi state.",
+      "detail": "bipolar on some models"
+    },
+    {
+      "name": "FLOW",
+      "scope": "Model-specific",
+      "description": "Second model-specific slider; function depends on the selected model and lo-fi state.",
+      "detail": "bipolar on some models"
+    },
+    {
+      "name": "EQ",
+      "scope": "Reverb",
+      "description": "Tilts the wet signal toward high or low emphasis.",
+      "detail": "high / low tilt"
+    },
+    {
+      "name": "INPUT",
+      "scope": "Reverb",
+      "description": "Sets the level of audio sent into the reverb.",
+      "detail": "drives the internal input stage"
+    },
+    {
+      "name": "MIX",
+      "scope": "Reverb",
+      "description": "Sets the dry / wet blend.",
+      "detail": "dry to wet"
+    },
+    {
+      "name": "LEVEL Attn (INPUT)",
+      "scope": "Global",
+      "description": "Sets how much the LEVEL CV input modulates INPUT.",
+      "detail": "attenuverter"
+    },
+    {
+      "name": "LEVEL Attn (MIX)",
+      "scope": "Global",
+      "description": "Sets how much the LEVEL CV input modulates MIX.",
+      "detail": "attenuverter"
+    },
+    {
+      "name": "RISE",
+      "scope": "SWELL Generator",
+      "description": "Sets SWELL attack time.",
+      "detail": "attack / rise"
+    },
+    {
+      "name": "FALL",
+      "scope": "SWELL Generator",
+      "description": "Sets SWELL release time.",
+      "detail": "decay / fall"
+    },
+    {
+      "name": "THRESH",
+      "scope": "SWELL Generator",
+      "description": "Sets the trigger threshold for SWELL generation.",
+      "detail": "higher = less sensitive"
+    },
+    {
+      "name": "CV Attn 1-8",
+      "scope": "Mod Inputs 1-8",
+      "description": "Sets modulation amount and polarity for the eight parameter CV inputs.",
+      "detail": "center = no modulation"
+    },
+    {
+      "name": "IN / SC / OUT",
+      "scope": "SWELL Generator",
+      "description": "Selects which signal source drives the SWELL envelope follower.",
+      "detail": "input · sidechain · output"
+    },
+    {
+      "name": "SWELL",
+      "scope": "SWELL Generator",
+      "description": "Manually fires the SWELL generator.",
+      "detail": "button"
+    },
+    {
+      "name": "FREEZE",
+      "scope": "Reverb",
+      "description": "Captures a slice of audio for endless sustain.",
+      "detail": "toggle"
+    },
+    {
+      "name": "REVERSE",
+      "scope": "Reverb",
+      "description": "Reverses playback through the pre-delay path.",
+      "detail": "toggle"
+    },
+    {
+      "name": "BURST",
+      "scope": "Reverb",
+      "description": "Triggers a momentary effect such as noise or extra pre-delay feedback.",
+      "detail": "toggle or triggered effect"
+    },
+    {
+      "name": "TRIG",
+      "scope": "Global",
+      "description": "Assignable trigger input for SWELL, FREEZE, BURST, REVERSE, or reverse sync.",
+      "detail": "trigger"
+    },
+    {
+      "name": "DRIVE",
+      "scope": "Global",
+      "description": "Enables input saturation.",
+      "detail": "alt function"
+    },
+    {
+      "name": "EF GAIN",
+      "scope": "SWELL Generator",
+      "description": "Sets the gain of the signal feeding the envelope follower.",
+      "detail": "alt function"
+    },
+    {
+      "name": "MODE",
+      "scope": "SWELL Generator",
+      "description": "Selects SWELL trigger mode.",
+      "detail": "alt function"
+    },
+    {
+      "name": "HPF -> VERB",
+      "scope": "Global",
+      "description": "Sets the reverb input high-pass cutoff.",
+      "detail": "alt function"
+    },
+    {
+      "name": "LPF -> EF",
+      "scope": "SWELL Generator",
+      "description": "Sets the low-pass cutoff for the SWELL source.",
+      "detail": "alt function"
+    },
+    {
+      "name": "TYPE",
+      "scope": "Reverb",
+      "description": "Selects the BURST type.",
+      "detail": "alt function"
+    },
+    {
+      "name": "ALT",
+      "scope": "Global",
+      "description": "Accesses alternate functions printed in grey on the panel.",
+      "detail": "modifier"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN L",
+      "description": "Left audio input. Normalled to the right input when the right jack is empty.",
+      "voltage": "stereo audio",
+      "normalizedTo": "IN R"
+    },
+    {
+      "name": "IN R",
+      "description": "Right audio input.",
+      "voltage": "stereo audio"
+    },
+    {
+      "name": "TRIG",
+      "description": "Assignable trigger input for SWELL, FREEZE, BURST, REVERSE, or reverse sync.",
+      "voltage": "trigger"
+    },
+    {
+      "name": "SC",
+      "description": "Sidechain input that can drive the SWELL generator.",
+      "voltage": "audio or CV"
+    },
+    {
+      "name": "LEVEL CV",
+      "description": "Modulates INPUT and MIX through the two LEVEL attenuverters.",
+      "voltage": "CV"
+    },
+    {
+      "name": "MOD 1-8",
+      "description": "Eight parameter modulation inputs, each with its own attenuverter.",
+      "voltage": "CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT L / OUT R",
+      "description": "Stereo reverb output."
+    },
+    {
+      "name": "SWELL",
+      "description": "Dedicated CV output from the SWELL generator.",
+      "voltage": "0-5V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Nine-model stereo reverb",
+      "trigger": "select a MODEL bank and position",
+      "description": "Swells offers nine stereo reverb models, from conventional halls and plates to stranger algorithms, with lo-fi variants that alter each model differently."
+    },
+    {
+      "name": "SWELL generator normalization",
+      "trigger": "adjust RISE, FALL, THRESH, or source mode",
+      "description": "The SWELL generator behaves like an envelope follower with four source modes and is normalled to the reverb parameters for self-modulation."
+    },
+    {
+      "name": "External modulation bus",
+      "trigger": "patch CV into MOD 1-8 or LEVEL CV",
+      "description": "The eight parameter inputs plus LEVEL CV can move the module away from static reverb and into animated, performance-oriented territory."
+    },
+    {
+      "name": "Freeze and reverse effects",
+      "trigger": "press FREEZE or REVERSE, or assign TRIG",
+      "description": "Freeze can hold a moment indefinitely, while Reverse turns the incoming audio around the pre-delay path for reversed ambience."
+    },
+    {
+      "name": "Burst accents",
+      "trigger": "press BURST or assign it to TRIG",
+      "description": "Burst injects noise or feedback-style accent events that can make swells and transitions feel more animated."
+    },
+    {
+      "name": "Send / return mode",
+      "trigger": "disable the dry path",
+      "description": "Swells can act as a send/return effect when the dry path is removed, which makes it easier to process external loops or parallel buses."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Lush hall",
+      "patch": "Stereo synth into IN L/R · MODEL set to a hall or plate · MIX around noon · SWELL off · classic wide reverb for pads and chords.",
+      "diagram": "Swells:\n* MODEL X/Y/Z: X\n* MODEL 1/2/3: 1\n* LO-FI: OFF\n* MIX: noon\n\nSynth:\nOutput:\n\n- Synth (Out L) -> Swells (IN L)\n- Synth (Out R) -> Swells (IN R)\n- Swells (OUT L) -> Output (L)\n- Swells (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Sidechain ducked space",
+      "patch": "Kick into SC · pad into IN L/R · SWELL output to a VCA CV input or downstream filter cutoff · the reverb breathes around the kick without manual automation.",
+      "diagram": "Swells:\n* MODEL X/Y/Z: Y\n* MODEL 1/2/3: 2\n* LO-FI: MIN\n* RISE: slow\n* FALL: medium\n\nKick:\nPad:\nVCA:\nOutput:\n\n- Kick (Out) -> Swells (SC)\n- Pad (Out L) -> Swells (IN L)\n- Pad (Out R) -> Swells (IN R)\n- Swells (SWELL) >> VCA (CV)\n- Pad (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Freeze cloud",
+      "patch": "A short chord enters IN L/R · FREEZE catches the tail · SWELL keeps moving a filter or VCA in the rest of the rack · endless sustain without a separate sampler.",
+      "diagram": "Swells:\n* MODEL X/Y/Z: Z\n* MODEL 1/2/3: 3\n* FREEZE: on\n* MIX: wet\n\nClock:\nFilter:\nOutput:\n\n- Clock (Out) t> Swells (TRIG)\n- Synth (Out L) -> Swells (IN L)\n- Synth (Out R) -> Swells (IN R)\n- Swells (SWELL) >> Filter (Cutoff)\n- Swells (OUT L) -> Output (L)\n- Swells (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Reverse shimmer",
+      "patch": "REVERSE on · long pre-delay · input from a simple drone · the reversed tail turns a static source into a moving wash.",
+      "diagram": "Swells:\n* MODEL X/Y/Z: Z\n* MODEL 1/2/3: 1\n* REVERSE: on\n* PREDLY: long\n* LO-FI: MAX\n\nDrone:\nOutput:\n\n- Drone (Out) -> Swells (IN L)\n- Drone (Out) -> Swells (IN R)\n- Swells (OUT L) -> Output (L)\n- Swells (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Bursty room",
+      "patch": "Clocked triggers to TRIG · BURST assigned to trigger mode · short percussive hits become noisy, blooming reverb events with their own rhythmic accent layer.",
+      "diagram": "Swells:\n* MODEL X/Y/Z: X\n* MODEL 1/2/3: 2\n* BURST: on\n* IN / SC / OUT: IN\n\nClock:\nDrum:\nOutput:\n\n- Clock (Out) c> Swells (TRIG)\n- Drum (Out) -> Swells (IN L)\n- Drum (Out) -> Swells (IN R)\n- Swells (OUT L) -> Output (L)\n- Swells (OUT R) -> Output (R)"
+    }
+  ]
+}

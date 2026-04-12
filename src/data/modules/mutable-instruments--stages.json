@@ -1,0 +1,148 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.2",
+    "sources": [
+      "https://mutable-instruments.net/modules/stages/manual/",
+      "https://mutable-instruments.net/modules/stages/",
+      "https://www.modulargrid.net/e/mutable-instruments-stages",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=211797",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/stages/manual/"
+    ]
+  },
+  "slug": "mutable-instruments--stages",
+  "name": "Stages",
+  "manufacturer": "Mutable Instruments",
+  "hp": 14,
+  "tags": ["ENVELOPE", "LFO", "SEQUENCER", "SLEW", "FUNCTION"],
+  "description": "Six-segment generator. Each segment configurable as ramp · hold (step) · attack/decay via mode button. Chained segments form envelopes, LFOs, sequencers, or complex multi-stage shapes.",
+  "controls": [
+    {
+      "name": "Segment Sliders (×6)",
+      "scope": "Seg 1–6",
+      "description": "Main level/time control per segment. In ramp mode = duration. In hold mode = voltage level. Full-size 60mm sliders.",
+      "detail": "CH 1–6 · touch-sensitive firmware detects handling for easter-egg modes"
+    },
+    {
+      "name": "Shape / Time Pot (×6)",
+      "scope": "Seg 1–6",
+      "description": "Sub-knob per segment. Ramp mode: shape curve (expo→lin→log). Hold mode: depends on segment position (glide/level jitter).",
+      "detail": "CCW: expo · noon: linear · CW: log · also sets step hold-time in sequencer chain"
+    },
+    {
+      "name": "Mode Button (×6)",
+      "scope": "Seg 1–6",
+      "description": "Cycles segment role: ramp (green) · hold/step (orange) · attack-decay (red blinking) · free-running LFO (when no gate, LED breathes).",
+      "detail": "Green = ramp · orange = hold/step · red = decaying envelope segment · long-press = chain grouping toggle"
+    },
+    {
+      "name": "Segment Chaining",
+      "scope": "Global",
+      "description": "Adjacent segments can be grouped into one multi-stage function by patching the GATE of segment N to segment N−1's GATE or leaving GATE jacks empty in a contiguous span.",
+      "detail": "Group LEDs between segments show chained vs. independent segments"
+    }
+  ],
+  "inputs": [
+    { "name": "GATE / TRIG (×6)", "description": "Per-segment gate/trigger. Starts the segment. Patching GATE of segment N breaks any chain to its left, so GATE placement defines group boundaries.", "voltage": ">1V gate/trigger" },
+    { "name": "LEVEL CV (×6)", "description": "Per-segment CV modulating the slider value (level or time).", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "OUT (×6)", "description": "Per-segment output. In a chain, outputs of earlier segments reflect the in-progress function; the group's \"final\" output is the last chained segment.", "voltage": "0–8V unipolar or ±5V depending on mode" }
+  ],
+  "behaviors": [
+    {
+      "name": "Auto-chaining from gate patching",
+      "trigger": "patching or unpatching GATE jacks",
+      "description": "Contiguous segments with no GATE patched form a single chain. A GATE cable patched at segment N starts a new chain beginning at N. This is how you build any length of envelope/sequence from the six segments."
+    },
+    {
+      "name": "Ramp mode (green)",
+      "trigger": "Mode button → green",
+      "description": "Segment produces a ramp from its predecessor's endpoint to its own slider level over the time set by the segment. Shape knob selects curve (expo/lin/log)."
+    },
+    {
+      "name": "Hold/Step mode (orange)",
+      "trigger": "Mode button → orange",
+      "description": "Segment holds a constant voltage set by its slider. In a chain, this turns the segment into a sequencer step. Shape knob acts as hold-time multiplier."
+    },
+    {
+      "name": "Attack/Decay mode (red blink)",
+      "trigger": "Mode button → red blink",
+      "description": "Segment becomes an envelope: ramps up to slider level (attack) then decays. Shape knob controls decay curve. Triggered by GATE rising edge."
+    },
+    {
+      "name": "Free-running LFO",
+      "trigger": "chain with no GATE patched",
+      "description": "An unpatched chain loops continuously. Chaining multiple ramp segments + a hold produces complex asymmetric LFO shapes — any waveform you can break into six linear segments."
+    },
+    {
+      "name": "Sequencer chain",
+      "trigger": "all-hold chain + clock on GATE",
+      "description": "Set every segment to hold mode, leave GATEs unpatched except for segment 1 (clock). Stages advances to the next step on each clock pulse, producing a CV sequencer with sliders as the step values."
+    },
+    {
+      "name": "ADSR as chain",
+      "trigger": "4-segment ramp chain",
+      "description": "Four adjacent ramp segments with gate on segment 1 form a full ADSR: attack to peak, decay to sustain level, hold sustain while gate high, release on gate low."
+    },
+    {
+      "name": "Ouroboros easter egg",
+      "trigger": "boot while holding Mode button 6",
+      "description": "Alternate firmware makes Stages behave as six harmonically-related quadrature oscillators — each segment outputs a sine wave at a harmonic of segment 1's frequency. Accessed by button-hold at power-on."
+    },
+    {
+      "name": "Segmented generator chain mode",
+      "trigger": "alternate Segment Generator firmware",
+      "description": "Default firmware is already the segment generator. The green/orange/red per-segment LEDs show role; when touched, the slider glows white to indicate the user is adjusting that segment."
+    },
+    {
+      "name": "Slew mode via ramp-only chain",
+      "trigger": "single ramp segment with GATE held",
+      "description": "A ramp segment receiving a fluctuating LEVEL CV acts as a portamento/slew generator — output slews toward the LEVEL target at the time set by the slider."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Six-step CV sequencer",
+      "patch": "All six segments in hold mode · clock → GATE 1 (advances through chain) · sliders set step values · OUT 6 feeds VCO V/OCT via quantizer · Shape pots add per-step hold-time variation · quick way to a 6-step CV lane",
+      "diagram": "Stages:\n* All segments: Hold (orange)\n\n- Clock (Out) c> Stages (GATE 1)\n- Stages (OUT 6) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Clock (Out) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Full ADSR envelope",
+      "patch": "Segments 1–4 in ramp mode (attack, decay, sustain-hold, release) · keyboard gate → GATE 1 · Shape pots sculpt curves · OUT 4 → VCA CV · full-featured ADSR built from a 4-segment chain",
+      "diagram": "Stages:\n* Seg 1: Ramp (attack)\n* Seg 2: Ramp (decay)\n* Seg 3: Hold (sustain)\n* Seg 4: Ramp (release)\n\n- Keyboard (Gate) g> Stages (GATE 1)\n- Stages (OUT 4) >> VCA (CV)"
+    },
+    {
+      "name": "Complex-shape LFO",
+      "patch": "All six segments in ramp mode · no GATE patched (free-running chain) · alternating slider levels create a six-segment non-sinusoidal LFO · Shape pots add curves · OUT 6 as main LFO output for filter modulation",
+      "diagram": "Stages:\n* All segments: Ramp (green)\n* All GATEs: unpatched (free-running chain)\n\n- Stages (OUT 6) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Two independent envelopes",
+      "patch": "Segments 1–3 = envelope A (gate 1) · segments 4–6 = envelope B (gate 4) · each chain attacks to peak and decays · GATE 4 patched starts second group · two envelopes in one module for dual-VCA setups",
+      "diagram": "Stages:\n* Seg 1-3: Ramp (env A)\n* Seg 4-6: Ramp (env B)\n\n- Gate A (Out) g> Stages (GATE 1)\n- Gate B (Out) g> Stages (GATE 4)\n- Stages (OUT 3) >> VCA 1 (CV)\n- Stages (OUT 6) >> VCA 2 (CV)"
+    },
+    {
+      "name": "Slew / portamento",
+      "patch": "Segment 1 in ramp mode · GATE 1 held high via +5V offset · LEVEL CV 1 fed from stepped sequencer pitch CV · slider sets slew time · OUT 1 = smoothed pitch CV feeding VCO · one-segment slew limiter",
+      "diagram": "Stages:\n* Seg 1: Ramp (slew)\n\n- Offset (+5V) g> Stages (GATE 1) // held high\n- Sequencer (Pitch) >> Stages (LEVEL CV 1)\n- Stages (OUT 1) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Burst generator",
+      "patch": "3 ramp segments + 3 hold segments · Cycle via self-patching OUT 6 → GATE 1 via Schmitt-like threshold · produces repeating burst of 3 envelope hits whenever external gate is high · good for drum rolls and gated rhythmic bursts",
+      "diagram": "Stages:\n* Seg 1-3: Ramp\n* Seg 4-6: Hold\n\n- External Gate (Out) g> Stages (GATE 1)\n- Stages (OUT 6) t> Stages (GATE 1) // self-retrig for burst\n- Stages (OUT 3) >> VCA (CV)"
+    },
+    {
+      "name": "Sequencer + envelopes combo",
+      "patch": "Segments 1–3 hold mode = 3-step CV sequencer · segments 4–6 ramp mode = 3-stage envelope · clock into GATE 1 advances sequencer · trigger into GATE 4 fires envelope · one Stages = sequence and shape a voice",
+      "diagram": "Stages:\n* Seg 1-3: Hold (sequencer)\n* Seg 4-6: Ramp (envelope)\n\n- Clock (Out) c> Stages (GATE 1)\n- Clock (Out) t> Stages (GATE 4)\n- Stages (OUT 3) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Stages (OUT 6) >> VCA (CV)"
+    },
+    {
+      "name": "Ouroboros quadrature oscillator",
+      "patch": "Boot Stages with Mode 6 held for Ouroboros firmware · sliders set harmonics · OUT 1 and OUT 2 give 90°-shifted sines (base and quadrature) · mix pairs for multi-harmonic additive drones and stereo imaging",
+      "diagram": "Stages:\n* Firmware: Ouroboros (boot hold)\n\n- Stages (OUT 1) -> Mixer (L)\n- Stages (OUT 2) -> Mixer (R) // 90° quadrature\n- Stages (OUT 3) -> Mixer (In 3) // higher harmonic\n- Stages (OUT 6) -> Mixer (In 4)"
+    }
+  ]
+}

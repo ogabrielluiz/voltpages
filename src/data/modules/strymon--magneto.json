@@ -1,0 +1,260 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.strymon.net/product/magneto/",
+      "https://www.strymon.net/manuals/Magneto_UserManual_REVB.pdf",
+      "https://www.strymon.net/manuals/Magneto_QuickStart_REVB.pdf",
+      "https://modulargrid.net/e/strymon-magneto",
+      "https://www.soundonsound.com/reviews/strymon-magneto"
+    ]
+  },
+  "slug": "strymon--magneto",
+  "name": "Magneto",
+  "manufacturer": "Strymon",
+  "hp": 28,
+  "tags": ["DELAY", "REVERB", "SAMPLER", "EFFECTS", "CLOCK"],
+  "description": "Stereo four-head dTape echo, looper, phrase sampler and spring reverb. Independent playback-level and feedback per head, phase-aligned clock outs per head, pitch-quantized self-oscillation.",
+  "controls": [
+    {
+      "name": "DRY",
+      "scope": "Global",
+      "description": "Level of unprocessed input sent to output. Stereo-preserving.",
+      "detail": "Mono in at LEFT appears at both outputs"
+    },
+    {
+      "name": "REC LVL",
+      "scope": "Global",
+      "description": "Level into record head. Drives tape saturation.",
+      "detail": "LED: blue = muted · green = clean · amber = onset · red = heavy saturation"
+    },
+    {
+      "name": "SPEED / PITCH",
+      "scope": "Global",
+      "description": "True varispeed tape speed. Controls delay time and pitch of repeats.",
+      "detail": "8:1 range · noon = normal · max = 2x (highest fidelity) · min = 1/4x"
+    },
+    {
+      "name": "WET",
+      "scope": "Global",
+      "description": "Overall delay signal level sent to output.",
+      "detail": "Post playback-level knobs"
+    },
+    {
+      "name": "REPEATS",
+      "scope": "Global",
+      "description": "Feedback amount for heads with FEEDBACK ON. At 100% enters self-oscillation.",
+      "detail": "Feedback summed from feedback-enabled heads only"
+    },
+    {
+      "name": "PLAYBACK LEVEL 1–4",
+      "scope": "Per head",
+      "description": "Individual level of each of the four playback heads.",
+      "detail": "Zero mutes output of that head but head still feeds back if FEEDBACK on"
+    },
+    {
+      "name": "FEEDBACK 1–4",
+      "scope": "Per head",
+      "description": "Buttons. Enable feedback of each head back to the record head.",
+      "detail": "Green LED when enabled · Head 4 must be ON for Loop playback"
+    },
+    {
+      "name": "HEADS",
+      "scope": "Global",
+      "description": "Three-way switch: EVEN / TRIPLET / SHIFT head spacing.",
+      "detail": "EVEN: 16th/8th/dotted-8th/quarter · TRIPLET: triplet subdivisions · SHIFT: +oct+5th / +oct / -oct / quarter at varispeed"
+    },
+    {
+      "name": "PAN",
+      "scope": "Global",
+      "description": "Preset stereo panning of heads: LRRL / CENTER / LRLR.",
+      "detail": "CENTER enables custom per-head panning via FEEDBACK-hold + PLAYBACK LEVEL"
+    },
+    {
+      "name": "MODES",
+      "scope": "Global",
+      "description": "Button selects ECHO / LOOP (sound-on-sound) / SAMPLE (phrase).",
+      "detail": "Green = Echo · amber = Loop · red = Sample"
+    },
+    {
+      "name": "TAP",
+      "scope": "Global",
+      "description": "Two taps set head-4 delay time. Hold to enter PITCH QUANTIZE mode.",
+      "detail": "50ms–15s tap range · amber LED = quantize active"
+    },
+    {
+      "name": "LOW CUT",
+      "scope": "Tape mechanics",
+      "description": "High-pass on the echo repeats.",
+      "detail": "Max: high-passed magnetic-drum response with peak"
+    },
+    {
+      "name": "TAPE AGE",
+      "scope": "Tape mechanics",
+      "description": "Tape bandwidth / treble loss.",
+      "detail": "Min: fresh tape · max: mildly peaking, atmospheric"
+    },
+    {
+      "name": "CRINKLE",
+      "scope": "Tape mechanics",
+      "description": "Tape irregularities: friction, creases, splices, contaminants.",
+      "detail": "Min: clean · max: mangled"
+    },
+    {
+      "name": "WOW & FLUTTER",
+      "scope": "Tape mechanics",
+      "description": "Amount of mechanical speed fluctuation.",
+      "detail": "CCW: perfectly tuned · CW: ailing transport"
+    },
+    {
+      "name": "SPRING",
+      "scope": "Global",
+      "description": "Output mix of integrated spring reverb tank. DRY and WET feed its input.",
+      "detail": "Independent send path"
+    },
+    {
+      "name": "TRANSPORT",
+      "scope": "Global",
+      "description": "Enters transport mode: buttons 1–4 become infinite / reverse / restart / pause.",
+      "detail": "Momentary/latch per-button selectable by power-up + hold"
+    }
+  ],
+  "inputs": [
+    { "name": "LEFT IN", "description": "Left audio input · use alone for mono", "voltage": "modular level", "normalizedTo": "right input (mono fanout)" },
+    { "name": "RIGHT IN", "description": "Right audio input" },
+    { "name": "SEND", "description": "Insert return point — not an input; see RETURN" },
+    { "name": "RETURN", "description": "External feedback-loop return, fed to record head after SEND", "voltage": "modular level" },
+    { "name": "CLK IN", "description": "Clock to set delay time in quarter notes", "voltage": "0–5V rising edge · 50ms–15s period" },
+    { "name": "REC GATE", "description": "Toggles record head on/off · mutes input to delay line", "voltage": "0–5V rising edge" },
+    { "name": "SHIFT", "description": "Toggles SHIFT head mode on/off", "voltage": "0–5V rising edge" },
+    { "name": "INFINITE", "description": "Toggles infinite hold (disables record head, loops last delay cycle)", "voltage": "0–5V rising edge" },
+    { "name": "FORWARD/REVERSE", "description": "Toggles tape direction", "voltage": "0–5V rising edge" },
+    { "name": "RESTART", "description": "Engages restart transport · trigger-only regardless of settings", "voltage": "0–5V rising edge" },
+    { "name": "PAUSE", "description": "Toggles pause transport · speed of slowdown set by PLAYBACK LEVEL 4", "voltage": "0–5V rising edge" },
+    { "name": "TAP", "description": "CV-controlled TAP function. Follows ECHO/LOOP/SAMPLE assignment of TAP button", "voltage": "0–5V rising edge · 10ms–15s range" },
+    { "name": "SPEED", "description": "Continuous CV for SPEED/PITCH · 1V/oct calibrated", "voltage": "-3V to +3V · 1V/oct" },
+    { "name": "WET CV", "description": "Modifies WET level · sums with knob", "voltage": "-5V to +5V" },
+    { "name": "REPEATS CV", "description": "Modifies REPEATS · sums with knob", "voltage": "-5V to +5V" },
+    { "name": "SPRING CV", "description": "Modifies SPRING level · sums with knob", "voltage": "-5V to +5V" }
+  ],
+  "outputs": [
+    { "name": "LEFT OUT", "description": "Left audio output · sums mono if RIGHT OUT unpatched", "voltage": "modular level" },
+    { "name": "RIGHT OUT", "description": "Right audio output" },
+    { "name": "SEND", "description": "Summed input + repeats, pre record head · external FX loop send", "voltage": "modular level" },
+    { "name": "CLK 1 OUT", "description": "Phase-aligned clock of playback head 1", "voltage": "0–5V · 50% duty · head-specific subdivision" },
+    { "name": "CLK 2 OUT", "description": "Phase-aligned clock of head 2", "voltage": "0–5V · 50% duty" },
+    { "name": "CLK 3 OUT", "description": "Phase-aligned clock of head 3", "voltage": "0–5V · 50% duty" },
+    { "name": "CLK 4 OUT", "description": "Phase-aligned clock of head 4 · becomes loop/sample length clock in LOOP/SAMPLE modes", "voltage": "0–5V · 50% duty" }
+  ],
+  "behaviors": [
+    {
+      "name": "Echo / Loop / Sample modes",
+      "trigger": "MODES button",
+      "description": "ECHO: four playback heads + one record head, four-tap delay. LOOP: head 4 becomes the sound-on-sound loop head, heads 1–3 remain delays of the incoming signal; FEEDBACK 4 must be ON for loop to play. SAMPLE: head 4 becomes phrase-sampler playhead, triggered by RESTART; tap to record, tap again to stop, third tap clears."
+    },
+    {
+      "name": "Self-oscillation as oscillator",
+      "trigger": "SPEED/PITCH CCW · REPEATS 100% · brief tap",
+      "description": "Tape loop collapses into a high-quality sine. Press INFINITE to lock the pitch; SPEED still responds as 1V/oct over ~6 octaves (combining SPEED knob range with SPEED CV ±3V). Tape-mechanics knobs color the oscillation; an input signal cross-modulates it."
+    },
+    {
+      "name": "Zero-latency suboctave",
+      "trigger": "SHIFT head mode + GATE to RESTART",
+      "description": "SHIFT mode sets head 3 to half-speed (-1 octave). Sending a note gate to RESTART CV realigns the SHIFT pointers on every note-on, yielding a tight -1 octave from head 3 with no perceivable latency. Level via PLAYBACK LEVEL 3."
+    },
+    {
+      "name": "Pitch quantize scales",
+      "trigger": "hold TAP",
+      "description": "Restricts SPEED/PITCH to musical intervals across 15 scales (Pentatonic, Minor Blues, modes, Harmonic Minor, Whole Tone, Harmonic Series, Chromatic). SPEED CV is quantized to semitones. Hold TRANSPORT and turn SPEED/PITCH to scroll scales; FEEDBACK/TRANSPORT LEDs show selection."
+    },
+    {
+      "name": "Phase-aligned clock outs",
+      "trigger": "CLK IN patched",
+      "description": "CLK 1–4 OUT emit 50%-duty clocks at each head's rhythmic subdivision and stay phase-aligned with incoming CLK IN or TAP. In EVEN: 16th/8th/dotted-8th/quarter. In TRIPLET: triplet variants. In SHIFT: 333ms/500ms/2000ms/1000ms at 1s quarter. CLK 4 becomes loop-length clock in LOOP/SAMPLE."
+    },
+    {
+      "name": "Custom per-head panning",
+      "trigger": "PAN = CENTER · hold FEEDBACK N + turn PLAYBACK LEVEL N",
+      "description": "With PAN switched to CENTER, holding a head's FEEDBACK button while turning that head's PLAYBACK LEVEL knob sets its pan (L / center / R). Lets any stereo placement of the four heads be dialed by hand; all-centered produces a psychoacoustic stereo image."
+    },
+    {
+      "name": "Send/Return loop",
+      "trigger": "cable in SEND and RETURN",
+      "description": "SEND outputs summed input + delay repeats pre record-head; RETURN feeds back into record head. Patching both inserts external FX in the feedback path — summed to mono inside Magneto, though the dry output retains stereo. Reverb / filter / waveshaper here for evolving delay feedback."
+    },
+    {
+      "name": "Dual split mode",
+      "trigger": "DIP S2 ON (rear)",
+      "description": "Splits Magneto into a mono 4-head tape delay on LEFT IN/OUT and an independent mono spring reverb on RIGHT IN/OUT. Two unrelated effects in one module; requires rack pull to toggle the DIP."
+    },
+    {
+      "name": "Momentary vs latch transport",
+      "trigger": "power up while holding a transport button",
+      "description": "Each transport function (INFINITE, REVERSE, RESTART, PAUSE) can be set independently to momentary (red flash) or latch (green flash) at boot. CV inputs follow the same assignment (gate vs trigger). RESTART is always trigger-only."
+    },
+    {
+      "name": "Pause with mechanical slowdown",
+      "trigger": "PAUSE engaged",
+      "description": "Stops tape with mechanical slowdown/startup ramp. Ramp time is set by PLAYBACK LEVEL 4 while TRANSPORT+PAUSE are active (both red). With TAPE AGE + CRINKLE high this produces a convincing dying-tape stop."
+    },
+    {
+      "name": "Scrub audio when paused",
+      "trigger": "PAUSE on · move SPEED/PITCH",
+      "description": "A ~1-foot scrub buffer of recent tape is addressable by the SPEED/PITCH knob while paused. Length of scrub material depends on the speed at the moment of pause — slower speeds capture more audio in the buffer."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Clock-locked quarter-note delay",
+      "patch": "ECHO mode · HEADS: EVEN · CLK IN from sequencer master clock at quarter notes · REPEATS ~50% · WET ~noon · all four heads at equal level · four rhythmic echoes (16th, 8th, dotted-8th, quarter) locked to the sequencer · use CLK 4 OUT as a slower sub-clock elsewhere",
+      "diagram": "Magneto:\n* Mode: ECHO\n* Heads: EVEN\n* Repeats: ~50%\n* Playback 1-4: equal\n\nClock:\n\nSource:\n\n- Clock (Out) c> Magneto (CLK IN)\n- Source (Out) -> Magneto (LEFT IN)\n- Magneto (LEFT OUT) -> Output (L)\n- Magneto (RIGHT OUT) -> Output (R)\n- Magneto (CLK 4 OUT) c> Drums (Clock) // sub clock"
+    },
+    {
+      "name": "Tape oscillator voice",
+      "patch": "no input · SPEED/PITCH CCW · REPEATS 100% · tap TAP once to prime oscillation · hold TAP to enter Pitch Quantize (chromatic) · play sequencer 1V/oct into SPEED CV · self-oscillating Magneto becomes a scale-quantized sine voice with tape coloration",
+      "diagram": "Magneto:\n* Mode: ECHO\n* Repeats: 100%\n* Speed: CCW\n* Pitch Quantize: Chromatic (hold TAP)\n* Wow & Flutter: taste\n\nSequencer:\n\n- Sequencer (Pitch) p> Magneto (SPEED)\n- Magneto (LEFT OUT) -> Output (L)"
+    },
+    {
+      "name": "Zero-latency sub bass",
+      "patch": "HEADS: SHIFT · PAN: center · mute PLAYBACK 1/2/4 · PLAYBACK 3 ~noon (head 3 = -1 oct in SHIFT) · send note gate into RESTART CV · mono synth into LEFT IN · get tight zero-latency -1 octave under the dry signal",
+      "diagram": "Magneto:\n* Heads: SHIFT\n* Playback 3: ~noon\n* Playback 1,2,4: 0\n* Dry: ~noon\n\nSynth:\n\nKeyboard:\n\n- Synth (Out) -> Magneto (LEFT IN)\n- Keyboard (Gate) g> Magneto (RESTART) // realign SHIFT pointers\n- Magneto (LEFT OUT) -> Output (L)"
+    },
+    {
+      "name": "Phrase sampler re-trigger",
+      "patch": "SAMPLE mode · tap TAP to record a phrase · tap again to end · patch CLK 4 OUT back into RESTART CV · sample re-triggers continuously at its own loop length — free granular bed",
+      "diagram": "Magneto:\n* Mode: SAMPLE\n\nSource:\n\n- Source (Out) -> Magneto (LEFT IN)\n- Magneto (CLK 4 OUT) t> Magneto (RESTART) // continuous re-trigger\n- Magneto (LEFT OUT) -> Output (L)\n- Magneto (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "Sound-on-sound looper",
+      "patch": "LOOP mode · FEEDBACK 4 ON (required for loop playback) · PLAYBACK 4 ~noon · REPEATS ~70% for evolving layers · tap TAP to splice in, tap to splice out and begin playback · layer new material on top each pass",
+      "diagram": "Magneto:\n* Mode: LOOP\n* Feedback 4: ON\n* Playback 4: ~noon\n* Repeats: ~70%\n\nSource:\n\n- Source (Out) -> Magneto (LEFT IN)\n- Magneto (LEFT OUT) -> Output (L)\n- Magneto (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "External FX in feedback loop",
+      "patch": "ECHO mode · patch SEND → external filter or reverb → RETURN · REPEATS ~60% · the filter now colors every repeat pass (not just the output) — repeats progressively band-limited, darkened or resonant as they decay",
+      "diagram": "Magneto:\n* Mode: ECHO\n* Repeats: ~60%\n\nFilter:\n\nSource:\n\n- Source (Out) -> Magneto (LEFT IN)\n- Magneto (SEND) -> Filter (In)\n- Filter (Out) -> Magneto (RETURN) // external feedback insert\n- Magneto (LEFT OUT) -> Output (L)"
+    },
+    {
+      "name": "Dying tape stop",
+      "patch": "TAPE AGE CW · CRINKLE CW · WOW & FLUTTER CW · gate into PAUSE CV (latch) · hold TRANSPORT+PAUSE and turn PLAYBACK 4 to set slowdown time · gate high pauses tape with a long mechanical spin-down",
+      "diagram": "Magneto:\n* Tape Age: CW\n* Crinkle: CW\n* Wow & Flutter: CW\n\nSource:\n\nGate:\n\n- Source (Out) -> Magneto (LEFT IN)\n- Gate (Out) g> Magneto (PAUSE)\n- Magneto (LEFT OUT) -> Output (L)"
+    },
+    {
+      "name": "Dual split: mono delay + spring",
+      "patch": "DIP S2 ON (rear) · LEFT IN/OUT acts as a mono 4-head delay · RIGHT IN/OUT is an independent mono spring · run drums through LEFT for tape echo and vocal through RIGHT for spring — two unrelated FX from one module",
+      "diagram": "Magneto:\n* DIP S2: ON (dual split)\n\nDrums:\n\nVocal:\n\n- Drums (Out) -> Magneto (LEFT IN) // mono delay\n- Vocal (Out) -> Magneto (RIGHT IN) // mono spring\n- Magneto (LEFT OUT) -> Output (Drum FX)\n- Magneto (RIGHT OUT) -> Output (Vocal FX)"
+    },
+    {
+      "name": "Multi-tap rhythm generator",
+      "patch": "ECHO + EVEN · CLK 1 OUT → drum 1 trigger · CLK 2 OUT → drum 2 · CLK 3 OUT → hat · CLK 4 OUT → kick · incoming CLK IN at quarter notes becomes four locked subdivisions driving a four-voice rhythm, phase-aligned to the source clock",
+      "diagram": "Magneto:\n* Mode: ECHO\n* Heads: EVEN\n\nClock:\n\nDrum1:\n\nDrum2:\n\nHat:\n\nKick:\n\n- Clock (Out) c> Magneto (CLK IN)\n- Magneto (CLK 1 OUT) t> Hat (Trig) // 16th\n- Magneto (CLK 2 OUT) t> Drum2 (Trig) // 8th\n- Magneto (CLK 3 OUT) t> Drum1 (Trig) // dotted 8th\n- Magneto (CLK 4 OUT) t> Kick (Trig) // quarter"
+    },
+    {
+      "name": "Ambient scrub pad",
+      "patch": "ECHO · PAUSE engaged · SPEED/PITCH slowly swept by LFO · ~1 foot of tape rescrubs as a drone · add WET, CRINKLE, SPRING CW for cavernous scrub pad · dry source stays silent (recording paused)",
+      "diagram": "Magneto:\n* Mode: ECHO\n* Paused\n* Spring: CW\n* Crinkle: CW\n\nLFO:\n\nSource:\n\n- Source (Out) -> Magneto (LEFT IN)\n- LFO (Out) >> Magneto (SPEED) // scrub\n- Magneto (LEFT OUT) -> Output (L)\n- Magneto (RIGHT OUT) -> Output (R)"
+    }
+  ]
+}

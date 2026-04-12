@@ -1,0 +1,213 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1976/1.4",
+    "sources": [
+      "http://xaocdevices.com/manuals/xaoc_belgrad_manual.pdf",
+      "https://xaocdevices.com/main/belgrad/",
+      "https://modulargrid.net/e/xaoc-devices-belgrad",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=169131",
+      "https://www.perfectcircuit.com/xaoc-devices-belgrad.html"
+    ]
+  },
+  "slug": "xaoc-devices--belgrad",
+  "name": "Belgrad",
+  "manufacturer": "Xaoc Devices",
+  "hp": 14,
+  "tags": ["FILTER", "VCF", "OSCILLATOR", "DISTORTION"],
+  "description": "Analog dual-core state variable filter. 10 morphable responses across two resonant peaks. Span detunes the cores up to 8 octaves, balance tilts peak emphasis, TITO switch enables self- or cross-modulation between cores.",
+  "controls": [
+    {
+      "name": "LEVEL",
+      "scope": "Global",
+      "description": "Sets input amplitude into the filter core. Pushes into soft overdrive past unity.",
+      "detail": "0–10 · clean below ~6 · progressive input saturation above"
+    },
+    {
+      "name": "FREQ",
+      "scope": "Global",
+      "description": "Large center-frequency knob for both cores. Scaled 0–10 on the dial.",
+      "detail": "~4Hz – 28kHz · sums with V/OCT and attenuated FM"
+    },
+    {
+      "name": "SPAN",
+      "scope": "Global",
+      "description": "Symmetrically detunes the two filter cores around FREQ. Non-linear taper. Zero = cores aligned, max ≈ 8 oct split.",
+      "detail": "0–10 · non-linear · 0 = single peak · 10 ≈ 8 oct spread"
+    },
+    {
+      "name": "RESO",
+      "scope": "Global",
+      "description": "Overall resonance / Q for both cores. Self-oscillates around 8 depending on mode.",
+      "detail": "0–10 · self-osc threshold ≈ 8 · sine at resonance, saturates when pushed"
+    },
+    {
+      "name": "BALANCE",
+      "scope": "Global",
+      "description": "Tilts resonance emphasis between the two peaks. CCW = lower peak dominant · noon = symmetric · CW = upper peak dominant.",
+      "detail": "bipolar taper · CCW/CW extremes mute the opposite peak"
+    },
+    {
+      "name": "FM attenuator (slider)",
+      "scope": "Global",
+      "description": "Illuminated slider attenuating the FM input before it reaches FREQ.",
+      "detail": "0–10 · unipolar attenuator"
+    },
+    {
+      "name": "SPAN CV attenuator (slider)",
+      "scope": "Global",
+      "description": "Illuminated slider attenuating the SPAN CV input.",
+      "detail": "0–10 · unipolar attenuator"
+    },
+    {
+      "name": "TITO",
+      "scope": "Global",
+      "description": "3-way switch routing audio-rate cross-coupling between the cores. Up = SM (self-modulation) · center = off · down = XM (cross-modulation).",
+      "detail": "SM: textured radical resonance · OFF: clean · XM: warbly chirp / FM-like"
+    },
+    {
+      "name": "MODE",
+      "scope": "Global",
+      "description": "10-position rotary selecting the two-core topology. Progresses lowpass → highpass across the dial.",
+      "detail": "LL · LB · NL · NN · LH · BB · HL · HN · BH · HH"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "INPUT",
+      "description": "Main audio input into the filter, scaled by LEVEL."
+    },
+    {
+      "name": "V/OCT",
+      "description": "1V/octave pitch input for FREQ. Used when self-oscillating as a sine VCO; tracks ~5 octaves when tuned.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "FM",
+      "description": "Frequency modulation input into FREQ, scaled by the FM slider.",
+      "voltage": "audio rate capable"
+    },
+    {
+      "name": "RESO",
+      "description": "CV input for resonance amount. Sums with the RESO knob.",
+      "voltage": "0 to +8V"
+    },
+    {
+      "name": "SPAN",
+      "description": "CV input for the core detuning amount, scaled by the SPAN slider.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "BALANCE",
+      "description": "CV input for peak emphasis tilt between lower and upper resonant peaks.",
+      "voltage": "-5V to +5V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUTPUT",
+      "description": "Main filter output. Level varies significantly with MODE — expect loud bandpass, quiet notch."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Mode dial morphs LP → HP",
+      "trigger": "MODE rotary",
+      "description": "10 positions ordered so rotation CCW→CW gradually moves from lowpass (LL) to highpass (HH) via bandpass and notch hybrids. LL and HH turn into classic 2-pole vs 4-pole responses at SPAN extremes."
+    },
+    {
+      "name": "Dual-peak span detuning",
+      "trigger": "SPAN knob / CV",
+      "description": "The two cores are symmetrically offset from FREQ. SPAN=0 collapses to a single peak; SPAN=max spreads up to ~8 octaves. In BB mode this produces two-formant vocal/bowed-string responses."
+    },
+    {
+      "name": "Asymmetric peak emphasis",
+      "trigger": "BALANCE knob / CV",
+      "description": "Tilts resonance strength between the lower and upper peak. Particularly useful in NL and HN modes to expose the notch, and in NN/LH modes to morph between single and dual rejection."
+    },
+    {
+      "name": "Self-oscillation as sine VCO",
+      "trigger": "RESO ≥ ~8",
+      "description": "Both cores produce a clean sine at resonance. V/OCT tracks about 5 octaves when tuned. SPAN sets the interval between the two sine VCOs; BALANCE crossfades between them."
+    },
+    {
+      "name": "Nonlinear feedback saturation",
+      "trigger": "RESO pushed past self-oscillation",
+      "description": "Past the self-osc point the internal feedback paths saturate, warping the resonant sines into shaped/distorted waves. SPAN and BALANCE sculpt the resulting timbre."
+    },
+    {
+      "name": "TITO self-modulation (SM)",
+      "trigger": "TITO up · high RESO",
+      "description": "Each core audio-rate-modulates itself. Yields a radical, grainy, textured resonance character. Most audible with RESO in self-oscillation range."
+    },
+    {
+      "name": "TITO cross-modulation (XM)",
+      "trigger": "TITO down · high RESO",
+      "description": "The two cores modulate each other at audio rate, producing warbly/chirpy FM-like sidebands. BH and HH modes with XM and moderate SPAN give chaotic, unpredictable timbres."
+    },
+    {
+      "name": "Notch prominence at low RESO",
+      "trigger": "MODE = NN / NL / HN · low RESO",
+      "description": "Counter-intuitively, notch modes sound deepest with RESO near zero — higher RESO narrows the notch until it is inaudible. Asymmetric BALANCE helps reveal the stopband in NL and HN."
+    },
+    {
+      "name": "Vocal formant sweet spot",
+      "trigger": "MODE = LL / LB / BB · RESO 6–7 · SPAN 2–4",
+      "description": "The manual's recommended vocal-like setting. Two peaks land on typical formant ratios; sweeping FREQ scans vowel shapes. BALANCE adds consonant emphasis."
+    },
+    {
+      "name": "Mode-dependent output level",
+      "trigger": "changing MODE",
+      "description": "Different topologies have radically different gain. Narrow bandpass (HL) is loud, narrow notch (NN) is quiet. Expect to rebalance the mixer after switching modes."
+    },
+    {
+      "name": "Input overdrive via LEVEL",
+      "trigger": "LEVEL past ~6",
+      "description": "The input stage progressively saturates before entering the cores. Useful for adding grit without relying on RESO or TITO."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Vocal formant sweep",
+      "patch": "MODE=BB · RESO 6–7 · SPAN 2–4 · slow LFO → FREQ FM for vowel scan · audio source into INPUT · BALANCE CV from envelope opens/closes consonant",
+      "diagram": "Belgrad:\n* MODE: BB\n* RESO: 7\n* SPAN: 3\n\n- VCO (Out) -> Belgrad (INPUT)\n- LFO (Out) >> Belgrad (FM) // vowel scan\n- Envelope (Out) >> Belgrad (BALANCE) // consonant morph\n- Belgrad (OUTPUT) -> Mixer (In)"
+    },
+    {
+      "name": "Dual sine VCO from self-oscillation",
+      "patch": "No INPUT · RESO ~8.5 to self-oscillate · MODE=BB · SPAN knob sets interval between the two sines · V/OCT from sequencer tracks both · BALANCE crossfades upper/lower sine",
+      "diagram": "Belgrad:\n* MODE: BB\n* RESO: 8.5 (self-osc)\n* TITO: OFF\n\n- Sequencer (Pitch) p> Belgrad (V/OCT)\n- LFO (Out) >> Belgrad (BALANCE) // sine crossfade\n- Static CV (Out) >> Belgrad (SPAN) // interval control\n- Belgrad (OUTPUT) -> VCA (In)"
+    },
+    {
+      "name": "XM chaotic lead",
+      "patch": "MODE=BH or HH · TITO=XM · RESO at self-osc · SPAN moderate · V/OCT from keyboard · cross-mod produces chirpy sideband chaos tracking pitch · second CV into SPAN opens the timbre",
+      "diagram": "Belgrad:\n* MODE: HH\n* TITO: XM\n* RESO: 8.5\n* SPAN: ~3 (moderate)\n\n- Keyboard (CV) p> Belgrad (V/OCT)\n- Envelope (Out) >> Belgrad (SPAN) // timbre opens\n- LFO (Out) >> Belgrad (BALANCE)\n- Belgrad (OUTPUT) -> VCA (In)"
+    },
+    {
+      "name": "Pingable highpass kick",
+      "patch": "MODE=HH · TITO=OFF · RESO just below self-osc · no INPUT · trigger into FM input pings the highpass peak producing a zappy drum tone · V/OCT sets pitch · LEVEL unused",
+      "diagram": "Belgrad:\n* MODE: HH\n* TITO: OFF\n* RESO: ~7.8\n\n- Clock (Out) t> Belgrad (FM) // ping\n- Pitch CV (Out) p> Belgrad (V/OCT)\n- Belgrad (OUTPUT) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Short phaser (double notch)",
+      "patch": "MODE=NN · RESO near 0 (deepest notches) · SPAN modulated by slow LFO for comb-like movement · dry signal through INPUT · BALANCE offsets one notch for asymmetric sweep",
+      "diagram": "Belgrad:\n* MODE: NN\n* RESO: 1\n\n- Pad VCO (Out) -> Belgrad (INPUT)\n- Slow LFO (Out) >> Belgrad (SPAN) // notch spacing\n- Offset (Out) >> Belgrad (BALANCE) // asymmetry\n- Belgrad (OUTPUT) -> Reverb (In)"
+    },
+    {
+      "name": "SM resonance grain on drums",
+      "patch": "MODE=LB · TITO=SM · RESO 8 · feed drum bus into INPUT with LEVEL at 7 for overdrive · envelope follower → FM for dynamic growl · SPAN CV from S&H for stepped formants",
+      "diagram": "Belgrad:\n* MODE: LB\n* TITO: SM\n* RESO: 8\n* LEVEL: 7\n\n- Drum Bus (Out) -> Belgrad (INPUT)\n- Env Follower (Out) >> Belgrad (FM)\n- S&H (Out) >> Belgrad (SPAN) // stepped formants\n- Belgrad (OUTPUT) -> Mixer (In)"
+    },
+    {
+      "name": "Stereo-like dual-peak spread",
+      "patch": "MODE=LH · RESO 6 · large SPAN for wide band-reject · BALANCE swept by two out-of-phase LFOs panning the two peaks to L/R on an external mixer · creates pseudo-stereo from mono source",
+      "diagram": "Belgrad:\n* MODE: LH\n* RESO: 6\n* SPAN: 8\n\n- Pad VCO (Out) -> Belgrad (INPUT)\n- LFO A (Out) >> Belgrad (BALANCE) // peak tilt L\n- LFO B (inv) >> Mixer.Pan (CV) // peak tilt R\n- Belgrad (OUTPUT) -> Mixer (In)"
+    },
+    {
+      "name": "Formant arp via BALANCE CV",
+      "patch": "MODE=BB · RESO 7 · SPAN 3 · clocked S&H into BALANCE steps between lower/upper peak emphasis per step · V/OCT holds root · simulates two-formant arpeggio from a static tone",
+      "diagram": "Belgrad:\n* MODE: BB\n* RESO: 7\n* SPAN: 3\n\n- Drone VCO (Out) -> Belgrad (INPUT)\n- Root CV (Out) p> Belgrad (V/OCT)\n- Clock (Out) c> S&H (Trig)\n- Noise (Out) >> S&H (In)\n- S&H (Out) >> Belgrad (BALANCE) // formant step\n- Belgrad (OUTPUT) -> Mixer (In)"
+    }
+  ]
+}

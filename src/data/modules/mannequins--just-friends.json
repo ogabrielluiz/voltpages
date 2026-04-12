@@ -1,0 +1,202 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "4.x (Just Type)",
+    "sources": [
+      "https://www.whimsicalraps.com/products/just-friends",
+      "https://www.whimsicalraps.com/pages/jf-latest-version",
+      "https://github.com/whimsicalraps/Mannequins-Technical-Maps/blob/main/just-friends/just-friends.md",
+      "https://synthmodes.com/modules/just_friends/",
+      "https://modwiggler.com/forum/viewtopic.php?t=160618"
+    ]
+  },
+  "slug": "mannequins--just-friends",
+  "name": "Just Friends",
+  "manufacturer": "Mannequins",
+  "hp": 14,
+  "tags": ["FUNCTION", "LFO", "OSCILLATOR", "ENVELOPE", "VCO"],
+  "description": "Six manifold slope generators tuned to integer ratios (1N–6N). Switchable between shape-rate envelopes/LFOs and sound-rate oscillators. Extended RUN firmware modes reveal polyphonic LPG, FM and ratcheted behaviours.",
+  "controls": [
+    {
+      "name": "TIME",
+      "scope": "Global (IDENTITY)",
+      "description": "Master speed of the IDENTITY slope. Other channels (2N–6N) scale from this via INTONE.",
+      "detail": "shape: minutes–ms · sound: ms–µs · v/8 tracking via TIME CV"
+    },
+    {
+      "name": "INTONE",
+      "scope": "Global (ratios)",
+      "description": "Sets harmonic ratio of channels 2N–6N relative to IDENTITY. Noon = all unison; CW multiplies (up to 6N); CCW divides (down to 1/6).",
+      "detail": "CCW: undertone series · noon: unison · CW: overtone series"
+    },
+    {
+      "name": "CURVE",
+      "scope": "Global",
+      "description": "Waveshape of every slope. Sweeps from rectangular through log/linear/expo to sine.",
+      "detail": "CCW: pulse · noon: linear · CW: sine · full-sweep via ±5V CV"
+    },
+    {
+      "name": "RAMP",
+      "scope": "Global",
+      "description": "Rise/fall balance. CCW = instant attack + long release (saw); CW = long attack + instant release (ramp). Total duration unchanged.",
+      "detail": "Symmetric at noon · with CURVE full CCW becomes audio-rate PWM in cycle mode"
+    },
+    {
+      "name": "FM",
+      "scope": "FM INPUT depth",
+      "description": "Bipolar attenuator routing FM INPUT. CW feeds TIME (pitch FM); CCW feeds INTONE (ratio FM).",
+      "detail": "CCW: INTONE FM · noon: zero · CW: TIME FM"
+    },
+    {
+      "name": "MODE switch",
+      "scope": "Global",
+      "description": "Three-position mode selector shared by all six channels: TRANSIENT (triggered AR), SUSTAIN (gated ASR), CYCLE (free-running).",
+      "detail": "transient | sustain | cycle"
+    },
+    {
+      "name": "RANGE switch",
+      "scope": "Global",
+      "description": "Two-position switch toggling between control-rate shape and audio-rate sound.",
+      "detail": "shape: 0–8V unipolar · sound: ±5V bipolar"
+    }
+  ],
+  "inputs": [
+    { "name": "TIME (v/8)", "description": "1V/oct CV for IDENTITY speed. Tracks across shape and sound ranges.", "voltage": "−2V to +5V" },
+    { "name": "INTONE", "description": "CV for ratio parameter. ±5V at noon sweeps 1/N to N.", "voltage": "±5V" },
+    { "name": "RAMP", "description": "CV for rise/fall balance.", "voltage": "±5V" },
+    { "name": "CURVE", "description": "CV for waveshape.", "voltage": "±5V" },
+    { "name": "FM INPUT", "description": "Audio-rate modulation source. DC-coupled in shape; AC-coupled in sound for through-zero FM.", "voltage": "audio-rate" },
+    { "name": "RUN", "description": "Selects and CV-controls RUN modes (SHIFT/STRATA/VOLLEY/SPILL/PLUME/FLOOM). Unpatched = standard modes.", "voltage": "±5V", "normalizedTo": "disconnected = standard modes" },
+    { "name": "TRIGGER 1N / IDENTITY", "description": "Trigger or gate for the IDENTITY channel. Normalled forward to 2N…6N unless 2N is patched.", "voltage": "~1V threshold" },
+    { "name": "TRIGGER 2N", "description": "Trigger/gate for 2N channel. Normalled from IDENTITY; breaks normal and cascades onward when patched.", "voltage": "~1V threshold", "normalizedTo": "IDENTITY trigger" },
+    { "name": "TRIGGER 3N", "description": "Trigger/gate for 3N channel.", "voltage": "~1V threshold", "normalizedTo": "2N (→IDENTITY)" },
+    { "name": "TRIGGER 4N", "description": "Trigger/gate for 4N channel.", "voltage": "~1V threshold", "normalizedTo": "3N" },
+    { "name": "TRIGGER 5N", "description": "Trigger/gate for 5N channel.", "voltage": "~1V threshold", "normalizedTo": "4N" },
+    { "name": "TRIGGER 6N", "description": "Trigger/gate for 6N channel. A single trigger here with no others patched excites all six channels via reverse-cascade normalling.", "voltage": "~1V threshold", "normalizedTo": "5N" }
+  ],
+  "outputs": [
+    { "name": "OUT 1N / IDENTITY", "description": "Slope output for IDENTITY channel.", "voltage": "shape: 0–8V · sound: ±5V" },
+    { "name": "OUT 2N", "description": "Slope output at 2N ratio.", "voltage": "shape: 0–8V · sound: ±5V" },
+    { "name": "OUT 3N", "description": "Slope output at 3N ratio.", "voltage": "shape: 0–8V · sound: ±5V" },
+    { "name": "OUT 4N", "description": "Slope output at 4N ratio.", "voltage": "shape: 0–8V · sound: ±5V" },
+    { "name": "OUT 5N", "description": "Slope output at 5N ratio.", "voltage": "shape: 0–8V · sound: ±5V" },
+    { "name": "OUT 6N", "description": "Slope output at 6N ratio.", "voltage": "shape: 0–8V · sound: ±5V" },
+    { "name": "MIX", "description": "shape: largest-of-scaled-slopes (envelope priority). sound: tanh-limited sum of all six (~15Vpp)." }
+  ],
+  "behaviors": [
+    {
+      "name": "TRANSIENT mode",
+      "trigger": "MODE: transient",
+      "description": "Each channel is a triggered attack-release slope. Rising edges fire an AR shaped by CURVE and RAMP. In shape range this is six clock-divided/multiplied envelopes; in sound range it becomes an impulse-train oscillator family covering subharmonics."
+    },
+    {
+      "name": "SUSTAIN mode",
+      "trigger": "MODE: sustain",
+      "description": "Gate-sensitive ASR: while the gate is high the slope climbs to its peak and sustains; gate low releases. In sound range it produces trapezoid VCOs whose pulse width follows the incoming gate length — enables PWM tracking."
+    },
+    {
+      "name": "CYCLE mode",
+      "trigger": "MODE: cycle",
+      "description": "Free-running. In shape = six temporally-related LFOs forming polyrhythms from INTONE. In sound = a harmonic/undertone oscillator stack: CW INTONE produces overtone series (2N=octave, 3N=octave+5th, 4N=2 oct…), CCW produces undertones."
+    },
+    {
+      "name": "Trigger normalling cascade",
+      "trigger": "Single cable into TRIGGER 6N with others unpatched",
+      "description": "Trigger jacks are reverse-normalled so that a cable into 6N alone fires all six channels. Patching any individual trigger breaks the normal at that point. Enables one-cable polyrhythmic triggering; each patched cable 'carves off' that channel to external control."
+    },
+    {
+      "name": "FM knob routing",
+      "trigger": "Patch source into FM INPUT",
+      "description": "The FM knob is a bipolar crossfade: full CW sends the FM INPUT to TIME (pitch/speed FM); full CCW sends it to INTONE (ratio FM, re-voicing the manifold). Mid positions blend both destinations. FM INPUT is AC-coupled in sound range for through-zero FM."
+    },
+    {
+      "name": "SHIFT (RUN, transient/shape)",
+      "trigger": "RUN jack patched · MODE transient · RANGE shape",
+      "description": "Variable retrigger lockout. RUN voltage −5V→+5V sweeps receptiveness from 'always retriggerable' to 'retrigger only at end-of-cycle'. Emulates MATHS-style retrigger blocking with CV control over the lockout threshold."
+    },
+    {
+      "name": "STRATA (RUN, sustain/shape)",
+      "trigger": "RUN patched · MODE sustain · RANGE shape",
+      "description": "ARSR envelope generator with CV-controlled sustain level (0–8V from RUN). Same hardware also becomes a six-channel slew limiter when driven by stepped voltages, tracking input CV with a per-channel lag."
+    },
+    {
+      "name": "VOLLEY (RUN, cycle/shape)",
+      "trigger": "RUN patched · MODE cycle · RANGE shape",
+      "description": "Burst generator. Each trigger produces a CV-determined number of cycles: −4V = 1 cycle, 0V = 6 cycles, +5V = 36 cycles. Per-channel ratio scaling means ratcheted euclidean-style patterns fall out of the manifold."
+    },
+    {
+      "name": "SPILL (RUN, transient/sound)",
+      "trigger": "RUN patched · MODE transient · RANGE sound",
+      "description": "Self-clocked impulse oscillator stack. IDENTITY free-runs; 2N–6N are re-triggered by IDENTITY's end-of-cycle, producing subharmonic drones. RUN voltage introduces retrigger chaos and sync-like timbres."
+    },
+    {
+      "name": "PLUME (RUN, sustain/sound)",
+      "trigger": "RUN patched · MODE sustain · RANGE sound",
+      "description": "Six free-running VCOs through internal pluckable low-pass gates. TRIGGER inputs act like piano keys — short trigger = plucked note, sustained gate = held note. RUN shapes the LPG response. Instant 6-voice polysynth without external EGs, VCAs or LPGs."
+    },
+    {
+      "name": "FLOOM (RUN, cycle/sound)",
+      "trigger": "RUN patched · MODE cycle · RANGE sound",
+      "description": "Each channel becomes a 2-operator FM voice with an internal sine modulator. RUN sets modulator:carrier ratio (−5V to +5V); the FM INPUT and FM knob now control FM depth. Specific RUN voltages produce inharmonic / noise timbres."
+    },
+    {
+      "name": "MIX behaviour differs by range",
+      "trigger": "Patch MIX output",
+      "description": "In shape, MIX emits the maximum of each slope divided by its index — effectively an envelope-priority output where IDENTITY dominates. In sound, MIX is a tanh-limited sum of all six channels, producing a warm ~15Vpp saturated chord or drone."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "One-cable polyrhythm",
+      "patch": "MODE cycle · RANGE shape · INTONE CW · single clock → TRIGGER 6N (no other trigger patches) · all six channels fire with 1:2:3:4:5:6 phase resets · take OUT 1N–6N to six destinations for instant polyrhythmic modulation from a single gate",
+      "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: shape\n* INTONE: CW\n\n- Clock (Out) c> Just Friends (TRIGGER 6N) // cascades to all 6\n- Just Friends (OUT 1N) >> Filter (Cutoff)\n- Just Friends (OUT 2N) >> VCA (CV)\n- Just Friends (OUT 3N) >> VCO (FM)\n- Just Friends (OUT 4N) >> FX (Time)"
+    },
+    {
+      "name": "PLUME six-voice polysynth",
+      "patch": "MODE sustain · RANGE sound · RUN patched (+1V) · v/oct → TIME · INTONE sets chord voicing · individual gates → TRIGGER 1N–6N act as keys · MIX = full six-voice poly output with internal LPGs and VCAs",
+      "diagram": "Just Friends:\n* MODE: sustain\n* RANGE: sound\n* RUN: patched\n\n- Sequencer (Pitch) p> Just Friends (TIME)\n- Offset (+1V) >> Just Friends (RUN)\n- Gate 1 (Out) g> Just Friends (TRIGGER 1N)\n- Gate 2 (Out) g> Just Friends (TRIGGER 2N)\n- Gate 3 (Out) g> Just Friends (TRIGGER 3N)\n- Just Friends (MIX) -> Output (In)"
+    },
+    {
+      "name": "FLOOM FM chord",
+      "patch": "MODE cycle · RANGE sound · RUN patched · FM knob CW · audio-rate source → FM INPUT · INTONE CW for harmonic stack · each channel becomes a 2-op FM voice at its N ratio · MIX = saturated FM chord · modulate RUN for timbre shifts",
+      "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: sound\n* RUN: patched · FM knob CW\n* INTONE: CW (overtones)\n\nVCO:\nLFO:\n\n- Sequencer (Pitch) p> Just Friends (TIME)\n- VCO (Out) -> Just Friends (FM INPUT)\n- LFO (Out) >> Just Friends (RUN) // timbre morph\n- Just Friends (MIX) -> Output (In)"
+    },
+    {
+      "name": "VOLLEY burst ratchets",
+      "patch": "MODE cycle · RANGE shape · RUN patched with +2V (a few cycles per burst) · clock → TRIGGER 6N · every clock triggers a controlled burst on each channel · OUT 6N = fastest ratchet · great for drum fills and euclidean flams",
+      "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: shape\n* RUN: ~+2V\n\n- Clock (Out) t> Just Friends (TRIGGER 6N)\n- Offset (+2V) >> Just Friends (RUN) // burst count\n- Just Friends (OUT 6N) t> Drum (Trig) // ratcheted hits\n- Just Friends (OUT 1N) t> Drum 2 (Trig)"
+    },
+    {
+      "name": "Six related LFOs for animation",
+      "patch": "MODE cycle · RANGE shape · INTONE noon+slight CCW for gently diverging rates · RUN unpatched · OUT 1N–6N → six different modulation destinations (filter, FM, wavefolder, pan, reverb time, VCA) · one module animates a whole voice",
+      "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: shape\n* INTONE: just CCW of noon\n\n- Just Friends (OUT 1N) >> Filter (Cutoff)\n- Just Friends (OUT 2N) >> VCO (FM)\n- Just Friends (OUT 3N) >> Wavefolder (Amount)\n- Just Friends (OUT 4N) >> Pan (CV)\n- Just Friends (OUT 5N) >> Reverb (Time)\n- Just Friends (OUT 6N) >> VCA (CV)"
+    },
+    {
+      "name": "Harmonic chord oscillator",
+      "patch": "MODE cycle · RANGE sound · INTONE full CW · TIME v/oct from sequencer · IDENTITY = fundamental, 2N = octave, 3N = octave+5th, 4N = 2 octaves, 5N = 2 oct+major 3rd, 6N = 2 oct+5th · mix selected outs for chord voicing",
+      "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: sound\n* INTONE: full CW\n\nMixer:\n\n- Sequencer (Pitch) p> Just Friends (TIME)\n- Just Friends (OUT 1N) -> Mixer (In) // root\n- Just Friends (OUT 3N) -> Mixer (In) // 5th\n- Just Friends (OUT 5N) -> Mixer (In) // major 3rd\n- Mixer (Out) -> Output (In)"
+    },
+    {
+      "name": "ASR envelope + trapezoid VCO pair",
+      "patch": "MODE sustain · RANGE shape on TRIGGER 1N for gated ASR → VCA CV · second cable: RANGE sound via a switched mult is not possible, so stay in shape and use OUT 2N for a related slower ASR envelope to the filter · single gate drives filter + VCA together",
+      "diagram": "Just Friends:\n* MODE: sustain\n* RANGE: shape\n\n- Gate (Out) g> Just Friends (TRIGGER 1N)\n- Just Friends (OUT 1N) >> VCA (CV)\n- Just Friends (OUT 2N) >> Filter (Cutoff) // slower related ASR"
+    },
+    {
+      "name": "SHIFT analog clock divider",
+      "patch": "MODE transient · RANGE shape · RUN patched near +5V (end-of-cycle retrigger only) · fast clock → TRIGGER 6N · OUT 1N–6N each divide the clock by 1,2,3,4,5,6 as slope channels · also get shaped envelopes while dividing",
+      "diagram": "Just Friends:\n* MODE: transient\n* RANGE: shape\n* RUN: ~+5V (retrigger at EOC only)\n\n- Clock (Out) c> Just Friends (TRIGGER 6N)\n- Offset (+5V) >> Just Friends (RUN)\n- Just Friends (OUT 2N) t> Drum (Trig) // /2\n- Just Friends (OUT 3N) t> Drum (Trig) // /3"
+    },
+    {
+      "name": "Through-zero ratio FM",
+      "patch": "MODE cycle · RANGE sound · FM knob full CCW (sends FM INPUT to INTONE) · audio-rate VCO → FM INPUT · modulating INTONE at audio rate re-voices the manifold each cycle · discordant shifting chord drone via MIX",
+      "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: sound\n* FM knob: full CCW (→ INTONE)\n\nVCO:\n\n- VCO (Out) -> Just Friends (FM INPUT)\n- Sequencer (Pitch) p> Just Friends (TIME)\n- Just Friends (MIX) -> Output (In)"
+    },
+    {
+      "name": "STRATA six-channel slew",
+      "patch": "MODE sustain · RANGE shape · RUN patched (sets sustain level) · stepped CV sources → TRIGGER inputs as gates · each OUT 1N–6N is a slew-limited version with per-channel ratio · use to smooth six sequencer lanes into flowing CV",
+      "diagram": "Just Friends:\n* MODE: sustain\n* RANGE: shape\n* RUN: patched (sustain level)\n\n- CV 1 (Out) >> Just Friends (TRIGGER 1N)\n- CV 2 (Out) >> Just Friends (TRIGGER 2N)\n- Offset (+4V) >> Just Friends (RUN)\n- Just Friends (OUT 1N) >> VCO 1 (FM) // slewed\n- Just Friends (OUT 2N) >> VCO 2 (FM)"
+    }
+  ]
+}

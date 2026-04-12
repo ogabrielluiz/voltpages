@@ -1,0 +1,272 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://joranalogue.com/products/filter-8",
+      "https://joranalogue.com/filter-8/manual",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=203658",
+      "https://www.manualslib.com/manual/2065127/Joranalogue-Filter-8.html",
+      "https://en.clockfacemodular.com/collections/joranalogue/products/joranalogue-filter-8"
+    ]
+  },
+  "slug": "joranalogue--filter-8",
+  "name": "Filter 8",
+  "manufacturer": "Joranalogue",
+  "hp": 12,
+  "tags": ["VCF", "FILTER", "VCO", "OSCILLATOR", "LFO"],
+  "description": "Multimode 4-pole OTA filter with eight simultaneous 45°-spaced outputs. Four cascaded lowpasses plus pole-mixed HP1, band-boost+notch, phase shifter and BP4. Self-oscillates as an 8-phase sine VCO with 1V/oct.",
+  "controls": [
+    {
+      "name": "LOW/AUDIO Switch",
+      "scope": "Global",
+      "description": "Selects filter/VCO audio range or slew-modifier/VCLFO range.",
+      "detail": "AUDIO: 22Hz–22kHz · LOW: 2.8mHz–180Hz · 1Hz at centre in LOW"
+    },
+    {
+      "name": "COARSE",
+      "scope": "frequency",
+      "description": "Sets filter/oscillator frequency. 22Hz–22kHz in audio when FINE centred.",
+      "detail": "Audio: 22Hz–22kHz · Low: 2.8mHz–180Hz"
+    },
+    {
+      "name": "FINE",
+      "scope": "frequency",
+      "description": "5 % fine-tune around COARSE. Roughly ±6 semitones in audio.",
+      "detail": "5% of COARSE range · centre = no offset"
+    },
+    {
+      "name": "RESONANCE",
+      "scope": "feedback",
+      "description": "Feedback from output back to input. Above ~3 o'clock self-oscillates (panel mark).",
+      "detail": "Unique circuit: no LF loss as resonance rises"
+    },
+    {
+      "name": "EXP. FM",
+      "scope": "exp FM knob",
+      "description": "Polariser for the EFM CV input. Second exponential FM path with depth.",
+      "detail": "noon: 0 · max: +1V/oct · min: −1V/oct · 0.66V/oct in LOW"
+    },
+    {
+      "name": "LIN. FM",
+      "scope": "linear FM knob",
+      "description": "Polariser for the LFM CV input. ~±7%/V — 'tonal' FM that holds pitch centre.",
+      "detail": "bipolar · ~±7 % freq/V"
+    },
+    {
+      "name": "AC Switch",
+      "scope": "linear FM",
+      "description": "AC-couples the LFM input to reject DC drift during audio-rate linear FM.",
+      "detail": "Engage for clean linear FM · bypass for DC control"
+    },
+    {
+      "name": "RES. MOD.",
+      "scope": "resonance CV",
+      "description": "Polariser for the resonance CV input.",
+      "detail": "bipolar · +5V at CV = max resonance"
+    },
+    {
+      "name": "COMP. Switch",
+      "scope": "output gain",
+      "description": "Enables gain compensation: all outputs equal amplitude when self-oscillating.",
+      "detail": "OFF: unity gain per output · ON: matched amplitude for 8-phase VCO use"
+    },
+    {
+      "name": "HOLD Switch",
+      "scope": "hold",
+      "description": "Manually freezes filter core, or enables/disables the HOLD gate input.",
+      "detail": "Toggles manually · with HOLD patched, switch routes the gate"
+    },
+    {
+      "name": "V/OCT Trimmer",
+      "scope": "calibration",
+      "description": "Front-panel pitch-tracking trim. Factory calibrated.",
+      "detail": "Target: 4 octaves between 0V and +4V on V/OCT"
+    },
+    {
+      "name": "RES. Trimmer",
+      "scope": "calibration",
+      "description": "Front-panel trim for self-oscillation amplitude at max resonance.",
+      "detail": "Target: BP4 = 10Vpp sine · not temp-compensated"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "V/OCT.",
+      "description": "Precision 1V/oct exponential FM. Usable as VCO pitch input.",
+      "voltage": "1V/oct · 0.66V/oct in LOW"
+    },
+    {
+      "name": "EFM",
+      "description": "Second exponential FM input, scaled by EXP. FM polariser knob.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "LFM",
+      "description": "Linear FM input, polarised by LIN. FM knob. AC-coupleable via AC switch.",
+      "voltage": "bipolar CV · ~±7%/V"
+    },
+    {
+      "name": "RES. MOD.",
+      "description": "Resonance modulation input, polarised by RES. MOD. knob.",
+      "voltage": "bipolar · +5V = max"
+    },
+    {
+      "name": "IN (×2)",
+      "description": "Two identical signal inputs, mixed internally. Can clip on rich high-level signals as a deliberate drive effect. Unpatched for pure oscillator mode.",
+      "voltage": "any audio/CV · 100kΩ"
+    },
+    {
+      "name": "HOLD",
+      "description": "Rising edge freezes filter core at current state. Schmitt-triggered for weak/slow signals.",
+      "voltage": "+2V low / +3V high · Schmitt trigger"
+    },
+    {
+      "name": "PING",
+      "description": "Rising edge above +3V 'strikes' the filter core for percussive ping tones. Set resonance just below self-osc.",
+      "voltage": "rising edge above +3V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "LP1",
+      "description": "1-pole lowpass. −6dB/oct. Softest filtering.",
+      "voltage": "45° phase at cutoff"
+    },
+    {
+      "name": "LP2",
+      "description": "2-pole lowpass. −12dB/oct.",
+      "voltage": "90° phase at cutoff"
+    },
+    {
+      "name": "LP3",
+      "description": "3-pole lowpass. −18dB/oct.",
+      "voltage": "135° phase at cutoff"
+    },
+    {
+      "name": "LP4",
+      "description": "4-pole lowpass. −24dB/oct. Steepest classic-Moog-style response.",
+      "voltage": "180° phase at cutoff"
+    },
+    {
+      "name": "HP1",
+      "description": "1-pole highpass (pole-mixed). Gentle highpass; resonates at 225°.",
+      "voltage": "225° phase"
+    },
+    {
+      "name": "BB+N",
+      "description": "Band-boost + notch. Boost just below cutoff, cut just above. Wavefolder-like at high res.",
+      "voltage": "270° phase"
+    },
+    {
+      "name": "PS",
+      "description": "Phase shifter: 3-pole allpass summed with input. One-stage phaser response.",
+      "voltage": "315° phase"
+    },
+    {
+      "name": "BP4",
+      "description": "4-pole bandpass. Purest sine at self-oscillation. 360° (0°) phase.",
+      "voltage": "360° phase · purest self-osc sine"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "8-phase sine VCO",
+      "trigger": "resonance max · inputs unpatched",
+      "description": "Self-oscillates with 1V/oct tracking over ≥5 octaves. All eight outputs emit sine waves separated by 45°. With COMP engaged, amplitudes match — a complete 8-phase oscillator bank."
+    },
+    {
+      "name": "Simultaneous multimode",
+      "trigger": "normal filter operation",
+      "description": "Every jack emits its response at all times. Patching LP4 and HP1 to separate destinations gives independent LP/HP filtering of the same signal, useful for bi-timbral voices."
+    },
+    {
+      "name": "Resonance without LF loss",
+      "trigger": "RESONANCE knob CW",
+      "description": "Unique feedback topology keeps low-frequency content intact as resonance rises, unlike classic OTA filters that thin out. Lets you push resonance without bass drop."
+    },
+    {
+      "name": "Input mix/drive",
+      "trigger": "two signals into both INs",
+      "description": "Input jacks sum internally — no mixer needed. Hot signals can clip the core; when resonance adds gain this becomes musical distortion. Lower amplitudes to avoid, or embrace it."
+    },
+    {
+      "name": "Filter ping",
+      "trigger": "rising edge → PING · res just below self-osc",
+      "description": "Each output generates a different ping timbre: LP1–LP4 have percussive transients (kick-drum material), BP4 is purest (bongo/tom), BB+N behaves best with COMP on. COMP off elsewhere to avoid transient distortion."
+    },
+    {
+      "name": "Hold freeze",
+      "trigger": "HOLD gate or switch",
+      "description": "Freezes the filter core at its instantaneous state. Halts slow modulations; at audio rate creates sync-like effects. Driving HOLD with audio pulses in oscillator mode yields FM-sync hybrid tones."
+    },
+    {
+      "name": "Linear FM with AC coupling",
+      "trigger": "LFM input + AC switch",
+      "description": "LFM keeps perceived pitch centred during deep modulation. AC switch removes DC drift so the fundamental doesn't wander. Rev D firmware fix removed a freeze bug at ~+10V LFM."
+    },
+    {
+      "name": "LF slew modifier / 8-phase LFO",
+      "trigger": "LOW range · signal → IN",
+      "description": "In LOW mode the filter slews incoming envelopes or gates. Resonance adds bounce. Self-oscillating LOW gives an 8-phase LFO array for quadrature-plus-rich modulation."
+    },
+    {
+      "name": "Output distortion as drive",
+      "trigger": "harmonically rich hot input",
+      "description": "Because outputs are unity gain (COMP off), removing harmonics can raise amplitude and clip. Useful as intentional overdrive on saws/pulses through LP4."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Resonating envelope bouncer",
+      "patch": "LOW range · attenuated envelope → IN · LP1 out · add resonance for bounce on transients · switch to AUDIO to superimpose an audio-rate component on the envelope for unique hybrid modulation",
+      "diagram": "Filter 8:\n* LOW/AUDIO: LOW\n* RESONANCE: ~2 o'clock\n\n- Envelope (Out) >> Attenuator (In)\n- Attenuator (Out) >> Filter 8 (IN)\n- Filter 8 (LP1) >> VCA (CV) // bouncing envelope"
+    },
+    {
+      "name": "Hold-modulated FM bells",
+      "patch": "AUDIO · res max (oscillator mode) · audio source → HOLD (switch engaged) · tune Filter 8 and source to a just interval · apply matched V/oct FM · produces 'bell' and 'synthetic bass' tones somewhere between linear FM and hard sync",
+      "diagram": "Filter 8:\n* LOW/AUDIO: AUDIO\n* RESONANCE: max\n* HOLD switch: ON\n\n- Sequencer (Pitch) p> Filter 8 (V/OCT.)\n- Sequencer (Pitch) p> Modulator VCO (V/Oct)\n- Modulator VCO (Out) -> Filter 8 (HOLD)\n- Filter 8 (BP4) -> VCA (In)"
+    },
+    {
+      "name": "Feedback drive",
+      "patch": "Audio source → IN · LP4 → attenuator → spare IN (feedback) · attenuator sets 'drive' · swap in a VCA on feedback path for voltage-controlled tone · try different outputs as feedback source for timbre variation",
+      "diagram": "Filter 8:\n* LOW/AUDIO: AUDIO\n* RESONANCE: high\n\n- VCO (Out) -> Filter 8 (IN)\n- Filter 8 (LP4) -> VCA (In)\n- Envelope (Out) >> VCA (CV) // VC drive amount\n- VCA (Out) -> Filter 8 (IN)\n- Filter 8 (LP4) -> Output (In)"
+    },
+    {
+      "name": "Saw-wave 8-phase VCO",
+      "patch": "AUDIO · res max · inputs unpatched · BP4 → EFM input (max EXP. FM) · LP2 and BB+N become near-perfect saw waves · pitch tracks with FM depth affecting V/oct · a chaotic saw bank",
+      "diagram": "Filter 8:\n* LOW/AUDIO: AUDIO\n* RESONANCE: max\n* COMP.: ON\n* EXP. FM: max\n\n- Sequencer (Pitch) p> Filter 8 (V/OCT.)\n- Filter 8 (BP4) >> Filter 8 (EFM) // waveshape feedback\n- Filter 8 (LP2) -> External Filter (In) // saw-like\n- Filter 8 (BB+N) -> Mixer (In)"
+    },
+    {
+      "name": "Multi-timbral kick + bongo ping",
+      "patch": "AUDIO · res just past 3 o'clock panel mark · COMP off · trigger → PING · LP4 drives the kick (big transient) · BP4 drives bongo-like tom · each output is its own drum voice from the same strike",
+      "diagram": "Filter 8:\n* LOW/AUDIO: AUDIO\n* RESONANCE: just past 3 o'clock\n* COMP.: OFF\n\n- Clock (Out) t> Filter 8 (PING)\n- LFO (Out) >> Filter 8 (V/OCT.) // pitch tuning\n- Filter 8 (LP4) -> Mixer (In) // kick\n- Filter 8 (BP4) -> Mixer (In) // bongo"
+    },
+    {
+      "name": "Phaser voice",
+      "patch": "AUDIO · moderate res · audio → IN · PS output = built-in one-stage phaser · slowly modulate V/OCT with an LFO for classic phaser sweep · chain a second Filter 8 for deeper phasing",
+      "diagram": "Filter 8:\n* LOW/AUDIO: AUDIO\n* RESONANCE: moderate\n\n- VCO (Out) -> Filter 8 (IN)\n- LFO (Out) >> Filter 8 (V/OCT.)\n- Filter 8 (PS) -> Mixer (In) // phaser voice"
+    },
+    {
+      "name": "Custom response via pole mixing",
+      "patch": "Audio → IN · send several LP outputs + IN into external VC mixer · use different modulation on each channel to morph the response in real time · recreate or exceed vintage multimode filters",
+      "diagram": "Filter 8:\n* LOW/AUDIO: AUDIO\n* RESONANCE: taste\n\n- VCO (Out) -> Filter 8 (IN)\n- Filter 8 (LP1) -> VC Mixer (In 1)\n- Filter 8 (LP2) -> VC Mixer (In 2)\n- Filter 8 (LP4) -> VC Mixer (In 3)\n- Filter 8 (HP1) -> VC Mixer (In 4)\n- LFO 1 (Out) >> VC Mixer (CV 1)\n- LFO 2 (Out) >> VC Mixer (CV 2)\n- VC Mixer (Out) -> Output (In)"
+    },
+    {
+      "name": "8-phase LFO bus",
+      "patch": "LOW · res max · COMP on · inputs unpatched · eight 45°-offset LFOs · route to eight destinations (pan, FX send, filter, wavefolder, etc.) for phase-related global motion",
+      "diagram": "Filter 8:\n* LOW/AUDIO: LOW\n* RESONANCE: max\n* COMP.: ON\n\n- Filter 8 (LP1) >> Pan (CV)\n- Filter 8 (LP2) >> VCA (CV)\n- Filter 8 (LP3) >> External Filter (Cutoff)\n- Filter 8 (LP4) >> FX (Time)\n- Filter 8 (HP1) >> VCO (FM)\n- Filter 8 (BB+N) >> Wavefolder (CV)\n- Filter 8 (PS) >> External Filter (Res)\n- Filter 8 (BP4) >> VCA (CV)"
+    },
+    {
+      "name": "Sync-effect via HOLD",
+      "patch": "AUDIO · res mid · audio → IN · another VCO square → HOLD · HOLD switch routing ON · filter core freezes on each rising edge → sync-like rhythmic stutter on the filtered audio · detune HOLD source for beating",
+      "diagram": "Filter 8:\n* LOW/AUDIO: AUDIO\n* RESONANCE: ~noon\n* HOLD switch: ON\n\n- VCO A (Out) -> Filter 8 (IN)\n- VCO B (Square) g> Filter 8 (HOLD)\n- Filter 8 (LP4) -> VCA (In)"
+    },
+    {
+      "name": "Decaying 8-phase sine modulator",
+      "patch": "LOW · res near self-osc · trigger → PING · ping excites a decaying multi-phase sine burst across all outputs · patch pairs to destinations for gently-ringing organic modulation on key events",
+      "diagram": "Filter 8:\n* LOW/AUDIO: LOW\n* RESONANCE: just past 3 o'clock\n\n- Gate Seq (Out) t> Filter 8 (PING)\n- Filter 8 (LP1) >> External Filter (Cutoff)\n- Filter 8 (LP3) >> VCA (CV)\n- Filter 8 (BP4) >> Pan (CV)"
+    }
+  ]
+}

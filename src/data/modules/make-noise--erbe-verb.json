@@ -1,0 +1,211 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/Erbe-VerbManual.pdf",
+      "https://www.makenoisemusic.com/retired/retired-modules/erbe-verb/"
+    ]
+  },
+  "slug": "make-noise--erbe-verb",
+  "name": "Erbe-Verb",
+  "manufacturer": "Make Noise",
+  "hp": 20,
+  "tags": ["REVERB", "EFFECTS"],
+  "description": "Modeless continuously-variable stereo reverb, co-designed with Tom Erbe (SoundHack). All seven parameters under CV control; Size sweeps coffin-to-heavens without algorithm boundaries. Syncable reverse.",
+  "controls": [
+    {
+      "name": "Level",
+      "scope": "Signal Input",
+      "description": "Input gain. Unity at 3:00. Past 3:00 introduces gain and possible overdrive.",
+      "detail": "unity: 3:00 · clips above"
+    },
+    {
+      "name": "Mix",
+      "scope": "Output",
+      "description": "Dry/wet blend. Acts as attenuator for Mix CV when patched.",
+      "detail": "0%: dry · 100%: wet · ~11:00 typical"
+    },
+    {
+      "name": "Size",
+      "scope": "Global",
+      "description": "Large grey knob. Sets size of virtual space, coffin to heavens. Defining parameter.",
+      "detail": "35 cu ft – 9.3 million cu ft · CCW: coffin · 12: room · 1-2: plate · 3: hall · 4: ambient · CW: heaven"
+    },
+    {
+      "name": "Size CV Att",
+      "scope": "Size",
+      "description": "Bipolar attenuator for Size CV.",
+      "detail": "bipolar"
+    },
+    {
+      "name": "Speed",
+      "scope": "Internal Mod",
+      "description": "Speed of internal modulation. Has no effect when Depth at noon.",
+      "detail": "internal clock: 0.5 – 256 cps · ext clock: 1/48 – 9000 cps"
+    },
+    {
+      "name": "Pre-Delay",
+      "scope": "Pre-Delay / Reverse",
+      "description": "Time before first reflections. Also sets Reverse buffer length.",
+      "detail": "internal: 7ms – 500ms · ext clk: bipolar divisors 1/12–12/1 (1/1 at noon) · reverse: 42ms–500ms int / 0.1s–5.46s ext"
+    },
+    {
+      "name": "Absorb",
+      "scope": "Global",
+      "description": "Combined diffusion and damping. Feedback-based — slow response.",
+      "detail": "CCW: 0 diffusion, 0 damping · 10:00: full diffusion, 0 damping · CW: full diffusion + damping"
+    },
+    {
+      "name": "Absorb CV",
+      "scope": "Absorb",
+      "description": "Direct CV input for Absorb. No attenuator.",
+      "detail": "±5V"
+    },
+    {
+      "name": "Depth",
+      "scope": "Internal Mod",
+      "description": "Bipolar. Sets amount and type of internal modulation. 12:00 = off.",
+      "detail": "CCW: Cyclic (chorus) · noon: off · CW: Ergodic (granular) · full CW: Shimmer"
+    },
+    {
+      "name": "Depth CV Att",
+      "scope": "Depth",
+      "description": "Bipolar attenuator for Depth CV.",
+      "detail": "bipolar"
+    },
+    {
+      "name": "Tilt",
+      "scope": "Output EQ",
+      "description": "Bipolar tone tilt. Last stage — independent of reverb energy.",
+      "detail": "CCW: +12 dB low / -12 dB high · noon: flat · CW: -24 dB low / +24 dB high"
+    },
+    {
+      "name": "Tilt CV Att",
+      "scope": "Tilt",
+      "description": "Bipolar attenuator for Tilt CV.",
+      "detail": "bipolar"
+    },
+    {
+      "name": "Decay",
+      "scope": "Global",
+      "description": "Unipolar. Reverb tail length. 100% = unity (infinite); past 100% = self-oscillating feedback.",
+      "detail": "0 – 120% · feedback past 100%"
+    },
+    {
+      "name": "Decay CV Att",
+      "scope": "Decay",
+      "description": "Bipolar attenuator for Decay CV.",
+      "detail": "bipolar"
+    },
+    {
+      "name": "Reverse",
+      "scope": "Pre-Delay",
+      "description": "Button toggles Reverse on/off. Reverses the Pre-Delay buffer for reverse reverb.",
+      "detail": "button · Reverse LED flickers at buffer length"
+    }
+  ],
+  "inputs": [
+    { "name": "Signal In", "description": "AC-coupled mono input. Unity ~3:00 on Level.", "voltage": "10Vpp" },
+    { "name": "Mix CV", "description": "Unipolar Mix CV. Mix knob becomes attenuator when patched.", "voltage": "0V to +5V" },
+    { "name": "Size CV", "description": "CV for Size. Bipolar.", "voltage": "±5V" },
+    { "name": "Speed CV", "description": "CV for internal modulation speed.", "voltage": "±5V" },
+    { "name": "Pre-Delay CV", "description": "Unity-gain CV for Pre-Delay. No attenuator — use external VCA/MATHS channel for attenuation. Audio-rate yields metallic tones.", "voltage": "±5V" },
+    { "name": "Absorb CV", "description": "Direct CV for Absorb. No attenuator.", "voltage": "±5V" },
+    { "name": "Depth CV", "description": "CV for Depth (bipolar).", "voltage": "±5V" },
+    { "name": "Tilt CV", "description": "CV for Tilt (bipolar).", "voltage": "±5V" },
+    { "name": "Decay CV", "description": "CV for Decay (bipolar).", "voltage": "±5V" },
+    { "name": "Reverse Gate", "description": "Momentary Reverse. 1.5V trigger to activate.", "voltage": "≥1.5V" },
+    { "name": "Tempo", "description": "External clock sync. Pre-Delay and Speed follow divisions/multiples. Needs ≥1.5V, ≥6ms wide.", "voltage": "≥1.5V · ≥6ms wide" }
+  ],
+  "outputs": [
+    { "name": "L (Mono) Out", "description": "Left channel — also serves as mono output.", "voltage": "10Vpp · AC coupled" },
+    { "name": "R Out", "description": "Right channel.", "voltage": "10Vpp · AC coupled" },
+    { "name": "CV Out", "description": "Envelope follower of reverb energy. Rises as reverb signal gets louder. Useful for feedback automation (patch to Decay/Absorb CV).", "voltage": "0 – 10V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Size as continuous space",
+      "trigger": "Size knob or Size CV",
+      "description": "Unlike reverbs with algorithm modes, Size sweeps continuously through coffin→room→plate→hall→ambient→heaven. Modulating Size dramatically morphs the virtual space — slow modulation crossfades between rooms, fast modulation produces metallic pitch-shift artifacts."
+    },
+    {
+      "name": "Pre-Delay clock sync",
+      "trigger": "clock → Tempo In",
+      "description": "With Tempo In patched, Pre-Delay control becomes bipolar selector over divisors/multipliers (1/12, 1/8, 1/6, 1/4, 1/3, 1/2, 2/3, 1/1, 3/2, 2/1, 3/1, 4/1, 6/1, 8/1, 12/1) with 1/1 at noon. Speed also follows the incoming clock."
+    },
+    {
+      "name": "Reverse buffer",
+      "trigger": "button or gate → Reverse Gate",
+      "description": "Plays the Pre-Delay buffer backwards for reverse-reverb. Reverse buffer size = Pre-Delay setting: 42ms–500ms internal, 0.1s–5.46s when synced. Gate-momentary for rhythmic reverse effects."
+    },
+    {
+      "name": "Depth polarity (Cyclic vs Ergodic)",
+      "trigger": "Depth knob or CV",
+      "description": "Bipolar Depth chooses type of internal modulation. CCW from noon: Cyclic — multi-phase chorus, subtle to doppler-swirl. CW from noon: Ergodic — random room dimension shifting, becoming granular. Full CW: 'Shimmer'. Note: at noon Speed has no audible effect."
+    },
+    {
+      "name": "Infinite feedback past unity",
+      "trigger": "Decay > 100% (past CW)",
+      "description": "Decay is feedback-based. Past unity (100%) the reverb self-sustains / drones indefinitely. Useful for freeze/infinite halls — press/hold a gate to Decay CV (via attenuator inversion) to punch into infinite feedback."
+    },
+    {
+      "name": "Absorb feedback response",
+      "trigger": "Absorb CV or knob change",
+      "description": "Absorb is feedback-based and slower than Size/Pre-Delay. Use slow envelopes, LFOs, or clocked Pressure Points sequences for best audible effect. Greater impact when Decay is higher. Full CCW = no diffusion, 0 damping; 10:00 = full diffusion, 0 damping; full CW = full + full damping."
+    },
+    {
+      "name": "Tilt as final tone",
+      "trigger": "Tilt knob or CV",
+      "description": "Tilt is the last operation in the algorithm — does not affect energy or feedback. Bipolar EQ tilt like a rocking see-saw. Slow Tilt modulation with long decay gives phase-shifting character."
+    },
+    {
+      "name": "CV Out envelope-follower",
+      "trigger": "reverb tail produces energy",
+      "description": "CV Out tracks the reverb signal loudness. Patch to Decay CV (with attenuverter inversion) for an automatic 'reigning in' of feedback before it runs away. Patch to Size CV for space-reshaping based on density. Patch outside Erbe-Verb to open other modules with reverb tails."
+    },
+    {
+      "name": "Pre-Delay audio-rate FM",
+      "trigger": "audio → Pre-Delay CV",
+      "description": "Pre-Delay accepts audio-rate CV without an attenuator. Modulating at audio rates produces metallic, clangorous tones. Attenuate through a MATHS channel first or the effect can be overwhelming."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Gated reverb",
+      "patch": "Mult source → Signal In AND → MATHS CH 1 Trig · MATHS Rise = 12:00, Fall full CCW (linear response) · MATHS CH 1 OUT → Mix CV · Mix knob sets max wetness (attenuates the CV) · each trigger opens the reverb then slams it shut — 80s drum-gate sound.",
+      "diagram": "Erbe-Verb:\n* Size: ~2:00 (plate)\n* Decay: 12:00\n\n- Source (Out) -> Mult (In)\n- Mult (Out 1) -> Erbe-Verb (Signal In)\n- Mult (Out 2) g> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> Erbe-Verb (Mix CV) // gated wet\n- Erbe-Verb (L) -> Output (L)\n- Erbe-Verb (R) -> Output (R)"
+    },
+    {
+      "name": "Decay Hell (infinite feedback on demand)",
+      "patch": "Sine voice → Optomix CH 1 (plucked via MATHS cycle) → Signal In · Start from Hall settings · Pressure Points Pressure Out → Decay CV (attenuator full CW) · pressing a PP plate pushes Decay into infinite feedback, releasing returns to hall · hands-on feedback performance.",
+      "diagram": "Erbe-Verb:\n* Size: 3:00 (hall)\n* Decay: just below unity\n* Decay CV Att: full CW\n\n- STO (SUB) -> Optomix.CH 1 (Signal In)\n- MATHS.CH 1 (EOR) g> Optomix.CH 1 (Strike)\n- Optomix.CH 1 (Out) -> Erbe-Verb (Signal In)\n- Pressure Points (Pressure) >> Erbe-Verb (Decay CV) // push to infinity\n- Erbe-Verb (L) -> Output (L)"
+    },
+    {
+      "name": "Synced reverse slapback",
+      "patch": "Clock → Tempo In · Reverse ON (button) · Pre-Delay set for 1/2 · clock-aligned reverse slapback on every note · modulate Size with slow LFO for shifting reverse-room character · patch clock to Speed via Tempo too for a musical internal modulation rhythm.",
+      "diagram": "Erbe-Verb:\n* Size: ~12:00 (room)\n* Pre-Delay: 1/2 (noon-ish)\n* Reverse: ON\n\n- Clock (Out) c> Erbe-Verb (Tempo)\n- Source (Out) -> Erbe-Verb (Signal In)\n- LFO (Out) >> Erbe-Verb (Size CV)\n- Erbe-Verb (L) -> Output (L)\n- Erbe-Verb (R) -> Output (R)"
+    },
+    {
+      "name": "Shimmer drone",
+      "patch": "Size full CW · Pre-Delay full CW · Decay 2:00 · Depth full CW (Shimmer, Ergodic max) · Speed 12:00–3:00 · drone source → Signal In · Mix 100% · upward shimmer octave-cascades on sustained tones · slow CV on Tilt keeps motion fresh.",
+      "diagram": "Erbe-Verb:\n* Size: full CW (heaven)\n* Pre-Delay: full CW\n* Decay: 2:00\n* Depth: full CW (Shimmer)\n* Mix: 100% wet\n\n- Drone (Out) -> Erbe-Verb (Signal In)\n- Slow LFO (Out) >> Erbe-Verb (Tilt CV)\n- Erbe-Verb (L) -> Output (L)\n- Erbe-Verb (R) -> Output (R)"
+    },
+    {
+      "name": "Self-tuning feedback via CV Out",
+      "patch": "Any source → Signal In · Decay set just past noon · CV Out → MATHS CH 2 In (attenuverter full CCW to invert) · CH 2 Out → Decay CV · as reverb grows, CV Out opens MATHS inverter which clamps Decay down · automatic runaway-prevention lets you sit near feedback edge safely.",
+      "diagram": "Erbe-Verb:\n* Decay: ~1:00\n* Decay CV Att: to taste\n\n- Source (Out) -> Erbe-Verb (Signal In)\n- Erbe-Verb (CV Out) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> Erbe-Verb (Decay CV) // self-regulation (invert CH 2)\n- Erbe-Verb (L) -> Output (L)"
+    },
+    {
+      "name": "Pre-Delay metallic FM",
+      "patch": "Source → Signal In · audio-rate sine VCO → MATHS CH 2 attenuverter → Pre-Delay CV · Size 12:00 · Decay 1:00 · audio-rate modulation of Pre-Delay produces clangorous metallic tones that scale with modulation frequency — use attenuation to dial in FM index.",
+      "diagram": "Erbe-Verb:\n* Size: 12:00\n* Decay: 1:00\n\n- Source (Out) -> Erbe-Verb (Signal In)\n- VCO (Sine) -> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> Erbe-Verb (Pre-Delay CV) // audio-rate metal\n- Erbe-Verb (L) -> Output (L)\n- Erbe-Verb (R) -> Output (R)"
+    },
+    {
+      "name": "Momentary reverse stabs",
+      "patch": "Drum source → Signal In · Size 1:00 (plate) · Pre-Delay 11:00 · Mix 50% · snare hits also gate → Reverse Gate · each snare triggers a short reverse burst of its own tail · pre-delay CV from sequencer randomizes buffer-length reverse lengths.",
+      "diagram": "Erbe-Verb:\n* Size: 1:00 (plate)\n* Pre-Delay: 11:00\n* Mix: 50%\n\n- Drums (Out) -> Mult (In)\n- Mult (Out 1) -> Erbe-Verb (Signal In)\n- Mult (Out 2) g> Erbe-Verb (Reverse Gate)\n- Sequencer (CV) >> Erbe-Verb (Pre-Delay CV)\n- Erbe-Verb (L) -> Output (L)\n- Erbe-Verb (R) -> Output (R)"
+    }
+  ]
+}

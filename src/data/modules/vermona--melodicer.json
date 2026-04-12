@@ -1,0 +1,223 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.vermona.com/en/products/modules/product/melodicer/",
+      "https://www.vermona.com/fileadmin/user_upload/products/melodicer/downloads/melodicer%20manual%20en%201.4%20web.pdf"
+    ]
+  },
+  "slug": "vermona--melodicer",
+  "name": "meloDICER",
+  "manufacturer": "Vermona",
+  "hp": 34,
+  "tags": ["SEQUENCER", "QUANTIZER", "CLOCK", "GATE", "RANDOM"],
+  "description": "Stochastic pattern generator with separate rhythm and melody engines. Dice mode repeats stored random values, realtime mode regenerates continuously, and the two gate and two CV inputs reshape timing, mutation, and quantization on the fly.",
+  "controls": [
+    {
+      "name": "NOTE VALUE",
+      "scope": "Rhythm",
+      "description": "Sets the base note length.",
+      "detail": "static base rhythm"
+    },
+    {
+      "name": "VARIATION",
+      "scope": "Rhythm",
+      "description": "Adds shorter or longer note values around the base note length.",
+      "detail": "center = off · CCW = longer · CW = shorter"
+    },
+    {
+      "name": "LEGATO",
+      "scope": "Rhythm",
+      "description": "Sets the probability of legato, where pitch changes without a new gate.",
+      "detail": "far right = no gate pulses"
+    },
+    {
+      "name": "REST",
+      "scope": "Rhythm",
+      "description": "Adds rests to the pattern.",
+      "detail": "far right = no notes left to play"
+    },
+    {
+      "name": "LO",
+      "scope": "Melody",
+      "description": "Sets the lower bound of the melodic range.",
+      "detail": "range starts at 0 V"
+    },
+    {
+      "name": "HI",
+      "scope": "Melody",
+      "description": "Sets the upper bound of the melodic range.",
+      "detail": "range reaches up to 5 V"
+    },
+    {
+      "name": "Semitone Faders",
+      "scope": "Melody",
+      "description": "Set the probability of each semitone in the scale.",
+      "detail": "one fader per note class"
+    },
+    {
+      "name": "Dice R",
+      "scope": "Rhythm",
+      "description": "Randomizes or repeats the rhythm engine's stored values.",
+      "detail": "dice mode toggle for rhythm"
+    },
+    {
+      "name": "Dice M",
+      "scope": "Melody",
+      "description": "Randomizes or repeats the melody engine's stored values.",
+      "detail": "dice mode toggle for melody"
+    },
+    {
+      "name": "First Step",
+      "scope": "Pattern",
+      "description": "Sets the start of the pattern window.",
+      "detail": "hold and turn the encoder to edit"
+    },
+    {
+      "name": "Last Step",
+      "scope": "Pattern",
+      "description": "Sets the end of the pattern window.",
+      "detail": "hold and turn the encoder to edit"
+    },
+    {
+      "name": "Encoder",
+      "scope": "Global",
+      "description": "Resets the pattern and edits pattern-range settings.",
+      "detail": "push to restart the pattern"
+    },
+    {
+      "name": "Mute (M)",
+      "scope": "Global",
+      "description": "Mutes the gate output without stopping the internal sequencer.",
+      "detail": "blinking LED when muted"
+    },
+    {
+      "name": "Lock",
+      "scope": "Global",
+      "description": "Locks the current stochastic state so parameter moves do not apply immediately.",
+      "detail": "use to stage changes before release"
+    },
+    {
+      "name": "Mode Buttons A-D",
+      "scope": "Global",
+      "description": "Selects one of the four operating modes.",
+      "detail": "A = sequencer · B = seq+gate · C = quantizer 1 · D = quantizer 2"
+    },
+    {
+      "name": "Mode Button E",
+      "scope": "Global",
+      "description": "Enters the mode-selection page.",
+      "detail": "hold to choose A, B, C, or D"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "CLK IN",
+      "description": "External clock input.",
+      "voltage": "clock"
+    },
+    {
+      "name": "GATE IN 1",
+      "description": "Gate input used for seq+gate mode and assignable gate functions.",
+      "voltage": "gate"
+    },
+    {
+      "name": "GATE IN 2",
+      "description": "Second gate input used for assignable gate functions and quantizer mode 2.",
+      "voltage": "gate"
+    },
+    {
+      "name": "CV IN 1",
+      "description": "First control-voltage input for stochastic control or quantization support.",
+      "voltage": "0 to 5 V"
+    },
+    {
+      "name": "CV IN 2",
+      "description": "Second control-voltage input for melody or quantizer mode 2.",
+      "voltage": "0 to 5 V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "GATE OUT",
+      "description": "Stochastic gate output.",
+      "voltage": "+12V gate"
+    },
+    {
+      "name": "1V/OCT OUT",
+      "description": "Melodic CV output.",
+      "voltage": "0 to 5 V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Dice mode",
+      "trigger": "press Dice R or Dice M",
+      "description": "The module stores the current random values and repeats them as a pattern instead of regenerating them every step."
+    },
+    {
+      "name": "Realtime mode",
+      "trigger": "hold Dice R or Dice M",
+      "description": "The selected engine keeps generating new values continuously. It becomes a live stochastic source instead of a pattern recorder."
+    },
+    {
+      "name": "Pattern window",
+      "trigger": "First Step and Last Step",
+      "description": "The active window can be shortened and moved inside the 16-step grid. That lets the module loop a subrange while the larger pattern state stays stored."
+    },
+    {
+      "name": "Mode A to D",
+      "trigger": "mode selection",
+      "description": "Mode A is the full sequencer, B is seq+gate, C is quantizer 1 from CV IN 2, and D is quantizer 2 driven by GATE IN 2. Each mode repurposes the same panel into a different workflow."
+    },
+    {
+      "name": "Restart and mute",
+      "trigger": "encoder press or M button",
+      "description": "The encoder restarts the pattern from step 1, while the mute button silences GATE OUT without stopping the internal clock. Mute is therefore performance-safe, not a transport stop."
+    },
+    {
+      "name": "Lock mode",
+      "trigger": "LOCK button",
+      "description": "Lock mode decouples the visible controls from the stochastic engine until you leave it. This makes it possible to stage a new pattern before it becomes audible."
+    },
+    {
+      "name": "External clock sync",
+      "trigger": "CLK IN",
+      "description": "An external clock overrides the internal oscillator, but the module still behaves like a pattern generator rather than a step-by-step clock follower. PPQN settings define the relationship to the grid."
+    },
+    {
+      "name": "Two-engine independence",
+      "trigger": "separate Dice R and Dice M states",
+      "description": "Rhythm and melody can be locked or free independently. One engine can repeat a stored pattern while the other keeps mutating in realtime."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Locked dice melody",
+      "patch": "Dice mode on for both sections · a scale is shaped by the semitone faders · 1V/OCT OUT feeds a VCO and GATE OUT fires the envelope · the pattern is repeatable until the dice are rolled again.",
+      "diagram": "meloDICER:\n* Mode: A\n* Dice R: on\n* Dice M: on\n* NOTE VALUE: 1/8\n* VARIATION: low\n* REST: low\n\nClock:\nVCO:\nEnvelope:\nVCA:\nOutput:\n\n- Clock (Out) c> meloDICER (CLK IN)\n- meloDICER (1V/OCT OUT) p> VCO (V/Oct)\n- meloDICER (GATE OUT) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Realtime melody over fixed rhythm",
+      "patch": "Rhythm stays in dice mode while melody runs realtime · NOTE VALUE stays constant · the gate stream repeats but the notes keep changing, which is a fast way to get variation without losing the groove.",
+      "diagram": "meloDICER:\n* Mode: A\n* Dice R: on\n* Dice M: hold\n* NOTE VALUE: 1/16\n* VARIATION: medium\n* LEGATO: noon\n\nClock:\nVCO:\nOutput:\n\n- Clock (Out) c> meloDICER (CLK IN)\n- meloDICER (1V/OCT OUT) p> VCO (V/Oct)\n- meloDICER (GATE OUT) g> Envelope (Trig)\n- VCO (Out) -> Output (In)"
+    },
+    {
+      "name": "Seq+gate quantizer",
+      "patch": "Mode B uses the melody section as a gated quantizer · external gates into GATE IN 1 advance the pattern and external CV becomes 1V/OCT output · useful when another sequencer already owns the rhythm.",
+      "diagram": "meloDICER:\n* Mode: B\n* Dice R: on\n* Dice M: on\n* LO: low\n* HI: high\n\nSequencer:\nQuantizer:\nVCO:\nOutput:\n\n- Sequencer (Gate) g> meloDICER (GATE IN 1)\n- Sequencer (CV) p> meloDICER (CV IN 1)\n- meloDICER (1V/OCT OUT) p> VCO (V/Oct)\n- VCO (Out) -> Output (In)"
+    },
+    {
+      "name": "Gate-edited rhythm",
+      "patch": "GATE IN 2 toggles the second gate-assignment mode while rhythm and melody stay locked · a second trigger source can restart, mute, or re-dice the pattern without touching the clock.",
+      "diagram": "meloDICER:\n* Mode: D\n* Dice R: on\n* Dice M: on\n* Mute: armed\n* Lock: off\n\nClock:\nEnvelope:\nOutput:\n\n- Clock (Out) c> meloDICER (CLK IN)\n- Envelope (Out) g> meloDICER (GATE IN 2)\n- meloDICER (GATE OUT) g> Output (Gate In)"
+    },
+    {
+      "name": "Long-form stochastic bass",
+      "patch": "Mode A with a wide subrange · First Step and Last Step define an eight-step loop · the same stored randomness can be re-used while the low note range keeps the melody in bass register.",
+      "diagram": "meloDICER:\n* Mode: A\n* First Step: 1\n* Last Step: 8\n* NOTE VALUE: 1/8\n* LO: low\n* HI: medium\n\nClock:\nVCO:\nFilter:\nOutput:\n\n- Clock (Out) c> meloDICER (CLK IN)\n- meloDICER (1V/OCT OUT) p> VCO (V/Oct)\n- meloDICER (GATE OUT) g> Envelope (Trig)\n- VCO (Out) -> Filter (In) -> Output (In)"
+    }
+  ]
+}

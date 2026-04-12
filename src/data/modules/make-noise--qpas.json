@@ -1,0 +1,196 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/qpas-manual.pdf",
+      "https://www.makenoisemusic.com/modules/qpas/",
+      "https://postmodular.co.uk/modules/qpas/",
+      "https://midwestmodular.com/qpas/"
+    ]
+  },
+  "slug": "make-noise--qpas",
+  "name": "QPAS",
+  "manufacturer": "Make Noise",
+  "hp": 18,
+  "tags": ["VCF", "FILTER", "VCA", "EFFECTS"],
+  "description": "Quad Peak Animation System. Four analog state-variable filter cores sharing FREQ and Q, spread stereo-pairwise by Radiate-L/R. LP, BP, HP and Smile-Pass outputs. Pre-filter VCA on input. Pingable.",
+  "controls": [
+    {
+      "name": "FREQ",
+      "scope": "Global (all four cores)",
+      "description": "Base cutoff frequency for every peak of every filter type. Large knob.",
+      "detail": "audio-range cutoff · shared across all 4 cores"
+    },
+    {
+      "name": "FREQ CV Input Attenuverter",
+      "scope": "FREQ1 CV",
+      "description": "Sets depth and polarity of FREQ1 CV Input. Bipolar — allows inverted modulation.",
+      "detail": "bipolar · CCW invert · noon off · CW positive"
+    },
+    {
+      "name": "Q",
+      "scope": "Global",
+      "description": "Resonance / peak height for all four filter cores. Does not self-oscillate by design. At low settings peaks round; at high settings peaks accentuate and the Radiate controls become more dramatic.",
+      "detail": "~9:00: 'zero' resonance · CCW: negative (attenuated peaks)"
+    },
+    {
+      "name": "Q CV Input Attenuverter",
+      "scope": "Q",
+      "description": "Depth and polarity of Q CV.",
+      "detail": "bipolar"
+    },
+    {
+      "name": "Level Combo Pot",
+      "scope": "Input VCA",
+      "description": "Pre-filter exponential VCA gain. Acts as attenuator for Level CV when patched. Sets input drive — higher Q + lower Level = resonance exceeding input.",
+      "detail": "expo response · unity-gain when CW"
+    },
+    {
+      "name": "Radiate-L",
+      "scope": "Left stereo pair",
+      "description": "Spreads the two Left-channel peaks away from FREQ. Mid = peaks coincide with FREQ; CW or CCW pushes them apart symmetrically.",
+      "detail": "bipolar · center: peaks at FREQ"
+    },
+    {
+      "name": "Radiate-L CV Attenuverter",
+      "scope": "Radiate-L",
+      "description": "Depth and polarity for Radiate-L CV. CV Input normalled to Radiate-R CV Input — one cable modulates both unless broken.",
+      "detail": "bipolar"
+    },
+    {
+      "name": "Radiate-R",
+      "scope": "Right stereo pair",
+      "description": "Spreads the two Right-channel peaks away from FREQ.",
+      "detail": "bipolar · center: peaks at FREQ"
+    },
+    {
+      "name": "Radiate-R CV Attenuverter",
+      "scope": "Radiate-R",
+      "description": "Depth and polarity for Radiate-R CV. Invert one side for opposing stereo motion.",
+      "detail": "bipolar"
+    }
+  ],
+  "inputs": [
+    { "name": "L (Mono) Input", "description": "Audio input to the Left cores. When only this is patched, the signal is sent to all four cores.", "voltage": "modular audio" },
+    { "name": "R Input", "description": "Audio input to Right cores. Normalled to L(Mono) Input when unpatched.", "voltage": "modular audio", "normalizedTo": "L(Mono) Input" },
+    { "name": "Level CV Input", "description": "CV over input VCA. Attenuated by Level Combo Pot. Exponential response — linear envelopes still produce expo shapes.", "voltage": "0V – 8V" },
+    { "name": "FREQ1 CV Input", "description": "Attenuverted/polarised FREQ CV input.", "voltage": "±5V typical" },
+    { "name": "FREQ2 CV Input", "description": "Un-attenuated FREQ CV input. Straight 1V/Oct-style cutoff control.", "voltage": "±5V typical" },
+    { "name": "Radiate-L CV Input", "description": "CV for Radiate-L, attenuverted.", "voltage": "±5V typical" },
+    { "name": "Radiate-R CV Input", "description": "CV for Radiate-R, attenuverted. Normalled to Radiate-L CV Input.", "voltage": "±5V typical", "normalizedTo": "Radiate-L CV Input" },
+    { "name": "Q CV Input", "description": "CV for resonance, attenuverted.", "voltage": "±5V typical" },
+    { "name": "!!¡¡ Inputs (2)", "description": "Clock, gate or audio-rate modulation inputs that poke nearly every part of the circuit. Each input affects two peaks — one per stereo pair.", "voltage": "gate / audio rate" }
+  ],
+  "outputs": [
+    { "name": "LP L / LP R", "description": "Low-Pass filter outputs. Right LP normalled to Left LP — pull only L for sum-of-four-peaks mono.", "voltage": "modular audio" },
+    { "name": "BP L / BP R", "description": "Band-Pass filter outputs. Right BP normalled to Left BP.", "voltage": "modular audio" },
+    { "name": "HP L / HP R", "description": "High-Pass filter outputs. Right HP normalled to Left HP.", "voltage": "modular audio" },
+    { "name": "SP L / SP R", "description": "Smile-Pass outputs. Stereo only — topology changes with cutoff to keep output level relatively constant regardless of FREQ. Not normalled together.", "voltage": "modular audio" }
+  ],
+  "behaviors": [
+    {
+      "name": "Four peaks share one cutoff",
+      "trigger": "rotate FREQ",
+      "description": "All four filter cores share a single cutoff parameter. FREQ moves the centre of the whole peak cluster. Radiate-L and Radiate-R then spread two peaks each away from that centre — FREQ pans the cluster, Radiate widens it."
+    },
+    {
+      "name": "Radiate CV normalization",
+      "trigger": "patch only Radiate-L CV Input",
+      "description": "Radiate-R CV Input is normalled to Radiate-L CV Input. One cable modulates both sides identically when the attenuverters are set the same, or oppositely when one attenuverter is inverted — fast stereo motion from a single LFO."
+    },
+    {
+      "name": "Output normalization (LP/BP/HP)",
+      "trigger": "patch only the Left output of a filter type",
+      "description": "Right outputs of LP, BP and HP are normalled to their Left. Patching out of L gives a mono mix of all four peaks. Patching out of R splits the peaks into two pairs (true stereo). Smile Pass is the exception — it is stereo only."
+    },
+    {
+      "name": "Pingable with high Q",
+      "trigger": "Q ≥ 11:00 · trigger → input",
+      "description": "Sending gates/triggers into the audio input momentarily opens the filters at their cutoff frequencies, producing plucks/pings with decay set by Q. Sequencing FREQ produces melodic pings. Modulating FREQ with an audio-rate sine yields classic low-pass-gate ping character."
+    },
+    {
+      "name": "Negative-Q zone",
+      "trigger": "Q below ~9:00",
+      "description": "Below '0' resonance point (~9:00), QPAS provides 'negative resonance' — filter peaks are actively attenuated rather than accentuated. Combines with FREQ sweeps for unusual ducking/notch-like behaviour not available on most filters."
+    },
+    {
+      "name": "Exponential pre-filter VCA",
+      "trigger": "Level CV with envelope",
+      "description": "Level VCA uses exponential response. Linear envelopes (MATHS) produce exponential-VCA shapes — very snappy plucks from short, sharp envelopes. Using Level as a pre-filter VCA often removes the need for a separate VCA module."
+    },
+    {
+      "name": "!!¡¡ chaotic mod bus",
+      "trigger": "clock / gate / audio → !!¡¡ Input",
+      "description": "!!¡¡ inputs modulate many internal signals simultaneously. Clocks excite/accent resonance in rhythmic bursts. Audio-rate signals produce cross-modulation chaos. Each input affects two peaks — one from each stereo pair — for asymmetric stereo motion."
+    },
+    {
+      "name": "Mono-to-stereo from mono input",
+      "trigger": "patch only L Input · take L and R of any filter type",
+      "description": "L normalled from R gives all four cores the same mono input. Radiate spreads them stereo-wise. Single cable in → stereo filtered output with animated stereo peaks from a mono signal."
+    },
+    {
+      "name": "Smile Pass constant-amplitude",
+      "trigger": "select SP output",
+      "description": "Smile Pass topology changes with FREQ to maintain approximately constant output amplitude across the cutoff range. Unlike LP (quiet high, loud low) or HP (opposite), SP keeps level steady — useful for subtle filter effects that don't dramatically duck the mix."
+    },
+    {
+      "name": "Feedback overdrive via FREQ1",
+      "trigger": "patch BP or HP R out → FREQ1 CV",
+      "description": "Feeding a filter output back into FREQ1 CV Input (attenuverted) creates self-modulating overdrive. Combined with Q and Radiate, produces a 'liquid metal to decayed rust' range of distorted filter timbres."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Stereo Radiate animation",
+      "patch": "Mono VCO → L Input · LP L → mixer L · LP R → mixer R · Q ~noon · FREQ sweepable · LFO → Radiate-L CV Input (normalled to R) · Radiate-L att CW · Radiate-R att CCW · one LFO spreads peaks in opposite directions each side — fast ping-pong stereo animation from a mono source.",
+      "diagram": "QPAS:\n* Q: ~noon\n* Radiate-L att: CW\n* Radiate-R att: CCW (inverted)\n\nVCO:\n\nLFO:\n\n- VCO (Saw) -> QPAS (L Input)\n- LFO (Out) >> QPAS (Radiate-L CV In) // normalled to R\n- QPAS (LP L) -> Mixer (L)\n- QPAS (LP R) -> Mixer (R)"
+    },
+    {
+      "name": "Pinged melody",
+      "patch": "Trigger sequence → L Input · FREQ CV sequence → FREQ2 CV Input · Q ~1:00 · no audio input beyond the triggers · each trigger pings the filter at the currently-set FREQ · melodic kalimba/mbira via QPAS resonance alone. Add Radiate for chorus-spread plucks.",
+      "diagram": "QPAS:\n* Q: ~1:00\n* FREQ: musical range\n\nSequencer:\n\n- Sequencer (Gate) t> QPAS (L Input) // pings\n- Sequencer (Pitch) p> QPAS (FREQ2 CV In)\n- QPAS (LP L) -> Output (In)"
+    },
+    {
+      "name": "Pre-filter VCA pluck",
+      "patch": "VCO → L Input · MATHS EOR envelope → Level CV In · Level combo pot ~noon · FREQ mid · Q ~11:00 · MATHS triggered from sequencer gate · exponential VCA response makes linear MATHS envelope snap percussively · plucky, filter-coloured voice without a separate VCA.",
+      "diagram": "QPAS:\n* Level: ~noon\n* FREQ: mid\n* Q: ~11:00\n\nVCO:\n\nMATHS:\n* CH 1: short decay\n\nSequencer:\n\n- VCO (Saw) -> QPAS (L Input)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) t> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> QPAS (Level CV In)\n- Sequencer (Pitch) p> QPAS (FREQ2 CV In)\n- QPAS (LP L) -> Output (In)"
+    },
+    {
+      "name": "Feedback distortion",
+      "patch": "VCO → L Input · LP L → monitor · BP R → FREQ1 CV Input (via attenuverter) · Q ~12:00 · Radiate-R controls character · attenuverter sweeps distortion from 'liquid metal' to 'decayed rust' · extremely rich aggressive filter tone from a single VCO.",
+      "diagram": "QPAS:\n* Q: ~12:00\n* FREQ1 att: start CCW, sweep\n\nVCO:\n\n- VCO (Saw) -> QPAS (L Input)\n- QPAS (BP R) >> QPAS (FREQ1 CV In) // feedback overdrive\n- QPAS (LP L) -> Output (In)"
+    },
+    {
+      "name": "Smile Pass subtle processing",
+      "patch": "Full mix → L Input + R Input · SP L → monitor L · SP R → monitor R · Q ~10:00 · FREQ swept by slow LFO · constant-amplitude Smile-Pass shapes tone without ducking level · gentle stereo sweetener for a drum bus or pad.",
+      "diagram": "QPAS:\n* Q: ~10:00\n\nLFO:\n\nMixer:\n\n- Mixer (L) -> QPAS (L Input)\n- Mixer (R) -> QPAS (R Input)\n- LFO (Out) >> QPAS (FREQ1 CV In)\n- QPAS (SP L) -> Output (L)\n- QPAS (SP R) -> Output (R)"
+    },
+    {
+      "name": "Spectral crossfade",
+      "patch": "VCO A → L Input · VCO B → R Input · LP L → Mixer CH 1 · HP R → Mixer CH 2 · FREQ becomes a crossfader: CCW keeps VCO A (low content) loud and attenuates VCO B (high content), CW inverts. Two voices morph as FREQ sweeps — one module spectral crossfade.",
+      "diagram": "QPAS:\n* Q: low\n\nVCO A:\n\nVCO B:\n\nMixer:\n\n- VCO A (Out) -> QPAS (L Input)\n- VCO B (Out) -> QPAS (R Input)\n- QPAS (LP L) -> Mixer (CH 1)\n- QPAS (HP R) -> Mixer (CH 2)"
+    },
+    {
+      "name": "!!¡¡ accent bursts",
+      "patch": "VCO → L Input · LP L → output · Q ~2:00 · sequencer gate mult: one to envelope, other to !!¡¡ Input · each gate simultaneously opens envelope AND kicks !!¡¡ which excites resonance peaks · rhythmic accent bursts on top of normal filtered notes · more expressive than gate-on-envelope alone.",
+      "diagram": "QPAS:\n* Q: ~2:00\n\nVCO:\n\nSequencer:\n\n- VCO (Saw) -> QPAS (L Input)\n- Sequencer (Gate) g> Mult (In)\n- Mult (Out 1) g> Envelope (Trig)\n- Mult (Out 2) t> QPAS (!!¡¡ In)\n- Envelope (Out) >> QPAS (Level CV In)\n- QPAS (LP L) -> Output (In)"
+    },
+    {
+      "name": "Transient resonator (Morphagene)",
+      "patch": "Morphagene L/R → QPAS L/R · MG CV Out → Q CV Input · Q ~11:00 · Q CV attenuverter full CW · FREQ below noon · HP L → monitor · transient-rich tape playback gains resonant tails that swell with MG's CV output per transient — a morph between source and filter-rung echoes.",
+      "diagram": "QPAS:\n* Q: ~11:00\n* Q CV att: full CW\n* FREQ: below noon\n\nMorphagene:\n\n- Morphagene (L) -> QPAS (L Input)\n- Morphagene (R) -> QPAS (R Input)\n- Morphagene (CV Out) >> QPAS (Q CV In)\n- QPAS (HP L) -> Output (In) // resonant tails"
+    },
+    {
+      "name": "Drone cluster",
+      "patch": "Sine VCO → L Input · Q ~2:00 · FREQ musical pitch · Radiate-L and Radiate-R both at moderate positions · LP L+R → monitor · four slightly-detuned filter peaks resonate at/near VCO pitch producing a rich additive-like drone · sweep FREQ for formant chords.",
+      "diagram": "QPAS:\n* Q: ~2:00\n* Radiate-L: noon+\n* Radiate-R: noon+\n* FREQ: musical note\n\nVCO:\n\n- VCO (Sine) -> QPAS (L Input)\n- QPAS (LP L) -> Output (L)\n- QPAS (LP R) -> Output (R)"
+    },
+    {
+      "name": "Karplus-ish pluck",
+      "patch": "Noise source → L Input briefly via VCA gated by short trigger · Q ~2:00 · sequencer pitch → FREQ2 CV Input · each trigger bursts noise into high-Q filter producing plucked-string-like decay at the pitch · tune FREQ2 attenuation for 1V/Oct tracking · add Radiate for chorus plucks.",
+      "diagram": "QPAS:\n* Q: ~2:00\n\nNoise:\n\nVCA:\n\nSequencer:\n\n- Noise (Out) -> VCA (In)\n- Sequencer (Gate) g> VCA (CV)\n- VCA (Out) -> QPAS (L Input)\n- Sequencer (Pitch) p> QPAS (FREQ2 CV In)\n- QPAS (LP L) -> Output (In)"
+    }
+  ]
+}

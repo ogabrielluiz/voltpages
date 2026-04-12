@@ -1,0 +1,175 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://shakmat.com/doc/4br/4BR-User_Manual.pdf",
+      "https://shakmat.com/products/four-bricks-rook/",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=170191",
+      "https://modulargrid.net/e/shakmat-modular-four-bricks-rook",
+      "https://synthandsoftware.com/2020/02/this-months-module-spotlight-going-off-the-grid-with-shakmat-modulars-four-bricks-rook/"
+    ]
+  },
+  "slug": "shakmat-modular--four-bricks-rook",
+  "name": "Four Bricks Rook",
+  "manufacturer": "Shakmat Modular",
+  "hp": 16,
+  "tags": ["SEQUENCER", "DRUM", "TRIGGER"],
+  "description": "Four-track trigger sequencer with 128-slot CV-addressable table memory, Length/Shift window, A/B buffers, Fill mode, quantize and randomizer. Unquantized recording for off-grid rhythms.",
+  "controls": [
+    {
+      "name": "Table Potentiometer",
+      "scope": "Global",
+      "description": "Selects one of 8 tables currently addressed. Combined with Table CV, maps across the 128-pattern memory via 16 loadable slots.",
+      "detail": "8 patterns per slot · 16 slots × 8 = 128 patterns in non-volatile memory"
+    },
+    {
+      "name": "Length Potentiometer",
+      "scope": "Global",
+      "description": "Sets playback length: 1, 2, 3, 4, 6, 8, 12, 16, 24, or 32 steps. Bipolar CV input is additive.",
+      "detail": "Available: 1 · 2 · 3 · 4 · 6 · 8 · 12 · 16 · 24 · 32"
+    },
+    {
+      "name": "Shift Potentiometer",
+      "scope": "Global",
+      "description": "Selects which segment of a recorded 32-step sequence plays at shorter Length. Divides 32 into length-size chunks.",
+      "detail": "At L=8 with 32-step recording: 4 segments · Shift CV selects between them on the fly"
+    },
+    {
+      "name": "Menu Potentiometer",
+      "scope": "Load / Save / Trigger length / Random amount",
+      "description": "Scrolls the menu display during Load Pattern, Save Table, Load Fill, trigger length edit, and random-amount edit.",
+      "detail": "Paired with display · double-click Function to edit per-track trigger length"
+    },
+    {
+      "name": "Pads (4)",
+      "scope": "Per-track",
+      "description": "Play triggers in Play mode, audition patterns in Pattern mode, gate fills in Fill mode, mute tracks in Mute mode.",
+      "detail": "Function+Pad selects mode · inverted LED indicates pattern playback overriding buffer"
+    },
+    {
+      "name": "Function Button",
+      "scope": "Global",
+      "description": "Shift key combining with other buttons: Function+Pad = mode select, Function+Rec = Load Pattern, Function+Erase = Save Table, Function+A/B = Load Fill.",
+      "detail": "Double-click = per-track trigger length edit · combined with Quantize = random-amount edit"
+    },
+    {
+      "name": "Rec Button",
+      "scope": "Recording",
+      "description": "Arms recording. Pad triggers are captured into the current buffer. Hold 5 seconds to store full module state to non-volatile memory.",
+      "detail": "Unquantized by default · Quantize button aligns to clock after the fact"
+    },
+    {
+      "name": "Erase Button",
+      "scope": "Buffer",
+      "description": "Erases the current buffer content on the pressed pad. Combined with Function = Save Table.",
+      "detail": "Per-track operation · select track by pressing its pad during Erase"
+    },
+    {
+      "name": "A/B Button",
+      "scope": "Buffer",
+      "description": "Switches between two recording buffers, like two sides of a tape. Function+A/B = Load Fill.",
+      "detail": "Two independent 32-step buffers per slot"
+    },
+    {
+      "name": "Quantize Button",
+      "scope": "Per-track",
+      "description": "Quantizes a recorded track to the incoming clock. Press Quantize then the target pad.",
+      "detail": "After-the-fact quantize · leaves other tracks unquantized"
+    }
+  ],
+  "inputs": [
+    { "name": "Clock", "description": "External clock advancing the sequence.", "voltage": "-5 to +5V" },
+    { "name": "Reset", "description": "Restarts sequence at step 1.", "voltage": "-5 to +5V" },
+    { "name": "Fill All", "description": "Gate input triggering all four tracks to play their Fill patterns for the gate duration.", "voltage": "-5 to +5V" },
+    { "name": "Shift CV", "description": "Bipolar CV selecting playback segment within the 32-step buffer when Length < 32.", "voltage": "-5 to +5V" },
+    { "name": "Length CV", "description": "Bipolar CV offset added to the Length potentiometer value.", "voltage": "-5 to +5V" },
+    { "name": "Table CV", "description": "CV addressing the currently loaded 8-pattern table and spanning into adjacent slots.", "voltage": "-5 to +5V" }
+  ],
+  "outputs": [
+    { "name": "Out 1", "description": "Track 1 trigger output. Default trigger length 4 ms; per-track adjustable up to clock period.", "voltage": "0-5V" },
+    { "name": "Out 2", "description": "Track 2 trigger output.", "voltage": "0-5V" },
+    { "name": "Out 3", "description": "Track 3 trigger output.", "voltage": "0-5V" },
+    { "name": "Out 4", "description": "Track 4 trigger output.", "voltage": "0-5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Play Mode",
+      "trigger": "Function + Pad 1 (Play)",
+      "description": "Pads act as manual triggers. With Rec armed, pad presses are captured into the buffer at their literal timing (unquantized) unless Quantize is applied later."
+    },
+    {
+      "name": "Pattern Mode",
+      "trigger": "Function + Pad 2 (Pattern)",
+      "description": "Pressing a pad swaps its track output from the buffer to the table pattern addressed by Table pot/CV. LED inverts to show pattern is active. Press again to return to buffer."
+    },
+    {
+      "name": "Fill Mode",
+      "trigger": "Function + Pad 3 (Fill) or Fill All gate",
+      "description": "Table patterns play only while pad is held (or for the Fill All gate duration). Enables live on-the-fly fills. Fill slot independently assignable via Load Fill."
+    },
+    {
+      "name": "Mute Mode",
+      "trigger": "Function + Pad 4 (Mute)",
+      "description": "Pad presses mute their track. Muted tracks show slow-pulsing status LED. While Rec is engaged, Mute additionally erases recorded steps within the mute window."
+    },
+    {
+      "name": "Length & Shift Slicing",
+      "trigger": "Length < buffer length with Shift CV",
+      "description": "Short Length plus CV-addressed Shift turns the 32-step buffer into addressable slices. Resembles a slice function on a sampler — mangles Amen-break-style recorded tables into junglist variations."
+    },
+    {
+      "name": "Per-Track Random Fills",
+      "trigger": "Function + Quantize (Random Amount)",
+      "description": "Each track has its own random amount 0-9. Algorithm concentrates random hits toward the end of the sequence (drum-fill style). Full F value is pure random triggers."
+    },
+    {
+      "name": "Non-Volatile State Storage",
+      "trigger": "Hold Rec for 5 seconds",
+      "description": "Stores buffers, trigger lengths, random amounts, and pointed slots to flash. Powers up in the same state next session."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Quad drum voice sequencer",
+      "patch": "4 pads → 4 drum voices · Table pot walks preset banks (Shakmat Basics / Richard Devine / Konstantine Funky etc.) · Fill All gate from performance button triggers breakdowns",
+      "diagram": "FOUR BRICKS ROOK:\n* Table slot: 1 Richard Devine's Beats\n- Clock (Out) c> Four Bricks Rook (Clock)\n- Performer (Gate) g> Four Bricks Rook (Fill All)\n- Four Bricks Rook (Out 1) t> Kick (Trig)\n- Four Bricks Rook (Out 2) t> Snare (Trig)\n- Four Bricks Rook (Out 3) t> Hat (Trig)\n- Four Bricks Rook (Out 4) t> Perc (Trig)"
+    },
+    {
+      "name": "Unquantized hand-played groove",
+      "patch": "Rec armed · tap 4 pads like a finger drummer · module captures literal timing for off-grid swing · quantize only kick + snare, leave hats untouched for human feel",
+      "diagram": "FOUR BRICKS ROOK:\n* Rec: armed · Quantize: tracks 1+2 only\n- Clock (Out) c> Four Bricks Rook (Clock)\n- Four Bricks Rook (Out 1) t> Kick (Trig) // quantized\n- Four Bricks Rook (Out 2) t> Snare (Trig) // quantized\n- Four Bricks Rook (Out 3) t> Hat (Trig) // off-grid\n- Four Bricks Rook (Out 4) t> Perc (Trig) // off-grid"
+    },
+    {
+      "name": "Amen-break slice mangler",
+      "patch": "Record 32-step Amen pattern · Length=4 slices it into 8 segments · random LFO → Shift CV scrambles segment order each bar · Table CV selects alternative tables on top",
+      "diagram": "FOUR BRICKS ROOK:\n* L=4 · 32-step recording\n- Clock (Out) c> Four Bricks Rook (Clock)\n- S&H (Out) >> Four Bricks Rook (Shift CV)\n- LFO (Out) >> Four Bricks Rook (Table CV)\n- Four Bricks Rook (Out 1) t> Drum A (Trig)\n- Four Bricks Rook (Out 2) t> Drum B (Trig)\n- Four Bricks Rook (Out 3) t> Drum C (Trig)\n- Four Bricks Rook (Out 4) t> Drum D (Trig)"
+    },
+    {
+      "name": "A/B verse/chorus switch",
+      "patch": "Bank A = verse groove · Bank B = chorus groove · performer toggles A/B at bar · identical trigger voices · identical table so Pattern mode can overlay fills on either",
+      "diagram": "FOUR BRICKS ROOK:\n* Bank A: verse · Bank B: chorus\n- Clock (Out) c> Four Bricks Rook (Clock)\n- Bar Clock (Out) t> Four Bricks Rook (Reset)\n- Four Bricks Rook (Out 1) t> Kick (Trig)\n- Four Bricks Rook (Out 2) t> Snare (Trig)\n- Four Bricks Rook (Out 3) t> Hat (Trig)\n- Four Bricks Rook (Out 4) t> Tom (Trig)"
+    },
+    {
+      "name": "Gate-from-trigger hack",
+      "patch": "Per-track trigger length set to clock period · clock doubler on Clock input · Out 1 becomes a gate the length of one clock-period while original division halves tempo, enabling gate sequencing from a trigger sequencer",
+      "diagram": "FOUR BRICKS ROOK:\n* Track 1 trig length: clock period\n- Clock (Out) -> Clock Multiplier (x2)\n- Clock Multiplier (Out) c> Four Bricks Rook (Clock)\n- Four Bricks Rook (Out 1) g> VCA (Gate) // sustained gate\n- Four Bricks Rook (Out 2) t> Drum (Trig)"
+    },
+    {
+      "name": "Randomizer fills with probability",
+      "patch": "Per-track random amount: Track1=0 (no random), Track2=3 (light), Track3=6 (medium), Track4=9 (chaos) · random hits pile near sequence end for natural drum fills · Reset from bar clock resets the build-up",
+      "diagram": "FOUR BRICKS ROOK:\n* Rand A: 0/3/6/9 per track\n- Clock (Out) c> Four Bricks Rook (Clock)\n- Bar Clock (Out) t> Four Bricks Rook (Reset)\n- Four Bricks Rook (Out 1) t> Kick (Trig) // solid\n- Four Bricks Rook (Out 2) t> Snare (Trig) // occasional\n- Four Bricks Rook (Out 3) t> Hat (Trig) // busy\n- Four Bricks Rook (Out 4) t> Ride (Trig) // chaotic"
+    },
+    {
+      "name": "CV-addressed song mode",
+      "patch": "Slow staircase CV into Table CV walks through 16 slots as song sections · Length held at 16 · each slot pre-filled with a different bar · simple LFO or sequencer becomes a song-mode driver",
+      "diagram": "FOUR BRICKS ROOK:\n* 16 slots = 16 bars of song\n- Clock (Out) c> Four Bricks Rook (Clock)\n- Slow Staircase (Out) >> Four Bricks Rook (Table CV)\n- Four Bricks Rook (Out 1) t> Kick (Trig)\n- Four Bricks Rook (Out 2) t> Snare (Trig)\n- Four Bricks Rook (Out 3) t> Hat (Trig)\n- Four Bricks Rook (Out 4) t> Perc (Trig)"
+    },
+    {
+      "name": "Live fill performance",
+      "patch": "Play mode on pads 1-3 plays the buffer · pad 4 in Fill mode holds a loaded fill table · tap-and-hold pad 4 for momentary fills without re-patching · Fill All gate triggers full-kit breakdowns",
+      "diagram": "FOUR BRICKS ROOK:\n* Pad 4: Fill mode · Load Fill: slot 9 Euclidean Combos\n- Clock (Out) c> Four Bricks Rook (Clock)\n- Performer (Gate) g> Four Bricks Rook (Fill All)\n- Four Bricks Rook (Out 1) t> Kick (Trig)\n- Four Bricks Rook (Out 2) t> Snare (Trig)\n- Four Bricks Rook (Out 3) t> Hat (Trig)\n- Four Bricks Rook (Out 4) t> Fill Drum (Trig)"
+    }
+  ]
+}

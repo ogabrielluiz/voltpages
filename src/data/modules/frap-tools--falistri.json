@@ -1,0 +1,300 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://frap.tools/docs/MANUALONE.pdf",
+      "https://frap.tools/products/falistri/",
+      "https://modulargrid.net/e/frap-tools-falistri",
+      "https://www.manualslib.com/manual/2007680/Frap-Tools-Cgm.html?page=25",
+      "https://cs.uwaterloo.ca/~plragde/flaneries/FIMS/Falistri__A_Function_Generator.html"
+    ]
+  },
+  "slug": "frap-tools--falistri",
+  "name": "FALISTRI",
+  "manufacturer": "Frap Tools",
+  "hp": 18,
+  "tags": ["FUNCTION", "ENVELOPE", "LFO", "SLEW", "VCA"],
+  "description": "Dual analog function generator + dual cascaded frequency divider + four-quadrant multiplier + linear slew limiter. Each generator: triangle-core, four stages, rise/fall + independent shapes, loop/transient/hold modes, quadrature and AHDSR combinations.",
+  "controls": [
+    {
+      "name": "Trigger/Gate Button",
+      "scope": "per generator (yellow, green)",
+      "description": "Manual trigger. LED lit when generator currently in rising stage of a To Rise cycle.",
+      "detail": "momentary · mirrors Trigger/Gate Input"
+    },
+    {
+      "name": "Rise Time",
+      "scope": "per generator",
+      "description": "Rising stage duration.",
+      "detail": "Long range: 0.9 ms – 10 s · Short range: per Time Scale switch · CV via Rise CV input"
+    },
+    {
+      "name": "Fall Time",
+      "scope": "per generator",
+      "description": "Falling stage duration. In Hold mode, time after hold releases.",
+      "detail": "Long range: 0.9 ms – 10 s · CV via Fall CV input · V/Oct input inverse-modulates both"
+    },
+    {
+      "name": "Rise Shape",
+      "scope": "per generator",
+      "description": "Morphs the rising curve.",
+      "detail": "CCW: logarithmic · noon: linear · CW: exponential · independent of time"
+    },
+    {
+      "name": "Fall Shape",
+      "scope": "per generator",
+      "description": "Morphs the falling curve.",
+      "detail": "CCW: logarithmic · noon: linear · CW: exponential · waveshaper is post-core"
+    },
+    {
+      "name": "Attenuverter",
+      "scope": "per generator",
+      "description": "Scales the Attenuverted Output between +10 V and -10 V of the unipolar function.",
+      "detail": "CCW: inverted unipolar · noon: zero · CW: positive unipolar"
+    },
+    {
+      "name": "Time Scale Switch",
+      "scope": "per generator",
+      "description": "Selects Rise/Fall range.",
+      "detail": "up: long times (envelope/LFO) · down: short times (audio rate / microsecond LFO)"
+    },
+    {
+      "name": "Play Mode Switch",
+      "scope": "per generator",
+      "description": "Trigger behaviour.",
+      "detail": "Loop: self-retriggers (LFO/oscillator) · Transient: one-shot AD · Hold: AHR (holds while gate high)"
+    },
+    {
+      "name": "Green Retrigger Switch (on back)",
+      "scope": "Green generator only",
+      "description": "Changes green retrigger behaviour.",
+      "detail": "down: yellow-style retrigger always · up: On Rest — retrigger only during rest stage (formant/undertone generator)"
+    },
+    {
+      "name": "Quadrature Switch",
+      "scope": "Dual-generator",
+      "description": "Chains the two generators into an interdependent quadrature pair. Forces green to To Rise mode.",
+      "detail": "right: quadrature ON · disables green's retrigger · green must be set to Hold for AHDSR"
+    },
+    {
+      "name": "DCFD Range 1 / Range 2",
+      "scope": "Dual Cascaded Frequency Divider",
+      "description": "Output voltage range of divider stages.",
+      "detail": "high: unipolar 0 V / +10 V · low: bipolar ±5 V"
+    },
+    {
+      "name": "Slew Rise / Slew Fall",
+      "scope": "Linear Slew Limiter",
+      "description": "Independent rising / falling slew times for the slew input.",
+      "detail": "linear · max 1.25 V/ms slew rate"
+    },
+    {
+      "name": "4QM Level",
+      "scope": "Four-Quadrant Multiplier",
+      "description": "Bipolar attenuator scaling the multiplier output.",
+      "detail": "±unity · 4-LED quadrant indicator matrix"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Trigger/Gate Input",
+      "description": "Fires the generator. Gate extends Hold stage in Hold mode; audio-rate signal accepted.",
+      "voltage": "threshold >1.5 V · max ~6 kHz · 80 µs min pulse"
+    },
+    {
+      "name": "Rise CV Input",
+      "description": "Modulates rise time. Positive CV lengthens.",
+      "voltage": "±10 V usable · 15 V knob offset"
+    },
+    {
+      "name": "Fall CV Input",
+      "description": "Modulates fall time. Positive CV lengthens.",
+      "voltage": "±10 V usable · 15 V knob offset"
+    },
+    {
+      "name": "V/Oct Input",
+      "description": "Inverse-tracks both Rise and Fall. Positive CV shortens times, negative lengthens. Pitch source when generator is used as oscillator.",
+      "voltage": "1 V/oct inverted tracking"
+    },
+    {
+      "name": "Force Loop Input",
+      "description": "Gate-high forces the play mode to Loop regardless of physical switch position. Accepts audio-rate signal for experimental effects.",
+      "voltage": "threshold >3 V"
+    },
+    {
+      "name": "DCFD Input 1 / 2",
+      "description": "Gate/trigger/audio input to frequency dividers. Semi-normalled in series — patching Input 2 only still produces 1/2 and 1/4 outputs.",
+      "voltage": "audio or gate · threshold >3 V"
+    },
+    {
+      "name": "4QM Input 1",
+      "description": "First multiplier input. Semi-normalled to yellow unipolar output.",
+      "voltage": "±10 V bipolar · unattenuated",
+      "normalizedTo": "yellow unipolar when unpatched"
+    },
+    {
+      "name": "4QM Input 2",
+      "description": "Second multiplier input. Semi-normalled to green bipolar output.",
+      "voltage": "±10 V bipolar · unattenuated",
+      "normalizedTo": "green bipolar when unpatched"
+    },
+    {
+      "name": "Slew Input",
+      "description": "Signal slewed by the Linear Slew Limiter.",
+      "voltage": "bipolar, audio/CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Bipolar Output (two dots)",
+      "description": "±5 V bipolar version of the function. Useful when using generator as audio-rate oscillator or bipolar LFO.",
+      "voltage": "±5 V"
+    },
+    {
+      "name": "Unipolar Output (one dot)",
+      "description": "0 V / +10 V unipolar envelope output. Classic envelope feed.",
+      "voltage": "0 – 10 V"
+    },
+    {
+      "name": "Attenuverted Output",
+      "description": "Attenuverter-scaled copy of the unipolar output.",
+      "voltage": "0 – 10 V to 0 – -10 V"
+    },
+    {
+      "name": "End Of Rise (EOR)",
+      "description": "Gate high for the duration of the falling stage (Transient/Loop mode). In Hold mode stays high through fall + held level.",
+      "voltage": "~10 V gate"
+    },
+    {
+      "name": "End Of Fall (EOF)",
+      "description": "Gate high from end-of-fall to start of next rise (Transient/Hold mode). Fast trigger in Loop mode at each cycle boundary.",
+      "voltage": "~10 V gate"
+    },
+    {
+      "name": "DCFD Output 1 / 2",
+      "description": "Successive /2 divisions. Output 1 = /2, Output 2 = /4 of input rising edges.",
+      "voltage": "Range switch: unipolar 0/+10 V or bipolar ±5 V"
+    },
+    {
+      "name": "4QM Output",
+      "description": "Four-quadrant multiplier result. VCA with bipolar signal → AM; both bipolar → ring mod; both unipolar → 2-quadrant.",
+      "voltage": "±10 V · max gain ~6 dB"
+    },
+    {
+      "name": "Slew Output",
+      "description": "Slew-limited version of Slew Input with independent rise/fall times.",
+      "voltage": "passes input range"
+    },
+    {
+      "name": "Max Output (quadrature section)",
+      "description": "Maximum of the two attenuverted outputs. Analog-OR for combining both generators into one envelope.",
+      "voltage": "0 – 10 V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Three play modes per generator",
+      "trigger": "Play Mode switch",
+      "description": "Loop: function auto-retriggers at end — free-running LFO or oscillator. Transient: one-shot rise-then-fall (AD) fired by each trigger. Hold: signal above ~1.5 V holds at peak while high, falls on gate-low (AHR envelope). Time between hold and rise equals Rise time."
+    },
+    {
+      "name": "Shapes independent of times",
+      "trigger": "Rise/Fall Shape knobs",
+      "description": "Waveshaper sits after the triangle core, so shape morph does not change period. Any blending between logarithmic and exponential is freely achievable. Enables audio-rate waveshaping when generator runs as oscillator — two pots become a minimal waveshaper."
+    },
+    {
+      "name": "Retrigger depends on stage",
+      "trigger": "trigger during active function",
+      "description": "Rise stage: ignored. Hold stage: ignored. Fall stage: jumps back up to the level at which fall began, fires new rise. Rest stage: fires new cycle. This lets FALISTRI produce clock-divided envelopes naturally — fast triggers drop through while slow cycles reset."
+    },
+    {
+      "name": "V/Oct inverse tracking",
+      "trigger": "patch V/Oct input",
+      "description": "One CV patched to V/Oct inversely modulates both Rise and Fall simultaneously. Positive CV shortens both (pitch goes up when used as oscillator); negative lengthens. This is the pitch input when running as audio-rate oscillator."
+    },
+    {
+      "name": "Force Loop overrides switch",
+      "trigger": "gate-high at Force Loop In",
+      "description": "While high, the generator loops regardless of Transient/Hold setting. Release returns to switch-selected mode. Audio-rate signals at Force Loop produce rapid mode-toggling for complex sync-like effects."
+    },
+    {
+      "name": "Green On Rest retrigger",
+      "trigger": "back-panel switch (up = On Rest)",
+      "description": "Green's retrigger only acts during rest stage. Running green faster than incoming triggers creates subharmonic division (/2, /3, /4…) of the master rate — formant/undertone generator behaviour found on EMS and old analog modulars."
+    },
+    {
+      "name": "Quadrature chaining",
+      "trigger": "Quadrature switch right + green in Hold",
+      "description": "Enables chained envelope stages between the two generators. Sequence: yellow rise → green rise → yellow fall → green fall → cycle. With green in Hold + attenuverters for relative levels, this generates a full AHDSR envelope where yellow = A+R, green = H+D and Hold level."
+    },
+    {
+      "name": "4QM semi-normalled synth voice",
+      "trigger": "leave 4QM inputs unpatched",
+      "description": "4QM Input 1 ← yellow unipolar, 4QM Input 2 ← green bipolar by default. Run yellow as envelope and green as audio oscillator to get a one-module synth voice (oscillator × envelope VCA) at the 4QM output."
+    },
+    {
+      "name": "DCFD as divider or flip-flop",
+      "trigger": "feed signal to DCFD",
+      "description": "Clock input → /2, /4 outputs (classic division). Trigger input → flip-flop (output changes state on each trigger). Audio input → sub-octave generator producing -1 and -2 octaves. Random clock input → variable-length gate streams. Semi-normalled cascade lets one input feed both dividers."
+    },
+    {
+      "name": "4QM behaviour follows polarity",
+      "trigger": "bipolar vs unipolar signal at 4QM inputs",
+      "description": "Two quadrants: unipolar + bipolar — acts as linear VCA (AM). Four quadrants: both bipolar — ring modulation. Both unipolar: two-quadrant multiplier (simpler VCA with polarity shifts). Bandwidth DC–20 kHz+ lets it double as audio-rate ring mod."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "AHDSR via quadrature",
+      "patch": "Yellow Play Mode: Transient · Green Play Mode: Hold · Quadrature switch right · yellow Rise = Attack, yellow Fall = Release, green Rise = Decay, green Fall = Sustain time · green attenuverter sets Sustain level · take Max Output · fires full AHDSR from one gate patched to yellow trigger.",
+      "diagram": "FALISTRI:\n* Yellow Mode: Transient\n* Green Mode: Hold\n* Quadrature: ON\n* Green Attenuverter: Sustain level\n\n- Gate (Out) g> FALISTRI.Yellow (Trig)\n- FALISTRI (Max Out) >> VCA (CV)"
+    },
+    {
+      "name": "Bouncing ball envelope",
+      "patch": "Yellow Loop mode · yellow attenuverted output → yellow Fall CV · each cycle feeds back and shortens the fall · envelope self-accelerates like a bouncing ball · trigger manual button to restart.",
+      "diagram": "FALISTRI:\n* Yellow Mode: Loop\n* Yellow Attenuverter: ~2 o'clock\n\n- FALISTRI.Yellow (Attenuverted Out) >> FALISTRI.Yellow (Fall CV) // positive FB shortens fall"
+    },
+    {
+      "name": "Undertone via On Rest",
+      "patch": "Green back-panel On Rest · feed steady clock into green trigger at ~300 Hz · green Rise/Fall set for ~900 Hz function cycle · green now divides incoming trigger rate by /3, producing a sub-octave formant · bipolar output through a VCA into mixer.",
+      "diagram": "FALISTRI:\n* Green Back Switch: On Rest\n* Green Mode: Transient\n\n- Clock (Out) t> FALISTRI.Green (Trig)\n- FALISTRI.Green (Bipolar Out) -> VCA (In)"
+    },
+    {
+      "name": "Single-module synth voice",
+      "patch": "Yellow as audio oscillator (Time Scale down, Loop mode, V/Oct from sequencer) · green as envelope (Transient, triggered by gate) · leave 4QM inputs unpatched — semi-norm brings yellow unipolar into 4QM1 and green bipolar into 4QM2 · 4QM output is oscillator × envelope — the complete voice.",
+      "diagram": "FALISTRI:\n* Yellow: Loop, Time Scale short\n* Green: Transient, Time Scale long\n* 4QM inputs: unpatched (semi-norm)\n\n- Sequencer (Pitch) p> FALISTRI.Yellow (V/Oct)\n- Gate (Out) g> FALISTRI.Green (Trig)\n- FALISTRI (4QM Out) -> Output (In)"
+    },
+    {
+      "name": "Ring-modded dual oscillator",
+      "patch": "Both generators at audio rate (Time Scale down, Loop) · yellow tuned to fundamental via V/Oct, green tuned an interval above by detuning Rise/Fall · patch yellow bipolar to 4QM1 and green bipolar to 4QM2 · 4QM output is their ring modulation · modulate Level CV with an envelope for dynamic timbre.",
+      "diagram": "FALISTRI:\n* Yellow: Loop, audio rate\n* Green: Loop, audio rate\n\n- Sequencer (Pitch) p> FALISTRI.Yellow (V/Oct)\n- FALISTRI.Yellow (Bipolar Out) -> FALISTRI (4QM In 1)\n- FALISTRI.Green (Bipolar Out) -> FALISTRI (4QM In 2)\n- Envelope (Out) >> FALISTRI (4QM Level CV)\n- FALISTRI (4QM Out) -> Output (In)"
+    },
+    {
+      "name": "Clocked envelope with divided variant",
+      "patch": "Clock into yellow trigger fires an envelope every beat · patch same clock into DCFD Input 1 to get /2 and /4 divisions · /4 triggers green for slow modulation envelopes · one clock now drives three synced but different envelope rates.",
+      "diagram": "FALISTRI:\n* Yellow Mode: Transient\n* Green Mode: Transient\n* DCFD Range: high\n\n- Clock (Out) c> FALISTRI.Yellow (Trig)\n- Clock (Out) c> FALISTRI (DCFD In 1)\n- FALISTRI (DCFD Out 2) t> FALISTRI.Green (Trig)\n- FALISTRI.Yellow (Unipolar Out) >> VCA 1 (CV)\n- FALISTRI.Green (Unipolar Out) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Pitch smoothing via slew",
+      "patch": "Sequencer pitch into Slew input · Slew Rise short, Slew Fall long · portamento glide on descending notes only · output to VCO V/Oct · works as CV smoother for S&H pitches or sample-and-hold.",
+      "diagram": "FALISTRI:\n* Slew Rise: CCW (fast)\n* Slew Fall: CW (slow)\n\n- Sequencer (Pitch) p> FALISTRI (Slew In)\n- FALISTRI (Slew Out) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Force Loop for fake delay",
+      "patch": "Green in Transient mode · patch EOR output from yellow → green Force Loop input · each yellow cycle forces green to loop briefly then stop · green fires an amplitude envelope that retriggers for the yellow rise-stage duration · creates echo-like envelope repeats.",
+      "diagram": "FALISTRI:\n* Yellow Mode: Transient\n* Green Mode: Transient\n\n- Gate (Out) g> FALISTRI.Yellow (Trig)\n- FALISTRI.Yellow (EOR) g> FALISTRI.Green (Force Loop)\n- FALISTRI.Green (Unipolar Out) >> VCA (CV)"
+    },
+    {
+      "name": "Sub-octave audio generator",
+      "patch": "Patch VCO square wave into DCFD Input 1 · DCFD Range switch low (bipolar ±5 V) · take DCFD Out 1 (-1 oct square) and DCFD Out 2 (-2 oct square) into a mixer with the original · fat three-octave unison bass.",
+      "diagram": "FALISTRI:\n* DCFD Range 1: low (bipolar)\n* DCFD Range 2: low (bipolar)\n\n- VCO (Square) -> FALISTRI (DCFD In 1)\n- VCO (Square) -> Mixer (In 1)\n- FALISTRI (DCFD Out 1) -> Mixer (In 2)\n- FALISTRI (DCFD Out 2) -> Mixer (In 3)"
+    },
+    {
+      "name": "Complex LFO with waveshaping",
+      "patch": "Yellow Loop, Time Scale long · set Rise Shape CCW (log), Fall Shape CW (expo) · asymmetric bipolar LFO with custom slope profile · V/Oct input from a separate slow LFO inversely modulates rate · very fluid modulation source.",
+      "diagram": "FALISTRI:\n* Yellow: Loop, Time Scale long\n* Rise Shape: CCW\n* Fall Shape: CW\n\n- Slow LFO (Out) >> FALISTRI.Yellow (V/Oct) // inverse rate mod\n- FALISTRI.Yellow (Bipolar Out) >> Filter (Cutoff)"
+    }
+  ]
+}

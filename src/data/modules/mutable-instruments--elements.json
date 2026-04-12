@@ -1,0 +1,218 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "firmwareVersion": "1.2",
+    "sources": [
+      "https://mutable-instruments.net/modules/elements/manual/",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/elements/",
+      "https://mutable-instruments.net/modules/elements/",
+      "https://www.modulargrid.net/e/mutable-instruments-elements",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=102080"
+    ]
+  },
+  "slug": "mutable-instruments--elements",
+  "name": "Elements",
+  "manufacturer": "Mutable Instruments",
+  "hp": 34,
+  "tags": ["OSCILLATOR", "RESONATOR", "VCO", "NOISE"],
+  "description": "Modal synthesis voice combining bowed/blown/struck exciters with a tuned resonator (strings, plates, tubes). Built-in reverb and stereo output. Also processes external audio through the resonator.",
+  "controls": [
+    {
+      "name": "BOW",
+      "scope": "Exciter",
+      "description": "Amount of bowed excitation. Continuous friction noise scraping the resonator.",
+      "detail": "0–full · CV summed"
+    },
+    {
+      "name": "BLOW",
+      "scope": "Exciter",
+      "description": "Amount of blown (breath-noise) excitation. Gated by envelope on GATE.",
+      "detail": "0–full · CV summed"
+    },
+    {
+      "name": "STRIKE",
+      "scope": "Exciter",
+      "description": "Amount of struck (mallet/pluck) excitation. Impulse-based, triggered by GATE edges.",
+      "detail": "0–full · CV summed"
+    },
+    {
+      "name": "FLOW",
+      "scope": "Exciter",
+      "description": "Character of blown noise (timbre of breath signal).",
+      "detail": "CCW: dark airy · CW: bright shaped noise"
+    },
+    {
+      "name": "MALLET",
+      "scope": "Exciter",
+      "description": "Character of struck excitation (mallet type).",
+      "detail": "CCW: wooden stick · noon: mallet · CW: sine-wave strike"
+    },
+    {
+      "name": "COARSE",
+      "scope": "Resonator",
+      "description": "Coarse pitch of the resonator body.",
+      "detail": "Tracks V/OCT · 8-octave range"
+    },
+    {
+      "name": "FINE",
+      "scope": "Resonator",
+      "description": "Fine pitch tuning of resonator.",
+      "detail": "±100 cents"
+    },
+    {
+      "name": "FM Attenuverter",
+      "scope": "Resonator",
+      "description": "Scales and inverts FM CV input to resonator pitch.",
+      "detail": "±unity"
+    },
+    {
+      "name": "GEOMETRY",
+      "scope": "Resonator",
+      "description": "Model-dependent resonator geometry — string stiffness, plate size, tube shape.",
+      "detail": "CV summed with attenuverter-scaled jack"
+    },
+    {
+      "name": "BRIGHTNESS",
+      "scope": "Resonator",
+      "description": "High-frequency content of the resonator — stiffness-damping tradeoff.",
+      "detail": "CV summed with BRIGHTNESS jack"
+    },
+    {
+      "name": "DAMPING",
+      "scope": "Resonator",
+      "description": "Decay time of resonator — how long the body rings after excitation.",
+      "detail": "CCW: staccato · CW: near-infinite sustain (resonator self-oscillates)"
+    },
+    {
+      "name": "POSITION",
+      "scope": "Resonator",
+      "description": "Strike/excitation position along the resonator — equivalent to pickup position on a string.",
+      "detail": "CCW: edge · CW: center · modulate for tremolo-like motion"
+    },
+    {
+      "name": "SPACE",
+      "scope": "Output",
+      "description": "Amount of built-in reverb applied to the output.",
+      "detail": "CCW: dry · CW: lush stereo hall · CV summed"
+    },
+    {
+      "name": "Resonator Model Button",
+      "scope": "Resonator",
+      "description": "Cycles resonator model: modal synthesis, sympathetic strings, non-linear string, or modulated/inharmonic string.",
+      "detail": "4 models · LEDs indicate selection · firmware 1.2 adds alternate modes (ominous/Kenaz/etc.)"
+    },
+    {
+      "name": "Exciter CV Attenuverters",
+      "scope": "Exciter",
+      "description": "Three small attenuverters for BOW/BLOW/STRIKE CV inputs.",
+      "detail": "CCW: invert · noon: zero · CW: unity"
+    }
+  ],
+  "inputs": [
+    { "name": "GATE", "description": "Gate input — sustains BLOW breath, triggers STRIKE impulse, and holds BOW active.", "voltage": ">2V gate" },
+    { "name": "V/OCT", "description": "1V/octave pitch for the resonator.", "voltage": "-3V to +7V" },
+    { "name": "FM", "description": "Frequency modulation of the resonator. Scaled by FM attenuverter.", "voltage": "±5V" },
+    { "name": "BOW CV", "description": "Scales bow amount, via attenuverter.", "voltage": "±5V" },
+    { "name": "BLOW CV", "description": "Scales blow amount, via attenuverter.", "voltage": "±5V" },
+    { "name": "STRIKE CV", "description": "Scales strike amount, via attenuverter.", "voltage": "±5V" },
+    { "name": "FLOW CV", "description": "Modulates breath noise character.", "voltage": "±5V" },
+    { "name": "MALLET CV", "description": "Modulates strike character.", "voltage": "±5V" },
+    { "name": "GEOMETRY CV", "description": "Modulates resonator geometry.", "voltage": "±5V" },
+    { "name": "BRIGHTNESS CV", "description": "Modulates resonator brightness.", "voltage": "±5V" },
+    { "name": "DAMPING CV", "description": "Modulates decay time.", "voltage": "±5V" },
+    { "name": "POSITION CV", "description": "Modulates excitation position.", "voltage": "±5V" },
+    { "name": "SPACE CV", "description": "Modulates reverb amount.", "voltage": "±5V" },
+    { "name": "BLOW IN (external)", "description": "External audio input replacing internal breath noise source. Patch in any audio as the blown excitation.", "voltage": "line level" },
+    { "name": "STRIKE IN (external)", "description": "External audio input replacing internal mallet impulse. Patch in any audio as the strike exciter — turns Elements into a modal processor of incoming audio.", "voltage": "line level" }
+  ],
+  "outputs": [
+    { "name": "AUX OUT (L)", "description": "Left stereo output. In mono use, dry-biased raw resonator sound.", "voltage": "±5V" },
+    { "name": "MAIN OUT (R)", "description": "Right stereo output. In mono use, this is the primary processed output with built-in reverb.", "voltage": "±5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Three-exciter hybrid voice",
+      "trigger": "any combination of BOW/BLOW/STRIKE + GATE",
+      "description": "Three exciter types sum simultaneously before entering the resonator. Blend for complex sounds (bowed attack on a struck body, blown sustain on a plucked string). Each has its own CV for dynamic articulation."
+    },
+    {
+      "name": "External audio through resonator",
+      "trigger": "audio patched into BLOW IN or STRIKE IN",
+      "description": "Replaces the internal exciter with external audio. Elements becomes a modal resonator processor — drums into STRIKE IN gain pitched modal ringing; pads into BLOW IN become vocalic filtered textures."
+    },
+    {
+      "name": "Self-oscillating resonator",
+      "trigger": "DAMPING near full CW + steady BOW",
+      "description": "DAMPING taken to extreme sustains excitation indefinitely. With just BOW active the resonator sings as a pure sine-like voice. GEOMETRY and BRIGHTNESS sculpt the self-oscillating tone."
+    },
+    {
+      "name": "Alt firmware modes (easter eggs)",
+      "trigger": "specific model-button combinations at power-up or long-press",
+      "description": "Firmware 1.2 adds alternate resonator models (ominous voice/Kenaz/Ens/drums) revealed by hidden button combinations at startup. Documented in later Mutable wiki."
+    },
+    {
+      "name": "Stereo output spread",
+      "trigger": "AUX + MAIN both patched",
+      "description": "AUX carries raw resonator body sound; MAIN carries reverberated voice. Panning L/R yields a natural-acoustic stereo image where dry body sits centered with wet tail spread."
+    },
+    {
+      "name": "POSITION tremolo",
+      "trigger": "LFO on POSITION CV",
+      "description": "Modulating POSITION at audio or LFO rate creates a pickup-position tremolo — produces pulsing harmonic sidebands without amplitude-modulation artifacts."
+    },
+    {
+      "name": "GEOMETRY model morphing",
+      "trigger": "slow CV into GEOMETRY",
+      "description": "GEOMETRY continuously morphs resonator shape within the selected model family. Slow CV sweeps turn fixed tones into organic evolving textures like warping metal or breathing wood."
+    },
+    {
+      "name": "Calibration mode",
+      "trigger": "hold button combination at power-up",
+      "description": "Standard Mutable calibration: apply 1V and 3V to V/OCT to tune precise tracking. Required after first install or temperature drift."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Bowed string lead",
+      "patch": "Model: modal string · BOW full · BLOW/STRIKE off · DAMPING at 3 o'clock (long) · V/OCT from keyboard · GATE held while notes play · MAIN OUT through envelope-controlled VCA for dynamics",
+      "diagram": "Elements:\n* Model: Modal string\n\n- Keyboard (Pitch) p> Elements (V/OCT)\n- Keyboard (Gate) g> Elements (GATE)\n- Elements (MAIN OUT) -> VCA (In) -> Output (In)\n- Keyboard (Gate) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Drums through modal body",
+      "patch": "External drum loop into STRIKE IN jack · all internal exciters at zero · resonator damping medium · clock sweeps V/OCT via quantizer for pitched modal drum processing · reverb (SPACE) at 10 o'clock",
+      "diagram": "Elements:\n* All exciters: 0\n\n- Drum Loop (Out) -> Elements (STRIKE IN)\n- Sequencer (Pitch) p> Quantizer (In)\n- Quantizer (Out) p> Elements (V/OCT)\n- Elements (MAIN OUT) -> Output (R)\n- Elements (AUX OUT) -> Output (L)"
+    },
+    {
+      "name": "Breathy flute pad",
+      "patch": "BLOW full · BOW/STRIKE off · FLOW at 2 o'clock (bright breath) · DAMPING CW (long) · GEOMETRY swept by slow LFO for tube morphing · SPACE at 3 o'clock · sustained ethereal flute",
+      "diagram": "Elements:\n* Model: Tube\n\n- Keyboard (Pitch) p> Elements (V/OCT)\n- Keyboard (Gate) g> Elements (GATE)\n- Slow LFO (Out) >> Elements (GEOMETRY CV)\n- Elements (MAIN OUT) -> Output (R)\n- Elements (AUX OUT) -> Output (L)"
+    },
+    {
+      "name": "Self-oscillating sine",
+      "patch": "DAMPING full CW · BOW at 10 o'clock (minimal) · BLOW/STRIKE off · GATE held constant (+5V offset) · resonator sings continuously · COARSE plays the pitch like a VCO · effectively a modal sine oscillator with body character",
+      "diagram": "Elements:\n* DAMPING: full CW (self-osc)\n\n- Offset (+5V) g> Elements (GATE) // constant hold\n- Sequencer (Pitch) p> Elements (V/OCT)\n- Elements (MAIN OUT) -> VCA (In) -> Output (In)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Hybrid percussion hit",
+      "patch": "Model: non-linear string · STRIKE at 3 o'clock · MALLET at 12 (mallet character) · BOW at 9 (tiny scrape for noise attack) · short GATE from clock · DAMPING 11 o'clock (medium decay) · GEOMETRY CV from random source for per-hit variation",
+      "diagram": "Elements:\n* Model: Non-linear string\n\n- Clock (Out) g> Elements (GATE)\n- Sequencer (Pitch) p> Elements (V/OCT)\n- S&H (Out) >> Elements (GEOMETRY CV) // per-hit variation\n- Elements (MAIN OUT) -> Output (R)\n- Elements (AUX OUT) -> Output (L)"
+    },
+    {
+      "name": "Pad through resonator",
+      "patch": "External pad/synth into BLOW IN · all internal exciters zero · Elements acts as resonant filter — pad picks up modal body · slow LFO on POSITION for pickup tremolo · SPACE at noon for room · vocal/metallic filtered pad",
+      "diagram": "Elements:\n* All exciters: 0\n\n- Pad Synth (Out) -> Elements (BLOW IN)\n- Slow LFO (Out) >> Elements (POSITION CV)\n- Keyboard (Pitch) p> Elements (V/OCT)\n- Keyboard (Gate) g> Elements (GATE)\n- Elements (MAIN OUT) -> Output (R)\n- Elements (AUX OUT) -> Output (L)"
+    },
+    {
+      "name": "Bouncing mallet on tube",
+      "patch": "Model: tube · STRIKE full · MALLET CW (sine mallet) · MATHS in bouncing-ball mode triggers GATE · accelerating bounces ring the tube · DAMPING set medium · natural decelerating physical simulation",
+      "diagram": "Elements:\n* Model: Tube\n\n- MATHS (EOR) t> MATHS (Trig) // bouncing ball self-patch\n- MATHS (Out) g> Elements (GATE)\n- Elements (MAIN OUT) -> Output (R)\n- Elements (AUX OUT) -> Output (L)"
+    },
+    {
+      "name": "Random modal dronescape",
+      "patch": "DAMPING CW · BOW constant · slow random CVs on GEOMETRY, BRIGHTNESS, POSITION · occasional STRIKE pulse from slow clock · ambient self-playing drone with spontaneous events · SPACE full CW",
+      "diagram": "Elements:\n* DAMPING: CW (long)\n* SPACE: CW\n\n- Offset (+5V) g> Elements (GATE)\n- S&H 1 (Out) >> Elements (GEOMETRY CV)\n- S&H 2 (Out) >> Elements (BRIGHTNESS CV)\n- S&H 3 (Out) >> Elements (POSITION CV)\n- Slow Clock (Out) t> Pulse Gen (Trig)\n- Pulse Gen (Out) >> Elements (STRIKE CV)\n- Elements (MAIN OUT) -> Output (R)\n- Elements (AUX OUT) -> Output (L)"
+    }
+  ]
+}

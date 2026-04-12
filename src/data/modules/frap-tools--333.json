@@ -1,0 +1,91 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://frap.tools/docs/MANUALONE.pdf",
+      "https://frap.tools/products/333/",
+      "https://www.manualslib.com/manual/1344210/Frap-Tools-333.html",
+      "https://clockfacemodular.com/en/products/frap-tools-333-new"
+    ]
+  },
+  "slug": "frap-tools--333",
+  "name": "333",
+  "manufacturer": "Frap Tools",
+  "hp": 6,
+  "tags": ["MIXER", "UTILITY", "MULT", "BUFFER"],
+  "description": "Three-section analog summing and distribution utility. Each section sums three DC-coupled inputs into three buffered outputs, with optional -6 dB attenuation. Semi-normalled chain lets it act as 1-to-9 mult or 7-to-1 mixer.",
+  "controls": [
+    {
+      "name": "-6 dB Switch",
+      "scope": "Red / Yellow / Green sections",
+      "description": "Halves the post-sum signal for hot inputs.",
+      "detail": "up: unity · down: -6 dB · one per section"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Section Inputs (3 per section × 3)",
+      "description": "DC-coupled summing inputs. Accepts audio, CV, clock.",
+      "voltage": "bipolar, full modular range",
+      "normalizedTo": "Yellow IN 1 ← Red post-switch sum; Green IN 1 ← Yellow post-switch sum (semi-normalled chain)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Section Outputs (3 per section × 3)",
+      "description": "Three independently buffered copies of the section sum.",
+      "voltage": "bipolar, after -6 dB switch"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Three isolated summing amps",
+      "trigger": "patch inputs to any section",
+      "description": "Each of the red, yellow, green sections is a 3-in 3-out buffered summing amp. No cross-talk between sections unless the semi-normal is exploited — sections operate independently otherwise."
+    },
+    {
+      "name": "Cascading semi-normal",
+      "trigger": "leave Yellow IN 1 / Green IN 1 unpatched",
+      "description": "Red's post-switch sum feeds Yellow's first input; Yellow's post-switch sum feeds Green's first input. Stacking this way turns 333 into a 1-to-9 mult (patch into Red IN 1, take 9 outs) or a 7-to-1 summing mixer (fill Red IN 1-3, Yellow IN 2-3, Green IN 2-3, take Green OUT)."
+    },
+    {
+      "name": "DC-coupled throughout",
+      "trigger": "any CV/clock at the input",
+      "description": "Entire signal path is DC-coupled. Safe for pitch CV, envelopes, triggers, and gates — no droop, no coupling capacitor. Buffered outputs preserve 1 V/oct tracking when multing pitch."
+    },
+    {
+      "name": "-6 dB pad placement",
+      "trigger": "flip -6 dB switch",
+      "description": "Attenuation occurs after the summing amplifier, before the output buffers. Scales the whole section sum by 0.5, useful when summing three ±5 V modular-level signals that would otherwise clip downstream."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "9-way pitch mult",
+      "patch": "Patch sequencer V/oct into Red IN 1 · leave Yellow IN 1 and Green IN 1 unpatched so the cascade propagates · all nine outputs carry the same pitch CV, each buffered independently · distribute to nine oscillators without degrading tracking.",
+      "diagram": "333:\n* All -6 dB: off\n* Yellow IN 1, Green IN 1: unpatched (cascade active)\n\n- Sequencer (V/oct) p> 333.Red (IN 1)\n- 333.Red (OUT 1) p> VCO 1 (V/Oct)\n- 333.Red (OUT 2) p> VCO 2 (V/Oct)\n- 333.Red (OUT 3) p> VCO 3 (V/Oct)\n- 333.Yellow (OUT 1) p> VCO 4 (V/Oct)\n- 333.Yellow (OUT 2) p> VCO 5 (V/Oct)\n- 333.Yellow (OUT 3) p> VCO 6 (V/Oct)\n- 333.Green (OUT 1) p> VCO 7 (V/Oct)\n- 333.Green (OUT 2) p> VCO 8 (V/Oct)\n- 333.Green (OUT 3) p> VCO 9 (V/Oct)"
+    },
+    {
+      "name": "7-to-1 sum",
+      "patch": "Seven signals into Red IN 1-3, Yellow IN 2-3, Green IN 2-3 · cascade carries Red's sum into Yellow IN 1 and Yellow's sum into Green IN 1 · Green OUT is the running total · engage -6 dB per section as needed to keep the sum inside ±10 V.",
+      "diagram": "333:\n* Yellow IN 1, Green IN 1: unpatched\n* -6 dB: per section as needed\n\n- Source 1 (Out) -> 333.Red (IN 1)\n- Source 2 (Out) -> 333.Red (IN 2)\n- Source 3 (Out) -> 333.Red (IN 3)\n- Source 4 (Out) -> 333.Yellow (IN 2)\n- Source 5 (Out) -> 333.Yellow (IN 3)\n- Source 6 (Out) -> 333.Green (IN 2)\n- Source 7 (Out) -> 333.Green (IN 3)\n- 333.Green (OUT 1) -> Output (In)"
+    },
+    {
+      "name": "Clock merger",
+      "patch": "Three clocks from different dividers into Red IN 1-3 · Red OUT 1/2/3 deliver the merged pulse stream (OR-like via summing) to three destinations · DC coupling passes every rising edge cleanly.",
+      "diagram": "333:\n\n- Clock A (Out) c> 333.Red (IN 1)\n- Clock B (Out) c> 333.Red (IN 2)\n- Clock C (Out) c> 333.Red (IN 3)\n- 333.Red (OUT 1) c> Drum 1 (Trig)\n- 333.Red (OUT 2) c> Drum 2 (Trig)\n- 333.Red (OUT 3) c> Drum 3 (Trig)"
+    },
+    {
+      "name": "CV sum with headroom",
+      "patch": "Three LFOs summed into one composite modulation · all three into one section, -6 dB engaged so the triple-summed signal sits inside ±5 V · three buffered copies delivered to three targets at the same amplitude.",
+      "diagram": "333:\n* Yellow -6 dB: ON\n\n- LFO 1 (Out) >> 333.Yellow (IN 1)\n- LFO 2 (Out) >> 333.Yellow (IN 2)\n- LFO 3 (Out) >> 333.Yellow (IN 3)\n- 333.Yellow (OUT 1) >> Filter (Cutoff)\n- 333.Yellow (OUT 2) >> VCA (CV)\n- 333.Yellow (OUT 3) >> FX (Time CV)"
+    },
+    {
+      "name": "Three separate 3→3 groups",
+      "patch": "Break the semi-normal by patching Yellow IN 1 and Green IN 1 with real signals · 333 now behaves as three independent 3-in 3-out mixer-mults · red handles one voice, yellow another, green a third — one module, three utility channels.",
+      "diagram": "333:\n* Semi-normal broken: Yellow IN 1 and Green IN 1 patched\n\n- Red Src 1 (Out) -> 333.Red (IN 1)\n- Red Src 2 (Out) -> 333.Red (IN 2)\n- Red Src 3 (Out) -> 333.Red (IN 3)\n- Yellow Src 1 (Out) -> 333.Yellow (IN 1)\n- Yellow Src 2 (Out) -> 333.Yellow (IN 2)\n- Yellow Src 3 (Out) -> 333.Yellow (IN 3)\n- Green Src 1 (Out) -> 333.Green (IN 1)\n- Green Src 2 (Out) -> 333.Green (IN 2)\n- Green Src 3 (Out) -> 333.Green (IN 3)"
+    }
+  ]
+}

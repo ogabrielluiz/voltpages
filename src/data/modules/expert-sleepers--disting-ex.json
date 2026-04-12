@@ -1,0 +1,152 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.26.1",
+    "sources": [
+      "https://expert-sleepers.co.uk/distingEX.html",
+      "https://expert-sleepers.co.uk/distingEXfirmwareupdates.html",
+      "https://www.expert-sleepers.co.uk/downloads/manuals/disting_EX_user_manual_1.20.pdf",
+      "https://www.expert-sleepers.co.uk/downloads/manuals/disting_EX_user_manual_1.5.pdf",
+      "https://www.expert-sleepers.co.uk/distingEXcontent.html"
+    ]
+  },
+  "slug": "expert-sleepers--disting-ex",
+  "name": "disting EX",
+  "manufacturer": "Expert Sleepers",
+  "hp": 8,
+  "tags": ["UTILITY", "OSCILLATOR", "SAMPLER", "DELAY", "REVERB", "FILTER", "EFFECTS", "QUANTIZER", "LFO", "ENVELOPE", "GRANULAR", "MIDI", "I/O"],
+  "description": "8HP successor to disting mk4 with dual OLED display, 6-in/4-out, MicroSD, MIDI and I2C. Runs 80+ mk4 algorithms in dual mode or dedicated single-mode algorithms (SD Multisample, Poly Wavetable, Granulator, Augustus Loop, etc.).",
+  "controls": [
+    {
+      "name": "P (Parameter Encoder)",
+      "scope": "Global · top-left",
+      "description": "Rotary encoder with push. Scrolls parameter in single mode · enters left-half menu in dual mode.",
+      "detail": "single: turn = next parameter · push = enter menu · dual: acts as left-half S knob (hold+turn = param, turn = value, push = menu)"
+    },
+    {
+      "name": "V (Value Encoder)",
+      "scope": "Global · top-right",
+      "description": "Rotary encoder with push. Edits parameter value in single mode · drives right-half mk4 in dual mode.",
+      "detail": "single: turn = edit value · hold = show input/output key · push = confirm (for 'confirm' params) · dual: right-half S knob · P+V together = main menu from dual"
+    },
+    {
+      "name": "L (Left Pot)",
+      "scope": "Global · mid-left",
+      "description": "Absolute rotary pot with push-button. Left-half Z pot in dual mode · user-mappable in single mode.",
+      "detail": "dual: Z for left mk4 (summed with Input Z) · single: independent of Input Z · default push = step preset back when enabled in Settings"
+    },
+    {
+      "name": "R (Right Pot)",
+      "scope": "Global · mid-right",
+      "description": "Absolute rotary pot with push-button. Right-half Z pot in dual mode · maps to current parameter in single mode.",
+      "detail": "dual: Z for right mk4 · single default: changes current parameter value (absolute) · push default: reset parameter to default"
+    },
+    {
+      "name": "MicroSD Slot",
+      "scope": "Global · left of display",
+      "description": "Push-push MicroSD slot. Holds WAV samples, wavetables, MIDI files, presets, firmware updates.",
+      "detail": "FAT32 · MBR · 32GB SDHC recommended · SPI mode ≈3 MB/s max · High-Speed mode optional (Samsung EVO yes, SanDisk Extreme no)"
+    },
+    {
+      "name": "OLED Display",
+      "scope": "Global",
+      "description": "128×64 OLED. Shows algorithm, parameter name/value, input-output key, menu, help text, preset list.",
+      "detail": "dual display modes: Standard (side-by-side with zoom) · Standard no-zoom · Retro (5×7 LED matrix emulation)"
+    }
+  ],
+  "inputs": [
+    { "name": "Z (5)", "description": "Left-half Z CV in dual mode · algorithm-assigned in single mode. LEDs red/blue for +/-.", "voltage": "±10V · DC-coupled" },
+    { "name": "X (1)", "description": "Input 1. Left-half X in dual mode · algorithm-assigned in single mode.", "voltage": "±10V · DC-coupled" },
+    { "name": "Y (2)", "description": "Input 2. Left-half Y in dual mode · algorithm-assigned in single mode.", "voltage": "±10V · DC-coupled" },
+    { "name": "Z (6)", "description": "Right-half Z CV in dual mode · algorithm-assigned (often Pitch 3 or Gate 3) in single mode.", "voltage": "±10V · DC-coupled" },
+    { "name": "X (3)", "description": "Input 3. Right-half X in dual mode · algorithm-assigned (often gate/pitch) in single mode.", "voltage": "±10V · DC-coupled" },
+    { "name": "Y (4)", "description": "Input 4. Right-half Y in dual mode · algorithm-assigned (often primary gate) in single mode.", "voltage": "±10V · DC-coupled" }
+  ],
+  "outputs": [
+    { "name": "A (1)", "description": "Output 1. Left-half A in dual mode · stereo-L in most single algorithms.", "voltage": "±10V · DC-coupled" },
+    { "name": "B (2)", "description": "Output 2. Left-half B in dual mode · stereo-R in most single algorithms.", "voltage": "±10V · DC-coupled" },
+    { "name": "A (3)", "description": "Output 3. Right-half A in dual mode · aux/paraphonic-gate/mono-mix in single algorithms.", "voltage": "±10V · DC-coupled" },
+    { "name": "B (4)", "description": "Output 4. Right-half B in dual mode · aux/mono-mix/EoR trigger in single algorithms.", "voltage": "±10V · DC-coupled" }
+  ],
+  "behaviors": [
+    {
+      "name": "Dual mode — two disting mk4s",
+      "trigger": "Menu → Algorithms → Enter dual mode",
+      "description": "Left encoder/pot drives left mk4 (inputs 5/1/2, outputs 1/2); right encoder/pot drives right mk4 (inputs 6/3/4, outputs 3/4). Both halves run independently at 96kHz. Firmware tracks disting mk4 v4.25 feature set. Press P+V together to access main menu from dual mode."
+    },
+    {
+      "name": "Single mode — dedicated algorithms",
+      "trigger": "Menu → Algorithms → Choose single → select",
+      "description": "One algorithm takes over the whole module with all six inputs and four outputs available. Catalogue (v1.26): Matrix Mixer, Augustus Loop, SD Multisample, SD 6 Triggers, WAV Recorder, Multi-Switch, Looper, Dream Machine, Filter Bank, Poly Wavetable, Granulator, Multi FX, Poly Exciter, Quad Envelope, Convolver, Chord Engine, Microtuner, Tracker, Macro Oscillator, Resonator, Macro Oscillator 2, MIDI Player, Poly FM, Spectral Freeze, Quad Quantizer, Quadraphonic Mixer."
+    },
+    {
+      "name": "Algorithm categories",
+      "trigger": "conceptual",
+      "description": "Algorithms span four functional families: audio processing (filters, delays, reverbs, FX), CV processing (quantizers, switches, S&H), CV/audio generation (VCOs, LFOs, envelopes, wavetable) and sample playback/recording (SD Multisample, WAV Recorder, Looper, MIDI Player). Single mode favours depth (more parameters, more voices) while dual mode favours breadth (two mk4 algorithms running at once)."
+    },
+    {
+      "name": "Preset system",
+      "trigger": "Menu → Presets",
+      "description": "256 preset slots in flash memory store algorithm, parameters, mapping, Z function, folder/file selections. Presets saveable/loadable per-half in dual mode, or as a 'dual preset' covering both halves. Bulk ops save/load all 256 to/from SD card as .dexpresets files. Individual presets load/save to SD as .dexpreset files."
+    },
+    {
+      "name": "Mappings — CV/MIDI/I2C control of parameters",
+      "trigger": "Menu → Mappings (single mode)",
+      "description": "Each single-mode parameter can be routed to a CV input, MIDI CC, MIDI note velocity, I2C message, or to the L/R pot and button. Independent attenuverter (-200% to +200%) per input. Mapping saved with the preset. Web-based editor on GitHub (expertsleepersltd/distingEX_tools) or community TouchOSC layouts for editing via MIDI SysEx."
+    },
+    {
+      "name": "Common single-mode parameters",
+      "trigger": "every single-mode algorithm",
+      "description": "Parameters 1–6 are always Attenuverter 1 through Attenuverter 6 (-200% to +200%, default 100%). They attenuate/invert each input before the algorithm uses it. Effective value (after CV + attenuation) shown alongside base value on the display."
+    },
+    {
+      "name": "MIDI I/O via 5-pin DIN breakout",
+      "trigger": "connect breakout to GT4/MIDI header",
+      "description": "Many single-mode algorithms accept MIDI note, CC, velocity, pitch-bend, clock, MTS tuning and MPE (per-note pitch bend) input. MIDI channels, note ranges and MPE mode configured per algorithm. 'Low-Voltage Signaling' option switches TRS polarity. MIDI file playback algorithm can force output channel or mute MIDI output."
+    },
+    {
+      "name": "I2C bus + ES-5 + FHX expanders",
+      "trigger": "connect to JP2 (I2C) / GT3 (ES-5) / GT2 (FHX)",
+      "description": "I2C header accepts messages from 16n Faderbank and other controllers to drive voices directly (EX.VOX) or trigger notes (EX.NOTE). ES-5 header adds 8 clock/gate outputs for sample-accurate timing and MIDI-to-gate translation. FHX-8CV / FHX-8GT extend CV/gate count. Select Bus jumper (JP1) enables Doepfer Select Bus preset recall."
+    },
+    {
+      "name": "Scala + MTS microtuning",
+      "trigger": "SCL/KBM on SD card · MTS SysEx",
+      "description": "Pitch-generating algorithms (Multisample, Chord Engine, Poly Wavetable, Poly Exciter, Tracker, Macro Oscillator, Quad Quantizer, MIDI/CV) read Scala .scl/.kbm files from the SD card or accept MTS (MIDI Tuning Standard) dumps for non-12TET scales. Current MTS dump savable to SD."
+    },
+    {
+      "name": "Knob Recorder + per-algorithm help",
+      "trigger": "hold Z down + turn (dual) · hold P >1s (single)",
+      "description": "Z push function is user-selectable (Function / Param / Knob Recorder) and saved per preset — knob recorder is available in any algorithm on the EX, not only those that implemented it on the mk4. Hold P/encoder for >1s to bring up per-algorithm help text paged to the display; P/V/R scroll pages."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "SD Multisample — 8-voice poly sampler from 3 CV/gate pairs",
+      "patch": "Single mode → 3 – SD Multisample · Input mode '3 CV/Gate pairs' → Pitch 1/2/5, Gate 4/3/6 · Output mode 'All summed 1/2' → stereo L/R on 1/2, paraphonic gate on 3, mono mix on 4. Folder parameter selects sample folder on SD.",
+      "diagram": "DISTING EX:\n* Algorithm: 3 SD Multisample (single)\n* Input mode: 3 CV/Gate pairs\n* Output mode: All summed 1/2\n* Folder: LABS Soft Pno PegOn\n\nSequencer:\n* 3 channels of pitch + gate\n\n- Sequencer (Pitch 1) p> DISTING EX.Y (2)\n- Sequencer (Gate 1) g> DISTING EX.Y (4)\n- Sequencer (Pitch 2) p> DISTING EX.X (1)\n- Sequencer (Gate 2) g> DISTING EX.X (3)\n- Sequencer (Pitch 3) p> DISTING EX.Z (5)\n- Sequencer (Gate 3) g> DISTING EX.Z (6)\n- DISTING EX.A (1) -> Output (L)\n- DISTING EX.B (2) -> Output (R)\n- DISTING EX.A (3) g> Envelope (Trig) // paraphonic gate = any voice active"
+    },
+    {
+      "name": "Poly Wavetable — 8-voice wavetable synth with delay/reverb",
+      "patch": "Single mode → 10 – Poly Wavetable · wavetable folder selected on SD (confirm with V push) · MIDI note input via 5-pin DIN · outputs 1/2 stereo · delay + reverb built in.",
+      "diagram": "DISTING EX:\n* Algorithm: 10 Poly Wavetable (single)\n* Wavetable: AKWF_0002\n* Wave spread: 30\n* MIDI channel: 1\n\nMIDI Keyboard:\n\n- MIDI Keyboard (Out) >> DISTING EX (MIDI In) // 5-pin DIN\n- DISTING EX.A (1) -> Output (L)\n- DISTING EX.B (2) -> Output (R)"
+    },
+    {
+      "name": "Augustus Loop — stereo tape delay with tap tempo and feedback",
+      "patch": "Single mode → 2 – Augustus Loop · stereo in 1/2 · delay time = Z param, feedback + filter + inertia-free mode configurable · outputs 1/2 wet+dry · effects loop via 3/4. Tap tempo from input.",
+      "diagram": "DISTING EX:\n* Algorithm: 2 Augustus Loop (single)\n* Delay time multiplier: 1/1\n* Feedback: 70%\n* Filter: LP 4kHz\n\nSource:\n\nClock:\n\n- Source (L) -> DISTING EX.X (1)\n- Source (R) -> DISTING EX.Y (2)\n- Clock (Out) c> DISTING EX.Z (5) // tap tempo\n- DISTING EX.A (1) -> Output (L)\n- DISTING EX.B (2) -> Output (R)\n- DISTING EX.A (3) -> FX Send (In) // effects-loop send\n- FX Return (Out) -> DISTING EX.X (3) // returns into feedback path"
+    },
+    {
+      "name": "Dual mode — MIDI/CV (left) into VCO + Clockable AD envelope (right)",
+      "patch": "Dual mode · left-half algorithm G-7 MIDI/CV converts MIDI notes into 1V/oct + gate on A/B · right-half F-1 Clockable AD envelope on B shapes VCA driven by clock on its X input. MIDI via 5-pin DIN.",
+      "diagram": "DISTING EX:\n* Mode: Dual\n* Left (mk4): G-7 MIDI/CV\n* Right (mk4): F-1 Clockable AD Envelope\n\nMIDI Keyboard:\n\nVCO:\n\nVCA:\n\nClock:\n\n- MIDI Keyboard (Out) >> DISTING EX (MIDI In)\n- DISTING EX (A 1) p> VCO (V/Oct) // left A = pitch\n- DISTING EX (B 2) g> DISTING EX (X 3) // left gate triggers right env\n- Clock (Out) c> DISTING EX (Y 4) // right env clock\n- DISTING EX (B 4) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Granulator — live stereo granular processor",
+      "patch": "Single mode → 11 – Granulator · stereo input 1/2 captured into buffer · Z CV on 5 scrubs position · X CV on 3 controls grain size · Spawn mode chosen from menu · outputs 1/2 stereo grains.",
+      "diagram": "DISTING EX:\n* Algorithm: 11 Granulator (single)\n* Spawn mode: Clocked\n* Size mean: 120ms\n\nSource:\n\nLFO:\n\nClock:\n\n- Source (L) -> DISTING EX.X (1)\n- Source (R) -> DISTING EX.Y (2)\n- LFO (Out) >> DISTING EX.Z (5) // scrub position\n- Clock (Out) c> DISTING EX.X (3) // grain spawn clock\n- DISTING EX.A (1) -> Output (L)\n- DISTING EX.B (2) -> Output (R)"
+    }
+  ]
+}

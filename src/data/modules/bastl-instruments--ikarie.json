@@ -1,0 +1,156 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://bastl-instruments.com/files/manual-ikarie-web.pdf",
+      "https://bastl-instruments.com/eurorack/modules/ikarie",
+      "https://modwiggler.com/forum/viewtopic.php?t=236456"
+    ]
+  },
+  "slug": "bastl-instruments--ikarie",
+  "name": "Ikarie",
+  "manufacturer": "Bastl Instruments",
+  "hp": 8,
+  "tags": ["FILTER", "VCF", "VCA", "ENVELOPE"],
+  "description": "Stereo twin-core 12dB/oct state-variable filter with continuous LP↔HP cutoff, envelope follower, stereo VCA, and BEYOND difference output. Designed by Casper Electronics × Bastl.",
+  "controls": [
+    {
+      "name": "CUTOFF",
+      "scope": "Global",
+      "description": "Large knob sweeps continuously from LP (CCW) through open (noon) to HP (CW). Controls both filter cores in sync.",
+      "detail": "LP ↔ open ↔ HP · 20Hz – 20kHz"
+    },
+    {
+      "name": "RESONANCE",
+      "scope": "Global",
+      "description": "Fader for filter Q. Self-oscillates as sine at max with no input. Becomes attenuator for RESONANCE CV when cable inserted.",
+      "detail": "Fader · self-osc at max · voltage-controlled"
+    },
+    {
+      "name": "MOD",
+      "scope": "Global",
+      "description": "Attenuverter for the MOD CV input feeding both filters' cutoff in tandem. Normalled from FOLLOW output when MOD unpatched.",
+      "detail": "CCW: invert · noon: zero · CW: unity"
+    },
+    {
+      "name": "STEREO",
+      "scope": "Global",
+      "description": "Controls stereo behavior per switch setting: detunes left/right cutoff (SPREAD) or pans between left/right filter levels (PAN). Becomes attenuator when STEREO jack patched.",
+      "detail": "Bipolar · SPREAD or PAN mode"
+    },
+    {
+      "name": "STEREO switch",
+      "scope": "Global",
+      "description": "Selects PAN (balance L/R VCA levels) or SPREAD (detune L/R cutoff frequencies).",
+      "detail": "PAN · SPREAD"
+    },
+    {
+      "name": "INPUT",
+      "scope": "Global",
+      "description": "Pre-filter gain from 0x to 5x. Drives the filter to overdrive at high settings; also sets amplitude feeding the FOLLOW envelope.",
+      "detail": "0x – 5x · unity mid"
+    },
+    {
+      "name": "FOLLOW switch",
+      "scope": "Global",
+      "description": "Envelope follower response speed — SLOW (natural release, pumping), MID (tight, balanced), FAST (near full-wave rectifier, per-cycle modulation).",
+      "detail": "SLOW · MID · FAST"
+    }
+  ],
+  "inputs": [
+    { "name": "L IN", "description": "Left filter input. Normalled to R IN for dual-mono operation.", "voltage": "line level · amplified by INPUT" },
+    { "name": "R IN", "description": "Right filter input. Accepts independent signal; otherwise sees L IN via normalling.", "voltage": "line level", "normalizedTo": "L IN" },
+    { "name": "V/OCT", "description": "Second modulation input added to cutoff. 1V = one octave shift (calibratable via front-panel trimmer).", "voltage": "1V/Oct" },
+    { "name": "MOD", "description": "Main cutoff modulation input, attenuverted by MOD knob. Normalled from FOLLOW output for built-in auto-wah.", "normalizedTo": "FOLLOW output" },
+    { "name": "STEREO", "description": "CV for the stereo parameter (spread or pan). Converts STEREO knob into an attenuator when patched." },
+    { "name": "RESONANCE", "description": "CV for resonance. Turns RESONANCE fader into a cap on the modulation range when patched." },
+    { "name": "VCA CV", "description": "Positive CV opens both output VCAs simultaneously. Silent with no CV patched.", "voltage": "0V – 5V · unity at 5V" }
+  ],
+  "outputs": [
+    { "name": "L OUT (MONO)", "description": "Left filter output. Sums L + R when R OUT is unpatched — use alone for mono.", "voltage": "AC-coupled" },
+    { "name": "R OUT", "description": "Right filter output. Splits the stereo image when patched (disables the mono sum on L OUT)." },
+    { "name": "BEYOND", "description": "Difference spectrum between the two filters — a band-pass between left and right cutoff frequencies (twin peak filter)." },
+    { "name": "FOLLOW", "description": "Envelope follower CV tracking INPUT signal loudness. Response set by FOLLOW switch. Normalled to MOD input." }
+  ],
+  "behaviors": [
+    {
+      "name": "Continuous LP↔HP morphing",
+      "trigger": "turn CUTOFF across range",
+      "description": "CCW half sweeps a low-pass from closed to open; CW half sweeps a high-pass from open to closed. A single knob morphs between filter types without a mode switch — great for unified tonal gestures."
+    },
+    {
+      "name": "Built-in auto-wah",
+      "trigger": "leave MOD input unpatched",
+      "description": "FOLLOW output is internally normalled to MOD input. Any signal at INPUT modulates its own cutoff — classic envelope-follower filter effect with no external envelope needed. FOLLOW switch chooses response time."
+    },
+    {
+      "name": "Twin peak filter (BEYOND)",
+      "trigger": "use BEYOND output with STEREO in SPREAD",
+      "description": "BEYOND takes the difference of L and R filter outputs — when cutoffs are detuned via SPREAD, yields a band-pass sitting between the two peaks. Add resonance for dual-formant vocal timbres."
+    },
+    {
+      "name": "Mono dual-peak formant",
+      "trigger": "use L OUT only with STEREO in SPREAD",
+      "description": "L OUT sums both filter outputs. With STEREO spreading cutoff, creates two simultaneous resonant peaks — formant filtering from a mono signal with no external routing."
+    },
+    {
+      "name": "Series 24dB filtering",
+      "trigger": "patch L OUT → R IN, listen to R OUT",
+      "description": "Chains the two 12dB filter cores in series for a 24dB/oct steep response. Stereo behavior is lost, but cutoff attenuation doubles. Add INPUT gain or SPREAD for aggressive serial distortion."
+    },
+    {
+      "name": "Pinged percussion",
+      "trigger": "trigger/noise burst to L IN, RESONANCE high",
+      "description": "High resonance plus a transient at INPUT excites the filter as a percussive voice. Use BEYOND or MOD in SPREAD for metallic tones. FOLLOW → VCA CV gates the burst's decay automatically."
+    },
+    {
+      "name": "Audio-rate stereo ring mod",
+      "trigger": "audio at STEREO input, PAN mode, listen BEYOND",
+      "description": "In PAN mode, the STEREO knob crossfades between L and R filter outputs. Modulating at audio rate with STEREO jack patched and listening on BEYOND yields ring-modulated tones — the difference cancels the shared spectrum."
+    },
+    {
+      "name": "External feedback",
+      "trigger": "patch L OUT or R OUT back into L IN or R IN",
+      "description": "Creates exaggerated resonance / feedback beyond internal RESONANCE range. INPUT knob caps the gain — careful scaling produces chaotic pinged drones or unstable tones."
+    },
+    {
+      "name": "VCA normally silent",
+      "trigger": "leave VCA CV unpatched",
+      "description": "The output stereo VCA defaults to open (normal filter level) when VCA CV has nothing plugged in. Patching 0V there mutes output — use positive CV (env, LFO) to sculpt amplitude without external VCA."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Auto-wah guitar in",
+      "patch": "leave MOD unpatched · FOLLOW switch MID · INPUT high · send guitar or drum loop through L IN · filter tracks envelope automatically · adjust MOD knob for depth and direction",
+      "diagram": "Ikarie:\n* FOLLOW: MID\n* INPUT: 4 o'clock\n* MOD: 1 o'clock\n* CUTOFF: noon\n\n- External (Out) -> Ikarie (L IN)\n- Ikarie (L OUT) -> Output (L)\n- Ikarie (R OUT) -> Output (R)"
+    },
+    {
+      "name": "Formant vocal filter",
+      "patch": "mono signal to L IN · STEREO switch SPREAD · STEREO knob ~2 o'clock · RESONANCE high · listen L OUT only · sweeping CUTOFF yields throaty formant sweep",
+      "diagram": "Ikarie:\n* STEREO switch: SPREAD\n* STEREO: ~2 o'clock\n* RESONANCE: 75%\n\nVCO:\nLFO:\n\n- VCO (Saw) -> Ikarie (L IN)\n- LFO (Out) >> Ikarie (MOD)\n- Ikarie (L OUT) -> Output (In)"
+    },
+    {
+      "name": "Twin peak stereo drone",
+      "patch": "noise into L IN · STEREO SPREAD wide · L OUT to left · BEYOND to right · creates disorienting stereo image with sum on one side, difference on the other",
+      "diagram": "Ikarie:\n* STEREO switch: SPREAD\n* STEREO: full\n* RESONANCE: 80%\n\nNoise:\nLFO:\n\n- Noise (Out) -> Ikarie (L IN)\n- LFO (Out) >> Ikarie (MOD)\n- Ikarie (L OUT) -> Output (L)\n- Ikarie (BEYOND) -> Output (R)"
+    },
+    {
+      "name": "Pinged snare",
+      "patch": "trigger burst to L IN · INPUT 3 o'clock · RESONANCE max · FOLLOW fast · FOLLOW → VCA CV · BEYOND gives metallic ring · self-contained percussion voice",
+      "diagram": "Ikarie:\n* RESONANCE: max\n* FOLLOW: FAST\n* STEREO switch: SPREAD\n* STEREO: ~1 o'clock\n\nClock:\n\n- Clock (Out) t> Ikarie (L IN) // trigger as audio\n- Ikarie (FOLLOW) >> Ikarie (VCA CV)\n- Ikarie (BEYOND) -> Output (In)"
+    },
+    {
+      "name": "Serial 24dB acid bass",
+      "patch": "L OUT into R IN · listen R OUT · RESONANCE high · envelope to MOD · INPUT drive for overdrive · steep saturated bass with classic 24dB character",
+      "diagram": "Ikarie:\n* INPUT: 4 o'clock\n* RESONANCE: 70%\n\nVCO:\nEnvelope:\n\n- VCO (Saw) -> Ikarie (L IN)\n- Ikarie (L OUT) -> Ikarie (R IN) // series\n- Envelope (Out) >> Ikarie (MOD)\n- Ikarie (R OUT) -> Output (In)"
+    },
+    {
+      "name": "Stereo VCA gate",
+      "patch": "stereo pair from external to L IN / R IN · envelope to VCA CV only · CUTOFF open · use Ikarie as stereo VCA with optional filter coloring",
+      "diagram": "Ikarie:\n* CUTOFF: noon (open)\n* RESONANCE: 0\n\nEnvelope:\n\n- External (L) -> Ikarie (L IN)\n- External (R) -> Ikarie (R IN)\n- Envelope (Out) >> Ikarie (VCA CV)\n- Ikarie (L OUT) -> Output (L)\n- Ikarie (R OUT) -> Output (R)"
+    }
+  ]
+}

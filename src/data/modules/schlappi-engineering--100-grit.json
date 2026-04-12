@@ -1,0 +1,178 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.analoguehaven.com/schlappi-engineering/100-grit/manual.pdf",
+      "https://schlappiengineering.com/products/100-grit",
+      "https://modulargrid.net/e/schlappi-engineering-100-grit",
+      "https://waveformmagazine.com/waveform-reviews/schlappi-engineering-100-grit/",
+      "https://www.perfectcircuit.com/schlappi-100-grit.html"
+    ]
+  },
+  "slug": "schlappi-engineering--100-grit",
+  "name": "100 Grit",
+  "manufacturer": "Schlappi Engineering",
+  "hp": 14,
+  "tags": ["DISTORTION", "FILTER", "VCF", "VCA", "NOISE"],
+  "description": "Touch-controlled transistor-ladder LPF, OTA VCA, and vintage-headphone-amp distortion with 8 brass touchpoints. Normalized feedback paths, x100 gain switch, and a secondary unstable distortion comparator turn it into a self-contained performance noise box.",
+  "controls": [
+    {
+      "name": "IN 1",
+      "scope": "Global",
+      "description": "Input attenuator for IN 1 jack. Also sends DIST 2 comparator into filter when unpatched, creating extreme square-wave chaos as a noise source.",
+      "detail": "Overdrives 50–75% · normals DIST 2 feedback"
+    },
+    {
+      "name": "IN 2",
+      "scope": "Global",
+      "description": "Input attenuator for IN 2 jack. Normals DIST output back into the mixer as an opposing resonance path when unpatched.",
+      "detail": "Normals DIST feedback"
+    },
+    {
+      "name": "FREQUENCY",
+      "scope": "Global",
+      "description": "Cutoff of the transistor-ladder 4-pole LPF. Large centre knob. Must be up to pass audio.",
+      "detail": "Sums with FM 1 + FM 2"
+    },
+    {
+      "name": "FM 1",
+      "scope": "Global",
+      "description": "Attenuator for FM 1 CV input. When unpatched, normals DIST output into filter cutoff for dynamic audio-rate FM — laser/zap percussion.",
+      "detail": "Normals DIST feedback"
+    },
+    {
+      "name": "FM 2",
+      "scope": "Global",
+      "description": "Attenuator for FM 2 CV input. Used for V/Oct tracking when patched.",
+      "detail": "1V/Oct tracking possible"
+    },
+    {
+      "name": "RES",
+      "scope": "Global",
+      "description": "Filter resonance bias. Self-oscillates when pushed; threshold set by internal RV3 trim.",
+      "detail": "Self-oscillating · sine when isolated"
+    },
+    {
+      "name": "RES CV",
+      "scope": "Global",
+      "description": "Attenuator for RES CV input. Unpatched, normals DIST output as audio-rate resonance modulation for screeches riding on the resonant peak.",
+      "detail": "Audio-rate modulation · normals DIST feedback"
+    },
+    {
+      "name": "GAIN",
+      "scope": "Global",
+      "description": "VCA gain. Also drives the distortion circuit harder. No sound without some initial gain.",
+      "detail": "Overdrives above ~75% · gates both OUT and DIST"
+    },
+    {
+      "name": "GAIN CV",
+      "scope": "Global",
+      "description": "Attenuator for GAIN CV input. Unpatched, normals filter POLE 2 (12dB output) into VCA CV for subtle harmonic-shift distortion.",
+      "detail": "5V = unity · normals POLE 2 feedback"
+    },
+    {
+      "name": "x100 Switch",
+      "scope": "Global",
+      "description": "Three-position gain multiplier. OFF = normal. ON = x100 always. (ON) = momentary spring x100 for extreme distortion bursts.",
+      "detail": "OFF / ON / (ON) momentary"
+    }
+  ],
+  "inputs": [
+    { "name": "IN 1", "description": "Primary filter input. Mixed with IN 2 into the ladder filter.", "normalizedTo": "DIST 2 comparator output (square-wave chaos noise source)" },
+    { "name": "IN 2", "description": "Secondary filter input.", "normalizedTo": "DIST output (distorted resonance opposition path)" },
+    { "name": "FM 1", "description": "Filter-frequency CV input.", "normalizedTo": "DIST output (dynamic FM from distortion signal)" },
+    { "name": "FM 2", "description": "Filter-frequency CV input. Used for V/Oct tracking." },
+    { "name": "RES CV", "description": "Resonance CV input. Audio-rate capable.", "normalizedTo": "DIST output (audio-rate resonance modulation)" },
+    { "name": "GAIN CV", "description": "VCA CV input. 5V = unity, more = gain above unity.", "voltage": "5V = unity", "normalizedTo": "POLE 2 (12dB filter tap) — harmonic-shift AM" }
+  ],
+  "outputs": [
+    { "name": "OUT", "description": "VCA output following the filter. Jumper J10 can re-route this to direct filter output (pre-VCA).", "voltage": "~10Vpp clean · up to ~22Vpp pushed" },
+    { "name": "DIST", "description": "Distortion-amp output after the VCA. Vintage headphone-amp circuit driven into instability. Self-limiting.", "voltage": "~12Vpp max (self-limiting)" }
+  ],
+  "behaviors": [
+    {
+      "name": "8 brass touchpoints",
+      "trigger": "finger, cable tip, alligator clip on touchpoint",
+      "description": "Eight brass balls expose internal nodes as resistive patch points: DIST 2 OUT, GAIN CV, DIST 2 AMP PIN, RES CV, DIST 1 AMP PIN, FREQ CV, DIST OUT, GAIN CV. Inputs are adjacent to outputs so any two-point touch creates a connection. Bridge with fingers, cables, or conductive material for performance distortion."
+    },
+    {
+      "name": "Feedback normalization",
+      "trigger": "leave input unpatched · turn up its attenuator",
+      "description": "Each audio/CV input normalizes to a hidden internal feedback path. IN 1→DIST 2, IN 2→DIST, FM 1→DIST, RES CV→DIST, GAIN CV→POLE 2. Turning an input's attenuator becomes a feedback amount control — the module self-generates sound without any input cable."
+    },
+    {
+      "name": "x100 momentary",
+      "trigger": "(ON) spring position held",
+      "description": "Momentary side of the gain switch springs back to OFF when released. Lets players punch in extreme distortion bursts without latching — transient-shaped chaos controlled by the switch."
+    },
+    {
+      "name": "DIST 2 secret comparator",
+      "trigger": "IN 1 attenuator turned up with no cable",
+      "description": "DIST 2 is an unstable distortion amp that compares the VCA output with the DIST output. Not available at any jack — only reachable via normalization or the DIST 2 OUT touchpoint. Produces extreme square-wave chaos ideal for noise-box patches."
+    },
+    {
+      "name": "Self-oscillating sine source",
+      "trigger": "RES CW · no input · FREQUENCY swept",
+      "description": "Ladder filter self-oscillates into a clean sine. Plays V/Oct via FM 2 as a filter-voice oscillator. Calibration trim RV3 sets the self-oscillation threshold."
+    },
+    {
+      "name": "J9 Input-to-Resonance jumper",
+      "trigger": "internal jumper J9",
+      "description": "Default ON: preserves bass and prevents resonance volume loss (classic-synth style). Removed: resonance takes over the input, whistling character, self-oscillation overtakes the signal."
+    },
+    {
+      "name": "J10 Output Source jumper",
+      "trigger": "internal jumper J10",
+      "description": "Default VCA: OUT is VCA-affected. Switched: OUT taken directly from filter output, bypassing the VCA so GAIN only controls DIST. Turns 100 Grit into two independent filter+distortion outs."
+    },
+    {
+      "name": "Noise-box mode",
+      "trigger": "no inputs · all attenuators ~25–60% · x100 ON · play touchpoints",
+      "description": "With nothing patched, the normalizations form a self-oscillating feedback network. Playing two or more touchpoints simultaneously modulates the internal signal paths — screams, radio-pickup artifacts, and rhythmic squealing chaos."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Touchpoint performance distortion",
+      "patch": "Drum loop → IN 1 @ 75% · FREQUENCY mid · GAIN 75% · x100 OFF · play the 4 right touchpoints with a thumb · adjacent input/output pairs create resistive patches in real time",
+      "diagram": "100 Grit:\n* IN 1: 75%\n* FREQUENCY: ~12 o'clock\n* GAIN: 75%\n* x100: OFF\n\nDrums:\n\n- Drums (Out) -> 100 Grit (IN 1)\n- 100 Grit (DIST) -> Output (In) // play touchpoints live"
+    },
+    {
+      "name": "Self-feedback noise box",
+      "patch": "No inputs · IN 1 at 25% · IN 2 at 25% · GAIN 60% · GAIN CV 60% · RES CV 25% · x100 ON · listen to DIST · play all 8 touchpoints for screeching chaos",
+      "diagram": "100 Grit:\n* IN 1: 25%\n* IN 2: 25%\n* GAIN: 60%\n* GAIN CV: 60%\n* RES CV: 25%\n* x100: ON\n\n- 100 Grit (DIST) -> Output (In)"
+    },
+    {
+      "name": "Laser percussion FM",
+      "patch": "Kick trigger → envelope → FM 2 @ high attenuation · FM 1 unpatched (DIST normalled in for dynamic FM) · RES mid · GAIN 75% · filter pings into screaming laser tails",
+      "diagram": "100 Grit:\n* RES: ~2 o'clock\n* GAIN: 75%\n* FM 1: up (DIST feedback normalled)\n\nEnvelope:\n\nTrigger:\n\n- Trigger (Out) t> Envelope (Trig)\n- Envelope (Out) >> 100 Grit (FM 2)\n- 100 Grit (DIST) -> Output (In)"
+    },
+    {
+      "name": "Self-oscillating sine voice",
+      "patch": "No input · RES full CW · V/Oct → FM 2 · GAIN CV from ADSR · 100 Grit sings as a ladder-sine voice with distortion character via x100",
+      "diagram": "100 Grit:\n* RES: full CW\n* GAIN: 0\n* x100: OFF\n\nSequencer:\n\nADSR:\n\n- Sequencer (Pitch) p> 100 Grit (FM 2)\n- ADSR (Out) >> 100 Grit (GAIN CV)\n- 100 Grit (OUT) -> Output (In)"
+    },
+    {
+      "name": "Dynamic audio-rate FM resonance",
+      "patch": "Synth pad → IN 1 · RES mid · RES CV up with unpatched RES CV (DIST normalled for audio-rate res mod) · screeching harmonics ride the pad's resonance",
+      "diagram": "100 Grit:\n* IN 1: 50%\n* RES: ~1 o'clock\n* RES CV: 60% (DIST normalled)\n* GAIN: 60%\n\nPad:\n\n- Pad (Out) -> 100 Grit (IN 1)\n- 100 Grit (OUT) -> Output (In)"
+    },
+    {
+      "name": "x100 punch-in explosions",
+      "patch": "Bass sequence → IN 1 · normal filter settings · perform x100 (ON) momentary spring for punctuation distortion bursts during a riff · spring returns to clean",
+      "diagram": "100 Grit:\n* IN 1: 75%\n* FREQUENCY: ~12 o'clock\n* GAIN: 60%\n* x100: momentary (ON) on accents\n\nSeq:\n\n- Seq (Out) -> 100 Grit (IN 1)\n- 100 Grit (DIST) -> Output (In) // live x100 punches"
+    },
+    {
+      "name": "Cable-as-touchpoint ring mod",
+      "patch": "Patch cable tip from external LFO into GAIN CV touchpoint · brass ball receives the CV via resistive connection · gain modulates audio-rate for AM/ring-mod effects between inputs and touchpoints",
+      "diagram": "100 Grit:\n* IN 1: 50%\n* GAIN: 60%\n\nLFO:\n\nSource:\n\n- Source (Out) -> 100 Grit (IN 1)\n- LFO (Out) >> 100 Grit (GAIN CV) // via brass touchpoint\n- 100 Grit (OUT) -> Output (In)"
+    },
+    {
+      "name": "Dual-output splitter",
+      "patch": "Flip J10 jumper to direct-filter · OUT = clean filter, DIST = distorted · stereo send: clean L + dirty R · GAIN controls only the distorted side",
+      "diagram": "100 Grit:\n* J10 jumper: direct (filter tap)\n* IN 1: 75%\n* GAIN: ~2 o'clock\n\nSource:\n\n- Source (Out) -> 100 Grit (IN 1)\n- 100 Grit (OUT) -> Output (In L) // clean filtered\n- 100 Grit (DIST) -> Output (In R) // distorted"
+    }
+  ]
+}

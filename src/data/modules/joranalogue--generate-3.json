@@ -1,0 +1,229 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://joranalogue.com/products/generate-3",
+      "https://joranalogue.com/generate-3/manual"
+    ]
+  },
+  "slug": "joranalogue--generate-3",
+  "name": "Generate 3",
+  "manufacturer": "Joranalogue",
+  "hp": 12,
+  "tags": ["OSCILLATOR", "VCO", "LFO", "WAVESHAPER", "UTILITY"],
+  "description": "Through-zero oscillator with pitch tracking, phase modulation, reset and flip sync, and three harmonic channels that can be mixed or modulated independently. The same core runs as an audio VCO or a slow through-zero modulation source.",
+  "controls": [
+    {
+      "name": "Frequency Range",
+      "scope": "Global",
+      "description": "Switches between audio-rate VCO and low-frequency VCLFO operation.",
+      "detail": "AUDIO: 22 Hz to 22 kHz · LOW: 2.8 mHz to 180 Hz"
+    },
+    {
+      "name": "Coarse Frequency",
+      "scope": "Global",
+      "description": "Sets the core frequency.",
+      "detail": "audio range spans 22 Hz to 22 kHz with Fine centered"
+    },
+    {
+      "name": "Fine Frequency",
+      "scope": "Global",
+      "description": "Adds a narrow offset around Coarse frequency.",
+      "detail": "about 5% of coarse range · 6 semitones in audio mode"
+    },
+    {
+      "name": "Through-Zero FM",
+      "scope": "Core FM",
+      "description": "Sets the depth and polarity of the through-zero FM path when no external cable is patched.",
+      "detail": "0 V stops the core · negative depth runs the oscillator backwards"
+    },
+    {
+      "name": "Bias",
+      "scope": "Core FM",
+      "description": "Adds a +5 V offset to the TZ FM path.",
+      "detail": "off = through-zero FM · on = normal linear FM bias"
+    },
+    {
+      "name": "AC",
+      "scope": "Core FM",
+      "description": "AC-couples the TZ FM input to remove DC offsets from the modulator.",
+      "detail": "blocks DC and very low frequency content"
+    },
+    {
+      "name": "Exponential FM",
+      "scope": "Exp FM",
+      "description": "Sets the depth and polarity of the exponential FM path.",
+      "detail": "centre = zero · clockwise = positive · counterclockwise = negative"
+    },
+    {
+      "name": "Phase",
+      "scope": "Phase modulator",
+      "description": "Sets manual phase offset or the depth of external phase modulation.",
+      "detail": "bipolar · 90 degrees per volt"
+    },
+    {
+      "name": "Fundamental",
+      "scope": "Harmonics",
+      "description": "Sets the level and polarity of the fundamental harmonic channel.",
+      "detail": "center = off · max = normal · min = inverted"
+    },
+    {
+      "name": "Even",
+      "scope": "Harmonics",
+      "description": "Sets the level and polarity of the even-harmonic channel.",
+      "detail": "balanced modulator input"
+    },
+    {
+      "name": "Odd",
+      "scope": "Harmonics",
+      "description": "Sets the level and polarity of the odd-harmonic channel.",
+      "detail": "balanced modulator input"
+    },
+    {
+      "name": "V/Oct Trimmer",
+      "scope": "Calibration",
+      "description": "Front-panel pitch-tracking trim.",
+      "detail": "factory calibrated · accessible from the front"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "V/OCT",
+      "description": "1V/oct pitch input for exponential tracking.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "TZ FM",
+      "description": "Through-zero FM input.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "EXP FM",
+      "description": "Exponential FM input.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "RESET",
+      "description": "Hard sync input that resets the triangle core to 0 V on a rising edge.",
+      "voltage": "rising edge"
+    },
+    {
+      "name": "FLIP",
+      "description": "Soft sync input that flips triangle direction on a rising edge.",
+      "voltage": "rising edge"
+    },
+    {
+      "name": "PHASE",
+      "description": "Phase modulation input.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "Fundamental CV",
+      "description": "CV over the fundamental harmonic channel.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "Even CV",
+      "description": "CV over the even harmonic channel.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "Odd CV",
+      "description": "CV over the odd harmonic channel.",
+      "voltage": "bipolar CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Core Output",
+      "description": "Triangle core output, one octave below the fundamental output.",
+      "voltage": "10 Vpp"
+    },
+    {
+      "name": "Fundamental Output",
+      "description": "Sine-like fundamental harmonic output.",
+      "voltage": "10 Vpp"
+    },
+    {
+      "name": "Even Output",
+      "description": "Even-harmonic output at twice the core frequency.",
+      "voltage": "10 Vpp"
+    },
+    {
+      "name": "Odd Output",
+      "description": "Odd-harmonic output built from the odd partials above the fundamental.",
+      "voltage": "10 Vpp"
+    },
+    {
+      "name": "Full Output",
+      "description": "Mix of the three harmonic channels.",
+      "voltage": "10 Vpp"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Through-zero FM",
+      "trigger": "TZ FM knob or input",
+      "description": "The oscillator can run through zero into negative frequencies. Deep modulation stays pitch-stable because the core changes direction instead of simply drifting sharp."
+    },
+    {
+      "name": "Phase modulation",
+      "trigger": "PHASE input",
+      "description": "Continuous phase movement creates FM-like timbre without changing the core frequency. The same phase control also shifts how the sync inputs strike the waveform."
+    },
+    {
+      "name": "Hard and soft sync",
+      "trigger": "RESET or FLIP input",
+      "description": "RESET hard-syncs the core by forcing it back to 0 V. FLIP soft-syncs by reversing triangle direction, which keeps more of the waveform edge shape intact."
+    },
+    {
+      "name": "Additive harmonic shaping",
+      "trigger": "Fundamental, Even, and Odd controls",
+      "description": "The three harmonic channels can be mixed into classic or complex waveforms. Ring-style amplitude modulation on each channel splits harmonics further and produces hollow, metallic spectra."
+    },
+    {
+      "name": "Low range as VCLFO",
+      "trigger": "Frequency Range set to LOW",
+      "description": "The same core becomes a slow through-zero modulation source. The harmonic outputs still move, so the module works as a multi-output low-frequency function generator."
+    },
+    {
+      "name": "Audio range calibration",
+      "trigger": "V/Oct input with trimmer set",
+      "description": "The front-panel trim lets the oscillator be calibrated without removing it from the rack. In audio mode, the core tracks pitch cleanly across a wide range."
+    },
+    {
+      "name": "Core one octave down",
+      "trigger": "monitor Core Output",
+      "description": "The core output is always one octave below the fundamental output. That makes it a useful sub-octave source or a clean reference for modulation patches."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Through-zero lead",
+      "patch": "Audio range engaged · Sequencer pitch into V/OCT · LFO into TZ FM with Bias off · Fundamental and Odd mixed for a thin lead that stays stable under deep modulation.",
+      "diagram": "Generate 3:\n* Range: AUDIO\n* Bias: off\n* AC: off\n* TZ FM: moderate\n* Fundamental: noon\n* Even: low\n* Odd: noon\n\nSequencer:\nLFO:\nVCA:\nOutput:\n\n- Sequencer (Pitch) p> Generate 3 (V/OCT)\n- LFO (Out) >> Generate 3 (TZ FM)\n- Generate 3 (Full Output) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Additive organ",
+      "patch": "Fundamental, Even, and Odd are balanced into a stacked organ tone · slight Exponential FM adds motion · Core Output can reinforce the bottom octave for weight.",
+      "diagram": "Generate 3:\n* Range: AUDIO\n* Fundamental: noon\n* Even: noon\n* Odd: noon\n\nMixer:\nOutput:\n\n- Generate 3 (Fundamental Output) -> Mixer (In 1)\n- Generate 3 (Even Output) -> Mixer (In 2)\n- Generate 3 (Odd Output) -> Mixer (In 3)\n- Generate 3 (Core Output) -> Mixer (In 4)\n- Mixer (Out) -> Output (In)"
+    },
+    {
+      "name": "Phase-wash drone",
+      "patch": "Low range with slow phase CV · Bias on for linear FM style control · Fundamental and Even mixed unevenly · the phase motion shifts perceived pitch while the core frequency stays fixed.",
+      "diagram": "Generate 3:\n* Range: LOW\n* Bias: on\n* AC: on\n* Phase: noon\n* Fundamental: high\n* Even: medium\n* Odd: low\n\nLFO:\nOutput:\n\n- LFO (Out) >> Generate 3 (PHASE)\n- Generate 3 (Full Output) -> Output (In)"
+    },
+    {
+      "name": "Sync lead",
+      "patch": "Sequencer pitch into V/OCT · hard sync from a second oscillator into RESET · Flip input available for softer sync edges · the two sync paths carve different harmonic attacks without changing the melodic line.",
+      "diagram": "Generate 3:\n* Range: AUDIO\n* Bias: off\n* AC: on\n\nSequencer:\nMod VCO:\nVCA:\nOutput:\n\n- Sequencer (Pitch) p> Generate 3 (V/OCT)\n- Mod VCO (Out) t> Generate 3 (RESET)\n- Generate 3 (Full Output) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Low-frequency mod bank",
+      "patch": "Low range with all three harmonic channels exposed · each output drives a different destination · one module becomes a three-voice modulation source instead of a single LFO.",
+      "diagram": "Generate 3:\n* Range: LOW\n* Fundamental: high\n* Even: medium\n* Odd: medium\n\nFilter:\nVCA:\nOutput:\n\n- Generate 3 (Fundamental Output) >> Filter (Cutoff)\n- Generate 3 (Even Output) >> VCA (CV)\n- Generate 3 (Odd Output) >> Output (Pan CV)\n- Generate 3 (Full Output) -> Output (In)"
+    }
+  ]
+}

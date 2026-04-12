@@ -1,0 +1,122 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://modulargrid.net/e/shakmat-ballista-blast-expander-",
+      "https://www.signalsounds.com/shakmat-modular-ballista-blast-expander-eurorack-module/",
+      "https://www.musicstore.com/en_OT/EUR/Shakmat-Modular-Ballista-Blast-Expander/art-SYN0009512-000"
+    ]
+  },
+  "slug": "shakmat-modular--ballista-blast-expander",
+  "name": "Ballista Blast Expander",
+  "manufacturer": "Shakmat Modular",
+  "hp": 4,
+  "tags": ["LFO", "ENVELOPE", "RANDOM", "CLOCK", "UTILITY"],
+  "description": "4HP Ballista Blast modulation sidecar. Switchable LFO or envelope source, six destinations, clockable sync, and CV over depth, shape, and time with preset recall integration.",
+  "controls": [
+    {
+      "name": "Mode",
+      "scope": "Global",
+      "description": "Chooses the modulation source behavior.",
+      "detail": "LFO · envelope"
+    },
+    {
+      "name": "Destination",
+      "scope": "Global",
+      "description": "Chooses the Ballista Blast parameter target set.",
+      "detail": "harmonics · emphasis · parameter · pitch · amplitude · assignable"
+    },
+    {
+      "name": "Depth",
+      "scope": "Global",
+      "description": "Sets modulation amount. Can behave as attenuator or attenuverter depending on configuration.",
+      "detail": "configurable depth · bipolar range"
+    },
+    {
+      "name": "Shape / Attack",
+      "scope": "Source shaping",
+      "description": "Shapes the LFO waveform or the envelope attack curve.",
+      "detail": "morphable LFO / envelope contour"
+    },
+    {
+      "name": "Time / Decay",
+      "scope": "Source shaping",
+      "description": "Sets LFO rate or envelope decay time, depending on mode.",
+      "detail": "syncable rate · envelope decay"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Clock / Trigger",
+      "description": "Synchronizes or fires the modulation source.",
+      "voltage": "clock / trigger"
+    },
+    {
+      "name": "Depth CV",
+      "description": "CV over modulation amount.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Shape / Attack CV",
+      "description": "CV over source shape or attack time.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Time / Decay CV",
+      "description": "CV over source rate or decay time.",
+      "voltage": "CV"
+    }
+  ],
+  "outputs": [],
+  "behaviors": [
+    {
+      "name": "Switchable source",
+      "trigger": "flip Mode",
+      "description": "Acts as either an LFO or an envelope generator. The same expander can be clocked, triggered, or left free-running depending on the patch."
+    },
+    {
+      "name": "Six destination routing",
+      "trigger": "select destination",
+      "description": "The generated modulation can be aimed at harmonics, emphasis, pitch, amplitude, a generic parameter slot, or an assignable destination."
+    },
+    {
+      "name": "Preset recall integration",
+      "trigger": "save Ballista Blast preset",
+      "description": "Depth, destination, and source behavior are stored with Ballista Blast presets, so the expander comes back with the sound."
+    },
+    {
+      "name": "Dual-expander setup",
+      "trigger": "install a second expander",
+      "description": "Two expanders can run in parallel on one Ballista Blast, letting one handle slow macro movement while the other adds short transients or random motion."
+    },
+    {
+      "name": "Clocked modulation",
+      "trigger": "patch clock or trigger to the input",
+      "description": "The source can lock to the host patch, making rhythmic modulation sequences or envelope hits that line up with the voice."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Envelope sidecar",
+      "patch": "Use the expander as a short envelope · route it to Ballista Blast pitch and amplitude · trigger with the same gate that opens the voice · gives plucked attacks without patching a second envelope generator.",
+      "diagram": "Ballista Blast Expander:\n* Mode: envelope\n* Destination: pitch + amplitude\n\nBallista Blast:\n* Engine Select: FM\n\nSequencer:\nOutput:\n\n- Sequencer (Gate) g> Ballista Blast Expander (Clock / Trigger)\n- Ballista Blast Expander (ENV) >> Ballista Blast (Pitch)\n- Ballista Blast Expander (ENV) >> Ballista Blast (Amplitude)\n- Ballista Blast (OUT L) -> Output (In)"
+    },
+    {
+      "name": "Slow harmonic drift",
+      "patch": "Free-running LFO · destination set to harmonics and emphasis · shallow depth · wavetable or classic engine stays in motion while the timbre slowly opens and closes around a stable note.",
+      "diagram": "Ballista Blast Expander:\n* Mode: LFO\n* Destination: harmonics + emphasis\n* Depth: low\n\nBallista Blast:\n* Engine Select: Wavetable\n\nLFO:\nOutput:\n\n- LFO (Out) c> Ballista Blast Expander (Clock / Trigger)\n- Ballista Blast Expander (LFO) >> Ballista Blast (Harmonics)\n- Ballista Blast Expander (LFO) >> Ballista Blast (Emphasis)\n- Ballista Blast (OUT R) -> Output (In)"
+    },
+    {
+      "name": "Randomized bite",
+      "patch": "Random source with syncable timing · destination assigned to pitch and parameter · one expander drives small pitch nudges while the other touches envelope depth, making each hit different without breaking the preset.",
+      "diagram": "Ballista Blast Expander:\n* Mode: LFO\n* Destination: pitch + parameter\n* Shape / Attack: random\n\nBallista Blast:\n* Engine Select: Classic\n\nClock:\nOutput:\n\n- Clock (Out) c> Ballista Blast Expander (Clock / Trigger)\n- Ballista Blast Expander (LFO) >> Ballista Blast (Pitch)\n- Ballista Blast Expander (LFO) >> Ballista Blast (Parameter)\n- Ballista Blast (OUT L) -> Output (In)"
+    },
+    {
+      "name": "Dual expander layering",
+      "patch": "One expander set to envelope, the other to LFO · the envelope drives amplitude while the LFO shifts harmonics · stored presets preserve both movements, so one patch can recall a whole performance scene.",
+      "diagram": "Ballista Blast Expander 1:\n* Mode: envelope\n* Destination: amplitude\n\nBallista Blast Expander 2:\n* Mode: LFO\n* Destination: harmonics\n\nBallista Blast:\n* Engine Select: FM\n\nSequencer:\nOutput:\n\n- Sequencer (Gate) g> Ballista Blast Expander 1 (Clock / Trigger)\n- Sequencer (Gate) g> Ballista Blast Expander 2 (Clock / Trigger)\n- Ballista Blast Expander 1 (ENV) >> Ballista Blast (Amplitude)\n- Ballista Blast Expander 2 (LFO) >> Ballista Blast (Harmonics)\n- Ballista Blast (OUT L) -> Output (L)\n- Ballista Blast (OUT R) -> Output (R)"
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "blue-7",
+    "sources": [
+      "https://dermannmitdermaschine.de/download/droid-manual-blue-7.pdf",
+      "https://modulargrid.net/e/der-mann-mit-der-maschine-droid-p10-controller",
+      "https://shop.dermannmitdermaschine.de/pages/droid-universal-cv-processor"
+    ],
+    "expanderOf": "der-mann-mit-der-maschine--droid"
+  },
+  "slug": "der-mann-mit-der-maschine--droid-p10",
+  "name": "DROID P10",
+  "manufacturer": "Der Mann mit der Maschine",
+  "hp": 5,
+  "tags": [
+    "UTILITY",
+    "ATTENUATOR"
+  ],
+  "description": "DROID controller. Ten pots — two large (same as P2B8) and eight small — all 0–10V / 0.0–1.0. Free assignment from the patch to any circuit parameter. Up to 16 controllers chain to a master.",
+  "controls": [
+    {
+      "name": "Pots 1–10 (P1.1–P1.10)",
+      "scope": "Panel",
+      "description": "Two large top pots + eight small pots. All identical behavior. Output 0.0 at fully CCW, 1.0 at fully CW.",
+      "detail": "0.0–1.0 number range · = 0–10V if routed to an O register · use A×B+C in patch to rescale"
+    },
+    {
+      "name": "LAST / PARK jumper",
+      "scope": "Rear",
+      "description": "Three-pin jumper terminating the controller chain. Must be LAST if this P10 is the last controller, PARK or removed otherwise.",
+      "detail": "wrong setting: LEDs light on boot but no pot data reaches master"
+    },
+    {
+      "name": "LINK IN / LINK OUT",
+      "scope": "Rear",
+      "description": "Two 6-pin shrouded headers for chaining. LINK IN to previous controller (or master/X7), LINK OUT to next controller.",
+      "detail": "do not connect to the unshrouded Debug header · powered by master, no separate power"
+    }
+  ],
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "P1.1 (large)",
+      "description": "First large pot. On first P10 in chain addressed as P1.1 in patch; on second controller in chain, P2.1; etc.",
+      "voltage": "0.0–1.0 (= 0–10V when routed to O register)"
+    },
+    {
+      "name": "P1.2 (large)",
+      "description": "Second large pot.",
+      "voltage": "0.0–1.0"
+    },
+    {
+      "name": "P1.3–P1.10 (small)",
+      "description": "Eight small pots, same 0.0–1.0 range, just smaller physical knob. Harder to fine-tune but space-efficient.",
+      "voltage": "0.0–1.0"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Pot-circuit indirection",
+      "trigger": "pot circuit in patch",
+      "description": "A bare P1.1 reference can be used directly as a CV, but wrapping it in a pot circuit unlocks features: notch at 0.5 (artificial detent), overlay multiple virtual pots on the same physical knob (with select), bipolar range with split halves, and 16 LED position display on the master matrix. The P10's physical travel stays constant; virtual values follow via selectat + persisted state."
+    },
+    {
+      "name": "Multi-function overlay",
+      "trigger": "select input on pot circuit",
+      "description": "Declare N pot circuits all reading P1.1 but each with a different select input. Only the currently-selected virtual pot is active; others retain their last value. Classic DROID trick to get attack/decay/sustain/release on one P10 knob via a 4-way buttongroup switch. Physical rotation edits whichever virtual pot is lit."
+    },
+    {
+      "name": "A×B+C on every parameter",
+      "trigger": "patch scaling",
+      "description": "Wherever P1.n is used, the patch can attenuate and offset it: attack = P1.3 * 0.3 gives 0–0.3 instead of 0–1. Bipolar mapping: input = P1.1 * 2 - 1 gives −1…+1. Removes the need for external attenuverters."
+    },
+    {
+      "name": "State persistence — virtual values",
+      "trigger": "pot circuit with select",
+      "description": "The saved state in DROIDSTA.BIN records the last virtual value for each select slot, NOT the physical pot position. On power-up, virtual values are restored; the physical pot is only read when you touch it (after take-over behavior configured in the pot circuit). This prevents jumps when switching virtual menus."
+    },
+    {
+      "name": "Chain order matters",
+      "trigger": "controller declarations",
+      "description": "In the patch, [p10] must appear in the same order as the physical chain, starting with the controller closest to the master (or X7). Swapping order garbles incoming data — Forge visually mirrors physical chain order and offers a 'master on right' option."
+    },
+    {
+      "name": "Ten pots, one small module",
+      "trigger": "physical layout",
+      "description": "At 5HP the P10 fits more knobs per HP than the P2B8 or P4B2. Trade-off: small pots are harder for fast performance edits but ideal for set-and-forget parameters (quantizer scales, algoquencer density, mixer levels) while the two large pots stay at hand for live-performance controls."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Full ADSR + mixer on one P10",
+      "patch": "P1.1 attack, P1.2 decay, P1.3 sustain, P1.4 release on a contour · P1.5–P1.8 four mixer levels · P1.9–P1.10 two tone controls · single P10 provides full envelope and voice controls for one synthesizer voice · two large pots stay free for live performance (filter + VCA or similar).",
+      "diagram": "DROID:\n* contour: trigger=I1, output=O1, attack=P1.1, decay=P1.2, sustain=P1.3, release=P1.4\n* mixer: input1=I2, level1=P1.5, input2=I3, level2=P1.6, input3=I4, level3=P1.7, input4=I5, level4=P1.8, output=O2\n\nP10:\n\n- Gate Source (Out) g> DROID (I1)\n- DROID (O1) >> VCA (CV)"
+    },
+    {
+      "name": "Quantizer scale selector",
+      "patch": "minifonion root=P1.1 * 12 (0–12 semitones) · scale=P1.2 * 7 (picks from 7 scale presets) · notes1..7=P1.3..P1.9 as custom chord degree weights · last small pot P1.10 = CV for transpose · full scale-control panel inside 5HP.",
+      "diagram": "DROID:\n* minifonion: input=I1, root=P1.1, scale=P1.2, notes1=P1.3, notes2=P1.4, notes3=P1.5, notes4=P1.6, notes5=P1.7, notes6=P1.8, notes7=P1.9, transpose=P1.10, output=O1\n\nP10:\n\n- Sequencer (CV) p> DROID (I1)\n- DROID (O1) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Eight-step sequencer",
+      "patch": "sequencer circuit with step1..step8 tied to P1.1..P1.8 · clock on I1 · P1.9 controls length (1–8 steps) · P1.10 swing shift · 8-step CV sequence from a 5HP module · output O1 to VCO, output O2 (gate) to envelope. Pots directly set step voltages.",
+      "diagram": "DROID:\n* sequencer: clock=I1, step1=P1.1, step2=P1.2, step3=P1.3, step4=P1.4, step5=P1.5, step6=P1.6, step7=P1.7, step8=P1.8, length=P1.9, swing=P1.10, output=O1, gate=O2\n\nP10:\n\n- Clock (Out) c> DROID (I1)\n- DROID (O1) p> VCO (V/Oct)\n- DROID (O2) g> VCA Env (Trig)"
+    },
+    {
+      "name": "Overlay attack with select",
+      "patch": "Two algoquencer tracks sharing one P1.1 · buttongroup on P2B8 (B2.1/B2.2) selects between them · pot circuit 1: select=L2.1 → writes to track1 density · pot circuit 2: select=L2.2 → writes to track2 density · turning P1.1 edits only the currently-lit track's density · other virtual value frozen.",
+      "diagram": "DROID:\n* buttongroup: button1=B2.1, button2=B2.2, led1=L2.1, led2=L2.2\n* pot: pot=P1.1, select=L2.1, output=_D1\n* pot: pot=P1.1, select=L2.2, output=_D2\n* algoquencer: clock=I1, density=_D1, trigger=O1\n* algoquencer: clock=I1, density=_D2, trigger=O2\n\nP10:\n\nP2B8:\n\n- Clock (Out) c> DROID (I1)\n- DROID (O1) t> Drum 1 (Trig)\n- DROID (O2) t> Drum 2 (Trig)"
+    },
+    {
+      "name": "Live modulation matrix",
+      "patch": "Ten independent LFOs, one per pot · each pot sets the rate of its lfo · outputs summed pairwise into mixers · sends modulation to O1..O5 · P10 becomes a live modulation console where each knob sweeps an LFO rate from slow drift to audio-rate · perfect for drones, generative textures.",
+      "diagram": "DROID:\n* lfo: hz=P1.1, sine=O1\n* lfo: hz=P1.2, sine=O2\n* lfo: hz=P1.3, triangle=O3\n* lfo: hz=P1.4, triangle=O4\n* lfo: hz=P1.5, square=O5\n\nP10:\n\nFilter:\n\nVCA:\n\nPan:\n\nFX:\n\nDrone:\n\n- DROID (O1) >> Filter (Cutoff)\n- DROID (O2) >> VCA (CV)\n- DROID (O3) >> Pan (CV)\n- DROID (O4) >> FX (Time)\n- DROID (O5) >> Drone (PWM)"
+    },
+    {
+      "name": "Bipolar attenuverters × 10",
+      "patch": "Ten copy circuits: input = P1.n * 2 - 1, output = O1..O8 (and two internal cables) · P10 becomes a bank of 10 bipolar attenuverters · each CCW half inverts, centre = zero, CW half = unity · manual CV offset bank for the price of 5HP.",
+      "diagram": "DROID:\n* copy: input=P1.1, multiplier=2, offset=-1, output=O1\n* copy: input=P1.2, multiplier=2, offset=-1, output=O2\n* copy: input=P1.3, multiplier=2, offset=-1, output=O3\n* copy: input=P1.4, multiplier=2, offset=-1, output=O4\n* copy: input=P1.5, multiplier=2, offset=-1, output=O5\n* copy: input=P1.6, multiplier=2, offset=-1, output=O6\n* copy: input=P1.7, multiplier=2, offset=-1, output=O7\n* copy: input=P1.8, multiplier=2, offset=-1, output=O8\n\nP10:\n\n- DROID (O1) >> Destination 1 (CV)\n- DROID (O2) >> Destination 2 (CV)"
+    }
+  ]
+}

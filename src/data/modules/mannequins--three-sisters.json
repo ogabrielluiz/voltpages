@@ -1,0 +1,160 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.whimsicalraps.com/products/sisters",
+      "https://www.whimsicalraps.com/pages/support-three-sisters",
+      "https://github.com/whimsicalraps/Mannequins-Technical-Maps/blob/main/three-sisters/three-sisters-web.md",
+      "https://modwiggler.com/forum/viewtopic.php?t=134844"
+    ]
+  },
+  "slug": "mannequins--three-sisters",
+  "name": "Three Sisters",
+  "manufacturer": "Mannequins",
+  "hp": 10,
+  "tags": ["FILTER", "VCF", "RESONATOR"],
+  "description": "Triple linked SVF filter. Three tuned peaks (LOW, CENTRE, HIGH) share a master cutoff and spread. Switches between 24dB crossover and three-bandpass formant responses; QUALITY sweeps through notch to self-oscillation.",
+  "controls": [
+    {
+      "name": "FREQ",
+      "scope": "Global",
+      "description": "Master cutoff. Shifts all three filter peaks in parallel across ~5 octaves.",
+      "detail": "v/8 tracking · adds to FREQ CV jack"
+    },
+    {
+      "name": "SPAN",
+      "scope": "Global",
+      "description": "Pushes LOW down and HIGH up around FREQ center. In crossover mode widens/narrows CENTRE passband; in formant mode CENTRE is unaffected.",
+      "detail": "Narrow: peaks converge · Wide: peaks separate across spectrum"
+    },
+    {
+      "name": "QUALITY",
+      "scope": "Global",
+      "description": "Bipolar resonance. CW increases Q to self-oscillation; CCW mixes inverted complementary filter outputs producing notch / anti-resonance.",
+      "detail": "CCW: notch · noon: dry · CW: resonate · ~3 o'clock: self-oscillates"
+    },
+    {
+      "name": "FM attenuverter",
+      "scope": "Global",
+      "description": "Grey knob. Scales and inverts FM jack before summing to FREQ. Accepts audio-rate modulation.",
+      "detail": "CCW: invert · noon: zero · CW: unity"
+    },
+    {
+      "name": "Response switch",
+      "scope": "Global",
+      "description": "Selects filter topology. CROSSOVER splits band into 24dB LP / BP / HP; FORMANT turns all three paths into 12dB bandpass for vowel-like spectra.",
+      "detail": "Two-position toggle · crossover | formant"
+    }
+  ],
+  "inputs": [
+    { "name": "LOW (IN)", "description": "Signal into the LOW filter path only", "voltage": "±5V audio" },
+    { "name": "CENTRE (IN)", "description": "Signal into the CENTRE filter path only", "voltage": "±5V audio" },
+    { "name": "HIGH (IN)", "description": "Signal into the HIGH filter path only", "voltage": "±5V audio" },
+    { "name": "ALL (IN)", "description": "Signal routed to all three filter paths in parallel", "voltage": "±5V audio" },
+    { "name": "FREQ", "description": "1V/oct cutoff pitch tracking input", "voltage": "±5V · v/8" },
+    { "name": "FM", "description": "Attenuverted modulation summed to FREQ. AC/DC coupled, audio-rate capable.", "voltage": "±5V" },
+    { "name": "QUALITY", "description": "CV sums with QUALITY knob. ±5V at noon ≈ full sweep.", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "LOW (OUT)", "description": "LOW path. Crossover: 24dB lowpass at FREQ−SPAN. Formant: 12dB bandpass." },
+    { "name": "CENTRE (OUT)", "description": "CENTRE path. Crossover: bandpass bounded by LOW/HIGH cutoffs (VCA-like gate). Formant: 12dB bandpass at FREQ." },
+    { "name": "HIGH (OUT)", "description": "HIGH path. Crossover: 24dB highpass at FREQ+SPAN. Formant: 12dB bandpass." },
+    { "name": "ALL (OUT)", "description": "Equal-level passive mix of LOW/CENTRE/HIGH. Can clip with loud inputs or self-oscillating peaks." }
+  ],
+  "behaviors": [
+    {
+      "name": "Crossover mode",
+      "trigger": "Response switch: crossover",
+      "description": "LOW becomes 4-pole (24dB) lowpass, HIGH becomes 4-pole highpass, CENTRE becomes a bandpass whose edges are LOW and HIGH cutoffs. SPAN controls the CENTRE passband width — at zero SPAN CENTRE closes entirely, acting as a SPAN-controlled VCA."
+    },
+    {
+      "name": "Formant mode",
+      "trigger": "Response switch: formant",
+      "description": "All three paths become 12dB/oct bandpass peaks. LOW and HIGH track FREQ ± SPAN; CENTRE tracks FREQ alone and is immune to SPAN. Sum via ALL(OUT) builds vowel-like resonant stacks; ideal for pinging with triggers."
+    },
+    {
+      "name": "Anti-resonance / notch",
+      "trigger": "QUALITY knob CCW of noon",
+      "description": "CCW half mixes each filter's complementary (inverted, 180° out of phase) output back into the signal. Full CCW produces deep notches at the peak frequencies — the inverse of the CW resonant response. Useful as a spectral duck or for subtractive timbre sculpting."
+    },
+    {
+      "name": "Self-oscillation",
+      "trigger": "QUALITY past ~3 o'clock",
+      "description": "Each of the three peaks sings its own pitch. With nothing patched, tapping LOW/CENTRE/HIGH yields three sine voices tracked by FREQ v/8. In formant mode the three peaks can be pinged by triggers at ALL(IN) for additive percussive voices."
+    },
+    {
+      "name": "v/8 pitch tracking",
+      "trigger": "FREQ CV input",
+      "description": "FREQ jack is calibrated to 1V/octave over roughly five octaves. With QUALITY high enough to self-oscillate, Three Sisters becomes a three-voice sine oscillator. Intervals between the three peaks follow SPAN, making chord-like voicings from a single v/oct."
+    },
+    {
+      "name": "ALL(IN) / ALL(OUT) parallel processing",
+      "trigger": "Patch to ALL jacks",
+      "description": "ALL(IN) fans the same signal into all three filters; ALL(OUT) is a passive equal mix of the three outputs. Patching ALL(IN) and taking individual outs splits one signal into three spectral bands; patching individual INs and taking ALL(OUT) is a three-channel spectral mixer."
+    },
+    {
+      "name": "Audio-rate FM",
+      "trigger": "Audio source into FM with attenuverter open",
+      "description": "The FM jack is capable of audio-rate modulation, not just slow sweeps. Self-oscillating Three Sisters plus an FM carrier creates classic FM timbres. The FM attenuverter at full CCW produces symmetric negative-going modulation for through-zero-style character."
+    },
+    {
+      "name": "Stackable ALL mix",
+      "trigger": "Stackable on ALL(OUT)",
+      "description": "Officially supported passive mixing: stackable ALL(OUT) with other Three Sisters outputs or other modules on the same bus. No active mixer required; voltage summing occurs on the cable."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Three-band parallel processor",
+      "patch": "Audio → ALL(IN) · Response: crossover · FREQ noon, SPAN wide · take LOW(OUT) to compressor, HIGH(OUT) to reverb, CENTRE(OUT) to dry mixer · recombine externally for multiband shaping without phase cancellation",
+      "diagram": "Three Sisters:\n* Response: crossover\n* FREQ: noon · SPAN: wide\n\nMixer:\n\n- Audio (Out) -> Three Sisters (ALL IN)\n- Three Sisters (LOW OUT) -> Compressor (In)\n- Three Sisters (CENTRE OUT) -> Mixer (In)\n- Three Sisters (HIGH OUT) -> Reverb (In)\n- Compressor (Out) -> Mixer (In)\n- Reverb (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Pinged formant chord",
+      "patch": "Response: formant · QUALITY ~2 o'clock · trigger burst → ALL(IN) · LOW/CENTRE/HIGH peaks ring as three-note chord · SPAN sets chord interval · FREQ plays the chord via v/8",
+      "diagram": "Three Sisters:\n* Response: formant\n* QUALITY: ~2 o'clock (high Q)\n\n- Trigger (Out) -> Three Sisters (ALL IN) // pings the peaks\n- Sequencer (Pitch) p> Three Sisters (FREQ)\n- Three Sisters (ALL OUT) -> Output (In)"
+    },
+    {
+      "name": "Three-voice sine oscillator",
+      "patch": "Nothing patched to inputs · QUALITY full CW (all three self-oscillate) · FREQ CV = v/oct from sequencer · SPAN sets interval between voices · LOW/CENTRE/HIGH = three sine voices · stack or mix for instant sine chord",
+      "diagram": "Three Sisters:\n* QUALITY: full CW (self-oscillating)\n* SPAN: sets chord interval\n\n- Sequencer (Pitch) p> Three Sisters (FREQ)\n- Three Sisters (LOW OUT) -> VCA 1 (In)\n- Three Sisters (CENTRE OUT) -> VCA 2 (In)\n- Three Sisters (HIGH OUT) -> VCA 3 (In)"
+    },
+    {
+      "name": "Dynamic spectral ducker",
+      "patch": "Audio → ALL(IN) · Response: crossover · SPAN at noon · QUALITY CCW for notch · LFO → QUALITY CV sweeps between notch and dry · creates a pulsing spectral hole that ducks the resonant frequency region on the beat",
+      "diagram": "Three Sisters:\n* Response: crossover\n* QUALITY: CCW (notch)\n\nLFO:\n\n- Audio (Out) -> Three Sisters (ALL IN)\n- LFO (Out) >> Three Sisters (QUALITY) // pulses notch depth\n- Three Sisters (ALL OUT) -> Output (In)"
+    },
+    {
+      "name": "SPAN VCA gate",
+      "patch": "Audio → CENTRE(IN) · Response: crossover · SPAN at zero = CENTRE passband closes · envelope → SPAN (via attenuverter externally) opens/closes CENTRE as a rough VCA · QUALITY high shapes the gate's tone · percussive plucks with built-in resonance",
+      "diagram": "Three Sisters:\n* Response: crossover\n* SPAN: starts at 0 (closed)\n\nEnvelope:\n\n- Audio (Out) -> Three Sisters (CENTRE IN)\n- Envelope (Out) >> Three Sisters (FREQ) // open gate via FREQ since SPAN has no CV\n- Three Sisters (CENTRE OUT) -> Output (In)"
+    },
+    {
+      "name": "Vowel morphing",
+      "patch": "Noise or sawtooth → ALL(IN) · Response: formant · QUALITY high · slow LFO → FREQ CV sweeps all three formants in parallel · SPAN set for vowel-like /a/–/i/ spacing · ALL(OUT) = morphing formant voice",
+      "diagram": "Three Sisters:\n* Response: formant\n* QUALITY: high\n\nLFO:\nVCO:\n\n- VCO (Saw) -> Three Sisters (ALL IN)\n- LFO (Out) >> Three Sisters (FREQ)\n- Three Sisters (ALL OUT) -> Output (In)"
+    },
+    {
+      "name": "Audio-rate FM sines",
+      "patch": "QUALITY full CW (self-oscillating) · VCO saw → FM · FM attenuverter open ~2 o'clock · FREQ sets carrier pitch · three FM sines with slightly different peaks produce metallic cross-modulated tones · SPAN detunes voices for beating",
+      "diagram": "Three Sisters:\n* QUALITY: full CW\n* FM attenuverter: ~2 o'clock\n\nVCO:\n\n- VCO (Out) -> Three Sisters (FM)\n- Three Sisters (ALL OUT) -> Output (In)"
+    },
+    {
+      "name": "Resonant drum body",
+      "patch": "Response: formant · QUALITY just below self-oscillation · short trigger → ALL(IN) · FREQ sets pitch · SPAN narrow for tom-like unified ping, wide for metallic bell · AD envelope → QUALITY CV for damping",
+      "diagram": "Three Sisters:\n* Response: formant\n* QUALITY: ~2-3 o'clock\n* SPAN: narrow for tom, wide for bell\n\nEnvelope:\n\n- Trigger (Out) t> Three Sisters (ALL IN)\n- Envelope (Out) >> Three Sisters (QUALITY) // damping\n- Three Sisters (ALL OUT) -> Output (In)"
+    },
+    {
+      "name": "Mid/side-style crossover split",
+      "patch": "Stereo sum → ALL(IN) · crossover mode · SPAN wide · LOW(OUT) + HIGH(OUT) → external sum as 'sides' · CENTRE(OUT) → 'mid' · independent processing of spectral extremes vs midrange",
+      "diagram": "Three Sisters:\n* Response: crossover\n* SPAN: wide\n\nMixer:\n\n- Audio (Out) -> Three Sisters (ALL IN)\n- Three Sisters (LOW OUT) -> Mixer (Sides A)\n- Three Sisters (HIGH OUT) -> Mixer (Sides B)\n- Three Sisters (CENTRE OUT) -> Mixer (Mid)"
+    },
+    {
+      "name": "Notch-to-peak morph",
+      "patch": "Audio → ALL(IN) · QUALITY knob around noon · bipolar LFO → QUALITY CV · signal morphs between deep spectral notches (CCW excursion) and resonant peaks (CW excursion) at the same filter frequencies · vowel-like wah with negative resonance",
+      "diagram": "Three Sisters:\n* QUALITY: noon\n\nLFO:\n\n- Audio (Out) -> Three Sisters (ALL IN)\n- LFO (Out) >> Three Sisters (QUALITY) // notch ↔ peak morph\n- Three Sisters (ALL OUT) -> Output (In)"
+    }
+  ]
+}

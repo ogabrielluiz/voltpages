@@ -1,0 +1,171 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.whimsicalraps.com/products/mangrove",
+      "https://www.whimsicalraps.com/pages/support-mangrove",
+      "https://github.com/whimsicalraps/Mannequins-Technical-Maps/blob/main/mangrove/mangrove.md",
+      "https://rabidelephant.com/blogs/general/mannequins-mangrove-guide",
+      "https://modwiggler.com/forum/viewtopic.php?t=127588"
+    ]
+  },
+  "slug": "mannequins--mangrove",
+  "name": "Mangrove",
+  "manufacturer": "Mannequins",
+  "hp": 10,
+  "tags": ["OSCILLATOR", "VCO", "WAVESHAPER"],
+  "description": "Analog formant oscillator. A triangle core drives an impulse-formant engine with three waveshaping controls (FORMANT, BARREL, AIR) yielding vocal, woodwind and brass-like spectra. Hard-sync input and through-zero FM are supported.",
+  "controls": [
+    {
+      "name": "PITCH",
+      "scope": "Global",
+      "description": "Coarse exponential frequency. Sets oscillator core pitch; sums with FINE and V/8 PITCH CV.",
+      "detail": "Wide sweep · tracks 1V/oct over 6 octaves via V/8"
+    },
+    {
+      "name": "FINE",
+      "scope": "Global",
+      "description": "One-octave fine pitch tuning offset.",
+      "detail": "±6 semitones around PITCH"
+    },
+    {
+      "name": "FORMANT",
+      "scope": "Global",
+      "description": "Duration of the formant impulse. Sets the spectral peak independently of pitch. CCW emphasises bass; CW pushes formant into the highs.",
+      "detail": "Summed with FORMANT CV · wave/formant switch changes pitch-tracking behaviour"
+    },
+    {
+      "name": "BARREL",
+      "scope": "Global",
+      "description": "Rise/fall ratio of the impulse envelope. Morphs the formant spectrum from ramp through triangle to sawtooth shapes.",
+      "detail": "Symmetric at noon · CCW/CW = opposite skews"
+    },
+    {
+      "name": "AIR",
+      "scope": "Global",
+      "description": "Output VCA and soft overdrive. Closes the FORMANT output at full CCW; noon ≈ 10Vpp clean; CW drives into wavefolder-like clipping.",
+      "detail": "−60dB → 10Vpp clean → overdrive · FORMANT output only"
+    },
+    {
+      "name": "AIR attenuverter",
+      "scope": "AIR CV",
+      "description": "Grey knob. Scales and inverts AIR CV before summing into the AIR VCA.",
+      "detail": "CCW: invert · noon: zero · CW: unity"
+    },
+    {
+      "name": "wave/formant switch",
+      "scope": "Global",
+      "description": "Selects whether FORMANT duration tracks pitch. constant wave: formant scales with pitch (traditional oscillator). constant formant: formant frequency stays fixed while pitch changes (vocal/woodwind behaviour).",
+      "detail": "Two-position toggle"
+    }
+  ],
+  "inputs": [
+    { "name": "V/8 PITCH", "description": "1V/octave pitch CV. DC-coupled exponential.", "voltage": "±5V · tracks over 6 octaves" },
+    { "name": "FM", "description": "Linear through-zero FM input. AC-coupled; accepts audio-rate signals.", "voltage": "audio-rate" },
+    { "name": "FM INDEX", "description": "DC-coupled CV controlling FM depth. Normalled high when unpatched so FM is audible by default.", "voltage": "0–5V", "normalizedTo": "+5V when unpatched (full FM depth)" },
+    { "name": "FORMANT CV", "description": "DC-coupled modulation of FORMANT duration. ±5V at noon ≈ half-sweep.", "voltage": "±5V" },
+    { "name": "BARREL CV", "description": "DC-coupled modulation of impulse rise/fall ratio. ±5V at noon covers full knob range.", "voltage": "±5V" },
+    { "name": "AIR CV", "description": "DC-coupled modulation of AIR VCA via attenuverter.", "voltage": "±5V" },
+    { "name": "SYNC", "description": "Soft hard-sync. Rising edges reset the oscillator core phase. AC-coupled.", "voltage": "trigger / audio-rate" }
+  ],
+  "outputs": [
+    { "name": "SQUARE", "description": "Square wave from the oscillator core. Unaffected by FORMANT / BARREL / AIR.", "voltage": "±5V" },
+    { "name": "FORMANT", "description": "Shaped impulse output after FORMANT, BARREL and AIR stages.", "voltage": "up to 10Vpp (AIR dependent)" }
+  ],
+  "behaviors": [
+    {
+      "name": "constant wave mode",
+      "trigger": "wave/formant switch: constant wave",
+      "description": "FORMANT duration scales with pitch, so the waveshape stays consistent across the keyboard. Behaves like a conventional oscillator: the same BARREL/FORMANT setting sounds harmonically similar at every note."
+    },
+    {
+      "name": "constant formant mode",
+      "trigger": "wave/formant switch: constant formant",
+      "description": "FORMANT duration stays fixed regardless of pitch. Low notes get many formant cycles per period (rich, vocal), high notes approach a single impulse. Emulates the spectral behaviour of vocal tract or wind instruments whose resonant body doesn't scale with fundamental."
+    },
+    {
+      "name": "AIR gate + overdrive",
+      "trigger": "AIR knob sweep",
+      "description": "AIR is both the FORMANT output VCA and a soft clipper. Fully CCW mutes FORMANT entirely — common 'no sound' gotcha. Around noon the output is clean at 10Vpp. Past noon the VCA drives into saturation, adding even harmonics and density."
+    },
+    {
+      "name": "SQUARE bypasses shaping",
+      "trigger": "Patch SQUARE output",
+      "description": "SQUARE taps the oscillator core before the formant engine. It responds only to PITCH, FINE, V/8 and SYNC — FORMANT / BARREL / AIR have no effect. Useful for sub duty, sync-based cross-modulation or as a clean second voice."
+    },
+    {
+      "name": "Through-zero linear FM",
+      "trigger": "Audio-rate signal into FM",
+      "description": "FM jack is AC-coupled linear through-zero. Paired with another Mangrove or sine VCO, deep FM indices stay in tune. FM INDEX jack (normalled to +5V) acts as a VCA on the modulation depth for dynamic FM timbres."
+    },
+    {
+      "name": "Soft sync reset",
+      "trigger": "Rising edge at SYNC",
+      "description": "SYNC performs a soft phase reset rather than a hard master/slave. Pinging SYNC with a sub-audio trigger chirps the formant; audio-rate sync produces formant-locked sidebands and cross-modulated timbres. Does not retrigger the formant envelope independently."
+    },
+    {
+      "name": "FORMANT / BARREL interaction",
+      "trigger": "Move BARREL with fixed FORMANT",
+      "description": "The same FORMANT duration sounds very different under different BARREL settings: symmetric BARREL produces triangle-like spectra, asymmetric BARREL yields sawtooth formants rich in odd/even harmonics. BARREL is most audible when FORMANT is longer than one oscillator period."
+    },
+    {
+      "name": "Self-patched FM",
+      "trigger": "SQUARE → FM",
+      "description": "Patching SQUARE into FM creates self-modulation at the core pitch. Combined with FM INDEX CV you get PWM-like timbre shifts. Patching FORMANT → FM instead introduces shaped-wave feedback that colours the spectrum dynamically with BARREL and FORMANT changes."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Spoken-vowel synthesis",
+      "patch": "wave/formant: constant formant · FORMANT at ~1 o'clock · BARREL just off centre · AIR at noon · Sequencer v/oct → V/8 PITCH · FORMANT CV → slow LFO for vowel glide · melody retains a fixed formant peak like a vocalised tract",
+      "diagram": "Mangrove:\n* wave/formant: constant formant\n* FORMANT: ~1 o'clock\n* BARREL: just off centre\n* AIR: noon\n\nLFO:\n\n- Sequencer (Pitch) p> Mangrove (V/8 PITCH)\n- LFO (Out) >> Mangrove (FORMANT CV) // vowel morph\n- Mangrove (FORMANT) -> Output (In)"
+    },
+    {
+      "name": "Clarinet impression",
+      "patch": "constant formant · FORMANT low/mid · BARREL full CCW for asymmetric ramp · AIR noon · envelope → FORMANT CV subtly · odd-harmonic-rich hollow tone · fixed formant gives low notes extra body",
+      "diagram": "Mangrove:\n* wave/formant: constant formant\n* FORMANT: ~11 o'clock\n* BARREL: full CCW\n* AIR: noon\n\nEnvelope:\n\n- Sequencer (Pitch) p> Mangrove (V/8 PITCH)\n- Envelope (Out) >> Mangrove (FORMANT CV)\n- Mangrove (FORMANT) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Through-zero FM pair",
+      "patch": "Two Mangroves · Mangrove A SQUARE → Mangrove B FM · Mangrove B constant wave · FM INDEX driven by envelope for dynamic FM · share v/oct so both track · classic DX-style FM with formant character",
+      "diagram": "Mangrove A:\nMangrove B:\n* wave/formant: constant wave\n\nEnvelope:\n\n- Sequencer (Pitch) p> Mangrove A (V/8 PITCH)\n- Sequencer (Pitch) p> Mangrove B (V/8 PITCH)\n- Mangrove A (SQUARE) -> Mangrove B (FM)\n- Envelope (Out) >> Mangrove B (FM INDEX)\n- Mangrove B (FORMANT) -> Output (In)"
+    },
+    {
+      "name": "AIR overdrive lead",
+      "patch": "constant wave · FORMANT 2 o'clock · BARREL noon · AIR past 3 o'clock drives soft clipping · VCA bypassed (AIR is the VCA) · slow LFO → AIR CV for swelling grit · lead voice with built-in saturation",
+      "diagram": "Mangrove:\n* wave/formant: constant wave\n* FORMANT: ~2 o'clock\n* AIR: past 3 o'clock (overdrive)\n\nLFO:\n\n- Sequencer (Pitch) p> Mangrove (V/8 PITCH)\n- LFO (Out) >> Mangrove (AIR CV)\n- Mangrove (FORMANT) -> Output (In)"
+    },
+    {
+      "name": "Audio-rate sync bells",
+      "patch": "constant formant · FORMANT 3 o'clock · BARREL CCW · external VCO → SYNC at audio rate · locked formant against swept core produces bell-like partials · modulate PITCH for sweeping bell timbre",
+      "diagram": "Mangrove:\n* wave/formant: constant formant\n* FORMANT: ~3 o'clock\n* BARREL: CCW\n\nVCO:\nLFO:\n\n- VCO (Out) -> Mangrove (SYNC) // audio-rate sync\n- Sequencer (Pitch) p> VCO (V/Oct)\n- LFO (Out) >> Mangrove (V/8 PITCH)\n- Mangrove (FORMANT) -> Output (In)"
+    },
+    {
+      "name": "Kick drum",
+      "patch": "constant wave · PITCH low · snappy envelope → V/8 PITCH for pitch drop · short envelope → AIR CV (attenuverter CW) for amplitude · BARREL asymmetric for click transient · FORMANT full CW for sharp attack · instant analog kick",
+      "diagram": "Mangrove:\n* wave/formant: constant wave\n* FORMANT: full CW\n* BARREL: asymmetric\n* AIR: starts closed\n\nEnvelope:\n\n- Envelope (Out) >> Mangrove (V/8 PITCH) // pitch drop\n- Envelope (Out) >> Mangrove (AIR CV) // amp env\n- Clock (Out) t> Envelope (Trig)\n- Mangrove (FORMANT) -> Output (In)"
+    },
+    {
+      "name": "Sub + formant stack",
+      "patch": "SQUARE → external mixer as sub · FORMANT → same mixer as upper voice · tune FORMANT with BARREL/FORMANT for harmonic upper layer · one Mangrove carries both bass and lead parts · modulate FORMANT CV only for moving top",
+      "diagram": "Mangrove:\n* wave/formant: constant wave\n\nMixer:\nLFO:\n\n- Sequencer (Pitch) p> Mangrove (V/8 PITCH)\n- Mangrove (SQUARE) -> Mixer (Sub)\n- Mangrove (FORMANT) -> Mixer (Lead)\n- LFO (Out) >> Mangrove (FORMANT CV) // upper voice only"
+    },
+    {
+      "name": "Formant-tracking LFO wobble",
+      "patch": "constant formant · slow bipolar LFO → BARREL CV (attenuverter moderate) · FORMANT mid · subtle LFO → FM INDEX · produces rhythmic harmonic wobble without pitch change · sits under a lead voice as pad",
+      "diagram": "Mangrove:\n* wave/formant: constant formant\n\nLFO:\n\n- LFO (Out) >> Mangrove (BARREL CV) // harmonic wobble\n- LFO (Out) >> Mangrove (FM INDEX)\n- Sequencer (Pitch) p> Mangrove (V/8 PITCH)\n- Mangrove (FORMANT) -> Output (In)"
+    },
+    {
+      "name": "Self-FM screech",
+      "patch": "FORMANT OUT → FM · FM INDEX high · BARREL extreme · output feeds back through shaper then back to FM input · aggressive digital-sounding noise with pitched core · great for drones and industrial tones",
+      "diagram": "Mangrove:\n* FM INDEX: high via CV\n* BARREL: extreme\n\n- Mangrove (FORMANT) -> Mangrove (FM) // self-FM feedback\n- Mangrove (FORMANT) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Pitch-tracked formant sweep",
+      "patch": "constant wave · sequencer v/oct → V/8 PITCH and → FORMANT CV (attenuated) · FORMANT therefore follows pitch even in wave mode · creates a fixed harmonic ratio emphasised on every note · pseudo-violin timbre",
+      "diagram": "Mangrove:\n* wave/formant: constant wave\n\n- Sequencer (Pitch) p> Mangrove (V/8 PITCH)\n- Sequencer (Pitch) >> Mangrove (FORMANT CV) // tracks harmonic\n- Mangrove (FORMANT) -> Output (In)"
+    }
+  ]
+}

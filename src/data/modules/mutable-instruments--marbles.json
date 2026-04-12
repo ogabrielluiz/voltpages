@@ -1,0 +1,205 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.1",
+    "sources": [
+      "https://mutable-instruments.net/modules/marbles/manual/",
+      "https://mutable-instruments.net/modules/marbles/",
+      "https://www.modulargrid.net/e/mutable-instruments-marbles",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=215293",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/marbles/manual/"
+    ]
+  },
+  "slug": "mutable-instruments--marbles",
+  "name": "Marbles",
+  "manufacturer": "Mutable Instruments",
+  "hp": 18,
+  "tags": ["RANDOM", "QUANTIZER", "GATE", "SEQUENCER", "CLOCK"],
+  "description": "Random sampler with master clock. One t-section emits probabilistic gates, one x-section emits quantized random voltages. A deja-vu knob locks patterns and a scale learner stores up to six custom scales.",
+  "controls": [
+    {
+      "name": "Rate (t)",
+      "scope": "t section",
+      "description": "Master clock rate. Drives the three T1/T2/T3 gate outputs. Overridden by external clock when T CLOCK patched.",
+      "detail": "~0.5 Hz to ~100 Hz · bipolar attenuverter for T RATE CV"
+    },
+    {
+      "name": "Bias (t)",
+      "scope": "t section",
+      "description": "Sets gate distribution between T1 and T3. CCW = only T1, CW = only T3, noon = balanced. T2 always fires as coin-flip between them.",
+      "detail": "0-1 range · bipolar attenuverter for CV"
+    },
+    {
+      "name": "Jitter (t)",
+      "scope": "t section",
+      "description": "Random clock jitter / tempo instability. CCW = locked grid, CW = progressively more timing drift up to fully random.",
+      "detail": "0–100% · bipolar attenuverter for CV"
+    },
+    {
+      "name": "t Mode",
+      "scope": "t section",
+      "description": "Cycles Bernoulli (coin flip on each tick) · clusters (sparse/dense bursts) · divider (harmonic-ratio division of master clock).",
+      "detail": "Three LEDs indicate active mode · affects how T1/T2/T3 interrelate"
+    },
+    {
+      "name": "Deja Vu",
+      "scope": "Global (t & x)",
+      "description": "Pattern-locking probability. CCW = always fresh random. Noon = 50% probability a past step repeats. CW = full loop of length set by LENGTH.",
+      "detail": "Shared t & x by default · separate sections via t/x Deja Vu buttons"
+    },
+    {
+      "name": "Length (Deja Vu)",
+      "scope": "Global (t & x)",
+      "description": "Loop length when Deja Vu is active. 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16 steps selectable.",
+      "detail": "LED row shows current length · hold Length button + turn knob to edit"
+    },
+    {
+      "name": "Rate (x)",
+      "scope": "x section",
+      "description": "X sample rate. Sets how often X1/X2/X3 redraw new voltages. Normalized to t clock but can be set independently.",
+      "detail": "External X CLOCK overrides · bipolar CV attenuverter"
+    },
+    {
+      "name": "Spread (x)",
+      "scope": "x section",
+      "description": "Width of the random distribution around center. CCW = narrow/centered, CW = wide.",
+      "detail": "0–100% · bipolar CV"
+    },
+    {
+      "name": "Bias (x)",
+      "scope": "x section",
+      "description": "Shifts center of the random distribution. Moves the average voltage up or down.",
+      "detail": "Bipolar · CV attenuverter available"
+    },
+    {
+      "name": "Steps (x)",
+      "scope": "x section",
+      "description": "Discrete-step count / quantization of the x output. Interacts with scale learner. Noon = continuous.",
+      "detail": "CW adds steps up to full scale quantization · CCW smooths toward continuous"
+    },
+    {
+      "name": "x Mode",
+      "scope": "x section",
+      "description": "Cycles identical-independent-independent · 3 voices of 1 octave · shift-register (voltages chain down X1→X2→X3).",
+      "detail": "Shift-register mode produces melodic-in-motion relationships between voices"
+    },
+    {
+      "name": "t Deja Vu / x Deja Vu buttons",
+      "scope": "t & x sections",
+      "description": "Independent enable/disable of Deja Vu for the t and x sections. Lets timing loop while CV stays free, or vice-versa.",
+      "detail": "LEDs indicate locked state"
+    }
+  ],
+  "inputs": [
+    { "name": "T CLOCK", "description": "External clock for t section. Replaces internal oscillator.", "voltage": ">1V clock" },
+    { "name": "X CLOCK", "description": "External clock for x section. Falls back to T CLOCK (or internal if none).", "voltage": ">1V clock", "normalizedTo": "T CLOCK when unpatched" },
+    { "name": "T RATE CV", "description": "CV for t master rate.", "voltage": "±5V" },
+    { "name": "T BIAS CV", "description": "CV for t bias.", "voltage": "±5V" },
+    { "name": "T JITTER CV", "description": "CV for jitter amount.", "voltage": "±5V" },
+    { "name": "X SPREAD CV", "description": "CV for x distribution width.", "voltage": "±5V" },
+    { "name": "X BIAS CV", "description": "CV for x distribution center.", "voltage": "±5V" },
+    { "name": "X STEPS CV", "description": "CV for step count / quantization depth.", "voltage": "±5V" },
+    { "name": "DEJA VU CV", "description": "CV for deja-vu probability (global for t and x).", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "T1 / T2 / T3", "description": "Three gate outputs. Distribution depends on t mode and bias. T2 is always a coin-flip between T1 and T3.", "voltage": "0/+5V gate" },
+    { "name": "X1 / X2 / X3", "description": "Three random CV outputs. Range, spread, and quantization set by x controls.", "voltage": "0–5V (or quantized pitches)" },
+    { "name": "Y", "description": "Fourth random CV output. Slow noise-like voltage, 16× slower than X by default, quantized by the same scale.", "voltage": "0–5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "t Bernoulli mode",
+      "trigger": "t Mode green",
+      "description": "Each tick of the master clock independently chooses T1 or T3 based on bias. T2 fires on every clock tick. Classic probabilistic rhythm generator."
+    },
+    {
+      "name": "t Clusters mode",
+      "trigger": "t Mode orange",
+      "description": "Gates emitted in bursts (dense groups) separated by silences. Bias sets cluster density; jitter adds timing variance. Good for Berlin-school and generative rhythmic bursts."
+    },
+    {
+      "name": "t Divider mode",
+      "trigger": "t Mode red",
+      "description": "T1/T2/T3 output harmonic ratios of master clock — bias selects the ratio. Works like a polyrhythmic clock divider with smooth bias-sweepable cross-fading."
+    },
+    {
+      "name": "x Shift-register mode",
+      "trigger": "x Mode red",
+      "description": "X1, X2, X3 behave as a 3-stage shift register: each clock shifts X1→X2, X2→X3; X1 draws a new value. Produces relationships where X2 and X3 are echoes of X1."
+    },
+    {
+      "name": "Deja Vu locking",
+      "trigger": "Deja Vu full CW + LENGTH",
+      "description": "At full CW the sequence loops exactly. Below CW, each step has a probability of being replaced by a new random value — so the loop slowly mutates. Can lock t and x independently via the sub-buttons."
+    },
+    {
+      "name": "Custom scale learner",
+      "trigger": "hold X Scale + external CV",
+      "description": "Marbles learns up to six user scales from incoming V/OCT (press+hold scale button while playing notes). Slot 1 is chromatic, slots 2–6 are user-programmable."
+    },
+    {
+      "name": "Y slow companion",
+      "trigger": "Y output",
+      "description": "Y emits a random voltage that updates 16× slower than X by default, but shares the same scale quantization. Useful for slow transposition offsets or timbral drift alongside a fast melody on X."
+    },
+    {
+      "name": "Internal vs external clocking",
+      "trigger": "patch T CLOCK",
+      "description": "Patching T CLOCK replaces the internal oscillator. The internal oscillator is high-quality (sub-ms jitter) and syncable to modular-standard clocks."
+    },
+    {
+      "name": "X-clock fallback to T",
+      "trigger": "X CLOCK unpatched",
+      "description": "With no X CLOCK cable, X updates at the same rate as T, so x-rate knob acts as a divider/multiplier relative to T. Patching X CLOCK lets x and t run at entirely independent rates."
+    },
+    {
+      "name": "Deja Vu pattern mutation",
+      "trigger": "Deja Vu knob between 50–100%",
+      "description": "Between half-CW and full-CW the locked pattern has a non-zero chance of swapping one step per cycle. Produces the 'Music for Airports' slowly-evolving motif effect."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Locked generative melody",
+      "patch": "Learn a major scale into slot 2 · X1 → VCO V/OCT · T1 → envelope trigger · Deja Vu full CW, Length 8 · Steps ~2 o'clock · repeatable 8-note melody that can be broken by easing Deja Vu CCW",
+      "diagram": "Marbles:\n* Scale: user slot 2 (major)\n* Deja Vu: full CW\n* Length: 8\n\n- Marbles (X1) p> VCO (V/Oct)\n- Marbles (T1) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+    },
+    {
+      "name": "Bernoulli drum split",
+      "patch": "t Mode Bernoulli · Bias at noon (50/50) · T1 → kick trigger · T3 → snare trigger · T2 → hat trigger · Jitter CV from slow LFO for feel · Deja Vu off for endless mutation or CW for locked pattern",
+      "diagram": "Marbles:\n* t Mode: Bernoulli\n* t Bias: noon\n\n- LFO (Slow) >> Marbles (T JITTER CV)\n- Marbles (T1) t> Kick (Trig)\n- Marbles (T2) t> Hat (Trig)\n- Marbles (T3) t> Snare (Trig)"
+    },
+    {
+      "name": "Shift-register harmonized voices",
+      "patch": "x Mode shift-register · learn minor scale · X1 → lead VCO · X2 → harmony VCO (echoes lead with 1-step delay) · X3 → bass VCO (2-step delay) · T2 triggers all three envelopes for simultaneous chord voicing",
+      "diagram": "Marbles:\n* x Mode: Shift Register\n* Scale: minor\n\n- Marbles (X1) p> Lead VCO (V/Oct)\n- Marbles (X2) p> Harmony VCO (V/Oct)\n- Marbles (X3) p> Bass VCO (V/Oct)\n- Marbles (T2) t> Envelope (Trig)\n- Envelope (Out) >> Mixer VCA (CV)"
+    },
+    {
+      "name": "Slow Y transposition",
+      "patch": "X1 → main melody VCO · Y → precision adder to add transposition CV over X1 · Y updates slowly (16× slower) · same scale quantization ensures in-key transposition · macro-level key changes every 16 notes",
+      "diagram": "Marbles:\n- Marbles (X1) p> Adder (In 1)\n- Marbles (Y) p> Adder (In 2) // slow transposition\n- Adder (Out) p> VCO (V/Oct)\n- Marbles (T1) t> Envelope (Trig)"
+    },
+    {
+      "name": "Clusters mode for Berlin rhythm",
+      "patch": "t Mode Clusters · Bias ~2 o'clock (denser bursts) · T1 → kick, T3 → tom fills, T2 → clock to sequencer · produces flurried bursts of notes separated by rests · Jitter low for tight feel",
+      "diagram": "Marbles:\n* t Mode: Clusters\n* t Bias: ~2 o'clock\n* t Jitter: low\n\n- Marbles (T1) t> Kick (Trig)\n- Marbles (T2) c> Sequencer (Clock)\n- Marbles (T3) t> Tom (Trig)"
+    },
+    {
+      "name": "Quantized random bass + lead",
+      "patch": "Learn scale · x Mode independent · X1 → bass VCO (set Bias CCW for low range) · X3 → lead VCO (Bias CW for high range) · T1 → bass env, T3 → lead env · Deja Vu at 75% for slowly-mutating ostinato",
+      "diagram": "Marbles:\n* Scale: user slot\n* x Mode: Independent\n* Deja Vu: 75%\n\n- Marbles (X1) p> Bass VCO (V/Oct)\n- Marbles (X3) p> Lead VCO (V/Oct)\n- Marbles (T1) t> Bass Env (Trig)\n- Marbles (T3) t> Lead Env (Trig)"
+    },
+    {
+      "name": "Divider-mode polyrhythm clock",
+      "patch": "t Mode Divider · master clock into T CLOCK · T1/T2/T3 output different ratios selectable by Bias · feeds three independent sequencers running polyrhythmically in lock · Jitter at zero for pristine timing",
+      "diagram": "Marbles:\n* t Mode: Divider\n* t Jitter: 0\n\n- Master Clock (Out) c> Marbles (T CLOCK)\n- Marbles (T1) c> Sequencer 1 (Clock)\n- Marbles (T2) c> Sequencer 2 (Clock)\n- Marbles (T3) c> Sequencer 3 (Clock)"
+    },
+    {
+      "name": "External clock, independent x rate",
+      "patch": "Modular master clock → T CLOCK · separate fast clock → X CLOCK (say, 8× faster) · x draws new values 8× per beat, feeding a quantized VCO for rapid arpeggios over a slow t-section rhythm",
+      "diagram": "Marbles:\n- Master Clock (Out) c> Marbles (T CLOCK)\n- Fast Clock (Out) c> Marbles (X CLOCK)\n- Marbles (T1) t> Envelope (Trig)\n- Marbles (X1) p> VCO (V/Oct)"
+    }
+  ]
+}

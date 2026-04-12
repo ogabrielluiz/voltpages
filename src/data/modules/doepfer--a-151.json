@@ -1,0 +1,130 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://doepfer.de/a100_man/A151_man.pdf",
+      "https://doepfer.de/a151.htm",
+      "https://modwiggler.com/forum/viewtopic.php?t=152562"
+    ]
+  },
+  "slug": "doepfer--a-151",
+  "name": "A-151",
+  "manufacturer": "Doepfer",
+  "hp": 4,
+  "tags": ["SWITCH", "SEQUENCER", "UTILITY"],
+  "description": "Quad bi-directional sequential switch. Each trigger steps a common O/I jack through 4 I/O jacks; reset returns to step 1. Version 2 adds Steps switch (2/3/4) and handles full ±12V signals. LEDs indicate active step.",
+  "controls": [
+    {
+      "name": "Steps",
+      "scope": "Sequence length",
+      "description": "Limits the step count to 2, 3, or 4 — shortens the switched cycle before wrap-around. V2 only.",
+      "detail": "positions: 2 · 3 · 4"
+    },
+    {
+      "name": "LED 1–4",
+      "scope": "Indicators",
+      "description": "Four status LEDs light the currently active I/O jack.",
+      "detail": "one-hot display"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Trig. In",
+      "description": "Advance input. Each rising edge steps the switch to the next I/O; after the last step it wraps to I/O 1.",
+      "voltage": "trigger/gate"
+    },
+    {
+      "name": "Res. In",
+      "description": "Reset input. Rising edge immediately returns the active connection to I/O 1.",
+      "voltage": "trigger/gate"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "O/I",
+      "description": "Common jack — acts as output when I/O 1–4 are driven as inputs, or as input when I/O 1–4 are used as outputs. Direction is determined by patching.",
+      "voltage": "v1: ±8V · v2: ±12V"
+    },
+    {
+      "name": "I/O 1",
+      "description": "Sequential tap 1 — routed to/from O/I on step 1.",
+      "voltage": "v1: ±8V · v2: ±12V"
+    },
+    {
+      "name": "I/O 2",
+      "description": "Sequential tap 2.",
+      "voltage": "v1: ±8V · v2: ±12V"
+    },
+    {
+      "name": "I/O 3",
+      "description": "Sequential tap 3.",
+      "voltage": "v1: ±8V · v2: ±12V"
+    },
+    {
+      "name": "I/O 4",
+      "description": "Sequential tap 4 (skipped when Steps set to 2 or 3).",
+      "voltage": "v1: ±8V · v2: ±12V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "4-to-1 multiplexer",
+      "trigger": "sources → I/O 1–4 · O/I → destination",
+      "description": "Trigger steps through four source signals, presenting one at a time at O/I. Useful for cycling CVs, VCO waveforms, or audio sources at clock rate."
+    },
+    {
+      "name": "1-to-4 demultiplexer",
+      "trigger": "source → O/I · I/O 1–4 → destinations",
+      "description": "Switch is bi-directional: a single signal at O/I is routed in turn to one of the four I/O jacks. Useful for rotating a trigger across four voices or envelope generators."
+    },
+    {
+      "name": "Reset-shortened loop",
+      "trigger": "periodic pulse → Res. In",
+      "description": "Send a pulse to Res. In every N trigs to loop just the first N steps. Combined with the Steps switch, produces arbitrary short patterns like 1→2→3 or 1→2."
+    },
+    {
+      "name": "Audio-rate wave mangler",
+      "trigger": "VCO square → Trig. In · waveforms → I/O 1–4",
+      "description": "When Trig. In is driven at audio rate, the A-151 switches so fast that the ear hears a composite wave — effectively waveform synthesis by time-slicing between four VCO outputs."
+    },
+    {
+      "name": "Voltage range clipping",
+      "trigger": "input exceeds ±8V on V1",
+      "description": "V1 modules malfunction above ±8V; V2 handles the full A-100 ±12V range. Attenuate or offset large signals before V1 units, or identify the version by the presence of the Steps switch."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "4-note pitch sequencer",
+      "patch": "Four offset voltages → I/O 1–4 · clock → Trig. In · O/I → VCO 1V/oct",
+      "diagram": "A-151:\n* Steps: 4\n- Offset 1 (CV) >> A-151 (I/O 1)\n- Offset 2 (CV) >> A-151 (I/O 2)\n- Offset 3 (CV) >> A-151 (I/O 3)\n- Offset 4 (CV) >> A-151 (I/O 4)\n- Clock (Clk) c> A-151 (Trig. In)\n- A-151 (O/I) p> VCO (1V/oct)"
+    },
+    {
+      "name": "VCO waveform stepper",
+      "patch": "VCO saw/tri/sqr/sine → I/O 1–4 · LFO → Trig. In · O/I → VCF",
+      "diagram": "A-151:\n- VCO (Saw) -> A-151 (I/O 1)\n- VCO (Tri) -> A-151 (I/O 2)\n- VCO (Sqr) -> A-151 (I/O 3)\n- VCO (Sine) -> A-151 (I/O 4)\n- LFO (Sqr) c> A-151 (Trig. In)\n- A-151 (O/I) -> VCF (In) // timbral cycling"
+    },
+    {
+      "name": "Rotating envelope across 4 voices",
+      "patch": "Gate source → O/I · I/O 1–4 → four ADSR gates · each note triggers a different envelope",
+      "diagram": "A-151:\n- Keyboard (Gate) g> A-151 (O/I)\n- A-151 (I/O 1) g> ADSR 1 (Gate)\n- A-151 (I/O 2) g> ADSR 2 (Gate)\n- A-151 (I/O 3) g> ADSR 3 (Gate)\n- A-151 (I/O 4) g> ADSR 4 (Gate)\n- Keyboard (Gate) t> A-151 (Trig. In) // advance on each note"
+    },
+    {
+      "name": "Three-step ostinato with reset",
+      "patch": "Steps=4 · feed /3 clock → Res. In for explicit 3-step loop · O/I → pitch",
+      "diagram": "A-151:\n* Steps: 4\n- Clock (Clk) c> A-151 (Trig. In)\n- Clock÷3 (Clk) t> A-151 (Res. In)\n- Pitch A (CV) >> A-151 (I/O 1)\n- Pitch B (CV) >> A-151 (I/O 2)\n- Pitch C (CV) >> A-151 (I/O 3)\n- A-151 (O/I) p> VCO (1V/oct)"
+    },
+    {
+      "name": "Krell-style voice rotator",
+      "patch": "Self-cycling EG end-of-cycle → Trig. In · four oscillator outs → I/O 1–4 · avoids clicks by switching between cycles",
+      "diagram": "A-151:\n- VCO 1 (Out) -> A-151 (I/O 1)\n- VCO 2 (Out) -> A-151 (I/O 2)\n- VCO 3 (Out) -> A-151 (I/O 3)\n- VCO 4 (Out) -> A-151 (I/O 4)\n- Function EG (EOC) t> A-151 (Trig. In)\n- A-151 (O/I) -> VCA (In) // new voice each Krell cycle"
+    },
+    {
+      "name": "Audio-rate wavefolder",
+      "patch": "VCO square at audio rate → Trig. In · four offsets → I/O 1–4 · O/I is new composite wave",
+      "diagram": "A-151:\n- Offset A (CV) >> A-151 (I/O 1)\n- Offset B (CV) >> A-151 (I/O 2)\n- Offset C (CV) >> A-151 (I/O 3)\n- Offset D (CV) >> A-151 (I/O 4)\n- VCO (Sqr) c> A-151 (Trig. In) // audio-rate stepping\n- A-151 (O/I) -> VCF (In)"
+    }
+  ]
+}

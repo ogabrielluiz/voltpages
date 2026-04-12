@@ -1,0 +1,131 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/STOManual.pdf",
+      "https://www.makenoisemusic.com/modules/sto/"
+    ]
+  },
+  "slug": "make-noise--sto",
+  "name": "STO",
+  "manufacturer": "Make Noise",
+  "hp": 8,
+  "tags": ["OSCILLATOR", "VCO"],
+  "description": "Compact analog VCO. Triangle core with Sine, Variable Shape and Sub outputs. Linear FM, hard SYNC and gateable Sub-Oscillator. Designed as melodic counterpart to the DPO.",
+  "controls": [
+    {
+      "name": "FREQ (Coarse)",
+      "scope": "Global",
+      "description": "Coarse tuning knob. Large grey knob.",
+      "detail": "9 octave range · 8Hz – 4kHz"
+    },
+    {
+      "name": "Fine Tune",
+      "scope": "Global",
+      "description": "Small trim knob beside FREQ.",
+      "detail": "±2.5 semitones"
+    },
+    {
+      "name": "LIN",
+      "scope": "FM",
+      "description": "Unipolar attenuator for Linear FM input.",
+      "detail": "0% – 100% · overdrives above 80% (tracking fails)"
+    },
+    {
+      "name": "SHAPE",
+      "scope": "Variable Shape",
+      "description": "Ripples even and odd harmonics while preserving fundamental. Acts as attenuator when SHAPE CV In is patched.",
+      "detail": "0%: Sine · 100%: glitched triangle"
+    },
+    {
+      "name": "1V/Oct Scale Trimmer",
+      "scope": "Calibration",
+      "description": "Internal trimmer. Calibration use only.",
+      "detail": "factory set"
+    }
+  ],
+  "inputs": [
+    { "name": "EXPO", "description": "Exponential frequency CV. No attenuator — patch a VCA inline for dynamic control.", "voltage": "bipolar · 10V range" },
+    { "name": "1V/Oct", "description": "Pitch CV input. No attenuator.", "voltage": "bipolar · optimal ±5V" },
+    { "name": "LIN (FM)", "description": "AC-coupled Linear FM input. Level set by LIN knob.", "voltage": "10V range · AC coupled" },
+    { "name": "SYNC", "description": "Hard sync. Resets oscillator core on rising edge of external VCO. Any 10Vpp audio-rate signal works.", "voltage": "~10Vpp audio rate" },
+    { "name": "SHAPE CV", "description": "Direct-coupled CV for Variable Shape. SHAPE knob becomes its attenuator when patched.", "voltage": "0V to +8V unipolar" },
+    { "name": "S-Gate", "description": "Turns Sub-Oscillator ON at gate high, OFF at gate low. Resets Sub on rising edge. Narrow audio signals can pseudo-sync Sub only.", "voltage": ">1V gate" }
+  ],
+  "outputs": [
+    { "name": "Variable SHAPE", "description": "Triangle-core-derived output shaped by SHAPE. Carries FM/SYNC harmonics most aggressively.", "voltage": "10Vpp bipolar" },
+    { "name": "SUB", "description": "Stepped rectangular sub-oscillator. One octave below Sine/Shape. Affected by EXPO, LIN FM and 1V/Oct; gated by S-Gate.", "voltage": "12Vpp" },
+    { "name": "Sine", "description": "Sine wave derived from triangle core (same shaper circuit as DPO). Low harmonics — ideal FM carrier.", "voltage": "10Vpp bipolar" }
+  ],
+  "behaviors": [
+    {
+      "name": "Linear FM tracking limit",
+      "trigger": "LIN knob past 80%",
+      "description": "Linear FM bus overdrives past 80% of LIN attenuator travel and the STO stops tracking 1V/Oct accurately. Keep LIN below 80% for pitched FM, push past for chaotic timbres that abandon pitch."
+    },
+    {
+      "name": "Gateable Sub-Oscillator",
+      "trigger": "gate → S-Gate",
+      "description": "Sub output is ON only while S-Gate is high. Rising edge resets Sub. Gives Sub an independent rhythmic layer from Sine/Shape — patch a clock or rhythm gate here for a percussive sub-octave. Narrow audio signals at S-Gate produce sync-like harmonics only in Sub."
+    },
+    {
+      "name": "Variable Shape morphing",
+      "trigger": "SHAPE knob or SHAPE CV In",
+      "description": "Ripples both even and odd harmonics while always preserving fundamental. 0%: pure sine. 100%: glitched triangle. Best driven by slow modulation (logarithmic envelopes, smooth random). SHAPE knob auto-converts from value to attenuator when SHAPE CV In is patched."
+    },
+    {
+      "name": "Hard SYNC on triangle core",
+      "trigger": "audio-rate signal → SYNC",
+      "description": "STO core restarts on each rising edge of the external VCO. Base frequency locks to external VCO; harmonics emerge when STO frequency is higher than master. Sweep the STO FREQ via EXPO to animate SYNC harmonics. Best with master at 100Hz or higher."
+    },
+    {
+      "name": "Expo FM via EXPO input",
+      "trigger": "audio-rate signal → EXPO",
+      "description": "No onboard attenuator — insert a VCA for dynamic/voltage-controlled index. Exponential FM is deeper than Linear but breaks 1V/Oct tracking. Use for percussion or chaos, not pitched leads."
+    },
+    {
+      "name": "Sub as sub-harmonic layer",
+      "trigger": "monitor SUB directly or mix with Sine/Shape",
+      "description": "Sub is stepped rectangular, one octave down, tracking all pitch/FM/SYNC inputs. Combining SUB + Variable Shape (at an MMG or Optomix audio mixer) produces the thick melodic voice STO is designed for."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Sub-Timbral melodic voice",
+      "patch": "Variable Shape → MMG/filter AC in · SUB → MMG DC in · STO FREQ ~12:00 · slow log LFO from MATHS → SHAPE CV, SHAPE knob ~60% · sequencer pitch → 1V/Oct · gate-triggered expo envelope → filter cutoff · rich sine + sub + animated harmonics under envelope control — the classic STO voice.",
+      "diagram": "STO:\n* FREQ: ~12:00\n* SHAPE: ~60% (as attenuator)\n\n- Sequencer (Pitch) p> STO (1V/Oct)\n- MATHS.CH 4 (OUT) >> STO (Shape CV) // slow log LFO\n- STO (Sine) -> Filter (AC In)\n- STO (SUB) -> Filter (DC In)\n- Envelope (Out) >> Filter (Cutoff)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Analog bass drum",
+      "patch": "Sine → Optomix CH 1 signal in · gate → STO Linear FM In AND Optomix CH 1 STRIKE · LIN ~12:00 · FREQ ~9:00 · Optomix DAMP and CONTROL full CCW · monitor Optomix CH 1 out · short FM burst on each gate gives analog kick. Modulate LIN amount or add Expo FM from another VCO for kick variants.",
+      "diagram": "STO:\n* FREQ: ~9:00\n* LIN: ~12:00\n\n- Gate Source (Gate) g> STO (LIN)\n- Gate Source (Gate) g> Optomix.CH 1 (Strike)\n- STO (Sine) -> Optomix.CH 1 (Signal In)\n- Optomix.CH 1 (Out) -> Output (In) // kick"
+    },
+    {
+      "name": "Transposition / superimposition",
+      "patch": "Main sequence → 1V/Oct · second sequence (odd clock division of master) → EXPO · the two sequences add for variable transposition. Alternatively derive transposer from main sequence via S&H for structural variation · or tune a square LFO to ±1V for double-octave leaps.",
+      "diagram": "STO:\n* FREQ: to taste\n\n- Sequencer A (Pitch) p> STO (1V/Oct)\n- Sequencer B (Pitch) p> STO (EXPO) // added — transposes main\n- STO (Variable SHAPE) -> Output (In)"
+    },
+    {
+      "name": "Dual SYNC (split Sub from main)",
+      "patch": "Audio-rate square → S-Gate · different audio-rate square → SYNC · Sub pseudo-syncs to S-Gate source while Sine/Shape hard-sync to the SYNC source · gives two related-but-independent harmonic layers from one STO. Try DPO VCO A saw into S-Gate and VCO B square into SYNC with Follow engaged.",
+      "diagram": "STO:\n* FREQ: higher than sync sources\n\n- VCO A (Square) -> STO (S-Gate) // pseudo-syncs Sub\n- VCO B (Square) -> STO (SYNC) // hard-syncs Sine/Shape\n- STO (Variable SHAPE) -> Mixer (In)\n- STO (SUB) -> Mixer (In)"
+    },
+    {
+      "name": "Key-tracking Variable Shape",
+      "patch": "Mult 1V/Oct pitch CV to SHAPE CV In · Variable Shape → output · higher pitches get more harmonic content, mimicking filter key-tracking without a filter · pair with sequencer for a bright top-end that scales with pitch.",
+      "diagram": "STO:\n* SHAPE: ~50% (sets depth)\n\n- Sequencer (Pitch) p> Mult (In)\n- Mult (Out 1) p> STO (1V/Oct)\n- Mult (Out 2) >> STO (Shape CV) // key-tracked harmonics\n- STO (Variable SHAPE) -> Output (In)"
+    },
+    {
+      "name": "Bassline with gated Sub",
+      "patch": "Slow square LFO (or cycling MATHS EOC) → S-Gate AND → sequencer clock · sequencer pitch → 1V/Oct · monitor SUB only · Sub turns on/off per clock step creating a note-like pulse without a VCA · adjust LFO pulse width (or MATHS Rise/Fall) to change note length.",
+      "diagram": "STO:\n* FREQ: bass range\n* SHAPE: irrelevant\n\nLFO:\n\n- LFO (Square) c> Mult (In)\n- Mult (Out 1) c> Sequencer (Clk)\n- Mult (Out 2) g> STO (S-Gate) // gates Sub per step\n- Sequencer (Pitch) p> STO (1V/Oct)\n- STO (SUB) -> Output (In)"
+    },
+    {
+      "name": "Dynamic Expo FM pings",
+      "patch": "Sine from another VCO → Optomix CH 1 · Optomix CH 1 out → STO EXPO · gate → Optomix STRIKE · Optomix CONTROL full CCW · each gate opens a short FM burst into EXPO · STO frequency disassembles for percussion accents that decay naturally with vactrol damping.",
+      "diagram": "STO:\n* FREQ: high register\n\nVCO:\n\n- VCO (Sine) -> Optomix.CH 1 (In)\n- Gate Source (Gate) g> Optomix.CH 1 (Strike)\n- Optomix.CH 1 (Out) >> STO (EXPO) // dynamic FM\n- STO (Variable SHAPE) -> Output (In) // percussive blip"
+    }
+  ]
+}

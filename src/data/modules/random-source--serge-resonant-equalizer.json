@@ -1,0 +1,141 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.perfectcircuit.com/random-source-serge-resonant-eq.html",
+      "https://serge-modular.com/docs/RandomSource_Serge_ResEQ.pdf"
+    ]
+  },
+  "slug": "random-source--serge-resonant-equalizer",
+  "name": "Serge Resonant EQ (RESEQ)",
+  "manufacturer": "Random Source",
+  "hp": 18,
+  "tags": ["EQ", "FILTER", "RESONATOR", "UTILITY"],
+  "description": "Ten-band Serge resonant equalizer with dual inputs, two identical mix outputs, two comb outputs, and switchable positive or inverted feedback.",
+  "controls": [
+    {
+      "name": "Band 1-10",
+      "scope": "EQ section",
+      "description": "Sets the ten band gains and resonance points. Noon is flat, clockwise boosts into resonance and counterclockwise cuts more deeply.",
+      "detail": "center: flat · >3 o'clock: resonant · <9 o'clock: rejection"
+    },
+    {
+      "name": "Input A",
+      "scope": "Input mixer",
+      "description": "Sets the level of the first audio input before the EQ bank.",
+      "detail": "dedicated attenuator"
+    },
+    {
+      "name": "Input B",
+      "scope": "Input mixer",
+      "description": "Sets the level of the second audio input before the EQ bank.",
+      "detail": "dedicated attenuator"
+    },
+    {
+      "name": "Feedback",
+      "scope": "Feedback section",
+      "description": "Sets how much of the module's output is fed back into the resonant equalizer path.",
+      "detail": "internal feedback amount"
+    },
+    {
+      "name": "Phase switch",
+      "scope": "Feedback section",
+      "description": "Selects normal or inverted feedback for more surgical reinforcement or cancellation.",
+      "detail": "positive / inverted"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN A",
+      "description": "First audio input to the internal two-channel mixer."
+    },
+    {
+      "name": "IN B",
+      "description": "Second audio input to the internal two-channel mixer."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "MIX OUT 1",
+      "description": "Main equalized output, one of two identical mix outputs."
+    },
+    {
+      "name": "MIX OUT 2",
+      "description": "Second identical equalized output for parallel processing."
+    },
+    {
+      "name": "COMB 1",
+      "description": "Output that sums alternating filter bands for comb-style spectral shaping."
+    },
+    {
+      "name": "COMB 2",
+      "description": "Second comb output with the alternate band grouping."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Flat-at-noon response",
+      "trigger": "center all band knobs",
+      "description": "When the ten band knobs are at noon, the main EQ output is flat."
+    },
+    {
+      "name": "Resonant top end",
+      "trigger": "turn a band past 3 o'clock",
+      "description": "Bands become noticeably resonant instead of merely boosted, which gives the module formant-like peaks."
+    },
+    {
+      "name": "Deeper rejection",
+      "trigger": "turn a band below 9 o'clock",
+      "description": "The band moves into stronger attenuation rather than a simple gentle cut."
+    },
+    {
+      "name": "Comb outputs interact strongly",
+      "trigger": "move any frequency knob",
+      "description": "Both Comb outputs are highly sensitive to band frequency changes, so even small knob moves reshape the sums."
+    },
+    {
+      "name": "Input drive and coloration",
+      "trigger": "raise the input attenuators",
+      "description": "The two-input mixer can push the EQ stage into color and distortion before the band bank."
+    },
+    {
+      "name": "Feedback phase control",
+      "trigger": "use the feedback knob and phase switch",
+      "description": "Normal feedback reinforces the current spectral shape; inverted feedback produces phase cancellation and hollowed-out resonances."
+    },
+    {
+      "name": "Serge-style band spacing",
+      "trigger": "set the bands across the panel",
+      "description": "Most bands are spaced at major-seventh intervals, with the top and bottom bands acting as end caps."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Formant vocal sweep",
+      "patch": "saw VCO into IN A · raise bands around the 500 Hz to 3 kHz region · drive one comb output lightly into the mix · the equalizer acts like a fixed formant bank for synthetic vowels and spoken tones.",
+      "diagram": "ResEQ:\n* Band 1-10: sculpted for vowels\n* Feedback: low\n\nVCO:\nOutput:\n\n- VCO (Saw) -> ResEQ (IN A)\n- ResEQ (MIX OUT 1) -> Output (L)\n- ResEQ (MIX OUT 2) -> Output (R)"
+    },
+    {
+      "name": "Comb stereo split",
+      "patch": "mono source into IN A and IN B via the mixer · route COMB 1 and COMB 2 to separate channels · move the band knobs as a stereo performance control rather than a static EQ.",
+      "diagram": "ResEQ:\n* Input A: noon\n* Input B: noon\n* Feedback: off\n\nMixer:\nOutput:\n\n- Mixer (Out) -> ResEQ (IN A)\n- Mixer (Out) -> ResEQ (IN B)\n- ResEQ (COMB 1) -> Output (L)\n- ResEQ (COMB 2) -> Output (R)"
+    },
+    {
+      "name": "Resonant ping bank",
+      "patch": "short trigger burst into IN A through a VCA · bias the upper bands upward · the module rings like a tuned metallic object without needing a separate resonator.",
+      "diagram": "ResEQ:\n* Band 1-10: bright and peaked\n* Feedback: medium\n\nVCO:\nEnvelope:\nVCA:\nTrigger:\nOutput:\n\n- Trigger (Out) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> ResEQ (IN A)\n- ResEQ (MIX OUT 1) -> Output (In)"
+    },
+    {
+      "name": "Inverted feedback growl",
+      "patch": "feedback knob high · phase switch inverted · saw VCO into IN A · the spectrum hollows and folds back into itself for unstable growl and reed-like overtones.",
+      "diagram": "ResEQ:\n* Feedback: high\n* Phase switch: inverted\n\nVCO:\nOutput:\n\n- VCO (Saw) -> ResEQ (IN A)\n- ResEQ (MIX OUT 1) -> Output (In)\n- ResEQ (MIX OUT 2) -> Output (In)"
+    },
+    {
+      "name": "Spectral crossfade",
+      "patch": "VCO A into IN A and VCO B into IN B · use the band knobs as a fixed spectral crossfader between two sources · COMB outputs provide additional movement while the main outputs stay usable as a consistent stereo pair.",
+      "diagram": "ResEQ:\n* Input A: low\n* Input B: low\n* Band 1-10: wide spread\n\nVCO A:\nVCO B:\nOutput:\n\n- VCO A (Out) -> ResEQ (IN A)\n- VCO B (Out) -> ResEQ (IN B)\n- ResEQ (MIX OUT 1) -> Output (L)\n- ResEQ (MIX OUT 2) -> Output (R)"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://xaocdevices.com/main/kamieniec2/",
+      "https://xaocdevices.com/manuals/xaoc_kamieniec2_manual_A4.pdf",
+      "https://xaocdevices.com/main/support/"
+    ]
+  },
+  "slug": "xaoc-devices--kamieniec-ii",
+  "name": "Kamieniec II",
+  "manufacturer": "Xaoc Devices",
+  "hp": 10,
+  "tags": ["PHASER", "FILTER", "LFO", "UTILITY"],
+  "description": "Analog resonant phase rotator with 4/6-stage outputs, voltage-controlled resonance, syncable triangle LFO, external modulation input, independent LFO out, and optional Allpass Expansion to 22 stages.",
+  "controls": [
+    {
+      "name": "Tuning FREQ",
+      "scope": "Global",
+      "description": "Sets the base phase-rotation frequency, like a filter cutoff point.",
+      "detail": "manual tuning point"
+    },
+    {
+      "name": "Depth",
+      "scope": "Global",
+      "description": "Sets how much the onboard LFO and external CV move the phase network.",
+      "detail": "LFO + ext mod mix"
+    },
+    {
+      "name": "Reso",
+      "scope": "Global",
+      "description": "Controls feedback amount and resonance. Can reach self-oscillation.",
+      "detail": "extreme resonance possible"
+    },
+    {
+      "name": "Resonance mode switch",
+      "scope": "Global",
+      "description": "Selects wasted, k-holed, or stoned feedback topology.",
+      "detail": "wasted · k-holed · stoned"
+    },
+    {
+      "name": "LFO rate",
+      "scope": "Global",
+      "description": "Sets the onboard triangle LFO speed.",
+      "detail": "tens of seconds to low audio rate"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Input",
+      "description": "Audio into the phase-rotation chain.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Ext mod",
+      "description": "External modulation summed with the internal LFO.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Reso CV",
+      "description": "Voltage control over resonance.",
+      "voltage": "CV"
+    },
+    {
+      "name": "LFO rate CV",
+      "description": "Voltage control over LFO speed.",
+      "voltage": "CV"
+    },
+    {
+      "name": "LFO reset",
+      "description": "Hard-sync reset for the onboard LFO.",
+      "voltage": "clock / trigger"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Output A",
+      "description": "Four-stage mixed output with its own frequency response.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Output B",
+      "description": "Six-stage mixed output with its own frequency response.",
+      "voltage": "audio"
+    },
+    {
+      "name": "LFO Out",
+      "description": "Independent triangle LFO output.",
+      "voltage": "CV / low audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Dual output pair",
+      "trigger": "use Output A and Output B together",
+      "description": "The module exposes two different mixed responses, so one patch point can behave like a stereo pair or two parallel phaser flavours."
+    },
+    {
+      "name": "Deep resonance",
+      "trigger": "raise Reso",
+      "description": "The feedback path can enter self-oscillation around two-thirds of knob travel, making the module useful as a resonant filter-like voice as well as a phaser."
+    },
+    {
+      "name": "Three feedback modes",
+      "trigger": "switch wasted, k-holed, or stoned",
+      "description": "The feedback topology changes the number and placement of resonant peaks, giving a wide palette from subtle swirl to aggressive comb-like grind."
+    },
+    {
+      "name": "Syncable LFO",
+      "trigger": "patch clock or trigger to LFO reset",
+      "description": "The onboard triangle LFO can hard-sync to external timing, so the phaser sweep can stay locked to a clocked patch."
+    },
+    {
+      "name": "Expansion and chaining",
+      "trigger": "install Allpass Expansion or chain multiple modules",
+      "description": "The optional expander extends the stage count to 22, and multiple Kamieniec units can be chained for denser, longer phaser textures."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Stereo sweep",
+      "patch": "Send a mono voice through the phaser · take Output A and Output B as a faux stereo pair · slow triangle LFO moves the notches apart · classic widening without external modulation.",
+      "diagram": "Kamieniec II:\n* Tuning FREQ: noon\n* Depth: low\n* Reso: low\n* Resonance mode switch: stoned\n\nVCO:\nLFO:\nOutput:\n\n- VCO (Out) -> Kamieniec II (Input)\n- LFO (Out) >> Kamieniec II (Ext mod)\n- Kamieniec II (Output A) -> Output (L)\n- Kamieniec II (Output B) -> Output (R)"
+    },
+    {
+      "name": "Clocked swirl",
+      "patch": "Trigger the LFO reset from clock pulses · the sweep restarts each bar · use the phase rotator like a clock-locked filter animation for rhythmically consistent motion.",
+      "diagram": "Kamieniec II:\n* Tuning FREQ: slow\n* Depth: medium\n* Resonance mode switch: wasted\n\nClock:\nFilter:\nOutput:\n\n- Clock (Out) c> Kamieniec II (LFO reset)\n- Sequencer (Gate) g> Kamieniec II (Input)\n- Kamieniec II (Output A) -> Filter (In)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Resonant drone",
+      "patch": "Push resonance near self-oscillation · feed a sustained oscillator into the input · Output A becomes a formant-rich drone while the LFO Out can move a separate filter or VCA.",
+      "diagram": "Kamieniec II:\n* Tuning FREQ: noon\n* Depth: low\n* Reso: high\n* Resonance mode switch: k-holed\n\nVCO:\nVCA:\nOutput:\n\n- VCO (Saw) -> Kamieniec II (Input)\n- Kamieniec II (LFO Out) >> VCA (CV)\n- Kamieniec II (Output A) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Feedback color",
+      "patch": "Patch Output B back into the external modulation input with attenuation outside the module · the phase network turns more aggressive and nasal, with the feedback mode changing the peak count and harmonic bite.",
+      "diagram": "Kamieniec II:\n* Tuning FREQ: mid\n* Depth: medium\n* Reso: medium\n* Resonance mode switch: stoned\n\nAttenuator:\nOutput:\n\n- Kamieniec II (Output B) -> Attenuator (In)\n- Attenuator (Out) >> Kamieniec II (Ext mod)\n- Kamieniec II (Output A) -> Output (In)"
+    },
+    {
+      "name": "Expanded long phaser",
+      "patch": "Install the Allpass Expansion, then use the phaser as a long, dense stage chain for a slow moving stereo wash. One knob sweep behaves more like a resonant room than a short effect.",
+      "diagram": "Kamieniec II:\n* Tuning FREQ: slow\n* Depth: medium\n* Resonance mode switch: stoned\n\nMixer:\nOutput:\n\n- Kamieniec II (Output A) -> Mixer (In 1)\n- Kamieniec II (Output B) -> Mixer (In 2)\n- Mixer (Out) -> Output (In)"
+    }
+  ]
+}

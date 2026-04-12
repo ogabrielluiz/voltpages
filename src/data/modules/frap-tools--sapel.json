@@ -1,0 +1,245 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://frap.tools/docs/MANUALONE.pdf",
+      "https://frap.tools/products/sapel/",
+      "https://www.rawvoltage.wien/pdf-attachments/SAPEL_manual_r0.pdf",
+      "https://modulargrid.net/e/frap-tools-sapEl",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=203413"
+    ]
+  },
+  "slug": "frap-tools--sapel",
+  "name": "SAPÈL",
+  "manufacturer": "Frap Tools",
+  "hp": 18,
+  "tags": ["RANDOM", "CLOCK", "NOISE", "QUANTIZER", "SAMPLER"],
+  "description": "Tamed random source. Two symmetric clusters (yellow, green) each provide three synced S&H outputs — one raw, one 2ⁿ-quantised to semitones, one n+1-quantised to octaves — plus a fluctuating output. Four noise colours (blue, white, pink, red).",
+  "controls": [
+    {
+      "name": "Clock Rate",
+      "scope": "per cluster",
+      "description": "Internal clock frequency driving the S&H triggers.",
+      "detail": "~0.1 Hz – 60 Hz · CV modulated via Gate/CV input"
+    },
+    {
+      "name": "Single / Both Switch",
+      "scope": "per cluster",
+      "description": "Routes the other cluster's clock into this one for density mixing.",
+      "detail": "centre: own clock · flip: add other cluster's clock into own trigger stream"
+    },
+    {
+      "name": "Random Clock Mode",
+      "scope": "per cluster",
+      "description": "Additive or subtractive blend of the random clock with the main clock.",
+      "detail": "up: add randoms to main · down: randomly remove triggers from main"
+    },
+    {
+      "name": "Gate/CV Modulation Switch",
+      "scope": "per cluster",
+      "description": "Selects what the Gate/CV input does.",
+      "detail": "CV mode: modulates clock rate · Gate mode: >3 V manually triggers S&H"
+    },
+    {
+      "name": "Sample-and-Hold Button",
+      "scope": "per cluster",
+      "description": "Manual trigger. Overrides clock while held. LED lit while depressed.",
+      "detail": "momentary · main clock out still pulses normally"
+    },
+    {
+      "name": "n+1 Value",
+      "scope": "per cluster",
+      "description": "Sets the number of octaves in the n+1 quantised output pool.",
+      "detail": "n=1: 2 octaves · n=2: 3 · n=3: 4 · n=4: 5 · n=5: 6 · n=6: 7 · 0 V–6 V range"
+    },
+    {
+      "name": "2ⁿ Value",
+      "scope": "per cluster",
+      "description": "Sets the exponent of 2 for the semitone-quantised output pool.",
+      "detail": "n=1: 2 notes · n=2: 4 · n=3: 8 · n=4: 16 · n=5: 32 · n=6: 64 stages (0 V – 5.25 V over 1/12 V steps)"
+    },
+    {
+      "name": "FRV Rate / Global Rate of Change",
+      "scope": "per cluster",
+      "description": "Speed of the fluctuating random voltage. Also biases main clock density.",
+      "detail": "CW: faster fluctuation + denser random clocks · CCW: slower · CV via C.3"
+    },
+    {
+      "name": "Probability Distribution",
+      "scope": "Global",
+      "description": "Biases the voltage magnitude the S&H circuits are likely to output.",
+      "detail": "noon: medium voltages favoured · CCW: lower · CW: higher · does not clip the pool"
+    },
+    {
+      "name": "Probability Distribution Switch",
+      "scope": "Per S&H output (×4)",
+      "description": "Opts each S&H into the global probability bias.",
+      "detail": "one per output: raw S&H, 2ⁿ, n+1, fluctuating"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Clock Input (external)",
+      "description": "External trigger/gate bypasses the internal clock for that cluster. Requires steep edges (square/pulse/sawtooth with negative ramp).",
+      "voltage": "trigger/gate, clamps negative pulses"
+    },
+    {
+      "name": "Gate/CV Modulation Input",
+      "description": "Switch-dependent: CV modulates the clock rate, or >3 V gate manually samples the S&H cluster.",
+      "voltage": "CV ±10 V (offset +15 V) · gate >3 V"
+    },
+    {
+      "name": "n+1 Value CV",
+      "description": "CV modulates the number of octaves in the n+1 pool.",
+      "voltage": "±10 V usable · 7.5 V knob offset"
+    },
+    {
+      "name": "2ⁿ Value CV",
+      "description": "CV modulates the number of quantised semitone steps.",
+      "voltage": "±10 V usable · 7.5 V knob offset"
+    },
+    {
+      "name": "FRV Rate / Global Rate of Change CV",
+      "description": "CV over the fluctuating rate and random-clock density.",
+      "voltage": "±10 V usable · 15 V knob offset"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "S&H Output (raw)",
+      "description": "Non-quantised stepped random voltage, 0 V to ~7.5 V. True analogue-noise-sampled randomness.",
+      "voltage": "0 – 7.5 V stepped"
+    },
+    {
+      "name": "2ⁿ Output",
+      "description": "Stepped random quantised to 1/12 V semitones. Range grows with the n setting.",
+      "voltage": "0 – 5.25 V in 1/12 V steps"
+    },
+    {
+      "name": "n+1 Output",
+      "description": "Stepped random quantised to 1 V octaves.",
+      "voltage": "0 – 6 V in 1 V steps"
+    },
+    {
+      "name": "FRV (Fluctuating Output)",
+      "description": "Continuous smooth random voltage, independent of clocks.",
+      "voltage": "0 – 7.5 V smoothed"
+    },
+    {
+      "name": "Main Clock Output",
+      "description": "Regular clock driving the S&H cluster. Mirrors external clock when patched.",
+      "voltage": "~9 V · ~2 ms period pulse"
+    },
+    {
+      "name": "Random Clock Output",
+      "description": "Random clock stream. Adds or subtracts triggers from main depending on Random Clock Mode switch.",
+      "voltage": "~9 V trigger"
+    },
+    {
+      "name": "Blue Noise",
+      "description": "Inharmonic noise with intensity rising with frequency. +3 dB/oct spectrum. Hissy, bass-deficient.",
+      "voltage": "~10 dBu RMS"
+    },
+    {
+      "name": "White Noise",
+      "description": "Flat audible-spectrum noise. 0 dB/oct.",
+      "voltage": "~10 dBu RMS"
+    },
+    {
+      "name": "Pink Noise",
+      "description": "White filtered at -3 dB/oct. Equal intensity per octave — balanced for the ear.",
+      "voltage": "~7 dBu RMS"
+    },
+    {
+      "name": "Red Noise",
+      "description": "Brown/Brownian noise. -6 dB/oct slope. Low rumbling spectrum.",
+      "voltage": "~4 dBu RMS"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Three synced values per trigger",
+      "trigger": "clock / manual S&H / external gate",
+      "description": "Each cluster's three stepped outputs (raw S&H, 2ⁿ semitones, n+1 octaves) update simultaneously from the same trigger. The three values are sampled from independent thermal-noise streams, so they are uncorrelated — one chord voice can have pitch, timbre, and amplitude coming from one cluster without phase-locking."
+    },
+    {
+      "name": "True thermal-noise sampling",
+      "trigger": "S&H event",
+      "description": "Each S&H samples a dedicated thermal-noise source, not a pseudo-random generator. 30-minute warmup is recommended — the module needs to reach operating temperature for the noise floor to sit in the working range."
+    },
+    {
+      "name": "Clock mix via Single/Both",
+      "trigger": "Single/Both switch flipped",
+      "description": "Routes the opposite cluster's clock into this cluster's trigger circuit. Both internal and external clocks still obey the switch. Used to densify one side or create polyrhythmic S&H patterns from two independent rates."
+    },
+    {
+      "name": "Random clock density coupled to FRV",
+      "trigger": "FRV Rate / Global Rate of Change knob",
+      "description": "A single knob controls both the fluctuating voltage speed and the random-clock density. Turning CW raises fluctuation rate and adds more random triggers; CCW slows and thins them. CV at C.3 modulates both simultaneously — modulating tempo feel and smooth-CV speed with one signal."
+    },
+    {
+      "name": "Additive vs subtractive random clock",
+      "trigger": "Random Clock Mode switch",
+      "description": "Up (additive): random clock outputs all main-clock pulses plus extra random triggers. Down (subtractive): randomly removes triggers from the main sequence — a gate with holes. Useful for generative percussion where you want rhythmic variation instead of density increase."
+    },
+    {
+      "name": "Probability biases magnitude not pool",
+      "trigger": "Probability Distribution knob",
+      "description": "Does not clip the voltage range — it biases which values are more likely within the existing pool. Unlike the n knobs (which resize the pool), probability skews frequency of occurrence. Lower-voltage values still appear when CW, just rarely."
+    },
+    {
+      "name": "External clock bypass",
+      "trigger": "patch Clock Input",
+      "description": "Patching the Clock Input disables that cluster's internal clock and the clock-rate knob. External clock must have steep rising edges — sine/triangle won't sample. Main Clock output mirrors the external clock (useful for clock cleanup)."
+    },
+    {
+      "name": "Fluctuating is always running",
+      "trigger": "always (not gated)",
+      "description": "FRV output is continuous and independent of clocks and gates. Treat it as a smooth independent LFO-rate random source that happens to share a rate knob with the random-clock density."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Generative melody with locked octave",
+      "patch": "Yellow 2ⁿ set to n=2 (4 semitones per chord pool) · Yellow n+1 at n=1 (2 octaves) · clock Yellow at moderate rate · sum 2ⁿ and n+1 for pitch that stays in a 2-octave window with a 4-note set · probability knob biases toward mid-range centre of the pool.",
+      "diagram": "SAPÈL:\n* Yellow 2ⁿ Value: n=2\n* Yellow n+1 Value: n=1\n* Probability: noon\n* Probability Dist Switch (2ⁿ): ON\n\n- Clock (Out) c> SAPÈL (Ext Clock In Yellow)\n- SAPÈL.Yellow (2ⁿ Out) p> Mixer (In 1)\n- SAPÈL.Yellow (n+1 Out) p> Mixer (In 2)\n- Mixer (Out) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Uncorrelated pitch & timbre",
+      "patch": "One clock drives Yellow · Yellow 2ⁿ → VCO pitch · Yellow raw S&H → filter cutoff · both update together but sample independent noise sources · each gate produces a new pitch and a new colour, never tied.",
+      "diagram": "SAPÈL:\n* Yellow 2ⁿ Value: n=3\n\n- Clock (Out) c> SAPÈL (Ext Clock In Yellow)\n- SAPÈL.Yellow (2ⁿ Out) p> VCO (V/Oct)\n- SAPÈL.Yellow (S&H Out) >> Filter (Cutoff)\n- SAPÈL.Yellow (Main Clock Out) t> Envelope (Trig)"
+    },
+    {
+      "name": "Polyrhythmic pair",
+      "patch": "Yellow clock at slow rate · Green clock at ~3× faster · each cluster drives its own voice (pitch via 2ⁿ, trigger via main clock out) · result is two interleaved random-pitch lines with independent rhythms from one module.",
+      "diagram": "SAPÈL:\n* Yellow Clock Rate: slow\n* Green Clock Rate: ~3× yellow\n* 2ⁿ per cluster: n=3\n\n- SAPÈL.Yellow (Main Clock Out) t> ENV 1 (Trig)\n- SAPÈL.Yellow (2ⁿ Out) p> VCO 1 (V/Oct)\n- SAPÈL.Green (Main Clock Out) t> ENV 2 (Trig)\n- SAPÈL.Green (2ⁿ Out) p> VCO 2 (V/Oct)"
+    },
+    {
+      "name": "Subtractive rhythm",
+      "patch": "Patch external steady clock into Yellow · Random Clock Mode switch down (subtractive) · Yellow random clock out is the incoming clock with triggers randomly removed · drive a kick drum for an Autechre-style rhythm with holes · FRV Rate controls hole density.",
+      "diagram": "SAPÈL:\n* Yellow Random Clock Mode: subtractive\n* Yellow FRV Rate: noon\n\n- Clock (Out) c> SAPÈL (Ext Clock In Yellow)\n- SAPÈL.Yellow (Random Clock Out) t> Drum (Trig)"
+    },
+    {
+      "name": "Smooth random modulation",
+      "patch": "Green FRV output at moderate rate drives filter resonance · no clock needed — FRV runs continuously · FRV Rate CV lets an envelope bend the fluctuation speed, faster during note attacks, slower on release.",
+      "diagram": "SAPÈL:\n* Green FRV Rate: noon\n\n- SAPÈL.Green (FRV Out) >> Filter (Resonance CV)\n- Envelope (Out) >> SAPÈL.Green (FRV Rate CV)"
+    },
+    {
+      "name": "Buchla 266-style voltage cascade",
+      "patch": "Use SAPÈL to mimic Source of Uncertainty three-output behaviour · each cluster's three outputs feed complementary parameters of one voice: n+1 → coarse pitch, 2ⁿ → fine-pitch offset, raw S&H → VCA level · probability knob biases the musical centre-of-mass.",
+      "diagram": "SAPÈL:\n* Yellow n+1 Value: n=2\n* Yellow 2ⁿ Value: n=3\n\n- Clock (Out) c> SAPÈL (Ext Clock In Yellow)\n- SAPÈL.Yellow (n+1 Out) p> Mixer (Pitch Coarse)\n- SAPÈL.Yellow (2ⁿ Out) p> Mixer (Pitch Fine)\n- Mixer (Out) p> VCO (V/Oct)\n- SAPÈL.Yellow (S&H Out) >> VCA (CV)"
+    },
+    {
+      "name": "Pink noise filtered percussion",
+      "patch": "Pink noise into a VCF · Main Clock Out of one cluster triggers an envelope · envelope modulates cutoff · 2ⁿ output of same cluster modulates resonance · per-hit pitched-noise percussion with correlated trigger but uncorrelated colour.",
+      "diagram": "SAPÈL:\n\n- SAPÈL (Pink Noise) -> Filter (In)\n- SAPÈL.Yellow (Main Clock Out) t> Envelope (Trig)\n- Envelope (Out) >> Filter (Cutoff)\n- SAPÈL.Yellow (2ⁿ Out) >> Filter (Resonance)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Ratcheting via manual S&H",
+      "patch": "Set Gate/CV switch to Gate · feed a burst/gate pattern into Gate/CV input · every gate high samples a new value on the Yellow cluster · main clock continues to tick underneath for parallel duties · creates ratcheted rapid-fire pitch changes synced to drum fills.",
+      "diagram": "SAPÈL:\n* Yellow Gate/CV Switch: Gate\n\n- Ratchet Gen (Out) g> SAPÈL (Yellow Gate/CV In)\n- SAPÈL.Yellow (2ⁿ Out) p> VCO (V/Oct)\n- SAPÈL.Yellow (Main Clock Out) t> Envelope (Trig)"
+    }
+  ]
+}

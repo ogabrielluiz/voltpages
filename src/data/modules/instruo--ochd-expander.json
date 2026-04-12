@@ -2,13 +2,17 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "expanderOf": "instruo--ochd"
   },
   "slug": "instruo--ochd-expander",
   "name": "ochd expander",
   "manufacturer": "Instruo",
   "hp": 4,
-  "tags": ["LFO", "UTILITY"],
+  "tags": [
+    "LFO",
+    "UTILITY"
+  ],
   "description": "4HP expander for ochd. Adds CV control over ochd's master rate and provides inverted outputs for all 8 LFO channels, doubling available modulation waveforms.",
   "controls": [],
   "inputs": [

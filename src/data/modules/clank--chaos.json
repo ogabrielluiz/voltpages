@@ -1,0 +1,180 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.1",
+    "sources": [
+      "https://www.clank.eu/chaos",
+      "https://static1.squarespace.com/static/5d77f17826f9797b805bdae8/t/623da2e204187c15188f821d/1648206563361/Chaos-Manual-FW-v1_1.pdf",
+      "https://modulargrid.net/e/clank-chaos",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=241187",
+      "https://lame.buanzo.org/eurorack_blog/shaping-chaos-a-guide-to-the-clank-chaos-eurorack-module.html",
+      "https://www.perfectcircuit.com/clank-chaos.html"
+    ]
+  },
+  "slug": "clank--chaos",
+  "name": "Chaos",
+  "manufacturer": "Clank",
+  "hp": 12,
+  "tags": ["RANDOM", "CLOCK", "SEQUENCER", "QUANTIZER"],
+  "description": "Six-channel aleatoric CV and gate generator. Master clock 10ms–10s, per-channel probability/width/swing/ratcheting, quantized CV with voltage-window and ground-transpose, 1–32 step looping, 60 slots, full chaos randomization.",
+  "controls": [
+    {
+      "name": "Encoder",
+      "scope": "Global",
+      "description": "Rotates to select active channel (no press needed). Rotating past channel 6 selects ALL channels for simultaneous edits. Press to fire the Chaos randomization function.",
+      "detail": "CW/CCW = channel select · press = Chaos"
+    },
+    {
+      "name": "Modifier buttons (prob / width / time / ratcheting / ground / random-window)",
+      "scope": "Selected channel",
+      "description": "Five black buttons providing direct access to gate and CV parameters. Hold + rotate encoder to edit. Avoids menu diving.",
+      "detail": "hold = edit · LED bar shows value"
+    },
+    {
+      "name": "quant / slew button",
+      "scope": "Selected channel",
+      "description": "Hold + encoder selects quantization scale (24 scales across 3 banks). Tap + hold + rotate sets slew amount as percentage of step duration. Also used with encoder for root-note selection.",
+      "detail": "hold = scale · tap+hold = slew · scale banks cycle past end"
+    },
+    {
+      "name": "input assign button",
+      "scope": "Global channel settings",
+      "description": "Opens per-channel assignment menu for the four top-row inputs (clock, loop, CV, chaos). Flip each input's link on/off per channel. Also toggles channel run/stop (double-tap then press modifiers).",
+      "detail": "4 inputs × 6 channels routing · double-tap = run/stop"
+    },
+    {
+      "name": "loop button (white)",
+      "scope": "Selected channel",
+      "description": "Enters loop mode capturing the last 1–32 steps. Hold + encoder to choose loop length. Hold + modifier-button to transpose/alter the loop non-destructively. Hold + memory-access to reset loop to original state.",
+      "detail": "1–32 steps · 4 pages of 8 LEDs · value LED 9/10 shows active page"
+    },
+    {
+      "name": "save/recall / memory access button",
+      "scope": "Global",
+      "description": "Holds to enter 60-slot memory menu (6 banks × 10 slots). Press encoder to save; press probability button to clear. Double-tap to reset channel to defaults. Starts up recalling last-used slot.",
+      "detail": "60 slots · auto-recall at boot · double-tap = channel reset"
+    }
+  ],
+  "inputs": [
+    { "name": "clock in", "description": "External gate/trigger input. 50% duty 8V typical. When patched, Channel 1 can sync to external clock; also acts as global start/stop (pulse interrupts = stop).", "voltage": "gate/trig" },
+    { "name": "loop in", "description": "Gate input that triggers loop mode for assigned channels. Per-channel routing via input assign menu.", "voltage": "gate/trig" },
+    { "name": "cv in", "description": "0–8V CV input. Routed per channel for transpose (ground-transpose via CV), slot recall (1V/slot increments), or Sample-and-Hold replacement of the internal random generator.", "voltage": "0–8V" },
+    { "name": "chaos in", "description": "Gate input that fires the Chaos randomization function for assigned channels. Lets sequence-driven chaos injections be patched without pressing the encoder.", "voltage": "gate/trig" }
+  ],
+  "outputs": [
+    { "name": "clock out", "description": "Master clock gate output. Always active regardless of channel state.", "voltage": "8V gate" },
+    { "name": "Gate 1–6", "description": "Per-channel gate outputs. 8V when high. Each has its own probability/width/time/ratcheting/swing settings.", "voltage": "8V gate" },
+    { "name": "CV 1–6", "description": "Per-channel CV outputs. 0–8V range in 1V steps (LED bar reflects value between steps). Range limited by Voltage Window and Ground Transpose modifiers.", "voltage": "0–8V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Per-channel clock sync or free-run",
+      "trigger": "input assign menu · clock LED color per channel",
+      "description": "Each channel independently syncs to master clock (green LED) or runs on its own millisecond-timebase (white LED). Unsynced Time ranges 10ms to 10s. Synced channels get 1/8 to 8/1 multiplication/division range, extendable to /16 and /32. Allows polyrhythms and cross-rate drift per channel."
+    },
+    {
+      "name": "Probability as coin-toss per gate",
+      "trigger": "prob modifier + encoder",
+      "description": "Each scheduled gate has a 0–100% chance of firing. Setting to 0 mutes the channel. When Ratcheting is set, probability applies per ratchet sub-step so ratchet patterns naturally thin out probabilistically."
+    },
+    {
+      "name": "Ratcheting sub-divisions",
+      "trigger": "tap + hold Width button",
+      "description": "Divides a single step into 1:1 through 8:1 sub-gates. Each sub-gate keeps the step's probability and width, producing rolling drum fills. Combined with probability it produces dynamic rhythmic fluctuations while holding the same CV output (same note)."
+    },
+    {
+      "name": "Swing delay per channel",
+      "trigger": "hold Time button",
+      "description": "Shifts synced-channel timing by 0, 1/4, 2/4, or 3/4 of a master-clock step. Per-channel so different channels can swing differently; classic upbeat grooves without a dedicated swing module."
+    },
+    {
+      "name": "Voltage window limits CV range",
+      "trigger": "hold Voltage-window modifier + encoder",
+      "description": "Caps the upper limit of the random voltage from 1 to 8V. Essential when the CV controls a VCO to stay within one octave. Full range = LED flashes orange. Partial windows shown as white LED count."
+    },
+    {
+      "name": "Ground transpose raises floor",
+      "trigger": "hold Ground modifier + encoder",
+      "description": "Shifts the lower limit of the voltage window up, transposing the whole random range without widening it. Unquantized: 1V/12 per encoder dent (semitone). Quantized: moves to next scale note. Combined with Voltage Window, gives a bounded pitch range per channel."
+    },
+    {
+      "name": "Quantization to 24 scales",
+      "trigger": "hold quant/slew + encoder",
+      "description": "Three scale banks × 8 scales each (first bank includes unquantized, chromatic, octave, pentatonic, blues, Arabic, pelog, hirajōshi, Chinese; second bank = 7 modes of major; third bank = 7 modes of melodic minor). Root note set independently via quant/slew + press + hold."
+    },
+    {
+      "name": "CV-IN Sample and Hold",
+      "trigger": "input assign + encoder to 3rd LED · press encoder",
+      "description": "Replaces the internal random generator on the selected channel with the external CV input. Quantization, voltage windows, and transpose still apply — so an LFO or envelope feeds the channel's CV output through the full scale engine. Slew doesn't work in this mode (external CV can't be predicted)."
+    },
+    {
+      "name": "Loop capture 1–32 steps",
+      "trigger": "loop button press",
+      "description": "Freezes the last N steps into a repeating loop. Value bar splits into 4 pages of 8 LEDs with 9th/10th LEDs indicating which page you're editing. Loop modifiers (loop-prob, loop-width, etc.) operate RELATIVE to original values — loop probability maxes at channel's original probability, loop width scales original width up/down."
+    },
+    {
+      "name": "Loop direction and reset",
+      "trigger": "hold loop button + input-assign or memory-access",
+      "description": "Hold loop then press input-assign to invert direction (backwards). Hold loop then press quant/slew to reset the loop counter to step 1. Double-tap memory-access to restore loop to its captured state."
+    },
+    {
+      "name": "Chaos function re-rolls modifiers",
+      "trigger": "press encoder · or gate into chaos in",
+      "description": "Randomizes every modifier value for selected channel(s). Entropy per modifier (set via hold modifier + encoder) limits how far new values drift from current — 0% = no change, 100% = totally new. Lets the user zap between mood variants (high entropy) or add subtle jitter (low entropy)."
+    },
+    {
+      "name": "60 slot memory with CV recall",
+      "trigger": "CV in routed to slot recall · 0–8V scans 10 slots",
+      "description": "6 banks of 10 slots each (60 total). 0–8V on CV in advances in 1V increments across a selected bank's ten slots. This is GLOBAL: overrides per-channel CV assignments. At startup Chaos auto-recalls the last saved/used slot."
+    },
+    {
+      "name": "All-channel edit",
+      "trigger": "encoder rotated past channel 6 → all LEDs red",
+      "description": "Selects all six channels simultaneously. Any modifier adjustment or chaos press is applied to every channel at once. Useful for global entropy zaps and reset-to-defaults operations."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "6-voice chaotic drum kit",
+      "patch": "All channels synced to master · each channel's Time set to 1:1, 2:1, 1:2, 3:1, 4:1, 1:4 · probability ~70% per channel · six drums triggered by gates 1-6 · polyrhythmic chaos drums",
+      "diagram": "Chaos:\n* CH 1-6: synced\n* CH 1: time 1:1, prob 80%\n* CH 2: time 2:1, prob 60%\n* CH 3: time 1:2, prob 70%\n* CH 4-6: various ratios\n\nClock Source:\n\n- Clock Source (Out) c> Chaos (clock in)\n- Chaos (Gate 1) t> Drum 1 (Trig)\n- Chaos (Gate 2) t> Drum 2 (Trig)\n- Chaos (Gate 3) t> Drum 3 (Trig)\n- Chaos (Gate 4) t> Drum 4 (Trig)\n- Chaos (Gate 5) t> Drum 5 (Trig)\n- Chaos (Gate 6) t> Drum 6 (Trig)"
+    },
+    {
+      "name": "Quantized melody with chaos injections",
+      "patch": "CH 1 synced · quant = Major pentatonic root C · voltage window 2V (2 octaves) · gate into chaos in from a downbeat every 4 bars · melody re-rolls periodically for variation",
+      "diagram": "Chaos:\n* CH 1: synced 1:1\n* Scale: Major pentatonic\n* Root: C\n* Voltage window: 2V\n\nClock:\n\nClock Divider:\n\n- Clock (Out) c> Chaos (clock in)\n- Clock Divider (/16) t> Chaos (chaos in) // re-roll every 4 bars\n- Chaos (CV 1) p> VCO (V/Oct)\n- Chaos (Gate 1) g> Envelope (Trig)"
+    },
+    {
+      "name": "Frozen 8-step loop jam",
+      "patch": "CH 1 running chaotically · press loop · hold loop + encoder to set length 8 · now a fixed melody loops · hold loop + width to alter width in-loop without breaking the pattern",
+      "diagram": "Chaos:\n* CH 1: loop ON\n* Loop length: 8\n* Scale: Minor pentatonic\n\nClock:\n\n- Clock (Out) c> Chaos (clock in)\n- Chaos (CV 1) p> VCO (V/Oct)\n- Chaos (Gate 1) g> Envelope (Trig)\n- VCO (Out) -> Filter (In)"
+    },
+    {
+      "name": "Self-patched pseudo-sequencer",
+      "patch": "Gate 6 into chaos in · CH 1-5 assigned to chaos input · each time CH 6 fires, CH 1-5 re-roll · low entropy ~20% on modifiers gives controlled evolution (described in manual as 'pseudo-controlled' random)",
+      "diagram": "Chaos:\n* CH 1-5: chaos-in assigned\n* CH 1-5: entropy 20%\n* CH 6: prob 30%, time 2:1\n\n- Clock Source (Out) c> Chaos (clock in)\n- Chaos (Gate 6) t> Chaos (chaos in) // self-patch for evolution\n- Chaos (CV 1) p> VCO 1 (V/Oct)\n- Chaos (CV 2) p> VCO 2 (V/Oct)"
+    },
+    {
+      "name": "Turing machine from loop",
+      "patch": "CH 1 synced · capture 16 steps via loop · quantized chromatic · voltage window 1V · behaves like a Turing Machine with 16-step lock, and loop modifiers can drift probability/width over time while pitch stays locked",
+      "diagram": "Chaos:\n* CH 1: synced 1:1, loop ON\n* Loop length: 16\n* Scale: Chromatic\n* Voltage window: 1V\n\nClock:\n\n- Clock (Out) c> Chaos (clock in)\n- Chaos (CV 1) p> VCO (V/Oct)\n- Chaos (Gate 1) g> Envelope (Trig)"
+    },
+    {
+      "name": "External LFO shaped through scale",
+      "patch": "CH 1 input assign = CV-in Sample-and-Hold mode · LFO into CV in · quantize to Dorian · LFO shape becomes a rising/falling melodic line through the scale · no slew since source is external",
+      "diagram": "Chaos:\n* CH 1: CV-IN S&H mode\n* Scale: Dorian\n* Root: D\n\nLFO:\n\nClock:\n\nVCO:\n\nEnvelope:\n\n- Clock (Out) c> Chaos (clock in)\n- LFO (Out) >> Chaos (cv in) // shaped through scale\n- Chaos (CV 1) p> VCO (V/Oct)\n- Chaos (Gate 1) g> Envelope (Trig)"
+    },
+    {
+      "name": "CV-scanned slot morph",
+      "patch": "Save 10 variations in a bank · patch a slow LFO (0-8V) into CV in · CV-in routed to slot recall (global mode) · morph between 10 distinct patches under LFO control · produces evolving long-form structure",
+      "diagram": "Chaos:\n* CV in: slot recall mode\n* Active bank: 1\n\nClock:\n\nLFO:\n\n- Clock (Out) c> Chaos (clock in)\n- LFO (Out · 0-8V) >> Chaos (cv in) // scans 10 slots\n- Chaos (CV 1) p> VCO 1 (V/Oct)\n- Chaos (CV 2) p> VCO 2 (V/Oct)\n- Chaos (Gate 1) g> Envelope (Trig)"
+    },
+    {
+      "name": "Controlled chaos modulation bank",
+      "patch": "All 6 channels unsynced · ground transpose staggered · voltage windows at 3V, 5V, 8V, etc · each CV out modulates a different destination (cutoff, resonance, pan, FM depth) for six independent organically-drifting modulations",
+      "diagram": "Chaos:\n* CH 1-6: unsynced\n* CH 1: time 200ms, window 3V\n* CH 2: time 1s, window 5V\n* CH 3-6: various\n\nFilter:\n\nVCA:\n\nVCO:\n\nDelay:\n\nReverb:\n\n- Chaos (CV 1) >> Filter (Cutoff)\n- Chaos (CV 2) >> Filter (Reso)\n- Chaos (CV 3) >> VCA (CV)\n- Chaos (CV 4) >> VCO (FM)\n- Chaos (CV 5) >> Delay (Time)\n- Chaos (CV 6) >> Reverb (Mix)"
+    }
+  ]
+}

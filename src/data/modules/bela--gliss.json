@@ -1,0 +1,134 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "2",
+    "sources": [
+      "https://bela.io/products/gliss/",
+      "https://learn.bela.io/products/modular/gliss/",
+      "https://www.soundonsound.com/reviews/bela-gliss",
+      "https://blog.bela.io/gliss-patch-notes-6/",
+      "https://www.sinesquares.net/musicgear/bela-gliss-review"
+    ]
+  },
+  "slug": "bela--gliss",
+  "name": "Gliss",
+  "manufacturer": "Bela",
+  "hp": 4,
+  "tags": ["UTILITY", "LFO", "ENVELOPE", "SEQUENCER", "SLEW", "RANDOM"],
+  "description": "Capacitive touch-strip controller built on Bela Trill. Four modes (Control, Record, Signal, Notes) turn finger position and pressure into two CV/gate outputs. Open-source firmware; v2 adds 1U orientation and dual-strip splits.",
+  "controls": [
+    {
+      "name": "Touch Strip",
+      "scope": "Global",
+      "description": "High-resolution capacitive strip sensing position and touch size (pressure). Single-touch in most modes; split into two halves in dual sub-modes.",
+      "detail": "sub-millimetre resolution · position + size · LED array mirrors touch"
+    },
+    {
+      "name": "Mode button",
+      "scope": "Global",
+      "description": "Short press cycles the four modes (Control / Record / Signal / Notes). Long press enters per-mode settings: output ranges, latching, dual split, wavetable.",
+      "detail": "short: mode cycle · long: settings · LED colour per mode"
+    },
+    {
+      "name": "Output range presets",
+      "scope": "Per mode, per output",
+      "description": "Settings menu selects voltage range for each output. Uni/bipolar options per mode. Calibrated per jack.",
+      "detail": "0-5V · 0-10V · ±5V · ±10V selectable · stored per mode"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN",
+      "description": "Signal/CV input. In Signal mode it is the signal being processed; in Record mode it re-triggers playback; in Notes mode it acts as clock for step-sequencer use.",
+      "voltage": "-5V to +10V usable · ±10V safe"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT TOP",
+      "description": "Primary CV. Follows finger position in Control/Notes, scaled recorded gesture in Record, processed input in Signal. Range configurable per mode.",
+      "voltage": "-5V to +10V · range set per mode"
+    },
+    {
+      "name": "OUT BOTTOM",
+      "description": "Secondary output. Touch size in Control, gate/env in Record, envelope-of-input in Signal, gate in Notes. Can be a trigger on gesture start/end.",
+      "voltage": "-5V to +10V · range set per mode"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Control mode",
+      "trigger": "finger on strip",
+      "description": "Two-dimensional performance controller. Top output = position, bottom = touch size (pressure). Latching option holds last value on release. Dual split turns the strip into two independent sliders."
+    },
+    {
+      "name": "Record mode",
+      "trigger": "press-hold-release to record",
+      "description": "Records a gesture up to 75 seconds. On release, loops automatically as a custom LFO. IN jack re-triggers playback for envelope use. Wavetable setting plays the gesture at audio rate tracked by V/oct at IN."
+    },
+    {
+      "name": "Signal mode",
+      "trigger": "CV / audio into IN",
+      "description": "Touch strip visualises incoming signal as a VU-meter and performatively scales, offsets, clips and smooths it. Top output = processed signal, bottom = envelope follower of IN."
+    },
+    {
+      "name": "Notes mode",
+      "trigger": "tap one of 5 zones",
+      "description": "Five user-tuned voltages played as a touch keyboard. With clock at IN becomes a 5-step sequencer with per-step mute/skip/hold. Pressure adds expressive modulation to bottom output."
+    },
+    {
+      "name": "Dual sub-modes",
+      "trigger": "long press mode → dual ON",
+      "description": "Splits strip in half for two independent gestures. Control dual = two sliders; Record dual = two 37.5 s loops on top and bottom outs; Notes dual = two zones each with their own notes."
+    },
+    {
+      "name": "Open-source firmware v2",
+      "trigger": "web-based updater (Chrome + USB)",
+      "description": "v2 (Oct 2024) adds 1U panel orientation, gesture-sync clock outputs, refined calibration, and wavetable mode. Flashable via browser; all code on GitHub for user mods."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Expressive touch macro",
+      "patch": "Control mode · position → filter cutoff · pressure → resonance · single finger sculpts timbre in one gesture · latching OFF so envelope falls on release",
+      "diagram": "Gliss:\n* Mode: Control · Latching: OFF\n\n- Gliss (OUT TOP) >> Filter (Cutoff)\n- Gliss (OUT BOTTOM) >> Filter (Resonance)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)"
+    },
+    {
+      "name": "Hand-drawn LFO",
+      "patch": "Record mode · draw a 10-second gesture · loops as custom LFO modulating pitch · re-draw live to mutate the shape · pairs beautifully with slow drones",
+      "diagram": "Gliss:\n* Mode: Record · Loop: ON\n\n- Gliss (OUT TOP) >> VCO (FM)\n- Gliss (OUT BOTTOM) >> VCA (CV) // envelope of gesture\n- VCO (Out) -> VCA (In)"
+    },
+    {
+      "name": "Gesture envelope",
+      "patch": "Record mode · draw an ADSR-shaped envelope once · IN receives gate from sequencer · plays gesture as envelope per note · drawable shape replaces a traditional EG",
+      "diagram": "Gliss:\n* Mode: Record · Trigger: IN\n\nSequencer:\n\n- Sequencer (Gate) g> Gliss (IN)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Gliss (OUT TOP) >> VCA (CV)\n- VCO (Out) -> VCA (In)"
+    },
+    {
+      "name": "CV scaler / clipper",
+      "patch": "Signal mode · chaotic source into IN · touch strip live-scales + clips the voltage · bottom output envelope follows · tame a wild LFO in real time",
+      "diagram": "Gliss:\n* Mode: Signal\n\nChaos LFO:\n\n- Chaos LFO (Out) >> Gliss (IN)\n- Gliss (OUT TOP) >> Filter (Cutoff) // tamed\n- Gliss (OUT BOTTOM) >> VCA (CV) // env follower"
+    },
+    {
+      "name": "Five-note touch keyboard",
+      "patch": "Notes mode · tune five zones to a pentatonic scale · pressure → velocity on bottom out · ideal for performing melodies over a drone",
+      "diagram": "Gliss:\n* Mode: Notes · 5 zones = pentatonic\n\n- Gliss (OUT TOP) p> VCO (V/Oct)\n- Gliss (OUT BOTTOM) >> VCA (CV) // velocity\n- VCO (Out) -> VCA (In)"
+    },
+    {
+      "name": "Clocked 5-step sequencer",
+      "patch": "Notes mode · clock at IN advances a 5-step pattern · hold zones to mute/skip/hold steps · live-edit sequence by touching the strip while it runs",
+      "diagram": "Gliss:\n* Mode: Notes · clock at IN = 5-step seq\n\nClock:\n\n- Clock (Out) c> Gliss (IN)\n- Gliss (OUT TOP) p> VCO (V/Oct)\n- Gliss (OUT BOTTOM) g> Envelope (Trig)"
+    },
+    {
+      "name": "Wavetable at audio rate",
+      "patch": "Record mode · wavetable setting ON · draw a waveform shape · feed V/oct sequence to IN · Gliss becomes a drawable oscillator tracked across octaves",
+      "diagram": "Gliss:\n* Mode: Record · Wavetable: ON\n\nSequencer:\n\n- Sequencer (Pitch) p> Gliss (IN)\n- Gliss (OUT TOP) -> Filter (In)\n- Filter (Out) -> VCA (In)"
+    },
+    {
+      "name": "Dual-mode two-slider mixer",
+      "patch": "Control dual ON · top half of strip → VCA A · bottom half → VCA B · crossfade two sources with one finger per side · hands-on mixer",
+      "diagram": "Gliss:\n* Mode: Control · Dual: ON\n\n- Gliss (OUT TOP) >> VCA A (CV) // top half of strip\n- Gliss (OUT BOTTOM) >> VCA B (CV) // bottom half\n- Source A (Out) -> VCA A (In)\n- Source B (Out) -> VCA B (In)"
+    }
+  ]
+}

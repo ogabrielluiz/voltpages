@@ -1,0 +1,289 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "188",
+    "sources": [
+      "https://busycircuits.com/pages/alm022",
+      "https://assets.busycircuits.com/docs/alm022-manual.pdf",
+      "https://busycircuits.com/support/squid-salmple/",
+      "https://www.perfectcircuit.com/alm-busy-circuits-squid-salmpler.html",
+      "https://cpr2323.github.io/squidmanager/"
+    ]
+  },
+  "slug": "alm-busy-circuits--squid-salmple",
+  "name": "Squid Salmple",
+  "manufacturer": "ALM Busy Circuits",
+  "hp": 21,
+  "tags": ["SAMPLER", "GRANULAR", "VCF", "ENVELOPE", "DELAY"],
+  "description": "Eurorack 8-channel mono sampler. Each channel has ~11s 16-bit/44.1kHz RAM, per-channel bit/rate/speed/pitch, multimode filter, A/D envelope, looping with crossfade, multiple cue sets. Channels 6-8 have 1V/oct.",
+  "controls": [
+    {
+      "name": "Chan",
+      "scope": "global",
+      "description": "Button cycles to next channel. Hold + twist encoder scrolls channels on the current parameter page.",
+      "detail": "Hold + Func: swap two channels · Hold + Rec: lock record destination"
+    },
+    {
+      "name": "Program Knob",
+      "scope": "global",
+      "description": "Push-turn encoder for all UI. Twist adjusts values, click plays current channel's sample or confirms menu action.",
+      "detail": "Hold Func + turn: fine adjust or zoom in Cues · Click from record screen: preview"
+    },
+    {
+      "name": "USB Button",
+      "scope": "global",
+      "description": "Opens USB screen for bank/set/pool loading, saving, renaming. Also goes back up menus.",
+      "detail": "Scroll left of Bank 1: access Sets · scroll further: Pool"
+    },
+    {
+      "name": "Quality",
+      "scope": "per channel",
+      "description": "Cycles pages: Bits, Rate, Speed, Pitch (or Quant on ch 6-8), Filter type, Frequency, Resonance.",
+      "detail": "Func + Quality: reassign channel output to neighbour pair"
+    },
+    {
+      "name": "Env",
+      "scope": "per channel",
+      "description": "Cycles pages: Level, Decay, Attack, E Trig (EOS destination), Steps (round-robin triggering).",
+      "detail": "Func + Env: mute channel · Chan + Func + Env: solo"
+    },
+    {
+      "name": "Loop",
+      "scope": "per channel",
+      "description": "Cycles pages: Loop mode (forward / loop / zig-zag / gate), X-Fade crossfade length.",
+      "detail": "Gate mode: sample plays only while trigger held (like sustain)"
+    },
+    {
+      "name": "Cues",
+      "scope": "per channel",
+      "description": "Cycles Start, End, Loop cue points. Twist moves cue, Func+twist zooms around current cue.",
+      "detail": "Func + Cues: access Cue Sets menu (Add / Split / Auto / RM ALL)"
+    },
+    {
+      "name": "Reverse",
+      "scope": "per channel",
+      "description": "Reverses sample playback.",
+      "detail": "Hold Reverse + Assign button: assign CV to Reverse"
+    },
+    {
+      "name": "Func",
+      "scope": "global",
+      "description": "Modifier for secondary functions (fine adjust, zoom, mute, solo, etc).",
+      "detail": "Func + Rec: toggle record monitor · Func + Cues: Cue Sets"
+    },
+    {
+      "name": "CV Assign 1 / 2 / 3",
+      "scope": "global",
+      "description": "Three buttons — on any parameter page, press an Assign button to map that parameter to CV input 1, 2, or 3. Press again to unassign.",
+      "detail": "Func + Assign: edit attenuation/offset for that CV pair"
+    },
+    {
+      "name": "V/Oct (×3)",
+      "scope": "CH 6-8",
+      "description": "Dedicated pitch knob per channel 6/7/8. Sums with V/oct jack.",
+      "detail": "tuning-fork icon shows on screen when near original sample pitch · ~2-3 octaves useful range"
+    },
+    {
+      "name": "Level",
+      "scope": "Sample In",
+      "description": "Input gain for audio/CV being sampled. Red LED lights at clipping.",
+      "detail": "modular level to line level · CV sampling tricky: keep low"
+    },
+    {
+      "name": "Rec",
+      "scope": "global",
+      "description": "Arms and starts recording. First press arms, second press records, third press stops.",
+      "detail": "Modes cycled by encoder while armed: Replace · Overdub (-3dB duck) · Extend"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Trigger Inputs 1-8",
+      "description": "Per-channel trigger jacks. Trigger starts playback of that channel's sample.",
+      "voltage": "trigger/gate · gate with Loop=GATE mode sustains playback"
+    },
+    {
+      "name": "Chan",
+      "description": "Trigger steps active channel. Firmware 185+ reconfigurable: Choke all / Punch-in cue / Load next bank / Reset cue steps / Reset step triggers / Toggle monitor.",
+      "voltage": "trigger"
+    },
+    {
+      "name": "V/Oct (CH 6 / 7 / 8)",
+      "description": "1V/oct pitch input per dedicated channel. Expect crunchy lo-fi aliasing — not a clean VCO.",
+      "voltage": "1V/oct · rough tracking"
+    },
+    {
+      "name": "Freq",
+      "description": "Attenuverted CV input for sample playback frequency. Routes after the V/oct.",
+      "voltage": "attenuverted CV"
+    },
+    {
+      "name": "CV 1 / 2 / 3",
+      "description": "Three assignable CV inputs. Any parameter (except Steps) can be routed with per-assignment attenuation and offset.",
+      "voltage": "0-5V · outside range safely ignored"
+    },
+    {
+      "name": "Signal",
+      "description": "Mono record input. Accepts modular to line level audio or CV.",
+      "voltage": "audio/CV · level trim via Level knob"
+    },
+    {
+      "name": "Rec",
+      "description": "Automated record trigger. <500ms trigger enables envelope-follower mode (records until source drops to silence); longer = gate (records while high).",
+      "voltage": "trigger/gate"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Trigger",
+      "description": "Outputs +5V gate while recording is active, plus EOS triggers from channels with E Trig set to ON. Useful for triggering drum modules during sample-then-replay automation.",
+      "voltage": "+5V trigger/gate"
+    },
+    {
+      "name": "1+2 Out",
+      "description": "DC-coupled sum output for channels 1 and 2 (assignable to 3+4 via Func+Quality). Patching here removes those channels from Mix Out.",
+      "voltage": "audio + DC (can pass CV)"
+    },
+    {
+      "name": "3+4 Out",
+      "description": "DC-coupled sum for channels 3-4 (assignable). Patching removes from Mix Out.",
+      "voltage": "audio + DC"
+    },
+    {
+      "name": "5+6 Out",
+      "description": "DC-coupled sum for channels 5-6 (assignable to 7+8). Patching removes from Mix Out.",
+      "voltage": "audio + DC"
+    },
+    {
+      "name": "7+8 Out",
+      "description": "DC-coupled sum for channels 7-8 (assignable). Patching removes from Mix Out.",
+      "voltage": "audio + DC"
+    },
+    {
+      "name": "Mix Out",
+      "description": "AC-coupled full mix of all 8 channels (minus any patched into pair outs). Blocks DC — will not reproduce recorded CV/envelopes.",
+      "voltage": "audio · AC-coupled"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Per-channel sample mangling",
+      "trigger": "Quality button pages",
+      "description": "Each channel has independent bit depth, sample rate, playback speed, pitch (chans 1-5) or quantised V/oct (chans 6-8), multimode filter (LP/BP/Notch/HP), frequency, and resonance. Filter is CPU-heavy — enabling many at once can lag the UI and introduce stutters, especially combined with pitch shifting."
+    },
+    {
+      "name": "Speed vs Pitch (timestretch)",
+      "trigger": "chans 1-5 only",
+      "description": "Speed is linear playback speed; Pitch shifts pitch without changing length. Combining the two produces timestretch-like effects. Chans 6-8 replace these with V/oct quantised playback for musical tracking — at cost of losing Speed/Pitch independence."
+    },
+    {
+      "name": "Loop modes (forward / zig-zag / gate)",
+      "trigger": "Loop parameter",
+      "description": "Single arrow: forward playback. Arrow + loop symbol: loops between loop and end points. Bidirectional arrows: zig-zag (ping-pong between loop and end). GATE: plays and loops only while the channel's trigger input is held high (sustain). X-Fade smooths loop boundaries."
+    },
+    {
+      "name": "Cue sets for beat slicing",
+      "trigger": "Func + Cues",
+      "description": "Each channel holds multiple sets of Start/End/Loop points — switching sets reshapes playback without loading a new sample. Auto detects transients and zero crossings to create cue sets from a break beat automatically. Split divides existing sets into equal halves. CV can select active cue set across the 0-5V range. WAV file markers auto-import as cue sets."
+    },
+    {
+      "name": "Choke groups",
+      "trigger": "Chan + Env + turn encoder",
+      "description": "Assign a channel to choke another — triggering the owner stops the chokee mid-playback. Display shows 'Cx' on the channel. Classic hi-hat style mutual exclusion, or use for vocal/sample truncation effects. Chan input alt-mode can also choke all channels at once."
+    },
+    {
+      "name": "E Trig (end-of-sample trigger)",
+      "trigger": "Env page: E Trig set",
+      "description": "Fires a trigger when a sample finishes playing. Can target another channel internally (chains sample-after-sample sequences without external clocking) or bus to the physical Trigger output. Combine with different end points per channel to generate percussion phrases where each hit cues the next."
+    },
+    {
+      "name": "Step triggering (polyphonic round-robin)",
+      "trigger": "Env page: Steps parameter",
+      "description": "Cycles incoming triggers across N adjacent channels in round-robin fashion — physical triggers only, encoder clicks don't cycle. Lets one trigger input drive polyphonic voice allocation across channels with different samples or settings. Steps cannot be CV-assigned."
+    },
+    {
+      "name": "Cross-channel sample reference",
+      "trigger": "Chan + turn encoder to target",
+      "description": "A channel can reference another channel's sample data rather than its own, enabling two channels to play the same source at different speeds/pitches/cue points — huge for delay/dub effects or duplicating breaks for polyrhythmic slicing."
+    },
+    {
+      "name": "Record modes: Replace / Overdub / Extend",
+      "trigger": "armed record screen → twist encoder",
+      "description": "Replace overwrites (default, clears cue sets). Overdub layers new audio atop existing at -3dB, preserving cue sets. Extend appends to the end of existing audio and automatically adds a new cue set marking the addition — lets you build 8-slice loops by successive short recordings into one channel."
+    },
+    {
+      "name": "Envelope-follower vs gate recording",
+      "trigger": "Rec input trigger length",
+      "description": "A trigger <500ms into Rec starts recording and auto-stops when the input signal decays to silence (envelope-follower mode) — perfect for capturing one-shot hits. Longer triggers are treated as gates: recording runs while the gate is high. Max sample length 11s per channel; recording past that wraps to beginning."
+    },
+    {
+      "name": "CV as audio (DC-coupled pair outs)",
+      "trigger": "patch from 1+2 / 3+4 / 5+6 / 7+8 Out",
+      "description": "Pair outputs are DC-coupled — they pass envelopes and CV sampled from modular sources. Mix Out is AC-coupled and strips DC, so recorded CV must be tapped from the pair outs to function as CV. Enables using the Squid as a sample-and-playback envelope or LFO recorder."
+    },
+    {
+      "name": "Output pair reassignment",
+      "trigger": "channel page → Func + Quality",
+      "description": "Channels 1-4 can be routed to either the 1+2 out or the 3+4 out; channels 5-8 to the 5+6 or 7+8 out. Lets you isolate any channel to its own jack for external processing while keeping others summed."
+    },
+    {
+      "name": "Reverse CV with special assignment",
+      "trigger": "hold Reverse + Assign 1/2/3",
+      "description": "Reverse gets a different CV assignment flow than other parameters — hold the Reverse button while pressing an Assign button to map a CV input to forward/reverse state. Lets a gate or LFO flip playback direction mid-sample for glitch effects."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Auto-sliced break beat",
+      "patch": "Record a breakbeat to Ch 1 · Func+Cues → Auto (transient detection) generates cue sets per hit · CV Assign 1 to active cue set · random or stepped CV into CV 1 sweeps through slices on each trigger · drums chopped without a computer",
+      "diagram": "Squid Salmple:\n* CH 1: Breakbeat loaded · Cue Sets: Auto\n* CV 1 → Active Cue Set\n\nClock:\n\nRandom:\n\n- Clock (Out) t> Squid Salmple (Trigger 1) // fire slice\n- Random (Out) >> Squid Salmple (CV 1) // pick slice\n- Squid Salmple (1+2 Out) -> Output (In)"
+    },
+    {
+      "name": "Clocked single-channel delay",
+      "patch": "Ch 1 = Rec destination (Chan+Rec locks it) · Ch 2 references Ch 1's buffer (Chan+turn) · clock /4 → Trigger 2 for playback · Rec input receives slow clock · live audio loops through record buffer with pitch-shifted replay · external filter for feedback and darkening",
+      "diagram": "Squid Salmple:\n* CH 1: Rec locked · Extend mode\n* CH 2: references CH 1 · Speed ~0.9\n\nClock:\n\nFilter:\n\n- Audio Src (Out) -> Squid Salmple (Signal)\n- Clock (Out) t> Squid Salmple (Rec) // timed sampling\n- Clock (Out) t> Squid Salmple (Trigger 2) // playback tap\n- Squid Salmple (1+2 Out) -> Filter (In)\n- Filter (Out) -> Mixer (In) // feedback darkening\n- Mixer (Out) -> Squid Salmple (Signal) // wet-dry return"
+    },
+    {
+      "name": "Single-cycle wavetable VCO",
+      "patch": "Load or record a rich tone to Ch 7 · Loop ON · zoom Cues (Func+turn) and align Start/End to zero crossings for a single cycle · Quant=OT (one per octave) · V/oct sequencer → CH 7 V/oct · sample now plays as a pitched oscillator with crunchy lo-fi character",
+      "diagram": "Squid Salmple:\n* CH 7: Loop forward · Start/End: 1 cycle · Quant=OT\n* CH 7 V/oct knob: calibrate to fork icon\n\nSequencer:\n\nVCF:\n\nVCA:\n\n- Sequencer (V/oct) p> Squid Salmple (V/oct CH 7)\n- Sequencer (Gate) t> Squid Salmple (Trigger 7)\n- Squid Salmple (7+8 Out) -> VCF (In) // clean up aliasing\n- VCF (Out) -> VCA (In)"
+    },
+    {
+      "name": "End-of-sample percussion chain",
+      "patch": "Ch 1 kick samples · Ch 1 E Trig → CH 2 (E Trig Env page) · Ch 2 snare fires the moment Ch 1 finishes · Ch 2 E Trig → CH 3 hi-hat · each end cues the next step of a percussion phrase with no external sequencer",
+      "diagram": "Squid Salmple:\n* CH 1: Kick · E Trig target=2\n* CH 2: Snare · E Trig target=3\n* CH 3: Hi-hat\n\nClock:\n\n- Clock (Out) t> Squid Salmple (Trigger 1) // starts chain\n- Squid Salmple (Mix Out) -> Output (In) // internal E Trigs chain 1→2→3"
+    },
+    {
+      "name": "CV envelope recorder and looper",
+      "patch": "Patch MATHS rise/fall envelope to Signal · low input level · Rec as envelope-follower · record the envelope to Ch 8 · Loop ON · pair output 7+8 (DC-coupled) carries the envelope as CV · use it to modulate another VCF · lo-fi stepped envelope recall",
+      "diagram": "Squid Salmple:\n* CH 8: Loop ON · recorded envelope\n* Mode: Rec envelope-follower\n\nMATHS:\n\nVCF:\n\n- MATHS (CH 1 OUT) >> Squid Salmple (Signal) // record CV as audio\n- Clock Source (Out) t> Squid Salmple (Trigger 8) // replay trigger\n- Squid Salmple (7+8 Out) >> VCF (Cutoff) // DC-coupled CV replay"
+    },
+    {
+      "name": "Polyphonic round-robin voice",
+      "patch": "Load 4 variations of the same snare to CH 1-4 · CH 1 Env → Steps=4 · single trigger into Trigger 1 round-robins through CH 1/2/3/4 · four slightly different snare samples alternate every hit · instant sample variation for humanised drums",
+      "diagram": "Squid Salmple:\n* CH 1: Snare v1 · Steps=4 (round-robin CH 1-4)\n* CH 2-4: Snare v2/v3/v4\n\nDrum Trigger:\n\n- Drum Trigger (Out) t> Squid Salmple (Trigger 1)\n- Squid Salmple (Mix Out) -> Output (In) // rotates through snares"
+    },
+    {
+      "name": "Gate-sustained granular drone",
+      "patch": "Load texture/pad to CH 1 · Loop mode = GATE (plays/loops only while trigger held) · Ch 1 loop points tight (50-200ms window) · Bits lowered to 8 · Filter LP enabled · long gate → Trigger 1 sustains a lo-fi granular drone from that tiny window",
+      "diagram": "Squid Salmple:\n* CH 1: Loop=GATE · tight loop window · Bits=8 · Filter=LP\n\nGate Source:\n\n- Gate Source (Out) g> Squid Salmple (Trigger 1) // sustain\n- Squid Salmple (1+2 Out) -> Reverb (In) // granular pad"
+    },
+    {
+      "name": "Choke group hi-hat pair",
+      "patch": "CH 1 closed hat · CH 2 open hat · CH 2 Choke=1 (open chokes on closed hit) · Pam or clock triggers → Trigger 1 and Trigger 2 · classic drum machine behaviour where a closed hat kills any decaying open hat",
+      "diagram": "Squid Salmple:\n* CH 1: Closed hat\n* CH 2: Open hat, Choke=1\n\nClock:\n\n- Clock (OUT 1) t> Squid Salmple (Trigger 1) // closed on\n- Clock (OUT 2) t> Squid Salmple (Trigger 2) // open on off-beats\n- Squid Salmple (Mix Out) -> Output (In) // closed kills open"
+    },
+    {
+      "name": "Reverse glitch stutter",
+      "patch": "CH 1 long vocal sample · Reverse assigned to CV 1 (hold Reverse + Assign 1) · square LFO → CV 1 · playback flips forward/reverse at LFO rate · combine with short loop for stuttering glitch texture · excellent over breaks or pads",
+      "diagram": "Squid Salmple:\n* CH 1: Vocal · Loop=zig-zag · Reverse→CV 1\n\nLFO:\n\nClock:\n\n- LFO (Square) >> Squid Salmple (CV 1) // flip direction\n- Clock (Out) t> Squid Salmple (Trigger 1)\n- Squid Salmple (1+2 Out) -> Delay (In) // glitch chop"
+    },
+    {
+      "name": "Live-resampling feedback loop",
+      "patch": "External synth → Signal · Chan+Rec locks CH 1 as rec destination · Mix Out → external FX → back into Signal · Extend mode appends each new record cycle · each pass adds layer and FX processing · classic tape-style infinite accumulation",
+      "diagram": "Squid Salmple:\n* CH 1: Rec locked · Extend mode · Loop ON\n\nVCO:\n\nFX:\n\n- VCO (Out) -> FX (In)\n- FX (Out) -> Squid Salmple (Signal) // live resample\n- Clock Source (Out) t> Squid Salmple (Rec) // record cycles\n- Clock Source (Out) t> Squid Salmple (Trigger 1)\n- Squid Salmple (Mix Out) -> FX (In) // feedback via FX"
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.strymon.net/product/starlab/",
+      "https://www.strymon.net/manuals/StarLab_UserManual_RevA.pdf",
+      "https://www.strymon.net/manuals/StarLab_QuickStart_Web_RevC.pdf",
+      "https://www.strymon.net/support/starlab/",
+      "https://modulargrid.net/e/strymon-starlab"
+    ]
+  },
+  "slug": "strymon--starlab",
+  "name": "StarLab",
+  "manufacturer": "Strymon",
+  "hp": 28,
+  "tags": ["REVERB", "DELAY", "EFFECTS", "OSCILLATOR", "FILTER"],
+  "description": "Stereo time-warped reverberator with three structures, variable-rate reverb core, regenerative shimmer, glimmer, pre-delay/Karplus-Strong string voice, LFO, resonant low-pass and four-slot favorite presets.",
+  "controls": [
+    {
+      "name": "DRY",
+      "scope": "Global",
+      "description": "Unprocessed signal level to output. Analog path, zero-latency, never digitized.",
+      "detail": "min: mute · noon: unity · max: +3dB boost"
+    },
+    {
+      "name": "INPUT GAIN",
+      "scope": "Global",
+      "description": "Gain into reverb core through soft-clipping input stage.",
+      "detail": "LED: green = clean · red = soft-clip · blue = input gated by IN GATE CV"
+    },
+    {
+      "name": "WET",
+      "scope": "Global",
+      "description": "Overall wet signal level to output.",
+      "detail": "WET CV: ±5V offset sums with knob"
+    },
+    {
+      "name": "DECAY",
+      "scope": "Reverb",
+      "description": "Reverb tail length. At high values decay time is shaped by the FILTER section.",
+      "detail": "DECAY CV: ±5V offset"
+    },
+    {
+      "name": "SIZE / PITCH",
+      "scope": "Reverb",
+      "description": "Variable processing rate of the reverb core. Scales core size and pitches regenerating audio.",
+      "detail": "±1 oct range · min: 1/2x size · max: 2x size · CV: 1V/oct ±2V"
+    },
+    {
+      "name": "TEXTURE",
+      "scope": "Reverb",
+      "description": "Three reverb structures select the grain of the tail.",
+      "detail": "sparse: granular-sounding distinct reflections · dense: plate-like fast response · diffuse: slow-building atmospheric wash"
+    },
+    {
+      "name": "INFINITE",
+      "scope": "Reverb",
+      "description": "Button. Holds reverb input indefinitely; new audio keeps being processed by the reverb. 2s hold enters PITCH QUANTIZE scale mode.",
+      "detail": "Default latching · momentary via REGEN-hold at power-up"
+    },
+    {
+      "name": "FAVORITE",
+      "scope": "Global",
+      "description": "Button recalls currently selected preset. Hold + center-button selects 1 of 4 slots. Hold until green flashes to save.",
+      "detail": "4 preset slots · DIP-1 ON enables spillover between preset and manual"
+    },
+    {
+      "name": "SHIMMER",
+      "scope": "Harmonics",
+      "description": "Pitch-shifted reverb voicing amount. OFF at fully CCW.",
+      "detail": "Interval ±1 oct · secondary: hold REGEN + turn for interval · −detune/+detune near noon · CV: ±5V"
+    },
+    {
+      "name": "GLIMMER",
+      "scope": "Harmonics",
+      "description": "Dynamic harmonic spectrum enhancement applied to input or regenerating signal.",
+      "detail": "OFF at CCW · CV: ±5V"
+    },
+    {
+      "name": "REGEN",
+      "scope": "Harmonics",
+      "description": "Button. Toggles shimmer placement: regenerative (inside reverb loop) vs. input (before reverb structure).",
+      "detail": "LED green: regenerative · LED off: input shimmer"
+    },
+    {
+      "name": "HIGH BAND",
+      "scope": "Harmonics",
+      "description": "Button. Selects which harmonic band the glimmer enhances.",
+      "detail": "LED green: high-band · LED off: low-band"
+    },
+    {
+      "name": "FEEDBACK",
+      "scope": "Delay / Karplus",
+      "description": "Regeneration in the delay line. In Karplus mode, sets string decay and structure resonance.",
+      "detail": "CV: ±5V offset"
+    },
+    {
+      "name": "DELAY / TUNE",
+      "scope": "Delay / Karplus",
+      "description": "Pre-delay 0–1.5s (log taper). With TAP/TRIG CV becomes clock div/mult. In Karplus mode, coarse string tuning over 4 octaves or fine 12 semitones with SIZE/PITCH CV.",
+      "detail": "Clock ratios: 1/4, 1/3, 1/2, 2/3, 3/4, 1/1, 3/2, 5/3, 7/4, 2/1, 5/2 · max delay 7.5s at 3s clock × 5/2"
+    },
+    {
+      "name": "ECHO ON",
+      "scope": "Delay / Karplus",
+      "description": "Button. Routes delay output to WET bus (mixed with reverb). Bypassed = pre-delay only. In Karplus mode, mixes the dry string with wet.",
+      "detail": "Default latching · momentary via ECHO ON-hold at power-up"
+    },
+    {
+      "name": "TAP / TRIG",
+      "scope": "Delay / Karplus",
+      "description": "Button. Tap tempo in delay mode. Quick press plucks string in Karplus; hold continuously bows.",
+      "detail": "Clock range 25 ms – 3 s · max delay time 7.5s"
+    },
+    {
+      "name": "LOW DAMP",
+      "scope": "Filter",
+      "description": "Removes low-end from output and from the regenerating reverb core as knob turns CW. In Karplus mode, damps low end of string.",
+      "detail": "CW: aggressive low-cut"
+    },
+    {
+      "name": "HIGH DAMP",
+      "scope": "Filter",
+      "description": "Removes high-end from regenerating reverb structure as knob turns CW. With LOW PASS engaged, becomes 24dB/oct resonant low-pass output filter. In Karplus mode, damps string decay harmonics.",
+      "detail": "HIGH DAMP CV: ±5V · positive V opens filter"
+    },
+    {
+      "name": "LOW PASS",
+      "scope": "Filter",
+      "description": "Button. Converts HIGH DAMP into a 24dB/oct variable-resonance low-pass at the output.",
+      "detail": "Secondary: hold LOW PASS + turn HIGH DAMP to set LOW PASS resonance (Q)"
+    },
+    {
+      "name": "SPEED",
+      "scope": "LFO",
+      "description": "LFO period. Sets envelope decay when ENV shape selected. Acts as clock div/mult when LFO CLK IN detected.",
+      "detail": "15 s (0.067 Hz) – 1/15 s (15 Hz) · clock div 8/6/5/4/3/2 first half · mult 2/3/4/5/6/8 second half · noon = 1:1 · CV: ±5V"
+    },
+    {
+      "name": "SHAPE",
+      "scope": "LFO",
+      "description": "Six LFO waveforms: triangle, square, ramp, saw, random, envelope.",
+      "detail": "env shape responds to input dynamics; DEPTH sets envelope sensitivity"
+    },
+    {
+      "name": "DEPTH",
+      "scope": "LFO",
+      "description": "Modulation amount. Attenuverter for EXT LFO IN signal. With ENV shape: noon = off, CW = positive env, CCW = negative env.",
+      "detail": "OFF at CCW (non-env) · CV: ±5V · attenuverter centered at noon when EXT LFO IN patched"
+    },
+    {
+      "name": "LFO TARGET",
+      "scope": "LFO",
+      "description": "Three-way switch: delay (delay time / Karplus tuning), pitch (SIZE/PITCH), filter (HIGH DAMP cutoff).",
+      "detail": "Filter target subtle without LOW PASS engaged"
+    }
+  ],
+  "inputs": [
+    { "name": "LEFT IN", "description": "Left audio input. Use alone for mono.", "voltage": "20 Vpp max · 22 kΩ" },
+    { "name": "RIGHT IN", "description": "Right audio input.", "voltage": "20 Vpp max · 22 kΩ" },
+    { "name": "INFINITE", "description": "Engages infinite hold of input into reverb. Latching by default; momentary via REGEN-hold power-up.", "voltage": "0–5V rising edge" },
+    { "name": "IN GATE", "description": "Gates audio into reverb (INPUT GAIN LED blue when muted). In Karplus mode, continuously bows string. Momentary by default; latching via HIGH BAND-hold power-up.", "voltage": "0–5V" },
+    { "name": "FAVORITE", "description": "Rising edge toggles between manual panel state and selected Favorite preset.", "voltage": "0–5V rising edge" },
+    { "name": "SHIMMER", "description": "Offset for SHIMMER amount; knob sums with CV.", "voltage": "±5V" },
+    { "name": "INTERVAL", "description": "Shimmer pitch interval, quantized to semitones over ±1 octave.", "voltage": "±5V" },
+    { "name": "HIGH DAMP", "description": "Offset for filter cutoff; positive V opens filter.", "voltage": "±5V" },
+    { "name": "GLIMMER", "description": "Offset for GLIMMER amount.", "voltage": "±5V" },
+    { "name": "LFO CLK IN", "description": "Syncs LFO with phase alignment; SPEED knob becomes clock div/mult.", "voltage": "0–5V rising edge" },
+    { "name": "SPEED", "description": "Offset for LFO SPEED.", "voltage": "±5V" },
+    { "name": "DEPTH", "description": "Offset for LFO DEPTH.", "voltage": "±5V" },
+    { "name": "EXT LFO IN", "description": "External modulation source routed to LFO TARGET. DEPTH acts as attenuverter centered at noon.", "voltage": "modular level" },
+    { "name": "SIZE/PITCH", "description": "1V/oct reverb pitch CV summed with knob. In Karplus mode, tracks string pitch over 4 octaves (0–4V).", "voltage": "±2V reverb · 0–4V Karplus · 1V/oct" },
+    { "name": "WET", "description": "Offset for WET level.", "voltage": "±5V" },
+    { "name": "DECAY", "description": "Offset for DECAY time.", "voltage": "±5V" },
+    { "name": "CLEAR", "description": "Clears audio data from reverb buffer.", "voltage": "0–5V rising edge" },
+    { "name": "FEEDBACK", "description": "Offset for FEEDBACK / Karplus string decay.", "voltage": "±5V" },
+    { "name": "ECHO ON", "description": "Toggles ECHO ON button. Latching by default; momentary via ECHO ON-hold power-up.", "voltage": "±5V" },
+    { "name": "TAP / TRIG", "description": "Clock-sets delay time (DELAY/TUNE acts as divider/multiplier) or plucks the Karplus string on rising edge.", "voltage": "0–5V rising edge · 25 ms – 3 s clock range" }
+  ],
+  "outputs": [
+    { "name": "LEFT OUT", "description": "Left audio output. Sums mono if RIGHT OUT unpatched.", "voltage": "20 Vpp max · 1 kΩ" },
+    { "name": "RIGHT OUT", "description": "Right audio output.", "voltage": "20 Vpp max · 1 kΩ" }
+  ],
+  "behaviors": [
+    {
+      "name": "Three reverb structures",
+      "trigger": "TEXTURE switch",
+      "description": "sparse produces audibly distinct reflections — granular-style textures on staccato input, clean tails on sustained. dense is a plate-like tank with fast response that ventures into ambient at long DECAY. diffuse is a slow-building atmospheric wash with reverse-like attacks. Each re-routes the internal tank topology, not a tonal filter change."
+    },
+    {
+      "name": "Variable-rate reverb core",
+      "trigger": "SIZE/PITCH knob or ±2V 1V/oct CV",
+      "description": "Scales the process rate of the reverb tank. CCW halves core size and drops regenerating audio one octave; CW doubles size and raises pitch one octave. Combined with SHIMMER it produces pitch-shifted tails that track incoming V/oct."
+    },
+    {
+      "name": "Karplus-Strong string voice",
+      "trigger": "Hold ECHO ON + turn DELAY/TUNE CW until TAP/TRIG LED glows red",
+      "description": "Swaps the delay line into a monophonic plucked/bowed string synthesizer. FEEDBACK sets string decay, LOW/HIGH DAMP damps body harmonics, DELAY/TUNE coarse-tunes over 4 octaves, SIZE/PITCH CV is 1V/oct, TAP/TRIG plucks (quick press) or bows (hold). IN GATE CV continuously bows. Exit by holding ECHO ON + turning DELAY/TUNE CCW until TAP/TRIG blinks green."
+    },
+    {
+      "name": "Karplus pitch-tracking trim",
+      "trigger": "Hold LOW PASS + turn INPUT GAIN",
+      "description": "Trims V/oct tracking of the Karplus string to compensate for external CV calibration offsets. Noon = nominal; below noon tracks flatter, above noon tracks sharper. Persists through power cycles."
+    },
+    {
+      "name": "Pitch-quantize scale mode",
+      "trigger": "Hold INFINITE until LED blinks amber",
+      "description": "Quantizes SIZE/PITCH knob and 1V/oct CV to one of 15 scales shown by a binary pattern on SHIMMER/GLIMMER/FEEDBACK/DELAY LEDs: octave, root+5th, pentatonic, minor blues, Major, Dorian, Phrygian, Lydian, Mixolydian, Aeolian, harmonic minor, whole-tone, minor/Major chord stacks with monotone input, chromatic. Turn SIZE/PITCH while holding INFINITE to pick a scale; hold LOW PASS + turn SIZE/PITCH to set scale portamento."
+    },
+    {
+      "name": "Delay as clock-locked effect",
+      "trigger": "TAP/TRIG CV connected",
+      "description": "DELAY/TUNE becomes a clock divider/multiplier with eleven ratios (1/4, 1/3, 1/2, 2/3, 3/4, 1/1, 3/2, 5/3, 7/4, 2/1, 5/2) around the knob. Delay time maxes at 7.5 s with a 3 s clock period × 5/2. ECHO ON routes the delay into the wet bus; bypassed, DELAY/TUNE is a simple pre-delay into the reverb."
+    },
+    {
+      "name": "Infinite hold with continuous play",
+      "trigger": "INFINITE button or gate on INFINITE CV",
+      "description": "Freezes the signal present at the reverb input; new incoming audio continues to be processed by the reverb structure over the frozen bed. Latching by default; hold REGEN at power-up to switch to momentary. Differs from IN GATE which mutes the input entirely."
+    },
+    {
+      "name": "Regenerative vs. input shimmer",
+      "trigger": "REGEN button",
+      "description": "Regenerative (LED green): shimmer sits inside the reverb feedback loop, producing the classic octave-stacking ambient bloom. Input (LED off): shimmer applies pitch-shift once at the input of the reverb structure — flat pitched wash without compounding octave stacks. Interval set by SHIMMER knob secondary function (hold REGEN + turn)."
+    },
+    {
+      "name": "Resonant low-pass at output",
+      "trigger": "LOW PASS button engaged",
+      "description": "Repurposes HIGH DAMP as a 24 dB/oct variable-resonance low-pass at the final output. HIGH DAMP CV still controls cutoff (positive V opens). Hold LOW PASS + turn HIGH DAMP knob to set resonance (Q) — CW peaks, CCW gentler roll-off. Disable LOW PASS to restore HIGH DAMP's reverb-core damping role."
+    },
+    {
+      "name": "LFO envelope follower",
+      "trigger": "SHAPE = env",
+      "description": "Replaces the LFO with an envelope follower driven by input dynamics. SPEED sets envelope decay rate; DEPTH is centered at noon — CW for positive depth, CCW for negative. Target via LFO TARGET. Combined with filter target, creates dynamic reverb ducking."
+    },
+    {
+      "name": "External modulation via EXT LFO IN",
+      "trigger": "Cable patched into EXT LFO IN",
+      "description": "Any external CV is routed through the LFO TARGET switch. DEPTH knob becomes a bipolar attenuverter with unity at the CW/CCW extremes and zero at noon. Lets function generators or envelopes drive SIZE/PITCH, delay time or filter cutoff without using the dedicated CV inputs."
+    },
+    {
+      "name": "LFO clock sync with ratios",
+      "trigger": "Cable in LFO CLK IN",
+      "description": "Syncs LFO with phase alignment to the incoming clock. SPEED knob turns into a discrete clock div/mult: /8 /6 /5 /4 /3 /2 on the first half, ×2 ×3 ×4 ×5 ×6 ×8 on the second half, 1:1 at noon. Works for any SHAPE, including env."
+    },
+    {
+      "name": "Favorite preset spillover",
+      "trigger": "DIP switch 1 ON (rear)",
+      "description": "Enables reverb tail spillover when toggling between the manual panel state and the selected Favorite preset via FAVORITE CV or button. Off: preset recall cuts the tail. Four preset slots are recalled by holding FAVORITE + pressing one of the four center buttons (SHIMMER/GLIMMER/FEEDBACK/DELAY)."
+    },
+    {
+      "name": "CV response at power-up",
+      "trigger": "Hold REGEN / HIGH BAND / ECHO ON at power-up",
+      "description": "INFINITE CV toggles latching↔momentary by holding REGEN at power-up (default latching). IN GATE CV toggles with HIGH BAND hold (default momentary). ECHO ON CV toggles with ECHO ON hold (default latching). Persists until changed."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Diffuse ambient bloom",
+      "patch": "TEXTURE: diffuse · DECAY 3 o'clock · SHIMMER ~noon with REGEN on · GLIMMER ~10 o'clock, HIGH BAND on · LOW DAMP ~9 o'clock, HIGH DAMP ~1 o'clock · sparse synth plucks bloom into slow octave-stacking wash with soft highs",
+      "diagram": "StarLab:\n* Texture: diffuse\n* Decay: 3 o'clock\n* Shimmer: noon · REGEN on\n* Glimmer: ~10 o'clock · HIGH BAND on\n\nSynth:\n\n- Synth (Out) -> StarLab (LEFT IN)\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "Karplus string voice",
+      "patch": "enter Karplus (hold ECHO ON + DELAY/TUNE CW until TAP/TRIG red) · FEEDBACK ~2 o'clock · ECHO ON engaged · sequencer 1V/oct into SIZE/PITCH CV · gate into TAP/TRIG CV for plucks · IN GATE for bowed passages · light reverb tail with TEXTURE: dense, DECAY ~11 o'clock",
+      "diagram": "StarLab:\n* Mode: Karplus-Strong\n* Feedback: ~2 o'clock\n* Texture: dense\n* Decay: ~11 o'clock\n* Echo On: engaged\n\nSequencer:\n\n- Sequencer (Pitch) p> StarLab (SIZE/PITCH)\n- Sequencer (Gate) t> StarLab (TAP/TRIG) // pluck\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "Clock-locked dotted-8th delay + plate",
+      "patch": "ECHO ON engaged · DELAY/TUNE at 3/4 ratio · FEEDBACK ~50% · TEXTURE: dense · DECAY noon · master clock at quarter notes into TAP/TRIG CV · rhythmic delay tails land dotted-8ths, plate reverb glues everything",
+      "diagram": "StarLab:\n* Texture: dense\n* Echo On: engaged\n* Delay/Tune: 3/4 ratio\n* Feedback: ~50%\n\nClock:\n\nSource:\n\n- Clock (Out) c> StarLab (TAP/TRIG)\n- Source (Out) -> StarLab (LEFT IN)\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "Scale-quantized pitch-shifted tails",
+      "patch": "hold INFINITE until LED blinks amber · turn SIZE/PITCH while holding INFINITE to pick a scale (e.g. minor blues) · TEXTURE: sparse · REGEN on · SHIMMER ~noon · 1V/oct sequencer into SIZE/PITCH CV — reverb core pitch-tracks the sequencer inside the selected scale",
+      "diagram": "StarLab:\n* Texture: sparse\n* Shimmer: noon · REGEN on\n* Pitch Quantize: Minor Blues\n\nSequencer:\n\nSource:\n\n- Source (Out) -> StarLab (LEFT IN)\n- Sequencer (Pitch) p> StarLab (SIZE/PITCH)\n- StarLab (LEFT OUT) -> Output (L)"
+    },
+    {
+      "name": "Envelope-ducked reverb",
+      "patch": "SHAPE: env · DEPTH ~10 o'clock (negative env) · LFO TARGET: filter · LOW PASS engaged, HIGH DAMP ~2 o'clock, resonance low · reverb tails duck under transients then open up on the decay — pumping ambient",
+      "diagram": "StarLab:\n* Shape: env\n* Depth: ~10 o'clock (negative)\n* LFO Target: filter\n* Low Pass: on\n* High Damp: ~2 o'clock\n\nSource:\n\n- Source (Out) -> StarLab (LEFT IN)\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "Infinite frozen pad under new input",
+      "patch": "play a chord, press INFINITE or gate INFINITE CV · frozen bed holds while new input continues to pass through the reverb structure · TEXTURE: diffuse, DECAY max · play a melody over the pad · CLEAR CV rising edge erases the frozen bed",
+      "diagram": "StarLab:\n* Texture: diffuse\n* Decay: max\n\nGate:\n\nTrigger:\n\nSource:\n\n- Source (Out) -> StarLab (LEFT IN)\n- Gate (Out) g> StarLab (INFINITE)\n- Trigger (Out) t> StarLab (CLEAR) // erase pad\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "Chorus / flange via modulated pre-delay",
+      "patch": "ECHO ON bypassed (delay becomes pre-delay) · DELAY/TUNE very short (~9 o'clock) · LFO TARGET: delay · SHAPE: triangle · SPEED ~2 Hz · DEPTH ~11 o'clock · FEEDBACK low for chorus, high for flange · dry signal modulated into reverb",
+      "diagram": "StarLab:\n* Echo On: off\n* Delay/Tune: ~9 o'clock\n* LFO Target: delay\n* Shape: triangle\n* Speed: ~2 Hz\n\nSource:\n\n- Source (Out) -> StarLab (LEFT IN)\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "LFO-clocked pitch wobble",
+      "patch": "master clock into LFO CLK IN · SHAPE: random · SPEED set to /4 clock division · LFO TARGET: pitch · DEPTH ~1 o'clock · reverb core pitch jumps to a random interval every four bars, phase-locked to the rest of the rack",
+      "diagram": "StarLab:\n* Shape: random\n* Speed: /4 clock division\n* LFO Target: pitch\n* Depth: ~1 o'clock\n\nClock:\n\nSource:\n\n- Clock (Out) c> StarLab (LFO CLK IN)\n- Source (Out) -> StarLab (LEFT IN)\n- StarLab (LEFT OUT) -> Output (L)"
+    },
+    {
+      "name": "Two-voice Karplus with external envelope",
+      "patch": "Karplus mode · IN GATE CV from a gate source continuously bows · EXT LFO IN from a function generator · LFO TARGET: delay (modulates string tuning) · DEPTH centered for subtle vibrato · gentle TEXTURE: sparse reverb behind · playable bowed-string voice with vibrato",
+      "diagram": "StarLab:\n* Mode: Karplus-Strong\n* LFO Target: delay\n* Texture: sparse\n\nSequencer:\n\nFunction:\n\n- Sequencer (Pitch) p> StarLab (SIZE/PITCH)\n- Sequencer (Gate) g> StarLab (IN GATE) // bow\n- Function (Out) >> StarLab (EXT LFO IN) // vibrato\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "Self-oscillating resonant LPF voice",
+      "patch": "LOW PASS on · hold LOW PASS + HIGH DAMP CW for max Q (self-oscillation) · TEXTURE: dense, DECAY low, WET max · sequencer 1V/oct into HIGH DAMP CV (positive V opens filter) to play the resonant sine · reverb tail adds space to the filter pitch",
+      "diagram": "StarLab:\n* Low Pass: on · high Q\n* Texture: dense\n* Decay: low\n* Wet: max\n\nSequencer:\n\n- Sequencer (Pitch) >> StarLab (HIGH DAMP)\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "Preset morph spillover",
+      "patch": "save a dense plate to Favorite slot 1 (hold FAVORITE until green, press slot button) · enable DIP-1 spillover · set manual panel to a diffuse shimmer wash · clock gate into FAVORITE CV · every gate-edge morphs between plate and shimmer with tail crossfade",
+      "diagram": "StarLab:\n* Favorite 1: dense plate\n* Manual: diffuse shimmer\n* DIP-1: ON (spillover)\n\nClock:\n\nSource:\n\n- Source (Out) -> StarLab (LEFT IN)\n- Clock (Out) t> StarLab (FAVORITE) // morph\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
+    },
+    {
+      "name": "Quantized shimmer interval sweep",
+      "patch": "SHIMMER ~1 o'clock, REGEN on · INTERVAL CV fed from a stepped random/quantizer (±5V, ±1 oct, semitone quantized) · TEXTURE: diffuse, DECAY ~2 o'clock · tails rebuild at a new pitch interval each step — harmonised ambient",
+      "diagram": "StarLab:\n* Shimmer: ~1 o'clock · REGEN on\n* Texture: diffuse\n* Decay: ~2 o'clock\n\nRandom:\n\nSource:\n\n- Source (Out) -> StarLab (LEFT IN)\n- Random (Out) >> StarLab (INTERVAL)\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
+    }
+  ]
+}

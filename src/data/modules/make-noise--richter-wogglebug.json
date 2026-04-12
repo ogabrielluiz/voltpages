@@ -1,0 +1,166 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/wogglebugmanual.pdf",
+      "https://www.makenoisemusic.com/modules/richter-wogglebug/",
+      "https://modulargrid.net/e/make-noise-richter-wogglebug-2014",
+      "https://www.perfectcircuit.com/make-noise-wogglebug-1.html"
+    ]
+  },
+  "slug": "make-noise--richter-wogglebug",
+  "name": "Richter Wogglebug",
+  "manufacturer": "Make Noise",
+  "hp": 10,
+  "tags": ["RANDOM", "NOISE", "CLOCK", "OSCILLATOR", "SLEW"],
+  "description": "Random voltage generator after Grant Richter's Wiard Wogglebug. Voltage-controlled clock feeds a sample-and-hold, lag processor, gate-burst generator and two VCOs ring-modulated into each other. Seven simultaneous random/audio outputs.",
+  "controls": [
+    {
+      "name": "Ego/Id Balance",
+      "scope": "Global",
+      "description": "Sets the range of probable random values when Ego In is unpatched. CCW clusters values near a narrow band. When Ego In is patched, balances external signal against the internal uncertainty source.",
+      "detail": "unpatched: probability range · patched: internal/external blend"
+    },
+    {
+      "name": "Woggle",
+      "scope": "Woggle circuit",
+      "description": "Sets how quickly the Woggle circuit catches up to the Smooth/Stepped CV. CW = sluggish follow; CCW = snappy chase.",
+      "detail": "CW: slow · CCW: fast"
+    },
+    {
+      "name": "Speed / Chaos",
+      "scope": "Internal Clock + Smooth lag",
+      "description": "Dual purpose — sets Internal Clock rate AND the Smooth CV lag-processor response. CW speeds the clock and makes Smooth CV jittery; CCW slows the clock and smooths the response.",
+      "detail": "1 min/cycle → ~40Hz (extended ~200Hz) · CW: jittery · CCW: smooth"
+    },
+    {
+      "name": "Speed / Chaos CV Attenuator",
+      "scope": "Internal Clock",
+      "description": "Unipolar attenuator for Speed/Chaos CV input. With nothing patched, extends internal clock upper range.",
+      "detail": "unipolar · normalled +8V"
+    },
+    {
+      "name": "Disturb Button",
+      "scope": "Sample & Hold",
+      "description": "Manual clock for the S&H. Press = sample new value; hold = pause CV outputs. At fast clock rates, kicks the system to fetch a fresh cluster of values.",
+      "detail": "press: sample · hold: freeze"
+    }
+  ],
+  "inputs": [
+    { "name": "Ego Input", "description": "External S&H source. Signal is injected directly into the Wogglebug's uncertain heart. Accepts CV or audio-rate signals.", "voltage": "10Vpp max" },
+    { "name": "Influence Input", "description": "CV or audio input to the Ring-Mod circuit. Also modulates Smooth/Woggle VCO frequency and level-shifts the Woggle CV.", "voltage": "audio / CV rate" },
+    { "name": "External Clock Input", "description": "Any signal clocks the S&H when patched. Internal Clock Output keeps running at its own rate regardless.", "voltage": "rising edge" },
+    { "name": "Speed / Chaos CV Input", "description": "Unipolar control over Speed. Attenuated by Speed/Chaos CV Attenuator.", "voltage": "0V – +8V" }
+  ],
+  "outputs": [
+    { "name": "Smooth VCO Output", "description": "Sharktooth audio-rate waveform. Pitch controlled by Ego Input, Ego/Id setting, Influence CV and Speed/Chaos.", "voltage": "10Vpp" },
+    { "name": "Ring-Mod Output", "description": "Pulse-wave audio-rate ring-mod product of Smooth VCO × Woggle VCO × Influence. Digital-flavoured, aggressive. Gets messy fast.", "voltage": "10Vpp" },
+    { "name": "Woggle VCO Output", "description": "Square audio-rate signal. Pitch controlled by Woggle, Ego, Ego/Id, Influence and Speed/Chaos.", "voltage": "10Vpp" },
+    { "name": "Stepped Output", "description": "Stepped random voltages. New value on every Internal Clock pulse (or External Clock / Disturb). At audio-rate clock, becomes bit-reduced noise. Activity window shows approximate voltage.", "voltage": "0V – 10V" },
+    { "name": "Smooth Out", "description": "Lag-processed (slewed) random CV. Smoothness set by Speed/Chaos — CCW = gentle smooth random, CW = audio-rate jitter.", "voltage": "0V – 10V" },
+    { "name": "Woggle CV Out", "description": "Product of Smooth and Stepped CV, shaken and chased by Woggle control. Always in motion.", "voltage": "0V – 10V" },
+    { "name": "Burst Output", "description": "Square random gate burst signal. Synced to internal clock, influenced by Stepped/Smooth/Woggle. Orange activity window shows gate activity.", "voltage": "0V – +10V" },
+    { "name": "Clock Output", "description": "Square clock from internal generator. Independent of External Clock Input — always runs at Speed/Chaos rate.", "voltage": "0V – +10V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Four CV flavours at once",
+      "trigger": "patch any CV output",
+      "description": "Stepped, Smooth, Woggle and Burst all derive from the same internal S&H but expose different characters simultaneously: Stepped = classic sampled random; Smooth = slewed/lagged version; Woggle = quivering product of the two; Burst = gate-burst rhythm. Pull all four for a coordinated random voice."
+    },
+    {
+      "name": "Audio-rate clock → digital noise",
+      "trigger": "Speed/Chaos full CW · Speed CV near +8V",
+      "description": "Internal clock exceeds 200Hz. Stepped Output becomes bit-reduced noise, Smooth Out becomes jittery grainy CV, Clock Output becomes a square wave. Patch an audio signal to Ego In for sample-and-hold bit-crushing on that signal."
+    },
+    {
+      "name": "Pitch-to-voltage following",
+      "trigger": "audio signal → Ego In",
+      "description": "Patching a VCO or any audio signal to Ego In makes Woggle VCO Out and Smooth CV 'follow' the ego-in pitch. Ego/Id sets blend; Woggle sets the type/degree of following. Useful as a generative second voice that tracks a sequencer melody."
+    },
+    {
+      "name": "Independent Master Clock",
+      "trigger": "patch anything to External Clock In",
+      "description": "External Clock overrides the S&H clock while Internal Clock Output keeps running at the Speed-set rate. This lets Wogglebug serve as both master clock source AND slave-sampling random generator from the same module."
+    },
+    {
+      "name": "Disturb = freeze + step",
+      "trigger": "Disturb Button",
+      "description": "Press samples new values manually. Hold pauses CV outputs — Stepped, Smooth, Woggle all freeze for the duration of the hold. At slow clock rates, use Disturb as a performance-friendly next-value button."
+    },
+    {
+      "name": "Influence warps pitch and ring-mod",
+      "trigger": "audio or CV → Influence In",
+      "description": "Influence simultaneously FMs both VCOs, feeds the ring-mod, and level-shifts Woggle CV. Patching a sequencer's pitch CV here yields discordant FM squelch that tracks the sequence. Patching LFO here animates the ring-mod timbre."
+    },
+    {
+      "name": "Ego/Id probability distribution",
+      "trigger": "rotate Ego/Id with Ego In unpatched",
+      "description": "Ego/Id CCW makes random values 'cluster' around a narrow band — biased/coloured random. Fully CW spreads values across the full 0–10V range. Use for controlled pitch wanders vs wild jumps."
+    },
+    {
+      "name": "Kick-the-Bug reset",
+      "trigger": "dummy cable → External Clock In · Speed 3+ o'clock",
+      "description": "A dummy cable (unplugged end) into External Clock defeats the internal clock without providing a new one. Press/hold Disturb to freeze last random values. Releases generate a fresh burst. Classic Wogglebug performance trick."
+    },
+    {
+      "name": "Activity windows = value visualisation",
+      "trigger": "observe blue / orange / system LEDs",
+      "description": "System Clock LED (blue) mirrors S&H clock rate — shows External Clock rate when patched, Internal rate otherwise. Stepped activity window shows approximate voltage. Burst orange window shows gate rhythm. Useful for dialling in without monitoring audio."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic melodic random",
+      "patch": "External clock → External Clock In · Stepped Out → quantizer → VCO 1V/Oct · Burst Out → envelope Trig · Speed/Chaos ~12:00 · Ego/Id ~10:00 (clustered values) · random melody locked to clock with rhythmic burst accents · clean, generative patch.",
+      "diagram": "Richter Wogglebug:\n* Speed/Chaos: ~12:00\n* Ego/Id: ~10:00\n\nQuantizer:\n\n- Clock (Out) c> Wogglebug (External Clock In)\n- Wogglebug (Stepped) >> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Wogglebug (Burst) g> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Bit-crushed S&H",
+      "patch": "Speed/Chaos full CW · Speed CV Att full CW · Ego/Id full CCW · audio signal (saw) → Ego In · Stepped Out → output · incoming audio is sample-and-held at audio rates — classic bit-reduction / sample-rate-reduction noise box. Sweep Speed for dynamic crush.",
+      "diagram": "Richter Wogglebug:\n* Speed/Chaos: full CW\n* Speed CV Att: full CW\n* Ego/Id: full CCW\n\nVCO:\n\n- VCO (Saw) -> Wogglebug (Ego In)\n- Wogglebug (Stepped) -> Output (In) // bit-crushed saw"
+    },
+    {
+      "name": "Pitch-following second voice",
+      "patch": "DPO VCO A Saw → Ego In · Woggle CV Out → VCO (another) 1V/Oct · Woggle control ~12:00 · Speed/Chaos mid · Woggle voice 'tracks' DPO's sequence but with stepped quiver — ghost harmony. Ego/Id sets degree of faithful tracking vs random wander.",
+      "diagram": "Richter Wogglebug:\n* Woggle: ~12:00\n* Speed/Chaos: ~12:00\n\nDPO:\n\nVCO:\n\n- DPO (VCO A Saw) -> Wogglebug (Ego In)\n- Wogglebug (Woggle CV) p> VCO (V/Oct) // ghost harmony\n- VCO (Out) -> Output (In)"
+    },
+    {
+      "name": "Jittery clock for Maths",
+      "patch": "Clock Output → Maths CH 1 Trig · Speed CV Att ~noon · LFO → Speed CV In · clock rate wanders with LFO · rhythmic jitter/swing without programming · tighter control than internal-only randomness since LFO shape is predictable.",
+      "diagram": "Richter Wogglebug:\n* Speed CV Att: ~noon\n\nLFO:\n\n- LFO (Out) >> Wogglebug (Speed CV In)\n- Wogglebug (Clock) c> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Three random modulators",
+      "patch": "Stepped → filter cutoff · Smooth → VCA CV · Woggle → VCO FM · Speed/Chaos ~11:00 · one module provides stepped, smooth, and quivering mods with shared tempo via internal clock · interlinked animation across three destinations.",
+      "diagram": "Richter Wogglebug:\n* Speed/Chaos: ~11:00\n\nFilter:\n\nVCA:\n\nVCO:\n\n- Wogglebug (Stepped) >> Filter (Cutoff)\n- Wogglebug (Smooth) >> VCA (CV)\n- Wogglebug (Woggle CV) >> VCO (FM In)"
+    },
+    {
+      "name": "Influence-driven chaos",
+      "patch": "Sequencer pitch CV → Influence In · monitor Ring-Mod Output · incoming pitch shifts both internal VCOs and rings their product · each step of the sequence yields a different angular ring-mod timbre · Speed/Chaos animates the chaos speed underneath.",
+      "diagram": "Richter Wogglebug:\n* Speed/Chaos: ~12:00\n\nSequencer:\n\n- Sequencer (Pitch) >> Wogglebug (Influence In)\n- Wogglebug (Ring-Mod) -> Output (In) // angular per-step timbre"
+    },
+    {
+      "name": "Disturb-triggered sample hold",
+      "patch": "Speed/Chaos full CCW (clock near 1/min — effectively off) · LFO → Ego In · Disturb Button = take-a-sample · each press captures current LFO phase into Stepped Out · hand-performed S&H for filter cutoff or pitch · a one-module sample+hold performance tool.",
+      "diagram": "Richter Wogglebug:\n* Speed/Chaos: full CCW\n\nLFO:\n\n- LFO (Out) >> Wogglebug (Ego In)\n- Wogglebug (Stepped) >> Filter (Cutoff) // press Disturb to sample"
+    },
+    {
+      "name": "Generative drone (ring-mod + smooth)",
+      "patch": "No external signals · Speed/Chaos ~9:00 · monitor Ring-Mod Output · Smooth Out → filter cutoff · Woggle CV Out → oscillator FM · internal VCOs + ring-mod produce evolving angular drone; smooth/woggle mods animate the sound over minutes · minimal patch, rich result.",
+      "diagram": "Richter Wogglebug:\n* Speed/Chaos: ~9:00\n\nFilter:\n\n- Wogglebug (Ring-Mod) -> Filter (In)\n- Wogglebug (Smooth) >> Filter (Cutoff)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Burst-triggered drum rolls",
+      "patch": "Speed/Chaos ~1:00 · Burst Output → drum module Trig · Stepped → drum pitch/accent CV · speed/chaos sweeps the roll density while Stepped varies accent and pitch per hit · classic random-burst fill generator.",
+      "diagram": "Richter Wogglebug:\n* Speed/Chaos: ~1:00\n\nDrum:\n\n- Wogglebug (Burst) t> Drum (Trig)\n- Wogglebug (Stepped) >> Drum (Accent)\n- Drum (Out) -> Output (In) // chaotic drum roll"
+    },
+    {
+      "name": "Tame-the-Bug slew",
+      "patch": "MATHS CH 1 square LFO → External Clock In · Speed CV Att full CCW (ignore internal clock) · Smooth Out → VCO 1V/Oct · MATHS CH 1 Rise/Fall set slow · Speed/Chaos controls Smooth slew rate independent of sample rate · tame the random into gliding pitch lines.",
+      "diagram": "Richter Wogglebug:\n* Speed/Chaos: controls slew rate\n\nMATHS:\n* CH 1: Cycle ON, slow\n\n- MATHS.CH 1 (OUT) c> Wogglebug (External Clock In)\n- Wogglebug (Smooth) p> VCO (V/Oct) // slewed random pitch\n- VCO (Out) -> Output (In)"
+    }
+  ]
+}

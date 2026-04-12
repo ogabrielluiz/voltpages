@@ -1,0 +1,183 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://shakmat.com/doc/mm/MM-User_Manual.pdf",
+      "https://shakmat.com/products/mod-medusa/",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=263693",
+      "https://modulargrid.net/e/shakmat-modular-mod-medusa",
+      "https://en.clockfacemodular.com/products/shakmat-modular-mod-medusa"
+    ]
+  },
+  "slug": "shakmat-modular--mod-medusa",
+  "name": "Mod Medusa",
+  "manufacturer": "Shakmat Modular",
+  "hp": 12,
+  "tags": ["LFO", "RANDOM", "FUNCTION"],
+  "description": "Four-output Euclidean LFO. Replaces triggers of an algo-rhythmic sequencer with full waveform cycles. Symmetry, shape, tables, correlated/independent modes, VCA, assignable gate.",
+  "controls": [
+    {
+      "name": "Length Potentiometer",
+      "scope": "Channel 1 (or selected channel)",
+      "description": "Sets sequence length 1-8 steps; Length+/Menu button extends to 9-16.",
+      "detail": "1-8 default · 9-16 via Length+ · CV-addressable"
+    },
+    {
+      "name": "Density Potentiometer",
+      "scope": "Channel 1 (or selected channel)",
+      "description": "Number of LFO cycles distributed across the pattern length. CCW mutes, CW fills.",
+      "detail": "0 = muted · max = trigger-per-step equivalent · CV-addressable"
+    },
+    {
+      "name": "Shape Potentiometer",
+      "scope": "Channel 1 (or selected channel)",
+      "description": "Continuously morphs waveshape from sigmoid through exponential, logarithmic, linear, to sinusoidal.",
+      "detail": "Continuous · CV-addressable · paired with Symmetry for full wave design"
+    },
+    {
+      "name": "Symmetry Potentiometer",
+      "scope": "Channel 1 (or selected channel)",
+      "description": "Balances rise vs fall time of each cycle. Full CCW = ramp down, CW = ramp up, center = triangular/sine symmetric.",
+      "detail": "Continuous · CV-addressable"
+    },
+    {
+      "name": "Tap / Manual Gate Button",
+      "scope": "Clock / Gate",
+      "description": "Acts as tap tempo (green mode) or manual gate at the Assignable Gate input (red mode, set in menu).",
+      "detail": "Green = tap tempo · Red = manual A Gate"
+    },
+    {
+      "name": "Uni Button",
+      "scope": "Polarity",
+      "description": "Toggles unipolar (0-5V) or bipolar (-5 to +5V). Correlated mode applies to all channels; independent mode per channel. Hold 2 s to store state to non-volatile memory.",
+      "detail": "Lit = unipolar · unlit = bipolar · hold 2 s = save state"
+    },
+    {
+      "name": "P Sync Button",
+      "scope": "Phase",
+      "description": "When ON, waves sync their peaks to the incoming clock rather than their starting points.",
+      "detail": "OFF = start-of-cycle sync · ON = peak sync"
+    },
+    {
+      "name": "Table / Division Button",
+      "scope": "Tables & Clock Divider",
+      "description": "Selects one of 8 rhythmic tables. In menu: sets incoming clock divider 1-8.",
+      "detail": "Green LEDs: 1 Straight · 2 Classic Euclidean · 3 Revised Eucl · 4 Anti-Eucl · Amber: 5 Descelerando · 6 Accelerando · 7 Divided · 8 Fill Next"
+    },
+    {
+      "name": "Mode / A Gate Button",
+      "scope": "Correlation / Gate assignment",
+      "description": "Cycles Main / Compute / Random / Phase correlation modes. Hold 2 s to enter independent channel edit. In menu: configures Assignable Gate function.",
+      "detail": "MN · CP · RD · PH · hold 2 s = indep edit · A Gate: Ratchet x2/x3/x4/rand · Accel/Decel · T&H · One-Shot"
+    },
+    {
+      "name": "Shift +/- Buttons",
+      "scope": "Channel / VCA assignment",
+      "description": "Rotates sequence forward/backward one step. Hold both 2 s = reset shift. In menu: assigns which channels the VCA input controls.",
+      "detail": "Menu mode: + / - select VCA-affected outputs"
+    },
+    {
+      "name": "Length+ / Menu Button",
+      "scope": "Global",
+      "description": "Toggles 9-16 step extended range; hold 2 s to enter options menu (A Gate, VCA routing, clock divider).",
+      "detail": "Lit = 9-16 range · hold 2 s = options menu"
+    }
+  ],
+  "inputs": [
+    { "name": "Clock", "description": "External clock driving the Euclidean sequence engine.", "voltage": "-5 to +5V" },
+    { "name": "VCA CV", "description": "Unipolar VCA CV; normalized to 5V. Assignable to any subset of the four outputs via menu.", "voltage": "0 to +5V", "normalizedTo": "+5V" },
+    { "name": "Length CV", "description": "CV offset added to Length pot.", "voltage": "-5 to +5V" },
+    { "name": "Symmetry CV", "description": "CV offset added to Symmetry pot.", "voltage": "-5 to +5V" },
+    { "name": "Shape CV", "description": "CV offset added to Shape pot.", "voltage": "-5 to +5V" },
+    { "name": "Density CV", "description": "CV offset added to Density pot.", "voltage": "-5 to +5V" },
+    { "name": "Reset", "description": "Resets the wave sequence to step 1.", "voltage": "-5 to +5V" },
+    { "name": "Assignable Gate", "description": "Gate input performing the menu-selected function: Ratchet (x2/x3/x4/Random), Accelerando, Decelerando, Track & Hold, One-Shot.", "voltage": "0 to +5V" }
+  ],
+  "outputs": [
+    { "name": "Out 1", "description": "Primary LFO output carrying the panel-set waveform.", "voltage": "-5 to +5V" },
+    { "name": "Out 2", "description": "Correlated or independent LFO channel 2. Correlated relationship defined by mode (Main=Backward, Compute=L/2 & C/2, Random=Soft Fill, Phase=L/4 shift).", "voltage": "-5 to +5V" },
+    { "name": "Out 3", "description": "Correlated or independent LFO channel 3. Correlated: Main=Inverted, Compute=2xL/3 & 2xC/3, Random=Hard Fill, Phase=L/2 shift.", "voltage": "-5 to +5V" },
+    { "name": "Out 4", "description": "Correlated or independent LFO channel 4. Correlated: Main=1 cycle per length, Compute=L-C, Random=full random, Phase=3L/4 shift.", "voltage": "-5 to +5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Euclidean LFO Engine",
+      "trigger": "Clock + Length + Density",
+      "description": "Each cycle of the LFO maps to a hit in an algorithmic sequence (Euclidean, Anti-Euclidean, Split, Divider etc.). Cycle timing adapts to the gap between consecutive hits."
+    },
+    {
+      "name": "Correlated Modes",
+      "trigger": "Mode button (short press)",
+      "description": "Channels 2-4 derive from channel 1: MN (Main: backward/inverted/1-per-length), CP (Compute math), RD (Random fills), PH (Phase: L/4, L/2, 3L/4 shifts for quadrature-like feel)."
+    },
+    {
+      "name": "Independent Mode",
+      "trigger": "hold Mode 2 s",
+      "description": "Panel controls address one channel at a time. Each of four channels holds its own length, density, shift, shape, symmetry, table, polarity, peak sync. CV inputs remain bound to channel 1."
+    },
+    {
+      "name": "Peak Sync",
+      "trigger": "P Sync button",
+      "description": "When ON, wave peaks align with the clock instead of wave starts. Converts sequence feel from attack-on-beat to peak-on-beat — changes perceived rhythmic character dramatically."
+    },
+    {
+      "name": "Assignable Gate Functions",
+      "trigger": "A Gate input + menu selection",
+      "description": "Gate performs ratcheting (x2/x3/x4/random), accelerando/decelerando cycle-rate modulation, Track & Hold (freeze outputs when gate low), or One-Shot gating."
+    },
+    {
+      "name": "VCA Routing",
+      "trigger": "VCA CV + menu assignment",
+      "description": "Unipolar VCA controls amplitude of any subset of the four outputs selected via menu. Enables a single envelope to shape only the outputs that need shaping."
+    },
+    {
+      "name": "Clock Divider",
+      "trigger": "menu + Table button",
+      "description": "Divides incoming clock 1-8 before the Euclidean engine. Useful when feeding a fast master clock but wanting slow modulation periods."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Quad correlated modulation",
+      "patch": "Clock into CLK · Main mode · four outputs modulate VCF cutoff, VCA level, FX send, pan · peak sync ON for beat-aligned swells",
+      "diagram": "MOD MEDUSA:\n* Mode: MN · P Sync: ON · Uni: bipolar\n- Clock (Out) c> Mod Medusa (Clock)\n- Mod Medusa (Out 1) >> VCF (Cutoff)\n- Mod Medusa (Out 2) >> VCA (CV) // backward\n- Mod Medusa (Out 3) >> FX Send (Level) // inverted\n- Mod Medusa (Out 4) >> Pan (CV) // 1 per length"
+    },
+    {
+      "name": "Quadrature-phase filter sweep",
+      "patch": "Phase mode · stereo filter cutoff L/R from Out 1 and Out 3 (L/2 shift) · Out 2 at L/4 feeds reverb size · Out 4 at 3L/4 feeds pan",
+      "diagram": "MOD MEDUSA:\n* Mode: PH · L=8\n- Clock (Out) c> Mod Medusa (Clock)\n- Mod Medusa (Out 1) >> VCF (Cutoff L)\n- Mod Medusa (Out 3) >> VCF (Cutoff R) // L/2 shift\n- Mod Medusa (Out 2) >> Reverb (Size) // L/4 shift\n- Mod Medusa (Out 4) >> Pan (CV) // 3L/4 shift"
+    },
+    {
+      "name": "Track & Hold stepped LFO",
+      "patch": "A Gate menu = Track & Hold · gate from sequencer · outputs freeze to stepped values between gates · great for melodic CV if fed to quantizer",
+      "diagram": "MOD MEDUSA:\n* A Gate: T&H\n- Clock (Out) c> Mod Medusa (Clock)\n- Sequencer (Gate) g> Mod Medusa (A Gate)\n- Mod Medusa (Out 1) >> Quantizer (CV)\n- Quantizer (Out) p> VCO (V/Oct)\n- Mod Medusa (Out 2) >> VCF (Cutoff)"
+    },
+    {
+      "name": "Accelerando ratchet fill",
+      "patch": "A Gate menu = Accelerando · gate at bar-3 of a 4-bar loop sweeps cycle rate upward for a drum-roll build · normal Euclidean patterns resume after gate release",
+      "diagram": "MOD MEDUSA:\n* A Gate: Accelerando\n- Clock (Out) c> Mod Medusa (Clock)\n- Bar 3 Gate (Out) g> Mod Medusa (A Gate)\n- Mod Medusa (Out 1) >> Drum Synth (Pitch)\n- Mod Medusa (Out 2) t> Drum Envelope (Trig) // via cycle starts"
+    },
+    {
+      "name": "Compute polyrhythm modulation",
+      "patch": "Compute mode · Out 1 (L=12, density 4) · Out 2 (L=6, density 2) · Out 3 (L=8, density 2 via 2xL/3) · Out 4 (L=8, density 3 via L-C) · four nested polyrhythms from one clock",
+      "diagram": "MOD MEDUSA:\n* Mode: CP · L=12 D=4\n- Clock (Out) c> Mod Medusa (Clock)\n- Mod Medusa (Out 1) >> VCO 1 (FM)\n- Mod Medusa (Out 2) >> VCO 2 (FM)\n- Mod Medusa (Out 3) >> Filter 1 (Cutoff)\n- Mod Medusa (Out 4) >> Filter 2 (Cutoff)"
+    },
+    {
+      "name": "Shape + Symmetry live morph",
+      "patch": "Two LFOs modulate Shape and Symmetry CVs respectively · output mutates from pulse-like exp to smooth sine to sawtooth without changing rhythm · single slow sweep sounds like three different modulations",
+      "diagram": "MOD MEDUSA:\n- Clock (Out) c> Mod Medusa (Clock)\n- Slow LFO 1 (Out) >> Mod Medusa (Shape CV)\n- Slow LFO 2 (Out) >> Mod Medusa (Symmetry CV)\n- Mod Medusa (Out 1) >> VCF (Cutoff)\n- Mod Medusa (Out 2) >> Wavefolder (Amount)"
+    },
+    {
+      "name": "Independent per-voice modulation",
+      "patch": "Hold Mode 2 s · edit each channel with different length/table/polarity · Out 1 slow sine for pad filter · Out 2 fast ramp for lead volume · Out 3 random for perc pitch · Out 4 anti-euclidean for FX",
+      "diagram": "MOD MEDUSA:\n* Independent mode · 4 channels unique\n- Clock (Out) c> Mod Medusa (Clock)\n- Mod Medusa (Out 1) >> Pad VCF (Cutoff) // slow sine\n- Mod Medusa (Out 2) >> Lead VCA (CV) // fast ramp\n- Mod Medusa (Out 3) >> Perc VCO (FM) // random\n- Mod Medusa (Out 4) >> Delay (Feedback) // anti-eucl"
+    },
+    {
+      "name": "VCA-gated envelope substitute",
+      "patch": "Menu assigns VCA to Out 2 only · sequencer envelope into VCA CV · Out 1 provides free-running filter mod · Out 2 replaces a dedicated envelope for a voice",
+      "diagram": "MOD MEDUSA:\n* Menu: VCA → Out 2\n- Clock (Out) c> Mod Medusa (Clock)\n- Envelope (Out) >> Mod Medusa (VCA CV)\n- Mod Medusa (Out 1) >> VCF (Cutoff) // free\n- Mod Medusa (Out 2) >> VCA (CV) // VCA-gated\n- Audio (Out) -> VCA (In)\n- VCA (Out) -> Output (L)"
+    }
+  ]
+}

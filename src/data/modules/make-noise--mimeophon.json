@@ -1,0 +1,206 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "mp86",
+    "sources": [
+      "https://www.makenoisemusic.com/modules/mimeophon/",
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/mimeophon-manual.pdf",
+      "https://modulargrid.net/e/make-noise-mimeophon"
+    ]
+  },
+  "slug": "make-noise--mimeophon",
+  "name": "Mimeophon",
+  "manufacturer": "Make Noise",
+  "hp": 16,
+  "tags": ["DELAY", "EFFECTS", "CHORUS", "RESONATOR"],
+  "description": "Stereo multi-zone audio repeater co-designed with Tom Erbe. Eight nested Zones span 1.3ms Karplus-Strong to 41s looping. Skew detunes L/R, Halo smears stereo, Flip reverses, Color shapes feedback timbre, Tempo input syncs to clock.",
+  "controls": [
+    {
+      "name": "Mix",
+      "scope": "Global",
+      "description": "Combo pot. Unpatched: sets balance between dry live input and wet Repeats. With signal at Mix CV IN: acts as attenuator for that CV.",
+      "detail": "CCW: dry · CW: wet · 0–8V CV range"
+    },
+    {
+      "name": "Repeats",
+      "scope": "Global",
+      "description": "Sets number of echo repeats from 1 to infinite. Extreme CW self-oscillates. While HOLD is engaged, this knob instead sets the starting point of the held repeat.",
+      "detail": "1 → ∞ · doubles as HOLD start-point"
+    },
+    {
+      "name": "Zone",
+      "scope": "Global",
+      "description": "Eight-position stepped selector. Each Zone is a delay-time range, nested inside the next. Switching Zones crossfades without doppler, allowing instantaneous size changes.",
+      "detail": "Z0 1.3–20.4ms · Z1 20–82ms · Z2 82–326ms · Z3 163–653ms · Z4 326ms–1.3s · Z5 653ms–2.6s · Z6 1.3–5.2s · Z7 2.6–41.8s"
+    },
+    {
+      "name": "Zone CV Attenuverter",
+      "scope": "Global",
+      "description": "Bipolar attenuator for Zone CV.",
+      "detail": "Bipolar"
+    },
+    {
+      "name": "Rate",
+      "scope": "Global",
+      "description": "Continuous frequency of Repeats within the selected Zone. When Skew is off, modulates both channels with doppler pitch-shift. When clocked via TEMPO, uses slew-less crossfade to jump between multiples without doppler.",
+      "detail": "CCW: slower · CW: faster · with TEMPO: x2 to /2 in fixed ratios"
+    },
+    {
+      "name": "Rate CV Attenuverter",
+      "scope": "Global",
+      "description": "Bipolar attenuator for Rate CV.",
+      "detail": "Bipolar"
+    },
+    {
+      "name": "Color",
+      "scope": "Global",
+      "description": "Timbre of the feedback path. CCW darker (oil-can / BBD), noon crunchy, CW crispy digital. Color also shapes Halo. Cumulative over successive repeats — modulation speed changes timbral drift.",
+      "detail": "Unity at ~3:00 (closest to uncolored)"
+    },
+    {
+      "name": "Color CV Attenuverter",
+      "scope": "Global",
+      "description": "Bipolar attenuator for Color CV.",
+      "detail": "Bipolar"
+    },
+    {
+      "name": "Halo",
+      "scope": "Global",
+      "description": "Adds stereo width and density around each repeat. Higher values inject smeared ambient excess into the feedback network, feeding Color.",
+      "detail": "CCW: dry · CW: wide / thick"
+    },
+    {
+      "name": "SKEW Button",
+      "scope": "Global",
+      "description": "Press to engage Skew — Rate now controls L and R repeat frequencies in opposite directions, creating stereo phase-shifted patterns. Hold to toggle Ping Pong (channels not skewed) or Swap (channels skewed).",
+      "detail": "Press = skew · hold = Ping Pong / Swap"
+    },
+    {
+      "name": "HOLD Button",
+      "scope": "Global",
+      "description": "Freezes the feedback buffer — no new sound enters or leaves. All other controls remain active for non-destructive modulation of the held repeat. Repeats knob becomes start-point while held.",
+      "detail": "Toggled · CV-controllable via HOLD In"
+    },
+    {
+      "name": "FLIP Button",
+      "scope": "Global",
+      "description": "Plays the buffer backwards. In Zones 2–7 = reverse audio. In Zones 0–1 = 'Total Protonic Reversal' distortion (audio-rate buffer flipping every 70 samples).",
+      "detail": "Toggled · CV-controllable via FLIP In"
+    }
+  ],
+  "inputs": [
+    { "name": "L (Mono) Input", "description": "Left/mono audio input. Modular level, typically 10Vpp.", "voltage": "~10Vpp" },
+    { "name": "R Input", "description": "Right audio input. Normalized to L when unpatched — mono signals feed both channels automatically.", "voltage": "~10Vpp", "normalizedTo": "L (Mono) Input" },
+    { "name": "Mix CV input", "description": "Unipolar CV for dry/wet mix.", "voltage": "0 to +8V", "normalizedTo": "+8V" },
+    { "name": "Repeats CV Input", "description": "CV for number of repeats.", "voltage": "0 to +5V" },
+    { "name": "Zone CV Input", "description": "CV for Zone selection, through the attenuverter.", "voltage": "0 to +5V" },
+    { "name": "Color CV Input", "description": "CV for Color.", "voltage": "0 to +5V" },
+    { "name": "Halo CV Input", "description": "CV for Halo.", "voltage": "0 to +5V" },
+    { "name": "Rate CV Input", "description": "CV for Rate, through the attenuverter.", "voltage": "0 to +5V" },
+    { "name": "microRate Input", "description": "Dedicated un-attenuated doppler-modulation destination. Continuous, consistent range across all Zones. Linear in Zones 1–7; 1V/oct exponential in Zone 0 (useful for Karplus-Strong tone).", "voltage": "±3V · 1V/oct in Zone 0" },
+    { "name": "TEMPO Input", "description": "External clock in. Maps Rate to nearest musical division/multiple per Zone; switches use slew-less crossfade (no doppler).", "voltage": "≥2.5V clock · 0.25Hz–50Hz" },
+    { "name": "HOLD Input", "description": "Gate toggles HOLD on/off.", "voltage": "≥2.5V gate" },
+    { "name": "FLIP Input", "description": "Gate toggles FLIP on/off. Audio-rate modulation in small Zones creates interesting sounds.", "voltage": "≥2.5V gate" }
+  ],
+  "outputs": [
+    { "name": "L Output", "description": "Left channel output.", "voltage": "~10Vpp" },
+    { "name": "R Output", "description": "Right channel output.", "voltage": "~10Vpp" },
+    { "name": "RATE Output", "description": "Trigger output at the current Rate (both channels OR'ed when Skew is engaged). Usable as clock divider/multiplier when externally clocked. Stays HIGH at fastest Rates (Zone 0 / fast Zone 1).", "voltage": "0 to +8V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Nested Zones",
+      "trigger": "Zone control",
+      "description": "Zones are nested from shortest to longest — Z1 contains Z0, Z2 contains Z1, etc. Incoming audio always writes into all Zones simultaneously. Switching from a small Zone to a larger one can unearth sounds from seconds or minutes ago."
+    },
+    {
+      "name": "Zone 0 Karplus-Strong",
+      "trigger": "Zone 0 + Repeats high",
+      "description": "Zone 0 (1.3–20.4ms) into self-oscillation produces string-like physical-modeling tone. microRate tracks 1V/oct, giving pitched plucked-string voices. Short input bursts (noise, impulses, transients) 'excite' the string; Color/Halo shape decay."
+    },
+    {
+      "name": "Skew",
+      "trigger": "SKEW button",
+      "description": "Rate controls L and R repeat frequencies in opposite directions, producing stereo phase-shifted echo patterns. In smallest two Zones one channel may bottom out before the knob hits minimum. Toggle on/off while Rate is still to resync L/R."
+    },
+    {
+      "name": "Ping Pong / Swap",
+      "trigger": "SKEW button hold",
+      "description": "If channels not skewed: engages Ping Pong — L+R inputs sum to mono and repeats bounce between L/R outputs. If channels are skewed: engages Swap — L/R feedback paths exchange each repeat, producing phase-shifted stereo pairs. Zone Window flashes to indicate."
+    },
+    {
+      "name": "HOLD preserves buffer",
+      "trigger": "HOLD button / gate",
+      "description": "Freezes the feedback loop non-destructively. Color, Halo, Rate, Zone, Skew, Flip, Mix all remain active for endless manipulation of a captured phrase. Repeats knob becomes the start-point of the held repeat for current Zone."
+    },
+    {
+      "name": "FLIP + small-Zone protonic reversal",
+      "trigger": "FLIP in Zones 0–1",
+      "description": "In Zones 2–7, FLIP cleanly reverses audio. In Zones 0–1, the buffer flips every 70 samples — 'Total Protonic Reversal' — generating harmonic/subharmonic distortion derived from input spectrum."
+    },
+    {
+      "name": "TEMPO doppler-free rate",
+      "trigger": "clock at TEMPO",
+      "description": "External clock maps Rate to 12 fixed ratios (x2 full CCW through 1/1 at 12:30 to /2 full CW). Rate changes become slew-less crossfades — no doppler pitch-shift on transitions. Accepts 0.25Hz–50Hz; tap tempo works via two pulses."
+    },
+    {
+      "name": "microRate doppler",
+      "trigger": "CV at µ input",
+      "description": "Dedicated audio-rate doppler modulation, independent of TEMPO sync state. Produces chorus, vibrato, flange. Skew inverts µ response on the right channel — great for stereo chorus with a slow LFO."
+    },
+    {
+      "name": "4-step input gain (mp82+)",
+      "trigger": "Hold FLIP + HOLD",
+      "description": "Cycles through −3dB Blue, 0dB Green (Unity), +3dB Orange, +6dB Red. Zone Window displays current setting. mp82 saves the selection across power cycles."
+    },
+    {
+      "name": "Clear all Zones (mp70+)",
+      "trigger": "Mix + Repeats full CCW",
+      "description": "Simultaneously setting Mix and Repeats fully CCW clears every Zone's buffer instantly — useful for resetting stuck feedback or removing latent content before a new section."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Karplus-Strong string",
+      "patch": "Zone 0 · Repeats ~1:00 · Halo CCW · Mix 1:00 · Color 12:00 · trigger a MATHS pluck (Rise CCW, Fall 10–12, Response 2:00) into L input · pitch CV → µRate for 1V/oct · plays a plucked-string voice",
+      "diagram": "MIMEOPHON:\n* Zone: 0\n* Repeats: 1:00\n* Halo: full CCW\n* Color: 12:00\n* Mix: 1:00\n\n- MATHS (CH1 Out) -> Mimeophon (L In) // short burst excites string\n- Keys (Pitch) p> Mimeophon (microRate) // 1V/oct in Zone 0\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
+    },
+    {
+      "name": "Tempo-synced dub delay",
+      "patch": "Zone 4–5 · Color 3:00 · Mix 11:00 · Repeats 12:00 · Halo to taste · system clock → TEMPO · engage Skew for stereo polyrhythmic echoes",
+      "diagram": "MIMEOPHON:\n* Zone: 4\n* Color: 3:00\n* Mix: 11:00\n* Repeats: 12:00\n* SKEW: ON\n\n- Source (Out) -> Mimeophon (L In)\n- Clock (Out) c> Mimeophon (TEMPO In)\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
+    },
+    {
+      "name": "Stereo chorus",
+      "patch": "Color 3:00 · Repeats ~12:00 · Mix 1:00 · slow ±LFO (≤10Hz) attenuated → µRate · SKEW on · Zone 1 for flange, Zone 0–1 for shimmer",
+      "diagram": "MIMEOPHON:\n* Zone: 0 (or 1 for flange)\n* Color: 3:00\n* Mix: 1:00\n* SKEW: ON\n\n- Source (Out) -> Mimeophon (L In)\n- LFO (Tri, ≤10Hz) >> Mimeophon (microRate) // attenuated\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
+    },
+    {
+      "name": "Back and forth to the future",
+      "patch": "Rate Out → FLIP In · Zone 3–5 · Mix 12:00 · Repeats ~9:00 · HOLD off · repeats alternate forward/backward automatically · patch clock to TEMPO for stricter rhythm",
+      "diagram": "MIMEOPHON:\n* Zone: 4\n* Mix: 12:00\n* Repeats: 9:00\n\n- Source (Out) -> Mimeophon (L In)\n- Mimeophon (RATE Out) g> Mimeophon (FLIP In) // auto forward/reverse\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
+    },
+    {
+      "name": "Zone-sequenced rhythmic lattice",
+      "patch": "Sequence Zone at same rate as a melody in Zone 0 · smaller-Zone repeats get preserved in larger Zones · Repeats up builds a rhythmic echo lattice of different repeat styles per note",
+      "diagram": "MIMEOPHON:\n* Repeats: 2:00\n* Mix: 12:00\n\n- VCO (Out) -> Mimeophon (L In)\n- Sequencer (CV) >> Mimeophon (Zone CV) // per-step zone\n- Clock (Out) c> Sequencer (Clock)\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
+    },
+    {
+      "name": "Held drone scrubber",
+      "patch": "Record a phrase · HOLD gate high · modulate Repeats (start-point), Color, Halo, Zone · infinite non-destructive scrubbing through a frozen moment",
+      "diagram": "MIMEOPHON:\n* HOLD: engaged\n\n- Source (Out) -> Mimeophon (L In)\n- Gate (Out) g> Mimeophon (HOLD In) // freeze buffer\n- LFO1 (Out) >> Mimeophon (Repeats CV) // scan start-point\n- LFO2 (Out) >> Mimeophon (Color CV)\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
+    },
+    {
+      "name": "Filter-verb",
+      "patch": "Mix full CW · Repeats + Rate full CCW · Zone 0 · access Color and Halo with no audible repeats · FLIP for protonic reversal harmonics · Repeats up to taste for trails",
+      "diagram": "MIMEOPHON:\n* Zone: 0\n* Mix: full CW\n* Repeats: full CCW\n* Rate: full CCW\n\n- Source (Out) -> Mimeophon (L In)\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
+    },
+    {
+      "name": "Self-oscillation drone",
+      "patch": "Nothing in inputs · Mix full CW · Zone 0 · Repeats full CW · slowly modulate Color (Wogglebug) and Zone (stepped random) · Rate Out → TEMPO In to cancel doppler on rate changes",
+      "diagram": "MIMEOPHON:\n* Zone: 0\n* Mix: full CW\n* Repeats: full CW\n* Halo: CCW\n\n- Wogglebug (Woggle CV) >> Mimeophon (Color CV)\n- Random (Stepped) >> Mimeophon (Zone CV)\n- Mimeophon (RATE Out) c> Mimeophon (TEMPO In) // cancel doppler\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
+    }
+  ]
+}

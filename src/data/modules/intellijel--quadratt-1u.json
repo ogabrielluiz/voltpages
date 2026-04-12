@@ -1,0 +1,120 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/shop/eurorack/1u/quadratt-1u/",
+      "https://intellijel.com/downloads/manuals/quadratt-1u_manual_2021.07.26.pdf",
+      "https://intellijel.com/support/"
+    ]
+  },
+  "slug": "intellijel--quadratt-1u",
+  "name": "Quadratt 1U",
+  "manufacturer": "Intellijel",
+  "hp": 28,
+  "tags": ["ATTENUATOR", "ATTENUVERTER", "MIXER", "UTILITY"],
+  "description": "Quad attenuator, attenuverter, mixer, and DC source. Four channels cascade left to right, with each input normalled to +5V for offsets, submixes, and macro CV.",
+  "controls": [
+    {
+      "name": "Channel Knob A-D",
+      "scope": "A-D",
+      "description": "Scales or offsets each channel's incoming signal or normalled DC source.",
+      "detail": "Unipolar: 0V to +5V · Bipolar: -5V to +5V"
+    },
+    {
+      "name": "Mode Switch A-D",
+      "scope": "A-D",
+      "description": "Selects attenuator or attenuverter mode for each channel.",
+      "detail": "Up = unipolar · Down = bipolar"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN A",
+      "description": "Channel A signal input. Normalled to a precision +5V source when unpatched.",
+      "voltage": "+5V normalled",
+      "normalizedTo": "precision +5V DC source"
+    },
+    {
+      "name": "IN B",
+      "description": "Channel B signal input. Normalled to a precision +5V source when unpatched.",
+      "voltage": "+5V normalled",
+      "normalizedTo": "precision +5V DC source"
+    },
+    {
+      "name": "IN C",
+      "description": "Channel C signal input. Normalled to a precision +5V source when unpatched.",
+      "voltage": "+5V normalled",
+      "normalizedTo": "precision +5V DC source"
+    },
+    {
+      "name": "IN D",
+      "description": "Channel D signal input. Normalled to a precision +5V source when unpatched.",
+      "voltage": "+5V normalled",
+      "normalizedTo": "precision +5V DC source"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT A",
+      "description": "Channel A output. When unpatched, acts as the first stage of the cascade."
+    },
+    {
+      "name": "OUT B",
+      "description": "Channel B output. With OUT A empty, it sums channels A and B."
+    },
+    {
+      "name": "OUT C",
+      "description": "Channel C output. With OUT A and OUT B empty, it sums channels A, B, and C."
+    },
+    {
+      "name": "OUT D",
+      "description": "Channel D output. With OUT A, OUT B, and OUT C empty, it sums all four channels."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Precision offset source",
+      "trigger": "leave an input unpatched",
+      "description": "Each channel receives a normalized +5V reference, so the knob can output a clean DC offset without any external source."
+    },
+    {
+      "name": "Cascaded mixing",
+      "trigger": "leave earlier outputs unpatched",
+      "description": "The outputs form a left-to-right summing bus. OUT B can be A+B, OUT C can be A+B+C, and OUT D can become the full four-channel mix."
+    },
+    {
+      "name": "Bipolar modulation",
+      "trigger": "switch a channel to bipolar mode",
+      "description": "The channel becomes an attenuverter, so the same knob can invert, center, or scale a CV instead of only trimming it."
+    },
+    {
+      "name": "Four-knob macro bank",
+      "trigger": "patch multiple destinations from the four outputs",
+      "description": "One panel can drive several destinations with matched offsets or related but independent CV amounts."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Macro CV bank",
+      "patch": "LFO to filter cutoff · envelope to VCA CV · two spare channels as DC offsets · one panel handles trim, inversion, and a clean offset source for four destinations.",
+      "diagram": "Quadratt 1U:\n* IN A: normalled +5V\n* IN B: normalled +5V\n* IN C: normalled +5V\n* IN D: normalled +5V\n\nLFO:\nEnvelope:\nFilter:\nVCA:\nVCO:\nOutput:\n\n- LFO (Out) >> Quadratt 1U (IN A)\n- Envelope (Out) >> Quadratt 1U (IN B)\n- VCO (Out) -> Filter (In)\n- Quadratt 1U (OUT A) >> Filter (Cutoff)\n- Quadratt 1U (OUT B) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Stereo trim",
+      "patch": "Two voices into channels A and B · use OUT A and OUT B as independent trim controls before the mixer · polarity switch on B inverts one side for phase experiments or mid/side style patches.",
+      "diagram": "Quadratt 1U:\n* IN A: channel A audio\n* IN B: channel B audio\n* IN C: normalled +5V\n* IN D: normalled +5V\n\nVCO 1:\nVCO 2:\nMixer:\nOutput:\n\n- VCO 1 (Out) -> Quadratt 1U (IN A)\n- VCO 2 (Out) -> Quadratt 1U (IN B)\n- Quadratt 1U (OUT A) -> Mixer (L)\n- Quadratt 1U (OUT B) -> Mixer (R)\n- Mixer (Out L) -> Output (L)\n- Mixer (Out R) -> Output (R)"
+    },
+    {
+      "name": "Bipolar filter sweep",
+      "patch": "LFO into a bipolar channel and a fixed +5V offset into the next one · OUT C sums the two into a controllable cutoff sweep that can sit above or below center without a separate offset module.",
+      "diagram": "Quadratt 1U:\n* IN A: bipolar\n* IN B: unpatched\n* IN C: normalled +5V\n* IN D: normalled +5V\n\nLFO:\nFilter:\nVCO:\nOutput:\n\n- LFO (Out) >> Quadratt 1U (IN A)\n- Quadratt 1U (OUT A) >> Quadratt 1U (IN B)\n- VCO (Out) -> Filter (In)\n- Quadratt 1U (OUT C) >> Filter (Cutoff)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Four-way voltage fanout",
+      "patch": "A sequencer pitch CV fans out to four oscillators with zero re-patching · each channel trims one copy for stacked unison, octave drift, or tiny detune offsets.",
+      "diagram": "Quadratt 1U:\n* IN A: pitch bus\n* IN B: pitch bus\n* IN C: pitch bus\n* IN D: pitch bus\n\nSequencer:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\n\n- Sequencer (Pitch) p> Quadratt 1U (IN A)\n- Quadratt 1U (OUT A) p> VCO 1 (V/Oct)\n- Quadratt 1U (OUT B) p> VCO 2 (V/Oct)\n- Quadratt 1U (OUT C) p> VCO 3 (V/Oct)\n- Quadratt 1U (OUT D) p> VCO 4 (V/Oct)"
+    }
+  ]
+}

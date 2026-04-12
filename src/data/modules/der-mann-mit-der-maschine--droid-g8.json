@@ -1,0 +1,118 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "blue-7",
+    "sources": [
+      "https://dermannmitdermaschine.de/download/droid-manual-blue-7.pdf",
+      "https://shop.dermannmitdermaschine.de/products/g8",
+      "https://modulargrid.net/e/der-mann-mit-der-maschine-droid-g8-expander"
+    ],
+    "expanderOf": "der-mann-mit-der-maschine--droid"
+  },
+  "slug": "der-mann-mit-der-maschine--droid-g8",
+  "name": "DROID G8",
+  "manufacturer": "Der Mann mit der Maschine",
+  "hp": 4,
+  "tags": [
+    "GATE",
+    "TRIGGER",
+    "I/O",
+    "LOGIC"
+  ],
+  "description": "DROID gate expander. Eight jacks, each freely assignable per-patch as gate/trigger input (≥0.75V = high) or output (0V or 5V). Up to four G8s chain to one master for 8–32 extra gate jacks.",
+  "controls": [
+    {
+      "name": "8 multicolor LEDs",
+      "scope": "Panel, one per jack",
+      "description": "Indicate jack state. Blue = input high, red = output high. Can be overridden from patch via R17–R48 registers for custom display.",
+      "detail": "one LED per jack · R registers allow visual feedback for any patch value"
+    },
+    {
+      "name": "Master connector (v2)",
+      "scope": "Rear",
+      "description": "8-pin IDC header to the master's G8 expansion port.",
+      "detail": "red stripe down · v2 has IN+OUT for chaining, v1 has one connector only"
+    },
+    {
+      "name": "Chain connector (v2 only)",
+      "scope": "Rear",
+      "description": "Second 8-pin header to the next G8 in the chain. v1 does not have this — v1 G8 must be last in the chain.",
+      "detail": "up to 4 G8s total · any v1 goes at the end"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Jack 1–8 (as input)",
+      "description": "Any of the eight jacks can be used as a gate/trigger input when referenced as input register in a circuit parameter. Register names: G1..G8 on MASTER (first G8), G2.1..G2.8 on MASTER18 (first G8), or dot-notation Gn.m for chained G8s.",
+      "voltage": "≥0.75V = 1 (high), below = 0 · negative voltages also read as 0"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Jack 1–8 (as output)",
+      "description": "Same jacks, used as output when any circuit writes to the G register. 5V high / 0V low only — no continuous CV. Threshold for high: value ≥ 0.1.",
+      "voltage": "0V or 5V · cannot output 10V (hardware limitation)"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Bidirectional jacks",
+      "trigger": "patch assignment",
+      "description": "Each jack's direction is decided by how it appears in the patch: if a circuit reads from G3 (input side of a parameter), jack 3 becomes an input; if a circuit writes to G3 (output side), jack 3 becomes an output. A jack cannot be both simultaneously. Flexible gate I/O topology without hardware switches."
+    },
+    {
+      "name": "5V only outputs",
+      "trigger": "any G register used as output",
+      "description": "Hardware compromise: the I/O chip that makes the jacks bidirectional cannot source 10V. 99.9% of Eurorack modules trigger cleanly at 5V, but some vintage analog envelopes may need higher. For those cases, use one of the master's O1–O8 outputs instead."
+    },
+    {
+      "name": "Numbering differs on MASTER vs MASTER18",
+      "trigger": "chain position + master type",
+      "description": "On MASTER (no built-in gate jacks), first G8 jacks = G1..G8, second = G2.1..G2.8 (via dot-notation), etc. On MASTER18 (has G1..G4 built in), the first G8 jacks = G2.1..G2.8 because G1.x are reserved for the master's own jacks. Dot-notation Gn.m works universally."
+    },
+    {
+      "name": "Up to four G8s per master",
+      "trigger": "chain wiring",
+      "description": "G8 v2 introduced daisy-chaining. Master → G8₁ → G8₂ → G8₃ → G8₄. Gives up to 32 extra gate I/O on a single DROID system. Last G8 in chain can be v1 or v2; all earlier positions must be v2 (v2 has the chain connector, v1 does not)."
+    },
+    {
+      "name": "No declaration required",
+      "trigger": "using G registers in patch",
+      "description": "Unlike controllers (P2B8, P10, etc.) G8s are NOT declared in droid.ini. They're detected automatically. Writing to G3 just works if a G8 is present; if no G8 is present the patch still loads and other non-G registers run normally."
+    },
+    {
+      "name": "LED override via R registers",
+      "trigger": "writing to R17–R48",
+      "description": "The eight LEDs follow default jack state (blue in / red out) unless the patch writes to their R registers: R17–R24 for first G8, R25–R32 for second, etc. Allows using G8 LEDs as custom display for sequencer positions, envelope phases, or any patch-generated visual."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "8-track trigger sequencer",
+      "patch": "algoquencer with 8 tracks, one per G register · each track's trigger output writes to G1..G8 · pattern/activity/density controlled by buttons on a B32 and pots on P10 · master's O1–O8 remain free for CV modulation · eight drums clocked from I1.",
+      "diagram": "DROID:\n* algoquencer: clock=I1, trigger1=G1, trigger2=G2, trigger3=G3, trigger4=G4, trigger5=G5, trigger6=G6, trigger7=G7, trigger8=G8\n\nDROID G8:\n\n- External Clock (Out) c> DROID (I1)\n- DROID G8 (G1) t> Drum 1 (Trig)\n- DROID G8 (G2) t> Drum 2 (Trig)\n- DROID G8 (G3) t> Drum 3 (Trig)\n- DROID G8 (G4) t> Drum 4 (Trig)"
+    },
+    {
+      "name": "Gate-based logic utility",
+      "patch": "Three external gate signals → G1, G2, G3 (as inputs) · logic circuit AND/OR/XOR → writes results to G6, G7, G8 (as outputs) · same G8 module simultaneously reads three inputs and outputs three derived logic signals · no extra logic module needed.",
+      "diagram": "DROID:\n* logic: type=AND, input1=G1, input2=G2, output=G6\n* logic: type=OR, input1=G1, input2=G2, output=G7\n* logic: type=XOR, input1=G1, input2=G3, output=G8\n\nDROID G8:\n\n- Clock A (Out) c> DROID G8 (G1)\n- Clock B (Out) c> DROID G8 (G2)\n- Clock C (Out) c> DROID G8 (G3)\n- DROID G8 (G6) t> Destination A (Trig)\n- DROID G8 (G7) t> Destination B (Trig)\n- DROID G8 (G8) t> Destination C (Trig)"
+    },
+    {
+      "name": "Euclidean polyrhythm bank",
+      "patch": "Four euklid circuits, each with different length/fill settings from four P10 pots · outputs → G1–G4 of the G8 · four polyrhythmic gate streams from one master+P10+G8 · master's I1 carries the shared clock · O1–O8 free for pitch, accents, decay modulation.",
+      "diagram": "DROID:\n* euklid: clock=I1, length=P1.1, fill=P1.2, output=G1\n* euklid: clock=I1, length=P1.3, fill=P1.4, output=G2\n* euklid: clock=I1, length=P1.5, fill=P1.6, output=G3\n* euklid: clock=I1, length=P1.7, fill=P1.8, output=G4\n\nP10:\n\nDROID G8:\n\n- External Clock (Out) c> DROID (I1)\n- DROID G8 (G1) t> Voice 1 (Trig)\n- DROID G8 (G2) t> Voice 2 (Trig)\n- DROID G8 (G3) t> Voice 3 (Trig)\n- DROID G8 (G4) t> Voice 4 (Trig)"
+    },
+    {
+      "name": "LED scope / custom display",
+      "patch": "lfo at 1 Hz sine=_PHASE · compare circuits split _PHASE into eight thresholds · each threshold writes R17..R24 · G8's eight LEDs become a rolling bar graph of the LFO phase · useful as a visual tempo indicator even when gates themselves are patched elsewhere.",
+      "diagram": "DROID:\n* lfo: hz=1, sine=_PHASE\n* compare: input=_PHASE, threshold=-0.75, output=R17\n* compare: input=_PHASE, threshold=-0.5, output=R18\n* compare: input=_PHASE, threshold=-0.25, output=R19\n* compare: input=_PHASE, threshold=0, output=R20\n* compare: input=_PHASE, threshold=0.25, output=R21\n* compare: input=_PHASE, threshold=0.5, output=R22\n* compare: input=_PHASE, threshold=0.75, output=R23\n\nDROID G8:"
+    },
+    {
+      "name": "Four G8 chain — 32 drum gates",
+      "patch": "Full percussion module setup. Four chained G8s (v2+v2+v2+v1) · algoquencer with 32 tracks · one track per G8 jack: G1.1..G1.8 kick variants, G2.1..G2.8 snare variants, G3.1..G3.8 hats, G4.1..G4.8 percussion · one DROID MASTER + 4 G8 = full trigger matrix for a drum rack.",
+      "diagram": "DROID:\n* algoquencer: clock=I1, trigger1=G1.1, trigger2=G1.2, trigger3=G2.1, trigger4=G2.2, trigger5=G3.1, trigger6=G3.2, trigger7=G4.1, trigger8=G4.2\n\nDROID G8:\n\n- External Clock (Out) c> DROID (I1)\n- DROID G8 (G1.1) t> Kick (Trig)\n- DROID G8 (G2.1) t> Snare (Trig)\n- DROID G8 (G3.1) t> Hat (Trig)\n- DROID G8 (G4.1) t> Perc (Trig)"
+    }
+  ]
+}

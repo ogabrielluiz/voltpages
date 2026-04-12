@@ -1,0 +1,135 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://wmdevices.com/products/c4rbn",
+      "https://www.analoguehaven.com/wmd/c4rbn/manual.pdf",
+      "https://modulargrid.net/e/wmd-c4rbn",
+      "https://modwiggler.com/forum/viewtopic.php?t=234527",
+      "https://www.perfectcircuit.com/wmd-c4rbn.html"
+    ]
+  },
+  "slug": "wmd--c4rbn",
+  "name": "C4RBN",
+  "manufacturer": "WMD",
+  "hp": 4,
+  "tags": ["FILTER", "VCF", "WAVEFOLDER", "DISTORTION"],
+  "description": "4HP 4/2-pole state-variable filter with input saturation and output wavefolder. Simultaneous LP/BP/HP 2-pole outputs plus a switchable-mode 4-pole output. Includes PING envelope for vactrol-style pluck.",
+  "controls": [
+    {
+      "name": "FREQ",
+      "scope": "Global",
+      "description": "Manual filter cutoff frequency.",
+      "detail": "2.5Hz – 10kHz · 1V/Oct tracking · temperature compensated"
+    },
+    {
+      "name": "RES",
+      "scope": "Global",
+      "description": "Filter resonance. Self-oscillates past 3 o'clock, generating a clean sine.",
+      "detail": "Adds to RES CV input"
+    },
+    {
+      "name": "FM",
+      "scope": "Global",
+      "description": "Inverting attenuator for the FM input. Scales cutoff CV bidirectionally.",
+      "detail": "CCW: invert · noon: zero · CW: unity · exponential response"
+    },
+    {
+      "name": "FOLD/SAT Button",
+      "scope": "Global",
+      "description": "Press toggles the 4P output wavefolder (FOLD LED). Hold cycles 4 input saturation levels (SAT LED).",
+      "detail": "Saturation: 4 stepped levels · wavefolder post-4P core"
+    },
+    {
+      "name": "HP/BP/LP Button",
+      "scope": "4P output",
+      "description": "Cycles 4-pole filter mode between HP, BP, LP. LED updates immediately; audio switches on release when held.",
+      "detail": "Indicated by HP/BP/LP LEDs"
+    }
+  ],
+  "inputs": [
+    { "name": "IN", "description": "Audio input. Passes through the input saturator before hitting the first 2-pole core.", "voltage": "20Vpp range · 100kΩ impedance" },
+    { "name": "V/OCT", "description": "Calibrated exponential CV input for keytracked cutoff.", "voltage": "1V/Oct · 82kΩ · temperature compensated" },
+    { "name": "FM", "description": "Exponential cutoff CV input, scaled by the FM attenuverter.", "voltage": ">100kΩ" },
+    { "name": "RES", "description": "CV for resonance. Sums with the RES knob.", "voltage": ">100kΩ" },
+    { "name": "SAT", "description": "CV for input saturation amount. Adds to the stepped SAT setting.", "voltage": ">100kΩ" },
+    { "name": "PING", "description": "Gate/trigger input. Fires a fast-decay vactrol-style envelope into cutoff.", "voltage": "Gate/trigger" }
+  ],
+  "outputs": [
+    { "name": "LP", "description": "2-pole low-pass output of the first filter core.", "voltage": "20Vpp · 1kΩ" },
+    { "name": "BP", "description": "2-pole band-pass output of the first filter core.", "voltage": "20Vpp · 1kΩ" },
+    { "name": "HP", "description": "2-pole high-pass output of the first filter core.", "voltage": "20Vpp · 1kΩ" },
+    { "name": "4P", "description": "Series 2nd 2-pole filter output. Mode selected via HP/BP/LP button; optional wavefolder post-filter.", "voltage": "20Vpp · 1kΩ" }
+  ],
+  "behaviors": [
+    {
+      "name": "Simultaneous 2-pole outputs",
+      "trigger": "always active on LP/BP/HP jacks",
+      "description": "The first 2-pole core outputs LP, BP, and HP simultaneously — pick multiple responses for sum-and-difference or stereo-spread patches without retracking cutoff."
+    },
+    {
+      "name": "Series 4-pole path",
+      "trigger": "take signal from 4P output",
+      "description": "The 4P jack is the output of a second 2-pole stage fed in series from the first, yielding a steeper 4-pole response. Its mode (HP/BP/LP) is independent from the 2-pole outputs."
+    },
+    {
+      "name": "Vactrol-style ping",
+      "trigger": "gate/trigger at PING input",
+      "description": "PING injects a fast-decay exponential envelope directly into cutoff, emulating a Low Pass Gate. With resonance near self-oscillation, yields plucky pitched tones without a patched envelope."
+    },
+    {
+      "name": "Self-oscillating sine VCO",
+      "trigger": "RES past 3 o'clock with no audio at IN",
+      "description": "Filter self-oscillates as a clean sine. V/OCT input tracks over useful range — turns C4RBN into a sine VCO for pinged bass or FM carriers."
+    },
+    {
+      "name": "Staged input saturation",
+      "trigger": "hold FOLD/SAT button",
+      "description": "Four discrete saturation levels at the filter input — from clean (level 0) to aggressive drive. SAT CV input adds continuous modulation on top of the chosen step."
+    },
+    {
+      "name": "Output wavefolder",
+      "trigger": "press FOLD/SAT (FOLD LED on)",
+      "description": "Folds the 4P output post-filter. With high resonance or self-oscillation, adds screaming harmonics reminiscent of the Synchrodyne. Only affects 4P — 2-pole jacks stay clean."
+    },
+    {
+      "name": "Delayed 4P mode switch",
+      "trigger": "hold HP/BP/LP button",
+      "description": "LED reflects selection immediately, but the audio mode only changes when the button is released — useful to line up a filter-mode change on the beat during live performance."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Pinged vactrol bass",
+      "patch": "RES near self-osc · close FREQ low · no IN signal · clock-derived trigger to PING · take 4P (LP mode) · results in plucky pitched bass tones with natural decay",
+      "diagram": "C4RBN:\n* RES: ~3 o'clock\n* FREQ: low\n* 4P mode: LP\n\nClock:\n\n- Clock (Out) t> C4RBN (PING)\n- Sequencer (Pitch) p> C4RBN (V/OCT)\n- C4RBN (4P) -> Output (In)"
+    },
+    {
+      "name": "Screaming fold lead",
+      "patch": "audio through IN · SAT cycled to stage 3 · FOLD enabled · RES high · envelope to FM via attenuverter · take 4P for overdriven folded lead",
+      "diagram": "C4RBN:\n* SAT: stage 3\n* FOLD: on\n* RES: high\n* 4P mode: BP\n\nVCO:\nEnvelope:\n\n- VCO (Saw) -> C4RBN (IN)\n- Envelope (Out) >> C4RBN (FM)\n- C4RBN (4P) -> Output (In)"
+    },
+    {
+      "name": "Parallel LP/HP notch",
+      "patch": "mix LP and HP 2-pole outputs to external mixer with HP inverted · pseudo-notch with resonance peak at cutoff · FM attenuverter sweeps with bipolar LFO",
+      "diagram": "C4RBN:\n\nVCO:\nLFO:\nMixer:\n\n- VCO (Out) -> C4RBN (IN)\n- LFO (Out) >> C4RBN (FM)\n- C4RBN (LP) -> Mixer (In 1)\n- C4RBN (HP) -> Mixer (In 2) // invert at mixer\n- Mixer (Out) -> Output (In)"
+    },
+    {
+      "name": "Sine VCO for FM",
+      "patch": "RES fully past self-osc · IN unpatched · V/OCT from sequencer · BP output as sine carrier · feed second VCO into FM input for filter-FM",
+      "diagram": "C4RBN:\n* RES: self-osc\n* FREQ: mid\n\nVCO:\nSequencer:\n\n- Sequencer (Pitch) p> C4RBN (V/OCT)\n- VCO (Out) >> C4RBN (FM) // audio-rate FM\n- C4RBN (BP) -> Output (In)"
+    },
+    {
+      "name": "Synchrodyne fold bass",
+      "patch": "4P mode LP · FOLD on · RES moderate · slow envelope to FREQ via FM · SAT stage 2 on input · fat folded bass with harmonic bite as filter opens",
+      "diagram": "C4RBN:\n* 4P mode: LP\n* FOLD: on\n* SAT: stage 2\n* RES: noon\n\nVCO:\nEnvelope:\n\n- VCO (Sub) -> C4RBN (IN)\n- Envelope (Out) >> C4RBN (FM)\n- C4RBN (4P) -> Output (In)"
+    },
+    {
+      "name": "Stereo 2-pole spread",
+      "patch": "LP out hard-left · HP out hard-right · shared modulation to FM · creates phantom center with cutoff-dependent stereo width",
+      "diagram": "C4RBN:\n\nVCO:\nLFO:\nMixer:\n\n- VCO (Out) -> C4RBN (IN)\n- LFO (Out) >> C4RBN (FM)\n- C4RBN (LP) -> Mixer (L)\n- C4RBN (HP) -> Mixer (R)"
+    }
+  ]
+}

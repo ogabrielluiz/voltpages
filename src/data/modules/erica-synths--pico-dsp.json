@@ -1,0 +1,103 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.ericasynths.lv/media/Pico_DSP_Manual.pdf",
+      "https://www.ericasynths.lv/shop/eurorack-modules/by-series/pico-series/pico-dsp/",
+      "https://synthmodes.com/modules/pico_dsp/index.html",
+      "https://schneidersladen.de/en/erica-synths-pico-dsp",
+      "https://modwiggler.com/forum/viewtopic.php?t=166264"
+    ]
+  },
+  "slug": "erica-synths--pico-dsp",
+  "name": "Pico DSP",
+  "manufacturer": "Erica Synths",
+  "hp": 3,
+  "tags": ["EFFECTS", "DELAY", "REVERB", "GRANULAR", "DISTORTION"],
+  "description": "3HP DSP multi-effect with eight algorithms: mono / pitch-shift / stereo / granular delay, reverb, saturated reverb, Leslie speaker and overdrive / bitcrush. Mono in, stereo out. CV over Parameter 1 on every effect.",
+  "controls": [
+    {
+      "name": "Parameter 1",
+      "scope": "per-effect",
+      "description": "First effect parameter, routed to each algorithm's primary feel (time, pitch, rotation, drive). Accepts CV.",
+      "detail": "Delays: time · Pitch Delay: pitch · Granular: feedback (freeze at max) · Reverb: time · Leslie: rotation speed · OD/Bitcrush: overdrive"
+    },
+    {
+      "name": "Parameter 2",
+      "scope": "per-effect",
+      "description": "Second effect parameter, no CV input. Typically feedback or tone.",
+      "detail": "Delays: feedback · Pitch Delay: time · Granular: time · Reverb: tone · Leslie: HP filter · OD/Bitcrush: bitcrush"
+    },
+    {
+      "name": "Wet/Dry",
+      "scope": "global",
+      "description": "Blend between dry input and wet effect. Available on every algorithm.",
+      "detail": "CCW: fully dry · CW: fully wet"
+    },
+    {
+      "name": "Effect button",
+      "scope": "global",
+      "description": "Centre button cycles through the eight effect algorithms. Coloured LED indicates the active effect.",
+      "detail": "8 effects · LED colour per slot"
+    }
+  ],
+  "inputs": [
+    { "name": "IN", "description": "Mono audio input. Clipping LED warns when level approaches digital ceiling.", "voltage": "±10V audio" },
+    { "name": "CV", "description": "CV input modulating Parameter 1 of the currently selected effect.", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "OUT L", "description": "Left channel of the stereo effect return. On mono effects carries the same signal as R.", "voltage": "±10V" },
+    { "name": "OUT R", "description": "Right channel of the stereo effect return. Stereo Delay, Leslie and reverbs produce genuine stereo spread.", "voltage": "±10V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Effect selection",
+      "trigger": "centre button press",
+      "description": "Each press advances to the next of the eight effects. The panel LED changes colour to indicate the active slot. Parameters 1 & 2 adopt the selected algorithm's mapping immediately."
+    },
+    {
+      "name": "Granular freeze",
+      "trigger": "Granular Delay · Parameter 1 fully CW",
+      "description": "In Granular Delay, pushing feedback to maximum freezes the buffer and scans it as a continuous loop — useful for sustained drones and stutter effects from short input bursts."
+    },
+    {
+      "name": "Stereo from mono",
+      "trigger": "Stereo Delay / Leslie / reverbs",
+      "description": "Several algorithms build a stereo field from the mono input: Stereo Delay ping-pongs, Leslie pans rotating highs, and the reverbs decorrelate wet tails."
+    },
+    {
+      "name": "CV-only automation",
+      "trigger": "CV → CV input",
+      "description": "Only Parameter 1 accepts CV. Modulating it with an LFO gives rhythmic time-stretching on delays, pitch wobble on Pitch Shift Delay, or rotary sweeps on Leslie."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Drone freeze",
+      "patch": "VCO burst → IN · Effect: Granular Delay · Parameter 1 → max to freeze · Wet full",
+      "diagram": "PICO DSP:\n* Effect: Granular Delay\n* Param 1: CW (freeze)\n* Wet/Dry: full wet\n- VCO (Out) -> Pico DSP (IN)\n- Pico DSP (OUT L) -> Mixer (L)\n- Pico DSP (OUT R) -> Mixer (R)"
+    },
+    {
+      "name": "Clocked pitch delay",
+      "patch": "Drum bus → IN · Effect: Pitch Shift Delay · clock-derived CV → Param 1 for stepped pitch",
+      "diagram": "PICO DSP:\n* Effect: Pitch Shift Delay\n- Drum Bus (Out) -> Pico DSP (IN)\n- S&H (Out) >> Pico DSP (CV) // stepped pitch\n- Pico DSP (OUT L) -> Mixer (L)\n- Pico DSP (OUT R) -> Mixer (R)"
+    },
+    {
+      "name": "Leslie on organ patch",
+      "patch": "VCO sum → IN · Effect: Leslie · LFO → CV for accel/decel rotation",
+      "diagram": "PICO DSP:\n* Effect: Leslie\n* Param 2: HP filter low\n- VCO (Out) -> Pico DSP (IN)\n- LFO (Out) >> Pico DSP (CV) // rotation speed\n- Pico DSP (OUT L) -> Mixer (L)\n- Pico DSP (OUT R) -> Mixer (R)"
+    },
+    {
+      "name": "Saturated cave reverb",
+      "patch": "Mono mix → IN · Effect: Saturated Reverb · Wet high · Param 2 (time) max",
+      "diagram": "PICO DSP:\n* Effect: Saturated Reverb\n* Wet/Dry: 3 o'clock\n- Mixer (Send) -> Pico DSP (IN)\n- Pico DSP (OUT L) -> Output (L)\n- Pico DSP (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Bitcrush with envelope",
+      "patch": "Drum → IN · Effect: Overdrive/Bitcrush · Env → CV for transient-triggered drive",
+      "diagram": "PICO DSP:\n* Effect: OD/Bitcrush\n- Drum (Out) -> Pico DSP (IN)\n- Drum (Trig) t> Env (Trig)\n- Env (Out) >> Pico DSP (CV)\n- Pico DSP (OUT L) -> Mixer (In)"
+    }
+  ]
+}

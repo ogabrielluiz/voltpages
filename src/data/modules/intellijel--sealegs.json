@@ -1,0 +1,284 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.3",
+    "sources": [
+      "https://intellijel.com/downloads/manuals/sealegs_manual_v1.3_2025.11.26.pdf",
+      "https://intellijel.com/shop/eurorack/sealegs/",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=276806"
+    ]
+  },
+  "slug": "intellijel--sealegs",
+  "name": "Sealegs",
+  "manufacturer": "Intellijel",
+  "hp": 20,
+  "tags": ["DELAY", "REVERB", "EFFECTS", "CHORUS"],
+  "description": "Multi-modeled stereo character delay with reverb. Three delay models (TAPE, BBD, DIGI) with per-model COLOR degradation; built-in syncable modulator (7 waveshapes + wow/flutter + envelope followers); feedback-loop VCF; spacious Fog reverb with repositionable signal-chain insertion.",
+  "controls": [
+    {
+      "name": "DRIVE",
+      "scope": "Global input",
+      "description": "Combination input level and overdrive. CCW = muted · noon = unity · CW past noon overdrives the delay. LED shows overdrive amount.",
+      "detail": "ALT + DRIVE sets input trim (0.5×–2.5×) · DRIVE position switch moves it in the chain"
+    },
+    {
+      "name": "FREEZE / ALT",
+      "scope": "Global",
+      "description": "Tap to toggle delay freeze (loop the buffer indefinitely). Hold = ALT modifier for grey secondary parameters on other controls.",
+      "detail": "Tap = freeze · hold = ALT modifier"
+    },
+    {
+      "name": "NOISE / MODE",
+      "scope": "Global",
+      "description": "Amount of hiss/crackle noise injected into the signal. ALT-held: selects noise mode — pre-delay hiss / crackle / post-delay hiss.",
+      "detail": "Standard = level · ALT = mode · noise type varies across knob sweep"
+    },
+    {
+      "name": "FOG / DECAY",
+      "scope": "Global reverb",
+      "description": "Reverb (Fog) level. ALT + FOG knob sets reverb decay time.",
+      "detail": "Standard = level · ALT = decay"
+    },
+    {
+      "name": "FOG/DRIVE POSITION switch",
+      "scope": "Signal chain",
+      "description": "Moves Fog insertion point. IN = pre-delay · DLY = post-delay/pre-mix (wet only) · MIX = post-mix (affects wet + dry). ALT-hold moves DRIVE position instead.",
+      "detail": "3-position · stored at power-off"
+    },
+    {
+      "name": "TAP TEMPO / AUX DEST",
+      "scope": "Global",
+      "description": "Tap to set delay time when DELAY SYNC or MOD SYNC is active. ALT + tap cycles AUX CV destination (Drive, Noise, Mod, Fog, Mix).",
+      "detail": "AUX dest indicated by colour flash"
+    },
+    {
+      "name": "DELAY SYNC / FB CROSS",
+      "scope": "Global",
+      "description": "Tap = toggle delay sync to external clock or tap tempo. ALT + tap = toggle Crossed Feedback — L feedback feeds R input and vice versa.",
+      "detail": "Long-press >1s clears delay buffer"
+    },
+    {
+      "name": "MOD SYNC / MOD PHASE",
+      "scope": "MOD section",
+      "description": "Tap = sync MOD RATE to clock/tap. ALT + tap = phase-invert internal MOD on right channel only (not MOD OUT jack).",
+      "detail": "Affects oscillating waveshapes only · W&F and EF do not sync"
+    },
+    {
+      "name": "MIX",
+      "scope": "Global output",
+      "description": "Wet/dry blend. CCW = dry only · CW = wet only.",
+      "detail": "Send/Return mode (hold DELAY SYNC on boot) removes dry entirely"
+    },
+    {
+      "name": "AUX CV attenuverter",
+      "scope": "AUX CV",
+      "description": "Scales ±polarity of AUX CV. Full CW = positive unity · noon = zero · full CCW = inverted unity.",
+      "detail": "Bipolar"
+    },
+    {
+      "name": "TIME/L slider",
+      "scope": "Delay",
+      "description": "Primary (or left) delay time. Free range depends on TIME RANGE switch; sync mode offers quarter-note to 64th-note divisions.",
+      "detail": "3.125ms–6s free · clock-synced divisions up to x4/-64"
+    },
+    {
+      "name": "WIDTH/R slider",
+      "scope": "Delay",
+      "description": "Second delay time. PONG/T:W: offsets right delay 0–33% relative to left. L/R: sets right delay time independently.",
+      "detail": "Behavior depends on STEREO CONFIG switch"
+    },
+    {
+      "name": "FB slider",
+      "scope": "Delay",
+      "description": "Feedback amount — up to 160% allows runaway self-oscillation swells.",
+      "detail": "0–160% · short times = flange · long = patterns"
+    },
+    {
+      "name": "TIME/WIDTH/FB CV attenuverters",
+      "scope": "Delay CV",
+      "description": "Each attenuverts its CV input. Noon = no CV · CCW = inverted.",
+      "detail": "Per-slider bipolar"
+    },
+    {
+      "name": "TIME RANGE switch",
+      "scope": "Delay",
+      "description": "L = long (200ms–6s) · M = med (50ms–1.5s) · S = short (3.125–93.75ms). When synced, L/M/S selects whole/16th/64th note base.",
+      "detail": "3-position"
+    },
+    {
+      "name": "STEREO CONFIG switch",
+      "scope": "Delay routing",
+      "description": "PONG (top) = serial ping-pong · T:W (mid) = parallel, WIDTH offsets right · L/R (bottom) = parallel with independent L and R times.",
+      "detail": "3-position"
+    },
+    {
+      "name": "MODEL switch",
+      "scope": "Delay",
+      "description": "TAPE (top) = tape emulation · BBD (mid) = bucket-brigade · DIGI (bottom) = digital. COLOR slider degrades model-specifically.",
+      "detail": "3-position"
+    },
+    {
+      "name": "MOD RATE slider",
+      "scope": "MOD section",
+      "description": "Sets LFO rate for oscillating MOD waves, envelope-follower response rate, or wow vs flutter balance for W&F.",
+      "detail": "0.1Hz–40Hz free · synced musical divisions"
+    },
+    {
+      "name": "MOD DEPTH slider",
+      "scope": "MOD section",
+      "description": "Depth of internal MOD modulation on Delay Time. Does not affect MOD OUT jack which is always full amplitude.",
+      "detail": "0–100%"
+    },
+    {
+      "name": "MOD knob",
+      "scope": "MOD section",
+      "description": "MOD waveshape select. Standard: morphs through W&F, EF-, EF+, LFV, S&H, SQ, SINE, SAW, TRI, RAMP. ALT + turn: snaps to discrete waveform.",
+      "detail": "Continuous crossfade · ALT = stepped"
+    },
+    {
+      "name": "COLOR slider",
+      "scope": "Character section",
+      "description": "Adds model-dependent degradation. TAPE = drag/dropouts · BBD = companded noise, clock instability · DIGI = bit-crush, sample-rate reduction.",
+      "detail": "Model-dependent"
+    },
+    {
+      "name": "HIGHPASS FREQ slider",
+      "scope": "Character VCF (in feedback loop)",
+      "description": "VCF highpass cutoff. Inside the feedback loop — each repeat darkens/thins cumulatively. Outside the loop when FREEZE is active.",
+      "detail": "6dB/oct"
+    },
+    {
+      "name": "LOWPASS FREQ slider",
+      "scope": "Character VCF (in feedback loop)",
+      "description": "VCF lowpass cutoff. Combined with highpass defines the feedback bandwidth.",
+      "detail": "6dB/oct"
+    },
+    {
+      "name": "COLOR/HPF/LPF CV attenuverters",
+      "scope": "Character CV",
+      "description": "Each attenuverts its corresponding CV input.",
+      "detail": "Per-slider bipolar"
+    }
+  ],
+  "inputs": [
+    { "name": "IN L", "description": "Left audio input", "voltage": "line/eurorack" },
+    { "name": "IN R", "description": "Right audio input", "voltage": "line/eurorack", "normalizedTo": "IN L when unpatched (mono-to-stereo)" },
+    { "name": "FREEZE", "description": "Gate input — high enables delay freeze, low unfreezes", "voltage": "gate" },
+    { "name": "CLK", "description": "Clock input for DELAY SYNC and MOD SYNC (16th-note reference)", "voltage": "clock/gate" },
+    { "name": "AUX CV", "description": "Assignable CV input — destination selected by ALT + TAP TEMPO", "voltage": "±5V" },
+    { "name": "TIME CV", "description": "Delay time CV (scaled by attenuverter)", "voltage": "±5V" },
+    { "name": "WIDTH CV", "description": "Delay width CV", "voltage": "±5V" },
+    { "name": "FB CV", "description": "Feedback CV", "voltage": "±5V" },
+    { "name": "MOD RATE CV", "description": "MOD rate CV", "voltage": "±5V" },
+    { "name": "MOD DEPTH CV", "description": "MOD depth CV", "voltage": "±5V" },
+    { "name": "COLOR CV", "description": "COLOR amount CV", "voltage": "±5V" },
+    { "name": "HPF CV", "description": "Highpass cutoff CV", "voltage": "±5V" },
+    { "name": "LPF CV", "description": "Lowpass cutoff CV", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "MOD", "description": "Internal MOD waveform — always full amplitude regardless of MOD DEPTH slider", "voltage": "±10V" },
+    { "name": "OUT L", "description": "Left audio output" },
+    { "name": "OUT R", "description": "Right audio output" }
+  ],
+  "behaviors": [
+    {
+      "name": "Three delay models",
+      "trigger": "MODEL switch",
+      "description": "TAPE emulates reel-to-reel warmth with saturation and drift. BBD emulates bucket-brigade companding with sample-rate instability. DIGI is clean digital — COLOR becomes bit-crush/SR reduction at extreme settings."
+    },
+    {
+      "name": "Model-dependent freeze",
+      "trigger": "FREEZE button/gate per MODEL",
+      "description": "BBD freeze accumulates signal loss (limited sample rate). TAPE freeze holds better but slowly saturates. DIGI freezes the buffer exactly and is immune to modulation/time changes while frozen."
+    },
+    {
+      "name": "VCF in feedback loop",
+      "trigger": "HPF/LPF sliders (default · not frozen)",
+      "description": "Filters sit inside the delay feedback path — repeats progressively darken/thin each pass. Ideal for dub-style cascading tone changes. When frozen, the VCF moves outside the loop and affects only the output."
+    },
+    {
+      "name": "Stereo configurations",
+      "trigger": "STEREO CONFIG switch",
+      "description": "PONG sums L+R to mono and ping-pongs two serial delays. T:W runs delays in parallel with right offset by WIDTH. L/R runs both delays fully independently for true stereo — WIDTH/R directly sets right time."
+    },
+    {
+      "name": "Crossed feedback",
+      "trigger": "ALT + DELAY SYNC (FB CROSS)",
+      "description": "Routes L feedback into R input and vice versa. Creates swapping stereo echoes; combined with L/R stereo config yields complex criss-crossing repeats."
+    },
+    {
+      "name": "FOG position shifts character",
+      "trigger": "FOG/DRIVE POSITION switch",
+      "description": "IN position lets reverb feed the delay — reverb builds into each repeat. DLY position puts reverb only on wet signal. MIX position applies reverb post-mix, affecting wet and dry together."
+    },
+    {
+      "name": "Envelope-follower MOD",
+      "trigger": "MOD knob → EF- or EF+",
+      "description": "MOD waveform becomes an envelope follower on the input signal. EF+ modulates delay time with input loudness (dynamic pitch bends); EF- inverts. RATE slider sets follower response speed."
+    },
+    {
+      "name": "Wow & Flutter emulation",
+      "trigger": "MOD knob → W&F (discrete position)",
+      "description": "Classic tape mechanical pitch instability. RATE slider balance between wow (slow drift) and flutter (fast warble). Combined with TAPE model gives convincing vintage tape flavour."
+    },
+    {
+      "name": "AUX CV destinations",
+      "trigger": "ALT + TAP TEMPO repeatedly",
+      "description": "Cycles AUX CV destination through 5 parameters: Drive (magenta), Noise (yellow), MOD wave (white), Fog (green), Mix (blue). One CV lane for whichever parameter you need."
+    },
+    {
+      "name": "Runaway feedback",
+      "trigger": "FB slider above 100%",
+      "description": "Feedback goes to 160%, producing self-sustaining swells that increase in volume. Use HPF/LPF to tame frequency buildup; long-press DELAY SYNC to clear the buffer."
+    },
+    {
+      "name": "MOD OUT as LFO source",
+      "trigger": "patch MOD jack anywhere",
+      "description": "Dedicated MOD output delivers the selected waveshape at full ±10V amplitude — ignores MOD DEPTH. Makes Sealegs a clock-syncable LFO/S&H source for the rest of the rack."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Dub delay with tone-darkening repeats",
+      "patch": "Audio → IN L · MODEL BBD · COLOR ~50% · FB 60% · HPF low, LPF ~3 o'clock · DELAY SYNC to external clock · each repeat darkens progressively · live LPF tweaks dub-style",
+      "diagram": "Sealegs:\n* MODEL: BBD · COLOR: 50% · FB: 60%\n* STEREO: PONG · DELAY SYNC: ON\n\nClock:\n\n- Synth (Out) -> Sealegs (IN L)\n- Clock (Out) c> Sealegs (CLK)\n- Sealegs (OUT L) -> Output (Left)\n- Sealegs (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Shoegaze ambient wash",
+      "patch": "MODEL TAPE · COLOR high · FOG position MIX · FOG level high · decay long (ALT + FOG) · MOD = SINE, sync'd · slight DEPTH · MIX 70% wet · swelling tape reverb with gentle chorus",
+      "diagram": "Sealegs:\n* MODEL: TAPE · COLOR: high\n* FOG POSITION: MIX · FOG: 70% · DECAY: long\n* MOD: SINE synced · MOD DEPTH: 20%\n\nPad:\n\n- Pad (Out) -> Sealegs (IN L)\n- Sealegs (OUT L) -> Output (Left)\n- Sealegs (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Karplus-Strong string",
+      "patch": "Short trigger burst → IN L · MODEL DIGI · TIME very short (S range) · FB 100%+ · HPF mid / LPF mid · pitched plucked string tones — each trigger excites the resonant feedback loop",
+      "diagram": "Sealegs:\n* MODEL: DIGI · TIME RANGE: S\n* FB: 100% · HPF/LPF: mid\n\nNoise:\n\nENV:\n\nVCA:\n\n- Trig (Out) t> ENV (Gate)\n- Noise (Out) -> VCA (In)\n- ENV (Out) >> VCA (CV)\n- VCA (Out) -> Sealegs (IN L)\n- Sealegs (OUT L) -> Output (In)"
+    },
+    {
+      "name": "Sync'd ping-pong eighth-notes",
+      "patch": "Audio → IN L · STEREO CONFIG PONG · DELAY SYNC ON · TIME slider on 1/8 division · WIDTH adds 33% offset on right · FB 40% · classic rhythmic stereo delay that locks to tempo",
+      "diagram": "Sealegs:\n* STEREO: PONG · MODEL: DIGI\n* DELAY SYNC: ON · TIME: 1/8\n\nClock:\n\n- Synth (Out) -> Sealegs (IN L)\n- Clock (Out) c> Sealegs (CLK)\n- Sealegs (OUT L) -> Output (Left)\n- Sealegs (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "MOD as rack-wide LFO",
+      "patch": "MOD knob SINE · MOD SYNC ON to master clock · MOD OUT → external filter cutoff · Sealegs also processes audio · one module gives you a clock-synced LFO and a delay simultaneously",
+      "diagram": "Sealegs:\n* MOD: SINE · MOD SYNC: ON\n\nClock:\n\nVCF:\n\n- Clock (Out) c> Sealegs (CLK)\n- Audio (Out) -> Sealegs (IN L)\n- Sealegs (MOD) >> VCF (Cutoff) // tempo-synced LFO\n- Sealegs (OUT L) -> Output (In)"
+    },
+    {
+      "name": "Envelope-follower pitch bend",
+      "patch": "Drum bus → IN L · MODEL TAPE · MOD = EF+ · MOD DEPTH ~30% · RATE slider mid · loud hits push delay time briefly, creating pitch-bend artifacts that lock to the performance",
+      "diagram": "Sealegs:\n* MODEL: TAPE\n* MOD: EF+ · DEPTH: 30% · RATE: mid\n\n- Drums (Out) -> Sealegs (IN L)\n- Sealegs (OUT L) -> Output (Left)\n- Sealegs (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Digital-freeze granular freeze chord",
+      "patch": "Play a chord · MODEL DIGI · tap FREEZE at the peak · frozen buffer loops forever (DIGI holds exactly) · modulate HPF/LPF live to morph timbre of the frozen loop · play lead over it",
+      "diagram": "Sealegs:\n* MODEL: DIGI · FREEZE: ON\n\nLFO:\n\n- Chord (Out) -> Sealegs (IN L)\n- LFO (Out) >> Sealegs (LPF CV)\n- Sealegs (OUT L) -> Output (Left)\n- Sealegs (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Crossed-feedback stereo chaos",
+      "patch": "Stereo source · STEREO CONFIG L/R with independent times · ALT + DELAY SYNC to enable FB CROSS · echoes ping back and forth between channels in non-repeating patterns · set L and R to prime-number ms times for evolving stereo",
+      "diagram": "Sealegs:\n* STEREO: L/R · FB CROSS: ON\n* TIME: 287ms · WIDTH: 431ms\n\n- Synth (L) -> Sealegs (IN L)\n- Synth (R) -> Sealegs (IN R)\n- Sealegs (OUT L) -> Output (Left)\n- Sealegs (OUT R) -> Output (Right)"
+    }
+  ]
+}

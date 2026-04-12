@@ -1,0 +1,244 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://noiseengineering.us/products/basimilus-iteritas-alter",
+      "https://d1aeri3ty3izns.cloudfront.net/media/39/390618/download_390618.pdf",
+      "https://manuals.noiseengineering.us/bia/",
+      "https://modwiggler.com/forum/viewtopic.php?t=161590"
+    ]
+  },
+  "slug": "noise-engineering--basimilus-iteritas-alter",
+  "name": "Basimilus Iteritas Alter",
+  "manufacturer": "Noise Engineering",
+  "hp": 10,
+  "tags": ["DRUM", "OSCILLATOR", "WAVEFOLDER", "VCO"],
+  "description": "Parameterized digital drum synthesizer. Six tonal plus one noise oscillator summed through an infinifolder with amplitude-compensated envelope. Three modes: Skin, Liquid, Metal. Full CV on every parameter and switch.",
+  "controls": [
+    {
+      "name": "Pitch",
+      "scope": "Global",
+      "description": "Fundamental oscillator pitch. Knob sums with CV input.",
+      "detail": "1V/oct · sums with Pitch CV"
+    },
+    {
+      "name": "Morph",
+      "scope": "Global",
+      "description": "Blends the waveform of all oscillators continuously through sine → triangle → saw → square. Knob offsets the CV input.",
+      "detail": "CCW: sine · noon: saw · CW: square"
+    },
+    {
+      "name": "Attack",
+      "scope": "Global",
+      "description": "Shapes attack for all oscillators and noise. CCW adds noise; dead center is classic analog pop; CW slows attack. Knob offsets CV.",
+      "detail": "CCW: noise · noon: click · CW: slow attack"
+    },
+    {
+      "name": "Decay",
+      "scope": "Global",
+      "description": "Decay time for all oscillators. Knob offsets the CV input.",
+      "detail": "short to long · CV offset"
+    },
+    {
+      "name": "Harmonic",
+      "scope": "Global",
+      "description": "Harmonic decay/amplitude of the six oscillators. CCW: single tone. First quarter fades in a second harmonic. Remaining range extends decay then amplitude of harmonics 3–6.",
+      "detail": "CCW: 1 partial · CW: 6 partials with long decays"
+    },
+    {
+      "name": "Fold",
+      "scope": "Global",
+      "description": "Infinifolder threshold. Dynamically adds fold stages based on amplitude. Top quarter mixes in a signal-following pulse train for gnarly buzz.",
+      "detail": "0–75%: threshold fold · 75%+: pulse-train buzz"
+    },
+    {
+      "name": "Spread",
+      "scope": "Global",
+      "description": "Frequency spacing of the five non-fundamental oscillators. Sweeps from harmonic series to prime/inharmonic series.",
+      "detail": "CCW: harmonic · CW: inharmonic (prime)"
+    },
+    {
+      "name": "S/L/M Switch",
+      "scope": "Global",
+      "description": "Mode selector. Skin: 6-op additive. Liquid: additive plus pitch envelope on all oscillators. Metal: 6-op FM with cross-modulation between oscillators.",
+      "detail": "Skin · Liquid · Metal · CV-overridable via S/L/M jack"
+    },
+    {
+      "name": "B/A/T Switch",
+      "scope": "Global",
+      "description": "Octave range offset. Alto is +2 octaves; Treble is +4 octaves relative to Bass.",
+      "detail": "Bass · Alto (+2 oct) · Treble (+4 oct) · CV-overridable via B/A/T jack"
+    },
+    {
+      "name": "HIT",
+      "scope": "Global",
+      "description": "Momentary manual trigger button. Sums with Trig input — useful for live hits without patching a cable.",
+      "detail": "momentary"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Pitch",
+      "description": "1V/oct pitch CV for the fundamental oscillator. Sums with Pitch knob.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "Morph",
+      "description": "CV for waveshape. Sums with Morph knob offset.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Attack",
+      "description": "CV for attack parameter. Sums with Attack knob offset.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Decay",
+      "description": "CV for decay parameter. Sums with Decay knob offset.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Harm",
+      "description": "CV for harmonic parameter. Sums with Harmonic knob offset.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Fold",
+      "description": "CV for fold threshold and pulse-train mix. Sums with Fold knob offset.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Spread",
+      "description": "CV for frequency spacing of harmonics. Sums with Spread knob offset.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "S/L/M",
+      "description": "CV overrides the Skin/Liquid/Metal switch. Voltage scans across the three modes.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "B/A/T",
+      "description": "CV overrides the Bass/Alto/Treble octave switch. Voltage selects range.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "Trig",
+      "description": "Rising-edge trigger fires the drum envelope. Retrigger ignored while envelope is rising.",
+      "voltage": "~3V threshold"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Out",
+      "description": "Main audio output. Low-impedance. Level varies with parameters — internal loudness compensation applied after the folder.",
+      "voltage": "audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Skin mode",
+      "trigger": "S/L/M switch → Skin (or 0V at S/L/M jack)",
+      "description": "Six-operator additive synth. Each oscillator plays a static partial determined by Spread. Skin models non-interacting drum modes — classic kicks, toms, metallic stabs. Fold and Harm are the main timbre sculptors here since there is no pitch envelope."
+    },
+    {
+      "name": "Liquid mode",
+      "trigger": "S/L/M switch → Liquid (or mid CV at S/L/M jack)",
+      "description": "Skin architecture with an added pitch envelope on all six oscillators. Produces the punchy pitch drop of classic kicks without external patching. Decay knob affects both amplitude and pitch envelope length. Best mode for 808/909-style kicks."
+    },
+    {
+      "name": "Metal mode",
+      "trigger": "S/L/M switch → Metal (or high CV at S/L/M jack)",
+      "description": "Classic 80s-style FM: the six oscillators phase-modulate each other with no regard for aliasing. Produces bell, cowbell, metallic crash, and alien noise textures. Spread and Harm become frequency-ratio controls; small changes cause huge timbral shifts."
+    },
+    {
+      "name": "CV overrides mode switch",
+      "trigger": "cable → S/L/M or B/A/T CV input",
+      "description": "Both mode/octave switches are CV-scannable. Patching gate or LFO to S/L/M flips between Skin/Liquid/Metal per-hit. B/A/T CV enables stepped octave jumps. Both jacks accept 0–5V and override the physical switch when patched."
+    },
+    {
+      "name": "Infinifold with pulse injection",
+      "trigger": "Fold knob in top quarter",
+      "description": "Below 75%, Fold threshold is set and the internal engine dynamically stacks fold stages to maximize folding while compensating amplitude. Past 75% an exponentially-decaying pulse is injected at signal minima/maxima, adding a gnarly buzz that tracks pitch. Key sound-design zone for noisy snares and sub-bass."
+    },
+    {
+      "name": "Post-fold envelope restore",
+      "trigger": "any trigger",
+      "description": "After the folder, BIA re-applies an envelope derived from the summed oscillator shape. This restores the punchy dynamic that folding normally kills, so even maximum Fold keeps percussive umph instead of becoming a steady-state tone."
+    },
+    {
+      "name": "Inharmonic Spread",
+      "trigger": "Spread knob CW",
+      "description": "Spread at CCW or fully CW produces strictly harmonic series; intermediate positions interpolate toward the prime-number series. Combined with aligned-alias sample rate, CCW and CW give the cleanest tonal results; between-positions add unique aliasing character."
+    },
+    {
+      "name": "Variable sample rate aliasing",
+      "trigger": "any pitch",
+      "description": "Internal sample rate is a multiple of the fundamental. Aliases fall on harmonics of the fundamental when Spread is fully CCW or CW — this makes aliasing musically aligned rather than noisy. Between Spread positions, aliasing adds unique digital character to the sound."
+    },
+    {
+      "name": "Pitched drone oscillator",
+      "trigger": "Decay fully CW + sustained trigger",
+      "description": "With Decay maxed and Trig held high (or looped sub-audio trigger), BIA sustains indefinitely as a pitched drone voice. Morph, Harm, Spread become timbre controls for a pseudo-additive oscillator. Pitch input tracks 1V/oct across the useful range for melodic use."
+    },
+    {
+      "name": "5V rail option",
+      "trigger": "rear PCB switch",
+      "description": "Rear-panel tab switch routes the processor to the 5V eurorack rail instead of 12V. Reduces 12V noise and current load (drops +12V from 150mA to 80mA). Requires a case that supplies the 5V rail."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic 909 kick",
+      "patch": "Mode: Liquid · B/A/T: Bass · Pitch 9 o'clock · Decay 2 o'clock · Attack noon · Morph 10 o'clock (tri-ish) · Harm 10 o'clock · Fold 10 o'clock · Spread full CCW · clock triggers Trig · Liquid pitch envelope delivers the 909 bloom without external envelope · tighten by lowering Decay",
+      "diagram": "Basimilus Iteritas Alter:\n* Mode: Liquid · Range: Bass\n* Pitch: 9 o'clock · Decay: 2 o'clock · Harm: 10 o'clock · Morph: 10 o'clock · Fold: 10 o'clock · Spread: full CCW\n\nClock:\n\n- Clock (Out) t> Basimilus Iteritas Alter (Trig)\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Metal crash with morphing ratio",
+      "patch": "Mode: Metal · B/A/T: Treble · Pitch noon · Decay 3 o'clock · Attack noon · slow triangle LFO → Spread CV (±2V) · stepped random → Harm CV · every hit lands on a different FM ratio with different decay structure · gate sequencer fires Trig · ghost hi-hats and wash crashes out of one module",
+      "diagram": "Basimilus Iteritas Alter:\n* Mode: Metal · Range: Treble\n* Pitch: noon · Decay: 3 o'clock · Attack: noon\n\nLFO:\nS&H:\nGate Seq:\n\n- LFO (Tri) >> Basimilus Iteritas Alter (Spread)\n- S&H (Out) >> Basimilus Iteritas Alter (Harm)\n- Gate Seq (Out) t> Basimilus Iteritas Alter (Trig)\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Pulse-train snare",
+      "patch": "Mode: Skin · B/A/T: Alto · Pitch 10 o'clock · Decay 10 o'clock · Attack 9 o'clock (noise blend) · Morph 3 o'clock · Harm 1 o'clock · Fold full CW (pulse injection) · Spread noon · noise attack plus pulse-buzz folder yields a gritty 606-style snare · envelope out of Maths → Attack CV for velocity-sensitive noise blend",
+      "diagram": "Basimilus Iteritas Alter:\n* Mode: Skin · Range: Alto\n* Pitch: 10 o'clock · Decay: 10 o'clock · Attack: 9 o'clock · Harm: 1 o'clock · Fold: full CW · Spread: noon · Morph: 3 o'clock\n\nMATHS:\n* CH 1: envelope\n\n- Clock (Out) t> Basimilus Iteritas Alter (Trig)\n- Clock (Out) t> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> Basimilus Iteritas Alter (Attack)\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Mode-jumping drum voice",
+      "patch": "Stepped random (0–5V) → S/L/M CV · each trigger lands on Skin, Liquid, or Metal randomly · Pitch noon · Decay 1 o'clock · Attack 11 o'clock · Harm 11 o'clock · Fold noon · Spread 1 o'clock · same parameter settings sound dramatically different per mode — single-voice drum kit from a stepped random source",
+      "diagram": "Basimilus Iteritas Alter:\n* Pitch: noon · Decay: 1 o'clock · Attack: 11 o'clock · Harm: 11 o'clock · Fold: noon · Spread: 1 o'clock\n\nS&H:\nClock:\n\n- Clock (Out) t> S&H (Trig)\n- S&H (Out) >> Basimilus Iteritas Alter (S/L/M)\n- Clock (Out) t> Basimilus Iteritas Alter (Trig)\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Pitched melodic voice",
+      "patch": "Mode: Skin · B/A/T: Alto · quantized sequencer → Pitch 1V/oct · Decay full CW (drone) · Attack 1 o'clock (slow) · Harm 11 o'clock · Fold 10 o'clock · Morph 9 o'clock (sine-ish) · Spread full CCW (strict harmonic) · held trigger (or loop gate) · plays as a 6-partial additive synth voice for melodic material",
+      "diagram": "Basimilus Iteritas Alter:\n* Mode: Skin · Range: Alto\n* Decay: full CW · Attack: 1 o'clock · Harm: 11 o'clock · Fold: 10 o'clock · Morph: 9 o'clock · Spread: full CCW\n\nSequencer:\nGate Source:\n\n- Sequencer (Pitch) p> Basimilus Iteritas Alter (Pitch)\n- Gate Source (Out) g> Basimilus Iteritas Alter (Trig) // sustained gate\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Octave-stepping tom fill",
+      "patch": "Mode: Liquid · ascending 3-step CV (0V, 2.5V, 5V) → B/A/T CV · same trigger fires BIA · three identical hits jump Bass → Alto → Treble · Pitch 11 o'clock · Decay 1 o'clock · Harm noon · produces a classic ascending tom fill from a single-voice · Maths can easily generate the ramp via CH 1 Rise",
+      "diagram": "Basimilus Iteritas Alter:\n* Mode: Liquid\n* Pitch: 11 o'clock · Decay: 1 o'clock · Harm: noon\n\nMATHS:\n* CH 1: ramp 0-5V\n\nClock:\n\n- Clock (Out) t> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> Basimilus Iteritas Alter (B/A/T) // ascending octaves\n- Clock (Out) t> Basimilus Iteritas Alter (Trig)\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Noise-attack hi-hat",
+      "patch": "Mode: Metal · B/A/T: Treble · Pitch 2 o'clock · Decay 9 o'clock (short) · Attack full CCW (max noise) · Harm 3 o'clock (many harmonics) · Fold 2 o'clock · Spread 1 o'clock · euclidean gate → Trig · short decay plus noise attack gives crisp digital hi-hat · CV Decay for open/closed variation",
+      "diagram": "Basimilus Iteritas Alter:\n* Mode: Metal · Range: Treble\n* Pitch: 2 o'clock · Decay: 9 o'clock · Attack: full CCW · Harm: 3 o'clock · Fold: 2 o'clock · Spread: 1 o'clock\n\nEuclidean:\nGate Seq:\n\n- Euclidean (Out) t> Basimilus Iteritas Alter (Trig)\n- Gate Seq (Out) >> Basimilus Iteritas Alter (Decay) // open/closed HH\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
+    },
+    {
+      "name": "FM bass with morph sweep",
+      "patch": "Mode: Metal · B/A/T: Bass · Pitch 8 o'clock · Decay full CW · Attack noon · Harm 11 o'clock · Fold 9 o'clock · slow sine LFO → Morph CV (full swing) · sustained gate into Trig · pitched 1V/oct sequencer · drone-bass voice with a slowly morphing FM character · works as a reese-style bass for techno",
+      "diagram": "Basimilus Iteritas Alter:\n* Mode: Metal · Range: Bass\n* Decay: full CW · Attack: noon · Harm: 11 o'clock · Fold: 9 o'clock\n\nSequencer:\nLFO:\n\n- Sequencer (Pitch) p> Basimilus Iteritas Alter (Pitch)\n- Sequencer (Gate) g> Basimilus Iteritas Alter (Trig) // sustain\n- LFO (Sine) >> Basimilus Iteritas Alter (Morph) // slow full-swing sweep\n- Basimilus Iteritas Alter (Out) -> VCF (In)\n- VCF (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Velocity-scaled kick via envelope-mod-Fold",
+      "patch": "Mode: Liquid · Pitch 9 o'clock · Decay 1 o'clock · Attack noon · Harm 10 o'clock · Spread full CCW · envelope follower on external hat track → Fold CV · kick intensity follows other drum energy · ducking-like buzz response that swells into syncopated density · trigger fires on downbeats only",
+      "diagram": "Basimilus Iteritas Alter:\n* Mode: Liquid\n* Pitch: 9 o'clock · Decay: 1 o'clock · Attack: noon · Harm: 10 o'clock · Spread: full CCW\n\nClock:\nEnv Follower:\nHat Bus:\n\n- Hat Bus (Out) -> Env Follower (In)\n- Env Follower (Env) >> Basimilus Iteritas Alter (Fold) // buzz follows hat energy\n- Clock (Out) t> Basimilus Iteritas Alter (Trig)\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Self-triggered aliasing bell",
+      "patch": "Mode: Metal · B/A/T: Treble · Pitch 3 o'clock (high) · Decay 2 o'clock · Attack noon · Harm full CW · Fold full CW · Spread 2 o'clock (between-positions — max aliasing) · audio-rate trigger from square VCO (~50 Hz) into Trig · digital bell voice with gritty re-triggered FM character · pitch the VCO for metallic bell sequences",
+      "diagram": "Basimilus Iteritas Alter:\n* Mode: Metal · Range: Treble\n* Pitch: 3 o'clock · Decay: 2 o'clock · Harm: full CW · Fold: full CW · Spread: 2 o'clock\n\nVCO:\n* Wave: Square · ~50 Hz\n\nLFO:\n\n- VCO (Out) t> Basimilus Iteritas Alter (Trig) // audio-rate re-trigger\n- LFO (Out) p> VCO (V/Oct) // bell sequence\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
+    }
+  ]
+}

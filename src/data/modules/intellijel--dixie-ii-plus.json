@@ -1,0 +1,137 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/downloads/manuals/dixie-2-plus_manual_2021.08.01.pdf",
+      "https://intellijel.com/shop/eurorack/dixie-2-plus/",
+      "https://forum.intellijel.com/t/dixie-ii-sync-behavior/2194"
+    ]
+  },
+  "slug": "intellijel--dixie-ii-plus",
+  "name": "Dixie II+",
+  "manufacturer": "Intellijel",
+  "hp": 8,
+  "tags": ["VCO", "OSCILLATOR", "LFO"],
+  "description": "Full-featured analog triangle-core VCO/LFO. Five simultaneous waveform outputs plus square sub, dual FM with selectable linear/exponential, PWM, hard sync and direction-flip sync.",
+  "controls": [
+    {
+      "name": "OCTAVE",
+      "scope": "Global",
+      "description": "8-position slide switch sets coarse tuning in octave steps.",
+      "detail": "8 positions · 1 octave per step · highest positions can clip LFO upper limit"
+    },
+    {
+      "name": "EXP/LIN",
+      "scope": "FM1",
+      "description": "Selects response curve of the FM1 input.",
+      "detail": "EXP: musical FM · LIN: through-zero-style timbral FM"
+    },
+    {
+      "name": "FINE",
+      "scope": "Global",
+      "description": "Fine tuning knob. Range depends on VCO/LFO mode.",
+      "detail": "VCO: ±6 semitones · LFO: ±7 octaves"
+    },
+    {
+      "name": "VCO/LFO",
+      "scope": "Global",
+      "description": "Switches between audio-rate and low-frequency operation.",
+      "detail": "VCO: 20 Hz–~60 kHz · LFO: several minutes up to ~1 kHz"
+    },
+    {
+      "name": "FM1 Attenuator",
+      "scope": "FM1",
+      "description": "Scales depth of the FM1 input before summing.",
+      "detail": "CCW: zero · CW: unity · unipolar attenuator"
+    },
+    {
+      "name": "PWM Attenuator",
+      "scope": "PWM",
+      "description": "Scales depth of the PWM CV input.",
+      "detail": "CCW: zero · CW: unity · unipolar attenuator"
+    },
+    {
+      "name": "PULSE WIDTH",
+      "scope": "PULSE",
+      "description": "Sets base pulse duty cycle of the PULSE output, summed with PWM input.",
+      "detail": "CCW: 10% · noon: 50% square · CW: 90% · can hit 0%/100% for silence"
+    }
+  ],
+  "inputs": [
+    { "name": "FM1", "description": "Frequency modulation input; curve set by EXP/LIN switch and scaled by FM1 attenuator", "voltage": "audio/CV" },
+    { "name": "FM2", "description": "Dedicated exponential frequency modulation input (no attenuator)", "voltage": "CV" },
+    { "name": "PWM", "description": "Pulse-width modulation input summed with PULSE WIDTH knob", "voltage": "±5V" },
+    { "name": "1V/OCT", "description": "Primary pitch control input, precision tracking", "voltage": "1V/oct" },
+    { "name": "SYNC", "description": "Hard sync: waveform resets to zero on each zero-crossing of incoming signal", "voltage": "audio/gate" },
+    { "name": "FLIP", "description": "Soft sync alternative: flips direction of triangle-core travel on zero-crossings instead of resetting", "voltage": "audio/gate" }
+  ],
+  "outputs": [
+    { "name": "SINE", "description": "Sine wave output", "voltage": "~10 Vpp" },
+    { "name": "TRIANGLE", "description": "Triangle wave output", "voltage": "~10 Vpp" },
+    { "name": "ZIG-ZAG", "description": "Zig-zag (asymmetric triangle) output", "voltage": "~10 Vpp" },
+    { "name": "SAW", "description": "Sawtooth wave output", "voltage": "~10 Vpp" },
+    { "name": "PULSE", "description": "Pulse wave with width set by PULSE WIDTH knob + PWM input", "voltage": "~10 Vpp" },
+    { "name": "SUB", "description": "Square sub-oscillator, 50% duty cycle one octave below primary", "voltage": "~10 Vpp" }
+  ],
+  "behaviors": [
+    {
+      "name": "Simultaneous Waveforms",
+      "trigger": "always",
+      "description": "All six outputs are live at once. Patch triangle to the filter while sending pulse to a ring mod and sub to the bass path — one VCO fans out into parallel voices."
+    },
+    {
+      "name": "Hard Sync vs Flip Sync",
+      "trigger": "SYNC / FLIP inputs",
+      "description": "SYNC resets the core to zero, producing the classic hard-sync sweep timbre. FLIP reverses direction of travel instead, yielding softer, less phase-locked harmonics — useful for pseudo-linear-FM effects without losing pitch."
+    },
+    {
+      "name": "Linear FM Mode",
+      "trigger": "EXP/LIN switch = LIN",
+      "description": "FM1 becomes linear-response FM. Pairs with an AC-coupled audio-rate modulator for DX-style bell and metallic tones while 1V/OCT still tracks cleanly at the pitch input."
+    },
+    {
+      "name": "LFO Mode",
+      "trigger": "VCO/LFO switch = LFO",
+      "description": "Frequency range drops to LFO territory. All six outputs still live, so one module provides sine, triangle, zig-zag, saw, PWM pulse and sub-octave square LFOs simultaneously."
+    },
+    {
+      "name": "PWM Range",
+      "trigger": "PULSE WIDTH + PWM input",
+      "description": "Knob and CV sum. At duty-cycle extremes (0% or 100%) the pulse goes silent — useful for envelope-style gating off the PWM jack or as a hard mute trick."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic hard-sync lead",
+      "patch": "Master VCO into Dixie SYNC · sweep Dixie pitch with envelope · take saw output · sharp timbral sweeps tracking keyboard pitch of the master",
+      "diagram": "Dixie II+:\n* VCO mode · OCT 4\n\n- Master VCO (Saw) -> Dixie II+ (SYNC)\n- Sequencer (Pitch) p> Master VCO (V/Oct)\n- Envelope (Out) >> Dixie II+ (FM2)\n- Dixie II+ (SAW) -> Filter (In)\n- Sequencer (Pitch) p> Dixie II+ (1V/OCT) // hard-sync sweep"
+    },
+    {
+      "name": "Linear-FM bell",
+      "patch": "Modulator VCO sine → Dixie FM1 · EXP/LIN set to LIN · FM1 attenuator ~noon · take SINE output · produces clean DX-style bells that still track 1V/oct",
+      "diagram": "Dixie II+:\n* VCO mode · EXP/LIN=LIN · FM1 atten noon\n\n- Modulator VCO (Sine) -> Dixie II+ (FM1)\n- Sequencer (Pitch) p> Dixie II+ (1V/OCT)\n- Sequencer (Pitch) p> Modulator VCO (V/Oct)\n- Envelope (Out) >> VCA (CV)\n- Dixie II+ (SINE) -> VCA (In) // linear FM bell"
+    },
+    {
+      "name": "Sub-augmented bass",
+      "patch": "Saw to filter for main voice · SUB mixed underneath at equal level · PULSE width narrowed for click transient · thick square-octave-down bass with percussive attack",
+      "diagram": "Dixie II+:\n* VCO mode · PW ~11 o'clock\n\n- Dixie II+ (SAW) -> Mixer (In 1)\n- Dixie II+ (SUB) -> Mixer (In 2)\n- Dixie II+ (PULSE) -> Mixer (In 3)\n- Mixer (Out) -> Filter (In)\n- Envelope (Out) >> Filter (Cutoff)\n- Sequencer (Pitch) p> Dixie II+ (1V/OCT) // fat bass + sub + click"
+    },
+    {
+      "name": "Six-output LFO bank",
+      "patch": "VCO/LFO switch to LFO · OCT low · use all six outputs as independent LFOs: sine to filter, saw to pan, zig-zag to VCA, pulse as clock divider, sub as half-rate trigger source",
+      "diagram": "Dixie II+:\n* LFO mode · OCT 1 · FINE 12 o'clock\n\n- Dixie II+ (SINE) >> Filter (Cutoff)\n- Dixie II+ (SAW) >> Panner (CV)\n- Dixie II+ (ZIG-ZAG) >> VCA (CV)\n- Dixie II+ (PULSE) c> Clock Divider (In)\n- Dixie II+ (SUB) t> Envelope (Trig) // one module, six LFOs"
+    },
+    {
+      "name": "Audio-rate PWM squelch",
+      "patch": "Audio-rate LFO or second VCO sine into PWM · PWM attenuator ~2 o'clock · PULSE output sweeps duty cycle at audio rate · produces syncopated, hollow timbres without a filter",
+      "diagram": "Dixie II+:\n* VCO mode · PW noon · PWM atten 2 o'clock\n\n- Modulator VCO (Sine) >> Dixie II+ (PWM)\n- Sequencer (Pitch) p> Dixie II+ (1V/OCT)\n- Dixie II+ (PULSE) -> VCA (In)\n- Envelope (Out) >> VCA (CV) // audio-rate PWM hollow timbre"
+    },
+    {
+      "name": "Flip-sync soft FM",
+      "patch": "Modulator saw into FLIP input · produces inharmonic overtones without phase-locking to a single hard-sync edge · softer, more vowel-like than SYNC · pair with BPF for formant sweeps",
+      "diagram": "Dixie II+:\n* VCO mode · OCT 4\n\n- Modulator VCO (Saw) -> Dixie II+ (FLIP)\n- Sequencer (Pitch) p> Dixie II+ (1V/OCT)\n- Sequencer (Pitch) p> Modulator VCO (V/Oct)\n- Dixie II+ (TRIANGLE) -> BPF (In)\n- LFO (Out) >> BPF (Cutoff) // flip-sync formant sweeps"
+    }
+  ]
+}

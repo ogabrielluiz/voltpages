@@ -1,0 +1,206 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.thonk.co.uk/shop/plinky-assembled/",
+      "https://www.thonk.co.uk/brand/plinkysynth/",
+      "https://plinkysynth.com/docs/manual/",
+      "https://plinkysynth.com/plinky_manual.pdf"
+    ]
+  },
+  "slug": "thonk--plinky",
+  "name": "Plinky Synth",
+  "manufacturer": "Thonk",
+  "hp": 24,
+  "tags": ["SAMPLER", "OSCILLATOR", "SEQUENCER", "FILTER", "MIDI"],
+  "description": "Expressive 8-voice touch synthesizer with 64 main pads, sampler/oscillator voices, low-pass gates, delay/reverb, sequencer, arpeggiator, and TRS MIDI on v3.",
+  "controls": [
+    {
+      "name": "Main pads (64)",
+      "scope": "Performance",
+      "description": "Play the eight string voices and edit parameters by touch.",
+      "detail": "8 vertical strips"
+    },
+    {
+      "name": "Shift keys (8)",
+      "scope": "Global",
+      "description": "Select presets, sequencer pages, parameters and samples with the main pads.",
+      "detail": "blue LEDs"
+    },
+    {
+      "name": "Transport / mode pads",
+      "scope": "Global",
+      "description": "Provide play, record, clear, previous, next and preset workflow control.",
+      "detail": "touch pads"
+    },
+    {
+      "name": "Arrow column",
+      "scope": "Edit",
+      "description": "Acts as a vertical slider during parameter edit mode.",
+      "detail": "touch strip"
+    },
+    {
+      "name": "Encoder",
+      "scope": "Global",
+      "description": "Selects and edits parameters and presets.",
+      "detail": "push encoder"
+    },
+    {
+      "name": "A / B knobs",
+      "scope": "Modulators A/B",
+      "description": "Offset the A and B modulators when those sources are used.",
+      "detail": "physical knobs"
+    },
+    {
+      "name": "Modulation rows",
+      "scope": "A/B/X/Y",
+      "description": "Rows 6 and 7 control CV level, offset, depth, rate, shape and symmetry for the four modulators.",
+      "detail": "A, B, X, Y"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Pitch Input",
+      "description": "V/oct input that transposes hand-played notes, arpeggiator or sequencer.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "Gate Input",
+      "description": "Scales the openness of the low-pass gates.",
+      "voltage": "+5V gate"
+    },
+    {
+      "name": "A, B, X, Y Inputs",
+      "description": "Four modulation CV inputs with dedicated LFOs.",
+      "voltage": "+/-5V"
+    },
+    {
+      "name": "Clock Input",
+      "description": "16th-note / 4 PPQN clock input for sequencer and arpeggiator sync.",
+      "voltage": "clock pulse"
+    },
+    {
+      "name": "Audio Input",
+      "description": "Stereo line / Eurorack audio input for effect processing or sampling.",
+      "voltage": "line or modular audio"
+    },
+    {
+      "name": "TRS MIDI In",
+      "description": "TRS MIDI input on Plinky v3.",
+      "voltage": "Type A / B"
+    },
+    {
+      "name": "USB-C",
+      "description": "USB power and computer connection.",
+      "voltage": "5V USB"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Trigger Output",
+      "description": "Trigger out for each note played by hand, the arpeggiator or sequencer.",
+      "voltage": "trigger pulse"
+    },
+    {
+      "name": "Touch Output",
+      "description": "Highest current finger pressure across the strings.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Pitch Hi / Lo Output",
+      "description": "V/oct outputs for the highest and lowest notes being played.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "Gate Output",
+      "description": "Gate signal while one or more pads are being touched.",
+      "voltage": "5V gate"
+    },
+    {
+      "name": "A, B, X, Y Outputs",
+      "description": "Modulation outputs derived from the four mod sources.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "Euro L / R",
+      "description": "Stereo Eurorack-level audio output.",
+      "voltage": "Eurorack level"
+    },
+    {
+      "name": "Phones Top",
+      "description": "Top-panel headphone output.",
+      "voltage": "stereo headphone"
+    },
+    {
+      "name": "Phones Bottom",
+      "description": "Bottom-panel headphone output.",
+      "voltage": "stereo headphone"
+    },
+    {
+      "name": "TRS MIDI Out",
+      "description": "TRS MIDI output on Plinky v3.",
+      "voltage": "Type A / B"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Eight-string polyphony",
+      "trigger": "touch any of the 64 main pads",
+      "description": "Plinky plays eight separate string voices arranged as eight vertical strips, and each string can stack oscillators or grains for a dense polyphonic texture."
+    },
+    {
+      "name": "Shift-pad editing",
+      "trigger": "hold a shift key and tap a pad",
+      "description": "The pad grid becomes a parameter editor, preset selector and sample browser rather than only a keyboard."
+    },
+    {
+      "name": "Modulator quartet",
+      "trigger": "use A, B, X or Y as a source",
+      "description": "Each mod source has its own LFO, and modulators A and B also have physical knobs that add offset on top of any incoming CV."
+    },
+    {
+      "name": "TRS MIDI performance",
+      "trigger": "feed Plinky v3 via MIDI In",
+      "description": "The v3 hardware supports external polyphonic sequencing over TRS MIDI while still letting a melodic line be played on top by touch."
+    },
+    {
+      "name": "Input overdrive",
+      "trigger": "drive the audio input hard",
+      "description": "The input stage can saturate into crunchy fuzz, especially when fed with modular-level signals."
+    },
+    {
+      "name": "Gate and touch CV extraction",
+      "trigger": "play the pads",
+      "description": "Plinky exposes gate, touch pressure, highest/lowest pitch and modulation CVs, so it can behave as both a synth voice and a controller for the rest of the rack."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "MIDI poly voice",
+      "patch": "TRS MIDI In from a keyboard or sequencer plays Plinky v3 as an 8-voice touch synth. The stereo output goes straight to the mixer while Pitch Hi / Lo and Gate Output can still drive external voices.",
+      "diagram": "Plinky Synth:\n* TRS MIDI In: enabled\n\nMixer:\nVCO 1:\nVCO 2:\nEnvelope:\nVCA:\n\n- MIDI Keyboard (Out) -> Plinky Synth (TRS MIDI In)\n- Plinky Synth (Euro L / R) -> Mixer (In 1)\n- Plinky Synth (Pitch Hi / Lo Output) p> VCO 1 (V/Oct)\n- Plinky Synth (Gate Output) g> Envelope (Trig)\n- VCO 1 (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Mixer (In 2)"
+    },
+    {
+      "name": "Touch-controlled filter voice",
+      "patch": "Use the main pads to play Plinky, then send Touch Output to a filter cutoff and A Output to a VCA. The same finger pressure that opens the strings also animates the external analog voice.",
+      "diagram": "Plinky Synth:\n\nVCO:\nFilter:\nVCA:\nOutput:\n\n- Plinky Synth (Touch Output) >> Filter (Cutoff)\n- Plinky Synth (A, B, X, Y Outputs) >> VCA (CV)\n- Plinky Synth (Euro L / R) -> Output (In)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Stereo sampler fuzz",
+      "patch": "Feed a drum loop into the audio input, raise the saturation, and modulate the delay or reverb with B and X. Plinky becomes a crunchy stereo processor that still keeps the touch keyboard available for overdubs.",
+      "diagram": "Plinky Synth:\n\nDelay:\nReverb:\nMixer:\n\n- Drum Loop (Out) -> Plinky Synth (Audio Input)\n- Plinky Synth (A, B, X, Y Outputs) >> Delay (Time CV)\n- Plinky Synth (A, B, X, Y Outputs) >> Reverb (Mix CV)\n- Plinky Synth (Euro L / R) -> Mixer (In 1)\n- Delay (Out) -> Mixer (In 2)\n- Reverb (Out) -> Mixer (In 3)"
+    },
+    {
+      "name": "Clocked touch sequencer",
+      "patch": "Clock Input locks the arpeggiator or sequencer, Trigger Output retriggers envelopes, and Gate Output keeps a companion VCA open only while notes are held. The result is a compact touch-led pattern voice with external sync.",
+      "diagram": "Plinky Synth:\n\nClock:\nEnvelope:\nVCA:\nFilter:\n\n- Clock (Out) c> Plinky Synth (Clock Input)\n- Plinky Synth (Trigger Output) t> Envelope (Trig)\n- Plinky Synth (Gate Output) g> VCA (CV)\n- Plinky Synth (Euro L / R) -> Filter (In)\n- Envelope (Out) >> Filter (Cutoff)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Modulation bank",
+      "patch": "Route A, B, X and Y outputs to four destinations: filter cutoff, VCA level, delay time and stereo pan. The built-in LFOs make Plinky a four-lane modulation source even when no pads are being played.",
+      "diagram": "Plinky Synth:\n\nVCO:\nFilter:\nVCA:\nDelay:\nMixer:\n\n- Plinky Synth (A, B, X, Y Outputs) >> Filter (Cutoff)\n- Plinky Synth (A, B, X, Y Outputs) >> VCA (CV)\n- Plinky Synth (A, B, X, Y Outputs) >> Delay (Time CV)\n- Plinky Synth (A, B, X, Y Outputs) >> Mixer (Pan CV)\n- Plinky Synth (Euro L / R) -> Mixer (In 1)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- VCA (Out) -> Mixer (In 2)"
+    }
+  ]
+}

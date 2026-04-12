@@ -1,0 +1,112 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.expert-sleepers.co.uk/es8.html",
+      "https://www.expert-sleepers.co.uk/es8usermanual.html"
+    ]
+  },
+  "slug": "expert-sleepers--es-8",
+  "name": "ES-8",
+  "manufacturer": "Expert Sleepers",
+  "hp": 8,
+  "tags": ["I/O", "MIDI", "UTILITY"],
+  "description": "USB 2.0 DC-coupled Eurorack audio interface with four analog inputs, eight analog outputs, ADAT I/O, and ES-5 / ES-6 expansion headers.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "ANALOG IN 1-4",
+      "description": "Four DC-coupled 3.5 mm audio/CV inputs.",
+      "voltage": "approximately ±10V"
+    },
+    {
+      "name": "ADAT IN",
+      "description": "Optical ADAT input for standalone conversion or host clock sync.",
+      "voltage": "24-bit · 44.1/48/88.2/96 kHz"
+    },
+    {
+      "name": "USB-C",
+      "description": "Class-compliant USB 2.0 host connection for audio and CV streaming."
+    },
+    {
+      "name": "ES-5 header",
+      "description": "Rear expansion header for ES-5 and downstream gate/CV/MIDI expanders."
+    },
+    {
+      "name": "ES-6 header",
+      "description": "Rear expansion header for ES-6 input expansion."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ANALOG OUT 1-8",
+      "description": "Eight DC-coupled 3.5 mm outputs for audio or CV.",
+      "voltage": "approximately ±10V"
+    },
+    {
+      "name": "ADAT OUT",
+      "description": "Optical ADAT output for eight channels of digital audio."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "USB interface mode",
+      "trigger": "USB host connection",
+      "description": "The ES-8 presents as a class-compliant USB 2.0 interface and streams 4 inputs, 8 outputs and ADAT I/O to a computer or iOS host."
+    },
+    {
+      "name": "Standalone ADAT converter",
+      "trigger": "no USB host connected",
+      "description": "Without a USB connection, the module works as an ADAT-to-audio converter for another ADAT-equipped interface."
+    },
+    {
+      "name": "Clock sync to ADAT",
+      "trigger": "sync input ADAT signal",
+      "description": "The internal clock can run freely or lock to the incoming ADAT stream."
+    },
+    {
+      "name": "ES-5 / ES-6 expansion",
+      "trigger": "rear expansion headers",
+      "description": "The ES-5 header drives gate and MIDI expansion chains, while the ES-6 header adds extra input expansion to the interface."
+    },
+    {
+      "name": "DC-coupled modulation path",
+      "trigger": "route CV through the interface",
+      "description": "All analog ins and outs are DC-coupled, so the ES-8 passes modulation, pitch and audio without AC blocking."
+    },
+    {
+      "name": "Host status LEDs",
+      "trigger": "front panel LEDs",
+      "description": "The top LED indicates USB host connection; the bottom LED indicates that the PLL has locked and a valid audio clock is present."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "DAW multitrack capture",
+      "patch": "four modular sources into IN 1-4 · record each channel in the DAW · ES-8 keeps the capture DC-coupled so CV or audio can be archived without extra conversion.",
+      "diagram": "ES-8:\n* USB mode: capture\n\nDAW:\nSource 1:\nSource 2:\nSource 3:\nSource 4:\n\n- Source 1 (Out) -> ES-8 (ANALOG IN 1)\n- Source 2 (Out) -> ES-8 (ANALOG IN 2)\n- Source 3 (Out) -> ES-8 (ANALOG IN 3)\n- Source 4 (Out) -> ES-8 (ANALOG IN 4)\n- ES-8 (USB OUT) -> DAW (Tracks)"
+    },
+    {
+      "name": "DAW CV sequencer",
+      "patch": "DAW pitch lanes to OUT 1-4 · VCO 1V/oct and filter cutoff under computer control · clock and gates stay sample-accurate to the session timeline.",
+      "diagram": "ES-8:\n* USB mode: CV output\n\nDAW:\nVCO:\nFilter:\nEnvelope:\nOutput:\n\n- DAW (Pitch) -> ES-8 (USB IN)\n- ES-8 (ANALOG OUT 1) p> VCO (V/Oct)\n- ES-8 (ANALOG OUT 2) >> Filter (Cutoff)\n- ES-8 (ANALOG OUT 3) g> Envelope (Trig)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Standalone ADAT bridge",
+      "patch": "ADAT interface carries modular audio to another converter · no USB host required · useful when the ES-8 is acting as a front-end for a larger studio rig.",
+      "diagram": "ES-8:\n* Standalone mode: ADAT bridge\n\nAudio Interface:\nOutput:\n\n- Audio Interface (ADAT Out) -> ES-8 (ADAT IN)\n- ES-8 (ANALOG OUT 1) -> Output (L)\n- ES-8 (ANALOG OUT 2) -> Output (R)"
+    },
+    {
+      "name": "ES-5 gate rack",
+      "patch": "ES-5 header drives gate expanders from the same interface instance · one DAW session can run drums, clock pulses and reset logic across many modules.",
+      "diagram": "ES-8:\n* ES-5 header: connected\n\nES-5:\n\nDrum:\nClock:\nEnvelope:\n\n- DAW (Gate) -> ES-8 (USB IN)\n- ES-8 (ES-5 header) -> ES-5 (In)\n- ES-5 (Gate 1) t> Drum (Trig)\n- ES-5 (Gate 2) c> Clock (Reset)\n- ES-5 (Gate 3) t> Envelope (Trig)"
+    },
+    {
+      "name": "Hybrid send and return",
+      "patch": "modular source into IN 1-2 · DAW reverb/compressor on USB return · processed audio back to OUT 7-8 · the ES-8 behaves like a low-latency insert point for a Eurorack voice.",
+      "diagram": "ES-8:\n* USB mode: insert loop\n\nSource:\nDAW:\nOutput:\n\n- Source (L) -> ES-8 (ANALOG IN 1)\n- Source (R) -> ES-8 (ANALOG IN 2)\n- ES-8 (USB OUT) -> DAW (Plugin In)\n- DAW (Plugin Out) -> ES-8 (USB IN)\n- ES-8 (ANALOG OUT 7) -> Output (L)\n- ES-8 (ANALOG OUT 8) -> Output (R)"
+    }
+  ]
+}

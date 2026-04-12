@@ -1,0 +1,348 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1955/1.1",
+    "sources": [
+      "http://xaocdevices.com/manuals/xaoc_sofia_manual.pdf",
+      "https://xaocdevices.com/main/sofia/",
+      "https://modulargrid.net/e/xaoc-devices-sofia",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=260555",
+      "https://www.perfectcircuit.com/xaoc-devices-sofia.html"
+    ]
+  },
+  "slug": "xaoc-devices--sofia",
+  "name": "Sofia",
+  "manufacturer": "Xaoc Devices",
+  "hp": 24,
+  "tags": [
+    "OSCILLATOR",
+    "VCO",
+    "WAVESHAPER",
+    "RESONATOR"
+  ],
+  "description": "Analog formant oscillator implementing extended FOF synthesis. Triangle core plus two decaying-sine ripple elements (A, B) produce phase-coherent vocal/organic tones without filters. Per-element ratio, damp, warp, shape, and tracking give wide spectral control.",
+  "controls": [
+    {
+      "name": "PITCH",
+      "scope": "Global",
+      "description": "Continuous pitch over a two-octave range. Sums with OCTAVE switch and all pitch CV inputs.",
+      "detail": "±12 semitones · fundamental range ~0.4Hz–12kHz combined with OCTAVE"
+    },
+    {
+      "name": "OCTAVE",
+      "scope": "Global",
+      "description": "8-position rotary selecting octave band. LO enters LFO/subsonic territory.",
+      "detail": "LO · 64' · 32' · 16' · 8' · 4' · 2' · 1'"
+    },
+    {
+      "name": "ELEMENTS MIX",
+      "scope": "Global",
+      "description": "Balance between ripple elements A and B. Noon = 1:1.",
+      "detail": "CCW = A only · noon = equal · CW = B only · CV ±5V offset"
+    },
+    {
+      "name": "FUND·ELEM MIX",
+      "scope": "Global",
+      "description": "Balance between the fundamental (base) tone and the summed ripple elements at MAIN OUT.",
+      "detail": "min = fundamental only · max = elements only · CV ±5V offset"
+    },
+    {
+      "name": "PITCH FM attenuator",
+      "scope": "Global",
+      "description": "Attenuator for the PITCH FM input. Modulates the whole oscillator including ripples — preserves waveform shape.",
+      "detail": "0–10 · shape-preserving FM"
+    },
+    {
+      "name": "GLOBAL FM attenuator",
+      "scope": "Global",
+      "description": "Attenuator for GLOBAL FM input. Modulates only the base tone — preserves overall spectrum, ripples stay put.",
+      "detail": "0–10 · spectrum-preserving FM"
+    },
+    {
+      "name": "RATIO A",
+      "scope": "Element A",
+      "description": "Density of ripple A relative to the fundamental — sets the spectral peak / formant position. Min ≈ no ripple, max ≈ 8 octaves above fundamental.",
+      "detail": "0–10 · ~1 to ~240 ripples per cycle"
+    },
+    {
+      "name": "RATIO B",
+      "scope": "Element B",
+      "description": "Density of ripple B relative to the fundamental — second formant peak. Same scaling as RATIO A.",
+      "detail": "0–10 · ~1 to ~240 ripples per cycle"
+    },
+    {
+      "name": "RATIO A CV attenuator",
+      "scope": "Element A",
+      "description": "Bipolar attenuator for RATIO A CV input.",
+      "detail": "0–10 · for ±5V CV"
+    },
+    {
+      "name": "RATIO B CV attenuator",
+      "scope": "Element B",
+      "description": "Bipolar attenuator for RATIO B CV input.",
+      "detail": "0–10 · for ±5V CV"
+    },
+    {
+      "name": "DAMP A (slider)",
+      "scope": "Element A",
+      "description": "Decay rate of ripple A — behaves like Q/resonance (narrow spike at bottom, long ring at top) but is not a filter.",
+      "detail": "0 = narrow spike ~1% period · 100 = nearly undamped"
+    },
+    {
+      "name": "DAMP B (slider)",
+      "scope": "Element B",
+      "description": "Decay rate of ripple B.",
+      "detail": "0 = narrow spike ~1% period · 100 = nearly undamped"
+    },
+    {
+      "name": "WARP A",
+      "scope": "Element A",
+      "description": "Bends density distribution of ripple A across the cycle. Noon = uniform.",
+      "detail": "CCW = density rises toward end of cycle · CW = density front-loaded"
+    },
+    {
+      "name": "WARP B",
+      "scope": "Element B",
+      "description": "Bends density distribution of ripple B across the cycle.",
+      "detail": "CCW = density rises toward end of cycle · CW = density front-loaded"
+    },
+    {
+      "name": "RATIO TRACK A",
+      "scope": "Element A",
+      "description": "Miniature switch. Tracks element A's ripple density to pitch or keeps it fixed.",
+      "detail": "track = constant waveform shape · off = constant spectrum (formant)"
+    },
+    {
+      "name": "DAMP TRACK A",
+      "scope": "Element A",
+      "description": "Miniature switch. Tracks element A's decay rate to pitch or keeps it fixed.",
+      "detail": "track = constant waveform · off = constant decay time"
+    },
+    {
+      "name": "RATIO TRACK B",
+      "scope": "Element B",
+      "description": "Miniature switch. Tracks element B's ripple density to pitch.",
+      "detail": "track = constant shape · off = constant spectrum"
+    },
+    {
+      "name": "DAMP TRACK B",
+      "scope": "Element B",
+      "description": "Miniature switch. Tracks element B's decay to pitch.",
+      "detail": "track = constant shape · off = constant decay time"
+    },
+    {
+      "name": "SHAPE A",
+      "scope": "Element A",
+      "description": "Per-element switch between sine-like and square-like ripple.",
+      "detail": "SINE = cleaner tone · SQUARE = richer spectrum, more aggressive"
+    },
+    {
+      "name": "SHAPE B",
+      "scope": "Element B",
+      "description": "Per-element switch between sine-like and square-like ripple.",
+      "detail": "SINE = cleaner tone · SQUARE = richer spectrum, more aggressive"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "PITCH CV V/OCT",
+      "description": "1V/octave pitch input, accepts voltages from -10V to +10V. Usable range depends on manual OCTAVE/PITCH settings.",
+      "voltage": "1V/oct · ±10V"
+    },
+    {
+      "name": "PITCH FM",
+      "description": "Pitch FM that modulates fundamental and ripples together — preserves waveform shape.",
+      "voltage": "audio rate capable · scaled by attenuator"
+    },
+    {
+      "name": "GLOBAL FM",
+      "description": "FM that shifts only the base tone — preserves the overall spectral shape of the ripples.",
+      "voltage": "audio rate capable · scaled by attenuator"
+    },
+    {
+      "name": "ELEMENTS MIX",
+      "description": "CV offsetting the A↔B balance.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "FUND·ELEM MIX",
+      "description": "CV offsetting the fundamental↔ripples balance.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "RATIO A",
+      "description": "CV for ripple A density. Scaled by its attenuator.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "RATIO B",
+      "description": "CV for ripple B density. Scaled by its attenuator.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "DAMP A",
+      "description": "CV offsetting ripple A decay rate.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "DAMP B",
+      "description": "CV offsetting ripple B decay rate.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "WARP A",
+      "description": "CV offsetting ripple A density warping across the cycle.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "WARP B",
+      "description": "CV offsetting ripple B density warping.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "IMPULSE A",
+      "description": "Individual decay envelope for element A — the raw amplitude curve without ripples. Useful for self-patching and triggering external gear."
+    },
+    {
+      "name": "IMPULSE B",
+      "description": "Individual decay envelope for element B."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "MAIN OUT",
+      "description": "Final mix of the fundamental and the two ripple elements per the MIX controls."
+    },
+    {
+      "name": "FUND OUT",
+      "description": "Pure sinusoidal fundamental, unaffected by the triangle-core saturation."
+    },
+    {
+      "name": "A OUT",
+      "description": "Element A ripple at full amplitude, without its decay envelope applied."
+    },
+    {
+      "name": "B OUT",
+      "description": "Element B ripple at full amplitude, without its decay envelope applied."
+    },
+    {
+      "name": "IMPULSE A OUT",
+      "description": "Decay envelope of element A, without the ripple carrier. Pulse-like shape spawning each cycle."
+    },
+    {
+      "name": "IMPULSE B OUT",
+      "description": "Decay envelope of element B, without the ripple carrier."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "FOF formant synthesis — time-domain formants",
+      "trigger": "non-zero RATIO + finite DAMP",
+      "description": "Each cycle of the fundamental spawns a pair of decaying sine/square bursts (elements A and B). RATIO sets ripple density ≈ formant centre frequency, DAMP sets decay rate ≈ formant bandwidth. Because both elements are derived from the core, the spectrum stays strictly harmonic even with 'detuned-looking' ripples."
+    },
+    {
+      "name": "Two independent formants (A vs B)",
+      "trigger": "distinct RATIO A vs RATIO B",
+      "description": "Classic vocal vowel approximation uses two formants spaced asymmetrically. Set RATIO A to a low ratio (F1) and RATIO B higher (F2), adjust ELEMENTS MIX for balance. Different vowel shapes emerge from distinct RATIO pairs."
+    },
+    {
+      "name": "Ratio tracking vs fixed-formant",
+      "trigger": "RATIO TRACK switch",
+      "description": "Track ON → ripple density scales with fundamental, so the waveform shape is constant across pitch (sounds like a timbre). Track OFF → ripple frequency stays fixed, formant stays fixed in Hz — the hallmark of vocal/acoustic-sounding pitched playback."
+    },
+    {
+      "name": "Damp tracking vs fixed decay",
+      "trigger": "DAMP TRACK switch",
+      "description": "Track ON → decay time scales with pitch (constant shape). Track OFF → decay time stays fixed in seconds, so at high pitches each cycle rings over the next, blurring toward a sustained resonance; at low pitches the ripple fully decays within a cycle."
+    },
+    {
+      "name": "Shape switch — sine vs square ripple",
+      "trigger": "SHAPE A or SHAPE B switch",
+      "description": "Per-element selection of the ripple carrier. Sine is smoother and vocal; square adds odd harmonics producing more aggressive / buzzy / reed-like tones."
+    },
+    {
+      "name": "Warp reshapes density across the cycle",
+      "trigger": "WARP knob off-noon",
+      "description": "Bends the ripple density distribution within one fundamental period. CW front-loads the density (strong attack, sparse tail); CCW pushes density to the end (sparse front, dense tail). Creates asymmetric articulation — plucks, bowed gestures, breathy attacks."
+    },
+    {
+      "name": "Pitch FM preserves waveform shape",
+      "trigger": "CV into PITCH FM",
+      "description": "All elements follow modulation together. Audio-rate FM produces classic FM sidebands around the fundamental; the ripple density tracks so the formant shape remains coherent."
+    },
+    {
+      "name": "Global FM preserves spectral shape",
+      "trigger": "CV into GLOBAL FM",
+      "description": "Only the base tone responds, ripples stay at their current frequencies. Yields formant-locked pitch wobble — source moves under fixed resonances, like a vocal tract with a changing pitched source."
+    },
+    {
+      "name": "Base tone mix — smooth sine to elements-only",
+      "trigger": "FUND·ELEM MIX",
+      "description": "Min position: only the saturated fundamental — a warm, slightly driven sine. Max: only the ripple elements, which can be very bright. Intermediate positions emulate source+filter relationships without actually filtering anything."
+    },
+    {
+      "name": "Self-patching for wild timbres",
+      "trigger": "cables from A/B/IMPULSE OUTs to CV inputs",
+      "description": "Manual explicitly encourages self-patching. Routing IMPULSE A → RATIO B, or A OUT → WARP B, or FUND OUT → DAMP A creates recursive internal modulation producing animal, metallic, or chaotic textures beyond static FOF."
+    },
+    {
+      "name": "Individual outs for multitracking / FX splits",
+      "trigger": "use A OUT / B OUT / FUND OUT separately",
+      "description": "Each ripple is available at full amplitude without decay, plus IMPULSE outs give the raw decay envelopes. Route each to a different processor (delay on B, reverb on A, dry fundamental) for a pseudo-stereo spread from one oscillator."
+    },
+    {
+      "name": "Subsonic / LFO operation",
+      "trigger": "OCTAVE = LO",
+      "description": "Fundamental drops below 1Hz. Ripple elements become audible grains riding a slow cycle — Sofia effectively turns into a rhythmic formant generator or complex LFO cluster."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Vocal vowel — fixed formants, played keyboard",
+      "patch": "SHAPE A/B = SINE · RATIO TRACK A/B = OFF (fixed formants) · RATIO A ~3 (F1), RATIO B ~6 (F2) · DAMP sliders mid · FUND·ELEM MIX mid · V/Oct from keyboard",
+      "diagram": "Sofia:\n* OCTAVE: 4'\n* RATIO A: 3\n* RATIO B: 6\n* RATIO TRACK A: OFF\n* RATIO TRACK B: OFF\n* SHAPE A: SINE\n* SHAPE B: SINE\n\n- Keyboard (CV) p> Sofia (PITCH CV V/OCT)\n- Env (Out) >> VCA (CV)\n- Sofia (MAIN OUT) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Morphing vowel sequence",
+      "patch": "Two S&H from clocked random → RATIO A CV and RATIO B CV · attenuators ~5 · fixed formant tracking · creates stepped vowel shifts per note",
+      "diagram": "Sofia:\n* RATIO TRACK A: OFF\n* RATIO TRACK B: OFF\n* DAMP A: 50\n* DAMP B: 60\n\n- Seq (Pitch) p> Sofia (PITCH CV V/OCT)\n- Clock (Out) c> S&H1 (Trig)\n- Clock (Out) c> S&H2 (Trig)\n- Noise (Out) >> S&H1 (In)\n- Noise (Out) >> S&H2 (In)\n- S&H1 (Out) >> Sofia (RATIO A)\n- S&H2 (Out) >> Sofia (RATIO B)\n- Sofia (MAIN OUT) -> Output (In)"
+    },
+    {
+      "name": "Plucked string via warp and damp",
+      "patch": "SHAPE A = SQUARE · DAMP A low (short ring) · WARP A full CW (front-loaded density) · RATIO A tracks on · envelope into DAMP A CV extends ring",
+      "diagram": "Sofia:\n* SHAPE A: SQUARE\n* DAMP A: 20\n* WARP A: full CW\n* RATIO TRACK A: ON\n* FUND·ELEM MIX: 8\n\n- Seq (Pitch) p> Sofia (PITCH CV V/OCT)\n- Env (Out) >> Sofia (DAMP A)\n- Sofia (MAIN OUT) -> Output (In)"
+    },
+    {
+      "name": "Self-FM beast — IMPULSE into WARP",
+      "patch": "IMPULSE A → WARP B · IMPULSE B → RATIO A · creates recursive internal modulation, producing growling, animal-like dynamics that respond to pitch",
+      "diagram": "Sofia:\n* RATIO A: 4\n* RATIO B: 7\n* DAMP A: 40\n* DAMP B: 60\n\n- Kbd (Pitch) p> Sofia (PITCH CV V/OCT)\n- Sofia (IMPULSE A OUT) >> Sofia (WARP B)\n- Sofia (IMPULSE B OUT) >> Sofia (RATIO A)\n- Sofia (MAIN OUT) -> Output (In)"
+    },
+    {
+      "name": "Audio-rate Global FM with static formants",
+      "patch": "External sine into GLOBAL FM attenuated · RATIO A/B fixed, TRACK OFF · fundamental wobbles under stationary formants — vowel-through-vibrato effect",
+      "diagram": "Sofia:\n* RATIO TRACK A: OFF\n* RATIO TRACK B: OFF\n* RATIO A: 3\n* RATIO B: 8\n\n- Kbd (Pitch) p> Sofia (PITCH CV V/OCT)\n- VCO (Sine) >> Sofia (GLOBAL FM) // low index\n- Sofia (MAIN OUT) -> Output (In)"
+    },
+    {
+      "name": "Two-tap stereo spread (A vs B outs)",
+      "patch": "A OUT → delay L · B OUT → chorus R · FUND OUT centered dry — pseudo-stereo from one oscillator with element-specific processing",
+      "diagram": "Sofia:\n* RATIO A: 2\n* RATIO B: 5\n\n- Kbd (Pitch) p> Sofia (PITCH CV V/OCT)\n- Sofia (A OUT) -> Delay (In)\n- Delay (Out) -> Mixer (ChL)\n- Sofia (B OUT) -> Chorus (In)\n- Chorus (Out) -> Mixer (ChR)\n- Sofia (FUND OUT) -> Mixer (ChC)"
+    },
+    {
+      "name": "LFO / rhythmic formant pulses",
+      "patch": "OCTAVE = LO · fundamental ~2Hz · DAMP A very low, DAMP B high · ripples become audible bursts on each cycle — a complex pulse LFO / drone",
+      "diagram": "Sofia:\n* OCTAVE: LO\n* DAMP A: 5\n* DAMP B: 80\n* RATIO A: 6\n* RATIO B: 9\n\n- Sofia (MAIN OUT) -> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Zadar-modulated formant scan",
+      "patch": "Zadar env → WARP A · second Zadar env → RATIO B with different shape · creates moving, breathy vocal gestures per note",
+      "diagram": "Sofia:\n* SHAPE A: SINE\n* SHAPE B: SINE\n* RATIO TRACK A: OFF\n\n- Kbd (Pitch) p> Sofia (PITCH CV V/OCT)\n- Trig (Trig) t> Zadar (Trig1)\n- Trig (Trig) t> Zadar (Trig2)\n- Zadar (Out1) >> Sofia (WARP A)\n- Zadar (Out2) >> Sofia (RATIO B)\n- Sofia (MAIN OUT) -> Output (In)"
+    },
+    {
+      "name": "Reed/brass via square ripples and bright formants",
+      "patch": "SHAPE A/B = SQUARE · RATIO A ~4, RATIO B ~8 · DAMP B high for sustain · FUND·ELEM MIX high · breath-shaped envelope into VCA",
+      "diagram": "Sofia:\n* SHAPE A: SQUARE\n* SHAPE B: SQUARE\n* RATIO A: 4\n* RATIO B: 8\n* DAMP B: 80\n* FUND·ELEM MIX: 8\n\n- Kbd (Pitch) p> Sofia (PITCH CV V/OCT)\n- BreathEnv (Out) >> VCA (CV)\n- Sofia (MAIN OUT) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    }
+  ]
+}

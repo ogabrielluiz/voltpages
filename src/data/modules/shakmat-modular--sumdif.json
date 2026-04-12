@@ -1,0 +1,106 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.1",
+    "sources": [
+      "https://shakmat.com/doc/sd/SD-User_Manual.pdf",
+      "https://shakmat.com/products/sumdif/",
+      "https://www.shakmatmodular.com/products/sd.html",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=181020",
+      "https://modulargrid.net/e/shakmat-modular-sumdif"
+    ]
+  },
+  "slug": "shakmat-modular--sumdif",
+  "name": "SumDif",
+  "manufacturer": "Shakmat Modular",
+  "hp": 2,
+  "tags": ["UTILITY", "MIXER", "MULT"],
+  "description": "Dual precision adder/differentiator. Each section produces A+B and A-B outputs from two inputs. Handles audio and V/Oct-grade CV with 0.1% resistors. Per-section -6dB jumpers.",
+  "controls": [
+    {
+      "name": "-6dB Jumper (A+B)",
+      "scope": "Section 1",
+      "description": "Rear jumper that attenuates the A+B output by 6 dB, preventing clipping when summing two hot signals.",
+      "detail": "ON = -6 dB (unity after two inputs summed) · OFF = full gain"
+    },
+    {
+      "name": "-6dB Jumper (A-B)",
+      "scope": "Section 1",
+      "description": "Rear jumper attenuating the A-B output by 6 dB. Matches the A+B jumper so a Mid/Side encode stays unity.",
+      "detail": "ON = -6 dB · OFF = full gain"
+    }
+  ],
+  "inputs": [
+    { "name": "A", "description": "Section 1 input A. Summed with and subtracted from input B. Unused B input leaves A buffered through both outputs.", "voltage": "CV or audio, V/Oct capable" },
+    { "name": "B", "description": "Section 1 input B. When A is patched alone, B is the inverted A (A+B=A, A-B=A).", "voltage": "CV or audio, V/Oct capable" },
+    { "name": "C", "description": "Section 2 input C. Summed with and subtracted from input D.", "voltage": "CV or audio, V/Oct capable" },
+    { "name": "D", "description": "Section 2 input D. Behaves identically to B for the second section.", "voltage": "CV or audio, V/Oct capable" }
+  ],
+  "outputs": [
+    { "name": "A+B", "description": "Section 1 sum. Unity mixer of A and B (or -6 dB with rear jumper). Precision enough for V/Oct transposition.", "voltage": "sum of inputs" },
+    { "name": "A-B", "description": "Section 1 difference. Subtracts B from A. With B unpatched, acts as a buffered mult of A; with A unpatched, outputs inverted B.", "voltage": "difference of inputs" },
+    { "name": "C+D", "description": "Section 2 sum. Identical behavior to A+B.", "voltage": "sum of inputs" },
+    { "name": "C-D", "description": "Section 2 difference. Identical behavior to A-B.", "voltage": "difference of inputs" }
+  ],
+  "behaviors": [
+    {
+      "name": "Unity Mixer",
+      "trigger": "two signals at A and B",
+      "description": "A+B outputs the sum at unity gain. 3V at A plus 1V at B yields 4V at A+B. Suitable for CV summing (transposition) or audio mixing with 0.1% precision."
+    },
+    {
+      "name": "Signal Inverter",
+      "trigger": "signal at B only",
+      "description": "With A unpatched and B carrying a signal, A-B outputs the inverted B. Turns SumDif into two independent inverters per section if A inputs are left open."
+    },
+    {
+      "name": "Buffered 1:2 Mult",
+      "trigger": "signal at A only, B unpatched",
+      "description": "A+B and A-B both deliver a buffered copy of A. The precision buffers preserve V/Oct accuracy, unlike passive mults."
+    },
+    {
+      "name": "Mid/Side Encode/Decode",
+      "trigger": "stereo L and R at A and B (audio)",
+      "description": "A+B = Mid (sum), A-B = Side (difference). Feed the second section C+D/C-D reversed to recover L/R. Both jumpers ON for -6 dB unity round-trip."
+    },
+    {
+      "name": "V/Oct Transposition",
+      "trigger": "pitch CV + transpose CV",
+      "description": "Precision resistors keep V/Oct linearity within cents. Sum a keyboard CV with a static offset for exact-octave/fifth transposition or with an LFO for precise vibrato."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "V/Oct transposer",
+      "patch": "Keyboard pitch into A · static offset CV into B · A+B delivers transposed pitch · A-B delivers inverse transposition for a stereo-mirrored voice",
+      "diagram": "SUMDIF:\n- Keyboard (Pitch) p> SumDif (A)\n- Offset (CV) >> SumDif (B)\n- SumDif (A+B) p> VCO 1 (V/Oct) // transposed up\n- SumDif (A-B) p> VCO 2 (V/Oct) // mirrored down"
+    },
+    {
+      "name": "Mid/Side processor",
+      "patch": "Stereo L and R into A and B · Mid (A+B) into a reverb · Side (A-B) kept dry · second section (C,D) decodes processed Mid+dry Side back to L/R",
+      "diagram": "SUMDIF:\n* Both -6 dB jumpers: ON\n- Source (L) -> SumDif (A)\n- Source (R) -> SumDif (B)\n- SumDif (A+B) -> Reverb (In) // Mid\n- Reverb (Out) -> SumDif (C)\n- SumDif (A-B) -> SumDif (D) // Side dry\n- SumDif (C+D) -> Output (L)\n- SumDif (C-D) -> Output (R)"
+    },
+    {
+      "name": "Precision CV inverter pair",
+      "patch": "Two modulation sources into B and D · A and C left unpatched · A-B and C-D deliver inverted CVs for spreading modulation across opposite-polarity targets",
+      "diagram": "SUMDIF:\n- LFO 1 (Out) >> SumDif (B)\n- LFO 2 (Out) >> SumDif (D)\n- SumDif (A-B) >> VCF 1 (Cutoff) // inverted LFO 1\n- SumDif (C-D) >> VCF 2 (Cutoff) // inverted LFO 2"
+    },
+    {
+      "name": "Buffered V/Oct mult",
+      "patch": "Single pitch CV into A · B unpatched · A+B and A-B both carry buffered copies of A with V/Oct accuracy preserved to cents",
+      "diagram": "SUMDIF:\n- Sequencer (Pitch) p> SumDif (A)\n- SumDif (A+B) p> VCO 1 (V/Oct)\n- SumDif (A-B) p> VCO 2 (V/Oct)"
+    },
+    {
+      "name": "Sum & difference sidechain",
+      "patch": "Drum bus into A · bassline into B · A+B mix feeds main output · A-B (drums minus bass) feeds compressor sidechain for rhythmic ducking",
+      "diagram": "SUMDIF:\n- Drums (Out) -> SumDif (A)\n- Bass (Out) -> SumDif (B)\n- SumDif (A+B) -> Mixer (In)\n- SumDif (A-B) -> Compressor (Sidechain) // drum-only envelope"
+    },
+    {
+      "name": "Dual CV offsetter",
+      "patch": "Two CVs through section 1 and section 2 · DC offset patched to B and D · A+B shifts CV up, A-B shifts CV down · four simultaneous offset variants from two modulations",
+      "diagram": "SUMDIF:\n- LFO 1 (Out) >> SumDif (A)\n- Offset 1 (CV) >> SumDif (B)\n- LFO 2 (Out) >> SumDif (C)\n- Offset 2 (CV) >> SumDif (D)\n- SumDif (A+B) >> VCO 1 (FM)\n- SumDif (A-B) >> VCO 2 (FM)\n- SumDif (C+D) >> VCF 1 (Cutoff)\n- SumDif (C-D) >> VCF 2 (Cutoff)"
+    }
+  ]
+}

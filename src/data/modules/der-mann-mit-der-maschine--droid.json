@@ -1,0 +1,164 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "blue-7",
+    "sources": [
+      "https://dermannmitdermaschine.de/download/droid-manual-blue-7.pdf",
+      "https://shop.dermannmitdermaschine.de/products/master",
+      "https://shop.dermannmitdermaschine.de/pages/droid-universal-cv-processor",
+      "https://modulargrid.net/e/der-mann-mit-der-maschine-droid",
+      "https://shop.dermannmitdermaschine.de/pages/downloads"
+    ]
+  },
+  "slug": "der-mann-mit-der-maschine--droid",
+  "name": "DROID (MASTER)",
+  "manufacturer": "Der Mann mit der Maschine",
+  "hp": 8,
+  "tags": ["UTILITY", "SEQUENCER", "QUANTIZER", "LFO", "ENVELOPE", "LOGIC", "RANDOM", "MIDI"],
+  "description": "User-programmable universal CV processor. 8 CV in, 8 CV out (16-bit, ±10V), 4×4 multicolor LED matrix. Patches are text/forge-built networks of circuits: LFOs, quantizers, sequencers, logic, MIDI — all in one module.",
+  "controls": [
+    {
+      "name": "Button",
+      "scope": "Global",
+      "description": "Loads the patch from the SD card at droid.ini. Press after swapping the card.",
+      "detail": "momentary · also used for maintenance menu on long-press"
+    },
+    {
+      "name": "Micro SD slot",
+      "scope": "Global",
+      "description": "Holds droid.ini (patch) and DROIDSTA.BIN (saved circuit states).",
+      "detail": "always keep card inserted during play · removing card loses state saves"
+    },
+    {
+      "name": "4×4 LED matrix",
+      "scope": "I/O display",
+      "description": "Top two rows mirror inputs I1–I8, bottom two rows mirror outputs O1–O8. Bipolar signals shown red/blue, unipolar white.",
+      "detail": "can be overridden with R1–R16 registers for custom display · X1 register shows a number live"
+    },
+    {
+      "name": "Controller bus header",
+      "scope": "Rear",
+      "description": "6-pin chain to P2B8/P4B2/P10/S10/P8S8/B32/M4/E4/DB8E controllers. X7 always first if present.",
+      "detail": "up to 16 controllers · last controller's jumper = LAST · others = PARK"
+    },
+    {
+      "name": "G8 expansion header",
+      "scope": "Rear",
+      "description": "8-pin chain to up to 4× G8 gate expanders.",
+      "detail": "adds 8–32 gate in/out jacks · red stripe down on ribbon cable"
+    }
+  ],
+  "inputs": [
+    { "name": "I1–I8", "description": "Eight CV inputs. Read as numbers −1.0 … +1.0 inside the patch. Every circuit input can attenuate (×) and offset (+).", "voltage": "±10V · 16-bit · clipped at ±10V" }
+  ],
+  "outputs": [
+    { "name": "O1–O8", "description": "Eight CV outputs. Patch circuit outputs to O1–O8. Any number outside −1..+1 is clamped at ±10V.", "voltage": "±10V · 16-bit · precise timing" },
+    { "name": "N1–N8 (virtual)", "description": "Virtual output registers that feed the normalization of I1–I8. Patch an internal LFO to N1; I1 reads that LFO when unpatched, the external signal when patched.", "voltage": "same as I when unpatched" }
+  ],
+  "behaviors": [
+    {
+      "name": "Circuit model",
+      "trigger": "patch loading",
+      "description": "A patch is a list of circuit instances (lfo, quantizer, algoquencer, arpeggio, contour, mixer, logic, midiin, etc.) with each input parameter set to a fixed number, a register (I/O/P/B/L/G), a controller control, or an internal cable name. 70+ built-in circuit types cover sequencing, quantizing, envelopes, LFOs, logic, MIDI, random, slew, swing, chord generation, calibration."
+    },
+    {
+      "name": "Main loop",
+      "trigger": "continuous",
+      "description": "Entire patch is evaluated at ~5.5 kHz (≈180 µs per cycle). Circuits execute top-to-bottom in file order; internal cables resolve in one cycle if source precedes destination, else incur ~160 µs delay. Reordering circuits can shave a loop cycle of latency."
+    },
+    {
+      "name": "Parameter columns A×B+C",
+      "trigger": "any circuit input",
+      "description": "Every input accepts three columns: source value, multiplier/attenuation, offset. Result = A·B+C. Multiplier and offset can themselves be CVs — so every input has a built-in VCA + mixer for free."
+    },
+    {
+      "name": "Input normalization via N registers",
+      "trigger": "N1–N8 written, I1–I8 unpatched",
+      "description": "If a circuit writes to N3, input I3 returns that signal when nothing is patched, and the external jack signal when patched. Classic use: internal clock (LFO→N1) overridden by external clock patched to I1."
+    },
+    {
+      "name": "State saved to DROIDSTA.BIN",
+      "trigger": "manual interaction",
+      "description": "Button toggles, sequencer steps, matrix mixer positions, calibrations — all saved to the SD card ~1.5 s after change. State survives power cycles. LFO phases, cvlooper recordings, temporary values are not saved. Per-circuit dontsave=1 disables save."
+    },
+    {
+      "name": "Forge over X7 MIDI sysex",
+      "trigger": "X7 switch right + Forge Activate!",
+      "description": "With X7 attached, patches upload from Forge over USB-MIDI sysex in under a second. No SD card swap. The only way to iterate fast. Without X7, upload requires pulling SD card to PC, writing droid.ini, reinserting, pressing the button."
+    },
+    {
+      "name": "Error display on LED matrix",
+      "trigger": "patch syntax/semantic error",
+      "description": "On load, errors encode the offending line number and column via coloured LEDs on the 4×4 matrix. Full error text is written to ERRORS.TXT on the SD card. X1 register sends a live number value for in-patch inspection."
+    },
+    {
+      "name": "Internal cables",
+      "trigger": "_NAME in a parameter cell",
+      "description": "Any string starting with _ is a named internal cable. One output writes it, any number of inputs read it. Equivalent to a virtual patch cable inside the DROID. Used heavily for modulation routing without eating physical jacks."
+    },
+    {
+      "name": "Voltage ↔ number convention",
+      "trigger": "jack ↔ register",
+      "description": "Input voltage is scaled: 10V ↔ 1.0, 5V ↔ 0.5, −10V ↔ −1.0. Numbers sent to O registers scale the same way out to the jack. V/oct uses 0.1 per semitone so 0.5 = 60 semitones up = C5. Numbers beyond ±1 are clipped at ±10V at the jack but used at full precision internally."
+    },
+    {
+      "name": "One knob multiple functions",
+      "trigger": "overlayed pot circuits",
+      "description": "Declare multiple pot circuits pointing at the same physical P1.1 with different select inputs tied to a button/buttongroup/switch output. Each pot circuit drives its own target. One pot becomes attack/decay/sustain/release on a contour — menu-style CV control. Physical position persists per virtual slot."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Hello world · LFO to O1",
+      "patch": "Canonical first patch. Declare one lfo circuit · set hz=5 · route square output to O1 · load to master · O1 pulses at 5 Hz · demonstrates that a DROID patch is just a list of circuits with parameters mapped to registers.",
+      "diagram": "DROID:\n* lfo: hz=5, square=O1\n\n- DROID (O1) c> Envelope (Trig)"
+    },
+    {
+      "name": "Overridable internal clock",
+      "patch": "lfo hz=4 square=N1 · any circuit using I1 as clock reads the internal 4 Hz when I1 is unpatched · patch an external clock to I1 and the internal LFO is silently replaced · illustrates N1..N8 normalization — a patch can expose internal signals as default values on physical jacks.",
+      "diagram": "DROID:\n* lfo: hz=4, square=N1\n* contour: trigger=I1, output=O1\n\n- External Clock (Out) c> DROID (I1) // overrides internal clock\n- DROID (O1) >> VCA (CV)"
+    },
+    {
+      "name": "Quantized S&H melody",
+      "patch": "lfo hz=0.3 triangle=_NOISE (as pseudo-noise source) → sample input=_NOISE, trigger=I1 → minifonion input=sample.output root=P1.1 scale=P1.2 → O1 · external clock at I1 triggers a new random, quantizer snaps to scale set by two pots on a P2B8.",
+      "diagram": "DROID:\n* random: output=_RAND\n* sample: input=_RAND, trigger=I1, output=_NOTE\n* minifonion: input=_NOTE, root=P1.1, scale=P1.2, output=O1\n\nP2B8:\n\n- External Clock (Out) c> DROID (I1)\n- DROID (O1) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Euclidean drum trio",
+      "patch": "Three euklid circuits, one per drum · shared clock on I1 · length/fill/rotate from P1.1–P1.6 on a P10 · outputs → O1/O2/O3 → kick/snare/hat · B1.1 on a P2B8 mutes the hat via a button circuit · full rhythm box inside one 8HP module.",
+      "diagram": "DROID:\n* euklid: clock=I1, length=P1.1, fill=P1.2, output=O1\n* euklid: clock=I1, length=P1.3, fill=P1.4, output=O2\n* euklid: clock=I1, length=P1.5, fill=P1.6, output=O3, mute=B2.1\n\nP10:\n\nP2B8:\n\n- External Clock (Out) c> DROID (I1)\n- DROID (O1) t> Kick (Trig)\n- DROID (O2) t> Snare (Trig)\n- DROID (O3) t> Hat (Trig)"
+    },
+    {
+      "name": "One knob ADSR (pot overlay)",
+      "patch": "P1.1 controls four targets: attack/decay/sustain/release on a contour · buttongroup B1.1–B1.4 selects which target is active · four pot circuits overlay P1.1 with select=L1.1..L1.4 · rotating the single pot edits only the currently-lit parameter · classic DROID menu-style interaction.",
+      "diagram": "DROID:\n* buttongroup: button1..4=B1.1..B1.4, led1..4=L1.1..L1.4\n* pot: pot=P1.1, select=L1.1, output=_A\n* pot: pot=P1.1, select=L1.2, output=_D\n* pot: pot=P1.1, select=L1.3, output=_S\n* pot: pot=P1.1, select=L1.4, output=_R\n* contour: trigger=I1, attack=_A, decay=_D, sustain=_S, release=_R, output=O1\n\nP2B8:\n\n- Gate Source (Out) g> DROID (I1)\n- DROID (O1) >> VCA (CV)"
+    },
+    {
+      "name": "Chord voice generator",
+      "patch": "chord circuit inputs root=I1 type=P1.1 · outputs four V/oct values → O1–O4 · four voices tuned to the chord of the current root · change root CV on I1 to transpose · turn P1.1 to morph chord type (major/minor/sus/dom7 etc.).",
+      "diagram": "DROID:\n* chord: root=I1, type=P1.1, output1=O1, output2=O2, output3=O3, output4=O4\n\nP2B8:\n\n- Sequencer (Pitch) p> DROID (I1) // root\n- DROID (O1) p> VCO 1 (V/Oct)\n- DROID (O2) p> VCO 2 (V/Oct)\n- DROID (O3) p> VCO 3 (V/Oct)\n- DROID (O4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Algoquencer performance track",
+      "patch": "algoquencer circuit with 8 steps, buttons B1.1–B1.8 on B32 toggle activity, P1.1 controls density, P1.2 shifts rotation · clock on I1, trigger to O1, CV melody on O2 through minifonion quantized to D-minor · accent pattern on O3 via separate activity mask. A full generative track from one master+B32+P10.",
+      "diagram": "DROID:\n* algoquencer: clock=I1, step1..8=B1.1..B1.8, trigger=O1, output=_RAW\n* minifonion: input=_RAW, root=2, scale=1, output=O2\n\nB32:\n\nP10:\n\n- External Clock (Out) c> DROID (I1)\n- DROID (O1) t> Drum (Trig)\n- DROID (O2) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Self-tuning VCO with calibrator",
+      "patch": "calibrator circuit measures VCO frequency at O1 while sweeping through known V/oct values · stores correction curve to DROIDSTA.BIN · subsequent playback through O1 is octave-perfect across six octaves · feed VCO square out back to I1 · run calibration once from a button, use daily.",
+      "diagram": "DROID:\n* vcotuner: input=I1\n* calibrator: input=I1, trigger=B1.1, output=O1\n\nP2B8:\n\n- VCO (Square) -> DROID (I1) // frequency measurement\n- DROID (O1) p> VCO (V/Oct) // calibrated pitch"
+    },
+    {
+      "name": "Internal cable modulation mesh",
+      "patch": "lfo 0.2 Hz → _SLOW · lfo 8 Hz triangle → _FAST · sample triggered by I1 from _SLOW → _STEP · mixer mixes _FAST*0.3 + _STEP → O1 · outputs layered modulation with stepped base and audio-rate wobble, using no physical cables · the DROID as a modulation matrix.",
+      "diagram": "DROID:\n* lfo: hz=0.2, sine=_SLOW\n* lfo: hz=8, triangle=_FAST\n* sample: input=_SLOW, trigger=I1, output=_STEP\n* mixer: input1=_FAST, level1=0.3, input2=_STEP, output=O1\n\n- External Clock (Out) c> DROID (I1)\n- DROID (O1) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Tap tempo master clock",
+      "patch": "tap-tempo button on B1.1 → timing circuit outputs master clock at tapped BPM → N1 as internal clock default · euklid, algoquencer, lfo sync=clock all read I1 (falls back to the tapped tempo) · tap twice to reset · one DROID replaces a dedicated master clock module.",
+      "diagram": "DROID:\n* timing: tap=B1.1, clock=N1\n\nP2B8:\n\nSystem Clock:\n\n- DROID (N1) c> System Clock (In) // internal default\n- External Clock (Out) c> DROID (I1) // override with external"
+    }
+  ]
+}

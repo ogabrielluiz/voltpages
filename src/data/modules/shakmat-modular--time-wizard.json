@@ -1,0 +1,189 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://shakmat.com/doc/tw/TW-User_Manual.pdf",
+      "https://shakmat.com/products/time-wizard/",
+      "https://www.shakmatmodular.com/products/tw.html",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=180959",
+      "https://modulargrid.net/e/shakmat-time-wizard"
+    ]
+  },
+  "slug": "shakmat-modular--time-wizard",
+  "name": "Time Wizard",
+  "manufacturer": "Shakmat Modular",
+  "hp": 8,
+  "tags": ["CLOCK", "LOGIC", "UTILITY"],
+  "description": "Sextuple clock divider with triplet multiplier, AND/OR logic, dual-column clocking and reset configurations. Six dividers per pot, four switches yielding 81 routing variations.",
+  "controls": [
+    {
+      "name": "A1 Potentiometer",
+      "scope": "Column A",
+      "description": "Selects divider factor for output A1: 1 through 8.",
+      "detail": "/1 /2 /3 /4 /5 /6 /7 /8 · derives from Clock A input (with optional Multiply x3/x4)"
+    },
+    {
+      "name": "A2 Potentiometer",
+      "scope": "Column A",
+      "description": "Divider factor for A2: 1-8. When Logic A2 switch is active, A2 output is combined logically with B5 or A3.",
+      "detail": "/1-/8 · Logic switch alters output: AND with B5 or OR with A3"
+    },
+    {
+      "name": "A3 Potentiometer",
+      "scope": "Column A",
+      "description": "Divider factor for A3: 1-8.",
+      "detail": "/1-/8 · participates in A2 OR A3 logic when switch is active"
+    },
+    {
+      "name": "B4 Potentiometer",
+      "scope": "Column B",
+      "description": "Divider factor for B4: 1-8. In middle Clock B switch position, B4 clocks B5 and B6 (instead of incoming clock) giving unusual time signatures.",
+      "detail": "/1-/8 · can act as clock source for B5/B6"
+    },
+    {
+      "name": "B5 Potentiometer",
+      "scope": "Column B",
+      "description": "Divider factor for B5: 1-32-64-128. Long division range suitable for song-length timing.",
+      "detail": "/1 · /4 · /8 · /16 · /32 · /64 · /128 (range varies per pot map)"
+    },
+    {
+      "name": "B6 Potentiometer",
+      "scope": "Column B",
+      "description": "Divider factor for B6: same long-range as B5. Reset B6 switch routes B6 as reset signal for column A (middle) or both columns (lower).",
+      "detail": "/1-/128 range · doubles as reset source via Reset B6 switch"
+    },
+    {
+      "name": "Multiply A Switch",
+      "scope": "Column A input",
+      "description": "Multiplies Clock A by x1, x3, or x4 before feeding column A dividers. Enables triplet decompositions (/3, /3/7 etc.) and 16th→triplet conversion.",
+      "detail": "x1 (off) · x3 · x4"
+    },
+    {
+      "name": "Clock B Switch",
+      "scope": "Column B clocking",
+      "description": "OFF (upper): both columns share Clock A. Middle: column B clocked from B4 output. Lower: Reset/In B jack becomes an independent clock input for column B.",
+      "detail": "OFF · B4-clocks-B5/B6 · independent Clock B via jack 2"
+    },
+    {
+      "name": "Logic A2 Switch",
+      "scope": "Column A logic",
+      "description": "OFF (upper): A2 acts as normal divider. Middle: A2 AND B5 (trigger only when both high). Lower: A2 OR A3 (trigger when either high).",
+      "detail": "OFF · AND B5 · OR A3"
+    },
+    {
+      "name": "Reset B6 Switch",
+      "scope": "Reset routing",
+      "description": "OFF (upper): B6 is a normal divider. Middle: B6 resets column A each hit. Lower: B6 resets both columns.",
+      "detail": "OFF · B6 → reset A · B6 → reset A+B"
+    },
+    {
+      "name": "Half-Period Jumper",
+      "scope": "Dividers 5 and 6",
+      "description": "Rear jumper configures B5 and B6 to produce half-period gates instead of triggers.",
+      "detail": "Jumper ON = square gates at divided rate · OFF = short triggers on all outputs"
+    }
+  ],
+  "inputs": [
+    { "name": "Clock", "description": "Master clock into column A and (by default) column B. Multiply A switch processes this clock before division.", "voltage": "0-5V" },
+    { "name": "Reset / Clock B", "description": "Default: resets every divider to step 1. With Clock B switch set to lower position, becomes an independent clock input for column B.", "voltage": "0-5V" }
+  ],
+  "outputs": [
+    { "name": "A1", "description": "Divider A1 trigger output.", "voltage": "0-5V" },
+    { "name": "A2", "description": "Divider A2 output. Combined with B5 (AND) or A3 (OR) when Logic switch is active.", "voltage": "0-5V" },
+    { "name": "A3", "description": "Divider A3 trigger output.", "voltage": "0-5V" },
+    { "name": "B4", "description": "Divider B4 trigger output. Can be internally routed as the clock source for B5/B6.", "voltage": "0-5V" },
+    { "name": "B5", "description": "Divider B5 trigger or half-period gate (jumper-dependent).", "voltage": "0-5V" },
+    { "name": "B6", "description": "Divider B6 trigger or half-period gate. Also routed as reset when Reset B6 switch is engaged (even while still acting as divider output).", "voltage": "0-5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Six Independent Dividers",
+      "trigger": "clock at Clock input",
+      "description": "Each pot divides the common clock by its selected factor, generating up to six simultaneous related tempos from a single master clock."
+    },
+    {
+      "name": "Triplet Decomposition",
+      "trigger": "Multiply A = x3",
+      "description": "Multiplying Clock A by 3 lets column A divide into non-standard ratios like 3/7 or transform 16th-note clocks into triplets. Essential for weird time signatures."
+    },
+    {
+      "name": "Dual Clock Domains",
+      "trigger": "Clock B switch lower position",
+      "description": "Reset jack repurposed as second clock input. Columns A and B then run on independent tempos, acting as two 3-output dividers with unrelated masters."
+    },
+    {
+      "name": "B4 Cascade Clocking",
+      "trigger": "Clock B switch middle position",
+      "description": "B4 becomes the clock source for B5 and B6. Creates compound divisions (e.g. B4=/5, B5=/4 → effective /20) for extremely long cycle times."
+    },
+    {
+      "name": "A2 AND B5 Logic",
+      "trigger": "Logic A2 switch middle",
+      "description": "A2 output high only when both A2 divider and B5 divider are producing pulses simultaneously. Accents coincide with song-section boundaries."
+    },
+    {
+      "name": "A2 OR A3 Logic",
+      "trigger": "Logic A2 switch lower",
+      "description": "A2 output fires on either A2 or A3 pulse. Merges two divisions into a single rhythmic trigger stream without external combiner."
+    },
+    {
+      "name": "B6 Reset Routing",
+      "trigger": "Reset B6 switch middle or lower",
+      "description": "B6 divider output doubles as reset pulse for column A (middle) or both columns (lower). Creates automatic phrase-length reset without patching a second clock divider."
+    },
+    {
+      "name": "Half-Period Gates",
+      "trigger": "rear jumper on dividers 5 and 6",
+      "description": "Jumper converts B5/B6 from short triggers to square gates at their divided rate. Useful for gate sequencing from the long divisions."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Six-tempo master divider",
+      "patch": "Master clock feeds six voices at different rates: A1=/1 lead, A2=/2 bass, A3=/4 arp, B4=/3 hats, B5=/8 kick, B6=/16 chord change",
+      "diagram": "TIME WIZARD:\n* A1=/1 · A2=/2 · A3=/4 · B4=/3 · B5=/8 · B6=/16\n- Master Clock (Out) c> Time Wizard (Clock)\n- Time Wizard (A1) c> Lead Seq (Clock)\n- Time Wizard (A2) c> Bass Seq (Clock)\n- Time Wizard (A3) c> Arp (Clock)\n- Time Wizard (B4) t> Hat (Trig)\n- Time Wizard (B5) t> Kick (Trig)\n- Time Wizard (B6) t> Chord (Change)"
+    },
+    {
+      "name": "Triplet against straight groove",
+      "patch": "Multiply A x3 · A column divides the tripled clock for triplet feel · B column divides original clock for straight feel · triplets and straights layered from one master",
+      "diagram": "TIME WIZARD:\n* Multiply A: x3 · Clock B: OFF\n- Master (Out) c> Time Wizard (Clock)\n- Time Wizard (A1) c> Triplet Seq (Clock)\n- Time Wizard (A2) t> Triplet Hat (Trig)\n- Time Wizard (B4) c> Straight Seq (Clock)\n- Time Wizard (B5) t> Kick (Trig)\n- Time Wizard (B6) t> Snare (Trig)"
+    },
+    {
+      "name": "Self-resetting bar structure",
+      "patch": "B6=/16 with Reset B6 switch = lower position · every 16 clocks B6 fires and resets both columns · locks all outputs to a 16-step bar regardless of tempo changes",
+      "diagram": "TIME WIZARD:\n* Reset B6: reset A+B · B6=/16\n- Master (Out) c> Time Wizard (Clock)\n- Time Wizard (A1) c> Bass Seq (Clock)\n- Time Wizard (A2) t> Kick (Trig)\n- Time Wizard (A3) t> Hat (Trig)\n- Time Wizard (B4) t> Snare (Trig)\n- Time Wizard (B5) t> Perc (Trig)"
+    },
+    {
+      "name": "AND-gated downbeat accent",
+      "patch": "Logic A2 switch = middle (AND B5) · A2=/4 AND B5=/16 fires only when both align = every 16th step · feed A2 to drum accent input for phrase-start emphasis",
+      "diagram": "TIME WIZARD:\n* Logic A2: AND B5 · A2=/4 · B5=/16\n- Master (Out) c> Time Wizard (Clock)\n- Time Wizard (A1) c> Drum Seq (Clock)\n- Time Wizard (A2) t> Kick (Accent) // only every 16 steps\n- Time Wizard (B5) t> Section Change (Trig)"
+    },
+    {
+      "name": "OR-merged polyrhythm triggers",
+      "patch": "Logic A2 = lower (OR A3) · A2=/3 and A3=/5 merged into single output · 3-against-5 polyrhythm collapsed to one trigger stream at A2 for single drum voice",
+      "diagram": "TIME WIZARD:\n* Logic A2: OR A3 · A2=/3 · A3=/5\n- Master (Out) c> Time Wizard (Clock)\n- Time Wizard (A2) t> Hat (Trig) // fires on /3 OR /5\n- Time Wizard (A1) t> Kick (Trig)"
+    },
+    {
+      "name": "Dual independent clock domains",
+      "patch": "Clock B = lower · patch-in second clock to Reset jack · columns A and B act as two unrelated 3-output dividers · perfect for splitting a fast FX clock from a slow song clock",
+      "diagram": "TIME WIZARD:\n* Clock B: independent via jack 2\n- Song Clock (Out) c> Time Wizard (Clock)\n- FX Clock (Out) c> Time Wizard (Reset/ClkB)\n- Time Wizard (A1) c> Song Seq (Clock)\n- Time Wizard (A2) t> Bass Drum (Trig)\n- Time Wizard (B4) c> Delay (Tap)\n- Time Wizard (B5) c> Reverb (Shimmer)"
+    },
+    {
+      "name": "Cascade for very long cycles",
+      "patch": "Clock B = middle · B4=/7 feeds B5/B6 · B5=/8 → effective /56 · B6=/16 → effective /112 · slow evolving structural changes from one clock without needing a LFO divider chain",
+      "diagram": "TIME WIZARD:\n* Clock B: B4 clocks B5/B6 · B4=/7 B5=/8 B6=/16\n- Master (Out) c> Time Wizard (Clock)\n- Time Wizard (A1) c> Drum Seq (Clock)\n- Time Wizard (B4) t> Phrase Accent (Trig)\n- Time Wizard (B5) t> Section A/B (Change)\n- Time Wizard (B6) t> Song Part (Change)"
+    },
+    {
+      "name": "Odd time signature sequencer clock",
+      "patch": "Multiply A x4 · A1=/7 for 7/16 feel · B6=/7 with Reset B6=middle resets column A every 7 beats · drives sequencer in authentic 7/16 without manual reset patching",
+      "diagram": "TIME WIZARD:\n* Multiply A: x4 · A1=/7 · B6=/7 · Reset B6: reset A\n- Master (Out) c> Time Wizard (Clock)\n- Time Wizard (A1) c> Sequencer (Clock) // 7/16 feel\n- Time Wizard (A2) t> Kick (Trig)\n- Time Wizard (A3) t> Snare (Trig)"
+    },
+    {
+      "name": "Half-period gates for envelopes",
+      "patch": "Rear jumper engaged on B5/B6 · B5=/8 and B6=/16 deliver sustained gates not triggers · gates open VCAs for entire division period, making a slow chord pad and bass-drone structure from clock alone",
+      "diagram": "TIME WIZARD:\n* Jumper: B5/B6 half-period · B5=/8 B6=/16\n- Master (Out) c> Time Wizard (Clock)\n- Time Wizard (B5) g> Chord VCA (Gate) // 1/8 period\n- Time Wizard (B6) g> Drone VCA (Gate) // 1/16 period\n- Time Wizard (A1) t> Hat (Trig)"
+    }
+  ]
+}

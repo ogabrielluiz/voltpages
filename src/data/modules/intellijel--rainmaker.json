@@ -1,0 +1,270 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.09",
+    "sources": [
+      "https://intellijel.com/downloads/manuals/cylonix-rainmaker_manual_v1.09-143.pdf",
+      "https://intellijel.com/shop/eurorack/cylonix-rainmaker/",
+      "https://cylonix.com/rainmaker.html",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=154265"
+    ]
+  },
+  "slug": "intellijel--rainmaker",
+  "name": "Rainmaker",
+  "manufacturer": "Intellijel",
+  "hp": 36,
+  "tags": ["DELAY", "EFFECTS", "FILTER", "RESONATOR", "GRANULAR"],
+  "description": "16-tap stereo spectral rhythm delay and 64-tap comb resonator. Each tap: level, pan, 2nd-order filter, granular pitch shift, detune. 16 groove patterns and comb modes (Fibonacci, Karplus, Uniform) enable modal synthesis.",
+  "controls": [
+    {
+      "name": "DELAY FEEDBACK",
+      "scope": "Rhythm delay",
+      "description": "Amount of selected tap fed back to input. Passes through tone filter and pitch shifter before returning.",
+      "detail": "0–unity · per-tap FB selectable"
+    },
+    {
+      "name": "PITCH SHIFT",
+      "scope": "Feedback / global",
+      "description": "Global pitch shift added to all 16 delay taps and to the feedback path. Dead zone at 12 o'clock.",
+      "detail": "±2 octaves · affects all taps"
+    },
+    {
+      "name": "FEEDBACK TONE",
+      "scope": "Feedback path",
+      "description": "1st-order tone control in the feedback loop. CCW = lowpass · CW = highpass.",
+      "detail": "LP/HP morph · affects regeneration"
+    },
+    {
+      "name": "COMB SIZE",
+      "scope": "Comb resonator",
+      "description": "Delay time of the 64th (longest) tap. Defines the comb's fundamental frequency when used for Karplus-Strong resonance. Selectable source: knob, clock + DIV, or 1V/OCT.",
+      "detail": "Source = CLK SRC setting"
+    },
+    {
+      "name": "COMB FEEDBACK",
+      "scope": "Comb resonator",
+      "description": "Amount of tap-64 signal fed back to input for resonating comb effect. High values produce sustained Karplus-Strong strings.",
+      "detail": "Adjustable · feedback filter + nonlinearity applied"
+    },
+    {
+      "name": "MOD A / MOD B",
+      "scope": "CV assignment",
+      "description": "Two assignable modulation knobs with jacks. Each scales CV sent into its MOD input and either offsets or overrides the chosen MOD destination. Destinations selected via MOD DEST menu.",
+      "detail": "MOD A normals to MOD B when B unpatched · 30+ destinations"
+    },
+    {
+      "name": "DRY / MIX (WET)",
+      "scope": "Global output",
+      "description": "Wet/dry balance at the main OUT L/R jacks. Analog mixer — not digital.",
+      "detail": "Dry to wet · analog crossfade"
+    },
+    {
+      "name": "TEMPO",
+      "scope": "Delay timing",
+      "description": "Tap-tempo button. Sets beat time from tap rhythm (3+ taps). Overridden by external CLK input.",
+      "detail": "Yellow LED flashes at beat time"
+    },
+    {
+      "name": "TRIGGER (big red)",
+      "scope": "Trigger action",
+      "description": "Fires the assigned trigger operation: randomize, freeze, reverse, ping, mute, bypass, shaped pulse, preset load, clear buffer, etc. Operation set via ROUTING+CONFIG.",
+      "detail": "15+ trigger modes"
+    },
+    {
+      "name": "CLEAR",
+      "scope": "Utility",
+      "description": "Clears delay and comb memory — kills persistent echoes or overloud feedback.",
+      "detail": "Press-and-hold or momentary"
+    },
+    {
+      "name": "EDIT / TAP#",
+      "scope": "UI mode",
+      "description": "Toggles between EDIT mode (global rhythm delay parameters) and TAP# mode (per-tap parameter editing). The 16 blue buttons switch roles accordingly.",
+      "detail": "EDIT = global · TAP# = per-tap"
+    },
+    {
+      "name": "Rotary encoder",
+      "scope": "UI",
+      "description": "Turn to adjust selected parameter value. Push for alternate behaviours: RAND execute, PING-PONG toggle, RAMP presets, preset save/load confirm.",
+      "detail": "Push-encoder · context-dependent"
+    },
+    {
+      "name": "Global param buttons (RAND / TAP GRID / PILES / CLK TIME / CLK DIV / TIME MOD WAVE/LEVEL/RATE)",
+      "scope": "EDIT mode",
+      "description": "Select global rhythm delay parameters for editing with the encoder. Includes randomization destination, tap grid/stacks, clock time/div, and time modulation LFO (wave, depth, rate).",
+      "detail": "Upper blue button row"
+    },
+    {
+      "name": "Per-tap buttons (QTY / SIZE / TAP# / SLIP / PITCH / TYPE / AMT / REVERSE+WET/DRY)",
+      "scope": "EDIT mode",
+      "description": "Second button row selects grain quantity/size, feedback tap number, feedback slip, feedback pitch/detune, groove type, groove amount, and reverse/wet-dry.",
+      "detail": "Groove = 16 preset rhythms"
+    },
+    {
+      "name": "TAP EDIT buttons (MUTE / LEVEL / PAN / CUT / Q / TYPE / PITCH SHIFT)",
+      "scope": "TAP# mode",
+      "description": "Red button row selects which per-tap parameter is displayed/edited across all 16 taps. PITCH SHIFT press-twice reveals DETUNE (<0.5 semitone).",
+      "detail": "Per-tap: 32 LEVEL steps · ±16 semis pitch"
+    },
+    {
+      "name": "FX ON / MUTE (Delay)",
+      "scope": "Rhythm delay",
+      "description": "FX ON toggles delay effect bypass (red LED = active). MUTE mutes the delay input — continues to regenerate existing material.",
+      "detail": "Red + black button pair"
+    },
+    {
+      "name": "FX ON / MUTE (Comb)",
+      "scope": "Comb resonator",
+      "description": "FX ON toggles comb bypass. MUTE mutes the comb input.",
+      "detail": "Red + black button pair"
+    },
+    {
+      "name": "Comb buttons (PATT+SLOPE / SIZE MOD WAVE/LEVEL/RATE / TAPS+FB / CLK SRC / CLK DIV / SIZE)",
+      "scope": "Comb editing",
+      "description": "Select comb parameters: tap pattern (Uniform/Fib/Flat/Karplus etc.), #taps, feedback configuration (Guitar/Sitar/Clarinet/Raw), clock source and division, and comb size modulation.",
+      "detail": "16 comb tap patterns"
+    },
+    {
+      "name": "Routing + Config / Meters + Gain / Save / Load",
+      "scope": "Utility (red)",
+      "description": "Routing selects DLY→CMB, CMB→DLY, DLY+CMB, or split L-dly/R-cmb. Config sets input mode and trigger operation. Meters+Gain monitors 8 signal levels. Save/Load handles 128 presets.",
+      "detail": "128 non-volatile preset slots"
+    }
+  ],
+  "inputs": [
+    { "name": "IN L", "description": "Left audio input", "voltage": "-5V to +5V (atten at 12 o'clock = unity for 10Vpp)" },
+    { "name": "IN R", "description": "Right audio input. Depending on input mode: stereo, summed to mono, or independent.", "voltage": "-5V to +5V", "normalizedTo": "IN L when in MONO L input mode" },
+    { "name": "DELAY FEEDBACK CV", "description": "CV input for rhythm delay feedback (attenuator)", "voltage": "0–10V" },
+    { "name": "PITCH SHIFT CV", "description": "CV for global delay pitch shift. Accepts 1V/oct — sets feedback pitch. Square wave overrides TEMPO to set DELAY CLOCK TIME.", "voltage": "1V/oct or ±5V" },
+    { "name": "FEEDBACK TONE CV", "description": "CV for tone filter (LP/HP morph)", "voltage": "0–10V" },
+    { "name": "TRIG", "description": "Trigger input — fires assigned trigger operation (randomize, freeze, reverse, ping, etc.)", "voltage": "trigger/gate" },
+    { "name": "CLK (delay)", "description": "External clock for delay — feeds CLK TIME when CLK SRC is set to clock input", "voltage": "0–5V square" },
+    { "name": "CLK (comb)", "description": "External clock for comb — sets comb size with DIV", "voltage": "0–5V square" },
+    { "name": "1V/OCT", "description": "Pitch CV for COMB SIZE — linear pitch control of comb fundamental (Karplus-style)", "voltage": "1V/oct" },
+    { "name": "COMB SIZE CV", "description": "CV offset for comb size", "voltage": "0–10V" },
+    { "name": "COMB FEEDBACK CV", "description": "CV for comb feedback amount", "voltage": "0–10V" },
+    { "name": "MOD A", "description": "CV for assignable MOD A destination", "voltage": "0–10V" },
+    { "name": "MOD B", "description": "CV for assignable MOD B destination", "voltage": "0–10V", "normalizedTo": "MOD A when B unpatched" }
+  ],
+  "outputs": [
+    { "name": "OUT L", "description": "Main left output — analog mix of input and processed signal", "voltage": "-5V to +5V" },
+    { "name": "OUT R", "description": "Main right output", "voltage": "-5V to +5V" },
+    { "name": "CLK", "description": "Square wave at rhythm delay beat time. Use to clock external modules in time with delay.", "voltage": "0–5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "16-tap spectral delay",
+      "trigger": "FX ON (delay)",
+      "description": "16 time-delayed taps, each with independent level, pan, 2nd-order filter (LP/BP/HP/None), granular pitch shift ±16 semitones, and fine detune. Taps sum into stereo output — a full granular/spectral delay in one module."
+    },
+    {
+      "name": "16 groove rhythms",
+      "trigger": "GROOVE TYPE parameter",
+      "description": "Straight, Swing, Hard Swing, Reverse Swing, Alternate Swing, Accelerando, Ritardando, Waltz, Half Swing, Roller Coaster, Quintuple, 3× Uniform Random, Early/Late Reflection. GROOVE AMT blends between Straight and selected — 0=even, 100=full groove."
+    },
+    {
+      "name": "Per-tap pitch piles",
+      "trigger": "TAP PILES parameter (STACK)",
+      "description": "Each tap can become a chord of multiple pitched copies at one time slot. Create four-note harmonized echoes or simulate a chord on every delay tap. Combine with pitch ramp for arpeggiated stacks."
+    },
+    {
+      "name": "Reverse mode",
+      "trigger": "TRIG operation = Reverse or REVERSE+WET/DRY encoder",
+      "description": "Plays the delay buffer backwards through the tap structure. Combine with long delay times and pitch shift for spectral reverse-reverb trails."
+    },
+    {
+      "name": "64-tap comb resonator",
+      "trigger": "FX ON (comb)",
+      "description": "Separate 64-tap delay line summed for comb/reverberation effects. 16 tap patterns (Uniform, Flat Middle, Early Comb, Fibonacci, Flat Comb, Late Comb, Rev Fib, Ess, plus 8 randomized variants)."
+    },
+    {
+      "name": "Karplus-Strong strings",
+      "trigger": "Comb FB config = Guitar/Sitar/Clarinet/Raw + 1V/OCT",
+      "description": "Comb section emulates plucked strings. Short input bursts excite the comb; 1V/OCT input tracks pitch. Feedback config changes timbre: Guitar (exponential), Sitar (modulated bridge), Clarinet (rectified), Raw (no nonlinearity)."
+    },
+    {
+      "name": "Four routing modes",
+      "trigger": "ROUTING+CONFIG",
+      "description": "DLY→CMB: delay feeds comb (serial). CMB→DLY: comb feeds delay. DLY+CMB: parallel sum. L:DLY R:CMB: stereo split — mono delay left, mono comb right."
+    },
+    {
+      "name": "Trigger modes (15+)",
+      "trigger": "TRIG jack + ROUTING+CONFIG",
+      "description": "Freeze, Reverse, Randomize, Delay/Comb Mute, Delay/Comb Bypass, Ping Input, Shaped Pulse, Toggle Ping-Pong, Gated Freeze, Gated Reverse, Preset Load, Clear Buffer. Trigger jack assigned to one mode at a time."
+    },
+    {
+      "name": "Randomization surgery",
+      "trigger": "RAND DESTINATION + encoder press (or TRIG)",
+      "description": "Randomize only selected parameter set: groove times, tap mutes, levels, pans, filter cutoffs, Qs, types, pitch shifts, detunes, all taps, all delay, all taps+delay, all comb, all delay+comb, all, or random-of-above. Surgical generative variation."
+    },
+    {
+      "name": "Time modulation LFO",
+      "trigger": "TIME MOD WAVE/LEVEL/RATE",
+      "description": "Dedicated LFO modulates delay tap time. Waveforms: Sinusoid, Triangle, Vibrato 1, Vibrato 2, Down Chirp, Up Chirp, Random. LEVEL sets modulation amplitude · RATE sets period (Hz display)."
+    },
+    {
+      "name": "Pitch tap (tap#) feedback",
+      "trigger": "TAP# encoder",
+      "description": "Selects which of the 16 taps feeds back to input. Different tap choice changes the rhythmic regeneration interval — short tap = fast flutter, long tap = slow looping echoes. SLIP offsets fractional timing."
+    },
+    {
+      "name": "128 factory presets",
+      "trigger": "LOAD + encoder",
+      "description": "128 non-volatile slots. First 82 are factory (Krellverb, Karplus, Spiral, Chorus, Flanger, Symphony, 40-Tap String, AllTap, TechnoLoop, Resonator, etc.); 46 are user slots. MIDI SysEx export/import."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Polyrhythmic 16-tap delay",
+      "patch": "Synth → IN L · load factory preset 16tap Beat · external clock → CLK delay · GROOVE = Hard Swing · GROOVE AMT ~70 · per-tap pan alternates L/R · each drum hit scatters across 16 taps in groove time",
+      "diagram": "Rainmaker:\n* Preset: 16tap Beat · GROOVE: Hard Swing · AMT 70\n* Routing: DLY only\n\nClock:\n\n- Synth (Out) -> Rainmaker (IN L)\n- Clock (Out) c> Rainmaker (CLK Delay)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Karplus-Strong string synth",
+      "patch": "Noise burst (triggered by gate) → IN L · Routing = CMB only · Comb Feedback ~90% · config = Guitar · 1V/OCT from sequencer → Rainmaker 1V/OCT · COMB SIZE CV driven by pitch · tuned plucked string voice with comb resonance",
+      "diagram": "Rainmaker:\n* Routing: CMB only · Comb FB: 90% · Config: Guitar\n* COMB CLK SRC: 1V/OCT\n\nSequencer:\n\nNoise:\n\nENV:\n\nVCA:\n\n- Sequencer (Gate) g> ENV (Trig)\n- Noise (Out) -> VCA (In)\n- ENV (Out) >> VCA (CV)\n- VCA (Out) -> Rainmaker (IN L)\n- Sequencer (Pitch) p> Rainmaker (1V/OCT)\n- Rainmaker (OUT L) -> Output (In)"
+    },
+    {
+      "name": "Ascending pitch-shift cascade",
+      "patch": "Tap 1 pitch = 0 · Tap 2 = +2 · Tap 3 = +4 ... tap 16 = +16 semitones · Groove = Straight · input any sound · each echo rises a whole step creating a 16-step ascending arpeggio from a single hit",
+      "diagram": "Rainmaker:\n* Taps 1-16: pitch shift 0,+2,+4...+16\n* GROOVE: Straight · DLY FB: low\n\n- Synth (Out) -> Rainmaker (IN L)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Spectral filter bank reverb",
+      "patch": "Voice → IN L · each tap filter type = BP · cutoffs tuned to harmonic series (100Hz, 200Hz, 300Hz...) · high Q · tap pitches = 0 · voice acquires resonant filter-bank body · per-tap pans spread harmonic series across stereo field",
+      "diagram": "Rainmaker:\n* Tap filters: BP · cutoffs harmonic series\n* Tap Q: high · Tap pans: spread L↔R\n\n- Voice (Out) -> Rainmaker (IN L)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Generative random reflections",
+      "patch": "Ambient source → IN L · trigger operation = Randomize destination: Tap Pitch Shifts · clock → TRIG divided to 4 bars · each bar Rainmaker randomizes all 16 tap pitches · constantly evolving generative reharmonization",
+      "diagram": "Rainmaker:\n* TRIG op: Randomize · Dest: Tap Pitch Shifts\n\nClock Div:\n\n- Ambient (Out) -> Rainmaker (IN L)\n- Clock Div (Out) t> Rainmaker (TRIG)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Dual delay + Karplus split",
+      "patch": "Routing = L:DLY R:CMB · left channel drum loop → IN L · pitch sequence → IN R + pitch-voice CV via 1V/OCT · left gets rhythmic delay, right gets tuned Karplus string · one module = two effects",
+      "diagram": "Rainmaker:\n* Routing: L:DLY R:CMB\n* Comb: Karplus config\n\nSequencer:\n\n- Drums (Out) -> Rainmaker (IN L)\n- Excite (Out) -> Rainmaker (IN R)\n- Sequencer (Pitch) p> Rainmaker (1V/OCT)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Freeze-and-pitch glitch",
+      "patch": "Source → IN L · TRIG op = Freeze · moment of interesting audio → tap TRIG to freeze · LFO → PITCH SHIFT CV · frozen buffer gets pitch-shifted wildly · play over the morphing texture",
+      "diagram": "Rainmaker:\n* TRIG op: Freeze · DLY FB: high\n\nLFO:\n\nManual Gate:\n\n- Source (Out) -> Rainmaker (IN L)\n- Manual Gate (Out) t> Rainmaker (TRIG) // freeze\n- LFO (Out) >> Rainmaker (PITCH SHIFT CV)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Reverse reverb tail",
+      "patch": "Drum → IN L · TRIG op = Gated Reverse · gate from drum hit → TRIG · during gate, delay plays reverse-buffer · at gate fall, plays forward again · each hit leaves a spectral reverse tail that leads into the next hit",
+      "diagram": "Rainmaker:\n* TRIG op: Gated Reverse\n* GROOVE: Early Reflection · FB: 50%\n\n- Drum (Out) -> Rainmaker (IN L)\n- Drum Trig (Out) g> Rainmaker (TRIG)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Pitched piles chord generator",
+      "patch": "Mono voice → IN L · PILES=4 per tap · per-tap pitch: 0, +4, +7, +12 · Groove = Straight · every delay tap plays a major-7 chord · single-note input yields chordal echo cascade",
+      "diagram": "Rainmaker:\n* PILES: 4 · per-pile pitch: 0,+4,+7,+12\n* GROOVE: Straight\n\n- VCO (Out) -> Rainmaker (IN L)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Tempo-locked modulated resonator",
+      "patch": "Routing = DLY+CMB · Rainmaker CLK OUT → external envelope trigger (tempo-locked) · TIME MOD WAVE = Triangle, LEVEL mid, RATE slow · delay times slowly shift around grid · comb adds modal body · percussion source becomes pitched evolving rhythmic motif",
+      "diagram": "Rainmaker:\n* Routing: DLY+CMB · TIME MOD: Tri · slow\n* GROOVE: Roller Coaster · AMT 50\n\n- Perc (Out) -> Rainmaker (IN L)\n- Rainmaker (CLK) c> ENV (Trig) // tempo lock\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
+    }
+  ]
+}

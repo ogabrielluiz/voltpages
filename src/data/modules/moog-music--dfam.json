@@ -1,0 +1,202 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://cdn.inmusicbrands.com/Moog/DFAM/DFAM_Manual.pdf",
+      "https://api.moogmusic.com/sites/default/files/2018-04/Syncing_DFAM_With_Mother_32.pdf",
+      "https://www.moogmusic.com/products/dfam",
+      "https://api.moogmusic.com/sites/default/files/2020-06/Subharmonicon-Mother32-Exploration-Patchbook.pdf",
+      "https://forum.moogmusic.com/viewtopic.php?f=19&t=36514"
+    ]
+  },
+  "slug": "moog-music--dfam",
+  "name": "DFAM",
+  "manufacturer": "Moog Music",
+  "hp": 60,
+  "tags": ["DRUM", "SEQUENCER", "VCO", "OSCILLATOR", "VCF"],
+  "description": "Drummer From Another Mother. Semi-modular analog percussion voice: 2 VCOs, noise, 24dB Moog ladder filter LP/HP, three decay envelopes and an 8-step analog sequencer with per-step pitch and velocity.",
+  "controls": [
+    { "name": "VCO 1 FREQUENCY", "scope": "VCO 1", "description": "Coarse pitch of oscillator 1.", "detail": "~10 octave range · center = reference · summed with VCO 1 CV, VCO EG and sequencer pitch" },
+    { "name": "VCO 2 FREQUENCY", "scope": "VCO 2", "description": "Coarse pitch of oscillator 2.", "detail": "~10 octave range · affected by HARD SYNC and 1→2 FM AMOUNT" },
+    { "name": "VCO 1 WAVE", "scope": "VCO 1", "description": "Waveform select.", "detail": "UP: SQUARE · DOWN: TRIANGLE" },
+    { "name": "VCO 2 WAVE", "scope": "VCO 2", "description": "Waveform select.", "detail": "UP: SQUARE · DOWN: TRIANGLE" },
+    { "name": "VCO 1 EG AMOUNT", "scope": "VCO 1", "description": "Depth of VCO envelope on VCO 1 pitch. Bipolar.", "detail": "Noon = 0 · CW = positive sweep · CCW = negative sweep" },
+    { "name": "VCO 2 EG AMOUNT", "scope": "VCO 2", "description": "Depth of VCO envelope on VCO 2 pitch. Bipolar.", "detail": "Noon = 0 · CW/CCW = ± pitch sweep" },
+    { "name": "VCO DECAY", "scope": "VCO Envelope", "description": "Decay time of the envelope modulating both VCO pitches.", "detail": "Audio-rate to several seconds · no effect if both VCO EG AMOUNT knobs at noon" },
+    { "name": "SEQ PITCH MOD", "scope": "VCOs", "description": "Three-way switch routes sequencer PITCH 1-8 knobs.", "detail": "UP: VCO 1 & 2 · CENTER: OFF (PITCH CV still on patchbay) · DOWN: VCO 2 only" },
+    { "name": "HARD SYNC", "scope": "VCO 2", "description": "Forces VCO 2 phase to reset to VCO 1. Creates metallic, flange-like timbres.", "detail": "ON: sync engaged · VCO 2 may go silent if its frequency falls below VCO 1, especially on square" },
+    { "name": "1→2 FM AMOUNT", "scope": "VCO Interaction", "description": "Linear FM amount from VCO 1 into VCO 2. Most audible with HARD SYNC OFF.", "detail": "Summed with 1→2 FM AMT jack · clangorous to bell-like" },
+    { "name": "VCO 1 LEVEL", "scope": "Mixer", "description": "Amount of VCO 1 into the filter input.", "detail": "Square sounds louder than triangle" },
+    { "name": "VCO 2 LEVEL", "scope": "Mixer", "description": "Amount of VCO 2 into the filter input.", "detail": "Square sounds louder than triangle" },
+    { "name": "NOISE / EXT LEVEL", "scope": "Mixer", "description": "Amount of white noise (or EXT AUDIO jack signal) into the filter.", "detail": "Modulated by NOISE LEVEL CV input · EXT AUDIO replaces noise when patched" },
+    { "name": "CUTOFF", "scope": "VCF", "description": "Filter cutoff frequency, LP or HP.", "detail": "20Hz – 20kHz · summed with VCF EG, VCF MOD and NOISE/VCF MOD" },
+    { "name": "RESONANCE", "scope": "VCF", "description": "Feedback. Self-oscillates past ~3 o'clock in LP mode.", "detail": "LP: sine self-oscillation · HP: self-oscillates with CUTOFF ~1kHz, scaling differs" },
+    { "name": "VCF", "scope": "VCF", "description": "Filter mode switch.", "detail": "UP: HP (24dB/oct) · DOWN: LP (24dB/oct ladder)" },
+    { "name": "VCF DECAY", "scope": "VCF Envelope", "description": "Decay time of the envelope modulating filter cutoff.", "detail": "~10ms to ~10s · no effect if VCF EG AMOUNT at noon" },
+    { "name": "VCF EG AMOUNT", "scope": "VCF Envelope", "description": "Depth of filter envelope. Bipolar.", "detail": "Noon = 0 · CW = + · CCW = − · overrides VCF switch direction" },
+    { "name": "NOISE / VCF MOD", "scope": "VCF Modulation", "description": "Dual-purpose: noise modulates cutoff, OR attenuates external VCF MOD input when patched.", "detail": "CW adds dirt/lo-fi · patched VCF MOD replaces noise as the source" },
+    { "name": "VCA EG", "scope": "VCA Envelope", "description": "Attack-time switch for VCA envelope.", "detail": "FAST: 1ms (punchy) · SLOW: 100ms (soft)" },
+    { "name": "VCA DECAY", "scope": "VCA Envelope", "description": "Decay time of output VCA envelope.", "detail": "Short = tight hat · long = washed/drone · velocity scales amplitude and decay" },
+    { "name": "VOLUME", "scope": "Output", "description": "Master output level.", "detail": "Affects AUDIO OUT and VCA patch jack" },
+    { "name": "TEMPO", "scope": "Sequencer", "description": "Sequencer clock speed. Continuously variable across a very wide range.", "detail": "~0.7Hz – 700Hz per step (≈10 BPM – 10,000 BPM at 16ths) · overridden by ADV/CLOCK when patched" },
+    { "name": "PITCH 1-8", "scope": "Sequencer", "description": "Per-step pitch knobs. Bipolar around the VCO FREQUENCY reference.", "detail": "Roughly ±5V (~10 octave range) · routed per SEQ PITCH MOD switch · always present at PITCH output" },
+    { "name": "VELOCITY 1-8", "scope": "Sequencer", "description": "Per-step velocity. Drives all three envelopes' amplitude and slightly their decay time.", "detail": "0–5V · VELOCITY knob at 0 = silent step · normalized to VELOCITY jack" },
+    { "name": "RUN/STOP", "scope": "Sequencer", "description": "Starts/stops sequencer from current step.", "detail": "Red LED lit when running" },
+    { "name": "ADVANCE", "scope": "Sequencer", "description": "Manually steps the sequencer without triggering the envelopes.", "detail": "Useful for fine-tuning individual steps while stopped" },
+    { "name": "TRIGGER", "scope": "Sequencer", "description": "Fires all three envelopes at current step without advancing.", "detail": "Lets a step be auditioned and adjusted repeatedly" }
+  ],
+  "inputs": [
+    { "name": "TRIGGER", "description": "Fires all three EGs at current step velocity without advancing the sequencer.", "voltage": "0 to +5V pulse · +10V tolerant", "normalizedTo": "sequencer clock" },
+    { "name": "VCA CV", "description": "Direct CV into output VCA. Sums with internal VCA EG.", "voltage": "0 to +8V" },
+    { "name": "VELOCITY", "description": "Replaces sequencer velocity — drives all three EG amplitudes.", "voltage": "0 to +5V", "normalizedTo": "sequencer VELOCITY 1-8 knobs" },
+    { "name": "VCA DECAY", "description": "CV sums with VCA DECAY knob.", "voltage": "−5V to +5V · set knob to noon for widest response" },
+    { "name": "EXT AUDIO", "description": "External audio source replaces noise at the mixer.", "voltage": "10V p-p Eurorack level", "normalizedTo": "internal noise generator" },
+    { "name": "VCF DECAY", "description": "CV sums with VCF DECAY knob.", "voltage": "−5V to +5V" },
+    { "name": "NOISE LEVEL", "description": "CV modulates NOISE/EXT LEVEL knob position.", "voltage": "0 to +8V · can clip the noise VCA" },
+    { "name": "VCO DECAY", "description": "CV sums with VCO DECAY knob.", "voltage": "−5V to +5V" },
+    { "name": "VCF MOD", "description": "Hard-wired CV modulation source for VCF cutoff. Replaces noise in the NOISE/VCF MOD circuit.", "voltage": "−5V to +5V · NOISE/VCF MOD knob attenuates" },
+    { "name": "VCO 1 CV", "description": "1V/oct input for VCO 1.", "voltage": "−5V to +5V · set FREQ and EG AMOUNT to noon for accurate tracking" },
+    { "name": "1→2 FM AMT", "description": "CV modulates 1→2 FM AMOUNT knob.", "voltage": "0 to +8V" },
+    { "name": "VCO 2 CV", "description": "1V/oct input for VCO 2.", "voltage": "−5V to +5V · set FREQ and EG AMOUNT to noon for accurate tracking" },
+    { "name": "TEMPO", "description": "1V/oct input to the internal clock VCO. Extends tempo into audio rate.", "voltage": "−5V to +5V · summed with TEMPO knob" },
+    { "name": "RUN/STOP", "description": "Gate controls sequencer run state.", "voltage": "0 to +5V gate · +10V tolerant" },
+    { "name": "ADV / CLOCK", "description": "External clock advance. TEMPO knob is ignored while patched. Each rising edge advances one step.", "voltage": "0 to +5V · +10V tolerant · slow-changing CVs may be missed" }
+  ],
+  "outputs": [
+    { "name": "VCA", "description": "Main audio output, post VOLUME.", "voltage": "±5V at typical Eurorack levels" },
+    { "name": "VCA EG", "description": "Copy of internal VCA envelope. Informed by velocity, VCA DECAY, VCA EG switch.", "voltage": "0 to +8V" },
+    { "name": "VCF EG", "description": "Copy of internal VCF envelope. Informed by velocity and VCF DECAY.", "voltage": "0 to +8V" },
+    { "name": "VCO EG", "description": "Copy of internal VCO envelope. Informed by velocity and VCO DECAY.", "voltage": "0 to +8V" },
+    { "name": "VCO 1", "description": "Direct VCO 1 output.", "voltage": "±5V (10V p-p)" },
+    { "name": "VCO 2", "description": "Direct VCO 2 output.", "voltage": "±5V (10V p-p)" },
+    { "name": "TRIGGER", "description": "~1ms pulse from sequencer clock. Per step, used to clock another DFAM or a drum voice.", "voltage": "0 to +5V · ~1ms width" },
+    { "name": "VELOCITY", "description": "Current step velocity as CV. Follows whichever step the sequencer is on.", "voltage": "0 to +5V" },
+    { "name": "PITCH", "description": "Current step pitch knob voltage. Always available even when SEQ PITCH MOD is OFF.", "voltage": "−5V to +5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Semi-modular normalization",
+      "trigger": "no patching",
+      "description": "Default signal path: two VCOs and noise → mixer → VCF → VCA → OUT. Sequencer clock is normalized to TRIGGER input (fires all three EGs); VELOCITY 1-8 normalized to VELOCITY input; noise normalized to the mixer. Any patched cable replaces its normalization."
+    },
+    {
+      "name": "Three velocity-scaled envelopes",
+      "trigger": "every step",
+      "description": "VCO, VCF and VCA each have their own decay envelope. All three share one velocity input — per-step VELOCITY knobs set amplitude of all three simultaneously, and also subtly affect their decay time. Velocity=0 silences the step entirely."
+    },
+    {
+      "name": "Bipolar EG amounts",
+      "trigger": "VCO/VCF EG AMOUNT knobs",
+      "description": "EG AMOUNT knobs are bipolar around noon. CW produces standard rising envelopes (pitch jumps up, filter opens); CCW produces inverted envelopes (pitch dips, filter closes into each note). Negative pitch gives videogame-style bloops; negative VCF gives inverted drums."
+    },
+    {
+      "name": "SEQ PITCH MOD routing",
+      "trigger": "switch position",
+      "description": "VCO 1 & 2: sequencer pitch controls both oscillators (sequenced bass lines). VCO 2: only oscillator 2 — useful with HARD SYNC or FM so VCO 1 holds static pitch while VCO 2 gets sequenced modulation. OFF: PITCH CV still appears on the patchbay, usable as a generic 8-step CV sequencer."
+    },
+    {
+      "name": "Patchbay as CV sequencer",
+      "trigger": "SEQ PITCH MOD OFF · patch PITCH / VELOCITY / TRIGGER outputs",
+      "description": "With SEQ PITCH MOD OFF, DFAM doubles as a step-CV sequencer: PITCH out, VELOCITY out and TRIGGER out can modulate another module (e.g., VCA CV, decay time, external filter cutoff). Gives two independent bipolar/unipolar CV rows per step plus a clock."
+    },
+    {
+      "name": "Clock VCO is the tempo",
+      "trigger": "TEMPO knob or TEMPO CV jack",
+      "description": "The sequencer clock is itself a voltage-controlled oscillator (1V/oct on TEMPO input). This enables audio-rate clocking — the sequencer becomes an 8-step waveform generator. PITCH out then becomes an oscillator with per-sample amplitudes set by the 8 pitch knobs."
+    },
+    {
+      "name": "External clock override",
+      "trigger": "patch into ADV / CLOCK",
+      "description": "TEMPO knob is ignored whenever ADV/CLOCK receives a rising edge. Use Mother-32 ASSIGN (Clock) or another DFAM's TRIGGER out to slave DFAM. Slowly-changing voltages without sharp edges may not trigger — accents from Mother-32 need fast rise to register."
+    },
+    {
+      "name": "Hard-sync voice character",
+      "trigger": "HARD SYNC ON",
+      "description": "VCO 2 phase locks to VCO 1. VCO 2 FREQUENCY becomes a timbre control rather than a pitch control — useful for sweeping metallic harmonics while bass pitch stays fixed. VCO 2 goes silent if set below VCO 1 frequency, especially on square wave."
+    },
+    {
+      "name": "Filter self-oscillation",
+      "trigger": "RESONANCE >3 o'clock",
+      "description": "In LP mode the VCF self-oscillates into a sine tone, usable as a third sound source (see 'Filter as Oscillator' preset). In HP mode the resonance scales differently — self-oscillation begins around CUTOFF ~1kHz with RESONANCE at max."
+    },
+    {
+      "name": "Dual-function NOISE/VCF MOD",
+      "trigger": "VCF MOD jack",
+      "description": "NOISE/VCF MOD knob controls how much noise modulates cutoff (dirt/lo-fi). Patching VCF MOD replaces noise as the modulation source, and the knob now attenuates that external CV — so the knob must be CW for full CV depth."
+    },
+    {
+      "name": "Sync multiple DFAMs",
+      "trigger": "TRIGGER → ADV/CLOCK of secondary",
+      "description": "Primary DFAM TRIGGER out → secondary DFAM ADV/CLOCK input. Start the secondary first (so it is ready), then start the primary. Chain more DFAMs the same way. Drives polyrhythmic patterns when primary tempo is varied independently."
+    },
+    {
+      "name": "Eurorack installation",
+      "trigger": "60HP eurorack case",
+      "description": "Front panel unscrews from the wooden enclosure. Internal 10-pin header accepts standard Eurorack power ribbon. Uses +12V only (230mA max), no −12V. No power switch — unit is on when powered."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "DFAM + Mother-32 sync",
+      "patch": "Mother-32 ASSIGN set to Clock (Setup page 1, default) · Mother ASSIGN → DFAM ADV/CLOCK · start DFAM first with RUN/STOP, then start Mother-32 · DFAM advances per Mother-32 clock pulse · change Mother's clock division (Clock/2, Clock/4) for polyrhythmic drums",
+      "diagram": "DFAM:\n* RUN/STOP armed\n\nMother-32:\n* ASSIGN: Clock (Setup p1 v2)\n\n- Mother-32 (ASSIGN) c> DFAM (ADV/CLOCK)\n- Mother-32 (KB) p> DFAM (VCO 1 CV) // optional tonal follow"
+    },
+    {
+      "name": "Dual DFAM chain",
+      "patch": "Primary DFAM plays 8-step pattern · patch TRIGGER out → secondary DFAM ADV/CLOCK · secondary advances on each primary step · detune tempos is impossible (shared clock) but patterns can differ in pitch/velocity/decay per step · stereo drum layer",
+      "diagram": "DFAM A:\n* Primary · RUN/STOP armed second\n\nDFAM B:\n* Secondary · RUN/STOP armed first\n\n- DFAM A (TRIGGER) c> DFAM B (ADV/CLOCK)\n- DFAM A (VCA) -> Output (L)\n- DFAM B (VCA) -> Output (R)"
+    },
+    {
+      "name": "Kick + snare in one voice",
+      "patch": "SEQ PITCH MOD: VCO 1&2 · set PITCH knobs on kick steps low, snare steps higher · set even steps' NOISE/EXT LEVEL via an external LFO to swell noise on snares · VCA DECAY ~10 o'clock · VCA EG FAST · VCO 1 EG AMOUNT 2 o'clock for kick thump",
+      "diagram": "DFAM:\n* SEQ PITCH MOD: VCO 1&2\n* PITCH 1,3,5,7: low (kick) · 2,4,6,8: mid (snare)\n* VCO 1 EG AMT: 2 o'clock\n* VCA EG: FAST · VCA DECAY: ~10 o'clock\n\n- DFAM (PITCH) >> LFO (CV-out, optional) // external snare tone\n- LFO (Out) >> DFAM (NOISE LEVEL) // swell noise on alternating steps"
+    },
+    {
+      "name": "Sequenced bass voice",
+      "patch": "VCO FREQUENCY knobs at noon for both · VCO 1 WAVE: triangle · VCO 2 LEVEL: 0 · VCA EG: SLOW for glide-like attack · VCA DECAY ~12 o'clock · VCF LP · VCF EG AMT moderate · SEQ PITCH MOD: VCO 1&2 · 8-note melodic bass line · pair with 8-step pattern from Mother-32 quantizing pitch externally",
+      "diagram": "DFAM:\n* VCO 1 WAVE: triangle · VCO 2 LEVEL: 0\n* VCA EG: SLOW · VCA DECAY: ~12 o'clock\n* VCF: LP · VCF EG AMT: ~2 o'clock\n* SEQ PITCH MOD: VCO 1&2\n\n- Quantizer (Out) p> DFAM (VCO 1 CV) // external in-key pitch\n- Clock (Out) c> DFAM (ADV/CLOCK)"
+    },
+    {
+      "name": "Filter as percussive oscillator",
+      "patch": "VCO 1/2 LEVEL: 0 · NOISE/EXT LEVEL: 0 · RESONANCE past 3 o'clock · VCF LP · CUTOFF ~11 o'clock · VCF EG AMT 3 o'clock · VCF DECAY short · self-oscillating sine ping per step · PITCH 1-8 sweep cutoff for tuned tom sequence",
+      "diagram": "DFAM:\n* VCO 1/2 LEVEL: 0 · NOISE/EXT LEVEL: 0\n* VCF: LP · RESONANCE: ~3.5 o'clock\n* CUTOFF: ~11 o'clock · VCF EG AMT: 3 o'clock · VCF DECAY: short\n* SEQ PITCH MOD: OFF\n\n- DFAM (PITCH) >> DFAM (VCF MOD) // sequenced cutoff tuning"
+    },
+    {
+      "name": "DFAM as 8-step CV sequencer",
+      "patch": "SEQ PITCH MOD: OFF · DFAM still plays percussion internally · patch PITCH out → external module (filter cutoff, VCA CV, etc.) · patch VELOCITY out → second external destination · two independent CV rows + trigger clock for free · useful in Mother-32-free racks",
+      "diagram": "DFAM:\n* SEQ PITCH MOD: OFF\n\n- DFAM (PITCH) >> Filter (Cutoff)\n- DFAM (VELOCITY) >> VCA (CV)\n- DFAM (TRIGGER) t> Envelope (Trig)"
+    },
+    {
+      "name": "FM Toys metallic hits",
+      "patch": "HARD SYNC OFF · 1→2 FM AMOUNT 2 o'clock · VCO 2 FREQUENCY varies per step via SEQ PITCH MOD = VCO 2 · VCO 1 holds drone · patch VCO 2 → VCF MOD for audio-rate filter FM · bell-like, clangorous hits that shift harmonics per step",
+      "diagram": "DFAM:\n* HARD SYNC: OFF\n* 1→2 FM AMOUNT: 2 o'clock\n* SEQ PITCH MOD: VCO 2\n\n- DFAM (VCO 2) >> DFAM (VCF MOD) // filter FM at audio rate"
+    },
+    {
+      "name": "Sequencer as audio oscillator",
+      "patch": "Patch audio-rate CV (another VCO) → TEMPO input · PITCH out becomes an 8-step wavetable · VCO 1 LEVEL 0 · route PITCH through a VCA/filter externally · tweak PITCH 1-8 knobs to shape the waveform · TEMPO knob sets the fundamental",
+      "diagram": "DFAM:\n* VCO 1/2 LEVEL: 0 · Noise: 0\n* Sequencer running\n\n- VCO (Out) -> DFAM (TEMPO) // audio-rate clock\n- DFAM (PITCH) -> Filter (In) // 8-step wavetable out"
+    },
+    {
+      "name": "Velocity-driven accent from Mother-32",
+      "patch": "Mother-32 ASSIGN set to MIDI Velocity (Setup p1 v10) · ASSIGN → DFAM VELOCITY · MIDI notes with high velocity accent DFAM hits dynamically · Mother-32 simultaneously clocks DFAM via a mult on ASSIGN (with ASSIGN = Clock) or separate clock source",
+      "diagram": "Mother-32:\n* ASSIGN: MIDI Velocity (Setup p1 v10)\n\nDFAM:\n* Sequencer running\n\n- External Clock (Out) c> DFAM (ADV/CLOCK)\n- Mother-32 (ASSIGN) >> DFAM (VELOCITY) // velocity-scaled hits"
+    },
+    {
+      "name": "Quick hats — decay-modulated",
+      "patch": "SEQ PITCH MOD: OFF · VCA DECAY ~10 o'clock · VCO 1/2 LEVEL 0 · Noise full · VCF HP · patch PITCH out → VCA DECAY input · each step has a per-step decay length via the PITCH knobs · tight-to-sloppy hat variation",
+      "diagram": "DFAM:\n* SEQ PITCH MOD: OFF\n* VCO 1/2 LEVEL: 0 · NOISE: full\n* VCF: HP · CUTOFF: ~3 o'clock\n* VCA DECAY: noon\n\n- DFAM (PITCH) >> DFAM (VCA DECAY) // decay varies per step"
+    },
+    {
+      "name": "Talking drum",
+      "patch": "HARD SYNC OFF · NOISE/VCF MOD full CW · patch VCO 2 → VCF MOD · NOISE/EXT LEVEL 0 · VCO 2 FREQUENCY modulates filter at audio rate · VCO 1 as the fundamental · low resonance adds thump · formant-like, vocal percussion",
+      "diagram": "DFAM:\n* HARD SYNC: OFF\n* NOISE/EXT LEVEL: 0 · NOISE/VCF MOD: full CW\n* VCF: LP · RESONANCE: low\n* SEQ PITCH MOD: VCO 2\n\n- DFAM (VCO 2) >> DFAM (VCF MOD)"
+    },
+    {
+      "name": "External reverb through DFAM VCA",
+      "patch": "External audio → EXT AUDIO · NOISE/EXT LEVEL full CW · VCO levels 0 · VCF wide open · sequencer triggers the VCA EG to chop the external source in rhythm with the patch · VELOCITY knobs set per-step ducking amount",
+      "diagram": "DFAM:\n* VCO 1/2 LEVEL: 0\n* NOISE/EXT LEVEL: full\n* VCF: LP · CUTOFF: full CW\n* VCA EG: FAST · VCA DECAY: tuned to tempo\n\n- External FX (Out) -> DFAM (EXT AUDIO)\n- DFAM (VCA) -> Output (In) // rhythmically gated external signal"
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://verboselectronics.com/",
+      "https://verboselectronics.com/tech-cards/",
+      "https://verboselectronics.com/voltage-multistage-10/vms-10techcards/",
+      "https://verboselectronics.com/tech-cards/VMS-10%2BTech%2BCards.pdf"
+    ]
+  },
+  "slug": "verbos-electronics--voltage-multistage-10",
+  "name": "Voltage Multistage 10",
+  "manufacturer": "Verbos Electronics",
+  "hp": 30,
+  "tags": ["SEQUENCER", "CLOCK", "FUNCTION", "ENVELOPE", "LFO"],
+  "description": "Four-channel staged modulator. Each slope runs as envelope, looping LFO or step sequencer with 10 shared stages, per-stage level/time/curve, quantiser, analog address and triggerable stage inputs.",
+  "controls": [
+    {
+      "name": "Slope",
+      "scope": "Global",
+      "description": "Selects which of the four slopes is active for editing.",
+      "detail": "4 slopes"
+    },
+    {
+      "name": "Type",
+      "scope": "Global",
+      "description": "Switches the selected slope between envelope, loop and step modes.",
+      "detail": "Env / Loop / Step"
+    },
+    {
+      "name": "Start / End",
+      "scope": "Global",
+      "description": "Sets the active stage range for the selected slope.",
+      "detail": "within 10 shared stages"
+    },
+    {
+      "name": "Quantiser",
+      "scope": "Global",
+      "description": "Cycles the selected slope through internal scales.",
+      "detail": "19 scales"
+    },
+    {
+      "name": "+/-",
+      "scope": "Global",
+      "description": "Changes the output range of the selected slope.",
+      "detail": "+/-5V, 0-5V or 0-2.5V"
+    },
+    {
+      "name": "Time",
+      "scope": "Global",
+      "description": "Sets the base stage length.",
+      "detail": "slower CW"
+    },
+    {
+      "name": "Stage Level / Time / Curve",
+      "scope": "Stages 1-10",
+      "description": "Each stage has a level slider, time knob and curve control.",
+      "detail": "level, duration, shape"
+    },
+    {
+      "name": "Stage Mode Toggle",
+      "scope": "Stages 1-10",
+      "description": "Selects on, off or slide behavior per stage.",
+      "detail": "on / off / slide"
+    },
+    {
+      "name": "Start / Stop / Advance / Strobe / Enable / Sustain",
+      "scope": "Global",
+      "description": "Panel controls for running, stepping and latching the sequencer core.",
+      "detail": "button cluster"
+    },
+    {
+      "name": "Analog Address",
+      "scope": "Global",
+      "description": "Chooses a stage by control voltage when strobe is latched.",
+      "detail": "0-9/10-voiced address"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Trigger Input 1-4",
+      "description": "Trigger or gate inputs for the four slopes; each input normalises onward until broken.",
+      "voltage": "0.8V+ trigger/gate"
+    },
+    {
+      "name": "Stage Select Inputs 1-10",
+      "description": "Per-stage gate inputs that can jump directly to specific stages.",
+      "voltage": "+5V gate"
+    },
+    {
+      "name": "CV In",
+      "description": "General CV input for matrix-style stage control.",
+      "voltage": "+/-10V"
+    },
+    {
+      "name": "Time CV",
+      "description": "Control-voltage input for stage duration.",
+      "voltage": "+/-10V"
+    },
+    {
+      "name": "Analog Address",
+      "description": "Analog address input for latched stage selection.",
+      "voltage": "+/-10V"
+    },
+    {
+      "name": "Start / Stop",
+      "description": "Starts or stops the selected slope.",
+      "voltage": "+5V gate"
+    },
+    {
+      "name": "Enable",
+      "description": "Allows the clocked slope to continue only when high.",
+      "voltage": "+5V gate"
+    },
+    {
+      "name": "Sustain",
+      "description": "Holds the active stage while high.",
+      "voltage": "+5V gate"
+    },
+    {
+      "name": "Advance",
+      "description": "Steps the selected slope forward.",
+      "voltage": "+5V trigger"
+    },
+    {
+      "name": "Strobe",
+      "description": "Jumps to the stage selected by Analog Address.",
+      "voltage": "+5V trigger"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "CV A",
+      "description": "Upper-stage CV output for the selected slope.",
+      "voltage": "0-5V default"
+    },
+    {
+      "name": "CV B",
+      "description": "Lower-stage CV output for the selected slope.",
+      "voltage": "0-5V default"
+    },
+    {
+      "name": "Gate Out",
+      "description": "Master gate output for the selected slope.",
+      "voltage": "+5V gate"
+    },
+    {
+      "name": "Ref Output",
+      "description": "Falling ramp reference output tied to the selected stage length.",
+      "voltage": "0-5V default"
+    },
+    {
+      "name": "Stage Gate Outputs",
+      "description": "Gate outputs for the 10 shared stages.",
+      "voltage": "+5V gate"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Three slope modes",
+      "trigger": "select Env, Loop or Step",
+      "description": "Env outputs a triggered multistage envelope, Loop free-runs as an LFO and Step advances through voltages one stage at a time."
+    },
+    {
+      "name": "Stage overlap and offsets",
+      "trigger": "move Start / End",
+      "description": "Each slope can use a different slice of the 10 stages, or overlap with another slope to share stage controls."
+    },
+    {
+      "name": "Latched analog address",
+      "trigger": "hold Strobe and move Analog Address",
+      "description": "When strobe is latched, an incoming CV can pick the current stage. A changing address can generate a new note stream without the clock staying high."
+    },
+    {
+      "name": "Per-stage gate logic",
+      "trigger": "patch stage gate outs into Enable or Sustain",
+      "description": "Stage gate outputs can turn the sequencer into a self-gated envelope, a hold stage, or a loop that only advances on chosen steps."
+    },
+    {
+      "name": "CV row split",
+      "trigger": "use CV A and CV B together",
+      "description": "CV A can glide through stage ranges while CV B gives the immediate stage voltage, which makes slide and time modulation easy to separate."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Three-stage envelope",
+      "patch": "Slope 1 in Env mode with stages 1-3 active; Stage 1 sets attack, Stage 2 holds sustain and Stage 3 returns to zero. CV A drives a VCA and Gate Out retriggers the voice cleanly.",
+      "diagram": "Voltage Multistage 10:\n* Slope: 1\n* Type: Env\n* Start: Stage 1\n* End: Stage 3\n* Stage 2: sustain\n\nVCA:\nVCO:\nEnvelope:\n\n- Keyboard (Gate) g> Voltage Multistage 10 (Trigger Input 1)\n- Keyboard (Pitch) p> VCO (V/Oct)\n- Voltage Multistage 10 (CV A) >> VCA (CV)\n- Voltage Multistage 10 (Gate Out) t> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Looping LFO",
+      "patch": "Slope 2 in Loop mode with a short stage range and mixed curve settings becomes a custom LFO. CV B can move the loop length while Ref Output acts as a synced ramp for filter movement.",
+      "diagram": "Voltage Multistage 10:\n* Slope: 2\n* Type: Loop\n* Start: Stage 1\n* End: Stage 4\n\nLFO:\nVCO:\nFilter:\nVCA:\n\n- Clock (Out) c> Voltage Multistage 10 (Trigger Input 2)\n- Voltage Multistage 10 (CV A) >> Filter (Cutoff)\n- Voltage Multistage 10 (Ref Output) >> VCA (CV)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Step melody with slides",
+      "patch": "Slope 3 in Step mode with selected stages set to slide and others set to on. Stage 1-10 voltages become note rows, while a quantizer after CV A locks the sequence to a scale.",
+      "diagram": "Voltage Multistage 10:\n* Slope: 3\n* Type: Step\n* Quantiser: on\n\nQuantizer:\nVCO:\nEnvelope:\nVCA:\n\n- Clock (Out) c> Voltage Multistage 10 (Trigger Input 3)\n- Voltage Multistage 10 (CV A) >> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Voltage Multistage 10 (Gate Out) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Analog address jump table",
+      "patch": "Strobe latched; Analog Address is driven by a slow random CV so the selected stage changes in a controlled but non-grid way. Gate Out and Ref Output still behave as stage-change clocks, so the patch stays rhythmically legible.",
+      "diagram": "Voltage Multistage 10:\n* Strobe: latched\n* Start: Stage 1\n* End: Stage 10\n\nRandom CV:\nClock:\nMixer:\n\n- Clock (Out) c> Voltage Multistage 10 (Strobe)\n- Random CV (Out) >> Voltage Multistage 10 (Analog Address)\n- Voltage Multistage 10 (CV B) >> Mixer (In 1)\n- Voltage Multistage 10 (Gate Out) t> Envelope (Trig)\n- Voltage Multistage 10 (Ref Output) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Self-gated loop",
+      "patch": "Stage gate outputs feed Enable and Sustain, so one active stage can hold the slope until a later stage releases it. This turns the 10-stage editor into a pseudo-sequenced envelope with internal dependency.",
+      "diagram": "Voltage Multistage 10:\n* Slope: 4\n* Type: Env\n\nEnvelope:\nVCO:\nVCA:\nFilter:\n\n- Clock (Out) c> Voltage Multistage 10 (Trigger Input 4)\n- Voltage Multistage 10 (Stage Gate Outputs) g> Voltage Multistage 10 (Enable)\n- Voltage Multistage 10 (Stage Gate Outputs) g> Voltage Multistage 10 (Sustain)\n- Voltage Multistage 10 (CV A) >> VCA (CV)\n- Voltage Multistage 10 (Ref Output) >> Filter (Cutoff)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    }
+  ]
+}

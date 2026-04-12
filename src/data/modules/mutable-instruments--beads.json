@@ -1,0 +1,186 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.1",
+    "sources": [
+      "https://mutable-instruments.net/modules/beads/manual/",
+      "https://mutable-instruments.net/modules/beads/",
+      "https://www.modulargrid.net/e/mutable-instruments-beads",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=241956",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/beads/manual/"
+    ]
+  },
+  "slug": "mutable-instruments--beads",
+  "name": "Beads",
+  "manufacturer": "Mutable Instruments",
+  "hp": 16,
+  "tags": ["GRANULAR", "EFFECTS", "SAMPLER", "DELAY"],
+  "description": "Granular texture synthesizer succeeding Clouds. Higher-quality buffer, stereo spread, built-in delay/reverb, three quality presets, and two dedicated outputs for wet-only and summed signals.",
+  "controls": [
+    {
+      "name": "Quality",
+      "scope": "Global",
+      "description": "Three-way button cycles buffer quality: CD (stereo 32kHz) · AM (mono 32kHz) · tape (mono 16kHz with wow/flutter and saturation).",
+      "detail": "Green=CD · orange=AM · red=tape · hold to freeze the buffer"
+    },
+    {
+      "name": "Freeze",
+      "scope": "Global",
+      "description": "Long-press Quality button or FREEZE gate locks the recording buffer. Grains continue reading the frozen material.",
+      "detail": "LED flashes while frozen · same gate also mutes input to avoid feedback crash"
+    },
+    {
+      "name": "Time",
+      "scope": "Global",
+      "description": "Buffer scrubbing position and grain start. CCW = oldest material, CW = newest. Also controls internal reverb decay when in reverb-emphasis mode.",
+      "detail": "Bipolar attenuverter · V/OCT tracking available"
+    },
+    {
+      "name": "Pitch",
+      "scope": "Global",
+      "description": "Grain pitch transposition. Stepped in semitones when V/OCT is patched; continuous otherwise.",
+      "detail": "±2 octaves · stepped in semitones when V/OCT in · continuous when not"
+    },
+    {
+      "name": "Size",
+      "scope": "Global",
+      "description": "Grain length. Small = crisp/percussive, large = stretched/ambient. Accepts audio-rate CV for FM-like artifacts.",
+      "detail": "Bipolar attenuverter · ~1ms–1s · audio-rate CV allowed"
+    },
+    {
+      "name": "Density",
+      "scope": "Global",
+      "description": "Grain rate. Center = silent. CW = regular/synchronous. CCW = Poisson/random. Doubles as macro trigger source when DENSITY CV not patched.",
+      "detail": "Bipolar · center = silence · CCW random · CW synchronous · normalled to internal trigger source"
+    },
+    {
+      "name": "Texture",
+      "scope": "Global",
+      "description": "Grain envelope shape. CCW = boxcar (clicky), CW = Gaussian (smooth). Interacts with spread and reverb routing depending on macro.",
+      "detail": "Bipolar attenuverter"
+    },
+    {
+      "name": "Seed",
+      "scope": "Global",
+      "description": "Button randomizes grain-parameter variation pattern. Holding + turning another knob changes that parameter's randomness depth.",
+      "detail": "Tap = new seed · hold+knob = per-parameter randomness"
+    },
+    {
+      "name": "Macros (x2)",
+      "scope": "Global",
+      "description": "Two attenuverter-style controls determine how the internal trigger, delay send, reverb send, and stereo spread are blended into the L/R macro outputs.",
+      "detail": "Sets balance dry : granular : delay : reverb in L/R outs"
+    },
+    {
+      "name": "In Gain",
+      "scope": "Global",
+      "description": "Input trim with peak LED. Feeds both buffer write and the dry path.",
+      "detail": "Unity at noon · up to +24dB CW · peak LED at ~0dBFS"
+    }
+  ],
+  "inputs": [
+    { "name": "TRIG", "description": "External grain trigger. Each pulse fires one grain at the TIME position. Overrides DENSITY as source.", "voltage": ">1V trigger" },
+    { "name": "V/OCT", "description": "1V/oct for grain pitch transposition. When patched, PITCH knob quantizes to semitones.", "voltage": "-2V to +2V" },
+    { "name": "TIME CV", "description": "CV for buffer position, scaled by attenuverter.", "voltage": "±5V" },
+    { "name": "SIZE CV", "description": "CV for grain size; accepts audio-rate.", "voltage": "±5V" },
+    { "name": "DENSITY CV", "description": "CV for grain rate and random distribution.", "voltage": "±5V" },
+    { "name": "TEXTURE CV", "description": "CV for envelope shape.", "voltage": "±5V" },
+    { "name": "SEED", "description": "Trigger input that generates a new randomization seed for grain parameter variation.", "voltage": ">1V trigger" },
+    { "name": "FREEZE", "description": "Gate input. High = buffer frozen.", "voltage": ">1V gate" },
+    { "name": "IN L / IN R", "description": "Stereo audio inputs. Left normalized to right.", "voltage": "±8V audio", "normalizedTo": "IN L feeds IN R when unpatched" }
+  ],
+  "outputs": [
+    { "name": "OUT L / OUT R", "description": "Stereo macro outputs. Mix of dry, granular, delay, and reverb determined by the two macro knobs.", "voltage": "±8V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Three buffer qualities",
+      "trigger": "Quality button",
+      "description": "CD: 32kHz 16-bit stereo, clean. AM: 32kHz mono, slight saturation. Tape: 16kHz with wow/flutter + saturation. Each mode has a different sonic signature — Tape is the Clouds-heritage lo-fi voice."
+    },
+    {
+      "name": "Self-triggering from DENSITY",
+      "trigger": "TRIG unpatched",
+      "description": "With no external TRIG, grains fire from an internal source driven by DENSITY. Around center no grains fire; CW produces regular pulses, CCW produces random Poisson events. Audio-rate DENSITY CV modulates grain rate at audio rate."
+    },
+    {
+      "name": "Seed-based variation",
+      "trigger": "Seed button or SEED input",
+      "description": "Each grain's parameters wobble around the set values. SEED chooses the random pattern — same seed produces repeatable wobble. Holding Seed + turning any parameter sets that parameter's variation amount."
+    },
+    {
+      "name": "Macro routing",
+      "trigger": "the two macro knobs",
+      "description": "The OUT L and OUT R macros blend dry / granular / delay / reverb according to the macro knob positions — a user-programmable 4-to-2 mixer. Lets Beads output wet-only at one position and dry+grains at another."
+    },
+    {
+      "name": "Integrated delay and reverb",
+      "trigger": "routed via macros",
+      "description": "Beads contains a feedback delay and a shimmer-friendly reverb that share DSP with the grain engine. These effects are always running; only the macro blend controls how much they reach the outs."
+    },
+    {
+      "name": "V/OCT quantizes PITCH",
+      "trigger": "patch cable in V/OCT",
+      "description": "When V/OCT is patched, the PITCH knob snaps to semitones so you can set an exact transposition over an incoming pitch CV. Unpatching restores continuous pitch."
+    },
+    {
+      "name": "Audio-rate SIZE modulation",
+      "trigger": "VCO into SIZE CV",
+      "description": "Audio-rate grain-size modulation produces FM-like sidebands and metallic artifacts — inherited from Clouds but cleaner in CD quality."
+    },
+    {
+      "name": "Tape-quality wow/flutter",
+      "trigger": "Tape quality selected",
+      "description": "Tape mode adds pitch-modulated buffer readout simulating mechanical instability, plus soft-clip saturation on input. Closest Beads gets to Clouds' original character."
+    },
+    {
+      "name": "Freeze mutes write bus",
+      "trigger": "FREEZE on",
+      "description": "When frozen, input audio is no longer written to the buffer but dry path still passes. Prevents feedback buildup when patching Beads' output back into its input."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Tape-lofi loop",
+      "patch": "Quality: Tape · drum loop into IN L · Freeze after two bars · SIZE ~3 o'clock · DENSITY ~2 o'clock · Macros set mostly granular+reverb · wow/flutter and saturation turn the frozen loop into a hazy cassette texture",
+      "diagram": "Beads:\n* Quality: Tape\n* Freeze: ON\n* Size: ~3 o'clock\n* Density: ~2 o'clock\n\n- Drum Loop (Out) -> Beads (IN L)\n- Beads (OUT L) -> Output (L)\n- Beads (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Quantized granular lead",
+      "patch": "Quality: CD · V/OCT from sequencer (PITCH now semitone-quantized) · gate into TRIG (one grain per note) · SIZE small, DENSITY CCW-random for roll feel · macro-right emphasizes reverb for airy lead voice",
+      "diagram": "Beads:\n* Quality: CD\n\n- Sequencer (Pitch) p> Beads (V/OCT)\n- Sequencer (Gate) t> Beads (TRIG)\n- Beads (OUT L) -> Output (L)\n- Beads (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Frozen shimmer pad",
+      "patch": "Quality: CD · chord stab into IN · FREEZE gate on · DENSITY CW (thick cloud) · PITCH +12 semitones (octave up shimmer) · Seed triggered slowly by LFO for evolving clusters · macros full wet",
+      "diagram": "Beads:\n* Quality: CD\n* Pitch: +12 semitones\n\n- Chord (Out) -> Beads (IN L)\n- Clock (Gate) g> Beads (FREEZE)\n- LFO (Slow) t> Beads (SEED)\n- Beads (OUT L) -> Output (L)\n- Beads (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Audio-rate SIZE FM bells",
+      "patch": "Quality: CD · held tone into IN · Freeze ON · VCO square into SIZE CV · metallic FM partials emerge from grain interruption · macros granular-forward · V/OCT for tuned bells",
+      "diagram": "Beads:\n* Quality: CD\n* Freeze: ON\n\n- Held Tone (Out) -> Beads (IN L)\n- VCO (Square) >> Beads (SIZE CV) // audio-rate\n- Sequencer (Pitch) p> Beads (V/OCT)\n- Beads (OUT L) -> Mixer (L)\n- Beads (OUT R) -> Mixer (R)"
+    },
+    {
+      "name": "Dual-macro wet/dry mix",
+      "patch": "Macro L set dry-heavy (for rhythm), Macro R set wet-granular (for ambient tail) · rhythm loop into IN · OUT L into main mix, OUT R into reverb-heavy aux · Beads acts as dry/wet split with internal FX",
+      "diagram": "Beads:\n* Macro L: dry-heavy\n* Macro R: granular/reverb\n\n- Loop (Out) -> Beads (IN L)\n- Beads (OUT L) -> Mixer (Main)\n- Beads (OUT R) -> Mixer (Aux Reverb)"
+    },
+    {
+      "name": "Stochastic grain sprays",
+      "patch": "TRIG unpatched · DENSITY full CCW (Poisson / random) · SIZE small · SEED stepped by slow clock for varying wobble pattern · drum loop in · produces glitchy stochastic re-shuffle of the input",
+      "diagram": "Beads:\n* Density: full CCW (Poisson)\n* Size: small\n\n- Drum Loop (Out) -> Beads (IN L)\n- Clock (Slow) t> Beads (SEED)\n- Beads (OUT L) -> Output (L)\n- Beads (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Pitch-tracked granular delay",
+      "patch": "Quality: CD · V/OCT from sequencer · TRIG from clock · macros lean heavily on internal delay · TIME CV slightly modulated by LFO · each note plays as a pitched tape-delay grain with built-in shimmer",
+      "diagram": "Beads:\n* Quality: CD\n* Macros: delay-heavy\n\n- Source (Out) -> Beads (IN L)\n- Sequencer (Pitch) p> Beads (V/OCT)\n- Clock (Out) t> Beads (TRIG)\n- LFO (Slow) >> Beads (TIME CV)\n- Beads (OUT L) -> Output (L)\n- Beads (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Self-seeding reverb drone",
+      "patch": "Input briefly, then unpatched · Freeze ON · macros set reverb+granular only · SEED jack self-patched from an LFO · the frozen buffer keeps mutating through new random parameter sets · long evolving drone",
+      "diagram": "Beads:\n* Freeze: ON\n* Macros: reverb + granular\n\n- Source (Out) -> Beads (IN L) // briefly, then unpatch\n- LFO (Out) t> Beads (SEED)\n- Beads (OUT L) -> Output (L)\n- Beads (OUT R) -> Output (R)"
+    }
+  ]
+}

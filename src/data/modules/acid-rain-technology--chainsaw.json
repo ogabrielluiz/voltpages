@@ -1,0 +1,139 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.1",
+    "sources": [
+      "https://acidraintechnology.com/pages/discontinued-products",
+      "https://cdn.shopify.com/s/files/1/0053/9151/5766/files/Chainsaw_Manual_1.1.pdf?v=1679586653",
+      "https://www.signalsounds.com/acid-rain-technology-chainsaw-eurorack-digital-oscillator-module/",
+      "https://www.detroitmodular.com/products/acid-rain-technology-chainsaw"
+    ]
+  },
+  "slug": "acid-rain-technology--chainsaw",
+  "name": "Chainsaw",
+  "manufacturer": "Acid Rain Technology",
+  "hp": 4,
+  "tags": ["OSCILLATOR", "VCO"],
+  "description": "Digital super-oscillator with three voices of seven detuned waves. Coarse and fine root tuning, per-voice 1V/oct inputs, stereo outs and saw-to-square morphing.",
+  "controls": [
+    {
+      "name": "Encoder",
+      "scope": "Global root pitch",
+      "description": "Sets the root pitch in semitone steps.",
+      "detail": "1 step = 1 semitone"
+    },
+    {
+      "name": "Encoder Press",
+      "scope": "Root pitch",
+      "description": "Toggles fine tune mode and returns to C1 on a long press.",
+      "detail": "press: 1 cent steps · long press: C1 (32.7Hz)"
+    },
+    {
+      "name": "Detune",
+      "scope": "All voices",
+      "description": "Spreads the seven waves in each voice from unison to a wide supersaw cluster.",
+      "detail": "center: unison · wider clockwise spread"
+    },
+    {
+      "name": "Shape",
+      "scope": "All voices",
+      "description": "Morphs all waves from saw to square.",
+      "detail": "CCW: saw · CW: square"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "V/O 1",
+      "description": "1V/oct pitch input for voice 1.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "V/O 2",
+      "description": "1V/oct pitch input for voice 2. Patching activates the second voice.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "V/O 3",
+      "description": "1V/oct pitch input for voice 3. Patching activates the third voice.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "Detune CV",
+      "description": "Voltage control over the Detune parameter.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "Shape CV",
+      "description": "Voltage control over the Shape parameter.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "FM",
+      "description": "Linear frequency modulation input for all voices.",
+      "voltage": "±5V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Out L",
+      "description": "Left stereo output. The waves are spread across the stereo field for a wide image.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Out R",
+      "description": "Right stereo output. Complements Out L and can be used alone for mono.",
+      "voltage": "audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Three-voice activation",
+      "trigger": "patching V/O 2 or V/O 3",
+      "description": "Each additional 1V/oct input activates another seven-wave voice. One cable gives one voice, two cables give two, three cables unlock the full 21-wave structure."
+    },
+    {
+      "name": "Supersaw to supersquare morph",
+      "trigger": "Shape knob or Shape CV",
+      "description": "Shape morphs every wave from saw to square across the entire oscillator bank. The module stays harmonically dense even at intermediate settings."
+    },
+    {
+      "name": "Detuned stereo swarm",
+      "trigger": "increase Detune",
+      "description": "Detune separates the seven waves in each voice along a fixed curve so the stereo pair becomes a wide supersaw stack instead of a static unison."
+    },
+    {
+      "name": "Root pitch memory",
+      "trigger": "power cycle",
+      "description": "The oscillator remembers the previous tuning after power-up, and the encoder long press returns the root to C1."
+    },
+    {
+      "name": "Linear FM coloration",
+      "trigger": "audio or CV into FM",
+      "description": "The FM input pushes all voices at once. The manual notes that it responds predictably to waveforms up to 2kHz, which makes it suitable for bright digital sidebands."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic stereo lead",
+      "patch": "Sequencer pitch to V/O 1 · Shape near saw · Detune around 2 o'clock · Out L/R into stereo delay and reverb · one cable already yields a wide three-voice swarm.",
+      "diagram": "Chainsaw:\n* Shape: near saw\n* Detune: 2 o'clock\n\nSequencer:\nFX Stereo:\nOutput:\n\n- Sequencer (Pitch) p> Chainsaw (V/O 1)\n- Chainsaw (Out L) -> FX Stereo (In L)\n- Chainsaw (Out R) -> FX Stereo (In R)\n- FX Stereo (Out L) -> Output (L)\n- FX Stereo (Out R) -> Output (R)"
+    },
+    {
+      "name": "Three-voice chord stack",
+      "patch": "Separate chord tones to V/O 1-3 · keep Detune modest · Shape halfway for a thick but not buzzy chord bed · stereo outs preserve the intervoice spread.",
+      "diagram": "Chainsaw:\n* Detune: noon\n* Shape: noon\n\nChord Source 1:\nChord Source 2:\nChord Source 3:\nMixer:\n\n- Chord Source 1 (Pitch) p> Chainsaw (V/O 1)\n- Chord Source 2 (Pitch) p> Chainsaw (V/O 2)\n- Chord Source 3 (Pitch) p> Chainsaw (V/O 3)\n- Chainsaw (Out L) -> Mixer (In L)\n- Chainsaw (Out R) -> Mixer (In R)"
+    },
+    {
+      "name": "Audio-rate FM bite",
+      "patch": "Fast LFO or audio VCO into FM · Shape set brighter · Detune moderate · FM adds edge without destroying the three-voice stack.",
+      "diagram": "Chainsaw:\n* Shape: 2 o'clock\n* Detune: noon\n\nVCO Mod:\nOutput:\n\n- Sequencer (Pitch) p> Chainsaw (V/O 1)\n- VCO Mod (Out) >> Chainsaw (FM)\n- Chainsaw (Out L) -> Output (L)\n- Chainsaw (Out R) -> Output (R)"
+    },
+    {
+      "name": "Mono bass through a filter",
+      "patch": "Use V/O 1 only · Detune minimum · Shape toward square · take Out L into a filter and VCA chain for a mono bass that still feels wider than a single saw.",
+      "diagram": "Chainsaw:\n* Detune: fully CCW\n* Shape: 3 o'clock\n\nSequencer:\nFilter:\nVCA:\nEnvelope:\n\n- Sequencer (Pitch) p> Chainsaw (V/O 1)\n- Chainsaw (Out L) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+    }
+  ]
+}

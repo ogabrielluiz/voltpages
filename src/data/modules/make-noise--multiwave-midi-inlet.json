@@ -1,0 +1,71 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.makenoisemusic.com/modules/multiwave/",
+      "https://www.makenoise-manuals.com/multiwave-midi-inlet/multiwave-midi-inlet-manual.pdf"
+    ]
+  },
+  "slug": "make-noise--multiwave-midi-inlet",
+  "name": "MultiWAVE MIDI Inlet",
+  "manufacturer": "Make Noise",
+  "hp": 2,
+  "tags": ["MIDI", "UTILITY", "I/O"],
+  "description": "Passive 2HP USB-MIDI expansion for MultiWAVE. Adds MIDI and MPE access, firmware management and wavetable upload support without consuming power.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "USB-C Host",
+      "description": "USB MIDI host connection for MultiWAVE. Enables MIDI, MPE and file management from a computer or other USB host.",
+      "voltage": "USB / MIDI"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "USB-C Device",
+      "description": "Passes the USB connection through to MultiWAVE.",
+      "voltage": "USB / MIDI"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Adds USB MIDI",
+      "trigger": "connect to MultiWAVE",
+      "description": "The inlet adds USB MIDI access to MultiWAVE so the oscillator can be played from a DAW or USB controller."
+    },
+    {
+      "name": "Supports MPE",
+      "trigger": "MPE-capable host and MultiWAVE firmware 4.1.6+",
+      "description": "The inlet exposes MultiWAVE to MPE when the parent module is updated to a compatible firmware revision."
+    },
+    {
+      "name": "Required outside N.U.S.S.",
+      "trigger": "MultiWAVE used outside the New Universal Synthesizer System skiff",
+      "description": "The manual frames the inlet as the required physical and electronic support for USB control when MultiWAVE is not installed in the dedicated skiff."
+    },
+    {
+      "name": "Firmware and wavetable access",
+      "trigger": "USB host attached",
+      "description": "The inlet gives easy access to firmware updates and custom wavetable uploading from the USB host connection."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "DAW-driven MultiWAVE voice",
+      "patch": "USB host to inlet · MultiWAVE on MIDI channel 1 · keyboard or DAW notes activate the 8-voice core · use Span modes for round-robin or parallel behavior.",
+      "diagram": "MultiWAVE MIDI Inlet:\n\nMultiWAVE:\nKeyboard:\nOutput:\n\n- Keyboard (USB MIDI) >> MultiWAVE MIDI Inlet (USB-C Host)\n- MultiWAVE MIDI Inlet (USB-C Device) -> MultiWAVE (USB-C)\n- MultiWAVE (Out 1-8) -> Output (In)"
+    },
+    {
+      "name": "MPE ribbon lead",
+      "patch": "MPE host to inlet · MultiWAVE firmware 4.1.6+ · per-note expression from the controller shapes channel activation and pitch behavior without front-panel repatching.",
+      "diagram": "MultiWAVE MIDI Inlet:\n\nMultiWAVE:\nMPE Controller:\nOutput:\n\n- MPE Controller (USB MIDI) >> MultiWAVE MIDI Inlet (USB-C Host)\n- MultiWAVE MIDI Inlet (USB-C Device) -> MultiWAVE (USB-C)\n- MultiWAVE (Out 1-8) -> Output (In)"
+    },
+    {
+      "name": "Wavetable maintenance link",
+      "patch": "USB host to inlet · use the same connection for firmware updates and custom wavetable upload workflows · no power draw and no front-panel cable clutter.",
+      "diagram": "MultiWAVE MIDI Inlet:\n\nComputer:\nMultiWAVE:\n\n- Computer (USB MIDI) >> MultiWAVE MIDI Inlet (USB-C Host)\n- MultiWAVE MIDI Inlet (USB-C Device) -> MultiWAVE (USB-C)"
+    }
+  ]
+}

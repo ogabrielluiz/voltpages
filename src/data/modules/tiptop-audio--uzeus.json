@@ -1,0 +1,104 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://tiptopaudio.com/uzeus/",
+      "https://www.tiptopaudio.com/manuals/Tiptop_Audio_uzeuswfbb.pdf",
+      "https://www.tiptopaudio.com/manuals/Tiptop_Audio_uzeusps.pdf",
+      "https://modulargrid.net/e/tiptop-audio-uzeus",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=231181"
+    ]
+  },
+  "slug": "tiptop-audio--uzeus",
+  "name": "uZeus",
+  "manufacturer": "Tiptop Audio",
+  "hp": 4,
+  "tags": ["UTILITY", "I/O"],
+  "description": "4HP Eurorack power supply. Accepts 15VDC adapter (1A or 3A uZeus-Boost) and delivers up to +12V/2000mA, -12V/500mA, +5V/170mA over two or three keyed flying bus boards.",
+  "controls": [
+    {
+      "name": "Power switch",
+      "scope": "Global",
+      "description": "Front-panel ON/OFF toggle. Turn off immediately if any of the three red status LEDs fail to illuminate.",
+      "detail": "Cuts power to all bus boards"
+    },
+    {
+      "name": "J7 jumper (PCB)",
+      "scope": "-12V rail",
+      "description": "Factory setting consumes 100mA internally to keep switching regulator stable. Rehoused on one pin to free the full 500mA for modules.",
+      "detail": "Remove only if powering more than ~4 analog modules on -12V"
+    }
+  ],
+  "inputs": [
+    { "name": "15V DC barrel", "description": "Center-positive 2.5mm barrel jack · official Tiptop adapter required", "voltage": "15V DC · 1000mA (stock) or 3000mA (uZeus-Boost)" }
+  ],
+  "outputs": [
+    { "name": "+12V rail", "description": "Main positive analog rail · fed to all bus board connectors", "voltage": "+12V · up to 2000mA (with Boost adapter)" },
+    { "name": "-12V rail", "description": "Negative analog rail · switching regulator requires 100mA minimum load (self-consumed by default)", "voltage": "-12V · up to 500mA" },
+    { "name": "+5V rail", "description": "Digital rail · generated on-board", "voltage": "+5V · up to 170mA" },
+    { "name": "Flying bus A", "description": "Primary flying bus board · 10-pin keyed connectors, red-stripe = -12V", "voltage": "10-pin Eurorack power" },
+    { "name": "Flying bus B", "description": "Secondary flying bus board · ships attached", "voltage": "10-pin Eurorack power" },
+    { "name": "Additional bus port", "description": "Third bus board connector on PCB · optional expansion", "voltage": "10-pin Eurorack power" }
+  ],
+  "behaviors": [
+    {
+      "name": "Three status LEDs",
+      "trigger": "power on",
+      "description": "Three red LEDs indicate +12V, -12V and +5V rails are healthy. Any LED dark means a rail has failed or the adapter is overloaded — switch off immediately and remove modules before re-powering. Flashing LEDs (post-2017 switch-mode adapters) indicate adapter overload protection has tripped."
+    },
+    {
+      "name": "Thermal budget",
+      "trigger": "continuous load · ~10 minutes",
+      "description": "Designed for 3U–6U of 84HP mixed analog/digital modules. After 10 minutes of use, check faceplate temperature: warm is normal, nearly-too-hot-to-touch means overload. Remove modules until temperature is acceptable. The module is designed for metal rails (Tiptop Z-Rails) which act as heatsinks — never mount to wood."
+    },
+    {
+      "name": "Adapter tiers",
+      "trigger": "choice of wall adapter",
+      "description": "Stock 1000mA adapter (Happy Ending Kit) is sufficient for small racks. Post-2017 switch-mode versions include overload protection (triggers LED flashing). Systems beyond 3U x 84HP or with many digital modules should use the 3000mA uZeus-Boost adapter to reach the full 2000mA +12V rating."
+    },
+    {
+      "name": "-12V jumper (J7)",
+      "trigger": "remove jumper from factory position",
+      "description": "The -12V switching regulator needs 100mA minimum load to stay stable. Factory jumper bridges an internal resistor to consume this current. If modules already draw >100mA on -12V (roughly >4 analog modules), re-seat the jumper on a single pin to free that 100mA for module use. Requires rack removal."
+    },
+    {
+      "name": "Keyed bus connectors",
+      "trigger": "connecting a module",
+      "description": "Flying bus boards use keyed 10-pin headers — the connector physically prevents reversed insertion. The red stripe on a module ribbon still indicates -12V; align it with the bottom of the bus-board connector. Reversing is nearly impossible but visually verify before powering on."
+    },
+    {
+      "name": "Bus-board crosstalk layout",
+      "trigger": "loading multiple high-current digital modules on one bus",
+      "description": "Digital/DSP modules, VCOs and noise sources pull current in spikes that can induce audible crosstalk on shared bus boards. Spread high-draw modules across both supplied buses (and the optional third) rather than clustering on one. Route long ribbons around modules that share the bus-board plane."
+    },
+    {
+      "name": "Bus daisy-chain expansion",
+      "trigger": "connect a flying bus's female end to another bus's last male connector",
+      "description": "Two stock 84HP flying buses can be lengthened by chaining a third with its female header onto the last male header of an existing bus. Power budget does not grow — still bound by adapter and uZeus ratings. Prefer the third bus-board port on the PCB for proper parallel distribution instead of daisy-chaining."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Happy Ending Kit starter rack",
+      "patch": "uZeus + stock 1000mA adapter + 84HP skiff · one flying bus handles ~16 analog modules at ~600mA +12V / 250mA -12V · keep a mental budget: each module's max current × count ≤ 60% of adapter rating to leave headroom for power-on spikes",
+      "diagram": "uZeus:\n* Adapter: stock 1000mA\n* Buses: 1 of 2 used\n\nAnalog Modules:\n\n- uZeus (+12V rail) >> Analog Modules (+12V pin)\n- uZeus (-12V rail) >> Analog Modules (-12V pin)\n- uZeus (+5V rail) >> Analog Modules (+5V pin) // few draw +5V"
+    },
+    {
+      "name": "Digital-heavy 6U case",
+      "patch": "uZeus + uZeus-Boost 3A adapter · 3U x 84HP digital row (Plaits, Rings, Disting) on bus A · 3U x 84HP analog row (VCAs, LPG, filters) on bus B · separates noisy digital spikes from quiet analog paths · faceplate check at 10 minutes to verify thermal headroom",
+      "diagram": "uZeus:\n* Adapter: uZeus-Boost 3000mA\n* Bus A: digital row\n* Bus B: analog row\n\nDigital Row:\n\nAnalog Row:\n\n- uZeus (Flying bus A) >> Digital Row (Power)\n- uZeus (Flying bus B) >> Analog Row (Power) // crosstalk isolation"
+    },
+    {
+      "name": "Three-bus expansion",
+      "patch": "add third flying bus to the Additional bus port on the PCB · split modules three ways: one bus for VCOs/noise, one for digital DSP, one for utilities and CV · reduces cross-bus noise coupling more effectively than two-bus daisy-chain",
+      "diagram": "uZeus:\n* Buses: 3 (A, B, and Additional port)\n\nVCO Bus:\n\nDSP Bus:\n\nUtility Bus:\n\n- uZeus (Flying bus A) >> VCO Bus (Power) // sound sources\n- uZeus (Flying bus B) >> DSP Bus (Power) // digital\n- uZeus (Additional bus port) >> Utility Bus (Power) // CV/utility"
+    },
+    {
+      "name": "-12V rail reclaim for analog-heavy rack",
+      "patch": "case already draws >100mA on -12V (4+ analog modules) · power off · pull uZeus · move J7 jumper to single-pin rest · reinstall · the full 500mA -12V is now available to modules instead of the internal bleeder · verify all three status LEDs come up steady",
+      "diagram": "uZeus:\n* J7: rehoused on single pin\n* -12V available: full 500mA\n\nAnalog Rack:\n\n- uZeus (-12V rail) >> Analog Rack (-12V pin) // +100mA reclaimed"
+    }
+  ]
+}

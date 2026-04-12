@@ -1,0 +1,217 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.2",
+    "sources": [
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/peaks/manual/",
+      "https://web.archive.org/web/20221207151840/https://mutable-instruments.net/modules/peaks/manual/",
+      "https://w2.mat.ucsb.edu/mat276n/resources/systems/CREATE_teachingSynth/manuals/7_Mutable%20Peaks.pdf",
+      "https://forum.mutable-instruments.net/t/contest-peaks-4-hidden-function-easter-egg/4730",
+      "https://divkidvideo.com/videos/mutable-instruments-peaks-easter-egg/",
+      "https://divkidvideo.com/videos/mutable-instruments-peaks/",
+      "https://modwiggler.com/forum/viewtopic.php?t=133281",
+      "https://github.com/timchurches/Mutated-Mutables/releases"
+    ]
+  },
+  "slug": "mutable-instruments--peaks",
+  "name": "Peaks",
+  "manufacturer": "Mutable Instruments",
+  "hp": 8,
+  "tags": ["ENVELOPE", "LFO", "DRUM", "SEQUENCER", "FUNCTION"],
+  "description": "Dual trigger-processor. Four main functions (ADSR envelope, LFO, tap-tempo LFO, drum synth) plus four hidden (mini sequencer, trigger delay/repeat, probabilistic stream, digital drum). Twin/split/expert routing across two channels.",
+  "controls": [
+    {
+      "name": "SPLIT button",
+      "scope": "Global",
+      "description": "Short press toggles twin (both channels share knobs) and split (knobs 1/2 = CH1, knobs 3/4 = CH2). Hold 1s: enter expert mode, button then swaps which channel the knobs edit.",
+      "detail": "LED off: twin · LED on: split · blinking: expert (hold to exit)"
+    },
+    {
+      "name": "FUNCTION button",
+      "scope": "Global",
+      "description": "Short press cycles the four main functions: envelope, LFO, tap LFO, drum. Hold 1s (blinks): switch to the four hidden alternative functions.",
+      "detail": "4 main × 2 alt banks = 8 modes · hold again to return to main"
+    },
+    {
+      "name": "Knob 1",
+      "scope": "ENV twin: Attack · ENV split CH1: Attack · LFO twin: Frequency · DRUM twin: Base freq",
+      "description": "First parameter for the active mode. Meaning follows the function/mode table.",
+      "detail": "mapping depends on FUNCTION × SPLIT state"
+    },
+    {
+      "name": "Knob 2",
+      "scope": "ENV twin: Decay · ENV split CH1: Decay · LFO twin: Waveform · DRUM twin: Punch/Tone",
+      "description": "Second parameter for the active mode.",
+      "detail": "mapping depends on FUNCTION × SPLIT state"
+    },
+    {
+      "name": "Knob 3",
+      "scope": "ENV twin: Sustain · ENV split CH2: Attack · LFO twin: Waveform variation · DRUM twin: Tone/Snappy",
+      "description": "Third parameter for the active mode.",
+      "detail": "mapping depends on FUNCTION × SPLIT state"
+    },
+    {
+      "name": "Knob 4",
+      "scope": "ENV twin: Release · ENV split CH2: Decay · LFO twin: Phase · DRUM twin: Decay",
+      "description": "Fourth parameter for the active mode.",
+      "detail": "mapping depends on FUNCTION × SPLIT state"
+    },
+    {
+      "name": "TRIG 1 switch",
+      "scope": "CH 1",
+      "description": "Momentary trigger button for CH 1. LED shows CH 1 output activity. Overrides TRIG 1 jack while pressed.",
+      "detail": "tactile switch · LED = output level indicator"
+    },
+    {
+      "name": "TRIG 2 switch",
+      "scope": "CH 2",
+      "description": "Momentary trigger button for CH 2. LED shows CH 2 output activity.",
+      "detail": "tactile switch · LED = output level indicator"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "TRIG 1",
+      "description": "Gate/trigger input for channel 1. Starts envelope, resets LFO, learns tap tempo, or fires drum depending on mode.",
+      "voltage": "0.7V threshold · gate or trigger"
+    },
+    {
+      "name": "TRIG 2",
+      "description": "Gate/trigger input for channel 2. Same function as TRIG 1 on CH 2. Also resets CH 1 in the alternative mini-sequencer (twin mode).",
+      "voltage": "0.7V threshold · gate or trigger"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT 1",
+      "description": "Channel 1 output. Envelope, LFO, tap LFO, bass drum (main banks) or sequencer/trigger-delay/probabilistic/909-kick (alt bank).",
+      "voltage": "0 – +8V CV · ±5V LFO · audio level for drums"
+    },
+    {
+      "name": "OUT 2",
+      "description": "Channel 2 output. Same per-mode behaviour as OUT 1, except the main drum bank is snare/hi-hat (CH2) rather than bass drum (CH1).",
+      "voltage": "0 – +8V CV · ±5V LFO · audio level for drums"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Twin mode (knobs shared)",
+      "trigger": "SPLIT LED off",
+      "description": "Both channels share all four knobs — full parameter set exposed. CH 1 and CH 2 have identical settings, each responding to its own TRIG input. Use for duophonic voices or two phase-shifted copies of the same LFO/envelope."
+    },
+    {
+      "name": "Split mode (2+2 knobs)",
+      "trigger": "SPLIT LED on",
+      "description": "Knobs 1 & 2 control CH 1's two most essential params; knobs 3 & 4 control CH 2's. The remaining parameters snap to 'neutral' defaults. Ideal for quick dual-AD envelopes, dual simple LFOs, or a preset 808 kick + snare voicing."
+    },
+    {
+      "name": "Expert mode (per-channel)",
+      "trigger": "hold SPLIT 1s (blinks)",
+      "description": "Knobs edit one channel at a time; the SPLIT button toggles which channel the knobs control. Gives full 4-parameter access per channel asymmetrically. Hold SPLIT again to exit."
+    },
+    {
+      "name": "ENV function: ADSR/AD",
+      "trigger": "FUNCTION = envelope",
+      "description": "Twin/expert = full ADSR (A, D, S, R on knobs 1-4). Split = dual AD envelope (A/D for CH1, A/D for CH2). TRIG input starts and holds the envelope: ADSR requires a sustained gate; AD fires on trigger edges."
+    },
+    {
+      "name": "LFO function with waveform variation",
+      "trigger": "FUNCTION = LFO",
+      "description": "Five waveforms: sine, linear slope, square, steps, random. Knob 3 (twin) morphs within: wavefolder for sine, asc/tri/desc balance for slope, PWM for square, number of steps for steps, interpolation for random. TRIG resets the waveform to the phase set by knob 4."
+    },
+    {
+      "name": "Tap-LFO function",
+      "trigger": "FUNCTION = tap-LFO · TRIG pulses set period",
+      "description": "Tap-tempo LFO: the TRIG input sets the LFO period (one full cycle per tap interval). Peaks tracks irregular trigger streams and locks onto their average — drop in a swung clock and the LFO follows. Knob 1 is amplitude; knobs 2-4 mirror the regular LFO's waveform controls."
+    },
+    {
+      "name": "Drum function (BD / SD+HH)",
+      "trigger": "FUNCTION = drum",
+      "description": "CH 1 is a bass-drum voice (knobs: base freq, punch, tone, decay). CH 2 is a snare/hi-hat voice (knobs: freq, tone, snappy, decay). Split mode gives a fixed '808 sweet-spot' voicing with BD tone + decay and SD tone + snappy on the four knobs."
+    },
+    {
+      "name": "Alt bank: mini-sequencer",
+      "trigger": "hold FUNCTION 1s · ENV slot",
+      "description": "Twin: 4-step mini-sequencer on CH 1 (clocked by TRIG 1, reset by TRIG 2); CH 2 runs independently clocked by TRIG 2. Split: dual 2-step sequencer, no reset, per-channel clocking. Each knob is a step's output voltage."
+    },
+    {
+      "name": "Alt bank: trigger delay/repeater",
+      "trigger": "hold FUNCTION 1s · LFO slot",
+      "description": "Incoming triggers are delayed with pre-delay, output gate duration, delay, and number of repeats (twin). Split reduces to delay + repeats per channel. Generates rolls, flams, and metric delays without an external module."
+    },
+    {
+      "name": "Alt bank: trigger randomizer",
+      "trigger": "hold FUNCTION 1s · tap-LFO slot",
+      "description": "Probabilistic trigger processor. Knob 1 = probability trigger is accepted. Knob 2 = probability it is regenerated after delay. Knob 3 = delay time. Knob 4 = jitter. Converts a steady clock into probabilistic, slightly swung trigger streams."
+    },
+    {
+      "name": "Alt bank: digital drum synth",
+      "trigger": "hold FUNCTION 1s · drum slot",
+      "description": "Anushri-style FM drum synth with frequency, FM intensity, FM/AM decay, and colour (center = clean, left = 909 distortion, right = snare noise). Split mode offers preset morphs between BD (CH1) and SD (CH2) variations."
+    },
+    {
+      "name": "Firmware-mod TRIG threshold",
+      "trigger": "power-on sequence · TRIG1 button held",
+      "description": "Peaks enters audio-bootloader mode when powered on with TRIG 1 held. Play the firmware WAV into TRIG 1 input with monitors muted — the three LEDs blink on each valid block. Used for official updates and Tim Churches' Mutated-Mutables community firmware (extra wavetables, extended ranges)."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Dual ADSR voice",
+      "patch": "FUNCTION: envelope · SPLIT off (twin) · knobs 1-4 set A/D/S/R · sequencer gate → TRIG 1 (for VCF env) and TRIG 2 (for VCA env) · OUT 1 → filter cutoff · OUT 2 → VCA CV · one Peaks covers both modulation envelopes for a classic voice.",
+      "diagram": "Peaks:\n* FUNCTION: envelope\n* SPLIT: off (twin ADSR)\n\nSequencer:\nVCO:\nFilter:\nVCA:\n\n- Sequencer (Gate) g> Peaks (TRIG 1)\n- Sequencer (Gate) g> Peaks (TRIG 2)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- VCO (Out) -> Filter (In) -> VCA (In) -> Output (In)\n- Peaks (OUT 1) >> Filter (Cutoff)\n- Peaks (OUT 2) >> VCA (CV)"
+    },
+    {
+      "name": "Quadrature LFO from twin reset",
+      "patch": "FUNCTION: LFO · SPLIT off · knob 4 (phase on restart) set to 90° offset · TRIG 1 and TRIG 2 both reset from the same clock · OUT 1 and OUT 2 are phase-shifted copies of the same sine wave · pan modulation and stereo filter motion from one module.",
+      "diagram": "Peaks:\n* FUNCTION: LFO\n* Waveform: sine\n* Phase: 90 degrees\n\nClock:\nFilter:\nVCA:\n\n- Clock (Out) c> Peaks (TRIG 1)\n- Clock (Out) c> Peaks (TRIG 2)\n- Peaks (OUT 1) >> Filter (Cutoff L)\n- Peaks (OUT 2) >> Filter (Cutoff R) // 90 deg offset"
+    },
+    {
+      "name": "Tap-tempo LFO follows groove",
+      "patch": "FUNCTION: tap-LFO · drummer or clocked gate (swung or irregular) → TRIG 1 · Peaks locks to the average period · OUT 1 modulates delay time for tempo-synced dub delay that follows the groove even when it changes · amplitude knob sets modulation depth.",
+      "diagram": "Peaks:\n* FUNCTION: tap-LFO\n* Waveform: sine\n* Amplitude: 3 o'clock\n\nClock:\nDelay:\n\n- Clock (Out) c> Peaks (TRIG 1) // swung clock learned\n- Peaks (OUT 1) >> Delay (Time CV)"
+    },
+    {
+      "name": "808 kick + snare from one module",
+      "patch": "FUNCTION: drum · SPLIT on · knobs 1/2 = BD tone/decay, knobs 3/4 = SD tone/snappy · sequencer pattern 1 → TRIG 1 (kick) · pattern 2 → TRIG 2 (snare) · OUT 1 + OUT 2 → mixer · instant '808 sweet-spot' drum kit in 8HP.",
+      "diagram": "Peaks:\n* FUNCTION: drum\n* SPLIT: on (808 sweet-spot)\n\nSequencer:\n\n- Sequencer (Pattern 1) t> Peaks (TRIG 1) // kick\n- Sequencer (Pattern 2) t> Peaks (TRIG 2) // snare\n- Peaks (OUT 1) -> Mixer (In 1)\n- Peaks (OUT 2) -> Mixer (In 2)"
+    },
+    {
+      "name": "4-step mini sequencer",
+      "patch": "Hold FUNCTION → alt ENV (mini-seq) · SPLIT off · clock → TRIG 1 (advance) · reset gate → TRIG 2 (reset to step 1) · knobs 1-4 set each step's voltage · OUT 1 → quantizer → VCO V/Oct for a 4-note melody with per-knob tuning · CH 2 runs its own 4-step loop on TRIG 2.",
+      "diagram": "Peaks:\n* FUNCTION: alt-envelope (mini-seq)\n* SPLIT: off\n\nClock:\nReset:\nQuantizer:\nVCO:\n\n- Clock (Out) c> Peaks (TRIG 1)\n- Reset (Gate) g> Peaks (TRIG 2) // resets CH 1\n- Peaks (OUT 1) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Trigger repeater rolls",
+      "patch": "Hold FUNCTION → alt LFO (trigger delay) · SPLIT off · kick trigger → TRIG 1 · knob 2 sets gate duration · knob 3 sets delay · knob 4 sets repeat count · OUT 1 → kick drum → one hit becomes a roll of 3-6 evenly-spaced retriggers · knob 1 adds a pre-delay for flam-style offsets.",
+      "diagram": "Peaks:\n* FUNCTION: alt-LFO (trigger delay)\n* Repeats: 4\n\nSequencer:\nDrum:\n\n- Sequencer (Kick Trig) t> Peaks (TRIG 1)\n- Peaks (OUT 1) t> Drum (Trig) // roll of 4 repeats"
+    },
+    {
+      "name": "Probabilistic hi-hat",
+      "patch": "Hold FUNCTION → alt tap-LFO (randomizer) · SPLIT on · clock → TRIG 1 · knob 1 = acceptance probability (~60%) · knob 2 = regeneration probability · OUT 1 → hi-hat trigger · produces a classic 'randomly dropping' hat pattern without an external probabilistic gate.",
+      "diagram": "Peaks:\n* FUNCTION: alt-tap (randomizer)\n* SPLIT: on\n* Accept probability: ~60%\n\nClock:\nHiHat:\n\n- Clock (Out) c> Peaks (TRIG 1)\n- Peaks (OUT 1) t> HiHat (Trig) // ~60% of clocks pass"
+    },
+    {
+      "name": "Digital FM drum voice",
+      "patch": "Hold FUNCTION → alt drum (digital synth) · SPLIT off · trigger → TRIG 1 · knob 1 = frequency (tune for tom/kick/metallic) · knob 2 = FM intensity · knob 3 = decay · knob 4 = colour (CCW into 909 distortion, CW into noise snare) · OUT 1 → mixer for a tunable FM/noise drum voice.",
+      "diagram": "Peaks:\n* FUNCTION: alt-drum (digital)\n* SPLIT: off\n* Color: full CCW (909 distortion)\n\nSequencer:\n\n- Sequencer (Kick Trig) t> Peaks (TRIG 1)\n- Peaks (OUT 1) -> Mixer (In)"
+    },
+    {
+      "name": "Hands-free LFO morph",
+      "patch": "FUNCTION: LFO · SPLIT on · knob 2 (CH 1 waveform) sweeps from sine → slope → square → steps → random · LFO from an external modulator → TRIG 1 at slow rate · Peaks changes wave shape on each reset edge · produces evolving modulation without touching the knobs.",
+      "diagram": "Peaks:\n* FUNCTION: LFO\n* SPLIT: on\n* Knob 2: auto-swept externally\n\nLFO Ext:\nFilter:\n\n- LFO Ext (Slow) c> Peaks (TRIG 1) // resets + steps morph\n- Peaks (OUT 1) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Twin drum layering",
+      "patch": "FUNCTION: drum · SPLIT off (twin) · both channels run identical BD/SD voicing on knobs · sequencer → TRIG 1 only · CH 1 = BD at OUT 1 · CH 2 = SD at OUT 2 · feed same trigger to both to get a punchy combined hit (layered kick + snare accent) · tune knobs for a unique hybrid drum.",
+      "diagram": "Peaks:\n* FUNCTION: drum\n* SPLIT: off (twin)\n\nSequencer:\n\n- Sequencer (Trig) t> Peaks (TRIG 1)\n- Sequencer (Trig) t> Peaks (TRIG 2) // simultaneous layer\n- Peaks (OUT 1) -> Mixer (In 1) // kick layer\n- Peaks (OUT 2) -> Mixer (In 2) // snare layer"
+    },
+    {
+      "name": "Mutated-Mutables firmware",
+      "patch": "Install Tim Churches' Mutated-Mutables firmware via audio bootloader (TRIG 1 held at power-on, play WAV into TRIG 1 with monitors muted). Adds extra LFO wavetables, longer envelope times, reworked drum presets · same UI, expanded behaviour · no hardware change needed.",
+      "diagram": "Peaks:\n* Firmware: Mutated-Mutables (community)\n\nComputer:\n\n- Computer (Audio Out) -> Peaks (TRIG 1) // bootloader mode"
+    }
+  ]
+}

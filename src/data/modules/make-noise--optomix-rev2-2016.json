@@ -1,0 +1,121 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/optomixrev2manual.pdf",
+      "https://www.makenoisemusic.com/modules/optomix/"
+    ]
+  },
+  "slug": "make-noise--optomix-rev2-2016",
+  "name": "Optomix rev2 2016",
+  "manufacturer": "Make Noise",
+  "hp": 8,
+  "tags": ["VCA", "VCF", "FILTER", "UTILITY", "MIXER"],
+  "description": "Two-channel vactrol low-pass gate with STRIKE and DAMP. rev2 adds audio-rate DAMP (sidechain compression), CV offsets on signal inputs, and drops CH1→CH2 normalization. Chainable via AUX.",
+  "controls": [
+    {
+      "name": "DAMP",
+      "scope": "CH 1 & CH 2",
+      "description": "Sets ringing/decay response. CCW: long ringing. CW: muted, fast. Doubles as attenuator when DAMP CV In is patched.",
+      "detail": "combo pot · unipolar"
+    },
+    {
+      "name": "CONTROL",
+      "scope": "CH 1 & CH 2",
+      "description": "Level knob for the vactrol VCA. Becomes attenuator for CONTROL Signal In when patched. Normalizes to +8V offset at jack.",
+      "detail": "combo pot · unipolar"
+    }
+  ],
+  "inputs": [
+    { "name": "CH 1 / CH 2 Signal In", "description": "Direct-coupled audio or CV input. rev2: no longer normalled CH 1 OUT → CH 2 IN.", "voltage": "up to 10Vpp" },
+    { "name": "CH 1 / CH 2 DAMP CV", "description": "CV input for DAMP parameter. Audio-rate capable (rev2) for sidechain compression. DAMP knob acts as attenuator when patched.", "voltage": "0V – 8V · normalized to +8V" },
+    { "name": "CH 1 / CH 2 CONTROL", "description": "Direct-coupled, highly-sensitive CV for the vactrol VCA. CONTROL knob acts as attenuator when patched.", "voltage": "0V – 8V · normalized to +8V" },
+    { "name": "CH 1 / CH 2 STRIKE", "description": "Gate input that plucks the vactrol — slow natural decay under DAMP control. No envelope generator needed.", "voltage": "8V gate expected" },
+    { "name": "AUX", "description": "Direct-coupled summing input. Chain multiple Optomix/modDemix into SUM.", "voltage": "up to 10Vpp" }
+  ],
+  "outputs": [
+    { "name": "CH 1 / CH 2 Signal Out", "description": "LPG-processed channel output. Amplitude and frequency content both respond to CONTROL.", "voltage": "up to 10Vpp" },
+    { "name": "SUM Out", "description": "Mix of CH 1 + CH 2 + AUX. Master output for chained setups.", "voltage": "up to 10Vpp" }
+  ],
+  "behaviors": [
+    {
+      "name": "LPG (amplitude + frequency linked)",
+      "trigger": "CV → CONTROL",
+      "description": "Simultaneous VCA + non-resonant LPF. As CONTROL goes positive, amplitude rises with low frequencies opening first; as it falls, highs disappear before lows. Creates natural acoustic-like attack/decay like a struck drum or xylophone bar."
+    },
+    {
+      "name": "STRIKE with DAMP decay",
+      "trigger": "gate → STRIKE",
+      "description": "8V gate plucks the vactrol. Decay shape set by DAMP: CCW for long ringing, CW for fast muted pluck. Emulates drum-head palm-muting or guitar-string palm-mute without an envelope generator — the LPG becomes its own AD contour."
+    },
+    {
+      "name": "Sidechain compression (rev2)",
+      "trigger": "audio → DAMP CV + CV → CONTROL",
+      "description": "Audio-rate at DAMP causes gain reduction. CONTROL sets the compression ratio (best ~40–60%). DAMP knob sets threshold. Soft, squishy ducking — route a kick's channel out into another channel's DAMP to duck a drone."
+    },
+    {
+      "name": "DAMP as accent",
+      "trigger": "accent gate → STRIKE + accent mult → DAMP CV",
+      "description": "In sequencer patches, STRIKE alone accents by opening the LPG harder. Multing the accent gate to DAMP CV adds brightness/speed to accented steps, simulating velocity-sensitive attack. Non-accented env goes to CONTROL for body."
+    },
+    {
+      "name": "Envelope generator (rev2)",
+      "trigger": "gate → STRIKE, take output",
+      "description": "Because CH signal inputs carry a +8V offset when unpatched, applying a gate to STRIKE and taking the channel OUT yields an envelope. Fall time = DAMP. Rise is fixed-fast. Works in a pinch as an AD envelope with VC decay."
+    },
+    {
+      "name": "CV offset / slew limiter",
+      "trigger": "signal → Signal In, CONTROL Combo Pot as level",
+      "description": "+8V offset normalization on Signal In allows use as an offset generator, attenuator, or summer. An Optomix channel can also be a simple slew limiter with DAMP setting fall time (rise stays fast)."
+    },
+    {
+      "name": "Vactrol speed characteristics",
+      "trigger": "any STRIKE/CONTROL modulation",
+      "description": "Vactrols have moderate attack, slow decay, and non-matched gain between channels. Not suitable for clicks/pops or matched-gain stereo VCA duty. The 'ringing' sounds — especially on FM or ring-modulated sources — are the core character."
+    },
+    {
+      "name": "AUX chaining",
+      "trigger": "SUM Out of another LPG → AUX",
+      "description": "Chain Optomix → Optomix or Optomix ↔ modDemix via AUX for larger mixes without external summing. AUX feeds SUM directly and is direct-coupled (CV works too)."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Bongo (PP + FM + LPG)",
+      "patch": "Two-op FM source (Sine → VCO linear FM) → CH 1 Signal In · Pressure Points Common Gate → CH 1 STRIKE · PP CH 3 Gate → CH 1 DAMP CV · tap touchplate 4 to strike, tap touchplate 3 to dampen mid-decay · DAMP knob sets muting amount · expressive hand-played bongo.",
+      "diagram": "Optomix:\n* CH 1 CONTROL: full CCW\n* CH 1 DAMP: ~30% (set dampening)\n\n- VCO (Out) -> Optomix.CH 1 (Signal In) // FM source\n- Pressure Points (Common Gate) g> Optomix.CH 1 (Strike) // touchplate 4\n- Pressure Points (CH 3 Gate) g> Optomix.CH 1 (DAMP CV) // touchplate 3 dampens\n- Optomix.CH 1 (Out) -> Output (In)"
+    },
+    {
+      "name": "FM pings",
+      "patch": "Audio-rate sine → CH 1 Signal In · CH 1 out → another VCO Linear FM In · CONTROL full CCW · trigger/gate → CH 1 STRIKE · each trigger pings a short FM burst into the destination VCO · adjust DAMP for tight click versus long sweep.",
+      "diagram": "Optomix:\n* CH 1 CONTROL: full CCW\n* CH 1 DAMP: to taste\n\n- VCO A (Sine) -> Optomix.CH 1 (Signal In)\n- Trigger Source (Trig) g> Optomix.CH 1 (Strike)\n- Optomix.CH 1 (Out) >> VCO B (Lin FM) // dynamic FM ping"
+    },
+    {
+      "name": "Kick-drum ducked drone",
+      "patch": "CH 1 generates kick: sine VCO → CH 1 In · gate → CH 1 STRIKE + VCO Lin FM · CH 1 Out → CH 2 DAMP CV (audio-rate DAMP = sidechain) · drone → CH 2 Signal In · CH 2 CONTROL ~50% · monitor SUM · kick ducks drone naturally.",
+      "diagram": "Optomix:\n* CH 1 CONTROL: full CCW\n* CH 2 CONTROL: ~50%\n* CH 2 DAMP: sets threshold\n\n- VCO (Sine) -> Optomix.CH 1 (Signal In)\n- Gate (Kick) g> Optomix.CH 1 (Strike)\n- Gate (Kick) g> VCO (Lin FM)\n- Drone (Out) -> Optomix.CH 2 (Signal In)\n- Optomix.CH 1 (Out) -> Optomix.CH 2 (DAMP CV) // sidechain\n- Optomix (SUM Out) -> Output (In)"
+    },
+    {
+      "name": "Accent via dual envelope",
+      "patch": "Sequence gate → AD envelope → CH 1 CONTROL (attenuate via CONTROL knob ~70% for baseline dynamics) · accent gate → CH 1 STRIKE for loud accented steps · same accent gate mult → CH 1 DAMP CV (DAMP ~20%+) for extra brightness/snap on accents · classic velocity feel without a dedicated VCA.",
+      "diagram": "Optomix:\n* CH 1 CONTROL: ~70%\n* CH 1 DAMP: ~20%\n\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Optomix.CH 1 (CONTROL)\n- Accent (Gate) g> Optomix.CH 1 (Strike)\n- Accent (Gate) g> Optomix.CH 1 (DAMP CV)\n- VCO (Out) -> Optomix.CH 1 (Signal In)\n- Optomix.CH 1 (Out) -> Output (In)"
+    },
+    {
+      "name": "Palm-mute percussion",
+      "patch": "Gate → CH 1 STRIKE AND → MATHS CH 1 TRIG · MATHS Rise ≥60%, Fall <50% · MATHS CH 1 OUT → CH 1 DAMP CV (DAMP ~65%) · delayed rising DAMP after strike clamps down on the ringing · emulates hand/palm muting arriving after the pluck.",
+      "diagram": "Optomix:\n* CH 1 DAMP: ~65%\n\nMATHS:\n* CH 1: Rise ≥60%, Fall <50%\n\n- Gate Source (Gate) g> Optomix.CH 1 (Strike)\n- Gate Source (Gate) g> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> Optomix.CH 1 (DAMP CV) // delayed palm mute\n- VCO (Out) -> Optomix.CH 1 (Signal In)\n- Optomix.CH 1 (Out) -> Output (In)"
+    },
+    {
+      "name": "Two-voice LPG mixer",
+      "patch": "Voice 1 → CH 1, Voice 2 → CH 2, each with their own STRIKE/envelope/DAMP settings · take SUM OUT for a combined mix · AUX can chain another LPG in · one 8HP module hosts two plucked/gated voices plus a mix bus.",
+      "diagram": "Optomix:\n* CH 1 DAMP: tight\n* CH 2 DAMP: long ringing\n\n- Voice 1 (Out) -> Optomix.CH 1 (Signal In)\n- Gate 1 (Trig) g> Optomix.CH 1 (Strike)\n- Voice 2 (Out) -> Optomix.CH 2 (Signal In)\n- Gate 2 (Trig) g> Optomix.CH 2 (Strike)\n- Optomix (SUM Out) -> Output (In)"
+    },
+    {
+      "name": "LPG as AD envelope source",
+      "patch": "Unused CH: gate → CH 2 STRIKE · CONTROL full CW · CH 2 OUT → external VCA or filter cutoff · +8V offset normalization makes the channel output a usable AD envelope with VC decay via DAMP CV · spare envelope from a vactrol without an EG module.",
+      "diagram": "Optomix:\n* CH 2 CONTROL: full CW\n* CH 2 DAMP: decay time\n* CH 2 Signal In: unpatched (+8V offset)\n\n- Gate Source (Gate) g> Optomix.CH 2 (Strike)\n- Optomix.CH 2 (Out) >> VCA (CV) // Optomix as EG\n- VCO (Out) -> VCA (In)"
+    }
+  ]
+}

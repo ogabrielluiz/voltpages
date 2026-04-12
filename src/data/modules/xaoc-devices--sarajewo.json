@@ -1,0 +1,215 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1984/1.1",
+    "sources": [
+      "http://xaocdevices.com/manuals/xaoc_sarajewo_manual.pdf",
+      "https://xaocdevices.com/main/sarajewo/",
+      "https://modulargrid.net/e/xaoc-devices-sarajewo",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=258550",
+      "https://www.perfectcircuit.com/xaoc-devices-sarajewo.html"
+    ]
+  },
+  "slug": "xaoc-devices--sarajewo",
+  "name": "Sarajewo",
+  "manufacturer": "Xaoc Devices",
+  "hp": 12,
+  "tags": [
+    "DELAY",
+    "EFFECTS",
+    "FILTER"
+  ],
+  "description": "Syncable analog BBD delay. Three 4096-stage chips in series give 20–1560ms with taps at 1/3, 2/3 and full delay time. Companded signal path, auto-tuned anti-aliasing filters, tilt-filtered feedback, and a breakable external feedback loop.",
+  "controls": [
+    {
+      "name": "T3 TIME",
+      "scope": "Global",
+      "description": "Large central dial. In FREE mode sets continuous delay from 20ms to 1560ms; in TAP/SYNC mode selects a discrete multiplication/division factor.",
+      "detail": "ranges: 20·30·45·80·130·220·370·600·960·1500ms · sync factors: 1:6 1:4 1:3 1:2 2:3 1:1 3:2 2 3 4 6"
+    },
+    {
+      "name": "LEVEL",
+      "scope": "Global",
+      "description": "Input amplitude into the BBD line. Sets where companding starts to saturate.",
+      "detail": "0–10 · input LED: green clean · yellow near clip · red BBD distortion"
+    },
+    {
+      "name": "EFFECT",
+      "scope": "Global",
+      "description": "Wet/dry blend at MIXED OUT. Unusual law: noon leaves both original and wet at unity — turning CCW/CW attenuates one side without amplifying the other.",
+      "detail": "0 = dry only · 10 = wet (T3) only · 5 = both unity"
+    },
+    {
+      "name": "FBCK (slider)",
+      "scope": "Global",
+      "description": "Feedback amount from the last tap back into the BBD input. Illuminated — green = level, red = clip warning.",
+      "detail": "0 = no repeats · ~7–8 long decay · >8 self-oscillation / runaway"
+    },
+    {
+      "name": "TONE (slider)",
+      "scope": "Global",
+      "description": "Tilt EQ inside the feedback path. Shapes repeats progressively darker or brighter as they recirculate.",
+      "detail": "center = flat · down = boost lows (fuels runaway) · up = boost highs (brighter echoes) · LED: green lows · red highs"
+    },
+    {
+      "name": "TAP TEMPO",
+      "scope": "Global",
+      "description": "Illuminated button. Blinks at current delay time. Two+ taps → tap-tempo mode; long-press returns to free mode.",
+      "detail": "green = free · yellow = tap-tempo · red = external sync"
+    },
+    {
+      "name": "INPUT LED",
+      "scope": "Global",
+      "description": "Multicolor input level indicator.",
+      "detail": "green safe · yellow hot · red clipping"
+    },
+    {
+      "name": "BBD OFF-RANGE LED",
+      "scope": "Global",
+      "description": "Lights red when dial + CV push delay time beyond the ±hardware clock limits (clamping in free mode, factor-reduction in sync mode).",
+      "detail": "red = out of BBD clock range"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "INPUT",
+      "description": "Audio input into the compressor / anti-alias filter / BBD chain.",
+      "voltage": "AC-coupled · modular-level ≥10Vpp"
+    },
+    {
+      "name": "TIME CV",
+      "description": "Delay-time modulation, added to the T3 TIME knob. In free mode, ±CV multiplies time up to ×4 or divides to ×¼; in sync/tap mode it offsets the factor selection.",
+      "voltage": "±5V typical"
+    },
+    {
+      "name": "SYNC",
+      "description": "External clock input. Patching a cable switches to sync mode (button red); unplugging returns to free mode.",
+      "voltage": "+5V clock pulses"
+    },
+    {
+      "name": "EXT FEEDBACK LOOP",
+      "description": "Return of external feedback processing. Normalized internally to the T3 output; inserting a jack breaks the internal loop and routes through the external path.",
+      "voltage": "audio · AC-coupled",
+      "normalizedTo": "T3 (internal)"
+    },
+    {
+      "name": "MIX CV",
+      "description": "CV over the EFFECT wet/dry blend.",
+      "voltage": "±5V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "T1",
+      "description": "First tap — delay time of T3/3. Useful for short slap/chorus settings at moderate dial positions."
+    },
+    {
+      "name": "T2",
+      "description": "Second tap — delay time of 2·T3/3. Lands on intermediate rhythmic subdivisions."
+    },
+    {
+      "name": "T3",
+      "description": "Third tap — full delay time shown on the dial. Feeds the internal feedback loop."
+    },
+    {
+      "name": "MIXED OUTPUT",
+      "description": "Blend of input and T3 per the EFFECT knob / MIX CV. Unity-at-noon crossfader."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Free mode — continuous delay",
+      "trigger": "TAP TEMPO lit green · no cable in SYNC",
+      "description": "T3 TIME dial sweeps 20–1560ms continuously. Sweeping the dial or applying TIME CV varies the BBD clock, causing tape-like pitch bends on sounds already in the buffer. CV range extends up to ×4 (slower) or down to ×¼ (faster) around the dial setting; past the clock limits the time clamps and BBD OFF-RANGE turns red."
+    },
+    {
+      "name": "Tap-tempo mode with factor dial",
+      "trigger": "≥2 taps on TAP TEMPO",
+      "description": "Button turns yellow. T3 TIME knob quantizes to eleven factors of the tapped period (1:6, 1:4, 1:3, 1:2, 2:3, 1:1, 3:2, 2, 3, 4, 6). Long-press TAP TEMPO to exit back to free mode. Out-of-range requests are auto-reduced to the nearest in-range factor — echoes stay in sync."
+    },
+    {
+      "name": "External sync mode",
+      "trigger": "cable in SYNC · TAP TEMPO lit red",
+      "description": "Follows the external clock tempo with the same factor scale as tap-tempo. Cannot be manually exited while a clock is present; unplugging the cable returns to free mode with the dial setting. TIME CV offset switches factors by default (quantized)."
+    },
+    {
+      "name": "Unquantized CV option",
+      "trigger": "hold TAP TEMPO while powering up",
+      "description": "In sync/tap modes, TIME CV becomes continuous rather than quantized to factors. Lets you smoothly modulate delay time while keeping the base tempo locked. State persists across power cycles until toggled back."
+    },
+    {
+      "name": "Automatic bandwidth tracking",
+      "trigger": "changing delay time",
+      "description": "All four internal LP filters (anti-alias at input, anti-image at each tap) retune with the BBD clock so noise/aliasing stay below audibility. Consequence: sound darkens noticeably past ~500ms and becomes quite dusky near 1.5s. This is factory calibrated, not a defect."
+    },
+    {
+      "name": "Internal vs external feedback loop",
+      "trigger": "cable in EXT FEEDBACK LOOP",
+      "description": "EXT FEEDBACK LOOP is normalized to T3 internally. Plugging into it breaks the normalisation, so you can route a tap out through a filter/distortion/reverb and back. Regardless of path, signal passes through TONE before re-entering the BBD input."
+    },
+    {
+      "name": "Self-oscillating echo wall",
+      "trigger": "FBCK > ~8 · TONE low",
+      "description": "Feedback compounds into a saturating sustained drone. Tilt toward bass accelerates oscillation and distortion; toward treble brightens the tail but can taper feedback depth. FBCK slider blinks red once near the BBD clip threshold."
+    },
+    {
+      "name": "Pitch-bend during delay-time change",
+      "trigger": "any T3 TIME change",
+      "description": "Unlike digital delays, Sarajewo varies the BBD clock rather than a buffer pointer — so each time change pitch-shifts whatever is currently in the delay line (tape-like Doppler). Slow hand-sweeps yield dub-style dives, fast LFO on TIME CV gives chorus/flanger."
+    },
+    {
+      "name": "Shorter delays via T1 tap",
+      "trigger": "use T1 output · moderate T3 dial",
+      "description": "T1 runs at 1/3 of T3 time — best path to short/chorus/flange settings because the BBD stays away from its slowest clock where noise is worst. External dry mixing is required since MIXED OUT always crossfades to T3 specifically."
+    },
+    {
+      "name": "Companding noise reduction",
+      "trigger": "any audio through INPUT",
+      "description": "Input compressor and per-tap expanders act as a noise-reduction pair — keeping the BBD at optimum level. Attacks and releases are baked in; high-transient material tolerates the process well but may exhibit slight 'pumping' on sustained dynamic sources."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Clock-synced dotted-eighth dub delay",
+      "patch": "Clock into SYNC · tap-tempo red · T3 TIME dial at 3:2 factor · FBCK ~6 · TONE slightly down for dub darkness · vocal into INPUT · MIXED OUT to mixer",
+      "diagram": "Sarajewo:\n* TIME factor: 3:2\n* FBCK: 6\n* TONE: -2\n* EFFECT: 6\n\n- ClockSrc (Out) c> Sarajewo (SYNC)\n- Voice (Out) -> Sarajewo (INPUT)\n- Sarajewo (MIXED OUTPUT) -> Mixer (In)"
+    },
+    {
+      "name": "Tape-style pitch-bend dives",
+      "patch": "Free mode · slow envelope or CV slew into TIME CV · delay dips while the bass plays · BBD OFF-RANGE will briefly flash if you push past ¼",
+      "diagram": "Sarajewo:\n* Mode: FREE\n* T3 TIME: 600ms\n* FBCK: 5\n\n- Bass (Out) -> Sarajewo (INPUT)\n- Slew Env (Out) >> Sarajewo (TIME CV)\n- Sarajewo (MIXED OUTPUT) -> Mixer (In)"
+    },
+    {
+      "name": "Chorus/flange via T1 and audio-rate time FM",
+      "patch": "T3 TIME at ~80ms giving T1 ~27ms · small LFO ±1V into TIME CV · use T1 output directly · mix dry externally for classic chorus",
+      "diagram": "Sarajewo:\n* Mode: FREE\n* T3 TIME: 80ms\n* FBCK: 2\n\n- Pad (Out) -> Sarajewo (INPUT)\n- LFO (Sine, slow) >> Sarajewo (TIME CV) // small depth\n- Sarajewo (T1) -> Mixer (ChA)\n- Pad (Out) -> Mixer (ChB) // dry"
+    },
+    {
+      "name": "Multi-tap rhythmic delay",
+      "patch": "T3 at a dotted quarter · take T1, T2, T3 to three mixer channels · pan them L/C/R for a polyrhythmic tail",
+      "diagram": "Sarajewo:\n* Mode: FREE\n* T3 TIME: 600ms\n* FBCK: 4\n\n- Lead (Out) -> Sarajewo (INPUT)\n- Sarajewo (T1) -> Mixer (Ch1) // pan L\n- Sarajewo (T2) -> Mixer (Ch2) // pan C\n- Sarajewo (T3) -> Mixer (Ch3) // pan R"
+    },
+    {
+      "name": "External feedback filter (Belgrad insert)",
+      "patch": "Patch T3 → Belgrad INPUT · Belgrad OUTPUT → EXT FEEDBACK LOOP · Belgrad filters every repeat · sweep Belgrad FREQ for morphing tail",
+      "diagram": "Sarajewo:\n* Mode: FREE\n* T3 TIME: 500ms\n* FBCK: 7\n* TONE: 0\n\n- Voice (Out) -> Sarajewo (INPUT)\n- Sarajewo (T3) -> Belgrad (INPUT)\n- Belgrad (OUTPUT) -> Sarajewo (EXT FEEDBACK LOOP)\n- LFO (Slow) >> Belgrad (FM)\n- Sarajewo (MIXED OUTPUT) -> Mixer (In)"
+    },
+    {
+      "name": "Self-oscillating drone pad",
+      "patch": "No audio input · FBCK at 10 · TONE just below center · momentarily flick INPUT LEVEL up to seed · TIME CV slow LFO gives evolving feedback pitches",
+      "diagram": "Sarajewo:\n* Mode: FREE\n* T3 TIME: 370ms\n* FBCK: 10\n* TONE: -1\n\n- LFO (Slow) >> Sarajewo (TIME CV)\n- Sarajewo (MIXED OUTPUT) -> Reverb (In)\n- Reverb (Out) -> Output (In)"
+    },
+    {
+      "name": "Wet/dry performance swell",
+      "patch": "Bipolar LFO or envelope into MIX CV · EFFECT knob at noon for unity baseline · creates a wet-swell without touching the source level",
+      "diagram": "Sarajewo:\n* Mode: FREE\n* T3 TIME: 450ms\n* EFFECT: 5 (noon)\n* FBCK: 6\n\n- Lead (Out) -> Sarajewo (INPUT)\n- Env (Out) >> Sarajewo (MIX CV)\n- Sarajewo (MIXED OUTPUT) -> Mixer (In)"
+    },
+    {
+      "name": "Drum bus granulator via audio-rate TIME CV",
+      "patch": "Drum bus into INPUT · audio-rate source into TIME CV (attenuated) · short T3 time · T1 output for glitchy metallic artifacts",
+      "diagram": "Sarajewo:\n* Mode: FREE\n* T3 TIME: 130ms\n* FBCK: 3\n\n- Drums (Out) -> Sarajewo (INPUT)\n- VCO (Sub) >> Atten (In)\n- Atten (Out) >> Sarajewo (TIME CV)\n- Sarajewo (T1) -> Mixer (In)\n- Drums (Out) -> Mixer (InDry)"
+    }
+  ]
+}

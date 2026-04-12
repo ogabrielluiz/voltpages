@@ -1,0 +1,152 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+      "firmwareVersion": "1.12.0",
+    "sources": [
+      "https://vpme.de/qd/",
+      "https://vpme.de/data/vpme.de%20QD%20-%20Quad%20Drum%20Voice%20-%20User%20Manual%20v1.12.pdf"
+    ]
+  },
+  "slug": "vpme-de--qd-quad-drum-voice",
+  "name": "QD - Quad Drum Voice",
+  "manufacturer": "vpme.de",
+  "hp": 22,
+  "tags": ["DRUM", "SAMPLER", "OSCILLATOR", "MIXER", "EFFECTS"],
+  "description": "Four-voice digital drum module with sample, wavetable and modeled synthesis per voice, CV/LFO assignment, internal stereo mixing, EQ/compression, and preset storage.",
+  "controls": [
+    {
+      "name": "3-way toggle",
+      "scope": "Global",
+      "description": "Switches the encoder page between mute/voice assignment, mixer/EQ and CV/LFO assignment.",
+      "detail": "top: mute/voice · middle: mixer · bottom: CV/LFO"
+    },
+    {
+      "name": "Encoder",
+      "scope": "Global",
+      "description": "Main edit encoder for model selection, parameter assignment, CV/LFO depth, preset navigation and hidden functions.",
+      "detail": "push button + rotary"
+    },
+    {
+      "name": "F-button",
+      "scope": "Global",
+      "description": "Opens the shortcut page for presets and other special functions.",
+      "detail": "press to access mapped function"
+    },
+    {
+      "name": "Voice buttons 1-4",
+      "scope": "Global",
+      "description": "Selects, mutes and manually retriggers the four voices depending on the active page.",
+      "detail": "four color-coded buttons"
+    },
+    {
+      "name": "Voice 1-4 pitch",
+      "scope": "Voice engines",
+      "description": "Sets pitch for modeled drums, samples or wavetables; CV can scale to V/oct at maximum depth.",
+      "detail": "shared per voice"
+    },
+    {
+      "name": "Voice 1-4 decay",
+      "scope": "Voice engines",
+      "description": "Sets envelope decay or gate length, depending on the selected sound engine.",
+      "detail": "shared per voice"
+    },
+    {
+      "name": "Voice 1-4 model/sample/wavetable parameter",
+      "scope": "Voice engines",
+      "description": "Sets the engine-specific third parameter, such as sample select, wavetable select or the selected drum model's extra control.",
+      "detail": "shared per voice"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "TRIG 1-4",
+      "description": "Trigger inputs for the four voices."
+    },
+    {
+      "name": "CV 1-4",
+      "description": "Assignable CV inputs for voice parameters, pan, volume and preset control.",
+      "voltage": "-5V to 5V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT L",
+      "description": "Main left output from the internal stereo mixer and EQ/compressor."
+    },
+    {
+      "name": "OUT R",
+      "description": "Main right output from the internal stereo mixer and EQ/compressor."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Three engines per voice",
+      "trigger": "select a model, sample set or wavetable bank",
+      "description": "Each voice can act as a modeled drum, a sample player or a wavetable VCO. The same front-panel controls adapt to the selected engine."
+    },
+    {
+      "name": "CV and LFO assignment",
+      "trigger": "bottom page plus encoder",
+      "description": "Each CV input or LFO can be assigned to pitch, decay, sample selection, pan or volume, with depth adjusted in 32 steps."
+    },
+    {
+      "name": "Gate mode hold",
+      "trigger": "enable GATE MODE in settings",
+      "description": "Samples, wavetables and some models hold while the gate is high and only enter decay after the trigger falls."
+    },
+    {
+      "name": "Choke groups",
+      "trigger": "enable choke routing in the voice assignment page",
+      "description": "One voice can be set to choke another, which is useful for closed-hat style muting and tighter drum articulation."
+    },
+    {
+      "name": "Random folders and step triggers",
+      "trigger": "uppercase RANDOM folder or CV step trigger setting",
+      "description": "Folders marked RANDOM choose a new sample on every trigger, and each voice can treat its nearby CV input as a step trigger for sample stepping."
+    },
+    {
+      "name": "Internal mix and master dynamics",
+      "trigger": "mixer page",
+      "description": "The module mixes four voices to two outputs, with per-voice volume and pan, master volume, three-band EQ and compressor."
+    },
+    {
+      "name": "Preset and memory-card workflow",
+      "trigger": "F-button preset page",
+      "description": "The module stores 64 presets, supports copy/delete and can save or load presets to the memory card in firmware 1.12.3+."
+    },
+    {
+      "name": "Hidden reverb",
+      "trigger": "long-press encoder in EQ/compressor screen",
+      "description": "A hidden reverb page is available and only feeds the main outputs 1 and 2."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Four-part drum rack",
+      "patch": "Voice 1 = kick model · Voice 2 = snare model · Voice 3 = hat model · Voice 4 = percussion model · sequencer clocks each voice separately · stereo mix stays internal until the final output stage.",
+      "diagram": "QD:\n* Voice 1: kick model\n* Voice 2: snare model\n* Voice 3: hat model\n* Voice 4: percussion model\n\nSequencer:\nOutput:\n\n- Sequencer (Trig 1) t> QD (TRIG 1)\n- Sequencer (Trig 2) t> QD (TRIG 2)\n- Sequencer (Trig 3) t> QD (TRIG 3)\n- Sequencer (Trig 4) t> QD (TRIG 4)\n- QD (OUT L) -> Output (L)\n- QD (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Random sample percussion",
+      "patch": "Voice 1 in sample mode · RANDOM folder enabled · CV 1 scans sample select · short gates retrigger a changing hit pattern with low-latency repeats and controlled randomness.",
+      "diagram": "QD:\n* Voice 1: sample mode\n* Voice 1 folder: RANDOM\n* CV 1: sample select\n\nSequencer:\nLFO:\nOutput:\n\n- Sequencer (Gate) g> QD (TRIG 1)\n- LFO (Out) >> QD (CV 1)\n- QD (OUT L) -> Output (In)"
+    },
+    {
+      "name": "Wavetable thump",
+      "patch": "Voice 2 in wavetable mode · pitch CV quantized to semitones · decay short · wavetable select animated slowly for pitched percussive motion that sits between drum and tone.",
+      "diagram": "QD:\n* Voice 2: wavetable mode\n* Voice 2 pitch: V/oct scaled\n* Voice 2 decay: short\n\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> QD (CV 2)\n- Sequencer (Trig) t> QD (TRIG 2)\n- QD (OUT L) -> Output (In)"
+    },
+    {
+      "name": "Choked fill layer",
+      "patch": "Voice 3 and voice 4 share a choke relationship · rapid fill pattern on voice 4 interrupts voice 3 · use this for abrupt fills without needing external voice-stealing logic.",
+      "diagram": "QD:\n* Voice 3: hat model\n* Voice 4: accent model\n\nSequencer:\nMixer:\nOutput:\n\n- Sequencer (Trig 3) t> QD (TRIG 3)\n- Sequencer (Trig 4) t> QD (TRIG 4)\n- QD (OUT L) -> Mixer (In 1)\n- QD (OUT R) -> Mixer (In 2)\n- Mixer (Out) -> Output (In)"
+    },
+    {
+      "name": "Preset morph performance",
+      "patch": "CV 4 selects presets · store contrasting drum kits in adjacent slots · sweep CV 4 with a slow LFO or stepped CV for live kit changes without reprogramming triggers.",
+      "diagram": "QD:\n* CV 4: preset select\n* Presets: multiple kits\n\nLFO:\nOutput:\n\n- LFO (Out) >> QD (CV 4)\n- QD (OUT L) -> Output (L)\n- QD (OUT R) -> Output (R)"
+    }
+  ]
+}

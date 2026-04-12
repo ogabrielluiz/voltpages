@@ -1,0 +1,191 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/downloads/manuals/bifold_manual_2021.08.15.pdf",
+      "https://intellijel.com/shop/eurorack/bifold/",
+      "https://www.perfectcircuit.com/intellijel-bifold.html"
+    ]
+  },
+  "slug": "intellijel--bifold",
+  "name": "Bifold",
+  "manufacturer": "Intellijel",
+  "hp": 8,
+  "tags": ["WAVEFOLDER", "WAVESHAPER", "EFFECTS"],
+  "description": "Dual-channel wavefolder. P channel is a Buchla-style parallel deadband folder; S channel is a Serge-style serial folder. Built-in crossfader, symmetry bias, phase invert and AUX sum enable ring/AM modulation tricks.",
+  "controls": [
+    {
+      "name": "FOLD",
+      "scope": "Global",
+      "description": "Master fold depth applied to both IN P and IN S. Fully CCW = no folding (unless CV overrides).",
+      "detail": "Sums with FOLD P and FOLD S CV · interacts with each attenuator"
+    },
+    {
+      "name": "XFADE",
+      "scope": "MIX out",
+      "description": "Crossfades between Parallel and Serial folder outputs at the MIX jack. CCW = P only · noon = equal mix · CW = S only.",
+      "detail": "±5V CV attenuverted by XFADE knob [15]"
+    },
+    {
+      "name": "SYM-X-AUX switch (P)",
+      "scope": "Parallel folder",
+      "description": "Three-position input bias select for IN P. SYM adds DC offset (asymmetry) · X = clean · AUX sums the AUX jack into IN P.",
+      "detail": "Offset/AUX amount set by SYM-AUX attenuverter [5]"
+    },
+    {
+      "name": "SYM-X-AUX switch (S)",
+      "scope": "Serial folder",
+      "description": "Three-position input bias select for IN S. SYM adds DC offset · X = clean · AUX sums the AUX jack into IN S.",
+      "detail": "Offset/AUX amount set by SYM-AUX attenuverter [6]"
+    },
+    {
+      "name": "SYM-AUX attenuverter (P)",
+      "scope": "Parallel folder",
+      "description": "Attenuverts either the ±5V DC bias (SYM position) or the AUX input (AUX position). Inactive in X position.",
+      "detail": "±5V DC · bipolar"
+    },
+    {
+      "name": "SYM-AUX attenuverter (S)",
+      "scope": "Serial folder",
+      "description": "Attenuverts either the ±5V DC bias (SYM position) or the AUX input (AUX position). Inactive in X position.",
+      "detail": "±5V DC · bipolar"
+    },
+    {
+      "name": "PHASE switch",
+      "scope": "Serial folder → XFADE",
+      "description": "Inverts the phase of the Serial folder signal fed to the XFADE/MIX. Enables ring-modulation cancellation and subtle mix colour shifts.",
+      "detail": "Up = inverted · down = in phase"
+    },
+    {
+      "name": "XFADE P select",
+      "scope": "XFADE input",
+      "description": "Selects what feeds the P side of the crossfader. FOLD OUT P (up) = folded P · IN P (down) = dry P (wet/dry across XFADE).",
+      "detail": "Up/down toggle"
+    },
+    {
+      "name": "XFADE S select",
+      "scope": "XFADE input",
+      "description": "Selects what feeds the S side of the crossfader. FOLD OUT S (up) = folded S · IN S (down) = dry S.",
+      "detail": "Up/down toggle"
+    },
+    {
+      "name": "FOLD P attenuator",
+      "scope": "Parallel folder",
+      "description": "Attenuates the FOLD P CV input. When no jack is patched, internally normals +5V — the knob then acts as a 0–5V fold offset.",
+      "detail": "0–5V normal · unipolar"
+    },
+    {
+      "name": "FOLD S attenuator",
+      "scope": "Serial folder",
+      "description": "Attenuates the FOLD S CV input. If FOLD S is unpatched, the FOLD P jack (or its internal +5V normal) also feeds the Serial folder CV.",
+      "detail": "0–5V normal · unipolar"
+    },
+    {
+      "name": "XFADE attenuverter",
+      "scope": "XFADE CV",
+      "description": "Scales and optionally inverts the XFADE CV input. CW = positive unity · noon = zero · CCW = inverted.",
+      "detail": "±5V CV · bipolar"
+    },
+    {
+      "name": "MIX LED",
+      "scope": "MIX out",
+      "description": "Brightness shows level at MIX. Red = negative · green = positive · orange = audio rate.",
+      "detail": "Bipolar indicator"
+    },
+    {
+      "name": "OUT P LED / OUT S LED",
+      "scope": "Per channel",
+      "description": "Per-folder output indicator. Same red/green polarity convention as MIX LED.",
+      "detail": "Bipolar indicator"
+    }
+  ],
+  "inputs": [
+    { "name": "IN P", "description": "Audio input to the Parallel (Buchla-style deadband) folder", "voltage": "±5V typical" },
+    { "name": "IN S", "description": "Audio input to the Serial (Serge-style) folder", "voltage": "±5V typical", "normalizedTo": "IN P when unpatched" },
+    { "name": "AUX", "description": "Auxiliary input summed into IN P and/or IN S when the respective SYM-X-AUX switch is in AUX position", "voltage": "±5V", "normalizedTo": "MIX output when unpatched (enables feedback)" },
+    { "name": "FOLD P", "description": "±10V CV for Parallel fold amount. Positive increases fold · negative decreases it.", "voltage": "±10V", "normalizedTo": "+5V when unpatched" },
+    { "name": "FOLD S", "description": "±10V CV for Serial fold amount", "voltage": "±10V", "normalizedTo": "FOLD P jack when unpatched" },
+    { "name": "XFADE", "description": "±5V CV for P/S crossfade at MIX out", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "OUT P", "description": "Parallel folder direct output", "voltage": "±5V" },
+    { "name": "OUT S", "description": "Serial folder direct output", "voltage": "±5V" },
+    { "name": "MIX", "description": "Crossfaded sum of Parallel and Serial (post PHASE switch)", "voltage": "±5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Two fold flavours",
+      "trigger": "route audio to IN P vs IN S",
+      "description": "P channel is a Buchla-style parallel deadband folder — symmetrical, opens from silence. S channel is a Serge-style serial stack — softer, denser harmonics. Each sounds distinct with the same input."
+    },
+    {
+      "name": "IN S normal",
+      "trigger": "leave IN S unpatched",
+      "description": "IN P is internally routed to IN S. One patched source drives both folders simultaneously — ideal for XFADE blending and stereo folding via OUT P / OUT S."
+    },
+    {
+      "name": "AUX feedback loop",
+      "trigger": "SYM-X-AUX switches in AUX + AUX jack unpatched",
+      "description": "AUX input normals to the MIX output. Setting either channel's SYM-X-AUX to AUX creates an internal feedback path — generates chaotic noise, squawks and self-oscillation with nothing else patched."
+    },
+    {
+      "name": "Ring modulator",
+      "trigger": "PHASE switch ON · both XFADE selects IN · SYM-X-AUX = X",
+      "description": "With S inverted and both folders bypassed (IN selects), XFADE knob nulls the two inputs. Patching a second oscillator to XFADE CV multiplies it against IN P — ring modulation output at MIX."
+    },
+    {
+      "name": "Amplitude modulation",
+      "trigger": "ring modulator setup + dummy cable in IN S",
+      "description": "Breaks the IN S-from-IN P normal. The XFADE CV signal then amplitude-modulates (rather than ring-modulates) the IN P signal."
+    },
+    {
+      "name": "SYM bias asymmetry",
+      "trigger": "SYM-X-AUX → SYM",
+      "description": "Adds a ±5V DC offset before the folder. Breaks symmetric fold into biased fold — the waveform folds more on one polarity than the other, producing PWM-like timbres and even harmonics."
+    },
+    {
+      "name": "Wet/dry XFADE",
+      "trigger": "XFADE P or S select → IN",
+      "description": "Feeds the raw input (not folded) to that side of the crossfader. XFADE knob then acts as wet/dry between dry input and the opposite channel's folded output."
+    },
+    {
+      "name": "FOLD knob silence trap",
+      "trigger": "FOLD fully CCW + FOLD P attenuator CCW + no FOLD P patch",
+      "description": "With FOLD at minimum and the attenuator at zero, no signal passes to the outputs. Turn the attenuator up (+5V internal normal) or raise FOLD to hear output."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Sine to square evolution",
+      "patch": "Sine → IN P · slow LFO >> FOLD P CV · FOLD P attenuator ~3 o'clock · FOLD knob at noon · MIX out · as CV sweeps, sine gains odd harmonics then approaches square",
+      "diagram": "LFO:\n\nVCO:\n\n- VCO (Sine) -> Bifold (IN P)\n- LFO (Out) >> Bifold (FOLD P)\n- Bifold (MIX) -> Output (In)"
+    },
+    {
+      "name": "Stereo fold",
+      "patch": "Sine → IN P · IN S normals from IN P · OUT P → left · OUT S → right · set SYM-X-AUX (P) to SYM with bias · leave S at X · two fold flavours panned L/R for wide stereo image",
+      "diagram": "Bifold:\n* SYM-X-AUX (P): SYM\n* SYM-AUX (P) attenuator: ~2 o'clock\n* SYM-X-AUX (S): X\n\nVCO:\n\n- VCO (Sine) -> Bifold (IN P)\n- Bifold (OUT P) -> Output (Left)\n- Bifold (OUT S) -> Output (Right)"
+    },
+    {
+      "name": "Ring modulator",
+      "patch": "Carrier sine → IN P · modulator sine → XFADE CV · both SYM-X-AUX to X · both XFADE selects to IN · PHASE switch up · XFADE knob at noon to null · MIX = clangorous sum/difference",
+      "diagram": "Bifold:\n* SYM-X-AUX (P): X · SYM-X-AUX (S): X\n* XFADE P: IN · XFADE S: IN\n* PHASE: ON · XFADE knob: noon\n\nVCO 1:\n\nVCO 2:\n\n- VCO 1 (Sine) -> Bifold (IN P)\n- VCO 2 (Sine) >> Bifold (XFADE CV)\n- Bifold (MIX) -> Output (In)"
+    },
+    {
+      "name": "Self-patched chaos noise",
+      "patch": "Nothing patched to IN P/S · both SYM-X-AUX to AUX · AUX unpatched (normals to MIX) · twist FOLD, XFADE and SYM-AUX attenuverters · self-oscillating hiss, clicks, squawks",
+      "diagram": "Bifold:\n* SYM-X-AUX (P): AUX · SYM-X-AUX (S): AUX\n* AUX jack: unpatched (normals to MIX)\n* FOLD: ~2 o'clock\n\n- Bifold (MIX) -> Output (In) // self-feedback via AUX normal"
+    },
+    {
+      "name": "Wet/dry fold crossfade",
+      "patch": "Triangle → IN P · XFADE P select = FOLD OUT P · XFADE S select = IN S (dry) · XFADE knob = wet/dry · slow LFO >> XFADE CV for breathing timbre",
+      "diagram": "Bifold:\n* XFADE P: FOLD OUT P\n* XFADE S: IN S (dry)\n\nLFO:\n\nVCO:\n\n- VCO (Tri) -> Bifold (IN P)\n- LFO (Out) >> Bifold (XFADE CV)\n- Bifold (MIX) -> Output (In)"
+    },
+    {
+      "name": "Chaotic dual CV fold",
+      "patch": "Single osc → IN P (S takes the normal) · envelope >> FOLD P · independent LFO >> FOLD S · two folders receive different modulation · IN S dummy-cabled breaks normal for fully independent drives",
+      "diagram": "Bifold:\n* Stereo folding setup\n\nENV:\n\nLFO:\n\nVCO:\n\n- VCO (Saw) -> Bifold (IN P)\n- ENV (Out) >> Bifold (FOLD P)\n- LFO (Out) >> Bifold (FOLD S)\n- Bifold (OUT P) -> Mixer (L)\n- Bifold (OUT S) -> Mixer (R)"
+    }
+  ]
+}

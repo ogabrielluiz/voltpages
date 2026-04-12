@@ -1,0 +1,174 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.2",
+    "sources": [
+      "https://mutable-instruments.net/modules/clouds/manual/",
+      "https://mutable-instruments.net/modules/clouds/",
+      "https://www.modulargrid.net/e/mutable-instruments-clouds",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=120299",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/clouds/manual/"
+    ]
+  },
+  "slug": "mutable-instruments--clouds",
+  "name": "Clouds",
+  "manufacturer": "Mutable Instruments",
+  "hp": 18,
+  "tags": ["GRANULAR", "EFFECTS", "SAMPLER", "DELAY"],
+  "description": "Granular texture synthesizer. Captures stereo audio into a buffer and generates overlapping grains with variable pitch, position, size, density. Four alternate modes accessed via hidden combos.",
+  "controls": [
+    {
+      "name": "Freeze",
+      "scope": "Global",
+      "description": "Freezes the audio buffer so new audio stops being written. All grains continue scrubbing the last-captured material.",
+      "detail": "Button lit = frozen · Gate input also triggers freeze"
+    },
+    {
+      "name": "Position",
+      "scope": "Global",
+      "description": "Playhead location within the buffer. CCW = newest audio, CW = oldest. Sweeping scrolls backwards through captured material.",
+      "detail": "Bipolar attenuverter for CV · 0–100% of buffer length"
+    },
+    {
+      "name": "Size",
+      "scope": "Global",
+      "description": "Grain duration. Small = percussive/metallic, large = time-stretched/blurred. Audio-rate modulation creates FM-like artifacts.",
+      "detail": "~1ms to ~1s · bipolar attenuverter · audio-rate CV allowed"
+    },
+    {
+      "name": "Pitch",
+      "scope": "Global",
+      "description": "Transposes grain playback ±2 octaves. CCW = down, noon = unity, CW = up. V/OCT tracked.",
+      "detail": "-24 to +24 semitones · 1V/Oct CV input"
+    },
+    {
+      "name": "Density",
+      "scope": "Global",
+      "description": "Grain rate. CCW from noon = rarer grains with space; CW from noon = overlapping cloud. Below 9 o'clock produces Poisson (random) triggering.",
+      "detail": "Below noon: random/Poisson · above noon: regular/synchronous · CV bipolar"
+    },
+    {
+      "name": "Texture",
+      "scope": "Global",
+      "description": "Grain envelope shape. CCW = boxcar/Tukey (crisp), CW = Gaussian (smooth). Also adjusts grain diffusion window in blend mode.",
+      "detail": "Bipolar attenuverter · interacts with blend parameters in alternate modes"
+    },
+    {
+      "name": "Blend / Mode / Spread / Feedback / Reverb",
+      "scope": "Global",
+      "description": "Single knob with four selectable functions chosen by short-pressing Freeze+Blend combo: dry/wet blend, stereo spread, feedback amount, reverb amount. LED color indicates current assignment.",
+      "detail": "Short-press mode button cycles: green=blend · orange=spread · red=feedback · yellow=reverb · held = shows all four"
+    },
+    {
+      "name": "In Gain",
+      "scope": "Global",
+      "description": "Input trim for left/right audio inputs. Red LED on peak indicates clipping into the buffer.",
+      "detail": "Unity at noon · +24dB CW · peak LED ~0dBFS"
+    }
+  ],
+  "inputs": [
+    { "name": "FREEZE", "description": "Gate input. High = buffer frozen, low = recording. Complements front panel button.", "voltage": ">1V gate" },
+    { "name": "TRIG", "description": "Trigger input. In granular mode gates a single grain. In alternate modes doubles as clock/event input.", "voltage": ">1V trigger" },
+    { "name": "V/OCT", "description": "1V/oct pitch tracking for grain transposition.", "voltage": "-2V to +2V" },
+    { "name": "POSITION CV", "description": "CV for buffer position, scaled by attenuverter.", "voltage": "±5V" },
+    { "name": "SIZE CV", "description": "CV for grain size; accepts audio-rate input.", "voltage": "±5V" },
+    { "name": "DENSITY CV", "description": "CV for grain density/rate.", "voltage": "±5V" },
+    { "name": "TEXTURE CV", "description": "CV for grain window shape.", "voltage": "±5V" },
+    { "name": "BLEND CV", "description": "CV for whichever blend slot (dry/wet, spread, feedback, reverb) is currently selected.", "voltage": "±5V" },
+    { "name": "IN L / IN R", "description": "Stereo audio inputs. Left normalized to right for mono operation.", "voltage": "±8V audio", "normalizedTo": "IN L feeds IN R when unpatched" }
+  ],
+  "outputs": [
+    { "name": "OUT L / OUT R", "description": "Stereo audio outputs of the granular engine (or selected alternate mode).", "voltage": "±8V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Granular mode (default)",
+      "trigger": "default on power-up",
+      "description": "Continuous stereo grain cloud reading from the rolling buffer. POSITION scans, SIZE sets grain length, DENSITY sets rate, PITCH transposes. Blend knob accesses dry/wet, spread, feedback, reverb."
+    },
+    {
+      "name": "Stretch mode",
+      "trigger": "hold Freeze + rotate Blend to second slot",
+      "description": "Time-stretching / pitch-shifting algorithm. DENSITY becomes playback-speed control, SIZE becomes window/overlap. POSITION and PITCH decouple — you can hold pitch while stretching."
+    },
+    {
+      "name": "Looping delay mode",
+      "trigger": "alternate mode 3 (Freeze+Position combo)",
+      "description": "Classic pitch-shifting delay with feedback. SIZE sets delay time up to ~8s (mono) / ~4s (stereo). POSITION scans within the delay buffer to create tape-style scrubbing."
+    },
+    {
+      "name": "Spectral madness mode",
+      "trigger": "alternate mode 4 (Freeze+Size combo)",
+      "description": "FFT-based spectral mangler. POSITION scans frequency bins, SIZE changes window length, DENSITY and TEXTURE perform magnitude clipping and phase randomization. Produces paul-stretch-like drones and phaser effects."
+    },
+    {
+      "name": "Freeze captures buffer",
+      "trigger": "button or FREEZE gate",
+      "description": "Stops buffer recording. Grains continue from whatever material was in the buffer at the moment of freeze. Combined with slow POSITION scan, produces classic infinite-hold ambient effects."
+    },
+    {
+      "name": "Audio-rate SIZE modulation",
+      "trigger": "patch VCO into SIZE CV",
+      "description": "Modulating grain size at audio rate produces FM-like sidebands and glitchy grain-interruption artifacts. A classic Clouds sound — pair with a slow buffer position for robotic textures."
+    },
+    {
+      "name": "In-gain clipping character",
+      "trigger": "IN GAIN past noon with hot source",
+      "description": "The buffer stores at 16-bit 32kHz with a soft-clip limiter on input. Overdriving IN GAIN adds gentle saturation and lo-fi character that is part of the Clouds sound signature."
+    },
+    {
+      "name": "Frozen + reverse scrub",
+      "trigger": "Freeze on + slowly rotate POSITION CCW",
+      "description": "With recording frozen, moving POSITION CCW scans backwards through the frozen material. Paired with low DENSITY it turns Clouds into a hand-scrubbable tape machine."
+    },
+    {
+      "name": "Parameter persistence across modes",
+      "trigger": "switching alternate modes",
+      "description": "Each mode stores its own blend-knob assignments and settings. Returning to granular mode restores the granular-mode parameters — useful for A/B-ing modes live."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Frozen ambient pad",
+      "patch": "Any audio source → IN L (feeds R via normal) · hit FREEZE · POSITION at noon · SIZE ~2 o'clock (large grains) · DENSITY ~2 o'clock (thick cloud) · Blend: reverb selected and set CW · instant evolving pad from a single captured phrase",
+      "diagram": "Clouds:\n* Mode: Granular (default)\n* Freeze: ON\n* Blend slot: Reverb\n\n- Source (Out) -> Clouds (IN L)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Pitch-shifted delay",
+      "patch": "Alternate mode 3 (looping delay) · SIZE sets delay time · PITCH CV from sequencer produces per-repetition pitch shift · Blend: feedback ~2 o'clock for multiple repeats · drum loop in, melodic delay out",
+      "diagram": "Clouds:\n* Mode: Looping Delay\n* Blend slot: Feedback (~2 o'clock)\n\n- Drum Loop (Out) -> Clouds (IN L)\n- Sequencer (Pitch) p> Clouds (V/OCT)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Audio-rate SIZE FM",
+      "patch": "Granular mode · VCO square → SIZE CV (audio rate) · Freeze ON over a held chord · POSITION slowly drifting via LFO · produces metallic, bell-like FM sidebands from the static source",
+      "diagram": "Clouds:\n* Mode: Granular\n* Freeze: ON\n\n- Held Chord (Out) -> Clouds (IN L)\n- VCO (Square) >> Clouds (SIZE CV) // audio-rate\n- LFO (Slow) >> Clouds (POSITION CV)\n- Clouds (OUT L) -> Mixer (L)\n- Clouds (OUT R) -> Mixer (R)"
+    },
+    {
+      "name": "Stretch-drone from field recording",
+      "patch": "Alternate mode 2 (stretch) · field recording into IN · DENSITY CCW (slow playback) · SIZE ~3 o'clock (huge window) · PITCH down 1 octave · Blend: reverb · dense slowed-down ambient bed",
+      "diagram": "Clouds:\n* Mode: Stretch\n* Pitch: -1 oct\n* Density: CCW\n\n- Field Rec (Out) -> Clouds (IN L)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Spectral phaser",
+      "patch": "Alternate mode 4 (spectral madness) · synth pad into IN · TEXTURE swept by LFO (phase randomization animation) · POSITION slowly drifted · produces paul-stretch/phaser-like sweeps on any sustained source",
+      "diagram": "Clouds:\n* Mode: Spectral Madness\n\n- Pad (Out) -> Clouds (IN L)\n- LFO 1 (Slow) >> Clouds (TEXTURE CV)\n- LFO 2 (Slower) >> Clouds (POSITION CV)\n- Clouds (OUT L) -> Mixer (L)\n- Clouds (OUT R) -> Mixer (R)"
+    },
+    {
+      "name": "Trigger-gated shimmer grains",
+      "patch": "Granular mode · DENSITY full CCW (rare grains) · external TRIG from rhythmic source fires one grain per hit · PITCH set +7 semitones (fifth shimmer) · Blend: reverb CW · each trigger sprays a pitched grain into lush reverb",
+      "diagram": "Clouds:\n* Mode: Granular\n* Density: full CCW\n* Pitch: +7 semitones\n* Blend slot: Reverb (CW)\n\n- Source (Out) -> Clouds (IN L)\n- Clock (Out) t> Clouds (TRIG)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Feedback runaway drone",
+      "patch": "Granular mode · Blend: feedback ~3 o'clock (near runaway) · POSITION held near noon · SIZE medium · input briefly captured then unplugged · feedback regenerates itself into an evolving drone that slowly mutates",
+      "diagram": "Clouds:\n* Mode: Granular\n* Blend slot: Feedback (~3 o'clock)\n\n- Source (Out) -> Clouds (IN L) // briefly, then unpatch\n- Clouds (OUT L) -> Mixer (L)\n- Clouds (OUT R) -> Mixer (R)"
+    },
+    {
+      "name": "Reverse-scrub tape effect",
+      "patch": "Granular · capture a melodic phrase · Freeze ON · slow LFO ramp DOWN into POSITION CV at maximum attenuverter · SIZE small-medium · DENSITY high · produces reverse-tape scrubbing from any captured phrase",
+      "diagram": "Clouds:\n* Mode: Granular\n* Freeze: ON (after capture)\n\n- Source (Phrase) -> Clouds (IN L) // capture then freeze\n- LFO (Ramp Down) >> Clouds (POSITION CV) // attenuverter max CCW\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
+    }
+  ]
+}

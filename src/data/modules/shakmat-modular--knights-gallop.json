@@ -1,0 +1,136 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://shakmat.com/doc/kg/KG-User_Manual.pdf",
+      "https://shakmat.com/products/knight-gallop/",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=154358",
+      "https://modulargrid.net/e/shakmat-modular-knight-s-gallop",
+      "https://www.thonk.co.uk/shop/knights-gallop/"
+    ]
+  },
+  "slug": "shakmat-modular--knights-gallop",
+  "name": "Knight's Gallop",
+  "manufacturer": "Shakmat Modular",
+  "hp": 8,
+  "tags": ["SEQUENCER", "TRIGGER", "GATE"],
+  "description": "Algo-rhythmic dual trigger generator. Five rhythmic tables (Euclidean, Divider, Anti-Euclidean, Split) multiplied by five Out 2 modes build practically infinite polyrhythms from a single clock.",
+  "controls": [
+    {
+      "name": "Length Potentiometer",
+      "scope": "Global",
+      "description": "Sets sequence length from 1 to 8 steps. Mode+Table together extend range to 9-16 steps.",
+      "detail": "1-8 default · 9-16 via Mode+Table · Length+ LED shows extended range · CV input additive"
+    },
+    {
+      "name": "Pulses Potentiometer",
+      "scope": "Global",
+      "description": "Number of hits in the sequence. Full CCW mutes outputs. Full CW distributes maximum hits. CV-addressable.",
+      "detail": "0 hits = mute · max CW = all steps active · Record mode: CW rolls triggers every step"
+    },
+    {
+      "name": "Mode Button",
+      "scope": "Out 2",
+      "description": "Cycles through five modes controlling how Out 2 derives from Out 1: Main, Compute, Random, Dual, Record.",
+      "detail": "MN · CP · RD · DL · RC · sub-modes via Mode+/- buttons"
+    },
+    {
+      "name": "Table Button",
+      "scope": "Out 1 / Out 2 source table",
+      "description": "Selects one of five rhythmic tables: Divider, Classic Euclidean, Revised Euclidean, Anti-Euclidean, Split Sequences.",
+      "detail": "Boots on Revised Euclidean · Mode+Table combo toggles 9-16 step range"
+    },
+    {
+      "name": "+/- Shift Buttons",
+      "scope": "Global",
+      "description": "Rotates the sequence one step forward or backward. Holds function as sub-mode navigation while Mode is held.",
+      "detail": "+ = forward 1 step · - = backward 1 step · also edit sub-modes · records patterns in RC mode"
+    }
+  ],
+  "inputs": [
+    { "name": "Clock", "description": "External clock advancing the sequence.", "voltage": "0-5V" },
+    { "name": "Length CV", "description": "CV offset added to the Length pot value.", "voltage": "0-5V" },
+    { "name": "Pulses CV", "description": "CV offset added to the Pulses pot value. In Record mode, controls roll density.", "voltage": "0-5V" },
+    { "name": "Reset", "description": "Restarts both outputs to step 1.", "voltage": "0-5V" }
+  ],
+  "outputs": [
+    { "name": "Out 1", "description": "Primary trigger output of the selected table/length/pulses/shift combination.", "voltage": "0-5V" },
+    { "name": "Out 2", "description": "Secondary trigger output algorithmically derived from Out 1 per the selected mode and sub-mode.", "voltage": "0-5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Main Mode (MN)",
+      "trigger": "Mode LED = MN",
+      "description": "Utility sub-modes on Out 2: Reset (pulse every first step), No Shift (same as Out 1 but immune to Shift), Invert (inverse of Out 1), Backward (Out 1 pattern reversed)."
+    },
+    {
+      "name": "Compute Mode (CP)",
+      "trigger": "Mode LED = CP",
+      "description": "Out 2 plays a related sequence derived mathematically from Out 1: L & P/2, L/2 & P/2, 2L/3 & 2P/3, L-P & P/2. Final sub-mode auto-resets Out 2 from Out 1."
+    },
+    {
+      "name": "Random Mode (RD)",
+      "trigger": "Mode LED = RD",
+      "description": "Adds randomness to Out 2. Sub-modes: No Random, Soft Fill (low-probability read of L/2+P/2 pattern), Hard Fill (higher probability), Full Random (per-step probability scaled by Pulses)."
+    },
+    {
+      "name": "Dual Mode (DL)",
+      "trigger": "Mode LED = DL",
+      "description": "Out 1 and Out 2 carry independent settings. Pots must cross their stored value before taking effect (Length+ LED flashes). CV inputs disabled in this mode."
+    },
+    {
+      "name": "Record Mode (RC)",
+      "trigger": "Mode LED = RC",
+      "description": "Record sequences via +/- buttons (- to Out 1, + to Out 2), quantized to incoming clock. Sub-modes: Record and Play. Pulses CW causes outputs to roll (trigger every step)."
+    },
+    {
+      "name": "Extended Length Range",
+      "trigger": "Mode + Table held",
+      "description": "Toggles Length range between 1-8 (default) and 9-16 steps. Length+ LED lit confirms 9-16 range."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic Euclidean drum pair",
+      "patch": "Revised Euclidean table · L=16 P=5 on Out 1 → kick · Main mode / Invert sub-mode on Out 2 → hats fill the gaps",
+      "diagram": "KNIGHT'S GALLOP:\n* Table: Revised Euclidean · Mode: MN/Invert · L=16 P=5\n- Clock (Out) c> Knight's Gallop (Clock)\n- Knight's Gallop (Out 1) t> Kick (Trig)\n- Knight's Gallop (Out 2) t> Hat (Trig) // inverse of Out 1"
+    },
+    {
+      "name": "Compute polyrhythm pair",
+      "patch": "CP mode / L & P/2 sub-mode · Out 1 kick busy, Out 2 snare with half the hits over same length · shared clock keeps them phase-locked",
+      "diagram": "KNIGHT'S GALLOP:\n* Mode: CP · sub: L & P/2 · L=12 P=6\n- Clock (Out) c> Knight's Gallop (Clock)\n- Knight's Gallop (Out 1) t> Kick (Trig) // 6 hits / 12 steps\n- Knight's Gallop (Out 2) t> Snare (Trig) // 3 hits / 12 steps"
+    },
+    {
+      "name": "Anti-Euclidean tom fills",
+      "patch": "Anti-Euclidean table packs hits at sequence extremes · Pulses CV from envelope peaks injects unpredictable fill density · Reset CV from bar-length divider keeps phrases aligned",
+      "diagram": "KNIGHT'S GALLOP:\n* Table: Anti-Euclidean\n- Clock (Out) c> Knight's Gallop (Clock)\n- Bar Clock (Out) t> Knight's Gallop (Reset)\n- Envelope (Out) >> Knight's Gallop (Pulses CV) // density swells\n- Knight's Gallop (Out 1) t> Tom (Trig)\n- Knight's Gallop (Out 2) t> Rim (Trig)"
+    },
+    {
+      "name": "Live shift groove morph",
+      "patch": "Steady 16-step Revised Euclidean pattern · +/- Shift buttons rotate the pattern live · Out 2 in MN/No Shift holds a reference downbeat · creates call-and-response between steady and shifting drum",
+      "diagram": "KNIGHT'S GALLOP:\n* Mode: MN/No Shift · L=16 P=6\n- Clock (Out) c> Knight's Gallop (Clock)\n- Knight's Gallop (Out 1) t> Shifting Drum (Trig) // rotates with +/-\n- Knight's Gallop (Out 2) t> Steady Drum (Trig) // anchor"
+    },
+    {
+      "name": "Dual independent patterns",
+      "patch": "DL mode lets Out 1 and Out 2 run completely different tables/lengths/pulses · sub-mode 1 sets Out 2 (busy Euclidean) · sub-mode 2 sets Out 1 (sparse divider) · one module, two sequencers",
+      "diagram": "KNIGHT'S GALLOP:\n* Mode: DL · Out1=Divider L=8 P=2 · Out2=Eucl L=13 P=7\n- Clock (Out) c> Knight's Gallop (Clock)\n- Knight's Gallop (Out 1) t> Bass Drum (Trig)\n- Knight's Gallop (Out 2) t> Hat (Trig)"
+    },
+    {
+      "name": "Generative fills with Random",
+      "patch": "RD mode / Hard Fill sub-mode · Out 1 plays strict Euclidean kick · Out 2 probabilistically sprinkles L/2+P/2 variant for organic fill accents · Pulses CV automates fill intensity",
+      "diagram": "KNIGHT'S GALLOP:\n* Mode: RD/Hard Fill · L=16 P=4\n- Clock (Out) c> Knight's Gallop (Clock)\n- Slow LFO (Out) >> Knight's Gallop (Pulses CV)\n- Knight's Gallop (Out 1) t> Kick (Trig)\n- Knight's Gallop (Out 2) t> Snare (Trig) // random fills"
+    },
+    {
+      "name": "CV-recorded loop with roll",
+      "patch": "RC mode · tap rhythm into +/- buttons to capture an 8-step groove · during playback, Pulses CV from joystick or touch plate causes snare rolls (Pulses max = trigger every step)",
+      "diagram": "KNIGHT'S GALLOP:\n* Mode: RC/Play\n- Clock (Out) c> Knight's Gallop (Clock)\n- Touch Plate (CV) >> Knight's Gallop (Pulses CV) // rolls at max\n- Knight's Gallop (Out 1) t> Kick (Trig)\n- Knight's Gallop (Out 2) t> Snare (Trig)"
+    },
+    {
+      "name": "Long bars via extended length",
+      "patch": "Mode+Table toggles 9-16 step range · L=16 P=5 Revised Euclidean makes a 16-step phrase · Length CV sweeps to 9 for mid-phrase variation · Reset locked to bar",
+      "diagram": "KNIGHT'S GALLOP:\n* Extended range · L=9-16 P=5\n- Clock (Out) c> Knight's Gallop (Clock)\n- Bar Clock (Out) t> Knight's Gallop (Reset)\n- Slow LFO (Out) >> Knight's Gallop (Length CV) // L sweeps 9-16\n- Knight's Gallop (Out 1) t> Kick (Trig)\n- Knight's Gallop (Out 2) t> Hat (Trig)"
+    }
+  ]
+}

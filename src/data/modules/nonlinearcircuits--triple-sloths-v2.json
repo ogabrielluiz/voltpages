@@ -1,0 +1,124 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.nonlinearcircuits.com/modules/p/triple-sloth",
+      "https://www.nonlinearcircuits.com/modules"
+    ]
+  },
+  "slug": "nonlinearcircuits--triple-sloths-v2",
+  "name": "Triple Sloths v2",
+  "manufacturer": "Nonlinearcircuits",
+  "hp": 8,
+  "tags": ["RANDOM", "LFO", "UTILITY"],
+  "description": "Three-channel chaos source with Torpor, Apathy and Inertia sections, CV-influenced slow motion, and a bottom-row difference rectifier.",
+  "controls": [
+    {
+      "name": "Torpor",
+      "scope": "Torpor section",
+      "description": "Biases the Torpor chaos circuit toward one attractor or the other.",
+      "detail": "weight control"
+    },
+    {
+      "name": "Apathy",
+      "scope": "Apathy section",
+      "description": "Biases the Apathy chaos circuit toward one attractor or the other.",
+      "detail": "weight control"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Torpor CV",
+      "description": "CV input for the Torpor chaos circuit.",
+      "voltage": "modulation level"
+    },
+    {
+      "name": "Apathy CV",
+      "description": "CV input for the Apathy chaos circuit.",
+      "voltage": "modulation level"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Torpor X/Y/Z",
+      "description": "Three related Torpor outputs; Z is the inverted version of Y."
+    },
+    {
+      "name": "Apathy X/Y/Z",
+      "description": "Three related Apathy outputs; Z is the inverted version of Y."
+    },
+    {
+      "name": "Inertia X/Y/Z",
+      "description": "Three related Inertia outputs; the section has no control and moves at the slowest rate."
+    },
+    {
+      "name": "+",
+      "description": "Positive difference rectifier output formed from the three Z outputs."
+    },
+    {
+      "name": "-",
+      "description": "Negative difference rectifier output formed from the three Z outputs."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Three time scales",
+      "trigger": "observe the three sloth sections",
+      "description": "Torpor moves in tens of seconds, Apathy in about a minute, and Inertia on the scale of many minutes."
+    },
+    {
+      "name": "Weight not frequency",
+      "trigger": "turn the Apathy or Torpor pots",
+      "description": "The pots bias the output toward one attractor or the other rather than acting as simple speed controls."
+    },
+    {
+      "name": "CV injection",
+      "trigger": "patch into Apathy CV or Torpor CV",
+      "description": "External CV is injected into the chaos circuits and can produce periodic windows or sudden voltage jumps."
+    },
+    {
+      "name": "No Inertia control",
+      "trigger": "leave Inertia untouched",
+      "description": "The Inertia section has no front-panel control and simply continues its own chaotic drift."
+    },
+    {
+      "name": "Z is inverted Y",
+      "trigger": "compare any section's Y and Z outputs",
+      "description": "Each Z output is the inverted version of Y, so the section can provide complementary modulation without extra inversion."
+    },
+    {
+      "name": "Difference rectifier",
+      "trigger": "use the + and - outputs",
+      "description": "The bottom outputs combine the three Z outputs into rectified positive and negative signals."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Slow mod bank",
+      "patch": "Torpor X to filter cutoff · Apathy Y to VCA CV · Inertia Z to oscillator FM · three different rates keep one voice moving without needing three separate LFO modules.",
+      "diagram": "Triple Sloths v2:\n* Torpor: mid\n* Apathy: noon\n\nFilter:\nVCA:\nVCO:\nOutput:\n\n- Triple Sloths v2 (Torpor X) >> Filter (Cutoff)\n- Triple Sloths v2 (Apathy Y) >> VCA (CV)\n- Triple Sloths v2 (Inertia Z) >> VCO (FM)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Quantized drift",
+      "patch": "Apathy X to quantizer input · quantizer out to oscillator V/Oct · Torpor Z to filter cutoff · slow chaos stays melodic while the filter breathes independently.",
+      "diagram": "Triple Sloths v2:\n* Torpor: low\n* Apathy: high\n\nQuantizer:\nVCO:\nFilter:\nOutput:\n\n- Triple Sloths v2 (Apathy X) >> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Triple Sloths v2 (Torpor Z) >> Filter (Cutoff)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Rectified accent source",
+      "patch": "use the + output as a positive accent CV and the - output as a complementary decay CV · one chaos module becomes a two-sided dynamics controller for drums or plucks.",
+      "diagram": "Triple Sloths v2:\n* Apathy: noon\n* Torpor: noon\n\nEnvelope:\nVCA:\nDrum:\nOutput:\n\n- Triple Sloths v2 (+) >> Envelope (Decay)\n- Triple Sloths v2 (-) >> VCA (CV)\n- Drum (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Stereo drift",
+      "patch": "Torpor X and Apathy Z to left/right filter cutoffs · both sides move at different rates · the rectifier outputs add a slow, asymmetric stereo push.",
+      "diagram": "Triple Sloths v2:\n* Torpor: low\n* Apathy: low\n\nFilter:\nOutput:\n\n- Triple Sloths v2 (Torpor X) >> Filter (Cutoff L)\n- Triple Sloths v2 (Apathy Z) >> Filter (Cutoff R)\n- Filter (Out L) -> Output (L)\n- Filter (Out R) -> Output (R)"
+    },
+    {
+      "name": "Self-modulating chaos",
+      "patch": "external LFOs into Apathy CV and Torpor CV · the circuit sometimes locks into periodic windows, then falls back into wandering motion · useful when the patch needs a slow but not static movement source.",
+      "diagram": "Triple Sloths v2:\n* Torpor: mid\n* Apathy: mid\n\nLFO:\nOutput:\n\n- LFO (Out) >> Triple Sloths v2 (Apathy CV)\n- LFO (Out) >> Triple Sloths v2 (Torpor CV)\n- Triple Sloths v2 (Inertia Y) >> Output (In)"
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "2.0",
+    "sources": [
+      "https://cdn.inmusicbrands.com/Moog/Mother32/Mother_32_Users_Manual.pdf",
+      "https://api.moogmusic.com/sites/default/files/2020-05/Mother-32_Firmware_Update_V2.0.pdf",
+      "https://api.moogmusic.com/sites/default/files/2018-04/Syncing_DFAM_With_Mother_32.pdf",
+      "https://www.moogmusic.com/products/mother-32",
+      "https://api.moogmusic.com/sites/default/files/2020-06/Subharmonicon-Mother32-Exploration-Patchbook.pdf"
+    ]
+  },
+  "slug": "moog-music--mother-32",
+  "name": "Mother-32",
+  "manufacturer": "Moog Music",
+  "hp": 60,
+  "tags": ["VCO", "OSCILLATOR", "VCF", "FILTER", "SEQUENCER", "MIDI"],
+  "description": "Semi-modular analog mono synth voice. VCO with saw/pulse, 24dB Moog ladder filter switchable LP/HP, EG, VCA, LFO, 32-step sequencer, VC mixer and 32-point patchbay in 60HP.",
+  "controls": [
+    { "name": "FREQUENCY", "scope": "VCO", "description": "Coarse tune of the VCO around its center position.", "detail": "±1 octave (analog · slightly wider at extremes)" },
+    { "name": "VCO WAVE", "scope": "VCO", "description": "Switch selects which VCO waveform is routed to the panel MIX knob.", "detail": "PULSE · SAW · both available simultaneously at VCO SAW / VCO PULSE jacks" },
+    { "name": "PULSE WIDTH", "scope": "VCO", "description": "Duty cycle of the pulse wave. Noon = square.", "detail": "~2% (CCW) to ~98% (CW) · 50% at noon" },
+    { "name": "GLIDE", "scope": "VCO", "description": "Portamento time between keyboard, sequencer or MIDI notes.", "detail": "Applies to KB CV · responds to CC 5 / CC 65" },
+    { "name": "VCO MOD SOURCE", "scope": "VCO Modulation", "description": "Selects modulation source routed to VCO MOD AMOUNT.", "detail": "UP: EG or external VCO MOD jack · DOWN: LFO" },
+    { "name": "VCO MOD AMOUNT", "scope": "VCO Modulation", "description": "Depth of modulation applied to selected VCO destination.", "detail": "Acts as attenuator for VCO MOD jack when patched" },
+    { "name": "VCO MOD DEST", "scope": "VCO Modulation", "description": "Routes modulation to pulse width or oscillator frequency.", "detail": "UP: PULSE WIDTH · DOWN: FREQUENCY" },
+    { "name": "MIX", "scope": "Mixer", "description": "Blends VCO waveform (CCW) with NOISE or external audio (CW).", "detail": "CCW: VCO · CW: NOISE/EXT · NOISE normalized to EXT AUDIO · VC via MIX CV" },
+    { "name": "CUTOFF", "scope": "VCF", "description": "Filter cutoff frequency for both LP and HP modes.", "detail": "20Hz – 20kHz" },
+    { "name": "RESONANCE", "scope": "VCF", "description": "Feedback amount. Self-oscillates past ~3 o'clock in LP mode.", "detail": "LP: resonant peak · HP: disables normal operation when raised" },
+    { "name": "VCF MODE", "scope": "VCF", "description": "Switches ladder filter topology.", "detail": "UP: HI PASS (24dB/oct, non-resonant) · DOWN: LOW PASS (24dB/oct, resonant)" },
+    { "name": "VCF MOD SOURCE", "scope": "VCF Modulation", "description": "Selects EG or LFO as filter modulation source.", "detail": "UP: EG · DOWN: LFO" },
+    { "name": "VCF MOD AMOUNT", "scope": "VCF Modulation", "description": "Depth of modulation applied to CUTOFF.", "detail": "Sums with CUTOFF knob and VCF CUTOFF jack" },
+    { "name": "VCF MOD POLARITY", "scope": "VCF Modulation", "description": "Inverts EG or LFO effect on cutoff.", "detail": "UP: + · DOWN: −" },
+    { "name": "LFO RATE", "scope": "LFO", "description": "Speed of the LFO. Reaches audio rate.", "detail": "~0.1Hz – 350Hz panel · up to ~600Hz with CV" },
+    { "name": "LFO WAVE", "scope": "LFO", "description": "Shape routed to VCO MOD SOURCE and VCF MOD SOURCE switches.", "detail": "UP: SQUARE · DOWN: TRIANGLE · both available at LFO TRI / LFO SQ jacks" },
+    { "name": "ATTACK", "scope": "EG", "description": "Ramp-up time of the envelope generator.", "detail": "Triggered by GATE / sequencer / MIDI Note On" },
+    { "name": "DECAY", "scope": "EG", "description": "Ramp-down time after attack or gate-off.", "detail": "Fast: pluck · slow: swell" },
+    { "name": "SUSTAIN", "scope": "EG", "description": "Two-position sustain switch (no level knob).", "detail": "ON: AHR behavior · OFF: AD behavior (retriggers every note)" },
+    { "name": "VCA MODE", "scope": "VCA", "description": "Selects VCA control source.", "detail": "ON: drone · EG: envelope-controlled" },
+    { "name": "VOLUME", "scope": "Output", "description": "Master attenuator for AUDIO OUT (rear) and VCA patch jack.", "detail": "Affects headphone output and VCA out simultaneously" },
+    { "name": "TEMPO / GATE LENGTH", "scope": "Sequencer", "description": "Dual-purpose: sets sequencer tempo when running · sets per-step gate length while editing.", "detail": "20–300 BPM internal · SHIFT + knob = Swing Amount · gate 1/8 to 8/8 (tie) per step" },
+    { "name": "VC MIX", "scope": "VC Mixer", "description": "Patchable DC-coupled CV/audio mixer. Blends MIX 1 (CCW) and MIX 2 (CW).", "detail": "MIX 1 normalized to 0V · MIX 2 normalized to +5V · useful as attenuator, VCA or fixed-voltage source" },
+    { "name": "HOLD / REST", "scope": "Sequencer", "description": "Repeats current step while held (playback) · toggles rest (editing).", "detail": "Live-Mute via SHIFT + REST" },
+    { "name": "RESET / ACCENT", "scope": "Sequencer", "description": "Returns pattern to step 1 (playback) · toggles accent on selected step (editing).", "detail": "Accent boosts VCF cutoff and VCA level internally" },
+    { "name": "PATTERN (BANK)", "scope": "Sequencer", "description": "Pattern select. With SHIFT selects bank.", "detail": "8 banks × 8 patterns = 64 locations" },
+    { "name": "RUN/STOP (REC)", "scope": "Sequencer", "description": "Starts/stops sequencer. SHIFT + REC arms record in KB mode.", "detail": "SHIFT + hold >1s: initiates save" },
+    { "name": "(SHIFT)", "scope": "Sequencer", "description": "Modifier for secondary functions across the panel.", "detail": "Live Accent / Live Mute / Live Ratchet / page & mode selection" },
+    { "name": "(KB) / (STEP) arrows", "scope": "Sequencer", "description": "Octave select in KB mode · step rotate in Step mode.", "detail": "SHIFT + KB: KB mode · SHIFT + STEP: Step mode · hold during TEMPO/GLIDE turn for clock-division / swing-interval" },
+    { "name": "1-8 / 9-16 / 17-24 / 25-32", "scope": "Sequencer", "description": "Pattern page selectors (up to 32 steps).", "detail": "SHIFT + SET END: defines end step" },
+    { "name": "Step 1-8 buttons", "scope": "Sequencer", "description": "Step on/off in Step mode · keyboard notes + step select in KB mode.", "detail": "13-note keyboard spans C–C across pages" }
+  ],
+  "inputs": [
+    { "name": "EXT. AUDIO", "description": "External audio into the mixer. Replaces noise when patched.", "voltage": "10V p-p Eurorack level", "normalizedTo": "internal noise source" },
+    { "name": "MIX CV", "description": "Crossfade control between VCO and NOISE/EXT.", "voltage": "−5V to +5V" },
+    { "name": "VCA CV", "description": "Direct CV into output VCA. Sums with EG/ON switch.", "voltage": "0 to +8V (EG mode) · ±5V (ON mode)" },
+    { "name": "VCF CUTOFF", "description": "CV sums with CUTOFF knob and VCF MOD AMOUNT.", "voltage": "−5V to +5V sweeps 20Hz–20kHz" },
+    { "name": "VCF RES.", "description": "CV sums with RESONANCE knob.", "voltage": "−5V to +5V" },
+    { "name": "VCO 1V/OCT", "description": "Exponential pitch input. Sums with KB CV and FREQUENCY knob.", "voltage": "−5V to +5V spans ~10 octaves" },
+    { "name": "VCO LIN FM", "description": "Linear FM input for harmonically rich audio-rate modulation.", "voltage": "−5V to +5V" },
+    { "name": "VCO MOD", "description": "External modulation source replacing EG on VCO MOD SOURCE UP position.", "voltage": "Eurorack CV", "normalizedTo": "EG when unpatched" },
+    { "name": "LFO RATE", "description": "CV input for LFO rate. Extends LFO to audio rates.", "voltage": "−5V to +5V · sweeps ~0.18Hz–190Hz · max ~600Hz" },
+    { "name": "MIX 1", "description": "Input A of VC Mixer. DC-coupled.", "voltage": "−5V to +5V", "normalizedTo": "0V" },
+    { "name": "MIX 2", "description": "Input B of VC Mixer. DC-coupled.", "voltage": "−5V to +5V", "normalizedTo": "+5V" },
+    { "name": "VC MIX CTRL", "description": "CV for crossfade between MIX 1 and MIX 2.", "voltage": "−5V to +5V" },
+    { "name": "MULT", "description": "Input to buffered 1-in / 2-out signal splitter.", "voltage": "Eurorack level · CV-splitter only (do not sum)" },
+    { "name": "GATE", "description": "External gate triggers EG and sets VCA.", "voltage": "0 to +5V · tolerates +10V" },
+    { "name": "TEMPO", "description": "Configurable: CV tempo, single-clock advance (default), analog clock (PPQN), or step-address CV.", "voltage": "−5V to +5V (Setup-selectable to 0–5V) · ≥3.2V threshold" },
+    { "name": "RUN/STOP", "description": "Gate-on runs sequencer, gate-off stops it.", "voltage": "0 to +5V (+15V tolerant) · ≥3.2V trigger" },
+    { "name": "RESET", "description": "Gate returns pattern to step 1 and holds there while high.", "voltage": "0 to +5V (+15V tolerant)" },
+    { "name": "HOLD", "description": "Gate pauses advance, repeating current step.", "voltage": "0 to +5V (+15V tolerant)" }
+  ],
+  "outputs": [
+    { "name": "VCA", "description": "Post-VCA audio output. Responds to VOLUME knob.", "voltage": "±5V typical" },
+    { "name": "NOISE", "description": "White noise source. Normalized to MIX CW position.", "voltage": "±5V typical" },
+    { "name": "VCF", "description": "Pre-VCA filter output.", "voltage": "±5V max" },
+    { "name": "VCO SAW", "description": "Sawtooth waveform direct from VCO, independent of VCO WAVE switch.", "voltage": "±5V" },
+    { "name": "VCO PULSE", "description": "Pulse waveform direct from VCO, independent of VCO WAVE switch.", "voltage": "±5V" },
+    { "name": "LFO TRI", "description": "Triangle LFO output, always available regardless of LFO WAVE switch.", "voltage": "±5V" },
+    { "name": "LFO SQ", "description": "Square LFO output, always available regardless of LFO WAVE switch.", "voltage": "±5V" },
+    { "name": "VC MIX", "description": "Output of voltage-controlled mixer.", "voltage": "±5V" },
+    { "name": "MULT 1 / MULT 2", "description": "Buffered copies of MULT input.", "voltage": "Same as input" },
+    { "name": "ASSIGN", "description": "Configurable output. Default is sequencer clock.", "voltage": "0–5V (clock/trig) · ±5V (CV modes)" },
+    { "name": "EG", "description": "Envelope generator output.", "voltage": "0 to +7.5V" },
+    { "name": "KB", "description": "1V/oct pitch CV from keyboard, sequencer or MIDI. Includes pitch-bend.", "voltage": "−5V to +5V" },
+    { "name": "GATE", "description": "Gate signal from keyboard, sequencer or MIDI Note On.", "voltage": "+5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Semi-modular normalization",
+      "trigger": "no patching",
+      "description": "Internal signal flow plays a complete voice with no cables: VCO → MIX → VCF → VCA → AUDIO OUT, with EG on VCF and VCA, and the sequencer driving KB CV / GATE internally. Patching any input overrides its normalization."
+    },
+    {
+      "name": "Assignable output",
+      "trigger": "Setup page 1",
+      "description": "ASSIGN jack re-routes to one of 16 sources: Accent, Clock, Clock/2, Clock/4, Step Ramp/Saw/Triangle/Random, Step 1 trigger, MIDI Velocity, Channel Pressure, Pitch Bend, CC 1/2/4/7. Clock is the default and is the recommended signal for syncing a DFAM."
+    },
+    {
+      "name": "TEMPO input modes",
+      "trigger": "Setup page 3",
+      "description": "TEMPO jack has four modes: Tempo CV, Single-Clock-Advance (default — one pulse per step), Analog Clock at programmable PPQN, and Step-Address CV (dividing the CV range into slices that select individual steps directly). Step-Address turns the jack into a wavetable-style step scanner."
+    },
+    {
+      "name": "Per-step articulation",
+      "trigger": "step editing",
+      "description": "Each sequencer step stores note, Gate Length (1/8–8/8, max = tie to next step), Glide on/off, Ratchet count (1–4 subdivisions), Accent and Rest independently. SUSTAIN must be ON for gate-length variation to be audible."
+    },
+    {
+      "name": "Swing interval decoupling",
+      "trigger": "SHIFT + TEMPO (swing %) / SHIFT + GLIDE (swing interval)",
+      "description": "Unlike most analog sequencers, swing interval is set independently of step rate (8 dotted / 8 triplet / 8 straight divisions). Allows eighth-note steps to be swung on a triplet grid, producing polyrhythmic feels. Swing amount and interval are stored per pattern."
+    },
+    {
+      "name": "Live performance overrides",
+      "trigger": "SHIFT + RESET / HOLD / GLIDE / KB or STEP arrows",
+      "description": "SHIFT + ACCENT = Live Accent on every step · SHIFT + REST = Live Mute · SHIFT + GLIDE = Live Ratchet (1–4) · arrow buttons + keyboard = Live Transpose by octave + note. None of these overrides are stored — they vanish when buttons release."
+    },
+    {
+      "name": "Accent signal routing",
+      "trigger": "Accent stored on step or Live Accent active",
+      "description": "Internal accent hard-wired to boost both VCF cutoff and VCA level at fixed amount. Setup page 8 option 4 disables internal accent when ASSIGN is set to Accent — use this to re-route accent to external destinations via the ASSIGN jack."
+    },
+    {
+      "name": "VCO self-oscillation trick",
+      "trigger": "LP mode · RES / MIX max · KB → VCF CUTOFF · dead cable in EXT. AUDIO",
+      "description": "With MIX and RESONANCE at max in LP mode, the ladder filter becomes a clean sine oscillator. Patching KB into VCF CUTOFF tracks it 1V/oct. Plugging an unconnected cable into EXT. AUDIO breaks noise normalization, giving the pure sine. Adds a second voice to the module."
+    },
+    {
+      "name": "HP resonance workaround",
+      "trigger": "HP mode · VCF out → EXT. AUDIO",
+      "description": "HP mode has no resonance because RESONANCE fails above zero. Patching VCF output back to EXT. AUDIO repurposes MIX as a feedback control for HP resonance, up to self-oscillation. Keep panel RESONANCE fully CCW."
+    },
+    {
+      "name": "MIDI to CV conversion",
+      "trigger": "MIDI IN (5-pin DIN)",
+      "description": "KB CV output follows MIDI Note On. MIDI Note 0 = −5V, 120 = +5V. Pitch bend (±1 octave default, up to ±12 semitones via RPN) adds to KB. Velocity ≥96 sets Accent on recorded steps. CC5 = portamento time, CC65 = portamento on/off, CC64 = sustain."
+    },
+    {
+      "name": "Clock priority",
+      "trigger": "multiple clock sources connected",
+      "description": "Internal clock is overridden by MIDI clock, which is overridden by an analog clock at the TEMPO input. Setup page 8 options 1–2 disable Follow MIDI Clock / Follow MIDI Start/Stop when preferred."
+    },
+    {
+      "name": "VC Mixer as utility",
+      "trigger": "patching into MIX 1 / MIX 2",
+      "description": "DC-coupled and fully independent from the synth voice. With nothing patched, VC MIX knob outputs 0 to +5V as a manual voltage source. Patching one input makes it an attenuator; patching both turns the VC MIX CTRL jack into a crossfader. Works for audio as well as CV."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Mother-32 + DFAM classic sync",
+      "patch": "Mother-32 melody locked to DFAM drums · Setup page 1 value 2 (Clock default) · ASSIGN at Mother = 16th-note clock · patch Mother ASSIGN → DFAM ADV/CLOCK · start DFAM then Mother · both advance in lockstep · experiment with Clock/2 or Clock/4 divisions for polyrhythms",
+      "diagram": "Mother-32:\n* Sequencer: running\n* ASSIGN: Clock (Setup p1 v2)\n\nDFAM:\n* RUN/STOP armed before Mother starts\n\n- Mother-32 (ASSIGN) c> DFAM (ADV/CLOCK)"
+    },
+    {
+      "name": "Cross-modulate DFAM with Mother pitch",
+      "patch": "Mother sequences melody · patch KB → DFAM VCO 1 CV for pitched drums that follow the bass line · DFAM VCO 2 can further FM with 1→2 FM AMT · creates tonal-percussion hybrid",
+      "diagram": "Mother-32:\n* Sequencer: melodic pattern\n\nDFAM:\n* SEQ PITCH MOD: OFF (VCO 1 tracks Mother)\n\n- Mother-32 (KB) p> DFAM (VCO 1 CV)\n- Mother-32 (ASSIGN) c> DFAM (ADV/CLOCK) // shared clock"
+    },
+    {
+      "name": "Filter as secondary oscillator",
+      "patch": "LP mode · MIX and RESONANCE full CW · patch cable into EXT. AUDIO with nothing at the other end (kills noise normalization) · patch KB → VCF CUTOFF for 1V/oct tracking · filter self-oscillates as pure sine · VCF OUT drives VCA · stacks as a sub-oscillator under the sawtooth voice",
+      "diagram": "Mother-32:\n* VCF MODE: LOW PASS\n* MIX: full CW\n* RESONANCE: full CW\n* Dead cable in EXT. AUDIO\n\n- Mother-32 (KB) p> Mother-32 (VCF CUTOFF) // sine tracks 1V/oct\n- Mother-32 (VCF) -> Mother-32 (EXT. AUDIO) // not required, see below"
+    },
+    {
+      "name": "HP resonance via feedback",
+      "patch": "HP mode · panel RESONANCE fully CCW · patch VCF → EXT. AUDIO · MIX knob now controls HP feedback/resonance · push to self-oscillation for whistle tones above the signal · recovers a feature the panel withholds",
+      "diagram": "Mother-32:\n* VCF MODE: HI PASS\n* RESONANCE: fully CCW\n* MIX: ~2 o'clock\n\n- Mother-32 (VCF) -> Mother-32 (EXT. AUDIO) // feedback enables HP resonance"
+    },
+    {
+      "name": "Step-address scanner",
+      "patch": "Setup page 3 value 4 (TEMPO = Step Address CV) · sequencer no longer clocked · patch slow LFO → TEMPO · voltage selects sequencer step directly · smoother LFOs smear through steps · ramp LFO plays sequence like a tape · wild with VCO MOD from the same LFO",
+      "diagram": "Mother-32:\n* Setup p3 v4: TEMPO = Step Address CV\n* Pattern: 8 stored pitches\n\n- LFO (Out) >> Mother-32 (TEMPO) // CV voltage selects step"
+    },
+    {
+      "name": "Ratcheting acid line",
+      "patch": "Program 8 steps · SHIFT + GLIDE on steps 3 and 7 to set ratchet = 4 · glide ON between steps · GLIDE knob ~9 o'clock · Decay short · VCF MOD SOURCE = EG · VCF MOD AMOUNT 3 o'clock · classic 303-style roll with slides and bursts",
+      "diagram": "Mother-32:\n* Pattern: 8 steps with ratchet=4 on steps 3 & 7\n* GLIDE: ~9 o'clock\n* SUSTAIN: ON\n* VCF MOD SRC: EG · AMT: 3 o'clock\n\n- Mother-32 (VCA) -> Output (In) // internal voice"
+    },
+    {
+      "name": "Ping-filter drum voice",
+      "patch": "VCA MODE: ON · VCF MOD SOURCE: EG · VCF MOD AMOUNT 3 o'clock · RESONANCE ~3 o'clock · short Decay · feed ASSIGN (Clock) → GATE · filter pings with every clock pulse · detune with CUTOFF for tom/kick flavors",
+      "diagram": "Mother-32:\n* VCA MODE: ON\n* VCF MOD SRC: EG · VCF MOD AMT: 3 o'clock\n* RESONANCE: ~3 o'clock · DECAY: short\n* ASSIGN: Clock\n\n- Mother-32 (ASSIGN) t> Mother-32 (GATE) // ping on every clock"
+    },
+    {
+      "name": "Random Krell with VC Mix",
+      "patch": "Patch NOISE → MIX 1 · KB → MIX 2 · EG → VC MIX CTRL · VC MIX OUT → VCO 1V/OCT · envelope crossfades between melodic sequence and noise-driven random pitch · sample-and-hold style evolution per note",
+      "diagram": "Mother-32:\n* Sequence running · SUSTAIN: OFF · short DECAY\n\n- Mother-32 (NOISE) >> Mother-32 (MIX 1)\n- Mother-32 (KB) >> Mother-32 (MIX 2)\n- Mother-32 (EG) >> Mother-32 (VC MIX CTRL)\n- Mother-32 (VC MIX) p> Mother-32 (VCO 1V/OCT)"
+    },
+    {
+      "name": "Audio-rate filter FM",
+      "patch": "VCO SAW → VCF CUTOFF (via VC MIX to attenuate) · RESONANCE 2 o'clock · VCF MODE LP · filter cutoff is FM'd at audio rate · metallic, inharmonic timbres that track pitch · stronger with LIN FM input",
+      "diagram": "Mother-32:\n* VCF MODE: LP · RESONANCE: 2 o'clock\n* VC MIX: ~10 o'clock\n\n- Mother-32 (VCO SAW) -> Mother-32 (MIX 1)\n- Mother-32 (VC MIX) >> Mother-32 (VCF CUTOFF) // audio-rate cutoff FM"
+    },
+    {
+      "name": "External VCO through Moog filter",
+      "patch": "Patch any external oscillator → EXT. AUDIO · MIX full CW · turn off VCO MOD · sequence still drives KB and GATE → patch KB to external oscillator 1V/oct · Mother becomes a filter/envelope/sequencer for any eurorack VCO",
+      "diagram": "Mother-32:\n* MIX: full CW\n\n- VCO (Out) -> Mother-32 (EXT. AUDIO)\n- Mother-32 (KB) p> VCO (V/Oct)\n- Mother-32 (GATE) g> VCO (Sync) // optional retrigger"
+    },
+    {
+      "name": "LFO doubles as second VCO",
+      "patch": "LFO at audio rate (CV from KB → LFO RATE) · LFO TRI → MIX 2 of VC Mixer · VCO → MIX 1 · VC MIX → EXT. AUDIO · two-oscillator mix tracked by keyboard · LFO now pitches along with VCO",
+      "diagram": "Mother-32:\n* LFO RATE: near max · LFO WAVE: TRIANGLE\n\n- Mother-32 (KB) p> Mother-32 (LFO RATE) // LFO tracks pitch\n- Mother-32 (VCO SAW) -> Mother-32 (MIX 1)\n- Mother-32 (LFO TRI) -> Mother-32 (MIX 2)\n- Mother-32 (VC MIX) -> Mother-32 (EXT. AUDIO)"
+    },
+    {
+      "name": "Swing triplets over 16ths",
+      "patch": "Set step clock division to 1/16 (SHIFT + KB + STEP + turn TEMPO) · set swing interval to eighth-note triplets (hold STEP, turn GLIDE) · SHIFT + TEMPO to ~66% swing · produces 16th-note pattern with triplet-grid feel — a shuffle not achievable on most analog sequencers",
+      "diagram": "Mother-32:\n* Clock division: 1/16 straight\n* Swing interval: 1/8 triplet\n* Swing amount: ~66%\n\n- Mother-32 (VCA) -> Output (In) // internal sequence"
+    }
+  ]
+}

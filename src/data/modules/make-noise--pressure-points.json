@@ -1,0 +1,144 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.makenoisemusic.com/modules/pressure-points/",
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/PressurePointsManual.pdf",
+      "https://modulargrid.net/e/make-noise-pressure-points"
+    ]
+  },
+  "slug": "make-noise--pressure-points",
+  "name": "Pressure Points",
+  "manufacturer": "Make Noise",
+  "hp": 20,
+  "tags": ["SEQUENCER", "GATE", "UTILITY"],
+  "description": "Four-stage touch-controlled voltage source. Each stage has three tuned voltages (X/Y/Z) and a pressure-sensitive copper touchplate that fires a gate and outputs pressure CV. Up to four units chain into an 8- or 16-stage controller.",
+  "controls": [
+    {
+      "name": "Tuned Voltage Row X",
+      "scope": "Per stage (4 knobs)",
+      "description": "Top row of knobs. Sets Tuned Voltage X for each stage. Range extends higher than the other two rows, useful as a settable gate source.",
+      "detail": "0 to +8V"
+    },
+    {
+      "name": "Tuned Voltage Row Y",
+      "scope": "Per stage (4 knobs)",
+      "description": "Middle row of knobs. Sets Tuned Voltage Y for each stage. Typical range for 1V/oct pitch when calibrated.",
+      "detail": "0 to +5.5V"
+    },
+    {
+      "name": "Tuned Voltage Row Z",
+      "scope": "Per stage (4 knobs)",
+      "description": "Bottom row of knobs. Sets Tuned Voltage Z for each stage.",
+      "detail": "0 to +5.5V"
+    },
+    {
+      "name": "Touch Plate 1–4",
+      "scope": "Per stage",
+      "description": "Copper finger-plates. Touching selects the Active Stage and generates gate plus pressure CV. Requires clean bare hands — the finger closes the circuit.",
+      "detail": "Resistive touch · dry/clean skin required"
+    },
+    {
+      "name": "Digit Trimmer",
+      "scope": "Global (internal)",
+      "description": "Internal trimmer pot for touchplate sensitivity. Accessed from the right side of the PCB with power off. More CW increases sensitivity for dry/small fingers or vertical installations.",
+      "detail": "Default: 40% CW · adjust with power OFF"
+    },
+    {
+      "name": "Close 4 Master / EXPAND jumpers",
+      "scope": "Global (rear)",
+      "description": "Rear headers configuring whether the unit is Master (rightmost in chain) or slave. Master has Close 4 Master closed; chained slaves leave them open. EXPAND headers also jumper for standalone use.",
+      "detail": "Master = closed · Chained slaves = open"
+    }
+  ],
+  "inputs": [],
+  "outputs": [
+    { "name": "Tuned Voltage Out X", "description": "Unified output carrying the X voltage of whichever stage is currently Active.", "voltage": "0 to +8V" },
+    { "name": "Tuned Voltage Out Y", "description": "Unified output carrying the Y voltage of whichever stage is currently Active.", "voltage": "0 to +5.5V" },
+    { "name": "Tuned Voltage Out Z", "description": "Unified output carrying the Z voltage of whichever stage is currently Active.", "voltage": "0 to +5.5V" },
+    { "name": "CH 1 Pressure Output", "description": "Pressure CV from stage 1. Amplitude proportional to finger contact area and force.", "voltage": "0 to ~5V" },
+    { "name": "CH 1 Gate Output", "description": "Gate output for stage 1 while touchplate 1 is held.", "voltage": "gate" },
+    { "name": "CH 2 Pressure Output", "description": "Pressure CV from stage 2.", "voltage": "0 to ~5V" },
+    { "name": "CH 2 Gate Output", "description": "Gate output for stage 2 while touchplate 2 is held.", "voltage": "gate" },
+    { "name": "CH 3 Pressure Output", "description": "Pressure CV from stage 3.", "voltage": "0 to ~5V" },
+    { "name": "CH 3 Gate Output", "description": "Gate output for stage 3 while touchplate 3 is held.", "voltage": "gate" },
+    { "name": "CH 4 Pressure Out / Combined Pressure", "description": "Pressure CV from stage 4. Normalized to the Combined Pressure BUS — when nothing else is patched into CH 4, this jack emits a mix of all four pressure signals.", "voltage": "0 to ~5V", "normalizedTo": "Combined Pressure BUS of all 4 stages" },
+    { "name": "CH 4 Gate Out / Combined Gate", "description": "Gate output for stage 4. Normalized to the Combined Gate BUS — when nothing is patched, this jack emits a gate whenever any stage is touched.", "voltage": "gate", "normalizedTo": "Combined Gate BUS of all 4 stages" }
+  ],
+  "behaviors": [
+    {
+      "name": "Active-stage selection",
+      "trigger": "touch any plate",
+      "description": "Touching a plate selects that stage. The X/Y/Z common outputs switch to display that stage's tuned voltages. Functions as an analog sequencer played by hand."
+    },
+    {
+      "name": "Pressure-sensitive CV",
+      "trigger": "variable finger pressure",
+      "description": "Pressure output amplitude scales with flesh-to-copper contact area. Light fingertip tap produces a low CV; flat-finger press with force produces maximum. Per-stage outs are independent; CH 4 pressure is also a mix bus."
+    },
+    {
+      "name": "Combined Gate BUS",
+      "trigger": "CH 4 Gate unpatched",
+      "description": "With nothing patched to CH 4 Gate, the jack carries a logical OR of all four stage gates. Stacking any gate output to a single gate input also sums gates."
+    },
+    {
+      "name": "Row X as gate source",
+      "trigger": "Row X knob full CW",
+      "description": "Top row voltage range reaches +8V — high enough to trigger most gate inputs. Setting a stage's X knob full CW and another full CCW turns the stage selection into a toggled gate at the X output."
+    },
+    {
+      "name": "Chaining with CHAIN cable",
+      "trigger": "10-pin CHAIN cable + jumper config",
+      "description": "Up to four Pressure Points units chain into 8- or 16-stage controllers via rear headers. Master unit keeps Close 4 Master jumpers closed; slaves open them. Gate and Pressure busses extend across the entire chain."
+    },
+    {
+      "name": "BRAINS expander",
+      "trigger": "Make Noise BRAINS attached",
+      "description": "BRAINS adds clock/reset/address CV inputs, turning the touchplates into a clockable 4- or 8-step sequencer. Maximum is two Pressure Points per BRAINS. Jumper on BRAINS selects 1PP or 2PP mode."
+    },
+    {
+      "name": "Digit Trimmer calibration",
+      "trigger": "dry skin / vertical install / weak response",
+      "description": "Touchplate sensitivity varies with skin moisture, finger size, and orientation. Adjust internal trimmer CW to compensate for dry fingers or vertical racks; CCW for greater pressure-CV resolution at the cost of fast sliding between plates."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Tactile 4-note keyboard",
+      "patch": "Row Y → VCO V/Oct · Common Gate → envelope Trig · envelope → VCA CV · tune Y knobs to four pitches · press plates to play notes",
+      "diagram": "PRESSURE POINTS:\n* Row Y: tune to 4 pitches\n\n- Pressure Points (Tuned Voltage Out Y) p> VCO (V/Oct)\n- Pressure Points (CH 4 Gate / Combined) g> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Preset patch-state recall",
+      "patch": "X/Y/Z rows become three CVs per preset · Common Pressure adds expressive layer per stage · pick a stage = recall three timbre/modulation values at once",
+      "diagram": "PRESSURE POINTS:\n* Row X: cutoff per preset\n* Row Y: resonance per preset\n* Row Z: FM index per preset\n\n- Pressure Points (Tuned Voltage Out X) >> Filter (Cutoff)\n- Pressure Points (Tuned Voltage Out Y) >> Filter (Resonance)\n- Pressure Points (Tuned Voltage Out Z) >> VCO (FM)\n- Pressure Points (CH 4 Pressure / Combined) >> VCA (CV) // expressive touch"
+    },
+    {
+      "name": "Toggle / latch switch",
+      "patch": "Two stages of one PP · stage A X knob full CW (+8V = ON) · stage B X knob full CCW (0V = OFF) · tap A to turn a destination on, tap B to turn off",
+      "diagram": "PRESSURE POINTS:\n* Stage 1 Row X: full CW (ON)\n* Stage 2 Row X: full CCW (OFF)\n\n- Pressure Points (Tuned Voltage Out X) >> Destination (Gate/Mute In) // latched state"
+    },
+    {
+      "name": "Pressure-modulated wavefolder",
+      "patch": "Common Pressure → DPO Fold attenuator full CW · Fold panel CCW · press harder to bloom harmonics from a clean sine",
+      "diagram": "PRESSURE POINTS:\n\n- DPO (Sine Out) -> Output (L)\n- Pressure Points (CH 4 Pressure / Combined) >> DPO (Fold CV)"
+    },
+    {
+      "name": "Morphagene splice picker",
+      "patch": "Common Gate → Morphagene Play · Row Y → Morphagene Organize · each stage selects a splice and fires playback with its own touch-triggered gate",
+      "diagram": "PRESSURE POINTS:\n* Row Y: tune to splice voltages\n\n- Pressure Points (CH 4 Gate / Combined) g> Morphagene (Play)\n- Pressure Points (Tuned Voltage Out Y) >> Morphagene (Organize CV)\n- Morphagene (Out L) -> Output (In)"
+    },
+    {
+      "name": "Bongo with damping",
+      "patch": "FM VCO → Optomix · Common Gate → Strike · stage 3 Gate → Damp via attenuator · touch 4 to strike, touch 3 to dampen",
+      "diagram": "PRESSURE POINTS:\n\n- VCO (Out) -> Optomix (In)\n- LFO (Sine) >> VCO (Linear FM) // 2-op FM\n- Pressure Points (CH 4 Gate / Combined) g> Optomix (Strike)\n- Pressure Points (CH 3 Gate Output) g> Optomix (Damp)\n- Optomix (Out) -> Output (In)"
+    },
+    {
+      "name": "Clocked 4-step sequencer (with BRAINS)",
+      "patch": "BRAINS attached · clock → BRAINS clock · reset → BRAINS reset · Row Y now acts as a 4-step pitch sequence, advanced by the clock",
+      "diagram": "PRESSURE POINTS:\n* BRAINS expander attached (1PP mode)\n* Row Y: step pitches\n\n- Clock (Out) c> BRAINS (Clock)\n- Pressure Points (Tuned Voltage Out Y) p> VCO (V/Oct)\n- Pressure Points (CH 4 Gate / Combined) g> Envelope (Trig)"
+    }
+  ]
+}

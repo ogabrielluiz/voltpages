@@ -1,0 +1,107 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://doepfer.de/a1802.htm",
+      "https://doepfer.de/a100_man/A180_man.pdf",
+      "https://www2.doepfer.eu/en/item/a180-2"
+    ]
+  },
+  "slug": "doepfer--a-180-2",
+  "name": "A-180-2",
+  "manufacturer": "Doepfer",
+  "hp": 2,
+  "tags": ["MULT", "UTILITY"],
+  "description": "Passive multiple. Eight interconnected jacks shipped from factory as two independent 4-way multiples (jacks 1–4 and 5–8). Closing an internal solder bridge joins all eight into a single 8-way mult. No active buffering.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "Jack 1",
+      "description": "Any of jacks 1–4 can act as input; the other three in the group carry the same signal.",
+      "voltage": "audio or any CV"
+    },
+    {
+      "name": "Jack 5",
+      "description": "Any of jacks 5–8 can act as input for the second group (factory default) or is joined to jacks 1–4 if the solder bridge is closed.",
+      "voltage": "audio or any CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Jack 2",
+      "description": "Passive copy of whichever jack in group 1 carries the source signal.",
+      "voltage": "follows source"
+    },
+    {
+      "name": "Jack 3",
+      "description": "Passive copy within group 1.",
+      "voltage": "follows source"
+    },
+    {
+      "name": "Jack 4",
+      "description": "Passive copy within group 1.",
+      "voltage": "follows source"
+    },
+    {
+      "name": "Jack 6",
+      "description": "Passive copy within group 2 (or extended group 1 if bridge closed).",
+      "voltage": "follows source"
+    },
+    {
+      "name": "Jack 7",
+      "description": "Passive copy within group 2 (or extended group 1 if bridge closed).",
+      "voltage": "follows source"
+    },
+    {
+      "name": "Jack 8",
+      "description": "Passive copy within group 2 (or extended group 1 if bridge closed).",
+      "voltage": "follows source"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Dual 1-to-3 (factory default)",
+      "trigger": "factory shipping state",
+      "description": "Solder bridge open: two isolated groups of four inter-connected jacks. Patch one source into any jack of a group, take three copies from the remaining three jacks of that group."
+    },
+    {
+      "name": "Single 1-to-7",
+      "trigger": "internal solder bridge closed",
+      "description": "Closing the PCB bridge joins both groups into a single bus of eight interconnected jacks — one source, up to seven copies."
+    },
+    {
+      "name": "Passive = no buffer",
+      "trigger": "distributing pitch CV to multiple VCOs",
+      "description": "Each additional VCO added to a passive mult loads the source and can drop pitch CV slightly. Doepfer explicitly recommends the buffered A-185-2 for 1V/oct distribution to avoid tuning drift. Safe for audio, gates, clocks, and non-critical CV."
+    },
+    {
+      "name": "Bidirectional summing caveat",
+      "trigger": "cables from multiple sources plugged into one group",
+      "description": "All jacks in a group are hard-wired together, so plugging two sources simultaneously ties those outputs together — not a mixer. The group then presents a short or contention depending on output impedances."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Clock distribution",
+      "patch": "Master clock → Jack 1 · Jack 2/3/4 → sequencer, drum, LFO sync",
+      "diagram": "A-180-2:\n- Master Clock (Clk) c> A-180-2 (Jack 1)\n- A-180-2 (Jack 2) c> Sequencer (Clk)\n- A-180-2 (Jack 3) c> Drum (Trig)\n- A-180-2 (Jack 4) c> LFO (Sync)"
+    },
+    {
+      "name": "Gate to many envelopes",
+      "patch": "Keyboard gate → Jack 1 · drives four ADSRs in parallel for stacked modulation",
+      "diagram": "A-180-2:\n- Keyboard (Gate) g> A-180-2 (Jack 1)\n- A-180-2 (Jack 2) g> ADSR 1 (Gate)\n- A-180-2 (Jack 3) g> ADSR 2 (Gate)\n- A-180-2 (Jack 4) g> ADSR 3 (Gate)"
+    },
+    {
+      "name": "Two independent splits",
+      "patch": "Gate in group 1 · audio in group 2 · two unrelated distributions in 2 HP",
+      "diagram": "A-180-2:\n- Gate Source (Gate) g> A-180-2 (Jack 1)\n- A-180-2 (Jack 2) g> ADSR (Gate)\n- A-180-2 (Jack 3) g> VCA (CV)\n- Audio (Audio) -> A-180-2 (Jack 5)\n- A-180-2 (Jack 6) -> Delay (In)\n- A-180-2 (Jack 7) -> Reverb (In)"
+    },
+    {
+      "name": "8-way mult (bridge closed)",
+      "patch": "One LFO fans out to seven destinations after user closes the solder bridge",
+      "diagram": "A-180-2:\n* solder bridge: closed (1-to-7 mode)\n- LFO (Out) >> A-180-2 (Jack 1)\n- A-180-2 (Jack 2) >> VCF (CV)\n- A-180-2 (Jack 3) >> VCA (CV)\n- A-180-2 (Jack 4) >> VCO (PWM)\n- A-180-2 (Jack 5) >> FX (CV)\n- A-180-2 (Jack 6) >> Reverb (CV)"
+    }
+  ]
+}

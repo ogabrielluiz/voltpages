@@ -1,0 +1,128 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/downloads/manuals/mixup_manual_2023.01.19.pdf",
+      "https://intellijel.com/shop/eurorack/mixup/"
+    ]
+  },
+  "slug": "intellijel--mixup",
+  "name": "Mixup",
+  "manufacturer": "Intellijel",
+  "hp": 6,
+  "tags": ["MIXER", "UTILITY"],
+  "description": "Chainable stereo utility mixer. Two mono mutable channels, one mutable stereo channel, one unity-gain auxiliary stereo input. Rear-panel 3-pin Link bus chains multiple Mixups or connects to Intellijel audio jack boards.",
+  "controls": [
+    {
+      "name": "LEVEL 1",
+      "scope": "Channel 1",
+      "description": "Attenuates mono IN 1 sent to both MIX L and MIX R.",
+      "detail": "Audio-grade logarithmic taper · AC-coupled"
+    },
+    {
+      "name": "LEVEL 2",
+      "scope": "Channel 2",
+      "description": "Attenuates mono IN 2 to both MIX L and MIX R.",
+      "detail": "Logarithmic taper"
+    },
+    {
+      "name": "LEVEL 3",
+      "scope": "Channel 3",
+      "description": "Shared attenuator for stereo inputs IN 3L and IN 3R.",
+      "detail": "Single knob controls both sides of the stereo pair"
+    },
+    {
+      "name": "MUTE 1",
+      "scope": "Channel 1",
+      "description": "Toggles IN 1 on/off. Down position removes it from the mix.",
+      "detail": "AC-coupled path suppresses clicks when toggling"
+    },
+    {
+      "name": "MUTE 2",
+      "scope": "Channel 2",
+      "description": "Toggles IN 2 on/off.",
+      "detail": "Down = muted"
+    },
+    {
+      "name": "MUTE 3",
+      "scope": "Channel 3",
+      "description": "Mutes both IN 3L and IN 3R simultaneously.",
+      "detail": "Single switch handles the stereo pair"
+    }
+  ],
+  "inputs": [
+    { "name": "IN 1", "description": "Mono audio input 1, routed to both L and R mix busses, level and mute controlled", "voltage": "audio (AC-coupled)" },
+    { "name": "IN 2", "description": "Mono audio input 2, routed to both L and R mix busses", "voltage": "audio (AC-coupled)" },
+    { "name": "IN 3L", "description": "Left side of stereo input 3; acts as mono-to-both if IN 3R is unpatched", "voltage": "audio", "normalizedTo": "mono-sums to MIX L and MIX R when IN 3R unpatched" },
+    { "name": "IN 3R", "description": "Right side of stereo input 3", "voltage": "audio" },
+    { "name": "IN 4L", "description": "Unity-gain auxiliary stereo left input — no level, no mute", "voltage": "audio", "normalizedTo": "mono-sums to MIX L and MIX R when IN 4R unpatched" },
+    { "name": "IN 4R", "description": "Unity-gain auxiliary stereo right input — no level, no mute", "voltage": "audio" },
+    { "name": "CHAIN-IN", "description": "Rear-panel 3-pin Link input — receives L/R mix bus from another Mixup, Stereo Mix 1U, or Intellijel audio jack board", "voltage": "audio bus" }
+  ],
+  "outputs": [
+    { "name": "MIX L", "description": "Summed left output: IN 1, IN 2, IN 3L, IN 4L plus any signal received via CHAIN-IN", "voltage": "audio (modular level)" },
+    { "name": "MIX R", "description": "Summed right output: IN 1, IN 2, IN 3R (or IN 3L if 3R unpatched), IN 4R (or IN 4L), plus CHAIN-IN", "voltage": "audio (modular level)" },
+    { "name": "CHAIN-OUT", "description": "Rear-panel 3-pin Link output — taps L/R mix bus for chaining into another Mixup or directly to Intellijel case audio jacks", "voltage": "audio bus" }
+  ],
+  "behaviors": [
+    {
+      "name": "Clip LED Warning",
+      "trigger": "summed mix level peaks",
+      "description": "Single LED between MIX L and MIX R lights when either bus clips. Chaining multiple Mixups makes overdrive more likely — drop LEVEL knobs when it lights."
+    },
+    {
+      "name": "Mono Normalization on Stereo Inputs",
+      "trigger": "IN 3R or IN 4R unpatched",
+      "description": "IN 3L and IN 4L each act as mono inputs summed to both L and R busses when their right partner is empty. Plug one cable for mono centre placement; add a second for true stereo."
+    },
+    {
+      "name": "Chainable via Rear Link",
+      "trigger": "CHAIN-OUT to another module's CHAIN-IN",
+      "description": "3-pin Link bus carries stereo mix to another Mixup, a Stereo Mix 1U, Outs module, v2 Headphones 1U, or directly to case audio jacks on Palette / 7U cases. Six jacks effectively grow to sixteen across two cascaded Mixups."
+    },
+    {
+      "name": "Unity-Gain Aux Input",
+      "trigger": "signal patched to IN 4L/R",
+      "description": "IN 4 has no level knob and no mute — a permanent always-on stereo return, ideal for a reverb/delay return or a DAW line that should never accidentally drop out."
+    },
+    {
+      "name": "Audio-Only AC Coupling",
+      "trigger": "always",
+      "description": "Unlike DC-coupled utility mixers, Mixup is AC-coupled and designed for audio. Do not use it to sum CV — offsets will be filtered out and muting will click less but CV won't pass cleanly."
+    },
+    {
+      "name": "Headphones 1U Jumper Removal",
+      "trigger": "chaining into Outs or v2 Headphones 1U",
+      "description": "When Link-chaining into an Intellijel Outs module or v2 Headphones 1U, the destination module's JP1 jumper must be removed — Mixup already handles the L/R normaling internally."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Basic 4-voice stereo submix",
+      "patch": "Drum bus mono into IN 1 · bass mono into IN 2 · synth stereo into IN 3L/3R · pad stereo into IN 4L/4R (always on) · MIX L/R to output · mute bass or drum drops with switches",
+      "diagram": "Mixup:\n* LEVEL 1-3 set · IN 4 unity\n\n- Drums (Out) -> Mixup (IN 1)\n- Bass (Out) -> Mixup (IN 2)\n- Synth L (Out) -> Mixup (IN 3L)\n- Synth R (Out) -> Mixup (IN 3R)\n- Pad L (Out) -> Mixup (IN 4L)\n- Pad R (Out) -> Mixup (IN 4R)\n- Mixup (MIX L) -> Output (L)\n- Mixup (MIX R) -> Output (R) // 4-voice stereo mix"
+    },
+    {
+      "name": "Chain two Mixups for 12+ inputs",
+      "patch": "First Mixup handles drums + synths · CHAIN-OUT of Mixup 1 into CHAIN-IN of Mixup 2 · Mixup 2 handles pads + FX returns · final MIX L/R on Mixup 2 sums everything · watch the clip LED on the downstream unit",
+      "diagram": "Mixup 1:\n* Drums + synths patched\nMixup 2:\n* Pads + FX returns patched\n\n- Mixup 1 (CHAIN-OUT) -> Mixup 2 (CHAIN-IN)\n- Mixup 2 (MIX L) -> Output (L)\n- Mixup 2 (MIX R) -> Output (R) // 12 inputs across two mixers"
+    },
+    {
+      "name": "FX return with mute pre-fader",
+      "patch": "Dry voice into IN 1 · send to external reverb · reverb return stereo to IN 3L/3R · MUTE 3 kills only the wet tail without affecting the dry voice on IN 1 · drop-out fills on performance mute",
+      "diagram": "Mixup:\n* LEVEL 1 noon · LEVEL 3 low\n\n- Voice (Out) -> Mixup (IN 1)\n- Voice (Out) -> Reverb (In)\n- Reverb (L) -> Mixup (IN 3L)\n- Reverb (R) -> Mixup (IN 3R)\n- Mixup (MIX L) -> Output (L)\n- Mixup (MIX R) -> Output (R) // mute wet only"
+    },
+    {
+      "name": "Direct to Palette case jacks",
+      "patch": "CHAIN-OUT on Mixup rear to the 3-pin Link connector on a Palette case · front-panel audio jacks on the case now output Mixup's MIX L/R at modular level · saves front-panel HP · pair with Stereo Out 1U if feeding consumer gear",
+      "diagram": "Mixup:\n* Internal routing to MIX bus\n\n- Sources (Out) -> Mixup (IN 1-4)\n- Mixup (CHAIN-OUT) -> Palette Case (Link) // direct to case jacks"
+    },
+    {
+      "name": "Always-on monitor input on IN 4",
+      "patch": "DAW line or phone into IN 4L/4R (unity gain, no mute) · modular voices on IN 1-3 with their own mutes · performer can mute all modular channels simultaneously and IN 4 keeps monitoring audio playing · useful for jam-along or click track",
+      "diagram": "Mixup:\n* IN 1-3 mutable · IN 4 unity always-on\n\n- Click Track (L) -> Mixup (IN 4L)\n- Click Track (R) -> Mixup (IN 4R)\n- Voice 1 (Out) -> Mixup (IN 1)\n- Voice 2 (Out) -> Mixup (IN 2)\n- Mixup (MIX L) -> Output (L)\n- Mixup (MIX R) -> Output (R) // click survives mutes"
+    }
+  ]
+}

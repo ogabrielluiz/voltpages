@@ -1,0 +1,158 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://nano-modules.com/ona/",
+      "https://nano-modules.com/wp-content/uploads/2021/10/ONA-Manual.pdf",
+      "https://modulargrid.net/e/nano-modules-ona",
+      "https://modwiggler.com/forum/viewtopic.php?t=234047",
+      "https://divkidvideo.com/videos/nano-modules-ona-eurorack-analogue-oscillator-with-classic-and-new-complex-waveforms/"
+    ]
+  },
+  "slug": "nano-modules--ona",
+  "name": "ONA",
+  "manufacturer": "NANO Modules",
+  "hp": 8,
+  "tags": ["OSCILLATOR", "VCO", "LFO"],
+  "description": "Analog voltage-controlled oscillator. CEM/AS 3340 triangle core with eight simultaneous outputs: sine, triangle, saw, pulse, two PWM-mixed complex waves, and two square sub-octaves.",
+  "controls": [
+    {
+      "name": "OCT",
+      "scope": "Global",
+      "description": "8-position rotary switch. Coarse tuning.",
+      "detail": "Positions 0–7 · each step adds one octave"
+    },
+    {
+      "name": "FINE",
+      "scope": "Global",
+      "description": "Fine-tune around the OCT setting. Active in both VCO and LFO modes.",
+      "detail": "±7 semitones · noon = 0"
+    },
+    {
+      "name": "FM Mode",
+      "scope": "Global",
+      "description": "Selects response curve of the FM input.",
+      "detail": "LIN (linear, through-zero-like use) · EXP (exponential, musical)"
+    },
+    {
+      "name": "Mode",
+      "scope": "Global",
+      "description": "Swaps core between audio and sub-audio ranges.",
+      "detail": "VCO: ~20Hz–40kHz+ · LFO: ~60s per cycle up to low audio"
+    },
+    {
+      "name": "FM",
+      "scope": "Global",
+      "description": "Attenuator for the FM input. No signal below unity CCW.",
+      "detail": "0 – full · input range ±5V"
+    },
+    {
+      "name": "PW",
+      "scope": "Global",
+      "description": "Sets pulse-width base. Acts as attenuator for PW input when a cable is patched.",
+      "detail": "CCW: 1% · 3 o'clock: 50% · CW: 100%"
+    }
+  ],
+  "inputs": [
+    { "name": "FM", "description": "Frequency modulation. Behaviour (linear vs exponential) set by FM Mode switch; depth set by FM knob.", "voltage": "±5V" },
+    { "name": "OCT", "description": "Primary 1V/oct pitch input. Sums with OCT switch and FINE knob.", "voltage": "1V/oct" },
+    { "name": "SYNC", "description": "Hard sync. Rising edge resets the triangle core; affects every output jack simultaneously.", "voltage": "±5V" },
+    { "name": "PW", "description": "Pulse-width CV. Modulates duty cycle of the Pulse output and the PWM pulse inside Complex 1 and Complex 2.", "voltage": "0V – +5V" }
+  ],
+  "outputs": [
+    { "name": "Sine", "description": "Smooth sine waveform. Lowest harmonic content.", "voltage": "±5V" },
+    { "name": "Triangle", "description": "Triangle waveform derived directly from the core.", "voltage": "±5V" },
+    { "name": "Saw", "description": "Rising sawtooth. Harmonically richest of the classic outputs.", "voltage": "±5V" },
+    { "name": "Pulse", "description": "Variable-width pulse. Duty cycle set by PW knob and PW input.", "voltage": "±5V" },
+    { "name": "Complex 1", "description": "Triangle mixed with the PWM pulse. Unique shifting timbre that responds to PW.", "voltage": "±5V" },
+    { "name": "Complex 2", "description": "Saw mixed with the PWM pulse. Buzzier sibling of Complex 1.", "voltage": "±5V" },
+    { "name": "Sub -1", "description": "Square waveform one octave below the main tuning.", "voltage": "±5V" },
+    { "name": "Sub -2", "description": "Square waveform two octaves below the main tuning.", "voltage": "±5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "VCO / LFO mode switch",
+      "trigger": "Mode switch position",
+      "description": "Flips the core between audio-rate VCO and sub-audio LFO ranges. LFO range reaches roughly one minute per cycle. All eight outputs remain active in LFO mode — useful for shaped phased modulation sources."
+    },
+    {
+      "name": "Linear vs exponential FM",
+      "trigger": "FM Mode switch",
+      "description": "EXP is the standard musical FM path (octaves per volt). LIN is DC-coupled around the core frequency; patch audio-rate for classic linear-FM bells and metallic tones, CV for vibrato that tracks depth rather than pitch."
+    },
+    {
+      "name": "PW knob as attenuator",
+      "trigger": "Cable patched into PW input",
+      "description": "Unpatched, PW knob sets a static duty cycle from 1% to 100%. Patching a cable into PW turns the knob into the CV attenuator, and the duty cycle is driven entirely by the 0–5V input."
+    },
+    {
+      "name": "PW affects Complex outs",
+      "trigger": "PW knob or CV movement",
+      "description": "The Complex 1 and Complex 2 outputs mix the core's triangle or saw with the PWM pulse, so PW modulation reshapes their timbre rather than just the Pulse output. Slow LFO into PW gives evolving harmonic sweeps on the Complex jacks."
+    },
+    {
+      "name": "Hard sync",
+      "trigger": "Rising edge at SYNC",
+      "description": "Resets the triangle core. Patch a second VCO's pitched output here and sweep ONA's tuning for classic sync-lead tones across all output jacks simultaneously."
+    },
+    {
+      "name": "Multiple voices from one module",
+      "trigger": "Patching two outputs to separate paths",
+      "description": "With eight simultaneous outputs from a single core, ONA can drive two or more parallel voices at the same pitch — e.g. Sine into a sub mixer and Saw into a filter voice, with Sub -1 reinforcing the fundamental."
+    },
+    {
+      "name": "Calibration trimmers",
+      "trigger": "Trimmers on rear PCB",
+      "description": "Three trimmers behind the panel: Scale (1V/oct tracking), Base Freq (C anchor with FINE at noon), and Oct Switch (linearity across the 8-position switch). Factory calibrated; re-tune after 5–10 minute warm-up if drift appears."
+    },
+    {
+      "name": "Skiff-friendly depth",
+      "trigger": "Mechanical install",
+      "description": "20mm depth with the ribbon attached fits shallow cases. Power connector keyed with the red stripe marked on the PCB — reversed ribbons damage the circuit."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Sub-reinforced bass",
+      "patch": "VCO mode · Saw into filter · Sub -1 mixed under the Saw · pitch CV from sequencer · layered sub octave fattens the low end without detuning voices.",
+      "diagram": "ONA:\n* Mode: VCO\n* OCT: 2\n* PW: noon\n\nMixer:\n\nFilter:\n\n- Sequencer (Pitch) p> ONA (OCT)\n- ONA (Saw) -> Filter (In)\n- ONA (Sub -1) -> Mixer (In 2)\n- Filter (Out) -> Mixer (In 1)"
+    },
+    {
+      "name": "Evolving complex pad",
+      "patch": "VCO mode · Complex 1 into low-pass filter · slow LFO into PW input · duty cycle modulation reshapes the triangle-plus-PWM mix for slow harmonic drift.",
+      "diagram": "ONA:\n* Mode: VCO\n* FM Mode: EXP\n* PW: noon\n\nLFO:\n\nFilter:\n\n- LFO (Out) >> ONA (PW)\n- ONA (Complex 1) -> Filter (In)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Linear FM bells",
+      "patch": "VCO mode · FM Mode LIN · second VCO's sine into FM input · FM knob near unity · carrier Sine out · inharmonic metallic FM tones that keep pitch stable.",
+      "diagram": "ONA:\n* Mode: VCO\n* FM Mode: LIN\n* FM: ~3 o'clock\n\nVCO 2:\n\nVCA:\n\n- VCO 2 (Sine) -> ONA (FM)\n- Sequencer (Pitch) p> ONA (OCT)\n- ONA (Sine) -> VCA (In)"
+    },
+    {
+      "name": "Sync lead",
+      "patch": "Two VCOs · master VCO's square into ONA SYNC · sweep ONA OCT/FINE or modulate ONA pitch with an envelope · Saw out for classic hard-sync formant sweep.",
+      "diagram": "ONA:\n* Mode: VCO\n* FM Mode: EXP\n\nVCO 2:\n\nEnvelope:\n\n- Sequencer (Pitch) p> VCO 2 (V/Oct)\n- VCO 2 (Square) -> ONA (SYNC)\n- Envelope (Out) >> ONA (FM)\n- ONA (Saw) -> Filter (In)"
+    },
+    {
+      "name": "LFO with phased outputs",
+      "patch": "LFO mode · use Sine as smooth LFO, Triangle for a slightly harder shape, Pulse for gate division, Sub -1 for half-rate gate — one slow core drives four modulation lines.",
+      "diagram": "ONA:\n* Mode: LFO\n* OCT: 0\n* PW: noon\n\nFilter:\n\nVCA:\n\nEnvelope:\n\nDrum:\n\n- ONA (Sine) >> Filter (Cutoff)\n- ONA (Triangle) >> VCA (CV)\n- ONA (Pulse) g> Envelope (Gate)\n- ONA (Sub -1) g> Drum (Trig)"
+    },
+    {
+      "name": "PWM stack",
+      "patch": "VCO mode · slow triangle LFO into PW · Complex 2 into filter · audio-rate shimmer as duty cycle sweeps reshape the saw+pulse mix — fatter than classic PWM square alone.",
+      "diagram": "ONA:\n* Mode: VCO\n* PW: ~3 o'clock\n\nLFO:\n* Shape: Triangle\n\nFilter:\n\nVCA:\n\nEnvelope:\n\n- LFO (Out) >> ONA (PW)\n- ONA (Complex 2) -> Filter (In)\n- Envelope (Out) >> VCA (CV)\n- Filter (Out) -> VCA (In)"
+    },
+    {
+      "name": "Dual-voice unison",
+      "patch": "VCO mode · Saw and Complex 1 into separate filters · one filter fast envelope, the other slow · stereo mix — a single oscillator spawning two timbrally distinct voices at identical pitch.",
+      "diagram": "ONA:\n* Mode: VCO\n* OCT: 3\n\nFilter L:\n\nFilter R:\n\n- Sequencer (Pitch) p> ONA (OCT)\n- ONA (Saw) -> Filter L (In)\n- ONA (Complex 1) -> Filter R (In)\n- Filter L (Out) -> Mixer (L)\n- Filter R (Out) -> Mixer (R)"
+    },
+    {
+      "name": "Audio-rate sync rhythms",
+      "patch": "LFO mode · clock into SYNC · sub and pulse outs drive drum triggers at synced sub-divisions · the resets produce polyrhythms that lock to clock.",
+      "diagram": "ONA:\n* Mode: LFO\n* OCT: 2\n\nClock:\n\n- Clock (Out) c> ONA (SYNC)\n- ONA (Pulse) t> Drum 1 (Trig)\n- ONA (Sub -2) t> Drum 2 (Trig)"
+    }
+  ]
+}

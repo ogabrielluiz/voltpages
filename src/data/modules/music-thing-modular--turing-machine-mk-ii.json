@@ -1,0 +1,161 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://musicthing.co.uk/Turing-Machine/",
+      "https://github.com/TomWhitwell/TuringMachine",
+      "https://www.soundonsound.com/reviews/music-thing-modular-turing-machine-mkii",
+      "https://modulargrid.net/e/music-thing-modular-turing-machine-mk-ii",
+      "https://modwiggler.com/forum/viewtopic.php?t=174807"
+    ]
+  },
+  "slug": "music-thing-modular--turing-machine-mk-ii",
+  "name": "Turing Machine Mk II",
+  "manufacturer": "Music Thing Modular",
+  "hp": 10,
+  "tags": ["SEQUENCER", "RANDOM", "UTILITY"],
+  "description": "Random looping sequencer built on a 16-bit shift register. Big knob sets probability of bit-flip per clock, locking into repeating melodies at extremes. Backpack header drives Volts, Pulses, Voltages and Vactrol Mix expanders.",
+  "controls": [
+    {
+      "name": "Big knob (probability)",
+      "scope": "Global",
+      "description": "Sets probability of inverting the first bit each clock. Noon is 50% (fully random); extremes lock the loop; sides slip occasional notes.",
+      "detail": "noon: random · 3 o'clock / 9 o'clock: slips occasional notes · 5 o'clock: locked loop · 7 o'clock: locked loop at 2x length"
+    },
+    {
+      "name": "Length switch",
+      "scope": "Global",
+      "description": "Rotary switch selecting loop length in steps. Combines with big knob CCW position to double the effective length.",
+      "detail": "2 · 3 · 4 · 5 · 6 · 8 · 12 · 16 steps · doubled when big knob at 7 o'clock"
+    },
+    {
+      "name": "Write switch",
+      "scope": "Global",
+      "description": "Momentary 3-way. Up injects a 1 into the first bit each clock (fills LEDs); down injects a 0 (clears LEDs). Centre is normal.",
+      "detail": "up: force 1 · centre: normal · down: force 0 · acts on clock edge while held"
+    },
+    {
+      "name": "Clock knob",
+      "scope": "Global",
+      "description": "Rate of the internal clock. Unused when an external clock is patched into CLOCK IN (input normalled to internal).",
+      "detail": "~1 Hz to audio rate · square wave · disconnected when CLOCK IN patched"
+    },
+    {
+      "name": "Scale knob",
+      "scope": "Global",
+      "description": "Attenuates the main CV output. From silence up to several octaves of swing. Quantizer recommended for 12-tone work.",
+      "detail": "0V up to ~5V (multiple octaves) · attenuator on stepped DAC output"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "CLOCK IN",
+      "description": "External clock. Rising edge advances the shift register one step. Square wave or trigger works; audio-rate clocks produce noise-like textures.",
+      "voltage": "0 to +5V trigger · threshold ~1V",
+      "normalizedTo": "internal clock set by Clock knob"
+    },
+    {
+      "name": "KNOB CV",
+      "description": "CV input summed with big knob position. Modulate probability with LFO/envelope for jumps between locked and random states.",
+      "voltage": "±5V · attenuverted by big knob"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "CV OUT",
+      "description": "Main stepped DAC output. Sum of last 8 bits of the shift register scaled by the Scale knob. 256 discrete levels before scaling.",
+      "voltage": "0 to ~5V · 8-bit resolution"
+    },
+    {
+      "name": "PULSE OUT",
+      "description": "Gate output mirroring step 1 of the Pulses expander. Goes high whenever the scaled CV sits above the ~1.5V lock threshold.",
+      "voltage": "0 / +5V gate · synced to clock"
+    },
+    {
+      "name": "NOISE OUT",
+      "description": "White-noise source that feeds the internal shift register. Independent output for external use as noise source or sample-and-hold fodder.",
+      "voltage": "~10Vpp white noise"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Shift-register mechanics",
+      "trigger": "clock edge",
+      "description": "On each clock, bits shift right and bit 0 is re-filled: a copy of bit 16 XORed with noise, with the mix set by the big knob. Extremes yield pure feedback (locked loop) or pure noise (random)."
+    },
+    {
+      "name": "Loop locking",
+      "trigger": "big knob fully CW or CCW",
+      "description": "Fully CW locks the 16-bit pattern into a loop of the length set by the switch. Fully CCW locks into a 2x-length pattern. Small knob twists away from extremes sprinkle mutations."
+    },
+    {
+      "name": "Write-switch editing",
+      "trigger": "write switch up/down",
+      "description": "Lets the player edit a locked loop live. Up gradually fills the register with 1s (rising melody); down with 0s (dropping). Tap on specific beats to carve phrases out of a random stream."
+    },
+    {
+      "name": "Backpack expander bus",
+      "trigger": "ribbon cable to expander header",
+      "description": "16-bit parallel bus exposes every register step to expanders. Volts (5 pots), Pulses (11 outs), Voltages (8 faders), Vactrol Mix (matrix) all tap the same bus. Daisy-chainable."
+    },
+    {
+      "name": "Audio-rate clocking",
+      "trigger": "VCO square wave → CLOCK IN",
+      "description": "Feeding an oscillator into CLOCK turns the module into a chaotic oscillator / noise source. CV OUT produces metallic grit; PULSE OUT becomes a rhythmic subharmonic."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Locked generative melody",
+      "patch": "Clock in from Pamela · Length=8 · big knob fully CW to lock · quantize CV OUT to minor pentatonic · nudge big knob CCW occasionally to evolve phrase",
+      "diagram": "Turing Machine:\n* Length: 8 · Big knob: fully CW (locked)\n\nClock:\n\nQuantizer:\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Turing Machine (CV OUT) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Turing Machine (PULSE OUT) g> Envelope (Trig)"
+    },
+    {
+      "name": "Probability modulation",
+      "patch": "Slow LFO → KNOB CV · big knob at noon · module drifts between random and locked without touching the panel · great for evolving live sets",
+      "diagram": "Turing Machine:\n* Big knob: noon\n\nLFO:\n* Rate: 0.05 Hz triangle\n\nClock:\n\nVCO:\n\n- LFO (Out) >> Turing Machine (KNOB CV)\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Turing Machine (CV OUT) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Write-switch melodic editing",
+      "patch": "Lock the big knob CW · performer holds write DOWN on strong beats to blank register · phrases emerge from a locked loop via subtraction · PULSE OUT becomes sparser over time",
+      "diagram": "Turing Machine:\n* Length: 16 · Big knob: locked CW\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Turing Machine (CV OUT) p> VCO (V/Oct)\n- Turing Machine (PULSE OUT) g> Drum (Trig) // thins out as register clears"
+    },
+    {
+      "name": "Bassline + drum pulse",
+      "patch": "Length=8 · PULSE OUT clocks hi-hat · main clock drives kick · quantized CV OUT drives bass VCO · both locked together from one sequencer source",
+      "diagram": "Turing Machine:\n* Length: 8 · Big knob: CW locked\n\nClock:\n\nQuantizer:\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Clock (Out) c> Kick (Trig)\n- Turing Machine (CV OUT) p> Quantizer (In)\n- Quantizer (Out) p> Bass VCO (V/Oct)\n- Turing Machine (PULSE OUT) t> HiHat (Trig)"
+    },
+    {
+      "name": "Volts expander 5-step sequencer",
+      "patch": "Volts expander attached · five faders set five voltages · module plays a 5-step sequence that can be locked or slipped · ignores Length switch, uses fader count",
+      "diagram": "Turing Machine:\n* Big knob: CW locked\n\nVolts:\n* 5 faders set 5 CV steps\n\nClock:\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Volts (Out) p> VCO (V/Oct)\n- Turing Machine (PULSE OUT) g> Envelope (Trig)"
+    },
+    {
+      "name": "Pulses expander euclidean-like rhythms",
+      "patch": "Pulses expander attached · 11 pulse outs pick out different bits of register · route bits 1/2/4/7 to kick/snare/hat/perc · locked loop gives repeatable euclidean-flavoured groove",
+      "diagram": "Turing Machine:\n* Length: 16 · Big knob: CW locked\n\nPulses:\n* 11 pulse outs from register bits\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Pulses (Out 1) t> Kick (Trig)\n- Pulses (Out 2) t> Snare (Trig)\n- Pulses (Out 4) t> HiHat (Trig)\n- Pulses (Out 7) t> Perc (Trig)"
+    },
+    {
+      "name": "Voltages expander dual CV",
+      "patch": "Voltages expander · 8 faders define two CV sequences tapped from different register bits · one for melody, one for filter sweep · move faders live to re-harmonize",
+      "diagram": "Turing Machine:\n* Length: 8 · Big knob: CW locked\n\nVoltages:\n* 8 faders · 2 CV outs\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Voltages (CV A) p> VCO (V/Oct)\n- Voltages (CV B) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Noise source utility",
+      "patch": "Patch just NOISE OUT for white noise · use CLOCK IN audio-rate to skip the sequencing entirely · saves HP when a noise source is all you need",
+      "diagram": "Turing Machine:\n\n- Turing Machine (NOISE OUT) -> Filter (In)\n- LFO (Out) >> Filter (Cutoff) // hi-hat-style perc\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Audio-rate chaos oscillator",
+      "patch": "VCO square into CLOCK IN · big knob near noon · CV OUT becomes metallic digital noise tracked by VCO pitch · distinct from plain noise, good for drums/FX",
+      "diagram": "Turing Machine:\n* Big knob: noon\n\nVCO:\n* Wave: square · audio rate\n\nFilter:\n\nEnvelope:\n\nVCA:\n\n- VCO (Square) c> Turing Machine (CLOCK IN)\n- Turing Machine (CV OUT) -> Filter (In)\n- Envelope (Out) >> VCA (CV)\n- Filter (Out) -> VCA (In)"
+    },
+    {
+      "name": "Dual Turing duet",
+      "patch": "Two Turings share a clock · different lengths (8 and 12) · locked at different big-knob positions · polymetric duet quantized to same scale · one melody, one counter-line",
+      "diagram": "Turing A:\n* Length: 8 · Big knob: CW locked\n\nTuring B:\n* Length: 12 · Big knob: CCW locked (2x = 24)\n\nQuantizer:\n\n- Clock (Out) c> Turing A (CLOCK IN)\n- Clock (Out) c> Turing B (CLOCK IN)\n- Turing A (CV OUT) p> Quantizer (In 1)\n- Turing B (CV OUT) p> Quantizer (In 2)\n- Quantizer (Out 1) p> VCO 1 (V/Oct)\n- Quantizer (Out 2) p> VCO 2 (V/Oct)"
+    }
+  ]
+}

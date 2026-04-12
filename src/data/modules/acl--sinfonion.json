@@ -1,0 +1,250 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.0",
+    "sources": [
+      "https://acl-synth.com/products/sinfonion.php",
+      "https://acl-synth.com/manuals-eng/sinfonion-manual-1.0c.pdf",
+      "https://modulargrid.net/e/acl-sinfonion",
+      "https://www.perfectcircuit.com/acl-sinfonion.html",
+      "https://modulargrid.net/e/forum/posts/index/9446"
+    ]
+  },
+  "slug": "acl--sinfonion",
+  "name": "Sinfonion",
+  "manufacturer": "ACL",
+  "hp": 42,
+  "tags": ["QUANTIZER", "SEQUENCER", "UTILITY", "MIDI"],
+  "description": "Harmonic CV processor. Three scale-aware quantizer channels, four-voice chord generator, eight-pattern arpeggiator and 16-song chord-progression sequencer share one key, scale and mode across eight 16-bit pitch outputs.",
+  "controls": [
+    {
+      "name": "ROOT",
+      "scope": "Global",
+      "description": "Selects the root note of the current scale (C, C#, … B). Together with DEGREE defines the scale shown on the display.",
+      "detail": "12 semitones · CV input sums · menu-assignable pot"
+    },
+    {
+      "name": "DEGREE",
+      "scope": "Global",
+      "description": "Selects the degree / chord quality within the current mode. Combined with MODE picks one of 88 built-in scales.",
+      "detail": "7 degrees per mode"
+    },
+    {
+      "name": "MODE",
+      "scope": "Global",
+      "description": "Picks the musical mode. Chord-building modes (Chords, Chords2, Slashch) map buttons to jazz functions; scale modes (Major, Minor, Mel.Minor, Har.Minor, Har.Major, Db.H.Maj) map buttons to degrees.",
+      "detail": "8 modes · stored per sequencer step"
+    },
+    {
+      "name": "TRANS",
+      "scope": "Global",
+      "description": "Global transposition in semitones. Applies to every pitch output.",
+      "detail": "±12 semitones · noon = 0 · dedicated CV also available"
+    },
+    {
+      "name": "PRESET",
+      "scope": "Global",
+      "description": "Selects one of 16 button presets in non-sequenced mode; becomes the song selector when SEQ is on.",
+      "detail": "16 positions · CV-assignable"
+    },
+    {
+      "name": "SLEW",
+      "scope": "Global",
+      "description": "Master slew / portamento time. Per-section enable via SLEW buttons or IN 1/2.",
+      "detail": "Linear or exponential curve (menu) · CV attenuates when patched"
+    },
+    {
+      "name": "POT 1 / POT 2",
+      "scope": "Assign",
+      "description": "Two assignable knobs routable to 28 CV functions — e.g. Harmonic Shift, Chaotic Detune, Song select, per-channel Pre-Transpose.",
+      "detail": "Attenuates CV at the matching CV jack if both are assigned"
+    },
+    {
+      "name": "PITCH (Chords)",
+      "scope": "Chord Section",
+      "description": "Manual pitch control of the chord root. Sums with IN jack to set the lowest chord note.",
+      "detail": "4 octaves · not saved in sequencer steps"
+    },
+    {
+      "name": "SPREAD",
+      "scope": "Chord Section",
+      "description": "Spaces chord voices apart. CCW = tight, CW distributes the four voices evenly across the selected range.",
+      "detail": "0 – many octaves · CV-assignable"
+    },
+    {
+      "name": "PITCH (Arpeggio)",
+      "scope": "Arpeggio Section",
+      "description": "Lowest note of the arpeggio pattern. Adds to IN jack and Pre-Trans CV.",
+      "detail": "~4 octave range"
+    },
+    {
+      "name": "RANGE",
+      "scope": "Arpeggio Section",
+      "description": "Range of the arpeggio in semitones. With range 0 the section acts as a clocked quantizer that grabs nearest allowed note.",
+      "detail": "0 – 5 octaves"
+    }
+  ],
+  "inputs": [
+    { "name": "CH 1 IN", "description": "Pitch input for Channel 1 quantizer. Routable via input-mixing matrix." },
+    { "name": "CH 1 TRIG", "description": "Sample-and-hold trigger. Rising edge quantizes the current IN voltage.", "voltage": "3V+ edge" },
+    { "name": "CH 1 A/B", "description": "Dedicated A/B switch. Above ~3V forces Channel 1 to use side B scale-note selection (only if A/B menu set to jack).", "voltage": "0V / 5V" },
+    { "name": "CH 2 IN", "description": "Pitch input for Channel 2 quantizer. Channel 2 exposes all 12 semitones via FILL1–FILL5." },
+    { "name": "CH 2 TRIG", "description": "S&H trigger for Channel 2.", "voltage": "3V+ edge" },
+    { "name": "CH 3 IN", "description": "Pitch input for Channel 3 quantizer. EQ-DIST button distributes allowed notes evenly across the input octave." },
+    { "name": "CH 3 TRIG", "description": "S&H trigger for Channel 3.", "voltage": "3V+ edge" },
+    { "name": "ROOT", "description": "CV for ROOT note. 1/12V per semitone, wraps around. Patch a pitch CV to track the incoming note's pitch class as the scale root.", "voltage": "±10V · 1/12V/semitone" },
+    { "name": "TRANS", "description": "Global transposition (unquantized). 1V/Oct.", "voltage": "-10V to +10V" },
+    { "name": "CV 1", "description": "General-purpose CV. Menu-assignable to one of 28 functions (Transpose, Chaotic Detune, Harmonic Shift, Preset, Slew Time, Pre-Trans, Pitch Bend, Arpeggio Clock/Randomize, Song, Song Part, Sequence Step, Voltmeter, …).", "voltage": "-10.24V to +10.24V", "normalizedTo": "0V when unpatched" },
+    { "name": "CV 2", "description": "General-purpose CV 2. Same assignment list as CV 1." },
+    { "name": "CV 3", "description": "General-purpose CV 3." },
+    { "name": "CV 4", "description": "General-purpose CV 4." },
+    { "name": "IN 1", "description": "Assignable gate input. 20 functions including Seq Song Reset / Part Reset / Step Forward-Backward, Slew-Enable per section, Quantize-Ch X, Chord Shuffle, Arpeggio Reset, Sync Slave.", "voltage": "3V+ gate" },
+    { "name": "IN 2", "description": "Second assignable gate input. Same function list as IN 1.", "voltage": "3V+ gate" },
+    { "name": "CHORDS IN", "description": "Pitch input for the chord section. Sums with PITCH knob to set chord root." },
+    { "name": "CHORDS TRIG", "description": "S&H trigger for the chord section — samples IN on rising edge.", "voltage": "3V+ edge" },
+    { "name": "ARP IN", "description": "Pitch input for the arpeggiator. Sets the lowest arpeggio note together with PITCH knob." },
+    { "name": "ARP CLK", "description": "Arpeggio clock. Normalled from main sequencer CLK; each pulse steps to the next arpeggio note.", "voltage": "3V+ edge" },
+    { "name": "CLK", "description": "Main sequencer clock. One pulse = one beat; chord change after step's beat count. Pre-divider (1–64) configurable per song part.", "voltage": "3V+ edge" }
+  ],
+  "outputs": [
+    { "name": "CH 1 OUT", "description": "Channel 1 quantized pitch output. Routable via output switching matrix.", "voltage": "-2V to +8V" },
+    { "name": "CH 2 OUT", "description": "Channel 2 quantized pitch output.", "voltage": "-2V to +8V" },
+    { "name": "CH 3 OUT", "description": "Channel 3 quantized pitch output.", "voltage": "-2V to +8V" },
+    { "name": "OUT 1", "description": "Assignable gate / CV output. 14 functions: per-channel Autogate, Arpeggio Beat, Tuning Active, Sequencer Clock / Beat / Song-Step / Song-Reset, Sync Master.", "voltage": "0 / 5V" },
+    { "name": "OUT 2", "description": "Second assignable gate output. Same function list as OUT 1.", "voltage": "0 / 5V" },
+    { "name": "CHORDS OUT 1-4", "description": "Four independent chord voice pitches. OUT1 = first selected interval, OUT4 = fourth — stable mapping regardless of inversion or spread.", "voltage": "-2V to +8V" },
+    { "name": "GATE 1 / GATE 2", "description": "Two manual gate jacks toggled by the GATES buttons. Gate states are saved per sequencer step.", "voltage": "~5V gate" },
+    { "name": "ARP OUT", "description": "Arpeggiator pitch output.", "voltage": "-2V to +8V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Three quantizer channels with different specialities",
+      "trigger": "Route a melody or random CV into CH N IN",
+      "description": "All three channels share the same scale / mode. Channel 1 has A/B-switch (auto-selects one of two note sets on alternating beats for 'root-on-1 walking bass' feel). Channel 2 FILL1–5 expose the five non-scale notes for chromatic access / major-minor flips. Channel 3 EQ-DIST equidistantly maps allowed notes across the input octave — critical when quantizing LFOs or random voltages."
+    },
+    {
+      "name": "Four-voice chord generator",
+      "trigger": "Select any of ROOT, 3RD, 5TH, 7TH, 9TH, 11TH, 13TH in the CHORDS section; voices patched to OUT 1–4",
+      "description": "The first four lit interval buttons map to OUT1–4. Fewer than four lit → some voices double. More than four lit → only the first four are played. INV cycles through inversions (root / 1st / 2nd / 3rd). SPREAD knob opens voices across octaves. 98 possible voicings. Sus chords automatically remap 3RD button to 4th."
+    },
+    {
+      "name": "Eight-pattern arpeggiator",
+      "trigger": "Patch clock to ARP CLK and voice to ARP OUT; select scale-note buttons",
+      "description": "Patterns: Up, Down, Up/Down, Down/Up, Baroque (2 forward, 1 back), Octaves (each note twice — once octaved up), Brownian (random by single step), Random. BEGIN forces reset to a specific interval on each chord change. Built-in clock divider/multiplier (1/4 to 4/1, incl. triplet 3/2) on the arp clock."
+    },
+    {
+      "name": "Chord progression sequencer",
+      "trigger": "Press SEQ; clock into CLK jack",
+      "description": "16 songs × 4 parts (A–D) × 32 steps. Each step stores root, degree, mode, beats (1–128), all 52 button states and all five octave switches. Clock divider 1–64 per part. ADD copies current step; DEL deletes; +/− BEATS tweak step length. Songs auto-save."
+    },
+    {
+      "name": "Chord progression sequencer — live mode",
+      "trigger": "Press SYNC (Arpeggio) on the SONG page",
+      "description": "'Buttons + Octaves are Live' makes button and octave changes immediate rather than overwriting the current step. The knob values still auto-save. Essential for improvising on top of a locked progression without scrambling stored steps."
+    },
+    {
+      "name": "Freeze mode (hidden)",
+      "trigger": "Double-click the play/pause button",
+      "description": "Current chord and scale freeze. ROOT / DEGREE / MODE knobs and buttons only affect the display — no audible change. Lets a performer pre-dial the next section silently, then exit freeze to drop it live."
+    },
+    {
+      "name": "Input & output matrices",
+      "trigger": "Press OCT, then GATE 2",
+      "description": "4×4 input mixer (adds pitch from CH1/2/3/Arp IN jacks into any channel, with 2-octave subtract) and 4×4 output switch (each OUT jack reads exactly one quantizer). Unlocks voice swaps, unison plays and polyphonic routings impossible to build from external modules."
+    },
+    {
+      "name": "Soft vs true bypass per channel",
+      "trigger": "13TH in OCT page toggles CH 1/2/3 bypass state",
+      "description": "Normal → quantize · Soft Bypass (dim): raw pitch passes but transpose, chaotic detune, pitch bend and 'IN-follows-ROOT' still apply · Off (true bypass): 1:1 ADC→DAC pass-through with ~2mV precision — effectively a high-precision buffer."
+    },
+    {
+      "name": "IN follows ROOT",
+      "trigger": "Per-section button (FILL/FILL1/13TH/SLEW/DIR) on OCT page",
+      "description": "Automatically shifts the input pitch by the musical distance from C to the current root, so a bass sequence stays shaped around the new chord. Shifts of 7 semitones+ octave down instead of up."
+    },
+    {
+      "name": "Chaotic Detune / Chaotic Note Shuffle",
+      "trigger": "Assign CV 1–4 to function",
+      "description": "Chaotic Detune: bipolar, detunes all eight pitch outputs independently up to 1 semitone — audio-rate modulation (1kHz update) produces disharmonic 'drunk-orchestra' motion. Chaotic Note Shuffle shuffles the 12 semitones within each octave globally for controlled dissonance."
+    },
+    {
+      "name": "Harmonic Shift",
+      "trigger": "Assign CV 1–4 or POT 1/2 to Harmonic Shift",
+      "description": "Progressively strips harmonic complexity: at 0V all intervals allowed, 0.7V removes FILL notes, 1.4V 11th, 2.1V 13th, 2.9V 9th, 3.6V 7th, 4.3V leaves root+5th, 5.0V forces root only. Negative voltages remove in reverse order."
+    },
+    {
+      "name": "Non-equal temperaments",
+      "trigger": "Menu → Intonation",
+      "description": "Switch globally between Equal, Just and Quarter-comma Meantone. Just retunes automatically when the root note changes — unique to Sinfonion and unavailable from any standalone quantizer."
+    },
+    {
+      "name": "Tuning Mode",
+      "trigger": "TUNE button",
+      "description": "Forces all eight outputs to a selectable octave C (1V steps from -2V/C0 to 8V/C8). Octave switches are honoured; CVs that modify pitch are suppressed. Use to calibrate external VCOs against Sinfonion's 16-bit DACs."
+    },
+    {
+      "name": "Super-Sinfonion sync",
+      "trigger": "Set OUT 1 on master to 'Sync Master'; IN 1 on slave(s) to 'Sync Slave'; cable master OUT1 → slave IN1",
+      "description": "Serial link (115200 bps) sends ROOT / DEGREE / MODE / TRANS / Chaotic Detune and sequencer clock+reset over a single patch cable. Unlimited slaves via mult. Slave sequencer disables; master drives the chord/scale everyone plays in. Display shows 'Sync: alive'."
+    },
+    {
+      "name": "Autogates and output triggers",
+      "trigger": "Menu → OUT 1/2 → 'Chan X Autogate' etc.",
+      "description": "OUT 1/2 fires a 10ms trigger whenever a quantizer actually outputs a new semitone — great for re-triggering envelopes only on note changes. Also available: Arpeggio Beat, Sequencer Clock / Beat / Song-Step / Song-Reset."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Minimum viable chord voice",
+      "patch": "Sequencer feeds CH 1 IN · CH 1 OUT to bass voice · CHORDS OUT 1-4 to four VCOs · MODE Chords · ROOT/DEGREE set chord · SPREAD opens voicing · one Sinfonion covers five-voice jazz harmony in one module.",
+      "diagram": "Sinfonion:\n* MODE: Chords\n* ROOT: C\n* DEGREE: maj7\n* Chords: ROOT 3RD 5TH 7TH lit\n* SPREAD: noon\n\nBass VCO:\n\nVCO 1:\n\nVCO 2:\n\nVCO 3:\n\nVCO 4:\n\n- Sequencer (Pitch) p> Sinfonion (CH 1 IN)\n- Sinfonion (CH 1 OUT) p> Bass VCO (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 1 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 2 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 3 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Chord progression with clocked changes",
+      "patch": "Master clock to CLK · SEQ on · song 1A with 4 steps (Cmaj7 → Am7 → Dm7 → G7) · 4 beats each · CHORDS OUT 1-4 → four VCOs through one VCA pad · chord changes lock to clock.",
+      "diagram": "Sinfonion:\n* SEQ: on\n* Song 1A: Cmaj7 - Am7 - Dm7 - G7 (4 beats each)\n\nMaster Clock:\n\nVCO 1:\n\nVCO 2:\n\nVCO 3:\n\nVCO 4:\n\n- Master Clock (Out) c> Sinfonion (CLK)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 1 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 2 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 3 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Arpeggiated pad with pattern sweep",
+      "patch": "Clock into ARP CLK · arp OUT to VCO · select 1-3-5-7 · PATTERN Baroque · RANGE 2 octaves · PITCH sets lowest note · change BEGIN to 3rd for reset on chord change · deep jazzy motion that stays in-key under chord progression.",
+      "diagram": "Sinfonion:\n* Arpeggio: ROOT 3RD 5TH 7TH lit\n* PATTERN: Baroque\n* RANGE: ~2 octaves\n* BEGIN: 3rd\n\nClock:\n\nVCO:\n\nEnvelope:\n\nVCA:\n\n- Clock (Out) c> Sinfonion (ARP CLK)\n- Clock (Out) t> Envelope (Trig)\n- Sinfonion (ARP OUT) p> VCO (V/Oct)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Walking bass with root on 1 and 3",
+      "patch": "Random CV to CH 1 IN · CH 1 side A: 5TH 7TH 9TH · side B: ROOT · Menu → Ch 1 A/B 'Each Odd Beat' · sequencer on with 4-beat bar · bass plays root on beats 1 & 3, scale notes on 2 & 4 — walking-bass feel locked to chord changes.",
+      "diagram": "Sinfonion:\n* SEQ: on\n* CH 1 A side: 5TH 7TH 9TH\n* CH 1 B side: ROOT\n* Menu: Ch 1 A/B = Each Odd Beat\n\nRandom CV:\n\nClock:\n\nBass VCO:\n\n- Clock (Out) c> Sinfonion (CLK)\n- Random CV (Out) >> Sinfonion (CH 1 IN)\n- Sinfonion (CH 1 OUT) p> Bass VCO (V/Oct)"
+    },
+    {
+      "name": "Equidistant quantizer for LFO melodies",
+      "patch": "Slow LFO into CH 3 IN · CH 3 ROOT 5TH 9TH lit · press EQ-DIST · each of the three notes gets equal time across the LFO's octave — fixes the 'root-is-always-playing' bias of classical quantizers.",
+      "diagram": "Sinfonion:\n* CH 3: ROOT 5TH 9TH lit\n* CH 3 EQ-DIST: on\n\nLFO:\n\nVCO:\n\n- LFO (Out) >> Sinfonion (CH 3 IN)\n- Sinfonion (CH 3 OUT) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Harmonic shift drop",
+      "patch": "Assign POT 1 → Harmonic Shift · chord with 3rd, 7th, 9th, 11th lit · turn POT 1 CW during a drop — harmonic complexity strips back to root+5th then just root, useful for dramatic tension → release transitions.",
+      "diagram": "Sinfonion:\n* Assign POT 1: Harmonic Shift\n* Chords: ROOT 3RD 5TH 7TH 9TH 11TH lit\n\nVCO 1:\n\nVCO 2:\n\nVCO 3:\n\nVCO 4:\n\n- Sinfonion (CHORDS OUT 1-4) p> VCO 1 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 2 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 3 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Autogate re-triggers envelope on note changes",
+      "patch": "Menu → OUT 1 = Chan 2 Autogate · sequencer into CH 2 IN · VCO hears CH 2 OUT · envelope triggered by OUT 1 · envelope only re-fires when Channel 2 quantizes to a new semitone — repeated identical notes don't re-articulate.",
+      "diagram": "Sinfonion:\n* Menu: OUT 1 = Chan 2 Autogate\n* CH 2: ROOT 3RD 5TH 7TH 9TH lit\n\nSequencer:\n\nVCO:\n\nEnvelope:\n\nVCA:\n\n- Sequencer (Pitch) p> Sinfonion (CH 2 IN)\n- Sinfonion (CH 2 OUT) p> VCO (V/Oct)\n- Sinfonion (OUT 1) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Input matrix unison swap",
+      "patch": "Send CH 1 IN to Channel 1 AND Channel 2 · CH 2 OUT plays Channel 1's input through Channel 2's button preset · momentarily different voicing on voice 2 while voice 1 continues · layered polyphony from one input stream.",
+      "diagram": "Sinfonion:\n* Input Matrix: CH 1 IN → Ch1 + Ch2\n* CH 1: ROOT 5TH\n* CH 2: ROOT 3RD 7TH\n\nSequencer:\n\nVCO 1:\n\nVCO 2:\n\n- Sequencer (Pitch) p> Sinfonion (CH 1 IN)\n- Sinfonion (CH 1 OUT) p> VCO 1 (V/Oct)\n- Sinfonion (CH 2 OUT) p> VCO 2 (V/Oct)"
+    },
+    {
+      "name": "Super-Sinfonion jam",
+      "patch": "Master Sinfonion runs song progression · OUT 1 = Sync Master to slave's IN 1 (Sync Slave) · slave chord section plays additional voices locked to master's key · eight more voices join the band with one cable.",
+      "diagram": "Sinfonion Master:\n* Menu: OUT 1 = Sync Master\n* SEQ: on\n\nSinfonion Slave:\n* Menu: IN 1 = Sync Slave\n* Chords: ROOT 3RD 5TH 9TH lit\n\n- Sinfonion Master (OUT 1) >> Sinfonion Slave (IN 1)\n- Sinfonion Slave (CHORDS OUT 1-4) p> VCO 5 (V/Oct)\n- Sinfonion Slave (CHORDS OUT 1-4) p> VCO 6 (V/Oct)\n- Sinfonion Slave (CHORDS OUT 1-4) p> VCO 7 (V/Oct)\n- Sinfonion Slave (CHORDS OUT 1-4) p> VCO 8 (V/Oct)"
+    },
+    {
+      "name": "Just-intoned pad drift",
+      "patch": "Menu → Intonation: Just · sustained chord · ROOT CV tied to song progression — every chord change auto-retunes all twelve semitones to that root's pure intervals. Beats between 3rds / 5ths vanish and reappear as harmony shifts.",
+      "diagram": "Sinfonion:\n* Menu: Intonation = Just\n* SEQ: on (song: I-vi-IV-V)\n* Chords: ROOT 3RD 5TH 7TH lit\n\nMaster Clock:\n\nVCO 1:\n\nVCO 2:\n\nVCO 3:\n\nVCO 4:\n\n- Master Clock (Out) c> Sinfonion (CLK)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 1 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 2 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 3 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 4 (V/Oct)"
+    }
+  ]
+}

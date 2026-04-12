@@ -1,0 +1,122 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.befaco.org/stmix/",
+      "https://befaco.org/docs/StMix/StMix_User_Manual.pdf",
+      "https://modulargrid.net/e/befaco-stmix-",
+      "https://www.perfectcircuit.com/befaco-stmix.html"
+    ]
+  },
+  "slug": "befaco--stmix",
+  "name": "STMix",
+  "manufacturer": "Befaco",
+  "hp": 6,
+  "tags": ["MIXER", "UTILITY"],
+  "description": "Four-channel stereo mixer in 6HP. Per-channel attenuator with L-to-R mono normalization · unattenuated stereo AUX post-fader input · DC-coupled for CV mixing · rear header chains to Hexmix master.",
+  "controls": [
+    {
+      "name": "Channel Level",
+      "scope": "CH 1-4",
+      "description": "Manual attenuator for each stereo channel pair. Controls both L and R of the channel together.",
+      "detail": "0 to unity · linear taper"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "L(M) IN 1-4",
+      "description": "Left / mono input per channel. When R of the same channel is unpatched the L signal is duplicated onto R, so mono sources mix into the stereo bus.",
+      "voltage": "±10V modular",
+      "normalizedTo": "routed to the same channel's R bus when R IN is unpatched"
+    },
+    {
+      "name": "R IN 1-4",
+      "description": "Right input per channel. Patching R breaks the L-to-R normalization on that channel, giving true stereo.",
+      "voltage": "±10V modular"
+    },
+    {
+      "name": "AUX L",
+      "description": "Stereo auxiliary input, left side. Sums straight to the L output bus with no attenuation and after the channel faders.",
+      "voltage": "±10V modular",
+      "normalizedTo": "routed to AUX R bus when AUX R is unpatched"
+    },
+    {
+      "name": "AUX R",
+      "description": "Stereo auxiliary input, right side. Sums straight to the R output bus with no attenuation.",
+      "voltage": "±10V modular"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT L",
+      "description": "Left channel of the stereo mix sum. Clip LED lights on signal and reddens near headroom.",
+      "voltage": "±10V modular"
+    },
+    {
+      "name": "OUT R",
+      "description": "Right channel of the stereo mix sum. Clip LED lights on signal and reddens near headroom.",
+      "voltage": "±10V modular"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Mono-to-stereo upmix per channel",
+      "trigger": "L(M) IN patched with the matching R IN unpatched",
+      "description": "Each channel's L jack normalizes to its R when R is empty, so mono voices land centred in the stereo image. Patching R on any channel leaves that channel true-stereo while neighbours still upmix mono."
+    },
+    {
+      "name": "Unattenuated AUX post-fader",
+      "trigger": "signal patched to AUX L / AUX R",
+      "description": "The AUX pair bypasses every channel fader and sums straight into the output bus at unity. Use for a fifth input, a chain-in from another STMix or a dry return that must not be attenuated by a misplaced fader."
+    },
+    {
+      "name": "DC-coupled CV mixing",
+      "trigger": "patching CV or offsets into channel inputs",
+      "description": "All inputs are DC coupled, so STMix works as a 4+1 CV summer with attenuation per input. Mix LFOs, envelopes and offsets at any rate; the AUX pair adds two more unity-gain summing jacks on top."
+    },
+    {
+      "name": "Hexmix submix expansion",
+      "trigger": "2×3 ribbon cable from STMix rear header to Hexmix",
+      "description": "The rear six-pin header taps the STMix stereo sum into the Hexmix master section. Keeps the front-panel OUT jacks free while STMix acts as a dedicated four-channel stereo subgroup feeding the Hexmix bus."
+    },
+    {
+      "name": "Clip LEDs on the output",
+      "trigger": "sum approaching headroom",
+      "description": "Red LEDs on OUT L and OUT R indicate signal presence and clip. Use them to back off individual channel faders until peaks stop reddening — needed because there is no master level on STMix itself."
+    },
+    {
+      "name": "No master fader",
+      "trigger": "using STMix standalone",
+      "description": "STMix has only per-channel attenuators, no overall gain. Set final listening level downstream (OUT module, interface) or via the channel faders themselves. Chain into Hexmix when a master is needed."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Four mono voices into stereo",
+      "patch": "Four mono VCOs → CH1-CH4 L(M) inputs, R jacks empty · each channel auto-upmixes to centred stereo · fader per voice · OUT L/R → master out · dense four-voice centre mix with one cable per voice",
+      "diagram": "STMix:\n* CH 1-4: Level to taste\n\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\n\n- VCO 1 (Out) -> STMix (L(M) IN 1)\n- VCO 2 (Out) -> STMix (L(M) IN 2)\n- VCO 3 (Out) -> STMix (L(M) IN 3)\n- VCO 4 (Out) -> STMix (L(M) IN 4)\n- STMix (OUT L) -> Output (L)\n- STMix (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Stereo FX in, dry on AUX",
+      "patch": "CH1-CH3 feed voices into the mix · CH4 stereo = wet return from a reverb send · dry sum of the voices → AUX L/R to sit at unity behind the wet channel · fade CH4 to dial wet/dry without touching the voices",
+      "diagram": "STMix:\n* CH 1-3: voices\n* CH 4: wet return\n\nVCO 1:\nVCO 2:\nVCO 3:\nReverb:\nMult:\n\n- VCO 1 (Out) -> STMix (L(M) IN 1)\n- VCO 2 (Out) -> STMix (L(M) IN 2)\n- VCO 3 (Out) -> STMix (L(M) IN 3)\n- Mult (Sum L) -> Reverb (In L) // dry send\n- Mult (Sum R) -> Reverb (In R)\n- Reverb (Out L) -> STMix (L(M) IN 4)\n- Reverb (Out R) -> STMix (R IN 4)\n- Mult (Sum L) -> STMix (AUX L) // dry unity\n- Mult (Sum R) -> STMix (AUX R)"
+    },
+    {
+      "name": "CV summing bus",
+      "patch": "Four modulation sources (LFO, envelope, random, offset) → CH1-CH4 L(M) · faders scale each contribution · OUT L = composite CV · because inputs are DC-coupled, STMix doubles as a 4-into-1 CV mixer with per-source level and unity AUX for a fifth signal",
+      "diagram": "STMix:\n* CH 1-4: Level = mix amount per source\n\nLFO:\nEnvelope:\nRandom:\nOffset:\nExtra CV:\n\n- LFO (Out) >> STMix (L(M) IN 1)\n- Envelope (Out) >> STMix (L(M) IN 2)\n- Random (Out) >> STMix (L(M) IN 3)\n- Offset (Out) >> STMix (L(M) IN 4)\n- Extra CV (Out) >> STMix (AUX L) // unity\n- STMix (OUT L) >> Filter (Cutoff) // composite CV"
+    },
+    {
+      "name": "Chain two STMix for 8 stereo channels",
+      "patch": "STMix A inputs host voices 1-4 · STMix A OUT L/R → STMix B AUX L/R (unity, post-fader safe) · STMix B hosts voices 5-8 on its channels · STMix B OUT = full 8-channel stereo sum · no master fader loss on either bank",
+      "diagram": "STMix A:\n* CH 1-4: voices 1-4\n\nSTMix B:\n* CH 1-4: voices 5-8\n\n- STMix A (OUT L) -> STMix B (AUX L) // unity cascade\n- STMix A (OUT R) -> STMix B (AUX R)\n- STMix B (OUT L) -> Output (L) // 8-channel sum\n- STMix B (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Drum submix to Hexmix",
+      "patch": "Kick, snare, hat, clap on CH1-CH4 (use R for stereo hats/claps) · rear ribbon → Hexmix master section · drum bus folds into Hexmix without burning channels there · front OUT L/R stay free for a separate monitor feed",
+      "diagram": "STMix:\n* CH 1-4: drum levels\n\nKick:\nSnare:\nHat L:\nHat R:\nClap L:\nClap R:\n\n- Kick (Out) -> STMix (L(M) IN 1)\n- Snare (Out) -> STMix (L(M) IN 2)\n- Hat L (Out) -> STMix (L(M) IN 3)\n- Hat R (Out) -> STMix (R IN 3) // stereo hats\n- Clap L (Out) -> STMix (L(M) IN 4)\n- Clap R (Out) -> STMix (R IN 4)\n- STMix (OUT L) -> Monitor (L) // front-panel monitor\n- STMix (OUT R) -> Monitor (R)"
+    }
+  ]
+}

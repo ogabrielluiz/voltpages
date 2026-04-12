@@ -1,0 +1,133 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.befaco.org/out-v3/",
+      "https://befaco.org/docs/Out/Out_V3_1_Assembly_Manual.pdf",
+      "https://befaco.org/docs/Out/1U_Out_User_Manual.pdf",
+      "https://modulargrid.net/e/befaco-out-"
+    ]
+  },
+  "slug": "befaco--out",
+  "name": "OUT V3",
+  "manufacturer": "Befaco",
+  "hp": 4,
+  "tags": ["I/O", "UTILITY", "MIXER"],
+  "description": "Stereo master output. Two 1/4\" TRS balanced line outs · dedicated headphone amp with independent level · CUE input for pre-listening; Main/CUE source switch routes either to the phones bus.",
+  "controls": [
+    {
+      "name": "Level",
+      "scope": "Main Out",
+      "description": "Dual-gang master level for left and right 1/4\" balanced outputs.",
+      "detail": "0 to unity · modular ±10V scaled to line level"
+    },
+    {
+      "name": "Phones",
+      "scope": "Headphone amp",
+      "description": "Dual-gang level for 1/4\" headphone output. Independent of Main Level.",
+      "detail": "0 to full gain · drives low-impedance cans"
+    },
+    {
+      "name": "Source",
+      "scope": "Headphone amp",
+      "description": "Two-position switch selecting what the headphone amp monitors.",
+      "detail": "MAIN: headphones follow L/R IN · CUE: headphones follow CUE IN only"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "L IN",
+      "description": "Left channel modular-level input. AC coupled. Mono signals here appear on both main outputs when R is unpatched.",
+      "voltage": "±10V modular",
+      "normalizedTo": "routed to R channel internally when R IN is unpatched"
+    },
+    {
+      "name": "R IN",
+      "description": "Right channel modular-level input. AC coupled. Breaks L-to-R normalization when patched, giving true stereo.",
+      "voltage": "±10V modular"
+    },
+    {
+      "name": "CUE IN",
+      "description": "Auxiliary mono monitoring input. Routed to the headphone amp only when Source switch is on CUE. Never reaches the main outs.",
+      "voltage": "±10V modular"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "L OUT",
+      "description": "Left 1/4\" TRS balanced output at line level.",
+      "voltage": "balanced line · +4 dBu nominal"
+    },
+    {
+      "name": "R OUT",
+      "description": "Right 1/4\" TRS balanced output at line level.",
+      "voltage": "balanced line · +4 dBu nominal"
+    },
+    {
+      "name": "Phones",
+      "description": "1/4\" stereo TRS headphone output driven by the onboard amplifier. Source selected by the Main/CUE switch.",
+      "voltage": "headphone level"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Mono to stereo normalization",
+      "trigger": "L IN patched with R IN unpatched",
+      "description": "A cable in L alone sends the signal to both L OUT and R OUT, so a mono bus feeds centred stereo without a mult. Patching R breaks the normalization for true stereo."
+    },
+    {
+      "name": "CUE pre-listen without interrupting main mix",
+      "trigger": "Source switch flipped to CUE",
+      "description": "The headphone amp switches to the CUE IN jack while the main 1/4\" outs keep playing the L/R signal untouched. Use it to audition a sequence, effect send or new voice in headphones before bringing it up on the main mix."
+    },
+    {
+      "name": "Clip indication per input",
+      "trigger": "input signal exceeding headroom",
+      "description": "LEDs on L IN, R IN and CUE IN light as signal present and redden as the stage approaches clipping. Tune modular gain upstream until peaks stay out of the red for clean balanced output."
+    },
+    {
+      "name": "Balanced TRS outputs",
+      "trigger": "connecting TRS cable to L OUT / R OUT",
+      "description": "Both main outputs are impedance-balanced 1/4\" TRS. Use TRS cables into balanced mixer/interface inputs for best noise rejection; TS cables still work but drop to single-ended level."
+    },
+    {
+      "name": "AC-coupled inputs",
+      "trigger": "patching DC signal to L / R / CUE",
+      "description": "All three inputs are AC coupled, so slow LFOs or DC offsets are blocked and cannot reach the outputs. OUT V3 is strictly an audio interface — do not use it to send CV to an external destination."
+    },
+    {
+      "name": "Independent headphone path",
+      "trigger": "headphone amp always active",
+      "description": "The phones amp sits on its own dual-gang pot downstream of the Source switch. Main Level can go to zero while headphones still monitor, useful for silent practice through the case."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Mono jam on a stereo rig",
+      "patch": "Final VCA → L IN only · Source MAIN · Phones up · L IN normalizes to R internally so the same signal reaches both balanced outs and both cans · single-cable master-out for mono patches",
+      "diagram": "OUT V3:\n* Source: MAIN\n\nVCA:\n\n- VCA (Out) -> OUT V3 (L IN) // L normalizes to R internally\n- OUT V3 (L OUT) -> Output (L)\n- OUT V3 (R OUT) -> Output (R)"
+    },
+    {
+      "name": "Stereo reverb send",
+      "patch": "Dry mix → OUT L and OUT R inputs · stereo reverb returns mixed upstream · Main Level sets live volume to PA · Phones switch on MAIN to monitor the full stereo image in headphones without extra cables",
+      "diagram": "OUT V3:\n* Source: MAIN\n\nMixer:\nReverb:\n\n- Mixer (Out L) -> OUT V3 (L IN)\n- Mixer (Out R) -> OUT V3 (R IN)\n- OUT V3 (L OUT) -> Output (L)\n- OUT V3 (R OUT) -> Output (R)\n- OUT V3 (Phones) -> Headphones (In)"
+    },
+    {
+      "name": "Silent cue a new voice",
+      "patch": "Main mix → L IN + R IN · Source MAIN during performance · a second voice/sequence → CUE IN · flick Source to CUE to pre-listen the new voice in headphones while the audience still hears the main mix · flip back to MAIN and bring the new voice in via the main mixer",
+      "diagram": "OUT V3:\n* Source: CUE (for pre-listen)\n\nMain Mix:\nNew Voice:\n\n- Main Mix (Out L) -> OUT V3 (L IN)\n- Main Mix (Out R) -> OUT V3 (R IN)\n- New Voice (Out) -> OUT V3 (CUE IN)\n- OUT V3 (L OUT) -> Output (L) // live PA unaffected\n- OUT V3 (Phones) -> Headphones (In) // monitors CUE only"
+    },
+    {
+      "name": "Silent practice through the case",
+      "patch": "Full patch → L/R IN · Main Level at zero · Phones Level up · Source MAIN · entire modular jams through headphones while the 1/4\" outs stay silent · useful at night or in shared spaces",
+      "diagram": "OUT V3:\n* Main Level: 0\n* Phones Level: up\n* Source: MAIN\n\nPatch:\n\n- Patch (Out L) -> OUT V3 (L IN)\n- Patch (Out R) -> OUT V3 (R IN)\n- OUT V3 (Phones) -> Headphones (In) // main outs silent"
+    },
+    {
+      "name": "Clip-free gain staging",
+      "patch": "Working mix → L/R IN · push last VCA or mixer output until the L/R clip LEDs just start flashing red on peaks · back off a hair · guarantees the 1/4\" outs hit line-level full-scale without distorting your interface preamp",
+      "diagram": "OUT V3:\n* Source: MAIN\n\nMixer:\n\n- Mixer (Out L) -> OUT V3 (L IN) // watch L clip LED\n- Mixer (Out R) -> OUT V3 (R IN) // watch R clip LED\n- OUT V3 (L OUT) -> Interface (L)\n- OUT V3 (R OUT) -> Interface (R)"
+    }
+  ]
+}

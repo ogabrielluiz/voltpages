@@ -1,0 +1,162 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://shakmat.com/support/",
+      "https://modulargrid.net/e/shakmat-ballista-blast",
+      "https://www.matrixsynth.com/2026/03/shakmat-ballista-blast-demo.html"
+    ]
+  },
+  "slug": "shakmat-modular--ballista-blast",
+  "name": "Ballista Blast",
+  "manufacturer": "Shakmat Modular",
+  "hp": 12,
+  "tags": ["OSCILLATOR", "VCO", "FILTER", "VCF", "VCA", "DISTORTION"],
+  "description": "Hybrid monophonic synth voice with subtractive, wavetable, and FM engines, analog filtering and VCA, assignable envelope and random source, velocity input, SD-card preset memory, and Select Bus recall.",
+  "controls": [
+    {
+      "name": "Tune",
+      "scope": "Global",
+      "description": "Encoder-based pitch calibration for the voice. Sets the current root and trims pitch without menu diving.",
+      "detail": "encoder control · fine pitch set"
+    },
+    {
+      "name": "Engine Select",
+      "scope": "Global",
+      "description": "Chooses Classic, Wavetable, or FM synthesis architecture.",
+      "detail": "Classic · Wavetable · FM"
+    },
+    {
+      "name": "FM Index",
+      "scope": "FM engine",
+      "description": "Sets modulation depth for the FM engine. Responds to direct control and CV.",
+      "detail": "direct + CV control · attenuverting CV input"
+    },
+    {
+      "name": "Ratio",
+      "scope": "FM engine",
+      "description": "Sets operator ratio range. Lock switch selects free or precise ratios.",
+      "detail": "free / locked ratios · direct + CV control"
+    },
+    {
+      "name": "Wave",
+      "scope": "Oscillator",
+      "description": "Selects the active operator waveform set.",
+      "detail": "8 waveform shapes · direct + CV control"
+    },
+    {
+      "name": "Envelope Assign",
+      "scope": "Global",
+      "description": "Routes the onboard envelope to the assigned destination set.",
+      "detail": "assignable envelope depth"
+    },
+    {
+      "name": "Random Assign",
+      "scope": "Global",
+      "description": "Assigns the onboard random source to a target parameter.",
+      "detail": "gate-triggered randomizer · assignable depth"
+    },
+    {
+      "name": "Velocity Assign",
+      "scope": "Global",
+      "description": "Scales the velocity input against the selected destination.",
+      "detail": "velocity routable to nearly any parameter"
+    },
+    {
+      "name": "Preset / Memory",
+      "scope": "Global",
+      "description": "Stores and recalls presets from SD card memory.",
+      "detail": "256 presets · non-volatile · Select Bus compatible"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Gate",
+      "description": "Triggers the onboard envelope and voice articulation.",
+      "voltage": "gate"
+    },
+    {
+      "name": "Velocity",
+      "description": "Velocity CV for expressive dynamics.",
+      "voltage": "CV"
+    },
+    {
+      "name": "CV 1-11",
+      "description": "Assignable CV inputs for engine, filter, envelope, randomizer, or mix destinations.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Select Bus",
+      "description": "Receives preset recall messages from a compatible master module.",
+      "voltage": "bus"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT L",
+      "description": "Left audio output with stereo widening applied.",
+      "voltage": "audio"
+    },
+    {
+      "name": "OUT R",
+      "description": "Right audio output with stereo widening applied.",
+      "voltage": "audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Three engines",
+      "trigger": "select Classic, Wavetable, or FM",
+      "description": "Classic routes saw and square waves through switchable analog filtering, VCA, and distortion. Wavetable reuses the analog chain. FM uses up to four operators and three macro controls."
+    },
+    {
+      "name": "Envelope and random routing",
+      "trigger": "assign envelope or random source",
+      "description": "The onboard envelope, random generator, and velocity input can be routed to nearly any parameter, so the same patch can swing between stable, animated, and chaotic states."
+    },
+    {
+      "name": "Preset memory",
+      "trigger": "save or recall presets",
+      "description": "The module stores 256 presets on SD card and recalls them non-volatilely. Select Bus support lets a master module step through stored sounds."
+    },
+    {
+      "name": "Velocity-driven articulation",
+      "trigger": "vary the velocity input",
+      "description": "Velocity scales more than output level. It can also move parameter destinations, so harder hits can brighten the tone or push the filter harder."
+    },
+    {
+      "name": "Stereo widening",
+      "trigger": "use OUT L / OUT R as a pair",
+      "description": "The voice remains effectively monophonic at the source, but the output stage widens the image enough to place it like a finished voice in a mix."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic bassline",
+      "patch": "Classic engine · saw/square mix into analog VCF and VCA · Gate fires the onboard envelope · Velocity adds accent and pushes the filter harder · dry, direct bass voice that sits like a complete mono synth.",
+      "diagram": "Ballista Blast:\n* Engine Select: Classic\n* Envelope Assign: VCA + VCF\n* Velocity Assign: accent\n\nEnvelope:\nVCA:\nFilter:\nOutput:\n\n- Sequencer (Gate) g> Ballista Blast (Gate)\n- Sequencer (Pitch) p> Ballista Blast (CV)\n- Ballista Blast (OUT L) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Wavetable lead",
+      "patch": "Wavetable engine · Tune set to the song root · Random assigned to wavetable motion · Envelope short and snappy · stereo output into a chorus or delay gives glassy lead lines that stay fresh without patching extra modulators.",
+      "diagram": "Ballista Blast:\n* Engine Select: Wavetable\n* Random Assign: wavetable position\n* Envelope Assign: amplitude\n\nLFO:\nDelay:\nOutput:\n\n- LFO (Out) >> Ballista Blast (Random CV)\n- Ballista Blast (OUT L) -> Delay (In)\n- Delay (Out) -> Output (In)"
+    },
+    {
+      "name": "FM bell voice",
+      "patch": "FM engine · Ratio lock engaged · FM Index moderate · Trigger fires the internal decay envelope · quick note bursts become bell-like strikes with controllable inharmonicity and clean stereo spread.",
+      "diagram": "Ballista Blast:\n* Engine Select: FM\n* Ratio: locked\n* FM Index: moderate\n\nSequencer:\nEnvelope:\nOutput:\n\n- Sequencer (Gate) g> Ballista Blast (Gate)\n- Sequencer (Pitch) p> Ballista Blast (Chord CV)\n- Ballista Blast (OUT L) -> Output (Left)\n- Ballista Blast (OUT R) -> Output (Right)"
+    },
+    {
+      "name": "Preset motion",
+      "patch": "Store four related presets · drive Select Bus from a clocked master module · Velocity or random motion changes the filter and distortion depth between recalls · step through evolving but repeatable voice states without touching the panel.",
+      "diagram": "Ballista Blast:\n* Preset / Memory: banked\n* Engine Select: Classic\n\nClock:\nSequencer:\nOutput:\n\n- Clock (Out) c> Sequencer (Clock)\n- Sequencer (Gate) g> Ballista Blast (Gate)\n- Sequencer (Pitch) p> Ballista Blast (Select Bus)\n- Ballista Blast (OUT L) -> Output (L)\n- Ballista Blast (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Velocity-shaped chord stab",
+      "patch": "Chord mode enabled · chord CV sets inversion and voicing · Velocity drives both timbre and output level · short triggers produce stab chords that behave like a playable poly-voice inside one module.",
+      "diagram": "Ballista Blast:\n* Engine Select: Classic\n* Envelope Assign: output level\n* Velocity Assign: chord brightness\n\nSequencer:\nOutput:\n\n- Sequencer (Gate) g> Ballista Blast (Gate)\n- Sequencer (Pitch) p> Ballista Blast (Chord CV)\n- Ballista Blast (OUT L) -> Output (In)"
+    }
+  ]
+}

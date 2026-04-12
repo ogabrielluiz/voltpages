@@ -1,0 +1,244 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/dpo-manual.pdf",
+      "https://www.makenoisemusic.com/modules/dpo/"
+    ]
+  },
+  "slug": "make-noise--dpo",
+  "name": "DPO",
+  "manufacturer": "Make Noise",
+  "hp": 28,
+  "tags": ["OSCILLATOR", "VCO", "WAVEFOLDER"],
+  "description": "Dual Primary Oscillator. Two analog complex VCOs with shared FM/Mod buses, Shape/Angle/Fold wavefolder on VCO B, Hard Sync, Lock, LFO mode and vactrol Strike. Buchla 259 lineage.",
+  "controls": [
+    {
+      "name": "FREQ (Coarse)",
+      "scope": "VCO A & VCO B",
+      "description": "Per-VCO coarse tune.",
+      "detail": "9.5 octave range · 12Hz – 6kHz"
+    },
+    {
+      "name": "Fine Tune",
+      "scope": "VCO A & VCO B",
+      "description": "Per-VCO fine tune.",
+      "detail": "1.75 octave range"
+    },
+    {
+      "name": "Expo Attenuator",
+      "scope": "VCO A & VCO B",
+      "description": "Unipolar attenuator for Expo FM input.",
+      "detail": "unipolar"
+    },
+    {
+      "name": "Linear FM Att",
+      "scope": "VCO A & VCO B",
+      "description": "Per-VCO attenuator for Linear FM input. VCO A is uni, VCO B is attenuverter.",
+      "detail": "VCO A: unipolar · VCO B: bipolar"
+    },
+    {
+      "name": "VCO A Mode Button",
+      "scope": "VCO A",
+      "description": "Cycles VCO A core behavior.",
+      "detail": "No LED: Standard · Blue: Lock to B · Pink: Hard Sync to B · Amber: LFO"
+    },
+    {
+      "name": "Follow",
+      "scope": "Interaction",
+      "description": "Determines how much VCO A tracks VCO B's 1V/Oct. Becomes attenuator when Follow CV is patched.",
+      "detail": "CW: full lag-free follow · CCW: independent · combo pot"
+    },
+    {
+      "name": "FM Bus Index",
+      "scope": "FM Bus",
+      "description": "Master depth of internal FM bus (sine-FM in both directions). Index LED shows value.",
+      "detail": "unipolar · overdrives >80%"
+    },
+    {
+      "name": "FM Bus Index CV Att",
+      "scope": "FM Bus",
+      "description": "Bipolar attenuator for FM Bus Index CV.",
+      "detail": "bipolar"
+    },
+    {
+      "name": "Shape",
+      "scope": "VCO B Timbre",
+      "description": "Morphs waveform feeding the Fold circuit. Crossfades via vactrol — slow/smooth.",
+      "detail": "CCW: Sine · 12:00: Spike · CW: Glitched Triangle · phase-reversal window ~12:00"
+    },
+    {
+      "name": "Shape CV Att",
+      "scope": "VCO B Timbre",
+      "description": "Unipolar attenuator for Shape CV. Normalled to Mod Bus.",
+      "detail": "unipolar"
+    },
+    {
+      "name": "Angle",
+      "scope": "VCO B Timbre",
+      "description": "Tilts added harmonics to one end of the wave-cycle. Asymmetric folding.",
+      "detail": "unipolar"
+    },
+    {
+      "name": "Angle CV Att",
+      "scope": "VCO B Timbre",
+      "description": "Unipolar attenuator for Angle CV. Normalled to Mod Bus.",
+      "detail": "unipolar"
+    },
+    {
+      "name": "Fold",
+      "scope": "VCO B Timbre",
+      "description": "Wavefolder depth. First 30% acts as VCA; past 30% introduces fold thresholds.",
+      "detail": "unipolar · VCA-like 0-30% then fold"
+    },
+    {
+      "name": "Fold CV Att",
+      "scope": "VCO B Timbre",
+      "description": "Unipolar attenuator for Fold CV. Normalled to Mod Bus.",
+      "detail": "unipolar"
+    },
+    {
+      "name": "Mod Bus Index",
+      "scope": "Mod Bus",
+      "description": "Master depth of Mod Bus (Sine from VCO A to Shape/Angle/Fold). Index LED shows value.",
+      "detail": "unipolar"
+    },
+    {
+      "name": "Mod Bus Index CV Att",
+      "scope": "Mod Bus",
+      "description": "Bipolar attenuator for Mod Bus Index CV.",
+      "detail": "bipolar"
+    }
+  ],
+  "inputs": [
+    { "name": "VCO A Expo", "description": "Exponential FM CV. Normalled to FM Bus.", "voltage": "bipolar · 10V" },
+    { "name": "VCO A 1V/Oct", "description": "Pitch CV.", "voltage": "±5V" },
+    { "name": "VCO A Linear FM", "description": "AC-coupled Linear FM. Normalled to FM Bus.", "voltage": "10V · AC coupled" },
+    { "name": "VCO B Expo", "description": "Exponential FM CV. Normalled to FM Bus.", "voltage": "bipolar · 10V" },
+    { "name": "VCO B 1V/Oct", "description": "Pitch CV.", "voltage": "±5V" },
+    { "name": "VCO B Linear FM", "description": "AC-coupled Linear FM. Normalled to FM Bus.", "voltage": "10V · AC coupled" },
+    { "name": "VCO B External Lock", "description": "Phase-reversed weak sync to external VCO. Use square/pulse/saw.", "voltage": "10Vpp" },
+    { "name": "Follow CV", "description": "CV over Follow amount. Follow knob becomes attenuator when patched.", "voltage": "0V – 5V" },
+    { "name": "FM Bus Index CV", "description": "CV for FM Bus depth.", "voltage": "±4V" },
+    { "name": "Shape CV", "description": "Unipolar CV for Shape. Normalled into Mod Bus.", "voltage": "0V – 5V" },
+    { "name": "Angle CV", "description": "Bipolar CV for Angle. Normalled into Mod Bus.", "voltage": "8V range" },
+    { "name": "Fold CV", "description": "Unipolar CV for Fold. Normalled into Mod Bus.", "voltage": "0V – 8V" },
+    { "name": "Mod Bus External Source", "description": "Interrupts VCO A Sine as Mod Bus source. Replaces internal routing.", "voltage": "±8V" },
+    { "name": "Mod Bus Index CV", "description": "CV for Mod Bus depth.", "voltage": "±4V" },
+    { "name": "Strike", "description": "Briefly opens Fold circuit to 100%. Gate/clock input.", "voltage": "8V – 10V gate" }
+  ],
+  "outputs": [
+    { "name": "VCO A Triangle", "description": "Tapped from triangle core — good for Shape modulation and Hard Sync source.", "voltage": "10Vpp" },
+    { "name": "VCO A Sawtooth", "description": "Core saw. More aggressive than Triangle/Sine for FM and filter input.", "voltage": "9Vpp" },
+    { "name": "VCO A Sine", "description": "Sine shaped from triangle core. Default Mod Bus source.", "voltage": "10Vpp" },
+    { "name": "VCO B Sine", "description": "Sine shaped from triangle core.", "voltage": "10Vpp" },
+    { "name": "VCO B Square", "description": "Asymmetrical square. Use for External Lock chain or subtractive patches.", "voltage": "9Vpp asymmetrical" },
+    { "name": "VCO B FINAL", "description": "Full Timbre-section output — post Shape, Angle, Fold. Main musical output.", "voltage": "10Vpp max" }
+  ],
+  "behaviors": [
+    {
+      "name": "FM Bus (internal sine cross-FM)",
+      "trigger": "FM Bus Index above zero",
+      "description": "Hardwired Sine-wave bus: VCO A Sine → VCO B Linear/Expo FM AND VCO B Sine → VCO A Linear/Expo FM simultaneously. FM Bus Index is master depth. Per-destination attenuators let you set different FM depths on each VCO. Past ~80% the bus overdrives into bi-directional dynamic FM chaos."
+    },
+    {
+      "name": "Mod Bus (internal sine → Timbre)",
+      "trigger": "Mod Bus Index above zero",
+      "description": "Hardwired VCO A Sine → Shape, Angle, Fold CVs. Per-destination unipolar attenuators. Patching a cable to Mod Bus External Source replaces VCO A Sine with that signal as Mod Bus source — audio-rate modulation of Timbre from any external source."
+    },
+    {
+      "name": "VCO A Lock (Blue LED)",
+      "trigger": "Mode button → Blue",
+      "description": "Extremely weak phase-sync: VCO A approaches an integer ratio of VCO B and small tuning errors correct. Useful for cleaning up FM patches where VCO A is the modulator. Does not impart audible harmonics."
+    },
+    {
+      "name": "VCO A Hard Sync (Pink LED)",
+      "trigger": "Mode button → Pink",
+      "description": "VCO B restarts VCO A's cycle at each B cycle. Introduces strong harmonics. Sweeping VCO A FREQ above VCO B generates classic sync sweeps. Master should be ≥100Hz for best results."
+    },
+    {
+      "name": "VCO A LFO mode (Amber LED)",
+      "trigger": "Mode button → Amber",
+      "description": "VCO A becomes an LFO. Routes onto FM and Mod Buses for slow cross-modulation of VCO B. Shape and Angle parameters respond beautifully to VCO A LFO-rate modulation via Mod Bus. Beat-Frequency LED also becomes a tempo indicator."
+    },
+    {
+      "name": "Follow tracking",
+      "trigger": "Follow knob or Follow CV",
+      "description": "Determines how well VCO A tracks VCO B 1V/Oct. Full CW: A perfectly follows B (maintains FM/Sync ratios with sequencer). CCW: A is fully independent. Mid settings produce pitch-lag glissandi — 'skronk' effect when a new sequencer note arrives."
+    },
+    {
+      "name": "Shape vactrol crossfade phase reversal",
+      "trigger": "Shape around 12:00",
+      "description": "Shape is vactrol-based — slow smooth crossfade. Around the 12:00 region the Shape circuit performs amplitude modulation and phase reversal on its own, causing subtle folding-like behavior before the Fold stage. Use LFO on Shape for subtle timbral animation."
+    },
+    {
+      "name": "Strike briefly opens Fold",
+      "trigger": "gate/clock → Strike",
+      "description": "Strike input momentarily snaps Fold to 100% for the duration of the gate. Creates accents, percussive clicks, audio-rate fold modulation. Often multed with a sequencer gate for brightness-per-note."
+    },
+    {
+      "name": "External Lock on VCO B",
+      "trigger": "square/pulse/saw → Ext Lock",
+      "description": "Weak phase-reversed sync of VCO B to an external VCO. VCO B approaches integer of external signal. Phase-reversal means summing VCO B + Ext source produces amplitude cancellations dependent on phase — modulating VCO B via Expo CV pushes it out of lock and back."
+    },
+    {
+      "name": "Fold first 30% acts as VCA",
+      "trigger": "Fold knob 0–30%",
+      "description": "Below 30%, the Fold circuit behaves like a VCA on the post-Shape/Angle signal — useful for percussive VCA duties without additional modules. Past 30%, folding begins and the circuit loses its VCA character."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Animated lead (classic DPO voice)",
+      "patch": "Sequencer → VCO B 1V/Oct · Shape, Angle CVs attenuators 12:00 · Fold ~9:00, Fold CV att 12:00 · Mod Bus Index 12:00 · gate → Strike · VCO A Mode: Amber (LFO), FREQ ~9:00, Follow full CW · monitor FINAL · VCO A as LFO animates VCO B Timbre via Mod Bus while Follow keeps harmonic ratio locked as sequence plays.",
+      "diagram": "DPO:\n* VCO A: Amber (LFO), FREQ ~9:00\n* VCO B: Shape/Angle att 12:00, Fold ~9:00\n* Follow: full CW\n* Mod Bus Index: 12:00\n\n- Sequencer (Pitch) p> DPO (VCO B 1V/Oct)\n- Gate Source (Gate) g> DPO (Strike)\n- DPO (VCO B FINAL) -> Output (In)"
+    },
+    {
+      "name": "Bass drum",
+      "patch": "VCO A Sine → Optomix CH 1 · stepped random (Wogglebug) → VCO A Linear FM In (att 12:00) · Wogglebug Clock → Optomix STRIKE · FREQ VCO A ~9:00 · Optomix DAMP/CONTROL full CCW · kick with varying FM character per hit · mult same gate to FM Bus Index for dynamic index expansion.",
+      "diagram": "DPO:\n* VCO A: FREQ ~9:00\n* VCO A Lin FM Att: 12:00\n\n- Wogglebug (Stepped) >> DPO (VCO A Lin FM)\n- Wogglebug (Clock) c> Optomix.CH 1 (Strike)\n- DPO (VCO A Sine) -> Optomix.CH 1 (Signal In)\n- Optomix.CH 1 (Out) -> Output (In) // kick"
+    },
+    {
+      "name": "Skronky FM",
+      "patch": "VCO A Mode: Pink (Hard Sync to B) · Follow ~3:00 · VCO B Lin FM att 12:00 · FM Bus Index 12:00 · tune VCOs to unison/fifth/octave · sequencer → VCO B 1V/Oct · Follow lag creates discordant FM squelch each note change as VCO A slides to catch up · monitor VCO B Sine.",
+      "diagram": "DPO:\n* VCO A: Pink (Sync to B)\n* Follow: ~3:00\n* VCO B Lin FM Att: 12:00\n* FM Bus Index: 12:00\n\n- Sequencer (Pitch) p> DPO (VCO B 1V/Oct)\n- DPO (VCO B Sine) -> Output (In) // skronky sync slides"
+    },
+    {
+      "name": "Strike Force (PP-controlled fold)",
+      "patch": "Shape and Fold knobs full CCW · Shape/Fold CV atts 12:00 · Pressure Points Common Gate → Strike · PP tuned voltage → VCO B 1V/Oct · PP Common Pressure → Mod Bus External Source · sound grows louder AND more damped with pressure — expressive one-handed DPO voicing.",
+      "diagram": "DPO:\n* VCO B: Shape/Fold full CCW, atts 12:00\n\n- Pressure Points (Tuned B) p> DPO (VCO B 1V/Oct)\n- Pressure Points (Common Gate) g> DPO (Strike)\n- Pressure Points (Pressure) >> DPO (Mod Bus Ext Source)\n- DPO (VCO B FINAL) -> Output (In)"
+    },
+    {
+      "name": "Wobble bass",
+      "patch": "Fold, Angle, Shape 12:00 atts 12:00 · VCO A Mode: Amber (LFO), FREQ ~9:00 · Mod Bus Index full CW · FM Bus Index full CCW · Follow full CW · sequencer → VCO B 1V/Oct · wobble speed doubles per octave because VCO A LFO tracks B pitch via Follow · expressive dubstep-style bass.",
+      "diagram": "DPO:\n* VCO A: Amber (LFO), FREQ ~9:00\n* VCO B: Fold/Angle/Shape 12:00\n* Follow: full CW\n* Mod Bus Index: full CW\n* FM Bus Index: full CCW\n\n- Sequencer (Pitch) p> DPO (VCO B 1V/Oct)\n- DPO (VCO B FINAL) -> Filter (In)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Cross-FM drone",
+      "patch": "Both VCOs tuned to unison or fifth · FM Bus Index ~2:00 (near overdrive) · Mode: standard (no sync) · Follow CCW · no sequencer · slow LFO → FM Bus Index CV · index slowly modulates into/out of overdrive · monitor VCO B FINAL · evolving bidirectional cross-FM drone.",
+      "diagram": "DPO:\n* VCO A: standard\n* Both VCOs tuned to fifth\n* FM Bus Index: ~2:00\n\nLFO:\n\n- LFO (Out) >> DPO (FM Bus Index CV)\n- DPO (VCO B FINAL) -> Output (In)"
+    },
+    {
+      "name": "External Lock chord stack",
+      "patch": "VCO B1 Square → DPO 2 VCO B Ext Lock · DPO 2 VCO B tuned to 3rd or 5th above · External Lock gently pulls the pair into harmonic relation · sum both FINAL outputs → mixer · chord-tuned stack without detuning drift. Add more DPOs the same way for thicker stacks.",
+      "diagram": "DPO 1:\n* VCO B tuned to root\n\nDPO 2:\n* VCO B tuned to 3rd\n\n- DPO 1 (VCO B Square) -> DPO 2 (Ext Lock)\n- DPO 1 (VCO B FINAL) -> Mixer (In)\n- DPO 2 (VCO B FINAL) -> Mixer (In)"
+    },
+    {
+      "name": "West-coast bongo",
+      "patch": "Shape full CCW · Angle 12:00 · Fold 9:00 · Fold CV att 12:00 · gate → Strike AND → Optomix CH 1 Strike · VCO B FINAL → Optomix CH 1 Signal In · Optomix DAMP ~9:00 · random CV → VCO B 1V/Oct · each gate opens Fold + plucks LPG → classic bongo.",
+      "diagram": "DPO:\n* Shape: full CCW\n* Angle: 12:00\n* Fold: 9:00\n\n- Random CV (Out) p> DPO (VCO B 1V/Oct)\n- Gate (Trig) g> DPO (Strike)\n- Gate (Trig) g> Optomix.CH 1 (Strike)\n- DPO (VCO B FINAL) -> Optomix.CH 1 (Signal In)\n- Optomix.CH 1 (Out) -> Output (In) // bongo"
+    },
+    {
+      "name": "Audio-rate Mod Bus injection",
+      "patch": "External audio source → Mod Bus External Source · Shape CV att, Angle CV att, Fold CV att all 12:00 · Mod Bus Index 2:00 · Timbre section modulated by arbitrary external signal at audio rate · works well with filtered noise, samples, another VCO's saw — very different character from default VCO A Sine.",
+      "diagram": "DPO:\n* Mod Bus Index: 2:00\n* Shape/Angle/Fold CV atts: 12:00\n* VCO B: FREQ bass range\n\n- External Audio (Out) -> DPO (Mod Bus Ext Source)\n- DPO (VCO B FINAL) -> Output (In)"
+    },
+    {
+      "name": "Quadrature LFOs from DPO",
+      "patch": "VCO A Mode: Amber (LFO) · VCO A Sine and VCO A Triangle outs = two phase-related LFOs · patch Sine to filter cutoff and Triangle to VCA CV · add Follow + sequencer → VCO B 1V/Oct to make VCO B audible voice while VCO A doubles as mod source · DPO as 1-VCO voice + dual modulator.",
+      "diagram": "DPO:\n* VCO A: Amber (LFO)\n* Follow: full CW\n\n- Sequencer (Pitch) p> DPO (VCO B 1V/Oct)\n- DPO (VCO A Sine) >> Filter (Cutoff)\n- DPO (VCO A Triangle) >> VCA (CV)\n- DPO (VCO B FINAL) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://ajhsynth.com/VCO.html",
+      "https://ajhsynth.com/pdf/MiniMod%20VCO%20User%20Manual.pdf",
+      "https://www.soundonsound.com/reviews/ajh-synth-minimod-vintage-transistor-core-vco",
+      "https://www.perfectcircuit.com/ajh-minimod-vco.html",
+      "https://modulargrid.net/e/ajh-synth-minimod-vintage-transistor-core-vco"
+    ]
+  },
+  "slug": "ajh-synth--minimod-vintage-transistor-core-vco",
+  "name": "MiniMod Vintage Transistor Core VCO",
+  "manufacturer": "AJH Synth",
+  "hp": 14,
+  "tags": ["VCO", "OSCILLATOR"],
+  "description": "Discrete all-transistor Moog Model D VCO emulation. Matched PNP expo converter and P-FET buffer, four simultaneous outputs including Sharktooth, CV-controllable PWM, hard sync, LFO mode. Normalled 1V/Oct from bus.",
+  "controls": [
+    {
+      "name": "Octave Switch",
+      "scope": "Global",
+      "description": "Rotary selector for preset octave ranges. LO setting drops frequency into LFO range for modulation use.",
+      "detail": "LO · 32' · 16' · 8' · 4' · 2'"
+    },
+    {
+      "name": "TUNE",
+      "scope": "Global",
+      "description": "Fine tune control. Approximately ±8 semitone range around the selected octave.",
+      "detail": "±8 notes · multi-turn trim behind panel for coarse set"
+    },
+    {
+      "name": "EXP CV",
+      "scope": "Global",
+      "description": "Attenuator for the Exp CV input. Ranges 0-120%, allowing overmodulation of the exponential core.",
+      "detail": "0–120%"
+    },
+    {
+      "name": "LIN CV",
+      "scope": "Global",
+      "description": "Attenuator for the Linear CV input. Modulates pitch subtly through the P-FET buffer stage.",
+      "detail": "0–100% · up to ±7 notes at full"
+    },
+    {
+      "name": "SYNC LEVEL",
+      "scope": "Sync",
+      "description": "Threshold/sensitivity for hard sync. Adjusts how much of the sync source reaches the core. Position 2–4 is typical with another MiniMod VCO as source.",
+      "detail": "0–10 · start CCW · very level-sensitive"
+    },
+    {
+      "name": "PWM CV",
+      "scope": "Square output",
+      "description": "Attenuator for PWM CV input. A triangle LFO at full gives classic sweeping PWM.",
+      "detail": "0–100% · input ±5V recommended"
+    },
+    {
+      "name": "PWM SHAPE",
+      "scope": "Square output",
+      "description": "Manual pulse-width control. Noon = 50% duty cycle. Remains active under PWM CV as offset.",
+      "detail": "~10%–90% duty · noon = square"
+    },
+    {
+      "name": "Sync On/Off Switch (S1/S2)",
+      "scope": "Sync",
+      "description": "Toggle to quickly enable/disable hard sync. S2 (down) = sync active; S1 (up) = bypassed. S1-triggered sync mode is no longer supported.",
+      "detail": "S1 = off · S2 = hard sync on"
+    }
+  ],
+  "inputs": [
+    { "name": "SYNC", "description": "Hard sync input. Rising ramp (saw) of ±5V resets the core waveform. Falling ramps need inversion to trigger reliably.", "voltage": "±5V rising ramp" },
+    { "name": "1 V/OCT", "description": "Primary pitch input at exactly 1 volt per octave. Normalled to the Eurorack power bus CV line; patching a cable defeats the normalled signal.", "voltage": "±7V accepted · tracking degrades above 10kHz", "normalizedTo": "Eurorack distribution-bus 1V/Oct CV" },
+    { "name": "EXP-CV", "description": "Exponential modulation input. Behaves like 1V/Oct but attenuated via Exp CV knob. Accepts ±5V.", "voltage": "±5V" },
+    { "name": "LIN-CV", "description": "Linear modulation input. Through-zero style but not TZFM; produces subtle pitch modulation up to ±7 semitones.", "voltage": "±5V" },
+    { "name": "PWM-CV", "description": "PWM control voltage input for the square output duty cycle.", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "SAW", "description": "Rising ramp / sawtooth output.", "voltage": "±5V · 1kΩ out" },
+    { "name": "Triangle", "description": "Triangle wave output.", "voltage": "±5V · 1kΩ out" },
+    { "name": "Shark", "description": "Sharktooth waveform from the original Model D. Unique spectral character sitting between saw and triangle.", "voltage": "±5V · 1kΩ out" },
+    { "name": "Square", "description": "Square / pulse wave output with duty cycle set by PWM Shape and PWM CV.", "voltage": "±5V · 1kΩ out · 10–90% duty" }
+  ],
+  "behaviors": [
+    {
+      "name": "Bus-normalled 1V/Oct",
+      "trigger": "no cable in 1V/Oct jack",
+      "description": "Picks up the distribution-bus CV line if the case routes one (e.g., from a MIDI/CV converter). Patching any cable defeats the normal. Lets MiniMod voices track a master controller without visible cabling, matching the MiniMod system design."
+    },
+    {
+      "name": "Four simultaneous waveforms",
+      "trigger": "always",
+      "description": "SAW, Triangle, Shark, and Square outputs all emit at once. Sharktooth is the distinctive Model D waveform, a softened saw with a triangular down-slope unique to this core. Useful as a built-in waveshaper menu via the patch cable."
+    },
+    {
+      "name": "LO switch = LFO mode",
+      "trigger": "Octave switch set to LO",
+      "description": "Drops the core into LFO range. With -5V at the 1V/Oct input the VCO reaches approximately 0.02Hz (one cycle per 50 seconds). All four waveform outputs remain available, making it a full-waveform LFO."
+    },
+    {
+      "name": "Warm-up drift",
+      "trigger": "powering up from cold",
+      "description": "Vintage analog core takes ~15 minutes to stabilize. Tuning before warm-up drifts noticeably. After stabilization pitch holds better than the original Model D due to modern SMT expo converter."
+    },
+    {
+      "name": "High-frequency tracking loss",
+      "trigger": "V/Oct input driving core above 10kHz",
+      "description": "The vintage core design does not maintain 1V/Oct law above ~10kHz. Tracking flattens at the top. Matches the original Model D behavior — relevant if used as a modulation source at high rates rather than at pitch."
+    },
+    {
+      "name": "Hard sync threshold",
+      "trigger": "SYNC input with S1/S2 = S2",
+      "description": "Sync reset is level-sensitive, set by Sync Threshold. Start fully CCW and turn up gradually. Classic 'laser harp' ripping sync sounds emerge when a swept slave VCO is synced to a fixed master. Falling ramps need inversion; saw outputs from other MiniMod VCOs are ideal."
+    },
+    {
+      "name": "PWM Shape as CV offset",
+      "trigger": "PWM CV patched while PWM Shape is adjusted",
+      "description": "Under CV control the manual Shape knob becomes an offset. Lets the user center the PWM sweep — e.g., set Shape to 30% then modulate, so the duty cycle wobbles asymmetrically around that base width."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic Model D voice",
+      "patch": "Saw to ladder filter · 8' octave · Envelope into filter cutoff · keyboard V/oct via bus · thick monosynth bass matching the original design intent",
+      "diagram": "VCO:\n* Octave: 8'\n\nFilter:\n\nEnvelope:\n\nVCA:\n\n- VCO (Saw) -> Filter (In)\n- Envelope (Out) >> Filter (Cutoff)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "PWM string pad",
+      "patch": "Square out · slow triangle LFO into PWM-CV at ~70% · PWM Shape at noon centered · soft pad character with continuously shifting width",
+      "diagram": "VCO:\n* Octave: 8'\n* PWM CV: 70%\n* PWM SHAPE: noon\n\nLFO:\n\n- LFO (Tri) >> VCO (PWM-CV) // classic PWM sweep\n- VCO (Square) -> Filter (In)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Dual-VCO hard sync lead",
+      "patch": "Master VCO free-running · slave VCO Sync Switch = S2 · master Saw to slave SYNC · slave frequency swept by envelope · screaming sync lead",
+      "diagram": "VCO 1 (master):\n* Octave: 8'\n\nVCO 2 (slave):\n* Octave: 8'\n* Sync Switch: S2\n* SYNC LEVEL: 3\n\nEnvelope:\n\n- VCO 1 (Saw) -> VCO 2 (SYNC)\n- Envelope (Out) >> VCO 2 (EXP-CV)\n- VCO 2 (Saw) -> Filter (In)"
+    },
+    {
+      "name": "LFO with four waveforms",
+      "patch": "Octave switch = LO · use Saw, Triangle, Square, Shark outs as four independent modulation sources from one oscillator · Shark gives a unique near-triangle curve unavailable on most LFOs",
+      "diagram": "VCO:\n* Octave: LO\n\nFilter:\n\nVCA:\n\nDelay:\n\nMixer:\n\n- VCO (Triangle) >> Filter (Cutoff)\n- VCO (Square) >> VCA (CV)\n- VCO (Shark) >> Delay (Time)\n- VCO (Saw) >> Mixer (Pan CV)"
+    },
+    {
+      "name": "Sharktooth bass",
+      "patch": "Shark output into filter · tuned to 32' for sub · the Shark waveform sits between saw and triangle harmonically giving a warm, punchy low end without the buzz of pure saw",
+      "diagram": "VCO:\n* Octave: 32'\n\nFilter:\n\nEnvelope:\n\nVCA:\n\n- VCO (Shark) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Exp overmodulation FM",
+      "patch": "VCO B (modulator) into EXP-CV · EXP CV attenuator at 120% (past unity) · dirty exponential FM with aliased harmonic crashes well beyond standard FM depth",
+      "diagram": "VCO A:\n* EXP CV: 120% (max)\n\nVCO B:\n* Octave: 8'\n\n- VCO B (Triangle) >> VCO A (EXP-CV) // overmodulated FM\n- VCO A (Saw) -> Filter (In)"
+    },
+    {
+      "name": "Linear vibrato on bus",
+      "patch": "Bus-normalled V/oct from MIDI interface · small triangle LFO into LIN-CV · LIN CV attenuator low · gentle ±semitone vibrato without detuning the main pitch reference",
+      "diagram": "VCO:\n* Octave: 8'\n* LIN CV: ~20%\n\nLFO:\n\n- LFO (Tri) >> VCO (LIN-CV) // subtle vibrato\n- VCO (Saw) -> Filter (In)"
+    }
+  ]
+}

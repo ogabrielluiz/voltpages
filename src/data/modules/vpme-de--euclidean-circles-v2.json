@@ -1,0 +1,211 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "2.0.5",
+    "sources": [
+      "https://vpme.de/euclidean-circles/",
+      "https://www.analoguehaven.com/vpmedotde/euclidean-circles-v2/manual.pdf",
+      "https://modulargrid.net/e/vpme-de-euclidean-circles-v2-",
+      "https://schneidersladen.de/en/vpme-euclidean-circles-v2",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=166411"
+    ]
+  },
+  "slug": "vpme-de--euclidean-circles-v2",
+  "name": "Euclidean Circles V2",
+  "manufacturer": "vpme.de",
+  "hp": 10,
+  "tags": ["SEQUENCER", "CLOCK", "TRIGGER", "RANDOM"],
+  "description": "Six-channel Euclidean rhythm generator with three concentric LED rings. 16-step patterns per channel with length, fill, rotation, chaining, prescaling, step-edit, and 16 presets. Open-source firmware, 5V-only, WAV-file update.",
+  "controls": [
+    {
+      "name": "Top Encoder",
+      "scope": "Global",
+      "description": "Cycles channel 1 (or 4) parameter: length → fill → start. Long press toggles between banks 1-3 and 4-6. In SETTINGS mode selects/saves presets.",
+      "detail": "Press: cycle param · Long press: switch bank · Rotate: adjust current param"
+    },
+    {
+      "name": "Middle Encoder",
+      "scope": "Global",
+      "description": "Cycles channel 2 (or 5) parameter: length → fill → start. Long press enters AUTO CLOCK. In SETTINGS mode toggles numbered settings on/off.",
+      "detail": "Long press → AUTO CLOCK · rotate CW: 10–2500 bpm · fully CCW: stop internal clock"
+    },
+    {
+      "name": "Bottom Encoder",
+      "scope": "Global",
+      "description": "Cycles channel 3 (or 6) parameter: length → fill → start. Long press enters PRESETS and SETTINGS mode. In SETTINGS adjusts LED brightness.",
+      "detail": "Long press → SETTINGS · rotate in SETTINGS: 8-step LED brightness"
+    },
+    {
+      "name": "F-BUTTON",
+      "scope": "Global",
+      "description": "User-assignable performance button. Default = toggle bank 1-3/4-6. Assignable to 11 functions in F-BUTTON settings page.",
+      "detail": "SWITCH · RESET · MUTE · RUN/STOP · PICK PRESET · SHOW PRESETS · TOGGLE · SAVE & TOGGLE · FREEZE · FILL · ROTATE"
+    },
+    {
+      "name": "Six LED Rings",
+      "scope": "Display",
+      "description": "Three concentric circles of 16 LEDs show length/fill/start for the active channel bank; innermost uses color to indicate which parameter the encoder currently edits.",
+      "detail": "BLUE/CYAN = length · ORANGE = fill · PURPLE/RED = start · green = current preset"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "CLK",
+      "description": "External clock input. Rising edge advances all active channels one step. Doubles as data input for WAV-file firmware updates.",
+      "voltage": "2Vpp+ for firmware update path"
+    },
+    {
+      "name": "RST",
+      "description": "Reset input. Rising edge resets all channels to step 1 on the next clock (edge-triggered by default; level-triggered in SETTINGS 15).",
+      "voltage": "gate/trigger"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT 1",
+      "description": "Trigger output for channel 1. Fires on each fill step of the channel 1 Euclidean (or STEP EDIT) pattern.",
+      "voltage": "5V pulse · 10 ms default or 1 ms (PULSE WIDTH setting)"
+    },
+    {
+      "name": "OUT 2",
+      "description": "Trigger output for channel 2.",
+      "voltage": "5V pulse"
+    },
+    {
+      "name": "OUT 3",
+      "description": "Trigger output for channel 3.",
+      "voltage": "5V pulse"
+    },
+    {
+      "name": "OUT 4",
+      "description": "Trigger output for channel 4. In default mode emits the offbeats of channel 1; in 6-CHANNEL mode becomes fully independent.",
+      "voltage": "5V pulse"
+    },
+    {
+      "name": "OUT 5",
+      "description": "Trigger output for channel 5. Offbeats of channel 2 unless 6-CHANNEL is on.",
+      "voltage": "5V pulse"
+    },
+    {
+      "name": "OUT 6",
+      "description": "Trigger output for channel 6. Offbeats of channel 3 unless 6-CHANNEL is on.",
+      "voltage": "5V pulse"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "3+3 offbeat mode vs 6-CHANNEL",
+      "trigger": "SETTINGS 1 toggle",
+      "description": "Default: channels 4-6 emit the offbeats (inverse pattern) of channels 1-3, giving a locked call-and-response groove from three encoders. Enabling 6-CHANNEL makes 4-6 fully independent (second bank reached via F-BUTTON or long-press top encoder)."
+    },
+    {
+      "name": "SPLIT MODE",
+      "trigger": "long press SETTINGS 1 (6-CHANNEL)",
+      "description": "Hybrid: channels 1-3 accept PRESCALE, CHAIN, STEP EDIT, and RANDOM while channels 4-6 stay pure Euclidean. Useful when melodic voicings need clean Euclidean gating while drums use chains or probability."
+    },
+    {
+      "name": "CHAIN 12 / CHAIN 123",
+      "trigger": "SETTINGS 5 or 6",
+      "description": "Channel 1 plays once, then channel 2 (then optionally channel 3), concatenated onto OUT 1. Total length up to 48 steps. Chained channels stop emitting on their own jacks."
+    },
+    {
+      "name": "PRESCALE 12 / 123",
+      "trigger": "SETTINGS 3 or 4",
+      "description": "Channel 2 advances one step per fill on channel 1 (and channel 3 per fill on channel 2 in 123). Produces polyrhythmic nesting where downstream channels tick only on parent hits rather than raw clock edges."
+    },
+    {
+      "name": "TOGGLE (LOCK MODE)",
+      "trigger": "SETTINGS 2 toggle · long press = LOCK MODE",
+      "description": "Outputs flip state on each pulse instead of emitting triggers, turning OUT into a divided square wave usable as gate or clock. Long-press variant locks encoders to fill-only for jam safety."
+    },
+    {
+      "name": "STEP EDIT mode",
+      "trigger": "SETTINGS 11-13 per channel pair",
+      "description": "Replaces the Euclidean engine on a channel pair with a hand-drawn 16-step sequence edited by rotating and pressing the encoder. Length inherits from Euclidean setting. Euclidean and Step-Edit patterns coexist in the preset."
+    },
+    {
+      "name": "RANDOM mute",
+      "trigger": "SETTINGS 14",
+      "description": "Applies 25% probability of muting any given step across all channels. Produces looser, evolving patterns without altering the underlying rhythm."
+    },
+    {
+      "name": "AUTO CLOCK",
+      "trigger": "long press middle encoder",
+      "description": "Internal clock 10-2500 bpm replaces external CLK. F-BUTTON taps tempo. Rotating middle encoder fully CCW stops the clock. Persists until middle encoder is pressed again."
+    },
+    {
+      "name": "SWAP ENCODERS",
+      "trigger": "long press SETTINGS 14 (RANDOM)",
+      "description": "Swaps top and bottom encoder roles so bank toggling lives on the bottom encoder and SETTINGS entry moves to the top. Muscle-memory fix for players who rest their thumb on the bottom of the panel."
+    },
+    {
+      "name": "F-BUTTON FILL / FREEZE / ROTATE",
+      "trigger": "F-BUTTON assignment 9/10/11",
+      "description": "FILL adds extra hits while held; FREEZE snapshots current patterns so any encoder edits revert on release; ROTATE maps encoder turns to pattern rotation. Enables live pattern deviation without losing the stored rhythm."
+    },
+    {
+      "name": "Preset auto-save",
+      "trigger": "power cycle",
+      "description": "Current rhythm is stored to flash automatically at power-off and reloaded on boot. 16 user preset slots saved via long-press on the top encoder inside SETTINGS."
+    },
+    {
+      "name": "Level-triggered reset",
+      "trigger": "SETTINGS 15 enabled",
+      "description": "Reset input changes from edge- to level-triggered: channels halt on step 1 as long as RST is high. Useful for fills, drops, and gating the sequencer with a mute-like sustained gate."
+    },
+    {
+      "name": "WAV-file firmware update",
+      "trigger": "hold middle encoder at power-on",
+      "description": "Boots into updater expecting 2Vpp audio on CLK. Playing a signed WAV from any soundcard overwrites firmware. Open-source project — new features ship as WAV updates."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic 3+3 offbeat kit",
+      "patch": "SETTINGS 1 OFF · encoders 1-3 set kick/snare/hat Euclidean patterns · OUT 1-3 drive kick/snare/hat · OUT 4-6 automatically play the offbeats into ghost-snare, shaker, rim",
+      "diagram": "Euclidean Circles V2:\n* 6-CHANNEL: OFF (3+3 offbeat mode)\n* CH1: L=16 F=4 S=0 (kick)\n* CH2: L=16 F=7 S=2 (snare)\n* CH3: L=16 F=11 S=0 (hat)\n\nClock:\n\n- Clock (Out) c> Euclidean Circles V2 (CLK)\n- Euclidean Circles V2 (OUT 1) t> Kick (Trig)\n- Euclidean Circles V2 (OUT 2) t> Snare (Trig)\n- Euclidean Circles V2 (OUT 3) t> Hat (Trig)\n- Euclidean Circles V2 (OUT 4) t> Ghost Snare (Trig)\n- Euclidean Circles V2 (OUT 5) t> Shaker (Trig)\n- Euclidean Circles V2 (OUT 6) t> Rim (Trig)"
+    },
+    {
+      "name": "Polyrhythm nest (PRESCALE 123)",
+      "patch": "SETTINGS 4 ON · channel 1 sparse (3/16) · channel 2 prescales off channel 1 hits · channel 3 prescales off channel 2 hits · produces generative polyrhythmic melodic counterpoint · OUT 1-3 to three voices",
+      "diagram": "Euclidean Circles V2:\n* PRESCALE 123: ON\n* CH1: L=16 F=3 · CH2: L=8 F=5 · CH3: L=5 F=2\n\nClock:\n\n- Clock (Out) c> Euclidean Circles V2 (CLK)\n- Euclidean Circles V2 (OUT 1) t> Bass Envelope (Trig)\n- Euclidean Circles V2 (OUT 2) t> Lead Envelope (Trig)\n- Euclidean Circles V2 (OUT 3) t> Pad Envelope (Trig)"
+    },
+    {
+      "name": "48-step megaloop (CHAIN 123)",
+      "patch": "SETTINGS 6 ON · program three 16-step rhythms on channels 1/2/3 · OUT 1 emits concatenated 48-step pattern · channels 4-6 continue normally as counterpoint · F-BUTTON = TOGGLE for A/B variation",
+      "diagram": "Euclidean Circles V2:\n* CHAIN 123: ON\n* F-BUTTON: TOGGLE presets\n* CH1/2/3: three distinct 16-step patterns\n\nClock:\n\n- Clock (Out) c> Euclidean Circles V2 (CLK)\n- Euclidean Circles V2 (OUT 1) t> Kick (Trig) // 48-step megaloop\n- Euclidean Circles V2 (OUT 4) t> Hat (Trig)\n- Euclidean Circles V2 (OUT 5) t> Clap (Trig)\n- Euclidean Circles V2 (OUT 6) t> Perc (Trig)"
+    },
+    {
+      "name": "Toggled square-wave LFO array",
+      "patch": "SETTINGS 2 ON (TOGGLE) · each OUT flips on each hit · resulting slow square waves drive VCA and filter CV · Euclidean lengths/fills tune the sub-rhythmic modulation rate per destination",
+      "diagram": "Euclidean Circles V2:\n* TOGGLE: ON (square-wave mode)\n* CH1: L=16 F=1 (slowest) · CH2: L=16 F=3 · CH3: L=8 F=3\n\nClock:\nVCA:\nFilter:\nVCO:\n\n- Clock (Out) c> Euclidean Circles V2 (CLK)\n- Euclidean Circles V2 (OUT 1) >> VCA (CV)\n- Euclidean Circles V2 (OUT 2) >> Filter (Cutoff)\n- Euclidean Circles V2 (OUT 3) >> VCO (FM In)"
+    },
+    {
+      "name": "Step-Edit breakbeat + Euclidean hats",
+      "patch": "SETTINGS 11 ON (STEP EDIT 1) · hand-draw a 16-step breakbeat kick on channel 1 · leave channels 2-3 as Euclidean for snare and hat · F-BUTTON = FREEZE for live fills that snap back",
+      "diagram": "Euclidean Circles V2:\n* STEP EDIT 1: ON (CH1 hand-drawn kick)\n* F-BUTTON: FREEZE\n* CH2: L=16 F=4 (snare) · CH3: L=16 F=11 (hat)\n\nClock:\n\n- Clock (Out) c> Euclidean Circles V2 (CLK)\n- Euclidean Circles V2 (OUT 1) t> Kick (Trig)\n- Euclidean Circles V2 (OUT 2) t> Snare (Trig)\n- Euclidean Circles V2 (OUT 3) t> Hat (Trig)\n- Euclidean Circles V2 (OUT 4) t> Ghost (Trig)"
+    },
+    {
+      "name": "Probabilistic evolving groove",
+      "patch": "SETTINGS 14 ON (RANDOM 25% mute) · dense Euclidean patterns (fill > half length) · 25% step drop keeps groove loose · pair with F-BUTTON = SAVE & TOGGLE to auto-capture favorite variations across preset slots",
+      "diagram": "Euclidean Circles V2:\n* RANDOM: ON (25% step mute)\n* F-BUTTON: SAVE & TOGGLE\n* CH1-3: dense fills (>50%)\n\nClock:\n\n- Clock (Out) c> Euclidean Circles V2 (CLK)\n- Euclidean Circles V2 (OUT 1) t> Drum 1 (Trig)\n- Euclidean Circles V2 (OUT 2) t> Drum 2 (Trig)\n- Euclidean Circles V2 (OUT 3) t> Drum 3 (Trig)\n- Euclidean Circles V2 (OUT 4) t> Drum 4 (Trig)"
+    },
+    {
+      "name": "Standalone with AUTO CLOCK",
+      "patch": "No external clock · long press middle encoder · rotate to ~120 bpm (or F-BUTTON tap) · six channels drive full drum kit and one gate-to-envelope voice · RST input still accepts external resets from other performers",
+      "diagram": "Euclidean Circles V2:\n* AUTO CLOCK: 120 bpm (middle encoder)\n* F-BUTTON: tap tempo\n\nReset Source:\n\n- Reset Source (Gate) t> Euclidean Circles V2 (RST) // song reset\n- Euclidean Circles V2 (OUT 1) t> Kick (Trig)\n- Euclidean Circles V2 (OUT 2) t> Snare (Trig)\n- Euclidean Circles V2 (OUT 3) t> Hat (Trig)\n- Euclidean Circles V2 (OUT 4) t> Clap (Trig)\n- Euclidean Circles V2 (OUT 5) t> Bass Envelope (Trig)\n- Euclidean Circles V2 (OUT 6) t> Perc (Trig)"
+    },
+    {
+      "name": "Level-triggered drop-out",
+      "patch": "SETTINGS 15 ON (level-triggered reset) · sustain a gate on RST during a breakdown · all channels halt on step 1 · release gate to restart in sync · use a performance gate or envelope sustain for musical drops",
+      "diagram": "Euclidean Circles V2:\n* RESET MODE: level-triggered\n\nClock:\nPerformance Gate:\n\n- Clock (Out) c> Euclidean Circles V2 (CLK)\n- Performance Gate (Out) g> Euclidean Circles V2 (RST) // held = halt\n- Euclidean Circles V2 (OUT 1) t> Kick (Trig)\n- Euclidean Circles V2 (OUT 2) t> Snare (Trig)\n- Euclidean Circles V2 (OUT 3) t> Hat (Trig)"
+    },
+    {
+      "name": "Split-mode drums + pure hat cluster",
+      "patch": "Long-press SETTINGS 1 → SPLIT MODE · CH1-3 with CHAIN 12 and STEP EDIT for flexible kick/snare · CH4-6 stay pure Euclidean hat/shaker/ride triplets · F-BUTTON = ROTATE for live cymbal phase shifts",
+      "diagram": "Euclidean Circles V2:\n* SPLIT MODE: ON (CH1-3 edited, CH4-6 pure Euclidean)\n* CHAIN 12: ON · STEP EDIT 1: ON\n* F-BUTTON: ROTATE\n* CH4/5/6: triplet-feel Euclidean (e.g. 12/16, 7/16, 5/12)\n\nClock:\n\n- Clock (Out) c> Euclidean Circles V2 (CLK)\n- Euclidean Circles V2 (OUT 1) t> Kick (Trig)\n- Euclidean Circles V2 (OUT 2) t> Snare (Trig)\n- Euclidean Circles V2 (OUT 4) t> Hat (Trig)\n- Euclidean Circles V2 (OUT 5) t> Shaker (Trig)\n- Euclidean Circles V2 (OUT 6) t> Ride (Trig)"
+    }
+  ]
+}

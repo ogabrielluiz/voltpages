@@ -1,0 +1,127 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://busycircuits.com/alm039/",
+      "https://assets.busycircuits.com/docs/alm039-manual.pdf",
+      "https://www.perfectcircuit.com/alm-pip-filter.html"
+    ]
+  },
+  "slug": "alm-busy-circuits--pip-filter",
+  "name": "Pip Filter",
+  "manufacturer": "ALM Busy Circuits",
+  "hp": 4,
+  "tags": ["FILTER", "VCF", "VCA"],
+  "description": "Compact 2-pole 12dB/oct lowpass filter with resonance, pingable trigger input, and built-in VCA normalled open. Self-oscillates with rough 1V/oct tracking from the second frequency input.",
+  "controls": [
+    {
+      "name": "-/+",
+      "scope": "Freq CV 1",
+      "description": "Attenuverter for the first frequency CV input. Scales CV positively or negatively around the manual Freq setting.",
+      "detail": "full CCW: invert · noon: zero · full CW: unity"
+    },
+    {
+      "name": "Freq",
+      "scope": "global",
+      "description": "Manual cutoff frequency. Summed with both CV inputs.",
+      "detail": "combined with CV 1 (attenuverted) and CV 2 (1V/oct)"
+    },
+    {
+      "name": "Res",
+      "scope": "global",
+      "description": "Manual resonance. Peaks signal just around the cutoff, reaches self-oscillation near full CW.",
+      "detail": "no CV input · self-osc approximately tracks V/oct from Freq CV 2"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "-/+ (Freq CV 1)",
+      "description": "First frequency CV input with attenuverter. Summed with knob and second CV.",
+      "voltage": "0-5V · attenuverted"
+    },
+    {
+      "name": "Freq (CV 2)",
+      "description": "Second frequency CV input. Wider range, roughly tracks 1V/oct when self-oscillating.",
+      "voltage": "0-8V · rough 1V/oct"
+    },
+    {
+      "name": "Trig",
+      "description": "Pings the filter to produce a plucked/percussive tone. Rising-edge only to prevent double pings from longer gates.",
+      "voltage": "rising-edge trigger · resonance must be just below self-osc to hear ping"
+    },
+    {
+      "name": "VCA",
+      "description": "CV for the built-in VCA. Controls output level independently of cutoff.",
+      "voltage": "0-5V",
+      "normalizedTo": "fully open (+5V equivalent) when unpatched"
+    },
+    {
+      "name": "In",
+      "description": "Audio input to the filter.",
+      "voltage": "audio"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Out",
+      "description": "Audio output post filter and post VCA.",
+      "voltage": "audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Self-oscillation as sine source",
+      "trigger": "Res at full CW, no audio input",
+      "description": "With resonance near maximum the filter oscillates into a sine wave even without audio input. Pitch follows the Freq knob plus both CV inputs. Freq CV 2 provides rough 1V/oct for a crude but usable sine VCO."
+    },
+    {
+      "name": "Ping mode",
+      "trigger": "trigger → Trig (with Res just below self-osc)",
+      "description": "A trigger into Trig excites the resonant peak, producing a decaying plucked/sine-burst tone with no audio input needed. Resonance setting determines decay length — closer to self-osc = longer ring. Rising-edge detection prevents double pings from long gates."
+    },
+    {
+      "name": "Normalled-open VCA",
+      "trigger": "VCA input unpatched",
+      "description": "The built-in VCA stays fully open when nothing is patched into its CV jack, so the module behaves as a plain filter by default. Patching a CV (envelope, LFO) adds amplitude control without requiring an external VCA."
+    },
+    {
+      "name": "Attenuverter offset via Freq CV 1",
+      "trigger": "CV 1 patched · attenuverter active",
+      "description": "The first frequency input has a built-in attenuverter, letting the same modulation source open or close the filter depending on knob position. Useful for inverting envelope polarity or scaling a bipolar LFO into a narrow sweep range."
+    },
+    {
+      "name": "Dual-input frequency summing",
+      "trigger": "both CV inputs patched",
+      "description": "Freq knob, attenuverted CV 1, and raw CV 2 (1V/oct) all sum to set cutoff. Lets pitch tracking (CV 2) coexist with modulation (CV 1) without an external mixer — useful for a self-oscillating sine VCO that also accepts vibrato."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Pinged percussion voice",
+      "patch": "Res just below self-osc · clock → Trig · Freq knob sets pitch · output is a decaying plucked tone with no audio input · attach envelope → VCA CV to add amplitude shaping",
+      "diagram": "Pip Filter:\n* Res: just below self-osc\n* Freq: sets pitch\n\nClock:\n\nEnvelope:\n\n- Clock (Out) t> Pip Filter (Trig) // pings resonant peak\n- Envelope (Out) >> Pip Filter (VCA) // amplitude shape\n- Pip Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Rough sine VCO",
+      "patch": "Res fully CW → self-oscillates · Sequencer V/oct → Freq CV 2 · output is sine following pitch · use Freq CV 1 (attenuverter) for vibrato LFO",
+      "diagram": "Pip Filter:\n* Res: full CW (self-osc)\n* -/+: ~2 o'clock\n\nSequencer:\n\nLFO:\n\n- Sequencer (V/oct) p> Pip Filter (Freq)\n- LFO (Out) >> Pip Filter (-/+) // attenuverted vibrato\n- Pip Filter (Out) -> VCA (In)"
+    },
+    {
+      "name": "Ducked filter sweep",
+      "patch": "Audio → In · envelope → VCA CV (ducks volume under filter sweep) · LFO → Freq CV 1 attenuverted for bipolar cutoff modulation · built-in VCA saves a dedicated VCA module",
+      "diagram": "Pip Filter:\n* Freq: ~noon\n* Res: moderate\n* -/+: ~1 o'clock\n\nVCO:\n\nLFO:\n\nEnvelope:\n\n- VCO (Out) -> Pip Filter (In)\n- LFO (Out) >> Pip Filter (-/+) // bipolar cutoff sweep\n- Envelope (Out) >> Pip Filter (VCA) // amp shape in-module\n- Pip Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Self-patched resonance drone",
+      "patch": "Res full CW · slow LFO → Freq CV 1 attenuverted · no audio input · drifting sine drone at sub-audio to mid frequencies · excellent for ambient or modulating bass",
+      "diagram": "Pip Filter:\n* Res: full CW\n* Freq: low-mid range\n* -/+: ~1 o'clock\n\nLFO:\n\n- LFO (Out) >> Pip Filter (-/+) // slow drift\n- Pip Filter (Out) -> Mixer (In) // sine drone"
+    },
+    {
+      "name": "Pluck with pitched ping",
+      "patch": "Sequencer V/oct → Freq CV 2 · Res just below self-osc · trigger pattern → Trig · filter pings in tune with sequence · no VCO needed · acoustic-like plucked melody",
+      "diagram": "Pip Filter:\n* Res: just below self-osc\n* Freq: tuned to A2\n\nSequencer:\n\n- Sequencer (V/oct) p> Pip Filter (Freq)\n- Sequencer (Gate) t> Pip Filter (Trig) // pitched plucks\n- Pip Filter (Out) -> Reverb (In)"
+    }
+  ]
+}

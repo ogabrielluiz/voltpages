@@ -1,0 +1,211 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.3",
+    "sources": [
+      "https://intellijel.com/downloads/manuals/planar-2_manual_v1.3_2024.04.16.pdf",
+      "https://intellijel.com/shop/eurorack/planar-2/"
+    ]
+  },
+  "slug": "intellijel--planar-2",
+  "name": "Planar² ",
+  "manufacturer": "Intellijel",
+  "hp": 14,
+  "tags": ["UTILITY", "MIXER", "SEQUENCER", "VCA", "FUNCTION"],
+  "description": "Multi-axis vector controller and gesture recorder. Precision joystick drives four quadrant VCAs (A-D) and two axis outputs (X/Y), records ~4 minutes of joystick motion, generates gates, and reshapes CV inputs in cartesian/polar/scan modes.",
+  "controls": [
+    {
+      "name": "Joystick",
+      "scope": "Global",
+      "description": "Spring-loaded precision joystick controls quadrant levels A-D and axis outputs X/Y.",
+      "detail": "Four corner LEDs show quadrant levels · centred = all quads equal"
+    },
+    {
+      "name": "XY Button",
+      "scope": "X/Y Outputs",
+      "description": "Three-state toggle controlling X/Y behaviour. Quick-press cycles lit/off; press-hold toggles between lit and flashing.",
+      "detail": "LIT: joystick+recording+CV · FLASHING: joystick only (ignores rec/CV) · UNLIT: CV IN only, joystick centred virtually"
+    },
+    {
+      "name": "ABCD Button",
+      "scope": "A-D/MIX Outputs",
+      "description": "Same three-state toggle but for outputs A, B, C, D and MIX.",
+      "detail": "LIT: joystick+recording+CV · FLASHING: joystick only · UNLIT: CV IN only"
+    },
+    {
+      "name": "MODE Button",
+      "scope": "CV Inputs",
+      "description": "Cycles how CV 1 and CV 2 affect outputs: Cartesian, Polar, or Scan.",
+      "detail": "Cartesian: CV1→X CV2→Y · Polar: CV1=rotation CV2=radius · Scan: CV1=playback point CV2=linearity"
+    },
+    {
+      "name": "LOOP Button",
+      "scope": "Recorder",
+      "description": "Three states set how a recording plays back.",
+      "detail": "UNLIT: one-shot · LIT: continuous loop · FLASHING: re-arm + wait for trigger"
+    },
+    {
+      "name": "MANUAL GATE Button",
+      "scope": "Gate",
+      "description": "Sends a high gate to GATE OUT as long as held. Recorded alongside joystick motion.",
+      "detail": "Push and hold · plays back with recording"
+    },
+    {
+      "name": "PLAY Button",
+      "scope": "Recorder",
+      "description": "Starts/stops playback of recorded joystick motion. Four visual states reflect availability, arming, and playback.",
+      "detail": "Press+hold >1s erases recording · flashing when waiting for trigger"
+    },
+    {
+      "name": "RECORD Button",
+      "scope": "Recorder",
+      "description": "Records joystick motion (incl. manual gate presses). Supports unsynced, synced, and punch-in modes.",
+      "detail": "~4 min maximum recording · press during playback for punch-in overdub"
+    },
+    {
+      "name": "SENSE Switch",
+      "scope": "Gate",
+      "description": "When up, any joystick motion drives GATE OUT high automatically.",
+      "detail": "Up: auto-gate on motion · down: manual-gate only"
+    },
+    {
+      "name": "X Polarity Switch",
+      "scope": "X Output",
+      "description": "Switches X OUT between unipolar and bipolar.",
+      "detail": "UNI: 0 to +10V · +/-: -5V to +5V"
+    },
+    {
+      "name": "Y Polarity Switch",
+      "scope": "Y Output",
+      "description": "Switches Y OUT between unipolar and bipolar.",
+      "detail": "UNI: 0 to +10V · +/-: -5V to +5V"
+    },
+    {
+      "name": "CV 1 Attenuverter",
+      "scope": "CV 1 Input",
+      "description": "Scales and inverts incoming CV at CV 1 before it reaches outputs.",
+      "detail": "CCW: max inverse · noon: zero · CW: full scale"
+    },
+    {
+      "name": "CV 2 Attenuverter",
+      "scope": "CV 2 Input",
+      "description": "Scales and inverts incoming CV at CV 2.",
+      "detail": "CCW: max inverse · noon: zero · CW: full scale"
+    }
+  ],
+  "inputs": [
+    { "name": "A IN", "description": "Audio/CV input routed through internal VCA to A OUT and summed into MIX. Normalized from MIX chain", "voltage": "audio/CV" },
+    { "name": "B IN", "description": "Input through internal VCA B. Normalized from A IN when unpatched", "voltage": "audio/CV", "normalizedTo": "A IN signal" },
+    { "name": "C IN", "description": "Input through internal VCA C. Normalized from B IN when unpatched", "voltage": "audio/CV", "normalizedTo": "B IN signal" },
+    { "name": "D IN", "description": "Input through internal VCA D. Normalized from C IN when unpatched", "voltage": "audio/CV", "normalizedTo": "C IN signal" },
+    { "name": "CV 1", "description": "CV input that modulates outputs per MODE setting (Cartesian X / Polar rotation / Scan position)", "voltage": "±5V" },
+    { "name": "CV 2", "description": "CV input that modulates outputs per MODE (Cartesian Y / Polar radius / Scan linearity)", "voltage": "±5V" },
+    { "name": "TRIGGER (I>/●)", "description": "Sync input for recording and playback. Armed RECORD starts when trigger arrives; LOOP/play interactions depend on button state", "voltage": "trigger" }
+  ],
+  "outputs": [
+    { "name": "A OUT", "description": "VCA A output controlled by joystick quadrant A position (top-left). Acts as 0-10V CV when A IN is unpatched", "voltage": "audio / 0-10V" },
+    { "name": "B OUT", "description": "VCA B output controlled by joystick quadrant B (top-right). 0-10V CV when B IN unpatched", "voltage": "audio / 0-10V" },
+    { "name": "C OUT", "description": "VCA C output controlled by joystick quadrant C (bottom-right)", "voltage": "audio / 0-10V" },
+    { "name": "D OUT", "description": "VCA D output controlled by joystick quadrant D (bottom-left)", "voltage": "audio / 0-10V" },
+    { "name": "MIX", "description": "Summed output of all four quadrant VCAs. Useful as crossfader output", "voltage": "audio" },
+    { "name": "X OUT", "description": "X-axis CV, polarity set by X polarity switch. Affected by joystick/recording/CV 1 per XY button state", "voltage": "0-10V or ±5V" },
+    { "name": "Y OUT", "description": "Y-axis CV, polarity set by Y polarity switch", "voltage": "0-10V or ±5V" },
+    { "name": "GATE OUT", "description": "Gate output from MANUAL GATE button, from joystick motion (SENSE up), or recorded gate presses", "voltage": "gate" }
+  ],
+  "behaviors": [
+    {
+      "name": "Four-Input Quad Crossfader",
+      "trigger": "A-D IN all patched · ABCD=lit",
+      "description": "Patch four audio sources into A-D, take MIX output. Joystick position crossfades smoothly between them in vector space. Input normalization lets you use 1-4 sources interchangeably — unpatched inputs inherit from the one above."
+    },
+    {
+      "name": "Quad Panner",
+      "trigger": "mono into A IN · individual A-D outputs to four speakers",
+      "description": "Route a mono signal through A IN (normalized to all four VCAs) and take A/B/C/D outputs to separate amplifiers. Joystick becomes a quadraphonic pan controller. Works with stereo by patching to A and C."
+    },
+    {
+      "name": "Quad Processing Router",
+      "trigger": "A IN patched · A-D outs to 4 processors · return mix to stereo",
+      "description": "Patch source to A IN, take A-D outputs into four different FX (filter, wavefolder, delay, reverb), return to a mixer. Joystick crossfades between processor paths — dynamic multi-effect routing controlled by a single stick."
+    },
+    {
+      "name": "CV Gesture Recorder",
+      "trigger": "RECORD button · ~4 min buffer",
+      "description": "Records joystick motion and manual-gate presses into a buffer. Plays back as 1-shot complex function generator or looped LFO. Punch-in recording over existing motion enables evolving gesture edits."
+    },
+    {
+      "name": "Trigger-Synced Recording",
+      "trigger": "cable in TRIGGER + RECORD armed",
+      "description": "With the trigger jack patched, RECORD arms but waits for an incoming pulse before starting; another pulse can stop it. Send clock divisions to capture gestures that conform to bar lengths."
+    },
+    {
+      "name": "Cartesian CV Mode",
+      "trigger": "MODE button → left LED",
+      "description": "CV 1 maps to X axis, CV 2 maps to Y axis. External LFOs can 'drive the joystick' programmatically — two perpendicular triangle LFOs at different rates trace Lissajous patterns across the four outputs."
+    },
+    {
+      "name": "Polar CV Mode",
+      "trigger": "MODE button → right LED",
+      "description": "CV 1 controls rotation angle, CV 2 controls radius from centre. A sawtooth on CV 1 produces 360° spinning motion through all four outputs; combining with an LFO on CV 2 yields spiral or orbit gestures. CV 2 defaults to 0V — patch it or the effect won't be audible."
+    },
+    {
+      "name": "Scan CV Mode",
+      "trigger": "MODE button → both LEDs · recording present",
+      "description": "CV 1 scrubs through a recorded gesture as a time axis; CV 2 sets the linearity (curve) of that scrub. Effectively lets you play the recording non-linearly — freeze, rewind, or stretch gestures with CV."
+    },
+    {
+      "name": "SENSE Auto-Gate",
+      "trigger": "SENSE switch up + joystick motion",
+      "description": "Any motion at the joystick drives GATE OUT high. Use to trigger envelopes only while the stick moves — natural articulation for vector performance."
+    },
+    {
+      "name": "XY/ABCD Three-State Isolation",
+      "trigger": "XY or ABCD button state",
+      "description": "UNLIT state disables joystick and recording for that output group, letting CV inputs take exclusive control. FLASHING isolates the live joystick and ignores recordings and CV — handy for doubling a recorded gesture with new live motion."
+    },
+    {
+      "name": "Ramped Loop Boot Toggle",
+      "trigger": "hold LOOP while powering up",
+      "description": "Boot-time option (firmware 1.3+): enables a few-sample crossfade at loop boundaries so recordings that don't end where they start don't click. GATE+PLAY flash when enabled; PLAY+REC flash when disabled."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Vector-controlled 4-voice crossfader",
+      "patch": "Four VCOs (distinct timbres) into A-D IN · MIX output to filter · joystick crossfades in 2D between the four voices · record a slow orbital gesture and loop for autonomous morphing",
+      "diagram": "Planar 2:\n* ABCD=lit · LOOP=lit\n\n- VCO 1 (Out) -> Planar 2 (A IN)\n- VCO 2 (Out) -> Planar 2 (B IN)\n- VCO 3 (Out) -> Planar 2 (C IN)\n- VCO 4 (Out) -> Planar 2 (D IN)\n- Planar 2 (MIX) -> Filter (In)\n- Filter (Out) -> VCA (In) // joystick crossfades 4 timbres"
+    },
+    {
+      "name": "Two-axis filter + wavefolder control",
+      "patch": "Nothing patched to A-D IN (so outputs are 0-10V CV) · X OUT to filter cutoff · Y OUT to wavefolder amount · bipolar switch on Y for positive/negative fold · play the filter and fold independently with one stick",
+      "diagram": "Planar 2:\n* X=UNI · Y=+/-\n\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> Wavefolder (In)\n- Planar 2 (X OUT) >> Filter (Cutoff)\n- Planar 2 (Y OUT) >> Wavefolder (Fold)\n- Wavefolder (Out) -> VCA (In) // 2-axis tone control"
+    },
+    {
+      "name": "Looped gesture as complex LFO",
+      "patch": "SENSE up so motion triggers gates · draw circles, figure-8s, or jagged shapes with the joystick while recording · enable LOOP · MIX and X/Y outputs now emit a custom LFO shape far more complex than a sine · gate follows the motion",
+      "diagram": "Planar 2:\n* SENSE=up · LOOP=lit · recording active\n\n- Planar 2 (X OUT) >> VCO (FM)\n- Planar 2 (Y OUT) >> Filter (Cutoff)\n- Planar 2 (GATE OUT) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV) // custom gesture LFO"
+    },
+    {
+      "name": "Polar spin on stereo image",
+      "patch": "MODE = Polar · slow saw LFO into CV 1 · steady voltage (or slow LFO) into CV 2 · patch A to left-front, B to right-front, C to right-rear, D to left-rear amps · signal rotates 360° continuously in quadraphonic space",
+      "diagram": "Planar 2:\n* MODE=Polar · ABCD=unlit (CV only)\n\n- Source (Out) -> Planar 2 (A IN)\n- Saw LFO (Out) >> Planar 2 (CV 1)\n- Slow LFO (Out) >> Planar 2 (CV 2)\n- Planar 2 (A OUT) -> Amp L-Front (In)\n- Planar 2 (B OUT) -> Amp R-Front (In)\n- Planar 2 (C OUT) -> Amp R-Rear (In)\n- Planar 2 (D OUT) -> Amp L-Rear (In) // quad orbit"
+    },
+    {
+      "name": "Synced gesture playback to clock bar",
+      "patch": "Patch clock divided by 4 bars into TRIGGER · RECORD armed starts on clock pulse, stops on next · LOOP=lit so gesture loops bar-aligned · joystick motion now conforms to the bar grid · evolving bar-long filter/pitch automation",
+      "diagram": "Planar 2:\n* LOOP=lit · TRIGGER patched\n\n- Clock /4 (Out) c> Planar 2 (TRIGGER)\n- Planar 2 (X OUT) >> Filter (Cutoff)\n- Planar 2 (Y OUT) p> VCO (V/Oct)\n- Planar 2 (GATE OUT) g> Envelope (Trig) // bar-locked gesture"
+    },
+    {
+      "name": "Scan-mode gesture timeline",
+      "patch": "Record a 30-second joystick gesture · MODE = Scan · CV 1 from another sequencer/LFO scrubs back and forth through the gesture · CV 2 from different LFO sets how linearly that scan interpolates · non-linear playback of recorded motion",
+      "diagram": "Planar 2:\n* MODE=Scan · recording present · LOOP=off\n\n- Sequencer (CV) >> Planar 2 (CV 1)\n- LFO (Out) >> Planar 2 (CV 2)\n- Planar 2 (X OUT) >> Filter (Cutoff)\n- Planar 2 (Y OUT) >> Wavefolder (Fold) // scrubbable gesture"
+    },
+    {
+      "name": "Quad FX send/return router",
+      "patch": "Dry voice into A IN · A OUT into reverb · B OUT into delay · C OUT into bitcrusher · D OUT into distortion · sum returns into stereo mixer · joystick position selects which effect dominates · joystick hold points create texture presets",
+      "diagram": "Planar 2:\n* A IN patched · ABCD=lit\n\n- Voice (Out) -> Planar 2 (A IN)\n- Planar 2 (A OUT) -> Reverb (In)\n- Planar 2 (B OUT) -> Delay (In)\n- Planar 2 (C OUT) -> Bitcrusher (In)\n- Planar 2 (D OUT) -> Distortion (In)\n- Reverb (Out) -> Mixer (In 1)\n- Delay (Out) -> Mixer (In 2)\n- Bitcrusher (Out) -> Mixer (In 3)\n- Distortion (Out) -> Mixer (In 4) // joystick FX router"
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "R106",
+    "sources": [
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/renemanual.pdf",
+      "https://www.makenoisemusic.com/modules/rene/"
+    ]
+  },
+  "slug": "make-noise--rene-mk2",
+  "name": "René Mk2",
+  "manufacturer": "Make Noise",
+  "hp": 34,
+  "tags": ["SEQUENCER", "QUANTIZER", "CLOCK"],
+  "description": "Three-channel, three-dimensional Cartesian sequencer. X/Red and Y/Green Snake channels plus C/Orange Cartesian channel. 64 States across 4 Banks, per-channel quantizer, Z-axis modulation, Select Bus.",
+  "controls": [
+    {
+      "name": "CV Programming Grid (16 Knobs)",
+      "scope": "per-channel",
+      "description": "Sets CV value at each of 16 locations for the active channel. Knob color indicates channel (Red/Green/Orange).",
+      "detail": "4×4 grid · illuminated"
+    },
+    {
+      "name": "Page Programming Grid (16 Buttons)",
+      "scope": "per-channel · per-page",
+      "description": "Tri-color LEDs. Program ACCESS, GATE, GLIDE, SNAKE, FUN, QUANT settings. Also used for State/Bank selection.",
+      "detail": "4×4 touch buttons"
+    },
+    {
+      "name": "Left / Right Navigation Buttons",
+      "scope": "Global",
+      "description": "Select Program Page for current channel. Press both simultaneously to enter/exit STATE Pages.",
+      "detail": "single: page · both: STATE pages"
+    },
+    {
+      "name": "X Channel Button (Red)",
+      "scope": "X Channel",
+      "description": "Switch to X/Red channel. In Program Pages, press again to enter/exit X Latch. In STATE Pages: enter M-Paste.",
+      "detail": "red LED"
+    },
+    {
+      "name": "Y Channel Button (Green)",
+      "scope": "Y Channel",
+      "description": "Switch to Y/Green channel. Press again for Y Latch. In STATE Pages: enter State Select / Bank view.",
+      "detail": "green LED"
+    },
+    {
+      "name": "C Channel Button (Orange)",
+      "scope": "C Channel",
+      "description": "Switch to C/Orange Cartesian channel. Press again for C Latch. In STATE Pages: Global Page and firmware version view.",
+      "detail": "orange LED"
+    },
+    {
+      "name": "X-CV Combo Pot",
+      "scope": "X Channel",
+      "description": "Attenuator for X-CV input with +5V normalization. Acts as manual control when X-CV unpatched.",
+      "detail": "combo pot · 0V-5V normalized"
+    },
+    {
+      "name": "Y-CV Combo Pot",
+      "scope": "Y Channel",
+      "description": "Attenuator for Y-CV input with +5V normalization. Acts as manual control when Y-CV unpatched.",
+      "detail": "combo pot · 0V-5V normalized"
+    }
+  ],
+  "inputs": [
+    { "name": "X-CLK", "description": "Clock for X/Red channel and Cartesian X-axis.", "voltage": "≥2.5V · ≥2.5ms wide" },
+    { "name": "X-MOD", "description": "Modifier gate for X/Red channel and Cartesian X-axis. Behavior set by FUN.MOD settings (Reset, Clock, Run/Stop, Direction).", "voltage": "≥2.5V gate" },
+    { "name": "X-CV", "description": "Control voltage for X/Red channel and Cartesian X-axis. Behavior set by FUN.CV settings (ADD, LOC, SNAKE, S&H).", "voltage": "0V – 5V via combo pot" },
+    { "name": "Y-CLK", "description": "Clock for Y/Green channel and Cartesian Y-axis.", "voltage": "≥2.5V · ≥2.5ms wide" },
+    { "name": "Y-MOD", "description": "Modifier gate for Y/Green channel and Cartesian Y-axis.", "voltage": "≥2.5V gate" },
+    { "name": "Y-CV", "description": "Control voltage for Y/Green channel and Cartesian Y-axis.", "voltage": "0V – 5V via combo pot" },
+    { "name": "Z-MOD", "description": "Gate input for incrementing through Stored STATEs. Active when Z.ON is on, or on State Select page.", "voltage": "≥2.5V gate" },
+    { "name": "Z-CV", "description": "CV input for selecting Stored STATE or Global Reset. Absolute mapping.", "voltage": "0V – 5V" }
+  ],
+  "outputs": [
+    { "name": "X-CV", "description": "Control Voltage output for X/Red Snake channel. Quantized if channel QUANT enabled.", "voltage": "0-4 octaves" },
+    { "name": "X-G", "description": "Gate output for X/Red. Follows GATE page settings. Can be Trigger or clock-width gate (FUN.OP.TRIG).", "voltage": "0V / 8V" },
+    { "name": "Y-CV", "description": "Control Voltage output for Y/Green Snake channel.", "voltage": "0-4 octaves" },
+    { "name": "Y-G", "description": "Gate output for Y/Green.", "voltage": "0V / 8V" },
+    { "name": "C-CV", "description": "Control Voltage output for C/Orange Cartesian channel. Position on 4×4 grid driven by X-CLK (horizontal) and Y-CLK (vertical).", "voltage": "0-4 octaves" },
+    { "name": "C-G", "description": "Cartesian gate output. With C.FUN.TRIG OFF, width combines both X and Y clocks allowing tied notes.", "voltage": "0V / 8V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Snake Patterns (X and Y)",
+      "trigger": "select on SNAKE page",
+      "description": "16 built-in patterns traverse the 4×4 grid non-linearly. Pattern 1 = standard L-R serpentine, 2 = vertical serpentine, 3 = straight columns, 5-6 = inward spirals, 7-8 = diagonals, 9-16 = scrambled. FUN.CV.SNAKE allows X-CV/Y-CV to select Snake pattern dynamically."
+    },
+    {
+      "name": "Cartesian channel (C/Orange)",
+      "trigger": "both X-CLK and Y-CLK patched",
+      "description": "C location = (X position, Y position) on the grid. X-CLK advances horizontally, Y-CLK advances vertically. C has its own CV/Gate/Access/Glide/Quantizer pages but no Snake page — it inherits X/Y motion. Independent third sequence from two clocks."
+    },
+    {
+      "name": "ACCESS page — step enable",
+      "trigger": "touch buttons on ACCESS page",
+      "description": "Enabled locations play; disabled locations are skipped per FUN.OP.SLEEP setting. SLEEP.OFF (SEEK): René jumps over disabled steps. SLEEP.ON: CV holds on last accessible location, Gate continues until next accessible. Infinite rests possible on C channel when one axis is SLEEP."
+    },
+    {
+      "name": "GATE and LATCH",
+      "trigger": "GATE page enables per-step gates; LATCH overrides",
+      "description": "GATE page: toggle per-location gate on/off. FUN.OP.TRIG: gate width = clock-width or 10ms trigger. LATCH page (press Channel Button again): touch locations to force-play regardless of ACCESS. Non-destructive — held state does not alter Stored STATE."
+    },
+    {
+      "name": "GLIDE per-location",
+      "trigger": "GLIDE page enables glide on specific steps",
+      "description": "Any enabled location glides from previous value to its own CV. Glide time based on clock rate for X/Y; constant for C. Combine with portamento-less QUANT for selective pitch bends only on desired steps."
+    },
+    {
+      "name": "QUANTizer (per-channel)",
+      "trigger": "QUANT page · top row enables, bottom 3 rows pick notes",
+      "description": "Top row: octave range (1/2/3/4 oct, or all off for max resolution non-pitch use). Lower three rows = chromatic note toggles (disable Db/Eb/Gb/Ab/Bb for major). Each channel has independent quantizer — X/Y/C can live in different scales simultaneously."
+    },
+    {
+      "name": "FUN.MOD behaviors",
+      "trigger": "configure on channel's FUN page row 2",
+      "description": "Sets MOD input behavior: RESET (gate high resets to first accessible location near loc 1), CLK (combines MOD pulses with CLK for extra clocking, or masks clock while high), RUNSTP (channel runs on MOD high, stops on low), DIR (reverses direction on MOD high). RUNSTP and DIR mutually exclusive per channel."
+    },
+    {
+      "name": "FUN.CV behaviors",
+      "trigger": "configure on channel's FUN page row 3",
+      "description": "ADD: CV adds to current location's value (quantized if QUANT on). LOC: CV addresses location absolutely (4-step resolution on C inherits from X/Y quarter range). SNAKE: CV selects Snake pattern. S&H: samples CV on MOD rising edge. ADD and S&H are mutually exclusive."
+    },
+    {
+      "name": "STATES and Z-axis",
+      "trigger": "Z-MOD gate / Z-CV / touch State Select page",
+      "description": "64 States across 4 Banks. Each State contains ACCESS, GATE, GLIDE, SNAKE, FUN, QUANT and all knob values per channel. On Select STATE Y page, any combination of 64 States can be enabled for Z-MOD stepping. Z-CV absolute. With GL.Z.ON, Z inputs active on all pages (incl. Program)."
+    },
+    {
+      "name": "Z.RESET (global reset via Z)",
+      "trigger": "GL.Z.RESET on",
+      "description": "Z-MOD not only changes State but also resets X, Y, C to their ACCESS-enabled location nearest Loc 1. Allows building chains of sequences with known start points. Turn Z.ON off and Z.RESET on for a dedicated global reset via Z-MOD."
+    },
+    {
+      "name": "MESH and Multi-Paste",
+      "trigger": "M-Paste (RED) state page",
+      "description": "Enable States for Mesh: changes made to active State also apply to all Mesh-enabled States simultaneously. Hold X Button to Multi-Paste current State into all M-Paste-enabled States. Non-destructive until STORE. Propagates to Following TEMPI."
+    },
+    {
+      "name": "Select Bus (LEAD / FOLLOW / FREE)",
+      "trigger": "Global Page → GL.BUS",
+      "description": "LEAD transmits State/Bank/M-Paste/Mesh/Store messages on INT.CV bus line. FOLLOW receives such messages. FREE ignores bus (default). Use for macro-control of TEMPI, Storage Strip, or another René. Set TEMPI to Follow to have it sync state changes with René automatically."
+    },
+    {
+      "name": "FUN.OP.TRIG (gate width)",
+      "trigger": "button on FUN row 1",
+      "description": "Sets gate output to clock-width (OFF) or 10ms triggers (ON). Triggers useful for plucking vactrol gates (QMMG, Optomix without Strike) or combining multiple gate outputs via mixer without long sustain overlap. Clocks via MOD are always triggers regardless of FUN.OP.TRIG."
+    },
+    {
+      "name": "FUN.OP.SCAN (instant remap)",
+      "trigger": "touch SCAN on FUN page",
+      "description": "Scans all 16 current knob positions and writes them to the active channel. Use to quickly copy physical knob state into a channel, tune all three channels to the same notes, or create variations by scanning different channels."
+    },
+    {
+      "name": "STORE process",
+      "trigger": "Global Page → GBL.STORE breathing red pad",
+      "description": "Writes all States + Global settings to non-volatile memory. Takes 8-10 seconds during which René stops sequencing. Only way to persist changes across power cycles. M-Paste and LATCH settings are NOT stored — they live only in RAM."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Standard melodic sequence (X only)",
+      "patch": "Clock → X-CLK · X-CV → VCO 1V/Oct (via VCA + envelope) · X-G → envelope Trig · enter ACCESS page, disable a couple steps for rests · QUANT page: 2-octave range, major scale · knobs set the melody · rock-solid melodic 16-step sequence with step disables for rests.",
+      "diagram": "René Mk2:\n* X: ACCESS page — some steps off\n* X QUANT: 2-oct major\n\n- Clock (Out) c> René (X-CLK)\n- René (X-CV) p> VCO (V/Oct)\n- René (X-G) g> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Cartesian polyphonic voice",
+      "patch": "Two different-rate clocks (e.g., TEMPI CH 1 and TEMPI CH 2 at ×3) → X-CLK, Y-CLK · X-CV → VCO A · Y-CV → VCO B · C-CV → VCO C · three independent voices from two clocks · each channel has own QUANT scale for rich harmony · C-Gate with C.FUN.TRIG OFF ties notes across X/Y positions.",
+      "diagram": "René Mk2:\n* X/Y/C QUANT: major scale, 2 oct\n* C.FUN.TRIG: OFF\n\n- TEMPI (CH 1 Out) c> René (X-CLK)\n- TEMPI (CH 2 Out) c> René (Y-CLK)\n- René (X-CV) p> VCO A (V/Oct)\n- René (Y-CV) p> VCO B (V/Oct)\n- René (C-CV) p> VCO C (V/Oct)\n- René (X-G) g> Envelope A (Trig)\n- René (Y-G) g> Envelope B (Trig)\n- René (C-G) g> Envelope C (Trig)"
+    },
+    {
+      "name": "Snake-selected variation",
+      "patch": "Clock → X-CLK · X-FUN.CV.SNAKE ON · slow smooth random CV → X-CV (combo pot ~50%) · CV drifts selects different Snake pattern on the fly · same melody notes but re-ordered pattern every few bars · knobs unchanged — variation comes from order.",
+      "diagram": "René Mk2:\n* X: FUN.CV.SNAKE ON\n* SNAKE page: enable first 8 patterns\n\n- Clock (Out) c> René (X-CLK)\n- Smooth Random (Out) >> René (In X-CV)\n- René (Out X-CV) p> VCO (V/Oct)\n- René (X-G) g> Envelope (Trig)"
+    },
+    {
+      "name": "Z-axis song sections",
+      "patch": "Global: Z.ON enabled · Pressure Points Common Pressure → Z-CV · each touchplate jumps to a different Stored STATE · tap different plates to arrange live · store 4 chord/scale variations across 4 States · perform a chord progression with one hand while sequence runs.",
+      "diagram": "René Mk2:\n* GL.Z.ON: enabled\n* 4 States programmed with different scales\n\n- Clock (Out) c> René (X-CLK)\n- Pressure Points (Pressure) >> René (Z-CV) // touch = section change\n- René (X-CV) p> VCO (V/Oct)\n- René (X-G) g> Envelope (Trig)"
+    },
+    {
+      "name": "Cartesian Latch for live improv",
+      "patch": "Standard X+Y clock patch · press C Button twice to enter C Latch · touch locations to force C channel to specific points in grid · improvise melody by hand-playing the touch grid while X/Y sequence underneath · non-destructive — Stored STATE unchanged.",
+      "diagram": "René Mk2:\n* C Latch: locations held by touch\n\n- Clock A (Out) c> René (X-CLK)\n- Clock B (Out) c> René (Y-CLK)\n- René (C-CV) p> VCO (V/Oct)\n- René (C-G) g> Envelope (Trig)"
+    },
+    {
+      "name": "MOD-reset for song start",
+      "patch": "FUN.MOD.RESET enabled on X channel · song-start gate → X-MOD · on gate high X resets to first-accessible location near Loc 1 · chain multiple MOD-RESETs across channels from one gate · reliable sequence restart for composition boundaries.",
+      "diagram": "René Mk2:\n* X: FUN.MOD.RESET ON\n* Y: FUN.MOD.RESET ON\n\n- Clock (Out) c> René (X-CLK)\n- Clock (Out) c> René (Y-CLK)\n- Song Start (Gate) g> Mult (In)\n- Mult (Out 1) g> René (X-MOD)\n- Mult (Out 2) g> René (Y-MOD)\n- René (X-CV) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Cartesian Sleep for long rests",
+      "patch": "C channel ACCESS off on many locations · FUN.OP.SLEEP ON (X or Y causes SLEEP) · mute X-CLK or disable X Access on Loc 1 · C channel infinite-rests until Y wakes it via Access-On position · creates long silences in Cartesian sequence — musical space.",
+      "diagram": "René Mk2:\n* C ACCESS: sparse\n* FUN.OP.SLEEP: ON\n\n- Clock (Out) c> René (X-CLK)\n- Slow Clock (Out) c> René (Y-CLK)\n- René (C-CV) p> VCO (V/Oct)\n- René (C-G) g> Envelope (Trig) // gated with long silences"
+    },
+    {
+      "name": "ADD-mode ornamentation",
+      "patch": "X-FUN.CV.ADD ON · QUANT page: major scale, 1 octave · continuous CV (LFO or expression) → X-CV (combo pot ~30%) · CV offsets each step in-scale, adding melodic ornamentation · for unquantized modulation targets (timbre CV, VCA CV) use same trick without QUANT.",
+      "diagram": "René Mk2:\n* X: FUN.CV.ADD ON\n* X QUANT: major 1-oct\n\nLFO:\n\nVCO:\n\n- Clock (Out) c> René (X-CLK)\n- LFO (Out) >> René (In X-CV) // in-scale ornament\n- René (Out X-CV) p> VCO (V/Oct)\n- René (X-G) g> Envelope (Trig)"
+    },
+    {
+      "name": "TEMPI + René LEAD/FOLLOW",
+      "patch": "René GL.BUS: LEAD · TEMPI Bank Edit → Follow · TEMPI clocks René · change René State via touch → TEMPI jumps to matching State automatically · MESH-program both simultaneously via René's M-Paste page · master-compose rhythm + melody from one interface.",
+      "diagram": "René Mk2:\n* GL.BUS: LEAD\n\nTEMPI:\n* Follow Select Bus: enabled\n\n- TEMPI (CH 1 Out) c> René (X-CLK)\n- TEMPI (CH 2 Out) c> René (Y-CLK)\n- René (X-CV) p> VCO (V/Oct)\n- René (State Change) >> TEMPI (Select Bus) // INT.CV bus line"
+    },
+    {
+      "name": "Quantizer for non-René CV",
+      "patch": "FUN.CV.ADD ON on X · knobs all full CCW (zero) · QUANT page major scale · route external CV (keyboard, LFO) → X-CV combo pot 100% · X-CV output = quantized version of incoming CV · use René as an on-board quantizer when sequence isn't needed · fast clock on X-CLK keeps scanning.",
+      "diagram": "René Mk2:\n* X knobs: full CCW\n* X: FUN.CV.ADD ON\n* X QUANT: major scale\n\n- Fast Clock (Out) c> René (X-CLK)\n- External CV (Out) >> René (In X-CV) // becomes quantized\n- René (Out X-CV) p> VCO (V/Oct)"
+    }
+  ]
+}

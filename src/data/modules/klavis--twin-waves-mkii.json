@@ -1,0 +1,172 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.1",
+    "sources": [
+      "https://www.klavis.com/images/Klavis_-_Twin_Waves_MKII_manual_V11.pdf",
+      "https://www.klavis.com/all-products/twin-waves-mkii",
+      "https://modulargrid.net/e/klavis-twin-waves-mkii"
+    ]
+  },
+  "slug": "klavis--twin-waves-mkii",
+  "name": "Twin Waves MkII",
+  "manufacturer": "Klavis",
+  "hp": 8,
+  "tags": ["OSCILLATOR", "VCO", "LFO", "RANDOM", "QUANTIZER"],
+  "description": "Dual digital oscillator. Each section independently set as VCO, LFO, or random generator with 17 VCO and 7 LFO algorithms. Built-in per-section quantizer, hard/soft sync, thru-zero FM.",
+  "controls": [
+    {
+      "name": "Param (encoder)",
+      "scope": "Selected section",
+      "description": "Rotates to set the current algorithm's parameter; short press toggles between parameter edit and algorithm selection. Long press scrolls contextual help.",
+      "detail": "Shared between sections — Osc2 button selects which section it controls"
+    },
+    {
+      "name": "Fine / Level",
+      "scope": "Selected section",
+      "description": "Fine pitch in VCO mode; output level (with FM/AM jack summing) in LFO mode.",
+      "detail": "Shared · white LED lights when knob matches stored value"
+    },
+    {
+      "name": "Coarse",
+      "scope": "Selected section",
+      "description": "Coarse pitch in VCO; rate in LFO; clock div/mult ratio when external clock is active; 7-position octave selector when pots are locked.",
+      "detail": "Shared · ±3 octaves when locked · up to 16x / ÷64 clock ratio"
+    },
+    {
+      "name": "LFO-AM button",
+      "scope": "Selected section",
+      "description": "Short press toggles VCO ↔ LFO mode. Long press edits the FM/AM jack role.",
+      "detail": "Red LED off: VCO · on: LFO"
+    },
+    {
+      "name": "Qtz/Clk button",
+      "scope": "Selected section",
+      "description": "In VCO: quantizer scale menu. In LFO: internal/external clock menu. Long press sets quantizer base note.",
+      "detail": "Yellow LED on: quantizer or external clock active"
+    },
+    {
+      "name": "Sync button",
+      "scope": "Selected section",
+      "description": "Opens sync menu — enables/disables Sync/Clk jack, selects hard or soft sync. Long press toggles absolute vs relative self-sync tracking.",
+      "detail": "Green LED on: sync active"
+    },
+    {
+      "name": "Osc2 button",
+      "scope": "Global",
+      "description": "Selects which section (1 or 2) the shared knobs, encoder, and mode buttons control. Long press edits V/Oct input mode.",
+      "detail": "Blue LED off: Osc 1 · on: Osc 2"
+    },
+    {
+      "name": "Param 1 / Param 2",
+      "scope": "CH 1 / CH 2",
+      "description": "Per-section input attenuators for the Param jack CV. Non-shared permanent controls.",
+      "detail": "Unity CW · zero CCW"
+    },
+    {
+      "name": "FM/AM/... attenuator",
+      "scope": "CH 1",
+      "description": "Attenuator for the OSC 1 FM/AM jack. Role of jack set via LFO-AM long press.",
+      "detail": "Attenuates BZX / FM / VCA / QTZ base / Algo CV"
+    }
+  ],
+  "inputs": [
+    { "name": "Param 1", "description": "CV modulating OSC 1 algorithm parameter (e.g. PWM, spread, bit depth).", "normalizedTo": "OSC 2 output" },
+    { "name": "Param 2", "description": "CV modulating OSC 2 algorithm parameter.", "normalizedTo": "OSC 1 output" },
+    { "name": "FM/AM/...", "description": "OSC 1 multi-role input: thru-zero FM (bipolar or symmetric), linear FM, VCA, quantizer base note, or algorithm select — set by LFO-AM long press." },
+    { "name": "Sync/Clk", "description": "Shared jack: sync source for either section in VCO mode, external clock in LFO mode. Per-section enabled via Sync/Qtz menus.", "normalizedTo": "OSC 1 Sqr 1 output" },
+    { "name": "V.Oct 1", "description": "1V/Oct pitch input for OSC 1 (VCO) or rate for OSC 1 (LFO).", "voltage": "1V/Oct · 10 octaves tracking" },
+    { "name": "V.Oct 2", "description": "1V/Oct pitch input for OSC 2. V/Oct modes: Separate, Added, or Offset via Osc2 long press.", "voltage": "1V/Oct" }
+  ],
+  "outputs": [
+    { "name": "Out 1", "description": "OSC 1 main output. VCA-scaled when FM/AM jack is in VCA mode.", "voltage": "±5V" },
+    { "name": "Sqr 1", "description": "OSC 1 sub-octave square in VCO mode (half frequency of Out 1); trigger pulse at each cycle start in LFO mode.", "voltage": "±5V / gate" },
+    { "name": "Out 2", "description": "OSC 2 main output, level-controlled by Fine/Level knob in LFO mode.", "voltage": "±5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Section sharing",
+      "trigger": "Osc2 button press",
+      "description": "Encoder, Fine/Level, and Coarse knobs are virtually duplicated per section. White LEDs next to each pot light when the physical position matches the stored value — a pot only acts when its LED is on. Prevents jumps when switching sections."
+    },
+    {
+      "name": "Pot lock and octave select",
+      "trigger": "Qtz/Clk + Sync pressed together",
+      "description": "Locks tuning pots of current VCO (prevents accidental detuning). Once locked, the Coarse pot becomes a 7-position transpose selector of ±3 octaves without moving the fine tuning."
+    },
+    {
+      "name": "Normalized cross-modulation",
+      "trigger": "leave Param 1, Param 2, or Sync/Clk unpatched",
+      "description": "Param 1 is normalized to OSC 2's output, Param 2 to OSC 1's output, Sync/Clk to OSC 1's [square]. Cross-modulation (FM, PWM, sync) happens automatically without cables — the pot meters how much of the other oscillator feeds in."
+    },
+    {
+      "name": "Thru-zero FM (BZX)",
+      "trigger": "FM/AM long press → BZX",
+      "description": "Modulates OSC 1 linearly with mirrored bipolar behavior. Symmetric about zero — max positive and max negative modulation yield identical frequencies with reversed wave direction. Inoperative with Unison, Self-sync, and Noise algorithms."
+    },
+    {
+      "name": "Per-section quantizer",
+      "trigger": "Qtz/Clk short press (VCO mode)",
+      "description": "19 scales per section, including quarter-tones, 19-TET, just intonation, and world scales. Long press sets Base Note — transposes the scale on the voltage-input side before quantization (distinct from Coarse transpose, which acts after)."
+    },
+    {
+      "name": "Clock-synced LFO with div/mult",
+      "trigger": "Qtz/Clk in LFO mode → external clock",
+      "description": "Coarse pot becomes a 23-position div/mult selector (16x to ÷64) applied to the Sync/Clk input tick rate. V/Oct CV sums with the Coarse setting. Enables clock-locked LFOs at musical subdivisions."
+    },
+    {
+      "name": "Aperiodic LFO algorithms",
+      "trigger": "LFO algorithm: Randomly-timed S&H or vectors",
+      "description": "Parameter knob controls timing randomness (cyclic to fully random) separately from level randomness (always 100%). Combines with Sqr 1 trigger-per-cycle output to generate irregularly-spaced clocks."
+    },
+    {
+      "name": "Normalled sync for self-sync",
+      "trigger": "Sync enabled with Sync/Clk unpatched in OSC 1",
+      "description": "OSC 1 syncs to itself via the normalling — useless. Always patch sync source or disable sync in OSC 1 when using self-sync algorithms; OSC 2 avoids this trap."
+    },
+    {
+      "name": "Soft sync on sine/triangle",
+      "trigger": "Sync menu set to soft sync (sine or triangle algos)",
+      "description": "Soft sync reverses wave direction at sync edge — equivalent to through-zero FM with a square modulator. Preserves the wave's frequency across the reversal, unlike hard sync which resets phase."
+    },
+    {
+      "name": "Autosave on power off",
+      "trigger": "any setting change",
+      "description": "Current state auto-saves for recall at power-up. Do not change settings within 10 seconds of switching off — the save may be interrupted."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Dual detuned VCO",
+      "patch": "both sections in VCO · OSC 1 Unison (5 stacked saws) with Spread mid · OSC 2 Unison slightly detuned via Coarse · V/Oct mode Offset so V.Oct 2 adds to V.Oct 1 · fat 10-voice lead from one module",
+      "diagram": "Twin Waves MkII:\n* OSC 1: Unison saw, Spread noon\n* OSC 2: Unison saw, Coarse +5 cents\n* V/Oct mode: Offset\n\nSequencer:\n\n- Sequencer (Pitch) p> Twin Waves MkII (V.Oct 1)\n- Twin Waves MkII (Out 1) -> Output (L)\n- Twin Waves MkII (Out 2) -> Output (R)"
+    },
+    {
+      "name": "Clock-locked random mod",
+      "patch": "OSC 2 in LFO mode · Randomly-timed S&H algorithm · external clock at Sync/Clk · Param 2 knob controls timing randomness · use Out 2 as stepped-random modulation synced to beat",
+      "diagram": "Twin Waves MkII:\n* OSC 2: LFO · Randomly-timed S&H\n* Qtz/Clk: external clock\n* Coarse: ÷4\n\nClock:\n\n- Clock (Out) c> Twin Waves MkII (Sync/Clk)\n- Twin Waves MkII (Out 2) >> Filter (Cutoff)\n- Twin Waves MkII (Sqr 1) t> Envelope (Trig) // trigger per cycle"
+    },
+    {
+      "name": "BZX FM growl",
+      "patch": "OSC 1 in VCO sine · FM/AM set to BZX · OSC 2 as modulator · Param 1 cross-pot taps OSC 2 back into OSC 1 phase · V.Oct 1 pitches both with Offset mode · through-zero FM bass",
+      "diagram": "Twin Waves MkII:\n* OSC 1: Sine · FM/AM: BZX\n* OSC 2: Sine · Coarse: ratio\n* V/Oct mode: Offset\n\nSequencer:\n\n- Sequencer (Pitch) p> Twin Waves MkII (V.Oct 1)\n- Twin Waves MkII (Out 2) >> Twin Waves MkII (FM/AM) // TZ-FM carrier\n- Twin Waves MkII (Out 1) -> Output (In)"
+    },
+    {
+      "name": "Self-locked quantized melody",
+      "patch": "OSC 1 in VCO · Qtz Pentatonic · OSC 2 in LFO Brownian vectors as slow melodic CV · Param 1 unpatched pulls OSC 2 output into OSC 1 algorithm · vectors quantized into melody",
+      "diagram": "Twin Waves MkII:\n* OSC 1: Saw · Qtz: Pentatonic\n* OSC 2: LFO Brownian vectors · slow rate\n\n- Twin Waves MkII (Out 2) p> Twin Waves MkII (V.Oct 1)\n- Twin Waves MkII (Out 1) -> Filter (In)"
+    },
+    {
+      "name": "Noise resonator",
+      "patch": "OSC 1 Noise Resonator algorithm · Param 1 controls Q factor · V.Oct 1 controls filter peak · LFO from OSC 2 sweeps Param 1 · melodic filtered noise drone",
+      "diagram": "Twin Waves MkII:\n* OSC 1: Noise Resonator · Qtz: off\n* OSC 2: LFO Sine · slow\n\n- Sequencer (Pitch) p> Twin Waves MkII (V.Oct 1)\n- Twin Waves MkII (Out 2) >> Twin Waves MkII (Param 1)\n- Twin Waves MkII (Out 1) -> Output (In)"
+    },
+    {
+      "name": "Aperiodic trigger clock",
+      "patch": "OSC 2 LFO · Randomly-timed vectors · take Sqr 1 equivalent from OSC 1 set to LFO with same algorithm · feed trigger pulses into drum voices for irregular polyrhythm",
+      "diagram": "Twin Waves MkII:\n* OSC 1: LFO Randomly-timed vectors\n* OSC 2: LFO Randomly-timed vectors · different rate\n\nDrum A:\nDrum B:\n\n- Twin Waves MkII (Sqr 1) t> Drum A (Trig)\n- Twin Waves MkII (Out 2) >> Drum B (Accent)"
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://tiptopaudio.com/buchla/",
+      "https://tiptopaudio.com/manuals/Buchla_&_Tiptop_Audio_264t.pdf",
+      "https://modulargrid.net/e/tiptop-audio-buchla-264t",
+      "https://www.perfectcircuit.com/tiptop-264t.html",
+      "https://www.synthtopia.com/content/2025/04/01/tiptop-buchla-264t-quad-sample-and-hold-model-hands-on-demo/"
+    ]
+  },
+  "slug": "tiptop-audio--buchla-264t",
+  "name": "Buchla 264t Quad S&H / Polyphonic Adaptor",
+  "manufacturer": "Tiptop Audio",
+  "hp": 18,
+  "tags": ["SAMPLER", "QUANTIZER", "UTILITY", "RANDOM"],
+  "description": "Licensed Eurorack reissue of the Buchla 200-series 264 quad sample-and-hold. Four S&H channels with per-channel sample/track switch, an internal quad-channel ART quantizer (minor/chromatic/major), a 4-voice polyphonic dispatcher and global offset/modulation CV.",
+  "controls": [
+    {
+      "name": "Sample/Track switch (×4)",
+      "scope": "S&H channel 1-4",
+      "description": "Up = track-and-hold (output follows input while pulse is high) · down = sample-and-hold (output latches on rising edge)",
+      "detail": "Per-channel; mix modes across the four channels freely"
+    },
+    {
+      "name": "separate/common switch",
+      "scope": "CV input routing",
+      "description": "separate = four independent CV inputs feed their own S&H · common = rightmost CV input is broadcast to all four channels",
+      "detail": "Common mode turns a single CV source into four S&H taps"
+    },
+    {
+      "name": "NUMBER OF VOICES switch",
+      "scope": "Polyphonic adaptor",
+      "description": "1-4 position slider · sets how many S&H channels the poly adaptor rotates through on each pulse",
+      "detail": "Single polyphonic input distributes to 1, 2, 3 or 4 voices in sequence"
+    },
+    {
+      "name": "SCALE knob",
+      "scope": "ART quantizer",
+      "description": "Three-position: m (minor) · ch (chromatic) · M (major) · selects the scale used for ART output quantization",
+      "detail": "Affects all four ART outputs simultaneously"
+    },
+    {
+      "name": "KEY switch (12-position)",
+      "scope": "ART quantizer",
+      "description": "12-position rotary · picks the root key (C through B) for ART quantization",
+      "detail": "Combines with SCALE knob to define the note pool"
+    },
+    {
+      "name": "OFFSET knob",
+      "scope": "CV outputs (all 4)",
+      "description": "±2V bipolar offset added to all four CV outputs · shifts the sequence up/down · transposes ART outputs by octave-quantized amount",
+      "detail": "Center = unity; CCW = −2V; CW = +2V"
+    },
+    {
+      "name": "MODULATION knob",
+      "scope": "Modulation input",
+      "description": "Zero-to-max attenuator on the audio-rate modulation input · signal is mixed into the CV outputs",
+      "detail": "Zero silences modulation; max passes full amplitude"
+    },
+    {
+      "name": "Tune / Initial Tune switch",
+      "scope": "ART link",
+      "description": "Momentary · short press sends Auto-Tune message to ART-equipped oscillators · long hold sends Initial Tune (per-oscillator calibration)",
+      "detail": "Only meaningful when ART outputs are connected to a 259t/compatible"
+    },
+    {
+      "name": "Input range jumper (rear)",
+      "scope": "ART quantizer",
+      "description": "Jumper sets quantizer input scaling · default '10' (0-10V, Buchla-native) · alternate '5' (0-5V, matches 259t's 8-octave range)",
+      "detail": "10 setting can mute notes outside 259t range; 5 keeps all notes playable"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "PULSE INPUTS (×4)",
+      "description": "Per-channel trigger/gate input that drives S&H sampling or track gating · sample mode latches on rising edge · track mode follows input for pulse duration",
+      "voltage": "gate/trigger"
+    },
+    {
+      "name": "CV INPUTS (×4)",
+      "description": "Per-channel control voltage input sampled/tracked by the channel's S&H · rightmost jack doubles as common-input when switch is set to common",
+      "voltage": "±10V typical"
+    },
+    {
+      "name": "POLYPHONIC INPUT (pulse)",
+      "description": "Master trigger input for the polyphonic adaptor · each pulse advances to the next voice (1→2→3→4→1)",
+      "voltage": "gate/trigger"
+    },
+    {
+      "name": "MODULATION IN",
+      "description": "Audio-rate input mixed into all four CV outputs (scaled by MODULATION knob) · produces FM on CV outs, randomness on ART in sample mode, in-tune FM on ART in track mode with long gates",
+      "voltage": "AC audio"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "CV OUTPUTS (×4)",
+      "description": "Per-channel sampled/tracked CV output · unquantized · affected by OFFSET and MODULATION",
+      "voltage": "±10V"
+    },
+    {
+      "name": "ART OUTPUTS (×4)",
+      "description": "Per-channel quantized digital ART message for ART-capable oscillators (259t) · carries pitch + tuning commands · key/scale applied",
+      "voltage": "ART digital"
+    },
+    {
+      "name": "PULSE OUTPUTS (×4)",
+      "description": "Per-channel pass-through or voice-dispatched pulse output · in poly mode, fires when that voice receives the rotation",
+      "voltage": "gate/trigger"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Sample vs track per channel",
+      "trigger": "flip a channel's S/T switch",
+      "description": "Sample mode latches the input voltage on rising edge of pulse and holds until the next pulse. Track mode passes the input through while pulse is high, then freezes on fall. Mixing modes across channels lets one pair emit stepped CV while another glides following a moving source."
+    },
+    {
+      "name": "Common-input broadcast",
+      "trigger": "separate/common switch set to common",
+      "description": "A single CV patched to the rightmost CV input is routed to all four S&H channels simultaneously. Four different pulse inputs then sample the same source at four different moments — turning any CV into a four-tap delay of itself."
+    },
+    {
+      "name": "Polyphonic voice rotation",
+      "trigger": "patch source into POLY IN, set NUMBER OF VOICES",
+      "description": "The adaptor treats the four S&H channels as a round-robin voice bank. Each pulse at POLY IN advances to the next voice (up to NUMBER OF VOICES), sampling the current common-CV input into that voice's S&H and emitting its pulse output. Instant 1-to-4-voice poly from one CV+gate pair."
+    },
+    {
+      "name": "ART quantization with key/scale",
+      "trigger": "CV OUT level rises",
+      "description": "The four CV outputs are internally tapped into a quad quantizer that outputs over ART. KEY switch picks root (C-B); SCALE picks minor/chromatic/major. Useful even without ART oscillators: the CV outputs remain unquantized, so ART outputs give a quantized 'ghost' copy for a second voice."
+    },
+    {
+      "name": "Offset transposes ART in octaves",
+      "trigger": "turn OFFSET",
+      "description": "OFFSET adds ±2V to CV outputs. On ART outputs, this effectively transposes the quantized note pool by octave (ART's quantizer rounds to scale tones). Gesture for live transposition without touching the key/scale."
+    },
+    {
+      "name": "Modulation: FM vs randomness",
+      "trigger": "patch audio to MODULATION IN, adjust knob",
+      "description": "With S&H in sample mode and ART out driving pitch, the modulation input injects randomness between sample edges (since the CV is latched). In track mode with a long gate, the modulation rides through to ART as in-tune FM. Same patch, two very different sonic results depending on S/T switch."
+    },
+    {
+      "name": "Auto-tune vs Initial Tune press",
+      "trigger": "press/hold tuning switch",
+      "description": "Short press sends Auto-Tune to ART oscillators — fast recalibration for drift after warm-up. Long hold sends Initial Tune, which performs a full per-oscillator calibration (blinking LED walks each oscillator in turn). Recommended after 30-40 minutes of warm-up."
+    },
+    {
+      "name": "Range jumper trade-off",
+      "trigger": "change rear jumper from 10 to 5",
+      "description": "Default 10 (0-10V) lets some incoming voltages exceed the 259t's 8-octave ART range — out-of-range voltages silence notes, which can be used intentionally to gate out stages of a 245t sequencer. Setting to 5 (0-5V) compresses input to 8-octave range so all stages play."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Four-tap CV delay from one source",
+      "patch": "LFO to the common CV input · separate/common = common · four different clock divisions to the four pulse inputs · each channel samples the same LFO at its own rate · four staggered CV outputs from one source",
+      "diagram": "264t:\n* Switch: common\n* S/T all: sample\n\nLFO:\nClock Div:\nFilter A:\nFilter B:\nFilter C:\nFilter D:\n\n- LFO (Out) >> 264t (CV IN 4) // common input\n- Clock Div (÷1) c> 264t (PULSE IN 1)\n- Clock Div (÷2) c> 264t (PULSE IN 2)\n- Clock Div (÷4) c> 264t (PULSE IN 3)\n- Clock Div (÷8) c> 264t (PULSE IN 4)\n- 264t (CV OUT 1) >> Filter A (Cutoff)\n- 264t (CV OUT 2) >> Filter B (Cutoff)\n- 264t (CV OUT 3) >> Filter C (Cutoff)\n- 264t (CV OUT 4) >> Filter D (Cutoff)"
+    },
+    {
+      "name": "Four-voice poly from mono source",
+      "patch": "sequencer CV to common · sequencer gate to POLY IN · NUMBER OF VOICES = 4 · four ART outputs fanned to four 259t oscillators · each new note dispatches to the next voice · instant four-voice poly with auto voice-stealing",
+      "diagram": "264t:\n* Switch: common\n* NUMBER OF VOICES: 4\n* SCALE: major · KEY: C\n\nSequencer:\n259t OSC 1:\n259t OSC 2:\n259t OSC 3:\n259t OSC 4:\nMixer:\n\n- Sequencer (Pitch) >> 264t (CV IN 4) // common\n- Sequencer (Gate) g> 264t (POLY IN)\n- 264t (ART OUT 1) p> 259t OSC 1 (ART)\n- 264t (ART OUT 2) p> 259t OSC 2 (ART)\n- 264t (ART OUT 3) p> 259t OSC 3 (ART)\n- 264t (ART OUT 4) p> 259t OSC 4 (ART)\n- 259t OSC 1 (Out) -> Mixer (In 1)\n- 259t OSC 2 (Out) -> Mixer (In 2)\n- 259t OSC 3 (Out) -> Mixer (In 3)\n- 259t OSC 4 (Out) -> Mixer (In 4)"
+    },
+    {
+      "name": "Two-voice arpeggio via 245t",
+      "patch": "245t CV to common CV · 245t pulser to POLY IN with voices=2 · pulse outputs 1 and 2 back to gate inputs 1 and 2 on the S&H · ART outputs 1 and 2 to two 259t voices · two-voice call-and-response arp",
+      "diagram": "264t:\n* Switch: common\n* NUMBER OF VOICES: 2\n\n245t:\n259t 1:\n259t 2:\n\n- 245t (CV Out) >> 264t (CV IN 4) // common\n- 245t (Pulser Out) c> 264t (POLY IN)\n- 264t (PULSE OUT 1) g> 264t (PULSE IN 1) // feedback gate\n- 264t (PULSE OUT 2) g> 264t (PULSE IN 2)\n- 264t (ART OUT 1) p> 259t 1 (ART)\n- 264t (ART OUT 2) p> 259t 2 (ART)"
+    },
+    {
+      "name": "Noise-driven quantized random",
+      "patch": "noise to common CV · slow clock to all four pulse inputs (via mult) · four uncorrelated quantized random notes on ART outs · set KEY/SCALE for tonal coherence · four 259t voices play chord-like stochastic textures",
+      "diagram": "264t:\n* Switch: common · SCALE: m · KEY: A\n* S/T all: sample\n\nNoise:\nClock:\nMult:\n\n- Noise (Out) >> 264t (CV IN 4)\n- Clock (Out) c> Mult (In)\n- Mult (Out 1) c> 264t (PULSE IN 1)\n- Mult (Out 2) c> 264t (PULSE IN 2)\n- Mult (Out 3) c> 264t (PULSE IN 3)\n- Mult (Out 4) c> 264t (PULSE IN 4) // four quantized voices"
+    },
+    {
+      "name": "Stepped envelope from 281t ramp",
+      "patch": "281t slope output to common CV input · fast clock samples at regular intervals · the ramp gets stair-stepped into discrete CV levels · classic Buchla 'step from slope' per the manual's example",
+      "diagram": "264t:\n* Switch: common\n* S/T ch1: sample\n\n281t:\nFast Clock:\nFilter:\n\n- 281t (Slope Out) >> 264t (CV IN 4)\n- Fast Clock (Out) c> 264t (PULSE IN 1)\n- 264t (CV OUT 1) >> Filter (Cutoff) // stepped ramp"
+    },
+    {
+      "name": "Sample-vs-track glide comparison",
+      "patch": "separate mode · same CV source split to all four CV inputs via mult · ch1+2 in sample, ch3+4 in track · identical pulse to all four · stepped outs on 1+2, gliding outs on 3+4 · live comparison of S&H vs T&H timbres",
+      "diagram": "264t:\n* Switch: separate\n* S/T 1-2: sample · S/T 3-4: track\n\nCV Source:\nMult:\nClock:\n\n- CV Source (Out) >> Mult (In)\n- Mult (Out 1) >> 264t (CV IN 1)\n- Mult (Out 2) >> 264t (CV IN 2)\n- Mult (Out 3) >> 264t (CV IN 3)\n- Mult (Out 4) >> 264t (CV IN 4)\n- Clock (Out) c> 264t (PULSE IN 1)\n- Clock (Out) c> 264t (PULSE IN 2)\n- Clock (Out) c> 264t (PULSE IN 3)\n- Clock (Out) c> 264t (PULSE IN 4)"
+    },
+    {
+      "name": "Jumper-muted gate selection",
+      "patch": "set rear jumper to 10 (0-10V) · 245t sequencer CV into common with stages exceeding 8 octaves · those high stages mute on ART outputs · use as a pattern-silencing technique where specific steps drop out of the melody",
+      "diagram": "264t:\n* Jumper: 10 (0-10V)\n* Switch: common · SCALE: M · KEY: D\n\n245t:\n259t:\n\n- 245t (CV Out) >> 264t (CV IN 4)\n- 245t (Pulser) g> 264t (PULSE IN 1)\n- 264t (ART OUT 1) p> 259t (ART) // high stages mute"
+    },
+    {
+      "name": "FM-flavored arpeggio via modulation input",
+      "patch": "base CV source drives common input · audio-rate oscillator to MODULATION IN · in S&H mode each note has random timbre jitter · switch a channel to track mode with long gate and you get in-tune FM on that voice only",
+      "diagram": "264t:\n* Switch: common · S/T ch1: sample · S/T ch2: track\n* MODULATION: ~1 o'clock\n\nSequencer:\nLong-gate:\nAudio OSC:\n259t 1:\n259t 2:\n\n- Sequencer (Pitch) >> 264t (CV IN 4)\n- Sequencer (Gate) g> 264t (PULSE IN 1)\n- Long-gate (Out) g> 264t (PULSE IN 2)\n- Audio OSC (Out) -> 264t (MODULATION IN)\n- 264t (ART OUT 1) p> 259t 1 (ART) // random jitter\n- 264t (ART OUT 2) p> 259t 2 (ART) // in-tune FM"
+    },
+    {
+      "name": "Live transpose by offset",
+      "patch": "any poly patch running · wiggle OFFSET during performance · ART outputs snap up or down by octave-quantized steps · instant key-change without touching KEY switch · dramatic drop/lift gesture",
+      "diagram": "264t:\n* Switch: common · SCALE: m · KEY: C\n\nSequencer:\n259t 1:\n259t 2:\n\n- Sequencer (Pitch) >> 264t (CV IN 4)\n- Sequencer (Gate) g> 264t (POLY IN)\n- 264t (ART OUT 1) p> 259t 1 (ART)\n- 264t (ART OUT 2) p> 259t 2 (ART) // turn OFFSET live"
+    },
+    {
+      "name": "Auto-tune every bar",
+      "patch": "bar-gate (once-per-bar pulse, e.g. clock ÷16) into the tune switch via external button-tap sim · unusual trick: use a module that can trigger a tactile switch press, or manually press between sections · keeps ART oscillators tuned through a long set",
+      "diagram": "264t:\n\nSlow Clock:\n259t 1:\n259t 2:\nSequencer:\n\n- Sequencer (Pitch) >> 264t (CV IN 4)\n- Sequencer (Gate) g> 264t (POLY IN)\n- 264t (ART OUT 1) p> 259t 1 (ART)\n- 264t (ART OUT 2) p> 259t 2 (ART) // manual Auto-Tune press each bar"
+    }
+  ]
+}

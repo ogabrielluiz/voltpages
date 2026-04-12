@@ -1,0 +1,187 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1973/2.3 · shapes fw 2.0",
+    "sources": [
+      "http://xaocdevices.com/manuals/xaoc_zadar_manual.pdf",
+      "https://xaocdevices.com/main/zadar/",
+      "https://modulargrid.net/e/xaoc-devices-zadar",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=212015",
+      "https://xaocdevices.com/main/nin/"
+    ]
+  },
+  "slug": "xaoc-devices--zadar",
+  "name": "Zadar",
+  "manufacturer": "Xaoc Devices",
+  "hp": 10,
+  "tags": ["ENVELOPE", "FUNCTION", "LFO"],
+  "description": "Four-channel vector envelope generator. 270 vector shapes across 27 banks, each scalable 0.85ms to 30min without aliasing. Per-channel warp, response, sustain, level, repeat, phase, and chainable inter-channel looping.",
+  "controls": [
+    {
+      "name": "A · SHAPE / REV",
+      "scope": "Selected channel",
+      "description": "Rotate: selects one of 270 shapes across 27 banks. Press: toggles REV to play the shape backwards. In CHAIN menu this knob edits the chain algorithm for channel A.",
+      "detail": "27 banks × 10 shapes · press = reverse · retains WARP when reversed"
+    },
+    {
+      "name": "B · RTG / TIME",
+      "scope": "Selected channel",
+      "description": "Rotate: sets envelope duration. Press: cycles retrigger behavior DG (digital, jump to 0V) → AN (analog, glitch-free restart) → NR (no retrigger, ignore trigs while playing).",
+      "detail": "0.85ms – 30min · DG / AN / NR modes"
+    },
+    {
+      "name": "C · WARP / RSP",
+      "scope": "Selected channel",
+      "description": "Press: toggles between WARP (horizontal time skew) and RESPONSE (vertical amplitude bend). Rotate: bipolar deformation of selected parameter; extremes radically reshape the envelope.",
+      "detail": "±100% each · press to switch WARP ↔ RSP"
+    },
+    {
+      "name": "D · SUS / LEVEL",
+      "scope": "Selected channel",
+      "description": "Press: toggles between SUS (sustain point along shape — holds while TRIG gate is high) and LEVEL (output amplitude attenuator). Set SUS past the shape end to display OFF and disable sustain.",
+      "detail": "LEVEL: 10mV–10V · SUS: position 0–end or OFF"
+    },
+    {
+      "name": "CHANNEL",
+      "scope": "Global",
+      "description": "Blue-lit button. Short press cycles the edited channel A→B→C→D. Hold: opens the channel-settings copy menu, allowing paste to one or all other channels.",
+      "detail": "short: next channel · hold: copy menu"
+    },
+    {
+      "name": "MENU",
+      "scope": "Global",
+      "description": "Red-lit button. Cycles three pages: CV assignments, chain/loop settings, preset management (plus a fourth page with Nin expander). Hold: quick-save current state to the default preset slot.",
+      "detail": "short: next menu · hold: quick-save default preset"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "TRIG A–D",
+      "description": "Per-channel trigger/gate input. Fires the envelope; gate sustains at SUS point while high. Inactive when the channel is chained downstream of another (only the chain's head accepts triggers).",
+      "voltage": "trigger / gate"
+    },
+    {
+      "name": "ASGN A–D",
+      "description": "Per-channel assignable CV input. Destination parameter is selected in the CV assignments menu: SHP, TIM, WRP, RSP, LVL, REP, PHS, REV, SUS, or FRZ. Sensitivity set per-channel with bipolar depth bar.",
+      "voltage": "-10V to +10V · -50 TIM ≈ 1V/oct"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT A–D",
+      "description": "Per-channel envelope output. Always appears on its own dedicated jack even when chained — chained channels fire sequentially, each on its own output.",
+      "voltage": "0V to +10V (unipolar)"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Vector shape library",
+      "trigger": "SHAPE encoder · 27 banks",
+      "description": "270 shapes as vector curves of 3–1000 breakpoints. Because shapes are interpolated in real time, the same curve renders cleanly from sub-millisecond transients to 30-minute drones with no stepping. Bank U favours snappy transients and resonator exciters; bank X is built for long evolving envelopes; several banks are signature contributions from guest artists."
+    },
+    {
+      "name": "WARP and RESPONSE deformation",
+      "trigger": "C encoder · press to toggle",
+      "description": "WARP skews time horizontally — positive values compress the head and stretch the tail (or vice versa), turning an AD shape into an AR or vice versa. RESPONSE bends amplitude vertically, convex ↔ concave. Extreme settings mangle the base shape beyond recognition; moderate settings fit an existing shape to a VCA's response curve."
+    },
+    {
+      "name": "Retrigger modes DG / AN / NR",
+      "trigger": "B encoder press",
+      "description": "DG restarts from 0V on every new trigger (may cause a click at non-zero states). AN restarts from the first breakpoint matching the current output voltage — glitch-free retriggering. NR ignores triggers while the envelope (or chain) is still playing, enforcing full-cycle completion."
+    },
+    {
+      "name": "Sustain point",
+      "trigger": "D encoder press · SUS selected",
+      "description": "A dashed vertical line on the display marks a hold point. When TRIG receives a gate, playback pauses at SUS for as long as the gate is high, then continues. Reversing the shape does not move the SUS line relative to the starting point. Scrolling SUS past the end displays OFF and disables the sustain stage entirely."
+    },
+    {
+      "name": "CV assignment per channel",
+      "trigger": "MENU page 1 · push channel encoder",
+      "description": "Each ASGN input is routed to one of ten targets: SHP, TIM, WRP, RSP, LVL, REP, PHS, REV, SUS, FRZ. Depth is bipolar (-100…+100). At TIM sensitivity of -50 the input responds at roughly 1V/oct — usable as a pitch-tracked envelope for resonant or rhythmic duties."
+    },
+    {
+      "name": "Binary CV: REV and FRZ",
+      "trigger": "ASGN routed to REV or FRZ",
+      "description": "These two targets ignore gradient CV and act as comparators against the bar-set threshold. When CV exceeds threshold: REV flips the envelope direction relative to current panel state; FRZ freezes playback in place, holding the current output voltage until CV drops below threshold."
+    },
+    {
+      "name": "Chain algorithms (16 topologies)",
+      "trigger": "MENU page 2 · knob A",
+      "description": "Sixteen algorithms split four channels into independent, paired, three-chained, or fully-chained configurations, with looped derivatives of each. Chained channels inherit their trigger from the chain head; only unchained channels accept external TRIG. Phase and repeat shape how the chain advances."
+    },
+    {
+      "name": "Phase parameter in chains",
+      "trigger": "MENU page 2 · PHASE per channel",
+      "description": "Unchained: PHASE simply delays the trigger (percentage of cycle length). Chained: PHASE controls when the next envelope fires relative to the previous one — 0% starts all envelopes simultaneously, 100% waits for full completion, 50% overlaps at halfway. For looped chains, at least one channel's PHASE must be >0% or the loop will not advance."
+    },
+    {
+      "name": "Repeat with infinite oscillator mode",
+      "trigger": "MENU page 2 · REPEAT per channel",
+      "description": "Unchained channels repeat 0–100 times or ∞. Infinite repeat turns the channel into a free-running shape oscillator — useful for tempo-synced LFOs via ASGN→TIM. Inside a chain, repeat is finite (∞ is disabled) and the phase calculation treats all repetitions as one long cycle."
+    },
+    {
+      "name": "Presets & default",
+      "trigger": "MENU page 3 · A encoder",
+      "description": "18 preset slots store the full module state (all channels, all menus). Operations are save / load / clear / default, each requiring confirmation. The DEFAULT preset is auto-recalled on power-up. Hold MENU to quick-save the current state as default without opening the menu."
+    },
+    {
+      "name": "Channel copy",
+      "trigger": "hold CHANNEL button",
+      "description": "Opens a copy destination menu: paste the current channel's settings (shape, time, warp, response, sustain, level, repeat, phase, retrigger mode, CV assignment) to any single other channel or to all three at once. Useful for setting up quadrature/identical voices quickly."
+    },
+    {
+      "name": "Nin expander",
+      "trigger": "Nin module attached via rear",
+      "description": "Adds a second set of four ASGN CV inputs (independent destinations) and four manual trigger/gate push-buttons per channel. Pressing a Nin button displays that channel's envelope on the OLED, aiding setup. A fourth MENU page appears for the expander's CV assignments."
+    },
+    {
+      "name": "Screen sleep",
+      "trigger": "10 minutes idle",
+      "description": "The OLED turns off after 10 minutes of no touch. Any encoder turn, encoder press, or button wakes it instantly. Envelopes continue running normally while the screen is asleep."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Snappy transient via WARP",
+      "patch": "CH A shape from bank U · TIME ~50ms · WARP +80 compresses the attack · RSP -40 for sharp decay curve · TRIG from drum clock · OUT A → VCA CV on a noise source → resonator excitation",
+      "diagram": "Zadar:\n* CH A shape: bank U\n* CH A TIME: 50ms\n* CH A WARP: +80\n* CH A RSP: -40\n\n- Clock (Out) t> Zadar (TRIG A)\n- Noise (Out) -> VCA (In)\n- Zadar (OUT A) >> VCA (CV)\n- VCA (Out) -> Resonator (In)"
+    },
+    {
+      "name": "Looping LFO with CV shape select",
+      "patch": "CH B · REPEAT = ∞ · TIME ~2s · ASGN B assigned to SHP with +100 depth · slow LFO into ASGN B scans through the shape bank over time · OUT B becomes an evolving modulation source whose curve family changes",
+      "diagram": "Zadar:\n* CH B REPEAT: ∞\n* CH B TIME: 2s\n* ASGN B: SHP (+100)\n\n- Slow LFO (Out) >> Zadar (ASGN B) // scans shapes\n- Zadar (OUT B) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Four-stage chain pad",
+      "patch": "Chain A→B→C→D · each channel long shape (bank X) · TIMEs 3s / 4s / 5s / 6s · PHASE 100% per channel plays them in strict sequence · single TRIG on A fires the full 18s progression across four outputs to four pad voices",
+      "diagram": "Zadar:\n* Chain: A-B-C-D\n* PHASE B/C/D: 100%\n* CH A TIME: 3s\n* CH B TIME: 4s\n* CH C TIME: 5s\n* CH D TIME: 6s\n\n- Gate (Out) t> Zadar (TRIG A)\n- Zadar (OUT A) >> VCA 1 (CV)\n- Zadar (OUT B) >> VCA 2 (CV)\n- Zadar (OUT C) >> VCA 3 (CV)\n- Zadar (OUT D) >> VCA 4 (CV)"
+    },
+    {
+      "name": "Pitch-tracked resonant exciter",
+      "patch": "CH C · bank U percussive shape · ASGN C assigned to TIM with -50 depth ≈ 1V/oct · pitch CV from sequencer into ASGN C makes envelope duration scale inversely with pitch · TRIG C from clock · OUT C excites a filter in self-oscillation for pitched pings",
+      "diagram": "Zadar:\n* CH C shape: bank U\n* ASGN C: TIM (-50)\n\n- Sequencer (Pitch) p> Zadar (ASGN C) // 1V/oct time\n- Clock (Out) t> Zadar (TRIG C)\n- Zadar (OUT C) -> Filter (In) // ping\n- Sequencer (Pitch) p> Filter (V/Oct)"
+    },
+    {
+      "name": "Freeze-modulated drone",
+      "patch": "CH D · REPEAT = ∞ · TIME 30s · ASGN D assigned to FRZ with 50 threshold · gate into ASGN D freezes the drone envelope mid-sweep · releasing the gate resumes motion · perform-style hold for modulation swells",
+      "diagram": "Zadar:\n* CH D REPEAT: ∞\n* CH D TIME: 30s\n* ASGN D: FRZ (50)\n\n- Gate (Out) g> Zadar (ASGN D) // freeze while high\n- Zadar (OUT D) >> Filter (Cutoff)\n- Zadar (OUT D) >> VCA (CV)"
+    },
+    {
+      "name": "Quadrature modulator via copy",
+      "patch": "Program CH A with a sine shape · hold CHANNEL to copy A → B, C, D · set PHASE A=0, B=25%, C=50%, D=75% in chain menu (unchained) · four TRIGs from a single clock via mult produce four quadrature-offset modulators",
+      "diagram": "Zadar:\n* CH A: sine shape\n* Copied to B/C/D\n* PHASE A/B/C/D: 0/25/50/75\n\n- Clock (Out) t> Mult (In)\n- Mult (Out 1) t> Zadar (TRIG A)\n- Mult (Out 2) t> Zadar (TRIG B)\n- Mult (Out 3) t> Zadar (TRIG C)\n- Mult (Out 4) t> Zadar (TRIG D)\n- Zadar (OUT A) >> Filter L (Cutoff)\n- Zadar (OUT C) >> Filter R (Cutoff)"
+    },
+    {
+      "name": "CV-morphing bass envelope",
+      "patch": "CH A percussive shape · TIME ~300ms · velocity CV into ASGN A assigned to WRP · soft hits → round envelope, hard hits → snappy envelope via warp sweep · OUT A → VCA on bass VCO · expressive dynamics from a single envelope",
+      "diagram": "Zadar:\n* CH A TIME: 300ms\n* ASGN A: WRP (+80)\n\n- Velocity (CV) >> Zadar (ASGN A) // warp by velocity\n- Gate (Out) g> Zadar (TRIG A)\n- Zadar (OUT A) >> VCA (CV)\n- VCO (Out) -> VCA (In)"
+    },
+    {
+      "name": "Chained euclidean-style rhythm",
+      "patch": "Chain looped A-B looped · CH A TIME 200ms REPEAT 2 · CH B TIME 300ms REPEAT 1 · PHASE A 100% makes the loop cycle · OUT A → kick VCA, OUT B → hat VCA · produces a polyrhythmic rhythm from a single trigger",
+      "diagram": "Zadar:\n* Chain: [A-B] looped\n* CH A TIME: 200ms · REPEAT 2\n* CH B TIME: 300ms · REPEAT 1\n* PHASE A: 100%\n\n- Gate (Out) t> Zadar (TRIG A)\n- Zadar (OUT A) >> Kick VCA (CV)\n- Zadar (OUT B) >> Hat VCA (CV)\n- Kick (Out) -> Kick VCA (In)\n- Hat (Out) -> Hat VCA (In)"
+    }
+  ]
+}

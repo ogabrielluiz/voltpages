@@ -1,0 +1,283 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://frap.tools/docs/MANUALONE.pdf",
+      "https://frap.tools/products/fumana/",
+      "https://frap.tools/fumana-vocoding/",
+      "https://frap.tools/filter-banks/",
+      "https://divkidvideo.com/videos/frap-tools-fumana-vocoding-spectral-transfer/",
+      "https://schneidersladen.de/en/frap-tools-fumana-dual-spectral-editor"
+    ]
+  },
+  "slug": "frap-tools--fumana",
+  "name": "FUMANA",
+  "manufacturer": "Frap Tools",
+  "hp": 42,
+  "tags": ["FILTER", "RESONATOR", "EFFECTS", "EQ"],
+  "description": "Dual all-analog 16-band spectral filter bank. Parallel bandpass array with per-band faders and CV, Tilt/Scan macros, odd/even splits, and a dual envelope-follower modulator path for 16-band vocoding and dynamic spectral transfer.",
+  "controls": [
+    {
+      "name": "Band Faders (×16)",
+      "scope": "Main filter bank",
+      "description": "Per-band amplitude of the main 16 bandpass filters.",
+      "detail": "bottom: VCA closed · top: unity · red LED per band"
+    },
+    {
+      "name": "Main Odd Level",
+      "scope": "Audio input",
+      "description": "Input gain for odd-band main signal.",
+      "detail": "bands 1, 3, 5, 7, 9, 11, 13, 15 · expects ~10 Vpp modular level"
+    },
+    {
+      "name": "Main Even Level",
+      "scope": "Audio input",
+      "description": "Input gain for even-band main signal.",
+      "detail": "bands 2, 4, 6, 8, 10, 12, 14, 16"
+    },
+    {
+      "name": "Mod Odd Level",
+      "scope": "Modulation input",
+      "description": "Input gain for odd-band modulator signal (vocoder input).",
+      "detail": "feeds 16 analysis filters → envelope followers"
+    },
+    {
+      "name": "Mod Even Level",
+      "scope": "Modulation input",
+      "description": "Input gain for even-band modulator signal.",
+      "detail": "semi-normalled to Mod Odd jack"
+    },
+    {
+      "name": "Unvoiced Level",
+      "scope": "Unvoiced input",
+      "description": "Input gain for the fricative/sibilant detector channel.",
+      "detail": "white/pink noise recommended · detects sharp transients in bands 14 & 15 of modulator"
+    },
+    {
+      "name": "Tilt",
+      "scope": "Macro Spectral Editing",
+      "description": "Seesaw between low and high bands around fulcrum at bands 8/9.",
+      "detail": "CCW: emphasise 1-8 · noon: flat · CW: emphasise 9-16 · ±10 V CV"
+    },
+    {
+      "name": "Peak/Notch",
+      "scope": "Parametric Scanning",
+      "description": "Positive gain (peak) or negative gain (notch) at the Scan centre.",
+      "detail": "CCW: notch · noon: no emphasis · CW: peak · ±10 V CV input"
+    },
+    {
+      "name": "Center",
+      "scope": "Parametric Scanning",
+      "description": "Centre frequency of the parametric scan.",
+      "detail": "CCW: band 1 · CW: band 16 · continuous · ±10 V CV"
+    },
+    {
+      "name": "Width",
+      "scope": "Parametric Scanning",
+      "description": "Number of bands flanking Centre affected by Peak/Notch.",
+      "detail": "CCW: only centre band · CW: all 16 bands · Centre audible only if Width > 0 · ±10 V CV"
+    },
+    {
+      "name": "E.F. Attack",
+      "scope": "Envelope Followers",
+      "description": "Attack time of the 16 modulator envelope followers.",
+      "detail": "CCW: fastest transient response · non-conventional (for formant sculpt)"
+    },
+    {
+      "name": "E.F. Release",
+      "scope": "Envelope Followers",
+      "description": "Release time of the 16 modulator envelope followers.",
+      "detail": "CCW: fastest release"
+    },
+    {
+      "name": "CV Input Attenuverters",
+      "scope": "Tilt / Peak-Notch / Center / Width",
+      "description": "Scales the CV input to each macro control.",
+      "detail": "one per macro CV · bipolar"
+    },
+    {
+      "name": "Odd/Even Phase Inversion Switch",
+      "scope": "Audio Outputs",
+      "description": "Inverts phase of Odd or Even sum relative to All.",
+      "detail": "for dynamic spectral subtraction / reinforcement when summed externally"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Main Odd In / Main Even In",
+      "description": "Carrier audio input, pre-split into odd and even bands. Semi-normalled together so one cable feeds both.",
+      "voltage": "modular level, ~10 Vpp",
+      "normalizedTo": "odd ↔ even via single-cable detection"
+    },
+    {
+      "name": "Mod Odd In / Mod Even In",
+      "description": "Modulator audio (vocoder analysis source). Fed through 16 analysis bandpass filters + envelope followers.",
+      "voltage": "modular level, ~10 Vpp",
+      "normalizedTo": "odd ↔ even when only one patched"
+    },
+    {
+      "name": "Unvoiced In",
+      "description": "Additional input for fricatives/sibilants. Detector reroutes bands 14 & 15 to this audio when detected.",
+      "voltage": "noise source recommended · ±10 V"
+    },
+    {
+      "name": "Individual Band CV Inputs (×16)",
+      "description": "Per-band VCA CV, one under each fader. Breaks semi-normal from envelope follower.",
+      "voltage": "±10 V · audio-rate capable (up to ~1 kHz)",
+      "normalizedTo": "corresponding envelope follower output (sum at input)"
+    },
+    {
+      "name": "Tilt CV",
+      "description": "Voltage over the Tilt macro.",
+      "voltage": "±10 V usable · 10 V knob offset"
+    },
+    {
+      "name": "Peak/Notch CV",
+      "description": "Voltage over the parametric Gain macro.",
+      "voltage": "±10 V usable · 10 V knob offset"
+    },
+    {
+      "name": "Center CV",
+      "description": "Voltage over the parametric Center frequency.",
+      "voltage": "±10 V usable · 12 V knob offset"
+    },
+    {
+      "name": "Width CV",
+      "description": "Voltage over the parametric Width.",
+      "voltage": "±10 V usable · 9 V knob offset"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "All Out",
+      "description": "Sum of all 16 filtered bands with additional 8th-order lowpass at 18 kHz. Slightly smoother than summing Odd+Even.",
+      "voltage": "modular audio · 48 dB/oct bands"
+    },
+    {
+      "name": "Odd Out",
+      "description": "Sum of bands 1, 3, 5, 7, 9, 11, 13, 15 post-VCA. Pre-VCA individual filter taps not present here.",
+      "voltage": "modular audio · phase-switchable"
+    },
+    {
+      "name": "Even Out",
+      "description": "Sum of bands 2, 4, 6, 8, 10, 12, 14, 16 post-VCA.",
+      "voltage": "modular audio · phase-switchable"
+    },
+    {
+      "name": "Individual Band Outputs (×16)",
+      "description": "Pre-VCA direct filter tap per band. Not affected by the fader or VCA — parallel-process a band independently.",
+      "voltage": "modular audio"
+    },
+    {
+      "name": "All E.F. Out",
+      "description": "Sum of all 16 envelope followers. Composite amplitude envelope of the modulator signal.",
+      "voltage": "0 – 10 V · small negative bias (offset)"
+    },
+    {
+      "name": "Individual E.F. Outputs (×16)",
+      "description": "Per-band envelope-follower CV. Usable as 16-band spectral analysis signal independent of the VCAs.",
+      "voltage": "0 – 10 V · ±5 % tolerance"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "16-band spectral transfer",
+      "trigger": "patch carrier → Main in, modulator → Mod in",
+      "description": "Modulator feeds its own 16-filter analysis array. Each analysis filter drives an envelope follower whose output is semi-normalled to the corresponding main-filter VCA CV. The modulator's spectral footprint opens the carrier's matching bands. Classic 16-band analog vocoding when carrier is harmonic."
+    },
+    {
+      "name": "Sixth-order modulator filters",
+      "trigger": "always (modulation path)",
+      "description": "Mod analysis filters are 6th-order (36 dB/oct) with a further stage that compensates band energy — distinct from the main 8th-order array (48 dB/oct). Band extraction is slightly less steep on the analysis side by design for smoother envelope curves."
+    },
+    {
+      "name": "Semi-normal per-band break",
+      "trigger": "patch a cable into any Individual Band CV input",
+      "description": "Envelope-follower normal to each VCA is broken only for that specific band when a jack is patched. The other 15 bands keep the envelope-following behaviour. Patch Individual E.F. outs in a shuffled order to bend-vocode (voice hits at one frequency open a different band on the carrier)."
+    },
+    {
+      "name": "Odd/Even splitting",
+      "trigger": "patch only Odd or Even input",
+      "description": "Inputs are semi-normalled in pairs (Main Odd ↔ Main Even, Mod Odd ↔ Mod Even). When one jack is patched it auto-feeds the other. Break the normal by patching both to different sources: the module becomes two 8-band vocoders operating independently on odd and even bands."
+    },
+    {
+      "name": "Parametric scanning",
+      "trigger": "Center / Width / Peak-Notch knobs",
+      "description": "Acts as a three-variable parametric EQ across the 16 bands. Centre selects fulcrum band, Width extends emphasis to neighbours, Peak/Notch sets positive (peak) or negative (notch) gain. Centre is audible only when Width > fully-CCW. Off position for Peak/Notch sits around noon but varies per unit."
+    },
+    {
+      "name": "Tilt fulcrum at 8/9",
+      "trigger": "Tilt knob",
+      "description": "Tilt pivots around bands 8-9. Emphasises one half while attenuating the other proportionally — more distant bands are affected more strongly. Use a kick-drum envelope into Tilt CV input to ducking-sidechain the lower spectrum on each hit, reinforcing the higher register."
+    },
+    {
+      "name": "Unvoiced section",
+      "trigger": "patch audio into Unvoiced In + modulator into Mod In",
+      "description": "Bands 14 & 15 have dedicated second envelope followers + VCAs that switch their source from the main signal to the Unvoiced audio when the modulator hits those bands. Fricatives/sibilants in voice modulator inject noise bursts from the Unvoiced input into the carrier. Preserves sound instead of muting it (unlike a traditional de-esser)."
+    },
+    {
+      "name": "Individual band taps pre-VCA",
+      "trigger": "patch Individual Band Output",
+      "description": "Each of the 16 direct outputs taps the filter before the fader/VCA. Patching does not affect the fader's role in the All/Odd/Even mix — use these to parallel-process a band (band 10 to a delay send, band 4 to a distortion) while the bank continues normal duty."
+    },
+    {
+      "name": "Audio-rate CV at per-band inputs",
+      "trigger": "audio into Individual Band CV input",
+      "description": "CV inputs accept signals up to ~1 kHz with a lowpass roll-off past that. Patching an audio-rate signal into a band CV performs amplitude modulation on that single band — 16 parallel AM channels selectable per-band."
+    },
+    {
+      "name": "Envelope follower as spectral CV source",
+      "trigger": "no carrier patched",
+      "description": "The 16 Individual E.F. outputs are usable as a 16-voice spectral analyser regardless of the main path. Take any audio through Mod In and use the envelope outs to drive external filters, VCAs, or quantised sequencers — FUMANA becomes a pure analysis tool."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic 16-band vocoder",
+      "patch": "Square-wave VCO into Main In (blue) as carrier · voice microphone into Mod In (grey) · all faders to unity · E.F. Attack fast, E.F. Release medium · All Out delivers the sung carrier · tune the VCO to match voice fundamental.",
+      "diagram": "FUMANA:\n* Faders 1-16: unity\n* E.F. Attack: fast\n* E.F. Release: medium\n* Unvoiced In: pink noise\n\n- VCO (Square) -> FUMANA (Main Odd In)\n- Mic Preamp (Out) -> FUMANA (Mod Odd In)\n- Noise (Pink) -> FUMANA (Unvoiced In)\n- FUMANA (All Out) -> Output (In)"
+    },
+    {
+      "name": "Dual 8-band vocoder",
+      "patch": "Square into Main Odd · triangle into Main Even · drums into Mod Odd · vocal into Mod Even · Odd Out = drum-modulated square (8 bands), Even Out = voice-modulated triangle (8 bands) · two independent vocoders sharing the same 16-band hardware.",
+      "diagram": "FUMANA:\n* Faders 1-16: unity\n\n- VCO 1 (Square) -> FUMANA (Main Odd In)\n- VCO 2 (Triangle) -> FUMANA (Main Even In)\n- Drums (Out) -> FUMANA (Mod Odd In)\n- Voice (Out) -> FUMANA (Mod Even In)\n- FUMANA (Odd Out) -> Mixer (In 1)\n- FUMANA (Even Out) -> Mixer (In 2)"
+    },
+    {
+      "name": "Spectral sidechain ducking",
+      "patch": "Drum bus through Main · bassline envelope into Tilt CV · each kick tilts the band distribution upward (attenuates lows) · bass breathes back in during rests · more musical than a broadband sidechain.",
+      "diagram": "FUMANA:\n* Tilt CV Attenuverter: ~2 o'clock\n\n- Drum Bus (Out) -> FUMANA (Main Odd In)\n- Kick Envelope (Out) >> FUMANA (Tilt CV)\n- FUMANA (All Out) -> Output (In)"
+    },
+    {
+      "name": "Parametric sweep",
+      "patch": "Pink noise into Main · LFO into Center CV · Width set to 3 bands · Peak/Notch CW for peak · LFO sweeps a resonant peak across the 16-band spectrum · sample-and-hold at Center CV gives stepped band jumps instead of sweeps.",
+      "diagram": "FUMANA:\n* Faders 1-16: unity\n* Peak/Notch: CW (peak)\n* Width: ~3 bands\n\n- Noise (Pink) -> FUMANA (Main Odd In)\n- LFO (Out) >> FUMANA (Center CV)\n- FUMANA (All Out) -> Output (In)"
+    },
+    {
+      "name": "Cross-wired vocoder",
+      "patch": "Voice into Mod In · VCO into Main · patch Individual E.F. outputs into Individual Band CV inputs in a shuffled pattern — E.F. 1 → Band 16 CV, E.F. 16 → Band 1 · high voice formants open low carrier bands and vice versa · inverted spectral character.",
+      "diagram": "FUMANA:\n\n- Voice (Out) -> FUMANA (Mod Odd In)\n- VCO (Saw) -> FUMANA (Main Odd In)\n- FUMANA (E.F. 1 Out) >> FUMANA (Band 16 CV)\n- FUMANA (E.F. 16 Out) >> FUMANA (Band 1 CV)\n- FUMANA (E.F. 8 Out) >> FUMANA (Band 9 CV)\n- FUMANA (All Out) -> Output (In)"
+    },
+    {
+      "name": "16-band analyser",
+      "patch": "Audio into Mod Odd · take the 16 Individual E.F. outputs as spectral CVs · route the All E.F. out as a broadband amplitude envelope · use spectral CVs to drive external oscillators for additive resynthesis.",
+      "diagram": "FUMANA:\n\n- Audio Src (Out) -> FUMANA (Mod Odd In)\n- FUMANA (E.F. 1 Out) >> VCO 1 (Amp CV)\n- FUMANA (E.F. 4 Out) >> VCO 2 (Amp CV)\n- FUMANA (E.F. 8 Out) >> VCO 3 (Amp CV)\n- FUMANA (All E.F. Out) >> Master VCA (CV)"
+    },
+    {
+      "name": "Per-band effects send",
+      "patch": "Individual Band 10 Out → delay send · delay return mixed back in · the tenth band of the spectrum gets an echo tail while all other bands stay dry · carrier bank continues to pass full signal via All Out · parallel wet band.",
+      "diagram": "FUMANA:\n* Faders 1-16: unity\n\n- Carrier (Out) -> FUMANA (Main Odd In)\n- FUMANA (Band 10 Out) -> FX (In)\n- FX (Out) -> Mixer (Wet In)\n- FUMANA (All Out) -> Mixer (Dry In)"
+    },
+    {
+      "name": "Spectral freeze with faders",
+      "patch": "Patch modulator with brief phrase · set E.F. Release CW (long) · immediately after the phrase, all VCAs stay open at their last-sampled levels · manual fader adjustments freeze a static spectral emphasis derived from the sampled moment.",
+      "diagram": "FUMANA:\n* E.F. Attack: fast\n* E.F. Release: very long (CW)\n\n- Voice (Out) -> FUMANA (Mod Odd In)\n- Drone (Out) -> FUMANA (Main Odd In)\n- FUMANA (All Out) -> Output (In)"
+    },
+    {
+      "name": "Notch scan for hollowness",
+      "patch": "Voice through Main · Peak/Notch CCW (notch) · Width ~half · slow LFO into Center CV · a 3-band notch crawls across the voice spectrum creating cyclic tonal absence · strong phasing-like effect without phaser delay.",
+      "diagram": "FUMANA:\n* Peak/Notch: CCW (notch)\n* Width: ~half\n\n- Voice (Out) -> FUMANA (Main Odd In)\n- Slow LFO (Out) >> FUMANA (Center CV)\n- FUMANA (All Out) -> Output (In)"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.ericasynths.lv/media/Pico_DRUMS1_Manual.pdf",
+      "https://schneidersladen.de/en/erica-synths-pico-dsp",
+      "https://www.perfectcircuit.com/erica-synths-pico-drums.html",
+      "https://www.controlvoltage.net/erica-synths-pico-drums.html",
+      "https://modulargrid.net/e/erica-synths-pico-drums",
+      "https://modwiggler.com/forum/viewtopic.php?t=163711"
+    ]
+  },
+  "slug": "erica-synths--pico-drums",
+  "name": "Pico DRUMS",
+  "manufacturer": "Erica Synths",
+  "hp": 3,
+  "tags": ["DRUM", "SAMPLER"],
+  "description": "3HP dual-voice drum sampler. 64 preset samples per drum at 12-bit/44kHz, 8MB memory, independent pitch/decay/level per voice. CV control of drum 1 parameters including sample-select at 1V/oct. Sub-5ms trigger latency.",
+  "controls": [
+    {
+      "name": "Pitch 1",
+      "scope": "drum 1",
+      "description": "Sets playback pitch of drum 1's sample. Under CV assignment also becomes the 1V/oct chromatic control.",
+      "detail": "Wide pitch range · negative tuning possible"
+    },
+    {
+      "name": "Decay 1",
+      "scope": "drum 1",
+      "description": "Truncates sample tail via internal envelope. CCW: very short · CW: full sample length.",
+      "detail": "Per-trigger VCA decay"
+    },
+    {
+      "name": "Level 1",
+      "scope": "drum 1",
+      "description": "Output level for drum 1 on the mixed output.",
+      "detail": "CCW: muted · CW: full gain"
+    },
+    {
+      "name": "Sample 1 / Bank button",
+      "scope": "drum 1",
+      "description": "Selects one of 64 samples for drum 1. Short press steps; long press enters save/load bank.",
+      "detail": "64 factory samples · user samples via USB programmer"
+    },
+    {
+      "name": "Pitch 2",
+      "scope": "drum 2",
+      "description": "Playback pitch of drum 2.",
+      "detail": "Same range as drum 1"
+    },
+    {
+      "name": "Decay 2",
+      "scope": "drum 2",
+      "description": "Decay envelope for drum 2.",
+      "detail": "Per-trigger VCA decay"
+    },
+    {
+      "name": "Level 2",
+      "scope": "drum 2",
+      "description": "Output level for drum 2.",
+      "detail": "CCW: muted · CW: full gain"
+    },
+    {
+      "name": "Sample 2 button",
+      "scope": "drum 2",
+      "description": "Selects one of 64 samples for drum 2.",
+      "detail": "No CV over sample-select on drum 2"
+    },
+    {
+      "name": "CV Assign",
+      "scope": "drum 1",
+      "description": "Cycles which drum-1 parameter the CV input modulates; LED colour indicates the target.",
+      "detail": "Green: pitch · Red: decay · Orange/Yellow: volume · (4th): sample-select at 1V/oct"
+    },
+    {
+      "name": "Exclusive switch",
+      "scope": "global",
+      "description": "Sets how the two voices interact when triggered simultaneously (retrigger / mute / overlap).",
+      "detail": "Drum-bus choke behaviour"
+    }
+  ],
+  "inputs": [
+    { "name": "TRIG 1", "description": "Trigger input for drum 1. Sub-5ms latency.", "voltage": "+5V trigger" },
+    { "name": "TRIG 2", "description": "Trigger input for drum 2.", "voltage": "+5V trigger" },
+    { "name": "CV 1", "description": "CV input modulating drum 1's currently selected parameter (pitch, decay, volume or sample-select).", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "OUT", "description": "Mono mixed output carrying both drum voices after their individual level controls.", "voltage": "10Vpp" }
+  ],
+  "behaviors": [
+    {
+      "name": "CV target cycling",
+      "trigger": "CV Assign button press",
+      "description": "Each press of the CV Assign button advances the CV routing: pitch → decay → volume → sample-select. LED colour reflects the current target."
+    },
+    {
+      "name": "Chromatic sample-select",
+      "trigger": "CV Assign = sample-select · CV = 1V/oct",
+      "description": "When assigned to sample-select, incoming CV advances the sample in semitone steps at 1V/oct, turning drum 1 into a pitch-addressable 64-slot sample player."
+    },
+    {
+      "name": "Exclusive retrigger",
+      "trigger": "simultaneous TRIG 1 + TRIG 2 · Exclusive on",
+      "description": "Exclusive switch defines whether simultaneous triggers let both voices overlap or cut one for the other — crucial for kick/hat choke behaviour from a single step sequencer."
+    },
+    {
+      "name": "Custom sample upload",
+      "trigger": "USB programmer device",
+      "description": "The separate Pico Drum Programmer loads user WAVs into the module's 8MB flash via USB. Each bank still caps at 64 samples per drum."
+    },
+    {
+      "name": "Preset save/load",
+      "trigger": "long-press Sample buttons",
+      "description": "Up to six combinations of sample selections and parameter settings can be saved as presets and recalled during performance."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Kick + hat drum voice",
+      "patch": "Step sequencer → TRIG1 (kick) · TRIG2 (hat) · short Decay 2 · Exclusive off",
+      "diagram": "PICO DRUMS:\n* Sample 1: kick\n* Sample 2: hat\n* Decay 2: CCW\n- Seq (Trig1) t> Pico Drums (TRIG 1)\n- Seq (Trig2) t> Pico Drums (TRIG 2)\n- Pico Drums (OUT) -> Mixer (In)"
+    },
+    {
+      "name": "Melodic drum 1",
+      "patch": "CV Assign → pitch · quantized sequencer → CV1 · trigger → TRIG1",
+      "diagram": "PICO DRUMS:\n* CV Assign: pitch\n- Quant (CV) p> Pico Drums (CV 1)\n- Seq (Gate) g> Pico Drums (TRIG 1)\n- Pico Drums (OUT) -> VCF (In)"
+    },
+    {
+      "name": "Sample-scrolled rhythm",
+      "patch": "CV Assign → sample-select · stepped CV → CV1 · each step picks a different sample",
+      "diagram": "PICO DRUMS:\n* CV Assign: sample-select\n- Seq (CV) >> Pico Drums (CV 1)\n- Clock (Out) c> Pico Drums (TRIG 1)\n- Pico Drums (OUT) -> Mixer (In)"
+    },
+    {
+      "name": "Choked kick/clap",
+      "patch": "Exclusive on · TRIG1 = kick · TRIG2 = clap · common clock with offbeat splits",
+      "diagram": "PICO DRUMS:\n* Exclusive: on\n- Seq (Trig1) t> Pico Drums (TRIG 1)\n- Seq (Trig2) t> Pico Drums (TRIG 2)\n- Pico Drums (OUT) -> VCA (In)"
+    },
+    {
+      "name": "Dynamic decay accents",
+      "patch": "CV Assign → decay · accent gate → CV1 · trigger → TRIG1",
+      "diagram": "PICO DRUMS:\n* CV Assign: decay\n- Accent (Gate) g> Pico Drums (CV 1)\n- Seq (Gate) g> Pico Drums (TRIG 1)\n- Pico Drums (OUT) -> Mixer (In)"
+    }
+  ]
+}

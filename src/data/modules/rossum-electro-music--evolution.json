@@ -1,0 +1,181 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.rossum-electro.com/products/evolution/",
+      "https://www.rossum-electro.com/fqlzron/wp-content/uploads/2015/12/evolution_manual_011816-2.pdf",
+      "https://www.rossum-electro.com/history/the-evolution-of-evolution/",
+      "https://modulargrid.net/e/rossum-electro-music-evolution",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=183012"
+    ]
+  },
+  "slug": "rossum-electro-music--evolution",
+  "name": "Evolution",
+  "manufacturer": "Rossum Electro-Music",
+  "hp": 16,
+  "tags": ["VCF", "FILTER", "OSCILLATOR", "WAVESHAPER"],
+  "description": "Analog variable-character ladder LPF. Re-engineered E-mu 1100 core adds voltage-controlled pole count (3–6), Q-level compensation and Species distortion-drive. DC-coupled · >10-octave range · precise 1V/oct self-oscillation.",
+  "controls": [
+    {
+      "name": "FREQUENCY",
+      "scope": "Global",
+      "description": "Initial cutoff frequency. Summed with all frequency CVs.",
+      "detail": "~22Hz – 22kHz (knob alone) · 0.02Hz – 40kHz with CVs"
+    },
+    {
+      "name": "FREQ CV3 attenuator",
+      "scope": "Frequency",
+      "description": "Conventional attenuator for FREQ CV3 input.",
+      "detail": "CCW: no CV · CW: full amplitude at 1V/oct"
+    },
+    {
+      "name": "FREQ CV2 attenuverter",
+      "scope": "Frequency",
+      "description": "Attenuverter for FREQ CV2 input.",
+      "detail": "CCW: full inverted · noon: 0 · CW: full direct · both ends at 1V/oct"
+    },
+    {
+      "name": "Q",
+      "scope": "Resonance",
+      "description": "Initial resonance height. ~4V enters self-oscillation.",
+      "detail": "0 – 7V effective range · approximately linear VCA-controlled Q"
+    },
+    {
+      "name": "Q LEVEL COMPENSATION",
+      "scope": "Resonance",
+      "description": "Restores passband level lost as Q rises. CCW: classic ladder thinning. CW: full pre-attenuation body preserved.",
+      "detail": "Continuous mix between thin/resonant-only and full-body signal"
+    },
+    {
+      "name": "Q CV2 attenuverter",
+      "scope": "Resonance",
+      "description": "Attenuverter for Q CV2 input.",
+      "detail": "CCW: invert · noon: 0 · CW: unity"
+    },
+    {
+      "name": "GENUS",
+      "scope": "Pole count",
+      "description": "Initial number of active poles in the ladder. Continuous analog current-steering, not switched.",
+      "detail": "3 poles (18dB/oct) – 6 poles (36dB/oct) · 5V swing covers full range"
+    },
+    {
+      "name": "GENUS CV2 attenuverter",
+      "scope": "Pole count",
+      "description": "Attenuverter for GENUS CV2 input.",
+      "detail": "CCW: invert · noon: 0 · CW: unity"
+    },
+    {
+      "name": "SPECIES",
+      "scope": "Drive",
+      "description": "Signal level into ladder. Controls distortion of frequencies near/above cutoff.",
+      "detail": "0 – 10V range · up to noon: subtle · past noon: audible grit"
+    },
+    {
+      "name": "SPECIES CV2 attenuverter",
+      "scope": "Drive",
+      "description": "Attenuverter for SPECIES CV2 input.",
+      "detail": "CCW: invert · noon: 0 · CW: unity"
+    }
+  ],
+  "inputs": [
+    { "name": "INPUT", "description": "DC-coupled audio/CV input", "voltage": "up to 20Vpp" },
+    { "name": "1V/OCT", "description": "Calibrated full-level pitch CV for cutoff · 10+ octave tracking", "voltage": "1V/oct · 100kΩ" },
+    { "name": "FREQ CV2", "description": "Attenuverted frequency CV (sign-flipping)", "voltage": "1V/oct at extremes · 100kΩ" },
+    { "name": "FREQ CV3", "description": "Attenuated frequency CV (positive only)", "voltage": "1V/oct at max · 50kΩ min" },
+    { "name": "Q CV1", "description": "Full-level Q control voltage", "voltage": "summed with Q knob · 100kΩ" },
+    { "name": "Q CV2", "description": "Attenuverted Q CV", "voltage": "100kΩ" },
+    { "name": "GENUS CV1", "description": "Full-level pole-count CV", "voltage": "5V swing covers 3→6 poles · 100kΩ" },
+    { "name": "GENUS CV2", "description": "Attenuverted pole-count CV", "voltage": "100kΩ" },
+    { "name": "SPECIES CV1", "description": "Full-level drive CV", "voltage": "100kΩ" },
+    { "name": "SPECIES CV2", "description": "Attenuverted drive CV", "voltage": "100kΩ" }
+  ],
+  "outputs": [
+    { "name": "OUTPUT", "description": "Filtered audio · DC-coupled · 1kΩ", "voltage": "up to 20Vpp without clipping" }
+  ],
+  "behaviors": [
+    {
+      "name": "Voltage-controlled pole count",
+      "trigger": "GENUS knob or GENUS CV",
+      "description": "Steers current through individual ladder stages in an analog continuous manner between 3 and 6 poles. LEDs show current integer pole count; two adjacent LEDs indicate the control is mid-transition. Modulating at LFO rates reshapes the filter's slope dynamically; at audio rates produces entirely new timbres not available from classic ladder filters."
+    },
+    {
+      "name": "Genus shifts resonant pitch",
+      "trigger": "GENUS change with Q near or at self-oscillation",
+      "description": "The 180° phase-shift frequency differs per pole count: at 3 poles resonance sits 10 semitones above cutoff, 4 poles equal to cutoff, 5 poles 6 semitones below, 6 poles 10.5 semitones below. Modulating Genus during self-oscillation sweeps the pitch between these anchor points — arpeggiator-like patterns from a single CV."
+    },
+    {
+      "name": "Oscillation continuity vs break",
+      "trigger": "Q at maximum vs just at onset · moving Genus",
+      "description": "With Q maxed, oscillation is continuous through all Genus transitions. With Q set just at self-oscillation threshold, moving Genus causes Evolution to stop oscillating between pole settings (the Q needed for oscillation differs per pole). Pick threshold-Q for gated arpeggios, max-Q for smooth pitch sweeps."
+    },
+    {
+      "name": "Q Level Compensation",
+      "trigger": "Q LEVEL COMPENSATION knob",
+      "description": "Classic ladders attenuate the passband as Q rises, giving the familiar thin resonant wah. CCW preserves that behavior. CW progressively mixes the pre-ladder signal back in, keeping body and low-end intact under high resonance — useful for resonant pads and fat bass that would otherwise sound gutted."
+    },
+    {
+      "name": "Species drive vs oscillation",
+      "trigger": "SPECIES knob · with Q high",
+      "description": "Because Q feedback lives inside the drive VCAs, Species does not affect resonance height but does inversely control self-oscillation amplitude. When self-oscillating, higher Species = quieter oscillator; Species CV thus amplitude-modulates the oscillator output. Combining audio-rate Species CV with an input signal produces ring-mod-like cross-modulation."
+    },
+    {
+      "name": "Sine-wave VCO mode",
+      "trigger": "Q ~4V+ · no input",
+      "description": "Self-oscillation produces a clean high-fidelity sine. 1V/OCT tracks accurately over 10+ octaves (better than many Eurorack VCOs). Purest sine with Genus at 4 poles and Q just barely into oscillation. Evolution doubles as a sine-only VCO with filter FM/AM capabilities via Species."
+    },
+    {
+      "name": "DC-coupled CV processing",
+      "trigger": "CV patched to INPUT",
+      "description": "DC-coupled throughout. Patching an LFO or envelope into INPUT lets Evolution smooth, slew or amplify CVs. With Genus at 3 poles the response is a slow RC-style lag; at 6 poles a steeper response. Self-oscillating with CV in causes quadrature-like behavior useful for complex modulation shapes."
+    },
+    {
+      "name": "Three frequency CVs sum",
+      "trigger": "1V/OCT + FREQ CV2 + FREQ CV3 all patched",
+      "description": "1V/OCT is full-level fixed. FREQ CV2 has an attenuverter (sign-flippable). FREQ CV3 has a plain attenuator (positive only). All three sum with the FREQUENCY knob. Gives simultaneous key-tracking, bidirectional envelope and scaled LFO modulation without external mixers."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Slope-morphing bass",
+      "patch": "Genus modulated by slow LFO ±2.5V · Q ~noon (no oscillation) · bass oscillator into INPUT · cutoff at 150Hz · filter slope morphs between 18 and 36 dB/oct cyclically, breathing the low-end character without changing pitch or resonance",
+      "diagram": "Evolution:\n* Frequency: ~150Hz\n* Q: ~noon\n* Genus: noon\n* Genus CV2 attenuverter: ~3 o'clock\n\nLFO:\n\nVCO:\n\n- VCO (Out) -> Evolution (INPUT)\n- LFO (Out) >> Evolution (GENUS CV2)\n- Evolution (OUTPUT) -> Output (In)"
+    },
+    {
+      "name": "Pole-count arpeggio",
+      "patch": "no input · Q maxed (continuous oscillation) · Frequency set to A4 · square LFO into GENUS CV1 · Evolution jumps between four oscillation pitches (+10, 0, -6, -10.5 semitones of cutoff) as Genus steps across pole counts — self-generating arpeggio",
+      "diagram": "Evolution:\n* Q: maximum\n* Frequency: A4\n* Genus: sweep range\n\nLFO:\n\n- LFO (Out) >> Evolution (GENUS CV1)\n- Evolution (OUTPUT) -> Output (In)"
+    },
+    {
+      "name": "Precision sine VCO",
+      "patch": "no input · Q just at oscillation · Genus at 4 poles · sequencer 1V/oct into 1V/OCT · Evolution becomes a clean, 10-octave-tracking sine VCO — use as a fifth voice or sub when your VCOs are maxed out",
+      "diagram": "Evolution:\n* Q: at oscillation threshold\n* Genus: 4 poles\n* Frequency: base pitch\n\nSequencer:\n\n- Sequencer (Pitch) p> Evolution (1V/OCT)\n- Evolution (OUTPUT) -> VCA (In)"
+    },
+    {
+      "name": "Through-zero filter FM",
+      "patch": "Genus 5 poles · Q high · audio-rate VCO into FREQ CV2 with attenuverter swept through noon · bipolar FM crosses zero · harsh metallic inharmonic tones built from ladder-filter self-oscillation",
+      "diagram": "Evolution:\n* Genus: 5 poles\n* Q: high (near oscillation)\n\nModulator VCO:\n\nAudio VCO:\n\n- Audio VCO (Out) -> Evolution (INPUT)\n- Modulator VCO (Out) >> Evolution (FREQ CV2)\n- Evolution (OUTPUT) -> Output (In)"
+    },
+    {
+      "name": "Fat resonant bass",
+      "patch": "Q ~3 o'clock · Q LEVEL COMPENSATION fully CW · cutoff 200Hz tracked with keyboard · Species at ~1 o'clock for warmth · the low body stays full under high resonance instead of thinning — aggressive acid bass without the classic ladder thin-out",
+      "diagram": "Evolution:\n* Q: ~3 o'clock\n* Q Level Compensation: full CW\n* Species: ~1 o'clock\n* Frequency: ~200Hz\n\nBass VCO:\n\nKeyboard:\n\n- Bass VCO (Out) -> Evolution (INPUT)\n- Keyboard (Pitch) p> Evolution (1V/OCT)\n- Evolution (OUTPUT) -> VCA (In)"
+    },
+    {
+      "name": "Species ring-mod",
+      "patch": "self-oscillating · audio-rate sine into SPECIES CV1 · Species now amplitude-modulates the oscillator output (inverse to Q feedback) · combine with a carrier signal into INPUT for ring-mod-like sum-and-difference tones",
+      "diagram": "Evolution:\n* Q: maximum\n* Species: noon\n* Genus: 4 poles\n\nModulator:\n\nCarrier:\n\n- Carrier (Out) -> Evolution (INPUT)\n- Modulator (Out) >> Evolution (SPECIES CV1)\n- Evolution (OUTPUT) -> Output (In)"
+    },
+    {
+      "name": "Generative slew",
+      "patch": "CV source into INPUT (DC-coupled) · Q low · Genus 3 poles · Frequency ~100Hz · Evolution acts as a gentle slew limiter on the CV · modulate Genus from another LFO to dynamically shift smoothing character from soft (3 poles) to sharp (6 poles)",
+      "diagram": "Evolution:\n* Genus: 3 poles (start)\n* Q: low\n* Frequency: ~100Hz\n\nS&H:\n\nShape LFO:\n\nVCO:\n\n- S&H (Out) >> Evolution (INPUT) // CV processed\n- Shape LFO (Out) >> Evolution (GENUS CV1)\n- Evolution (OUTPUT) p> VCO (V/Oct) // dynamic glide"
+    },
+    {
+      "name": "Dual CV envelope LPF",
+      "patch": "keyboard 1V/oct into 1V/OCT · envelope into FREQ CV2 with attenuverter noon→CW for positive sweep · LFO into FREQ CV3 with attenuator low for vibrato · three-source CV sum via the three independent frequency inputs with no external mixer",
+      "diagram": "Evolution:\n* Q: ~2 o'clock\n* Frequency: ~500Hz\n\nEnvelope:\n\nLFO:\n\nKeyboard:\n\nSource:\n\n- Source (Out) -> Evolution (INPUT)\n- Keyboard (Pitch) p> Evolution (1V/OCT)\n- Envelope (Out) >> Evolution (FREQ CV2)\n- LFO (Out) >> Evolution (FREQ CV3)\n- Evolution (OUTPUT) -> VCA (In)"
+    }
+  ]
+}

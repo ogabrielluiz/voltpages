@@ -1,0 +1,202 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1967/1.2",
+    "sources": [
+      "http://xaocdevices.com/manuals/xaoc_praga_manual.pdf",
+      "https://xaocdevices.com/main/praga/",
+      "https://modulargrid.net/e/xaoc-devices-praga",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=246050",
+      "https://www.perfectcircuit.com/xaoc-devices-praga.html"
+    ]
+  },
+  "slug": "xaoc-devices--praga",
+  "name": "Praga",
+  "manufacturer": "Xaoc Devices",
+  "hp": 20,
+  "tags": ["MIXER", "VCA", "UTILITY"],
+  "description": "Four-channel stereo VCA mixer with per-channel unipolar/bipolar CV modes, clickless mutes, two post-fader aux sends with stereo returns, direct VCA outs, and chainable sub-mix bus. Hrad expander adds master level and gate mutes.",
+  "controls": [
+    {
+      "name": "VOL",
+      "scope": "per channel (1–4)",
+      "description": "Channel attenuator. Function depends on active volume mode — offset in unipolar, bipolar scaler in bipolar.",
+      "detail": "0–10 · unipolar: fully open = 0dB at 8V CV · bipolar: fully CCW = -56dB, no modulation"
+    },
+    {
+      "name": "ACTIVE|MODE",
+      "scope": "per channel (1–4)",
+      "description": "Illuminated button. Short press toggles clickless mute · long press switches volume control mode.",
+      "detail": "green = unipolar · red = bipolar · unlit = muted · mode-switch works while muted"
+    },
+    {
+      "name": "PAN",
+      "scope": "per channel (1–4)",
+      "description": "Stereo panorama offset. Sums with PAN CV. 3dB equal-loudness pan law, compressed near 0dB to prevent loudness rise.",
+      "detail": "bipolar · CCW = L · noon = center · CW = R · CV expects ±5V"
+    },
+    {
+      "name": "AUX",
+      "scope": "per channel (1–4)",
+      "description": "Bipolar send to aux A (CCW) or aux B (CW). Post-fader, derived from channel VCA output.",
+      "detail": "noon = no send · CCW = send A · CW = send B · post-fader only"
+    },
+    {
+      "name": "Post-fader LED meter",
+      "scope": "per channel (1–4)",
+      "description": "Five-bar peak indicator referenced to 10Vpp. Thresholds -32 · -20 · -12 · -6 · 0dB.",
+      "detail": "top LED = clip warning · reads post-VOL, pre-pan/aux split"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "INPUT",
+      "description": "Channel audio input. DC-coupled signal path accepts modular-level audio or CV.",
+      "voltage": "±10V (DC-coupled)"
+    },
+    {
+      "name": "PAN CV",
+      "description": "Pan-position CV, summed with the PAN knob as offset.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "VOL CV",
+      "description": "Volume CV. Response differs per mode — unipolar for envelopes, bipolar for LFOs. Higher amplitudes tolerated but compressed above 0dB gain.",
+      "voltage": "unipolar 0–8V · bipolar -5V to +5V"
+    },
+    {
+      "name": "AUX RETURN A (L/R)",
+      "description": "Stereo return pair for the aux A send. Summed directly into the main stereo bus.",
+      "voltage": "±10V audio"
+    },
+    {
+      "name": "AUX RETURN B (L/R)",
+      "description": "Stereo return pair for the aux B send. Summed directly into the main stereo bus.",
+      "voltage": "±10V audio"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "VCA OUT",
+      "description": "Per-channel direct post-VCA tap, unaffected by PAN. Uses a separate VCA chip for a clean copy — intended for multitracking or insert-style routing via Hrad.",
+      "voltage": "±10V audio"
+    },
+    {
+      "name": "STEREO SUM L",
+      "description": "Main mix bus, left. Soft-clipped above ~16Vpp to tame sum overs."
+    },
+    {
+      "name": "STEREO SUM R",
+      "description": "Main mix bus, right. Soft-clipped above ~16Vpp to tame sum overs."
+    },
+    {
+      "name": "AUX SEND A",
+      "description": "Mono post-fader send for bus A."
+    },
+    {
+      "name": "AUX SEND B",
+      "description": "Mono post-fader send for bus B."
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Unipolar volume mode (envelope VCA)",
+      "trigger": "long-press ACTIVE|MODE · button lit green",
+      "description": "VOL knob biases the CV input. Full knob + 8V CV opens channel to 0dB, closed knob silences the channel to ~-85dB. Dynamic response to CV is preserved regardless of knob position — behaves like a CV-offset VCA. Above 0dB gain is soft-compressed (+3dB ceiling), giving a compressor-like taming rather than clipping."
+    },
+    {
+      "name": "Bipolar volume mode (LFO amp mod)",
+      "trigger": "long-press ACTIVE|MODE · button lit red",
+      "description": "VOL knob scales the bipolar CV together with an internal offset. Depth of AM (in dB) shrinks as the knob closes — modulation is maximal only when the fader is up. Optimized for ±5V LFOs; +5V fully open = 0dB, fully closed ≈ -56dB steady. No clipping above 0dB; response compresses instead."
+    },
+    {
+      "name": "Clickless mute / unmute",
+      "trigger": "short-press ACTIVE|MODE",
+      "description": "Fades the channel to -90dB over a few milliseconds instead of hard-cutting. LED extinguishes while muted. Pressing again fades back in. Safe for performance muting under audio."
+    },
+    {
+      "name": "Knob-as-offset with CV patched",
+      "trigger": "cable in VOL CV or PAN CV",
+      "description": "Knobs become offsets rather than primary controls when CV is patched. In unipolar mode, VOL still sets the floor of attenuation; in bipolar mode, it still scales depth. PAN knob biases the center point of CV-driven panning."
+    },
+    {
+      "name": "Post-fader aux sends",
+      "trigger": "AUX knob off noon",
+      "description": "Sends tap the per-channel VCA output, so envelope/LFO amplitude modulation carries into the send effect. Channel mute also silences the send. AUX is bipolar with A on the CCW half and B on the CW half — noon is no send."
+    },
+    {
+      "name": "Stereo aux returns route to main bus",
+      "trigger": "cable into AUX RETURN A or B",
+      "description": "Returns are stereo pairs summed directly into the main bus, not back through any channel. Aux A return shares its input jacks with the left pair, aux B with the right pair (see panel labels)."
+    },
+    {
+      "name": "Soft-clipped sum bus",
+      "trigger": "sum > 16Vpp",
+      "description": "The stereo bus gently saturates when multiple hot sources sum. Prevents harsh hard-clipping. Manual recommends keeping faders 50–80% for clean headroom with typical modular levels."
+    },
+    {
+      "name": "Chainable sub-mix via rear headers",
+      "trigger": "6-pin ribbon between OUT → IN headers",
+      "description": "Multiple Pragas (or compatible mixers) cascade: each upstream unit injects its mix bus 1:1 into the next unit's bus, so the final Praga's STEREO SUM carries everything. IN of the first unit and OUT of the last remain open."
+    },
+    {
+      "name": "Hrad expander integration",
+      "trigger": "Hrad connected via expander header",
+      "description": "Adds line-level outputs, master LEVEL with meter, headphones, cue input, gate inputs for automated muting, CV over the aux amounts, and channel insert points between VCA and aux selector."
+    },
+    {
+      "name": "DC-coupled signal path",
+      "trigger": "any patch",
+      "description": "All channels pass DC, so Praga doubles as a VCA/mixer for CV as well as audio — useful for summing envelopes, crossfading CV, or muting modulation sources."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Four-voice performance mixer with gated mutes",
+      "patch": "Four voices into INPUT 1–4 · each channel in unipolar (green) with envelope → VOL CV · manual mutes for live arrangement · sum via STEREO SUM to main out",
+      "diagram": "Praga:\n* Ch1 Mode: UNIPOLAR\n* Ch2 Mode: UNIPOLAR\n* Ch3 Mode: UNIPOLAR\n* Ch4 Mode: UNIPOLAR\n\n- Voice1 (Out) -> Praga (INPUT 1)\n- Env1 (Out) >> Praga (VOL CV 1)\n- Voice2 (Out) -> Praga (INPUT 2)\n- Env2 (Out) >> Praga (VOL CV 2)\n- Voice3 (Out) -> Praga (INPUT 3)\n- Voice4 (Out) -> Praga (INPUT 4)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"
+    },
+    {
+      "name": "Tremolo on one channel via bipolar LFO",
+      "patch": "Switch Ch1 to bipolar (red) · LFO ±5V into VOL CV 1 · VOL knob sets tremolo depth (open = full depth, ~half = subtle) · other channels stay in unipolar",
+      "diagram": "Praga:\n* Ch1 Mode: BIPOLAR\n* Ch1 VOL: 7 (depth)\n\n- Pad (Out) -> Praga (INPUT 1)\n- LFO (Sine) >> Praga (VOL CV 1)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"
+    },
+    {
+      "name": "Auto-panning pad",
+      "patch": "Pad into Ch2 · slow LFO ±5V → PAN CV 2 · PAN knob at noon for symmetric sweep · channel in unipolar, envelope shapes amplitude",
+      "diagram": "Praga:\n* Ch2 Mode: UNIPOLAR\n* Ch2 PAN: noon\n\n- Pad (Out) -> Praga (INPUT 2)\n- AD Env (Out) >> Praga (VOL CV 2)\n- Slow LFO (Tri) >> Praga (PAN CV 2)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"
+    },
+    {
+      "name": "Reverb send with pre-delay",
+      "patch": "Vocal/lead into Ch1 · AUX full CW to send B · AUX SEND B → reverb in · reverb L/R → AUX RETURN B pair · pre-delay via delay in the send path",
+      "diagram": "Praga:\n* Ch1 AUX: full CW (send B)\n\n- Voice (Out) -> Praga (INPUT 1)\n- Praga (AUX SEND B) -> Delay (In)\n- Delay (Out) -> Reverb (In)\n- Reverb (OutL) -> Praga (AUX RETURN B L)\n- Reverb (OutR) -> Praga (AUX RETURN B R)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"
+    },
+    {
+      "name": "Parallel compression via dual aux loop",
+      "patch": "Drum bus into Ch3 · AUX full CW (B) → external compressor → AUX RETURN B · AUX full CCW (A) unused or to saturator · blend dry Ch3 with smashed parallel return",
+      "diagram": "Praga:\n* Ch3 Mode: UNIPOLAR\n* Ch3 AUX: full CW\n\n- Drums (Out) -> Praga (INPUT 3)\n- Praga (AUX SEND B) -> Compressor (In)\n- Compressor (OutL) -> Praga (AUX RETURN B L)\n- Compressor (OutR) -> Praga (AUX RETURN B R)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"
+    },
+    {
+      "name": "Multitrack via VCA OUTs",
+      "patch": "Four voices in · record each VCA OUT to a separate DAW track (still VCA-shaped, no pan) · use STEREO SUM for headphone monitor mix with pan and aux fx",
+      "diagram": "Praga:\n* Ch1-4 Mode: UNIPOLAR\n\n- Voice1 (Out) -> Praga (INPUT 1)\n- Voice2 (Out) -> Praga (INPUT 2)\n- Voice3 (Out) -> Praga (INPUT 3)\n- Voice4 (Out) -> Praga (INPUT 4)\n- Praga (VCA OUT 1) -> Interface (Ch1)\n- Praga (VCA OUT 2) -> Interface (Ch2)\n- Praga (VCA OUT 3) -> Interface (Ch3)\n- Praga (VCA OUT 4) -> Interface (Ch4)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"
+    },
+    {
+      "name": "CV mixer for modulation summing",
+      "patch": "Use DC-coupled path to mix multiple CVs. Envelopes into INPUT 1–3 in unipolar mode, faders set weights · VCA OUT 1 (or STEREO SUM L) drives a filter cutoff",
+      "diagram": "Praga:\n* Ch1 Mode: UNIPOLAR\n* Ch2 Mode: UNIPOLAR\n* Ch3 Mode: UNIPOLAR\n\n- EnvA (Out) >> Praga (INPUT 1)\n- EnvB (Out) >> Praga (INPUT 2)\n- LFO (Out) >> Praga (INPUT 3)\n- Praga (STEREO SUM L) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Cascaded 8-channel mixer (two Pragas)",
+      "patch": "Praga#1 channels 1–4, Praga#2 channels 5–8. 6-pin ribbon from Praga#1 OUT header → Praga#2 IN header. Praga#2 STEREO SUM carries all eight.",
+      "diagram": "Praga#1:\n* all channels: UNIPOLAR\n\nPraga#2:\n* all channels: UNIPOLAR\n\n- Voice1 (Out) -> Praga#1 (INPUT 1)\n- Voice2 (Out) -> Praga#1 (INPUT 2)\n- Voice3 (Out) -> Praga#1 (INPUT 3)\n- Voice4 (Out) -> Praga#1 (INPUT 4)\n- Voice5 (Out) -> Praga#2 (INPUT 1)\n- Voice6 (Out) -> Praga#2 (INPUT 2)\n- Voice7 (Out) -> Praga#2 (INPUT 3)\n- Voice8 (Out) -> Praga#2 (INPUT 4)\n- Praga#2 (STEREO SUM L) -> Output (L)\n- Praga#2 (STEREO SUM R) -> Output (R)"
+    },
+    {
+      "name": "Sidechain duck via bipolar mode",
+      "patch": "Bass on Ch1 unipolar · kick-triggered envelope inverted → VOL CV 1 in bipolar mode · knob sets duck floor · kick punches a hole in the bass",
+      "diagram": "Praga:\n* Ch1 Mode: BIPOLAR\n* Ch1 VOL: 8\n\n- Bass (Out) -> Praga (INPUT 1)\n- Kick (Trig) t> Env (Trig)\n- Env (Inv) >> Praga (VOL CV 1)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"
+    }
+  ]
+}

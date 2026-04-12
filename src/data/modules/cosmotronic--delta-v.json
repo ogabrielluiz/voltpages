@@ -1,0 +1,142 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://cosmotronic.nl/modules/delta-v/",
+      "https://www.elevatorsound.com/product/cosmotronic-delta-v-eurorack-envelope-and-vca-module/",
+      "https://modulargrid.net/e/cosmotronic-delta-v",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=219647"
+    ]
+  },
+  "slug": "cosmotronic--delta-v",
+  "name": "Delta-V",
+  "manufacturer": "Cosmotronic",
+  "hp": 10,
+  "tags": ["ENVELOPE", "LFO", "FUNCTION", "VCA", "SLEW"],
+  "description": "Analog dual-channel function generator. Per-channel Attack, Decay, Shape, Cycle, dedicated VCA with audio input, EOC output, and summed DC-coupled mix. Covers envelopes, LFOs into audio rate, slew, and mixing.",
+  "controls": [
+    {
+      "name": "Attack",
+      "scope": "CH 1 & 2",
+      "description": "Envelope rise time. Drives the attack stage or the rising slope in Cycle mode.",
+      "detail": "Short to long · audio rate reachable with Cycle"
+    },
+    {
+      "name": "Decay",
+      "scope": "CH 1 & 2",
+      "description": "Envelope fall time. Drives the decay stage or falling slope in Cycle mode.",
+      "detail": "Short to long · audio rate reachable with Cycle"
+    },
+    {
+      "name": "Shape",
+      "scope": "CH 1 & 2",
+      "description": "Bends the slope curve from exponential through linear to logarithmic for both attack and decay stages.",
+      "detail": "CCW: expo · noon: linear · CW: log"
+    },
+    {
+      "name": "Level",
+      "scope": "CH 1 & 2",
+      "description": "Output attenuverter for the envelope/LFO. Also sets amplitude when used as a mixer channel via Sum output.",
+      "detail": "±unity · attenuverter"
+    },
+    {
+      "name": "Cycle Switch",
+      "scope": "CH 1 & 2",
+      "description": "Enables self-cycling. End-of-cycle triggers back into Trig, producing an LFO that reaches audio rate. Synced when Trig is patched.",
+      "detail": "On / Off per channel"
+    },
+    {
+      "name": "Link Switch",
+      "scope": "Global",
+      "description": "Normals Trig 1 to Trig 2 so both channels fire from a single gate source.",
+      "detail": "On: CH 1 Trig drives CH 2 · Off: independent"
+    }
+  ],
+  "inputs": [
+    { "name": "TRIG 1 / TRIG 2", "description": "Gate/trigger input per channel. Fires the Attack-Decay envelope.", "voltage": "2V+ gate", "normalizedTo": "CH 1 Trig when Link switch on (TRIG 2 only)" },
+    { "name": "SLEW 1 / SLEW 2", "description": "Audio/CV input for slew-limiter mode. Signal is smoothed by Attack (rising) and Decay (falling) times." },
+    { "name": "VCA 1 / VCA 2", "description": "Audio or CV input to the per-channel VCA. Amplitude modulated by that channel's envelope/LFO." }
+  ],
+  "outputs": [
+    { "name": "OUT 1 / OUT 2", "description": "Envelope / LFO / slewed signal per channel, DC-coupled. Scaled by the Level attenuverter.", "voltage": "±10V (with attenuverter)" },
+    { "name": "VCA 1 / VCA 2", "description": "Output of the per-channel VCA (VCA input × envelope/LFO)." },
+    { "name": "EOC 1 / EOC 2", "description": "End-of-cycle trigger. Pulses at the end of each decay stage." },
+    { "name": "SUM", "description": "Summed DC-coupled mix of OUT 1 + OUT 2 via their Level attenuverters. Handles audio or CV." }
+  ],
+  "behaviors": [
+    {
+      "name": "Cycle as audio-rate LFO",
+      "trigger": "Cycle switch on",
+      "description": "Channel self-triggers into a continuous AD-shape oscillator. With short Attack/Decay, reaches audio rate and functions as a low-fi VCO whose waveform is reshaped by the Shape knob."
+    },
+    {
+      "name": "Slew limiter",
+      "trigger": "Signal at SLEW input",
+      "description": "The SLEW input passes signal through the channel's rise/fall processor. CV staircases become glides, gates become envelopes with independent attack/decay — a portamento or gate-to-envelope converter."
+    },
+    {
+      "name": "Bipolar sum mixer",
+      "trigger": "Both channels patched · Levels set",
+      "description": "SUM is a two-channel DC-coupled mixer with attenuverters per channel. Works on CV or audio — combine two LFOs, two envelopes, or use as a summing utility alongside the function generator duties."
+    },
+    {
+      "name": "Linked dual envelope",
+      "trigger": "Link switch on + single gate at TRIG 1",
+      "description": "Both channels fire from one gate with independent shaping. Stack two envelopes with different times to build complex two-stage shapes from a single trigger."
+    },
+    {
+      "name": "Self-patch feedback with EOC",
+      "trigger": "EOC 1 → TRIG 2 · Cycle on CH 2",
+      "description": "Chain end-of-cycle outputs to build sequenced envelope bursts, ratcheted patterns, or complex cycling shapes triggered by each other."
+    },
+    {
+      "name": "Dedicated VCA per channel",
+      "trigger": "Audio at VCA input",
+      "description": "Each channel has an internal VCA that the envelope/LFO opens. Patches a full voice (gate → envelope → VCA output) into a single channel of Delta-V."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Two-voice AD",
+      "patch": "Gate → TRIG 1 · VCO 1 → VCA 1 · second gate → TRIG 2 · VCO 2 → VCA 2 · two full voices with dedicated envelopes and VCAs in 10HP",
+      "diagram": "Delta-V:\n* CH 1: Attack short · Decay medium\n* CH 2: Attack short · Decay long\n\nVCO 1:\n\nVCO 2:\n\n- Gate 1 (Out) g> Delta-V (TRIG 1)\n- Gate 2 (Out) g> Delta-V (TRIG 2)\n- VCO 1 (Out) -> Delta-V (In VCA 1)\n- VCO 2 (Out) -> Delta-V (In VCA 2)\n- Delta-V (Out VCA 1) -> Output (In L)\n- Delta-V (Out VCA 2) -> Output (In R)"
+    },
+    {
+      "name": "Audio-rate cycling VCO",
+      "patch": "CH 1 Cycle ON · Attack/Decay short · Shape at noon · OUT 1 is a low-fi AD oscillator · V/Oct tracks roughly via Decay CV if patched",
+      "diagram": "Delta-V:\n* CH 1: Cycle ON\n* CH 1: Attack very short\n* CH 1: Decay very short\n\n- Delta-V (OUT 1) -> Filter (In) // audio-rate cycling\n- Delta-V (OUT 1) -> Output (In)"
+    },
+    {
+      "name": "Gate-to-glide converter",
+      "patch": "Sequencer pitch CV → SLEW 1 · Attack sets rise glide · Decay sets fall glide · OUT 1 is portamento-ed pitch CV",
+      "diagram": "Delta-V:\n* CH 1: Attack ~50ms\n* CH 1: Decay ~50ms\n\nSequencer:\n\n- Sequencer (Pitch) p> Delta-V (SLEW 1)\n- Delta-V (OUT 1) p> VCO (V/Oct) // glide"
+    },
+    {
+      "name": "Linked complex envelope",
+      "patch": "Link ON · single gate → TRIG 1 · CH 1 fast AD + CH 2 slow AD · SUM = two-stage envelope for filter cutoff with bite + body",
+      "diagram": "Delta-V:\n* Link: ON\n* CH 1: Attack short · Decay short\n* CH 2: Attack medium · Decay long\n* CH 1 Level: +80%\n* CH 2 Level: +60%\n\n- Gate (Out) g> Delta-V (TRIG 1)\n- Delta-V (SUM) >> Filter (Cutoff) // bite + body"
+    },
+    {
+      "name": "Bouncing-ball envelope",
+      "patch": "CH 1 Cycle ON · CH 2 attenuverts OUT 1 into CH 1 Decay CV (via SLEW 2 hack or external attenuator) · fall time shortens each cycle like a decaying bounce",
+      "diagram": "Delta-V:\n* CH 1: Cycle ON\n* CH 2 Level: moderate attenuation\n\n- Delta-V (OUT 1) -> Delta-V (SLEW 2)\n- Delta-V (OUT 2) >> Delta-V (TRIG 1) // feedback retrigger speeds up"
+    },
+    {
+      "name": "Dual LFO for stereo",
+      "patch": "Both channels Cycle ON at slow rates · slightly different Attack/Decay · OUT 1 → left pan CV · OUT 2 → right pan CV · drifting stereo motion",
+      "diagram": "Delta-V:\n* CH 1: Cycle ON · slow\n* CH 2: Cycle ON · slightly slower\n\nVCA L:\n\nVCA R:\n\n- Delta-V (OUT 1) >> VCA L (CV)\n- Delta-V (OUT 2) >> VCA R (CV)"
+    },
+    {
+      "name": "EOC ratchet",
+      "patch": "Gate → TRIG 1 · CH 1 Cycle ON for a few bursts · EOC 1 → TRIG 2 · CH 2 fires a percussion envelope at each burst end",
+      "diagram": "Delta-V:\n* CH 1: Cycle ON short\n* CH 2: Attack very short · Decay short\n\nDrum:\n\n- Delta-V (EOC 1) t> Delta-V (TRIG 2)\n- Delta-V (OUT 2) >> Drum (Level) // ratcheted bursts"
+    },
+    {
+      "name": "Two-input mixer",
+      "patch": "Audio 1 → SLEW 1 (Attack/Decay at 0) · audio 2 → SLEW 2 · Levels set mix amounts · SUM output = summed audio · Delta-V doubles as a DC-coupled 2ch mixer",
+      "diagram": "Delta-V:\n* CH 1: Attack min · Decay min\n* CH 2: Attack min · Decay min\n* CH 1 Level: +70%\n* CH 2 Level: -50%\n\nOsc A:\n\nOsc B:\n\n- Osc A (Out) -> Delta-V (SLEW 1)\n- Osc B (Out) -> Delta-V (SLEW 2)\n- Delta-V (SUM) -> Output (In) // inverting mixer"
+    }
+  ]
+}

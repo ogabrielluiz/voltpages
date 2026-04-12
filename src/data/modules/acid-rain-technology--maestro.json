@@ -1,0 +1,216 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.1",
+    "sources": [
+      "https://acidraintechnology.com/products/maestro",
+      "https://acidraintechnology.com/pages/documentation",
+      "https://www.analoguehaven.com/acid-rain-technology/maestro/reference_guide.pdf",
+      "https://www.manualslib.com/manual/2348789/Acid-Rain-Technology-Maestro.html",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=240200",
+      "https://modulargrid.net/e/acid-rain-technology-maestro"
+    ]
+  },
+  "slug": "acid-rain-technology--maestro",
+  "name": "Maestro",
+  "manufacturer": "Acid Rain Technology",
+  "hp": 20,
+  "tags": ["SEQUENCER", "LFO", "FUNCTION", "CLOCK", "RANDOM"],
+  "description": "Six-channel clocked modulation controller · DAW-automation feel in eurorack · 8 waveforms per channel with smooth, bipolar, triplet, slow modifiers · 14 save slots on microSD · internal or external clock · chain mode sequences waveforms per channel.",
+  "controls": [
+    {
+      "name": "Channel buttons I–VI",
+      "scope": "Per channel",
+      "description": "Select one or more channels for subsequent edits. Hold during save/load to restrict data to those channels.",
+      "detail": "momentary · multi-select · LED indicates selection"
+    },
+    {
+      "name": "Waveform buttons",
+      "scope": "Per selected channel",
+      "description": "Eight waveforms: rising saw, falling saw, triangle up, triangle down, square, random plus high/low variants in the clock-menu overlay.",
+      "detail": "saw-up · saw-down · ramp-up · ramp-down · square · random · (high, low clock overlays)"
+    },
+    {
+      "name": "smooth",
+      "scope": "Per selected channel",
+      "description": "Applies slew to the selected waveform, converting stepped ramps into curved shapes and square into pulse-wave.",
+      "detail": "toggle · combines with any waveform · random+smooth becomes smooth random/S&H-like curve"
+    },
+    {
+      "name": "bipolar",
+      "scope": "Per selected channel",
+      "description": "Switches the channel between 0..+5V (unipolar) and −5..+5V (bipolar) output range.",
+      "detail": "toggle · unipolar default · bipolar doubles available span"
+    },
+    {
+      "name": "Timing buttons 1/2, 1/4, 1/8, 1/16, 1/32",
+      "scope": "Per selected channel",
+      "description": "Clock division per channel, measured in 4 pulses per quarter note.",
+      "detail": "from 1/2 (slow) to 1/32 (fast) · combines with triplet and slow for extended timings"
+    },
+    {
+      "name": "triplet",
+      "scope": "Timing modifier",
+      "description": "Turns the selected timing into its triplet variant (e.g. 1/4 → 1/4t).",
+      "detail": "toggle · applied to selected channels"
+    },
+    {
+      "name": "slow",
+      "scope": "Timing modifier",
+      "description": "Extends the selected timing to multi-bar ranges, up to 32 bars / 128 clock pulses.",
+      "detail": "toggle · 1/4s · 1/4ts · 1/8s · 1/8ts · 1/16s · 1/16ts · 1/32s"
+    },
+    {
+      "name": "mute",
+      "scope": "Per selected channel",
+      "description": "Mutes or unmutes the channel's output. In clock menu mode, starts/stops the internal clock.",
+      "detail": "toggle · channel LED turns off when muted"
+    },
+    {
+      "name": "chain",
+      "scope": "Menu entry",
+      "description": "Enters chain mode to sequence multiple waveforms on one channel. Each waveform can keep the channel timing or take a per-step timing.",
+      "detail": "enter → pick waveforms in order → select channels → press chain to apply"
+    },
+    {
+      "name": "clock",
+      "scope": "Menu entry",
+      "description": "Opens clock-settings menu where waveform buttons act as tap tempo, ±5 bpm, random tempo, reset-to-120bpm and start/stop.",
+      "detail": "high: manual reset · low: 120bpm reset · ramp-up: tap · triangle-up: +5bpm · triangle-down: −5bpm · random: 60–180bpm · slow+knob: 1bpm steps"
+    },
+    {
+      "name": "save",
+      "scope": "Menu entry",
+      "description": "Opens save menu. Middle two rows (14 buttons) map to 14 save slots on the microSD card.",
+      "detail": "channel-selected → per-channel save · no selection → whole-module state"
+    },
+    {
+      "name": "load",
+      "scope": "Menu entry",
+      "description": "Opens load menu. Loads instantly from internal memory (preloaded from SD at boot) so performance recalls are gap-free.",
+      "detail": "14 slots · channel-selected → partial load · no selection → full state"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "clock in",
+      "description": "External clock input. When a cable is inserted, Maestro locks to the incoming edges at 4 PPQN and the clock menu tempo controls are disabled.",
+      "voltage": "rising-edge trigger"
+    },
+    {
+      "name": "reset in",
+      "description": "Resets all six channels' phase to the start of their current waveform or chain step.",
+      "voltage": "rising-edge trigger"
+    },
+    {
+      "name": "gate / trig in I–VI",
+      "description": "Per-channel gate or trigger input. Behaviour depends on channel configuration — can re-trigger the waveform or advance chain steps."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "clock out",
+      "description": "Internal clock distributed at 4 PPQN. Active whether Maestro is internally or externally clocked."
+    },
+    {
+      "name": "reset out",
+      "description": "Reset pulse, firing at the start of each bar or when a manual reset is triggered."
+    },
+    {
+      "name": "channel out I–VI",
+      "description": "CV output for each of the 6 channels. Range follows bipolar toggle: 0 to +5V or −5 to +5V.",
+      "voltage": "0 to +5V or −5 to +5V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Chain playback per channel",
+      "trigger": "chain menu → select waveforms in order → apply to channels",
+      "description": "A channel plays a chained sequence of waveforms, each lasting one cycle of its timing. Optional per-step timings override the channel's default. Produces modulation phrases that evolve over multiple bars without patching extra modules."
+    },
+    {
+      "name": "Per-channel clock division",
+      "trigger": "selecting channels and pressing a timing button",
+      "description": "Every channel runs at its own division, always phase-locked to the master clock. Mix 1/16 detail on one lane with 1/4s (slow) on another for layered timescales from the same clock."
+    },
+    {
+      "name": "Random + smooth = smooth random",
+      "trigger": "random waveform with smooth enabled",
+      "description": "Stepped random values get interpolated between change points, turning the channel into a clock-synced smooth-random source similar to a sampled-and-held noise into a slew limiter — but always locked to the grid."
+    },
+    {
+      "name": "Bipolar doubles voltage span",
+      "trigger": "bipolar enabled on a channel",
+      "description": "Switches output from 0..+5V to −5..+5V. Useful for FM, PWM, and attenuverter-free destinations that expect centred modulation. Waveform shape is unchanged; only the span flips."
+    },
+    {
+      "name": "Gate-triggered one-shot",
+      "trigger": "cable in a channel's gate/trig input",
+      "description": "Once patched, the channel can run as a gate-triggered one-shot envelope rather than free-running, re-triggering on each incoming pulse — effectively converting that lane into a clocked AR/AD envelope."
+    },
+    {
+      "name": "Instant-recall save slots",
+      "trigger": "load button → slot button",
+      "description": "All 14 slots are preloaded from the microSD to RAM at power-up, so pressing load jumps to a new state instantly with no SD read gap. Full-module or per-channel scope depending on whether any channel is selected."
+    },
+    {
+      "name": "Internal clock tap & random tempo",
+      "trigger": "clock menu entered and clock input unpatched",
+      "description": "In the clock menu, the ramp-up waveform button taps tempo, up/down adjust ±5 bpm (±1 with slow held), and random sets the internal clock to a value between 60 and 180 bpm. Pressing mute stops and restarts the clock."
+    },
+    {
+      "name": "Triplet × slow extended timings",
+      "trigger": "triplet and/or slow combined with a timing button",
+      "description": "Opens the range from 1/32 all the way to 32 bars (128 pulses at 4 PPQN). Triplet-slow values fill in between the straight divisions for polymetric phrasing from the same grid."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Six-lane synced modulation bus",
+      "patch": "Master clock → clock in · CH I: 1/16 ramp-up for hat accent · CH II: 1/4 square bipolar → VCA punch · CH III: 1/2 triangle → filter cutoff · CH IV: 1/4s random+smooth → resonance · CH V: 1/8 square for arpeggio decay · CH VI: 1 bar slow ramp → pan sweep · one module replaces six LFOs",
+      "diagram": "Maestro:\n* CH I: 1/16 ramp-up\n* CH II: 1/4 square · bipolar\n* CH III: 1/2 triangle\n* CH IV: 1/4s random + smooth\n* CH V: 1/8 square\n* CH VI: 1 bar slow ramp\n\nClock Source:\nHat VCA:\nKick VCA:\nFilter:\nVCA:\nArp Env:\nPan:\n\n- Clock Source (Out) c> Maestro (clock in)\n- Maestro (channel out I) >> Hat VCA (CV)\n- Maestro (channel out II) >> Kick VCA (CV)\n- Maestro (channel out III) >> Filter (Cutoff)\n- Maestro (channel out IV) >> Filter (Resonance)\n- Maestro (channel out V) >> Arp Env (Level)\n- Maestro (channel out VI) >> Pan (CV)"
+    },
+    {
+      "name": "Chained waveform modulation phrase",
+      "patch": "Enter chain menu · pick ramp-up → triangle → square → random for CH III · assigns one bar each at 1/2 timing · apply to channel · filter cutoff evolves through four distinct shapes every four bars · no external sequencer driving modulation shape",
+      "diagram": "Maestro:\n* CH III: chain = ramp-up, triangle, square, random\n* CH III: 1/2 timing (4 bars per cycle)\n\nClock:\nFilter:\n\n- Clock (Out) c> Maestro (clock in)\n- Maestro (channel out III) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Gate-triggered AD envelopes",
+      "patch": "Drum clock → gate/trig in I and II · CH I: falling-saw + smooth = AR shape · CH II: triangle-down + smooth + bipolar = punchy AD · CH III free-running 1/16 for hats · use Maestro channels as clocked one-shot envelopes",
+      "diagram": "Maestro:\n* CH I: falling saw + smooth\n* CH II: triangle-down + smooth + bipolar\n* CH III: 1/16 square (free run)\n\nKick Trig:\nSnare Trig:\nClock:\nKick VCA:\nSnare VCA:\nHat VCA:\n\n- Clock (Out) c> Maestro (clock in)\n- Kick Trig (Out) t> Maestro (gate / trig in I)\n- Snare Trig (Out) t> Maestro (gate / trig in II)\n- Maestro (channel out I) >> Kick VCA (CV)\n- Maestro (channel out II) >> Snare VCA (CV)\n- Maestro (channel out III) >> Hat VCA (CV)"
+    },
+    {
+      "name": "Performance recall scene change",
+      "patch": "Slot 1 = verse mod set · slot 2 = chorus · slot 3 = bridge · press load + channel buttons II, IV to only swap those two lanes between scenes · bass modulation on CH I and drum mods on CH III, V, VI stay untouched · scene changes with no clock glitch",
+      "diagram": "Maestro:\n* slot 1: verse · slot 2: chorus · slot 3: bridge\n* load+CH II, IV → partial load\n\nClock:\nBass Filter:\nPad Filter:\nFX Send:\n\n- Clock (Out) c> Maestro (clock in)\n- Maestro (channel out I) >> Bass Filter (Cutoff)\n- Maestro (channel out II) >> Pad Filter (Cutoff)\n- Maestro (channel out IV) >> FX Send (Level)"
+    },
+    {
+      "name": "Smooth random cutoff + stepped random resonance",
+      "patch": "CH I: random + smooth at 1/4 → filter cutoff (smooth sampled-and-held curve) · CH II: random no smooth at 1/8 bipolar → resonance (stepped) · two facets of the same random character on one filter, both clock-locked",
+      "diagram": "Maestro:\n* CH I: random + smooth · 1/4\n* CH II: random · 1/8 · bipolar\n\nClock:\nFilter:\n\n- Clock (Out) c> Maestro (clock in)\n- Maestro (channel out I) >> Filter (Cutoff)\n- Maestro (channel out II) >> Filter (Resonance)"
+    },
+    {
+      "name": "Polyrhythmic envelope gates",
+      "patch": "CH I: 1/4 square · CH II: 1/4t square · CH III: 1/8s square · each bipolar square becomes a gate source when sent to a comparator or envelope trig input · Maestro hosts a six-lane polyrhythmic gate generator using only square outs",
+      "diagram": "Maestro:\n* CH I: square · 1/4\n* CH II: square · 1/4t\n* CH III: square · 1/8s\n\nClock:\nEnvelope A:\nEnvelope B:\nEnvelope C:\n\n- Clock (Out) c> Maestro (clock in)\n- Maestro (channel out I) g> Envelope A (Trig)\n- Maestro (channel out II) g> Envelope B (Trig)\n- Maestro (channel out III) g> Envelope C (Trig)"
+    },
+    {
+      "name": "Long-form 32-bar evolution",
+      "patch": "CH VI: ramp-up + slow on 1/32 = a 32-bar rising ramp · bipolar → feeds filter cutoff across a whole song section · other channels run faster modulations on top · Maestro handles macro-scale evolution no dedicated slow-LFO needed",
+      "diagram": "Maestro:\n* CH VI: ramp-up + slow + bipolar · 1/32s (32 bars)\n\nClock:\nMacro Filter:\n\n- Clock (Out) c> Maestro (clock in)\n- Maestro (channel out VI) >> Macro Filter (Cutoff)"
+    },
+    {
+      "name": "Tap-tempo standalone clock hub",
+      "patch": "No external clock · enter clock menu · tap on ramp-up button for live BPM · use clock out to master the system · channels I-VI drive sequencer clocks, LFO triggers, reset pulses · Maestro acts as 20HP clock hub + six modulators",
+      "diagram": "Maestro:\n* clock menu: tap tempo live\n* CH I: 1/16 square (master clock copy)\n* CH II: 1/4 ramp-down\n\nSequencer:\nLFO:\nResetter:\n\n- Maestro (clock out) c> Sequencer (Clock)\n- Maestro (reset out) t> Sequencer (Reset)\n- Maestro (channel out I) c> LFO (Trig)\n- Maestro (channel out II) >> Resetter (In)"
+    },
+    {
+      "name": "Triplet-vs-straight rhythmic layering",
+      "patch": "CH I: 1/8 square for straight 8ths · CH II: 1/8t square for triplet 8ths · CH III: 1/16 square for double-time · mix into three separate drum triggers · gives polymetric feel from a single clock without a Euclidean sequencer",
+      "diagram": "Maestro:\n* CH I: square · 1/8\n* CH II: square · 1/8t\n* CH III: square · 1/16\n\nClock:\nKick:\nHat:\nSnare:\n\n- Clock (Out) c> Maestro (clock in)\n- Maestro (channel out I) t> Kick (Trig)\n- Maestro (channel out II) t> Hat (Trig)\n- Maestro (channel out III) t> Snare (Trig)"
+    }
+  ]
+}

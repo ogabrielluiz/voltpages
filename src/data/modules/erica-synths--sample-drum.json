@@ -1,0 +1,183 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.ericasynths.lv/media/Sample_Drum_Manual.pdf",
+      "https://www.ericasynths.lv/shop/eurorack-modules/by-series/drum-series/sample-drum/",
+      "https://www.ericasynths.lv/support/sample-drum/",
+      "https://www.ericasynths.lv/news/sample-drum/",
+      "https://modulargrid.net/e/erica-synths-sample-drum",
+      "https://www.musicradar.com/reviews/erica-synths-sample-drum",
+      "https://www.perfectcircuit.com/erica-synths-sample-drum.html",
+      "https://modwiggler.com/forum/viewtopic.php?t=202975"
+    ]
+  },
+  "slug": "erica-synths--sample-drum",
+  "name": "Sample Drum",
+  "manufacturer": "Erica Synths",
+  "hp": 14,
+  "tags": ["SAMPLER", "DRUM", "GRANULAR", "EFFECTS"],
+  "description": "Dual-channel sample player and live recorder with 1V/oct pitch tracking, AD envelope, slicing, reverse and granular-style looping. Six encoders, two displays, micro-SD storage, and six freely assignable CV inputs.",
+  "controls": [
+    {
+      "name": "Encoder A / DATA",
+      "scope": "channel 1",
+      "description": "Main data encoder for channel 1. Selects samples, edits values and confirms menu entries with click.",
+      "detail": "Click = enter/confirm · long press = sub-menu · doubles as primary navigator"
+    },
+    {
+      "name": "Encoder B",
+      "scope": "channel 1",
+      "description": "Channel-1 parameter encoder — typically Start point / secondary edit depending on page.",
+      "detail": "Page-dependent · Start, Loop Start, Attack etc."
+    },
+    {
+      "name": "Encoder C",
+      "scope": "channel 1",
+      "description": "Channel-1 parameter encoder — typically End point / tertiary edit.",
+      "detail": "Page-dependent · End, Loop End, Decay etc."
+    },
+    {
+      "name": "Encoder D / BACK",
+      "scope": "channel 2",
+      "description": "Channel-2 data encoder. Click returns to previous menu page from any sub-menu.",
+      "detail": "Click = back · long press = sub-menu"
+    },
+    {
+      "name": "Encoder E",
+      "scope": "channel 2",
+      "description": "Channel-2 parameter encoder mirroring B on channel 1.",
+      "detail": "Page-dependent"
+    },
+    {
+      "name": "Encoder F",
+      "scope": "channel 2",
+      "description": "Channel-2 parameter encoder mirroring C on channel 1.",
+      "detail": "Page-dependent"
+    },
+    {
+      "name": "PLAY",
+      "scope": "global",
+      "description": "Manually trigger sample playback on both channels for auditioning without patching a trigger.",
+      "detail": "Also used in recording/slicing workflows"
+    },
+    {
+      "name": "SHIFT",
+      "scope": "global",
+      "description": "Secondary function button. Held with encoders/TRG buttons to reach deeper menu pages, CV-assign and recording modes.",
+      "detail": "SHIFT + TRG = mode per channel · SHIFT + encoder = fine edit on many pages"
+    },
+    {
+      "name": "TRG1",
+      "scope": "channel 1",
+      "description": "Channel-1 manual trigger button. Doubles as channel-select in global menus.",
+      "detail": "Mirrors TRIG 1 input"
+    },
+    {
+      "name": "TRG2",
+      "scope": "channel 2",
+      "description": "Channel-2 manual trigger button. Doubles as channel-select in global menus.",
+      "detail": "Mirrors TRIG 2 input"
+    }
+  ],
+  "inputs": [
+    { "name": "TRIG 1", "description": "Trigger/gate input for channel 1. Behaviour depends on selected play mode (trigger one-shot, gated loop, etc.).", "voltage": "+5V trigger/gate" },
+    { "name": "TRIG 2", "description": "Trigger/gate input for channel 2.", "voltage": "+5V trigger/gate" },
+    { "name": "CV1 (ch 1)", "description": "Assignable CV input for channel 1. Route to Tune, Sample Select, Start, End, Loop, Attack, Decay, Play Mode etc. with per-input attenuator.", "voltage": "±5V" },
+    { "name": "CV2 (ch 1)", "description": "Second assignable CV input for channel 1.", "voltage": "±5V" },
+    { "name": "CV3 (ch 1)", "description": "Third assignable CV input for channel 1. Commonly used as 1V/oct pitch when CV1 is assigned to Tune.", "voltage": "±5V" },
+    { "name": "CV1 (ch 2)", "description": "Assignable CV input for channel 2, same parameter menu as channel 1.", "voltage": "±5V" },
+    { "name": "CV2 (ch 2)", "description": "Second assignable CV input for channel 2.", "voltage": "±5V" },
+    { "name": "CV3 (ch 2)", "description": "Third assignable CV input for channel 2.", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "OUT A", "description": "Mono audio output for channel 1 after VCA, envelope and realtime effect.", "voltage": "10Vpp" },
+    { "name": "OUT B", "description": "Mono audio output for channel 2 after VCA, envelope and realtime effect.", "voltage": "10Vpp" }
+  ],
+  "behaviors": [
+    {
+      "name": "Play modes",
+      "trigger": "menu page per channel",
+      "description": "Each channel selects among multiple play modes: one-shot trigger, gated playback, loop, reverse and granular-style fragment looping scanning Start/End points."
+    },
+    {
+      "name": "Live sample recording",
+      "trigger": "SHIFT + TRG into record page",
+      "description": "Records incoming audio from OUT jacks used as inputs (per-channel) directly to micro-SD at 44.1 kHz, immediately playable and sliceable."
+    },
+    {
+      "name": "Slicing",
+      "trigger": "slice menu",
+      "description": "Manual slice placement on loaded samples; no transient detection. Slices are recallable as individual trigger targets via CV-assigned Sample Select."
+    },
+    {
+      "name": "1V/oct pitch tracking",
+      "trigger": "CV assigned to Tune",
+      "description": "Assigning a CV input to Tune enables chromatic playback across several octaves, turning the module into a melodic sample voice."
+    },
+    {
+      "name": "AD envelope + virtual VCA",
+      "trigger": "internal per channel",
+      "description": "Each channel has an AD envelope feeding a virtual VCA. Attack and Decay edit on dedicated page; CV-assignable for per-hit dynamics."
+    },
+    {
+      "name": "Realtime effects",
+      "trigger": "effect page per channel",
+      "description": "Per-channel realtime effect (bit-crush/filter/etc. depending on firmware) applied post-playback before the output, adjustable without external processing."
+    },
+    {
+      "name": "Preset save/load",
+      "trigger": "SHIFT + menu",
+      "description": "Save complete module state (samples, assignments, parameters) as a preset on the SD card and recall during performance."
+    },
+    {
+      "name": "CV input assignment",
+      "trigger": "CV menu per channel",
+      "description": "Each of the three CV inputs per channel can be routed to any parameter (Tune, Sample Select, Start, End, Loop, Attack, Decay, Play Mode) with dedicated attenuator."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Dual drum voice",
+      "patch": "Clock sequencer → TRIG1 & TRIG2 · different one-shot samples per channel · OUT A/B → mixer",
+      "diagram": "SAMPLE DRUM:\n* Ch1 Mode: Trigger\n* Ch2 Mode: Trigger\n- Seq (Trig1) t> Sample Drum (TRIG 1)\n- Seq (Trig2) t> Sample Drum (TRIG 2)\n- Sample Drum (OUT A) -> Mixer (Ch1)\n- Sample Drum (OUT B) -> Mixer (Ch2)"
+    },
+    {
+      "name": "Melodic chromatic sample",
+      "patch": "Quantizer → CV3 (assigned Tune) · sequencer gate → TRIG1 · short decay",
+      "diagram": "SAMPLE DRUM:\n* Ch1 CV3: Tune (1V/oct)\n* Ch1 Mode: Trigger\n- Quant (CV) p> Sample Drum (CV3 ch1)\n- Seq (Gate) g> Sample Drum (TRIG 1)\n- Sample Drum (OUT A) -> VCF (In)"
+    },
+    {
+      "name": "Granular texture loop",
+      "patch": "Long sample · Gate into TRIG1 for loop · LFO → CV1 (Start) · LFO → CV2 (End)",
+      "diagram": "SAMPLE DRUM:\n* Ch1 Mode: Loop\n* Ch1 CV1: Start\n* Ch1 CV2: End\n- Gate (Out) g> Sample Drum (TRIG 1)\n- LFO1 (Out) >> Sample Drum (CV1 ch1)\n- LFO2 (Out) >> Sample Drum (CV2 ch1)\n- Sample Drum (OUT A) -> Reverb (In)"
+    },
+    {
+      "name": "Reverse hit with CV morph",
+      "patch": "Trigger → TRIG1 · play mode Reverse · Env → CV1 (Decay) for dynamic tails",
+      "diagram": "SAMPLE DRUM:\n* Ch1 Mode: Reverse\n* Ch1 CV1: Decay\n- Trig (Out) t> Sample Drum (TRIG 1)\n- Trig (Out) t> Env (Trig)\n- Env (Out) >> Sample Drum (CV1 ch1)\n- Sample Drum (OUT A) -> Mixer (In)"
+    },
+    {
+      "name": "Live loop slice-and-rearrange",
+      "patch": "Record 1-bar loop via SHIFT+record · slice at beats · random CV → CV1 (Sample Select) · clock → TRIG1",
+      "diagram": "SAMPLE DRUM:\n* Ch1 Mode: Trigger\n* Ch1 CV1: Sample Select\n- Clock (Out) c> Sample Drum (TRIG 1)\n- Random (Out) >> Sample Drum (CV1 ch1)\n- Sample Drum (OUT A) -> Mixer (In)"
+    },
+    {
+      "name": "Gated loop with dynamic window",
+      "patch": "Long gate → TRIG1 · Loop mode · LFO → CV1 (Start) keeps playhead moving · manual End",
+      "diagram": "SAMPLE DRUM:\n* Ch1 Mode: Loop\n* Ch1 CV1: Start\n- Gate (Out) g> Sample Drum (TRIG 1)\n- LFO (Out) >> Sample Drum (CV1 ch1)\n- Sample Drum (OUT A) -> VCA (In)"
+    },
+    {
+      "name": "Stereo sample pair",
+      "patch": "Same trigger to both channels · different samples/start points · OUT A/B = hard stereo",
+      "diagram": "SAMPLE DRUM:\n* Ch1 Mode: Trigger\n* Ch2 Mode: Trigger\n- Trig (Out) t> Sample Drum (TRIG 1)\n- Trig (Out) t> Sample Drum (TRIG 2)\n- Sample Drum (OUT A) -> Mixer (L)\n- Sample Drum (OUT B) -> Mixer (R)"
+    },
+    {
+      "name": "CV-swept play mode",
+      "patch": "Stepped CV → CV1 (assigned Play Mode) jumps mode on each new note, clocked trigger",
+      "diagram": "SAMPLE DRUM:\n* Ch1 CV1: Play Mode\n- Seq (CV) >> Sample Drum (CV1 ch1)\n- Clock (Out) c> Sample Drum (TRIG 1)\n- Sample Drum (OUT A) -> Mixer (In)"
+    }
+  ]
+}

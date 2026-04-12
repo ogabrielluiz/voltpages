@@ -1,0 +1,125 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.makenoisemusic.com/modules/gte/",
+      "https://www.makenoise-manuals.com/gte/gte-manual.pdf"
+    ]
+  },
+  "slug": "make-noise--gte",
+  "name": "GTE",
+  "manufacturer": "Make Noise",
+  "hp": 8,
+  "tags": ["CLOCK", "GATE", "TRIGGER", "UTILITY"],
+  "description": "Analog pulse extractor and Channel Index translator for N.U.S.S. or any Eurorack system. Derives channel gates, pulse streams and odd/even activity from motion at Span.",
+  "controls": [
+    {
+      "name": "Span",
+      "scope": "Global",
+      "description": "Selects which channel region the input voltage is currently addressing.",
+      "detail": "higher voltage advances through 8 channels"
+    },
+    {
+      "name": "Span Attenuverter",
+      "scope": "Span",
+      "description": "Sets span sensitivity and polarity. Fully clockwise is the reference for Channel Index translation.",
+      "detail": "CCW: invert · noon: off · CW: normal"
+    },
+    {
+      "name": "Space",
+      "scope": "Global",
+      "description": "Sets the voltage distance required to traverse the channel set.",
+      "detail": "lower = denser activity · higher = wider spacing"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Span CV In",
+      "description": "Control voltage that drives channel selection and gate extraction.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Space CV In",
+      "description": "CV over the channel spacing threshold.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Trigger In",
+      "description": "Synchronizes channel changes to a trigger or gate edge.",
+      "voltage": "gate / trigger"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Channel Out 1-8",
+      "description": "Eight gate outputs that represent the currently selected channel.",
+      "voltage": "0V / 5V gate"
+    },
+    {
+      "name": "GTE Pulse Stream Out",
+      "description": "Short pulse whenever Span selects a new channel.",
+      "voltage": "trigger"
+    },
+    {
+      "name": "Even Out",
+      "description": "High when an even-numbered channel is active.",
+      "voltage": "0V / 5V gate"
+    },
+    {
+      "name": "Odd Out",
+      "description": "High when an odd-numbered channel is active.",
+      "voltage": "0V / 5V gate"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Pulse extraction from motion",
+      "trigger": "span voltage changes",
+      "description": "Any movement at Span can produce a new selected channel, a pulse stream, and parity gates. It turns continuous CV motion into repeatable rhythm information."
+    },
+    {
+      "name": "Clock-locked channel changes",
+      "trigger": "trigger into Trigger In",
+      "description": "When Trigger In is patched, output channel updates only on incoming edges. That keeps extracted rhythms aligned to an external tempo or clock divider."
+    },
+    {
+      "name": "Channel index translation",
+      "trigger": "Span set fully CCW and attenuverter fully CW",
+      "description": "With the reference settings from the manual, GTE translates Channel Index signals from PoliMATHS or MultiWAVE into discrete gates for downstream modules."
+    },
+    {
+      "name": "Odd/even split",
+      "trigger": "observe active channel parity",
+      "description": "Odd and Even outputs report channel parity without needing to monitor the full eight-channel bank. It is a simple way to split a gesture into two related lanes."
+    },
+    {
+      "name": "Flam delivery",
+      "trigger": "multiple source channels active at once",
+      "description": "When the source module presents multiple simultaneous channels, GTE turns them into a rapid run of triggers before settling on the final active channel."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Gesture to drum gate bank",
+      "patch": "Slow CV source into Span · Space set tight · Channel Out bank to drum triggers · Pulse Stream Out to accent envelope · a moving control signal becomes a playable rhythm generator.",
+      "diagram": "GTE:\n* Span: 12:00\n* Space: tight\n\nCV Source:\nDrum 1:\nDrum 2:\nEnvelope:\n\n- CV Source (Out) >> GTE (Span CV In)\n- GTE (Channel Out 1-8) t> Drum 1 (Trig)\n- GTE (Channel Out 1-8) t> Drum 2 (Trig)\n- GTE (GTE Pulse Stream Out) t> Envelope (Trig)\n- Envelope (Out) >> Drum 1 (Accent)"
+    },
+    {
+      "name": "Clocked gesture synchronizer",
+      "patch": "External clock into Trigger In · pressure or joystick CV into Span · Space sets how quickly channels change · GTE only updates on clock edges, so the extracted pattern stays phase-locked.",
+      "diagram": "GTE:\n* Span: 12:00\n* Space: medium\n\nClock:\nCV Source:\nVCA:\n\n- Clock (Out) c> GTE (Trigger In)\n- CV Source (Out) >> GTE (Span CV In)\n- GTE (Even Out) g> VCA (CV)\n- GTE (Odd Out) g> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "N.U.S.S. channel translator",
+      "patch": "PoliMATHS or MultiWAVE channel index into Span CV · Span attenuverter fully CW · Space fully open · GTE turns the source's channel activity into ordinary gates for drums, envelopes or switch logic.",
+      "diagram": "GTE:\n* Span: fully CCW reference\n* Span Attenuverter: fully CW\n* Space: fully open\n\nSource:\nDrum:\nEnvelope:\n\n- Source (Channel Index Out) >> GTE (Span CV In)\n- GTE (Channel Out 1-8) t> Drum (Trig)\n- GTE (GTE Pulse Stream Out) t> Envelope (Trig)"
+    },
+    {
+      "name": "Odd-even lane split",
+      "patch": "Gesture CV into Span · Odd Out to one voice and Even Out to another · pair the split with different envelopes to get alternating accents from one motion source.",
+      "diagram": "GTE:\n* Span: 1:00\n* Space: medium\n\nVoice A:\nVoice B:\nEnvelope A:\nEnvelope B:\n\n- Gesture (Out) >> GTE (Span CV In)\n- GTE (Odd Out) g> Envelope A (Trig)\n- GTE (Even Out) g> Envelope B (Trig)\n- Envelope A (Out) >> Voice A (CV)\n- Envelope B (Out) >> Voice B (CV)"
+    }
+  ]
+}

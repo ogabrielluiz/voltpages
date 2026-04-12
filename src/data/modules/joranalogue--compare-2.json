@@ -1,0 +1,159 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://joranalogue.com/products/compare-2",
+      "https://joranalogue.com/compare-2/manual",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=190531",
+      "https://www.perfectcircuit.com/joranalogue-compare-2-dual-window-comparator.html"
+    ]
+  },
+  "slug": "joranalogue--compare-2",
+  "name": "Compare 2",
+  "manufacturer": "Joranalogue",
+  "hp": 8,
+  "tags": ["LOGIC", "TRIGGER", "GATE", "UTILITY"],
+  "description": "Dual analogue window comparator with logic section. Each side detects whether the input voltage sits inside a shift/size-defined window. Extracts gates and pulses from any CV or audio signal.",
+  "controls": [
+    {
+      "name": "SHIFT",
+      "scope": "CH 1 & 2",
+      "description": "Offsets the detection window's centre voltage.",
+      "detail": "−5V to +5V · 0V at centre"
+    },
+    {
+      "name": "SIZE",
+      "scope": "CH 1 & 2",
+      "description": "Sets distance between the window's lower and upper edges.",
+      "detail": "~few mV to 10V · negative after adding CV disables the comparator"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "SHIFT CV",
+      "description": "Modulates window centre. Sums with the SHIFT knob. Processes bipolar CV.",
+      "voltage": "bipolar CV",
+      "normalizedTo": "right comparator SHIFT CV (left → right)"
+    },
+    {
+      "name": "SIZE CV",
+      "description": "Modulates window size. Sums with the SIZE knob. Negative sum disables comparator output.",
+      "voltage": "bipolar CV",
+      "normalizedTo": "right comparator SIZE CV (left → right)"
+    },
+    {
+      "name": "IN",
+      "description": "Analogue signal to compare. Accepts CV or audio.",
+      "voltage": "any CV/audio",
+      "normalizedTo": "right comparator IN (left → right)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT",
+      "description": "Main gate: high when the input sits inside the detection window.",
+      "voltage": "0V / +5V gate"
+    },
+    {
+      "name": "NOT",
+      "description": "Inverted main gate. High whenever OUT is low.",
+      "voltage": "0V / +5V gate"
+    },
+    {
+      "name": "AND",
+      "description": "Logic AND of both comparators. High only when both are inside their windows.",
+      "voltage": "0V / +5V gate"
+    },
+    {
+      "name": "OR",
+      "description": "Logic OR of both comparators. High when either or both are inside their windows.",
+      "voltage": "0V / +5V gate"
+    },
+    {
+      "name": "XOR",
+      "description": "Logic XOR of both comparators. High only when exactly one is inside its window.",
+      "voltage": "0V / +5V gate"
+    },
+    {
+      "name": "FF",
+      "description": "T flip-flop. Toggles state on every rising edge of XOR.",
+      "voltage": "0V / +5V gate"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Window detection",
+      "trigger": "IN between SHIFT ± SIZE/2",
+      "description": "OUT goes high while the input voltage sits between the two window edges. LED shows blue below window, red above, white inside."
+    },
+    {
+      "name": "Negative window",
+      "trigger": "SIZE knob + CV sum goes below 0",
+      "description": "Comparator output stays low permanently. LED extinguishes rather than turning white. Useful for CV-gated muting of a gate stream."
+    },
+    {
+      "name": "Left-to-right normalisation",
+      "trigger": "right jacks unpatched",
+      "description": "IN, SHIFT CV and SIZE CV all normalise from the left comparator to the right. Lets a single signal or CV drive both windows simultaneously."
+    },
+    {
+      "name": "XOR flip-flop",
+      "trigger": "rising edge on XOR",
+      "description": "Every rising XOR edge toggles the FF output. Divides XOR rate by two; transitions OUT-based pulse train into sub-octave or latched gate."
+    },
+    {
+      "name": "Set/reset latch",
+      "trigger": "feedback: OUT → SIZE CV",
+      "description": "Per comparator, patching OUT back to SIZE CV with SHIFT min and SIZE ~3 o'clock turns it into an SR latch. SHIFT CV rising edge sets, IN rising edge resets."
+    },
+    {
+      "name": "Audio-rate PWM",
+      "trigger": "triangle/saw into IN",
+      "description": "At audio rate the comparator emits a pulse wave. SHIFT moves phase/width, SIZE sets duty. Output can jump between fundamental and +1 octave as the window clips both halves."
+    },
+    {
+      "name": "Logic input thresholds",
+      "trigger": "gate signals into CV inputs",
+      "description": "With SHIFT max and SIZE noon, window is +2.5V to +7.5V. All five jacks (IN, SHIFT CV, SIZE CV × 2) then accept standard +5V gates, yielding a 6-input logic array."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Complex rhythm generator",
+      "patch": "LFO → left IN · dial SHIFT/SIZE per side to carve gate patterns at different points of the LFO cycle · AND/OR/XOR/FF outputs drive envelopes or drums · modulate SHIFT/SIZE CV to evolve the rhythm",
+      "diagram": "Compare 2:\n* CH 1 SHIFT: taste\n* CH 1 SIZE: narrow\n* CH 2 SHIFT: different offset\n* CH 2 SIZE: medium\n\n- LFO (Out) >> Compare 2 (IN) // normalises to right\n- Compare 2 (AND) g> Envelope 1 (Trig)\n- Compare 2 (XOR) g> Drum (Trig)\n- Compare 2 (FF) g> Envelope 2 (Gate) // half-rate latch"
+    },
+    {
+      "name": "Audio frequency multiplier",
+      "patch": "Triangle VCO → left IN (normalised to right) · both comparators on · XOR output as audio · SHIFT/SIZE sweep output between fundamental, +1 and +2 octave with complex pulse waveforms · use FF for −1/0/+1 octave jumps",
+      "diagram": "Compare 2:\n* CH 1 SHIFT: noon\n* CH 1 SIZE: narrow\n* CH 2 SHIFT: offset\n* CH 2 SIZE: narrow\n\n- VCO (Tri) -> Compare 2 (IN)\n- Compare 2 (XOR) -> Mixer (In) // pulse, octave-shifting with SIZE\n- Compare 2 (FF) -> Mixer (In) // sub-octave variant"
+    },
+    {
+      "name": "Digital ring modulator",
+      "patch": "VCO A → left IN · VCO B → right IN · XOR output as audio · detune sources for ring mod timbres · modulate SHIFT/SIZE for PWM-style bite",
+      "diagram": "Compare 2:\n* CH 1 SHIFT: 0V\n* CH 1 SIZE: narrow\n* CH 2 SHIFT: 0V\n* CH 2 SIZE: narrow\n\n- VCO A (Out) -> Compare 2.CH 1 (IN)\n- VCO B (Out) -> Compare 2.CH 2 (IN)\n- LFO (Out) >> Compare 2.CH 1 (SIZE CV) // PWM on ring mod\n- Compare 2 (XOR) -> VCA (In)"
+    },
+    {
+      "name": "Dynamic depth VCO sync",
+      "patch": "Slave VCO → CH 1 IN · sync source VCO → CH 2 IN · XOR → slave's FM input (depth knob on VCO or VCA) · depth and Compare 2 settings set sync timbre · VCA in FM path for voltage-controlled sync amount",
+      "diagram": "Compare 2:\n* CH 1 SHIFT/SIZE: narrow window near 0V\n* CH 2 SHIFT/SIZE: same\n\n- Slave VCO (Out) -> Compare 2.CH 1 (IN)\n- Sync VCO (Out) -> Compare 2.CH 2 (IN)\n- Compare 2 (XOR) >> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) >> Slave VCO (FM)"
+    },
+    {
+      "name": "Voltage-controlled swing",
+      "patch": "Clock → left IN · LFO → SHIFT CV · fixed narrow SIZE · slow LFO shifts detection threshold, producing a clock whose edges shift earlier/later — swing that can be CV'd",
+      "diagram": "Compare 2:\n* CH 1 SHIFT: 0V\n* CH 1 SIZE: narrow\n\n- Clock (Out) c> Compare 2 (IN)\n- LFO (Out) >> Compare 2 (SHIFT CV) // swing depth\n- Compare 2 (OUT) g> Drum (Trig)"
+    },
+    {
+      "name": "Set/reset latch",
+      "patch": "SHIFT min · SIZE ~3 o'clock · OUT → SIZE CV (self-feedback) · rising edge on SHIFT CV sets the latch high · rising edge on IN resets it low · LED reports latch state",
+      "diagram": "Compare 2:\n* CH 1 SHIFT: min\n* CH 1 SIZE: ~3 o'clock\n\n- Compare 2 (OUT) >> Compare 2 (SIZE CV) // latch feedback\n- Set Gate (Out) g> Compare 2 (SHIFT CV)\n- Reset Gate (Out) g> Compare 2 (IN)"
+    },
+    {
+      "name": "Six-input logic array",
+      "patch": "SHIFT max · SIZE noon (window +2.5V to +7.5V) · any +5V gate on IN, SHIFT CV or SIZE CV activates that comparator · AND/OR/XOR/FF combine gate streams from up to six sources",
+      "diagram": "Compare 2:\n* CH 1 SHIFT: max\n* CH 1 SIZE: noon\n* CH 2 SHIFT: max\n* CH 2 SIZE: noon\n\n- Gate A (Out) g> Compare 2.CH 1 (IN)\n- Gate B (Out) g> Compare 2.CH 1 (SHIFT CV)\n- Gate C (Out) g> Compare 2.CH 1 (SIZE CV)\n- Gate D (Out) g> Compare 2.CH 2 (IN)\n- Compare 2 (AND) g> Drum (Trig)\n- Compare 2 (XOR) g> Envelope (Trig)"
+    }
+  ]
+}

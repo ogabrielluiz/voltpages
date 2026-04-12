@@ -1,0 +1,130 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "firmwareVersion": "2020 revision",
+    "sources": [
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/veils/manual/",
+      "https://mutable-instruments.net/modules/veils/",
+      "https://www.modulargrid.net/e/mutable-instruments-veils-2020",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=236841"
+    ]
+  },
+  "slug": "mutable-instruments--veils",
+  "name": "Veils",
+  "manufacturer": "Mutable Instruments",
+  "hp": 10,
+  "tags": ["VCA", "MIXER", "UTILITY", "DISTORTION"],
+  "description": "Four-channel DC-coupled VCA with per-channel response curve, offset/boost, and normalled mixer. 2020 revision adds LED meters and selectable linear/exponential per channel.",
+  "controls": [
+    {
+      "name": "Level 1–4",
+      "scope": "CH 1-4",
+      "description": "Per-channel gain knob. Also acts as CV offset when no input patched, scaling the CV attenuverter function.",
+      "detail": "0–unity · gain up to ~4x (12 dB) · LED tracks output"
+    },
+    {
+      "name": "Response 1–4",
+      "scope": "CH 1-4",
+      "description": "Per-channel response curve knob between exponential and linear CV tracking.",
+      "detail": "CCW: full exponential (audio-ideal) · CW: linear (CV-ideal)"
+    },
+    {
+      "name": "CV Attenuverter 1–4",
+      "scope": "CH 1-4",
+      "description": "Scales and inverts each channel's CV input when patched.",
+      "detail": "CCW: invert · noon: zero · CW: unity"
+    }
+  ],
+  "inputs": [
+    { "name": "IN 1", "description": "Channel 1 audio/CV input. DC-coupled.", "voltage": "±10V" },
+    { "name": "IN 2", "description": "Channel 2 audio/CV input. DC-coupled.", "voltage": "±10V" },
+    { "name": "IN 3", "description": "Channel 3 audio/CV input. DC-coupled.", "voltage": "±10V" },
+    { "name": "IN 4", "description": "Channel 4 audio/CV input. DC-coupled.", "voltage": "±10V" },
+    { "name": "CV 1", "description": "Channel 1 CV input, scaled by its attenuverter.", "voltage": "±8V" },
+    { "name": "CV 2", "description": "Channel 2 CV input, scaled by its attenuverter.", "voltage": "±8V" },
+    { "name": "CV 3", "description": "Channel 3 CV input, scaled by its attenuverter.", "voltage": "±8V" },
+    { "name": "CV 4", "description": "Channel 4 CV input, scaled by its attenuverter.", "voltage": "±8V" }
+  ],
+  "outputs": [
+    { "name": "OUT 1", "description": "Channel 1 direct output. Breaks that channel out of the mix normalling.", "voltage": "±10V" },
+    { "name": "OUT 2", "description": "Channel 2 direct output. Breaks channel 2 out of the mix.", "voltage": "±10V" },
+    { "name": "OUT 3", "description": "Channel 3 direct output. Breaks channel 3 out of the mix.", "voltage": "±10V" },
+    { "name": "OUT 4 / MIX", "description": "Sum of all unbroken channels. With nothing patched in OUT 1–3 this is the full 4-channel mix; patching OUT 1–3 removes those channels from the mix.", "voltage": "±10V clipped with soft saturation" }
+  ],
+  "behaviors": [
+    {
+      "name": "Normalled mixer",
+      "trigger": "OUT 4 patched, OUT 1–3 empty",
+      "description": "Channels 1–3 internally sum into channel 4's bus. The MIX output delivers the combined signal. Patching any of OUT 1–3 removes that channel from the sum — no extra mixer needed for a 4-input setup."
+    },
+    {
+      "name": "Per-channel response curve",
+      "trigger": "Response knob position",
+      "description": "Each channel independently selectable between exponential (ear-matched for audio) and linear (artifact-free for CV). Set channels 1–2 linear for CV duties and 3–4 exponential for audio in a single Veils."
+    },
+    {
+      "name": "Gain above unity",
+      "trigger": "Level knob past noon or high CV",
+      "description": "Each VCA can boost up to +12 dB for recovering signal after passive attenuation, hot-rodding oscillators, or deliberately clipping into the soft-saturation output stage for warmth."
+    },
+    {
+      "name": "Soft clipping on MIX",
+      "trigger": "MIX output exceeds ±10V headroom",
+      "description": "MIX output soft-saturates rather than hard-clips when channels combined exceed headroom. Useful as a deliberate drive stage — push inputs past unity for smooth analog compression character."
+    },
+    {
+      "name": "DC-coupled CV processing",
+      "trigger": "CV signal patched through any channel",
+      "description": "All four channels pass DC, so Veils doubles as a four-channel CV attenuverter/processor: IN accepts CV, CV jack scales it, Level offsets it, MIX sums multiple CV streams."
+    },
+    {
+      "name": "LED level meters",
+      "trigger": "signal present at any OUT",
+      "description": "2020 revision adds bright per-channel LEDs tracking output amplitude. Useful as a diagnostic confirming VCA action, envelope shape, and signal presence at a glance."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Four-voice submixer",
+      "patch": "Four voices patched into IN 1–4 · levels balanced by knobs · envelope on CV 1 shapes voice 1 · OUT 4 is the summed mix with soft saturation for glue",
+      "diagram": "Veils:\n* CH 1-4: Level at unity\n\n- VCO 1 (Out) -> Veils (IN 1)\n- VCO 2 (Out) -> Veils (IN 2)\n- VCO 3 (Out) -> Veils (IN 3)\n- VCO 4 (Out) -> Veils (IN 4)\n- Envelope (Out) >> Veils (CV 1)\n- Veils (OUT 4) -> Output (In)"
+    },
+    {
+      "name": "Drum bus with sidechain",
+      "patch": "Kick → IN 1, Snare → IN 2, Hats → IN 3 summed into MIX · bass → IN 4 broken out via OUT 4 · inverted kick envelope into CV 4 ducks bass on every kick hit",
+      "diagram": "Veils:\n* CH 4: Response CW (linear)\n\n- Kick (Out) -> Veils (IN 1)\n- Snare (Out) -> Veils (IN 2)\n- Hats (Out) -> Veils (IN 3)\n- Bass (Out) -> Veils (IN 4)\n- Kick Env (Out) >> Veils (CV 4) // inverted via attenuverter CCW, ducks bass\n- Veils (OUT 4) -> Drum Bus (In)"
+    },
+    {
+      "name": "Stereo VCA + CV attenuators",
+      "patch": "Channels 1–2 linear for stereo audio VCA (L/R with shared envelope mult) · channels 3–4 exponential for sculpting two CVs · one Veils covers stereo amp duties and two CV processors",
+      "diagram": "Veils:\n* CH 1-2: Response CW (linear)\n* CH 3-4: Response CCW (expo)\n\n- Synth (L) -> Veils (IN 1)\n- Synth (R) -> Veils (IN 2)\n- Envelope (Out) >> Veils (CV 1)\n- Envelope (Out) >> Veils (CV 2)\n- LFO (Out) -> Veils (IN 3)\n- S&H (Out) -> Veils (IN 4)\n- Veils (OUT 1) -> Output (L)\n- Veils (OUT 2) -> Output (R)\n- Veils (OUT 3) >> Filter (Cutoff)\n- Veils (OUT 4) >> VCO (FM)"
+    },
+    {
+      "name": "Soft-saturation drive",
+      "patch": "Bass VCO into IN 1 · Level pushed past unity · overdriving into OUT 4's soft clipping adds analog warmth/tube-style grit · level CV from envelope adds dynamic drive",
+      "diagram": "Veils:\n* CH 1: Level ~3 o'clock (boost)\n\n- Bass VCO (Out) -> Veils (IN 1)\n- Envelope (Out) >> Veils (CV 1)\n- Veils (OUT 4) -> Filter (In) -> Output (In)"
+    },
+    {
+      "name": "Four-channel CV attenuverter bank",
+      "patch": "No audio patched · four CV sources into IN 1–4 · knobs set offsets · CV jacks trim per-channel depth · summed modulation on OUT 4 for complex motion on a single destination",
+      "diagram": "Veils:\n* CH 1-4: Response CW (linear)\n\n- LFO 1 (Out) >> Veils (IN 1)\n- LFO 2 (Out) >> Veils (IN 2)\n- S&H (Out) >> Veils (IN 3)\n- Envelope (Out) >> Veils (IN 4)\n- Veils (OUT 4) >> Filter (Cutoff) // summed complex CV"
+    },
+    {
+      "name": "Per-voice amp envelope with shared VCA",
+      "patch": "Four voice VCOs into IN 1–4 · four independent envelopes into CV 1–4 · each voice broken out via its own OUT for per-voice panning/processing · MIX remains available if any left unpatched",
+      "diagram": "Veils:\n- VCO 1 (Out) -> Veils (IN 1)\n- VCO 2 (Out) -> Veils (IN 2)\n- VCO 3 (Out) -> Veils (IN 3)\n- VCO 4 (Out) -> Veils (IN 4)\n- Env 1 (Out) >> Veils (CV 1)\n- Env 2 (Out) >> Veils (CV 2)\n- Env 3 (Out) >> Veils (CV 3)\n- Env 4 (Out) >> Veils (CV 4)\n- Veils (OUT 1) -> Pan 1 (In)\n- Veils (OUT 2) -> Pan 2 (In)\n- Veils (OUT 3) -> Pan 3 (In)\n- Veils (OUT 4) -> Pan 4 (In)"
+    },
+    {
+      "name": "Complex LFO via summed CV",
+      "patch": "Slow sine into IN 1 · fast sine (audio rate) into IN 2 · triangle at medium rate into IN 3 · S&H steps into IN 4 · each attenuverted differently · MIX emits rich non-repeating modulation for filter FM",
+      "diagram": "Veils:\n* CH 1: Level ~unity · Response linear\n* CH 2: Level low · Response linear\n* CH 3: Level medium · Response linear\n* CH 4: Level low · Response linear\n\n- LFO Slow (Out) -> Veils (IN 1)\n- LFO Fast (Out) -> Veils (IN 2)\n- LFO Mid (Out) -> Veils (IN 3)\n- S&H (Out) -> Veils (IN 4)\n- Veils (OUT 4) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Audio-rate amplitude modulation",
+      "patch": "Carrier VCO into IN 1 · fast LFO or second VCO at audio rate patched into CV 1 with attenuverter at unity · Level near unity · OUT 1 delivers ring-mod-style AM sidebands",
+      "diagram": "Veils:\n* CH 1: Response CW (linear)\n\n- VCO Carrier (Out) -> Veils (IN 1)\n- VCO Mod (Out) >> Veils (CV 1) // audio-rate AM\n- Veils (OUT 1) -> Filter (In) -> Output (In)"
+    }
+  ]
+}

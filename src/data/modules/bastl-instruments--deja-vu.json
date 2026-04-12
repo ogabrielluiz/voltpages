@@ -1,0 +1,134 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://modulargrid.net/e/bastl-instruments-deja-vu",
+      "https://www.detroitmodular.com/products/bastl-instruments-deja-vu",
+      "https://bastl-instruments.com/support/"
+    ]
+  },
+  "slug": "bastl-instruments--deja-vu",
+  "name": "Déjà Vu",
+  "manufacturer": "Bastl Instruments",
+  "hp": 4,
+  "tags": ["ATTENUATOR", "ATTENUVERTER", "MIXER", "UTILITY"],
+  "description": "Dual fader utility with voltage source behavior, attenuator, attenuverter, crossfader, preamp gain up to 10x, cascading outputs, and CV or audio processing in 4HP.",
+  "controls": [
+    {
+      "name": "FADER",
+      "scope": "Channel A/B",
+      "description": "Sets the channel level or crossfade position depending on mode.",
+      "detail": "voltage source when unpatched"
+    },
+    {
+      "name": "FADER MODE",
+      "scope": "Channel A/B",
+      "description": "Switches between attenuverter, attenuator, and crossfader behavior.",
+      "detail": "attenuverter · attenuator · crossfader"
+    },
+    {
+      "name": "FADER GAIN",
+      "scope": "Channel A/B",
+      "description": "Sets the gain stage for the fader path.",
+      "detail": "1x · 2x · 10x · 5x via rear jumper"
+    },
+    {
+      "name": "Cascading output jumper",
+      "scope": "Rear jumper",
+      "description": "Routes channel A into channel B when the output path is left unpatched.",
+      "detail": "cascading mix on/off"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "FADER A",
+      "description": "Main fader input for channel A. Normalled to a voltage source when unpatched.",
+      "voltage": "CV / audio",
+      "normalizedTo": "voltage source"
+    },
+    {
+      "name": "ADD A",
+      "description": "Auxiliary input summed after the fader path on channel A.",
+      "voltage": "CV / audio"
+    },
+    {
+      "name": "FADER B",
+      "description": "Main fader input for channel B. Normalled to a voltage source when unpatched.",
+      "voltage": "CV / audio",
+      "normalizedTo": "voltage source"
+    },
+    {
+      "name": "ADD B",
+      "description": "Auxiliary input summed after the fader path on channel B.",
+      "voltage": "CV / audio"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT A",
+      "description": "Channel A output with polarity and voltage indication.",
+      "voltage": "CV / audio"
+    },
+    {
+      "name": "OUT B",
+      "description": "Channel B output, cascaded from A when the rear jumper is set and OUT A is left unused.",
+      "voltage": "CV / audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Voltage source mode",
+      "trigger": "leave FADER input unpatched",
+      "description": "The fader becomes a static voltage source instead of a level control, so each channel can act as an offset or bias generator."
+    },
+    {
+      "name": "Three-way fader behavior",
+      "trigger": "switch FADER MODE",
+      "description": "The same channel can act as an attenuverter, attenuator, or crossfader between FADER and ADD, which keeps the panel useful for both audio and CV."
+    },
+    {
+      "name": "Preamp gain",
+      "trigger": "raise FADER GAIN",
+      "description": "The channel can boost incoming audio up to 10x, making it usable as a line-level preamp as well as a utility attenuator."
+    },
+    {
+      "name": "Cascade mixer",
+      "trigger": "leave OUT A unpatched",
+      "description": "Channel A mixes into channel B when the cascading jumper is enabled, effectively turning the pair into a 4-input mixer."
+    },
+    {
+      "name": "CV or audio utility",
+      "trigger": "patch either audio or control voltages",
+      "description": "The module processes both CV and audio cleanly, so it works as a bias box, crossfade pair, gain stage, or small mixer."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Voltage offset pair",
+      "patch": "Leave both FADER inputs open · set each fader to different positions · use the two channels as offset sources for pitch or filter modulation · a tiny analog bias box with hands-on control.",
+      "diagram": "Déjà Vu:\n* FADER MODE: attenuator\n* FADER GAIN: 1x\n\nLFO:\nFilter:\nOutput:\n\n- LFO (Out) >> Déjà Vu (ADD A)\n- Déjà Vu (OUT A) >> Filter (Cutoff)\n- Déjà Vu (OUT B) >> Output (In)"
+    },
+    {
+      "name": "Crossfade macro",
+      "patch": "Use channel A as a crossfader between two modulation sources · feed the result into channel B for fine trimming · one fader performs the macro move while the second sets the final range.",
+      "diagram": "Déjà Vu:\n* FADER MODE: crossfader\n* FADER GAIN: 1x\n\nLFO:\nEnvelope:\nOutput:\n\n- LFO (Out) >> Déjà Vu (FADER A)\n- Envelope (Out) >> Déjà Vu (ADD A)\n- Déjà Vu (OUT A) >> Déjà Vu (FADER B)\n- Déjà Vu (OUT B) >> Output (In)"
+    },
+    {
+      "name": "Stereo line preamp",
+      "patch": "Use the 10x gain setting to lift line-level or quiet synth sources into modular level · channel A and B handle left and right paths separately · useful before an effect return or mixer insert.",
+      "diagram": "Déjà Vu:\n* FADER MODE: attenuator\n* FADER GAIN: 10x\n\nSource L:\nSource R:\nOutput:\n\n- Source L (Out) -> Déjà Vu (FADER A)\n- Source R (Out) -> Déjà Vu (FADER B)\n- Déjà Vu (OUT A) -> Output (L)\n- Déjà Vu (OUT B) -> Output (R)"
+    },
+    {
+      "name": "Cascade mixer",
+      "patch": "Patch several sources into A and B, leave OUT A unpatched, and let the cascade jumper fold both channels into a small mixer. The module turns into a compact two-stage mix and trim block.",
+      "diagram": "Déjà Vu:\n* FADER MODE: attenuator\n* Cascading output jumper: on\n\nSource 1:\nSource 2:\nOutput:\n\n- Source 1 (Out) -> Déjà Vu (FADER A)\n- Source 2 (Out) -> Déjà Vu (FADER B)\n- Déjà Vu (OUT B) -> Output (In)"
+    },
+    {
+      "name": "Bias and clip",
+      "patch": "Bias a hot audio signal with the fader source mode and push it into an ADD input from another oscillator or envelope · the result is a simple saturating utility stage with a very direct feel.",
+      "diagram": "Déjà Vu:\n* FADER MODE: attenuverter\n* FADER GAIN: 2x\n\nVCO:\nEnvelope:\nOutput:\n\n- VCO (Out) -> Déjà Vu (FADER A)\n- Envelope (Out) >> Déjà Vu (ADD A)\n- Déjà Vu (OUT A) -> Output (In)"
+    }
+  ]
+}

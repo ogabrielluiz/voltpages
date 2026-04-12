@@ -1,0 +1,140 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://ajhsynth.com/VCF.html",
+      "https://ajhsynth.com/pdf/MiniMod%20VCF%20User%20Manual.pdf",
+      "https://www.soundonsound.com/reviews/ajh-synth-minimod-transistor-ladder-filter",
+      "https://www.perfectcircuit.com/ajh-minimod-vcf.html",
+      "https://modulargrid.net/e/ajh-synth-minimod-transistor-ladder-filter"
+    ]
+  },
+  "slug": "ajh-synth--minimod-transistor-ladder-filter",
+  "name": "MiniMod Transistor Ladder Filter",
+  "manufacturer": "AJH Synth",
+  "hp": 14,
+  "tags": ["VCF", "FILTER", "DISTORTION"],
+  "description": "Faithful 24dB/oct transistor ladder LPF replica of the early Model D filter. Matched discrete ladder transistors, three-input audio mixer, vactrol VC resonance, Model D 1/3 and 2/3 keyboard tracking CVs, internal overdrive jumper.",
+  "controls": [
+    {
+      "name": "FREQ",
+      "scope": "Global",
+      "description": "Large cutoff frequency knob. Acts as offset when CV is applied. CCW fully closes; CW fully opens.",
+      "detail": "Full audio range · offset when CV present"
+    },
+    {
+      "name": "FREQ CV",
+      "scope": "Global",
+      "description": "Attenuator for the Freq CV Input. Ranges 0-130%, enabling overmodulation past 1V/oct tracking. 1V/oct point occurs at 2 o'clock (position 7).",
+      "detail": "0–130% · 1V/oct = pos 7"
+    },
+    {
+      "name": "EMP CV",
+      "scope": "Global",
+      "description": "Attenuator for the Emphasis CV input feeding the vactrol resonance circuit. Manual Emphasis still acts as offset when CV is present.",
+      "detail": "0–100% · vactrol response allows audio-rate modulation"
+    },
+    {
+      "name": "EMPHASIS",
+      "scope": "Global",
+      "description": "Manual resonance (feedback) control. Self-oscillates between positions 8 and 10 producing a playable sine wave.",
+      "detail": "0–10 · self-oscillation ~8+ · 3–4 octave tracking range in self-osc"
+    },
+    {
+      "name": "INPUT 1 / INPUT 2 / INPUT 3",
+      "scope": "Audio mixer",
+      "description": "Three independent level knobs forming an input mixer into the filter core. All AC-coupled.",
+      "detail": "0–100% each · summed to filter input"
+    },
+    {
+      "name": "Gain Jumper (J1)",
+      "scope": "Internal PCB",
+      "description": "Removing the onboard jumper boosts pre-filter gain by ~70% for Model D style overdrive. Output level rises proportionally.",
+      "detail": "Installed: unity · removed: +70% pre-gain overdrive"
+    }
+  ],
+  "inputs": [
+    { "name": "IN 1", "description": "Audio input 1 into the three-channel mixer. AC-coupled.", "voltage": "±5V audio" },
+    { "name": "IN 2", "description": "Audio input 2 into the three-channel mixer. AC-coupled.", "voltage": "±5V audio" },
+    { "name": "IN 3", "description": "Audio input 3 into the three-channel mixer. AC-coupled.", "voltage": "±5V audio" },
+    { "name": "FREQ-CV", "description": "External cutoff CV. Scaled by FREQ CV attenuator. Overmodulation possible past 100%.", "voltage": "±5V typical" },
+    { "name": "1V/Oct", "description": "Fixed 1V/octave input. Emulates Model D keyboard switches 1 AND 2 on. Tracking drifts with temperature (uncorrected, per original).", "voltage": "1V/oct" },
+    { "name": "1/3 CV", "description": "Scaled keyboard tracking input at 3V per octave. Equivalent to Model D keyboard switch 1 on, switch 2 off.", "voltage": "3V/oct" },
+    { "name": "2/3 CV", "description": "Scaled keyboard tracking input at 1.5V per octave. Equivalent to Model D keyboard switch 2 on, switch 1 off.", "voltage": "1.5V/oct" },
+    { "name": "EMP-CV", "description": "Resonance/emphasis CV input. Fed through vactrol for smooth response up into audio rate.", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "OUT", "description": "Filtered audio output after the ladder core. Unity gain with single input at 100%; +70% higher with gain jumper removed.", "voltage": "±5V typical · THD 0.008%" }
+  ],
+  "behaviors": [
+    {
+      "name": "Three keyboard-tracking CV inputs",
+      "trigger": "applying V/oct to 1V/Oct, 1/3 CV, or 2/3 CV",
+      "description": "Recreates the Model D filter-keyboard-follow switches. 1V/Oct = both switches on (full tracking), 1/3 CV = 3V/oct (partial), 2/3 CV = 1.5V/oct (two-thirds). Summing them produces classic Moog filter tracking behavior without a dedicated switch."
+    },
+    {
+      "name": "Vactrol voltage-controlled resonance",
+      "trigger": "CV into EMP-CV",
+      "description": "Resonance is controlled by a fast vactrol, acting purely resistively so the filter core sound is unchanged. Supports audio-rate modulation for FM-like resonance timbres. Manual Emphasis becomes an offset when CV is present."
+    },
+    {
+      "name": "Overmodulation via Freq CV",
+      "trigger": "FREQ CV knob past 2 o'clock (position 7)",
+      "description": "Freq CV range extends to 130% versus the 1V/Oct input. Pushing past 1V/oct point creates overshoot and exaggerated tracking useful for filter FM timbres and wide modulation sweeps."
+    },
+    {
+      "name": "Self-oscillation as sine VCO",
+      "trigger": "EMPHASIS set 8–10 with no audio input",
+      "description": "Filter self-resonates into a clean sine wave. Tracks V/Oct reasonably over 3–4 octaves (CV scaling is uncorrected, drifts slightly with ambient temperature, matching original Model D behavior). Playable as an additional VCO."
+    },
+    {
+      "name": "Internal overdrive jumper",
+      "trigger": "J1 jumper removed on PCB",
+      "description": "Boosts pre-filter signal gain by approximately 70%, overdriving the ladder front-end. Emulates the vintage Model D trick of routing the headphone output back into the external VCF input. Output level rises proportionally, so compensate downstream."
+    },
+    {
+      "name": "Emphasis still active with CV",
+      "trigger": "patching EMP-CV while Emphasis knob set",
+      "description": "Manual Emphasis knob is summed as offset under CV control. Allows biasing the resonance up to near-oscillation then modulating the peak region without going fully into self-oscillation."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Model D bass tracking",
+      "patch": "Sequencer V/oct → 1V/Oct filter input · VCO into IN 1 · Envelope into FREQ-CV with FREQ CV at 2 o'clock · EMPHASIS ~5 · classic Moog-style filter envelope with full keyboard tracking",
+      "diagram": "VCF:\n* EMPHASIS: 5\n* FREQ CV: 2 o'clock (pos 7)\n\nVCO:\n\nSequencer:\n\nEnvelope:\n\nVCA:\n\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Pitch) p> VCF (1V/Oct)\n- VCO (Saw) -> VCF (IN 1)\n- Envelope (Out) >> VCF (FREQ-CV)\n- VCF (OUT) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Two-thirds tracking lead",
+      "patch": "Pitch CV into 2/3 CV only · filter tracks at 1.5V/oct for that slightly-detuned 'half-follow' Model D character · EMPHASIS ~7 just below self-osc · bright but never fully opens up the top",
+      "diagram": "VCF:\n* EMPHASIS: 7\n* FREQ knob: noon\n\nVCO:\n\nSequencer:\n\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Pitch) >> VCF (2/3 CV) // 1.5V/oct tracking\n- VCO (Saw) -> VCF (IN 1)\n- VCF (OUT) -> Output (In)"
+    },
+    {
+      "name": "Three-oscillator fat unison",
+      "patch": "Three detuned VCOs into IN 1-3 · levels balanced ~70% each · J1 jumper removed for pre-filter overdrive · EMPHASIS ~4 keeps the fatness without squealing · classic thick Moog bass",
+      "diagram": "VCF:\n* J1 jumper: REMOVED (overdrive)\n* INPUT 1-3: ~70%\n* EMPHASIS: 4\n\nVCO 1:\n\nVCO 2:\n\nVCO 3:\n\nEnvelope:\n\nVCA:\n\n- VCO 1 (Saw) -> VCF (IN 1)\n- VCO 2 (Saw) -> VCF (IN 2)\n- VCO 3 (Pulse) -> VCF (IN 3)\n- Envelope (Out) >> VCF (FREQ-CV)\n- VCF (OUT) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Sine VCO from self-oscillation",
+      "patch": "No audio input · EMPHASIS at 10 · 1V/Oct from sequencer · filter sings as a sinewave VCO tracking ~3-4 octaves · FM the cutoff via FREQ-CV for timbral motion",
+      "diagram": "VCF:\n* EMPHASIS: 10 (self-osc)\n* INPUT 1-3: 0\n\nSequencer:\n\nLFO:\n\n- Sequencer (Pitch) p> VCF (1V/Oct)\n- LFO (Out) >> VCF (FREQ-CV) // timbral FM\n- VCF (OUT) -> Output (In)"
+    },
+    {
+      "name": "Audio-rate resonance FM",
+      "patch": "VCO sine into EMP-CV · EMP CV knob ~5 · filter IN 1 fed by a second VCO · EMPHASIS 6 · vactrol modulates resonance at audio rate producing FM-like sidebands unique to this filter",
+      "diagram": "VCF:\n* EMPHASIS: 6\n* EMP CV: 5\n\nVCO A:\n\nVCO B:\n\nVCA:\n\n- VCO A (Saw) -> VCF (IN 1)\n- VCO B (Triangle) >> VCF (EMP-CV) // audio-rate resonance mod\n- VCF (OUT) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Dirty Model-D trick",
+      "patch": "J1 removed · EMPHASIS ~8 (just oscillating) · feed audio into IN 1 at maximum · VCA after filter attenuates the boosted output · saturated resonance growl like the vintage headphone-feedback trick",
+      "diagram": "VCF:\n* J1 jumper: REMOVED\n* INPUT 1: 10 (max)\n* EMPHASIS: 8\n\nVCO:\n\nEnvelope:\n\nVCA:\n\n- VCO (Saw) -> VCF (IN 1)\n- Envelope (Out) >> VCF (FREQ-CV)\n- VCF (OUT) -> VCA (In) // VCA turned down to compensate\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Overmodulation sweep",
+      "patch": "FREQ CV knob at maximum (130%) · wide envelope into FREQ-CV · filter cutoff is driven past its normal limits giving an exaggerated, dramatic sweep with pronounced pop on envelope peaks",
+      "diagram": "VCF:\n* FREQ CV: max (130%)\n* EMPHASIS: 6\n\nVCO:\n\nEnvelope:\n\n- VCO (Saw) -> VCF (IN 1)\n- Envelope (Out) >> VCF (FREQ-CV) // overmodulated sweep\n- VCF (OUT) -> Output (In)"
+    }
+  ]
+}

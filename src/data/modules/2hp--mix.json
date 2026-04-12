@@ -1,0 +1,117 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "http://www.twohp.com/modules/p/mix",
+      "http://www.twohp.com/s/Mix_Manual_2023.pdf",
+      "https://modulargrid.net/e/2hp-mix"
+    ]
+  },
+  "slug": "2hp--mix",
+  "name": "Mix",
+  "manufacturer": "2hp",
+  "hp": 2,
+  "tags": ["MIXER", "UTILITY"],
+  "description": "4-channel DC-coupled mixer. Four attenuator knobs sum four inputs to a single output. Accepts audio or CV interchangeably. 10Vpp input range, 45mm deep.",
+  "controls": [
+    {
+      "name": "Level 1",
+      "scope": "CH 1",
+      "description": "Attenuator for channel 1 input.",
+      "detail": "CCW: muted · CW: unity"
+    },
+    {
+      "name": "Level 2",
+      "scope": "CH 2",
+      "description": "Attenuator for channel 2 input.",
+      "detail": "CCW: muted · CW: unity"
+    },
+    {
+      "name": "Level 3",
+      "scope": "CH 3",
+      "description": "Attenuator for channel 3 input.",
+      "detail": "CCW: muted · CW: unity"
+    },
+    {
+      "name": "Level 4",
+      "scope": "CH 4",
+      "description": "Attenuator for channel 4 input.",
+      "detail": "CCW: muted · CW: unity"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Input 1",
+      "description": "Signal input for channel 1. DC-coupled, accepts audio or CV.",
+      "voltage": "10Vpp"
+    },
+    {
+      "name": "Input 2",
+      "description": "Signal input for channel 2. DC-coupled, accepts audio or CV.",
+      "voltage": "10Vpp"
+    },
+    {
+      "name": "Input 3",
+      "description": "Signal input for channel 3. DC-coupled, accepts audio or CV.",
+      "voltage": "10Vpp"
+    },
+    {
+      "name": "Input 4",
+      "description": "Signal input for channel 4. DC-coupled, accepts audio or CV.",
+      "voltage": "10Vpp"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Output",
+      "description": "Summed output of all four channels.",
+      "voltage": "sum of scaled inputs"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "DC coupling",
+      "trigger": "any CV patched",
+      "description": "All inputs and the output are DC-coupled, so CV, envelopes, gates, and pitch signals pass unchanged. Useful for summing offsets, mixing modulation sources, or combining multiple gate signals into one."
+    },
+    {
+      "name": "Unity gain only",
+      "trigger": "all knobs fully CW with multiple inputs",
+      "description": "Knobs are pure attenuators — maximum gain is unity. Summing four full-level signals drives the output near +/-20V peak on CV or produces loud audio peaks. Back off individual knobs to keep the sum inside eurorack range."
+    },
+    {
+      "name": "CV offset summing",
+      "trigger": "multiple offset sources at inputs",
+      "description": "Because each input is DC-coupled with its own attenuator, Mix functions as a weighted offset adder. Great for combining a pitch sequence with an octave switch voltage, or summing LFO plus sequencer modulation on a single cutoff line."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "4-voice audio submix",
+      "patch": "Four voice outs → Input 1-4 · balance with Level 1-4 · Output → main mixer · compact submix for drum or chord voice group that otherwise eats HP",
+      "diagram": "Mix:\n\nDrum 1:\nDrum 2:\nDrum 3:\nDrum 4:\n\n- Drum 1 (Out) -> Mix (Input 1)\n- Drum 2 (Out) -> Mix (Input 2)\n- Drum 3 (Out) -> Mix (Input 3)\n- Drum 4 (Out) -> Mix (Input 4)\n- Mix (Output) -> Main Mixer (In)"
+    },
+    {
+      "name": "Modulation summer",
+      "patch": "LFO 1 → Input 1 · LFO 2 → Input 2 · S&H → Input 3 · envelope → Input 4 · Output → filter cutoff · combine four modulation sources with per-source amount on one cutoff — cheaper than a dedicated CV mixer",
+      "diagram": "Mix:\n\nLFO 1:\nLFO 2:\nS&H:\nEnvelope:\nFilter:\n\n- LFO 1 (Out) >> Mix (Input 1)\n- LFO 2 (Out) >> Mix (Input 2)\n- S&H (Out) >> Mix (Input 3)\n- Envelope (Out) >> Mix (Input 4)\n- Mix (Output) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Pitch + transpose summer",
+      "patch": "Sequencer 1V/oct → Input 1 (Level 1 full CW for accurate tracking) · octave switch (0/+1/+2V) → Input 2 · slow LFO (vibrato) → Input 3 · Output → VCO 1V/oct · transposable sequence with vibrato in a 2HP footprint",
+      "diagram": "Mix:\n* Level 1: full CW\n\nSequencer:\nOctave Switch:\nLFO:\nVCO:\n\n- Sequencer (Pitch) p> Mix (Input 1)\n- Octave Switch (Out) p> Mix (Input 2)\n- LFO (Sine) >> Mix (Input 3)\n- Mix (Output) p> VCO (V/Oct)"
+    },
+    {
+      "name": "Gate OR combiner",
+      "patch": "Three gate sources → Input 1-3 · Levels full CW · Output → gate destination · Mix sums the gates — any source firing opens the destination (analog OR) · downstream Schmitt/comparator cleans up the variable amplitude",
+      "diagram": "Mix:\n* Level 1-3: full CW\n\nGate 1:\nGate 2:\nGate 3:\nEnvelope:\n\n- Gate 1 (Out) g> Mix (Input 1)\n- Gate 2 (Out) g> Mix (Input 2)\n- Gate 3 (Out) g> Mix (Input 3)\n- Mix (Output) t> Envelope (Trig)"
+    },
+    {
+      "name": "Unity-gain crossfade simulator",
+      "patch": "Source A → Input 1 · Source B → Input 2 · manually pan between Levels 1 and 2 for simple mono crossfade · works as a quick no-VCA crossfade or A/B comparison utility in 2HP",
+      "diagram": "Mix:\n\nSource A:\nSource B:\n\n- Source A (Out) -> Mix (Input 1)\n- Source B (Out) -> Mix (Input 2)\n- Mix (Output) -> Output (In) // manual A/B balance via Level 1/2"
+    }
+  ]
+}

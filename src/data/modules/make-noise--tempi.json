@@ -1,0 +1,151 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "tempi60",
+    "sources": [
+      "https://www.makenoisemusic.com/wp-content/uploads/2024/03/tempimanual.pdf",
+      "https://www.makenoisemusic.com/modules/tempi/"
+    ]
+  },
+  "slug": "make-noise--tempi",
+  "name": "TEMPI",
+  "manufacturer": "Make Noise",
+  "hp": 10,
+  "tags": ["CLOCK", "SEQUENCER", "LOGIC"],
+  "description": "Six-channel polyphonic time-shifting clock. Per-channel multiplier/divider/phase of a Leading Tempo. 64 States in 4 Banks, recallable via CV. Shift, Run/Stop, Mute and Mesh modes.",
+  "controls": [
+    {
+      "name": "Channel Buttons 1-6",
+      "scope": "Global",
+      "description": "Tap to program multiples/divisions (Human programming). Hold combos with PGM_A/B for Machine programming and phase editing. Button LEDs flash to indicate current Clock. Colors encode state: blue=active, red=muted, purple=mod-enabled, pink=muted+mod.",
+      "detail": "tap-to-program · multi-role"
+    },
+    {
+      "name": "PGM_A / PGM_B",
+      "scope": "Global",
+      "description": "Program buttons. Hold + tap channel buttons to set Divisor/Multiplier values. Double-press for edit pages (Bank Edit, Program Edit, Clock Edit).",
+      "detail": "DIV (PGM_A) · MULT (PGM_B)"
+    },
+    {
+      "name": "State Select (Combo Pot)",
+      "scope": "State",
+      "description": "Selects active State 1-16 within current Bank. Acts as attenuator for State Select CV when patched. When Tap Tempo is disabled becomes Leading Tempo control.",
+      "detail": "combo pot · 0V-5V"
+    }
+  ],
+  "inputs": [
+    { "name": "External Leading Tempo", "description": "Clock input. TEMPI follows after 2 pulses to measure rate. Primary clock source.", "voltage": "≥1.5V · ≥6ms wide" },
+    { "name": "State Select Gate", "description": "Increments State on rising edge. When Shift mode on, this input triggers Shift instead.", "voltage": "≥2.5V gate" },
+    { "name": "State Select CV", "description": "Absolute State selection. Takes priority over State Select Gate. 0V-5V maps across 16 States of current Bank.", "voltage": "0V – 5V" },
+    { "name": "Mod Gate", "description": "Triggers Shift and/or Run/Stop for Mod-enabled channels (purple). Behavior set in Program Edit page.", "voltage": "≥2.5V gate" }
+  ],
+  "outputs": [
+    { "name": "CH 1-6 Outputs", "description": "Six independent clock outputs — each a programmable multiple/division/phase-offset of Leading Tempo. Default 50% duty cycle; switchable to 10ms triggers per channel (Clock Edit).", "voltage": "0V / 8V" }
+  ],
+  "behaviors": [
+    {
+      "name": "Human programming",
+      "trigger": "tap channel button ≥2 times",
+      "description": "Tap a channel button at the rate you want that channel to run. TEMPI compares to Leading Tempo and derives multiplier/divisor automatically. Resolution (100/50/25%) set on Program Edit page — 100% for strict integer ratios, 25% for free/loose relationships."
+    },
+    {
+      "name": "Machine programming (divisor)",
+      "trigger": "hold PGM_A + tap channel button N times",
+      "description": "Programs channel to ÷N of Leading Tempo. N counts taps (max 32). Hold PGM_A + press PGM_B secondary for double divisor (÷2^y). Multi-channel: tap multiple channel buttons while holding PGM_A."
+    },
+    {
+      "name": "Machine programming (multiplier)",
+      "trigger": "hold PGM_B + tap channel button N times",
+      "description": "Programs channel to ×N of Leading Tempo. PGM_B adds MULT mode. Hold PGM_B + press PGM_A secondary for double multiplier. Fine increments/decrements: hold channel + tap PGM_A (slower) or PGM_B (faster)."
+    },
+    {
+      "name": "Phase programming",
+      "trigger": "press PGM_A + PGM_B simultaneously",
+      "description": "Enters Phase page. Hold PGM_A + tap channel N times for coarse phase decrement (1 cycle of Leading Tempo per N). PGM_B for coarse increment. Holding channel button + PGM_A/B gives fine phase (¼ cycle) adjustments."
+    },
+    {
+      "name": "States and Banks",
+      "trigger": "hold PGM_A + PGM_B → State Edit page",
+      "description": "Stores up to 64 timing scenarios in 4 Banks of 16. Recall, store, copy, paste and Mutate operations available. State LED color indicates Bank (Blue/Orange/Pink/White). Nothing is saved across power cycles without explicit Store."
+    },
+    {
+      "name": "Shift mode",
+      "trigger": "Mod-enable channels + Mod gate → high",
+      "description": "On Mod gate rising edge, Clock values are rotated between Mod-enabled channels (purple). Direction set by Button 4 (CW/CCW/Random). Returns to original values on State change. Creates evolving rhythmic variations without reprogramming."
+    },
+    {
+      "name": "Run/Stop modes",
+      "trigger": "Mod-enable channels + Mod gate as run/stop",
+      "description": "Run/Stop (red): Mod-enabled channels run on gate high. Run/Stop All (blue, 'James Cigler'): all channels run/stop; enabled channels preserve phase, disabled reset in phase. Alt Run/Stop (purple, 'Robert A.A. Lowe'): inverse logic. Mod input toggled or momentary (Button 6)."
+    },
+    {
+      "name": "Mute",
+      "trigger": "press PGM_A to enter Mute page",
+      "description": "Tap channel buttons to mute/unmute. Muted = red. Mutes are not Shifted (a trick: muted via large division = shiftable mute). New clocks can be programmed into muted channels — useful for cueing changes in performance."
+    },
+    {
+      "name": "Retrigger blocking / integer masking",
+      "trigger": "Mod gate as integer of Leading Tempo → Run/Stop",
+      "description": "When Mod input signal is an integer division of Leading Tempo (e.g. 1/1, 1/2, 1/4), Run/Stop can also act as a channel Reset that preserves phase with Leading Tempo — useful for compositional structure."
+    },
+    {
+      "name": "Select Bus follower",
+      "trigger": "Bank Edit → Button 3 → Follow",
+      "description": "Set TEMPI to Follow Select Bus messages from a René (Make Noise) or Macro Machines Storage Strip. TEMPI receives State changes, Store, Multi-Paste and Mesh operations over the INT.CV bus line. Tempo LED turns green when Following."
+    },
+    {
+      "name": "Tap Tempo from Channel 1",
+      "trigger": "Clock Edit → Button 4 enables Leading Tap Tempo",
+      "description": "When enabled, tapping Channel 1 Button sets Leading Tempo. When disabled, State Select Combo Pot/CV becomes Leading Tempo control. Button 2-6 switches per-channel clock width between 50% duty cycle (blue) and 10ms trigger (off)."
+    },
+    {
+      "name": "Internal delay when clock rate changes",
+      "trigger": "external tempo change",
+      "description": "When Leading Tempo changes rate, TEMPI needs 2 clock pulses to re-measure and lock. For DAW sync, include ~2 bars of silence at the start of a song to allow lock-in. Or use Run/Stop All for DAW-reliable start."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Polyrhythmic percussion loop",
+      "patch": "Master clock → Leading Tempo · CH 1 set 1/1 (gate main kick) · CH 2 Machine-programmed to ×3 (hi-hats in triplet) · CH 3 ÷2 (snare on 2nd half), CH 4 ÷3 (perc accent) · CH 5 Fibonacci State (Bank A State 7) · state select via knob auditions presets live · instant polyrhythm bed.",
+      "diagram": "TEMPI:\n* CH 1: ×1\n* CH 2: ×3\n* CH 3: ÷2\n* CH 4: ÷3\n\n- Master Clock (Clk) c> TEMPI (Leading Tempo)\n- TEMPI (CH 1 Out) c> Kick (Trig)\n- TEMPI (CH 2 Out) c> HiHat (Trig)\n- TEMPI (CH 3 Out) c> Snare (Trig)\n- TEMPI (CH 4 Out) c> Perc (Trig)"
+    },
+    {
+      "name": "CV-scanned State sequencer",
+      "patch": "Master clock → Leading Tempo · slow LFO or Pressure Points CV → State Select CV (combo pot ~50%) · TEMPI walks through States in current Bank as CV sweeps · each State is a different rhythmic feel · ideal for song-section morphing without touching the module.",
+      "diagram": "TEMPI:\n* States 1-8: programmed feels\n\n- Master Clock (Clk) c> TEMPI (Leading Tempo)\n- LFO (Out) >> TEMPI (State Select CV)\n- TEMPI (CH 1 Out) c> Destination A (Clk)\n- TEMPI (CH 2 Out) c> Destination B (Clk)"
+    },
+    {
+      "name": "Shift variations live",
+      "patch": "Program 3 channels for related rhythm · enter Program Edit and enable Shift (Button 4 red) · Mod-enable those 3 channels (purple) · rhythmic gate → Mod Gate · each Mod pulse rotates clock values between the 3 channels producing live rhythmic variations that return on State change. Button 4 purple = Random shift (RODENT mode).",
+      "diagram": "TEMPI:\n* CH 2, 3, 5: Mod-enabled (purple)\n* Shift: CW (red)\n\n- Master Clock (Clk) c> TEMPI (Leading Tempo)\n- Variation Gate (Gate) g> TEMPI (Mod Gate) // each pulse rotates rhythms\n- TEMPI (CH 2 Out) c> Voice A (Trig)\n- TEMPI (CH 3 Out) c> Voice B (Trig)\n- TEMPI (CH 5 Out) c> Voice C (Trig)"
+    },
+    {
+      "name": "Run/Stop All for song intro",
+      "patch": "Button 5 blue (Run/Stop All) · Button 6 red (Momentary) · all channels Mod-enabled · Mod Gate held low until intro arrives, then high · every channel starts together in phase (disabled channels) or holding programmed phase (enabled channels) · clean song start without drift.",
+      "diagram": "TEMPI:\n* Run/Stop All: enabled\n* All CH Mod-enabled\n\n- Master Clock (Clk) c> TEMPI (Leading Tempo)\n- Song Gate (Gate) g> TEMPI (Mod Gate) // high = run, low = stop all\n- TEMPI (CH 1 Out) c> Voice 1 (Trig)\n- TEMPI (CH 2 Out) c> Voice 2 (Trig)"
+    },
+    {
+      "name": "Stutter via Mod-reset",
+      "patch": "Program CH 3 to 1/1 · Mod-enable only CH 3 · gate at integer of tempo → Mod Gate · Run/Stop mode momentary · each Mod Gate high resets CH 3's phase — stutter/ratchet effect synced to master · mute CH 3 via Mute page to silence, unmute to perform.",
+      "diagram": "TEMPI:\n* CH 3: ×1, Mod-enabled\n* Run/Stop: Momentary\n\n- Master Clock (Clk) c> TEMPI (Leading Tempo)\n- Performance Gate (Gate) g> TEMPI (Mod Gate)\n- TEMPI (CH 3 Out) c> Drum (Trig) // stutters on gate"
+    },
+    {
+      "name": "Drive René via TEMPI",
+      "patch": "Program CH 1 = 1/1, CH 2 = ÷4 · CH 1 → René X-CLK · CH 2 → René Y-CLK · Cartesian channel advances 1-D while X is fast · experiment with CH 3/4 → X-Mod / Y-Mod for additional modifier rhythms · compact polyrhythmic Cartesian.",
+      "diagram": "TEMPI:\n* CH 1: ×1\n* CH 2: ÷4\n* CH 3: ÷3\n\n- Master Clock (Clk) c> TEMPI (Leading Tempo)\n- TEMPI (CH 1 Out) c> René (X-CLK)\n- TEMPI (CH 2 Out) c> René (Y-CLK)\n- TEMPI (CH 3 Out) g> René (X-Mod)"
+    },
+    {
+      "name": "Clock Murmur (feedback loop)",
+      "patch": "TEMPI CH 1 → René X-CLK (Snake Mode ON) · René X-Gate → TEMPI Leading Tempo · René's gate pattern feeds TEMPI's rate — TEMPI hiccups each time a gate arrives · use TEMPI CH outputs → LPG strikes (Optomix) for rhythmic pulsing that evolves autonomously.",
+      "diagram": "TEMPI:\n* CH 1: ×1\n* CH 2: ÷2\n\n- TEMPI (CH 1 Out) c> René (X-CLK)\n- René (X-Gate) g> TEMPI (Leading Tempo) // feedback\n- TEMPI (CH 2 Out) g> Optomix.CH 1 (Strike)"
+    },
+    {
+      "name": "Select Bus macro-control from René",
+      "patch": "Set René to LEAD via Global Page → GL.BUS · Set TEMPI to Follow via Bank Edit → Button 3 · State changes on René automatically change TEMPI state (same number) · M-Paste and Mesh operations on René propagate to TEMPI · macro-compose entire rhythmic environment from René.",
+      "diagram": "TEMPI:\n* Follow Select Bus: enabled\n\nRené:\n* GL.BUS: LEAD\n\n- Master Clock (Clk) c> TEMPI (Leading Tempo)\n- René (State Change) >> TEMPI (Select Bus) // via INT.CV bus line"
+    }
+  ]
+}

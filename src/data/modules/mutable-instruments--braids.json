@@ -1,0 +1,165 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "firmwareVersion": "1.9 (final 2015)",
+    "sources": [
+      "https://mutable-instruments.net/modules/braids/manual/",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/braids/",
+      "https://mutable-instruments.net/modules/braids/",
+      "https://www.modulargrid.net/e/mutable-instruments-braids",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=83834"
+    ]
+  },
+  "slug": "mutable-instruments--braids",
+  "name": "Braids",
+  "manufacturer": "Mutable Instruments",
+  "hp": 16,
+  "tags": ["VCO", "OSCILLATOR", "WAVESHAPER", "NOISE"],
+  "description": "Digital macro-oscillator with 40+ synthesis models spanning virtual-analog, FM, formant, wavetable, physical modeling, and noise. OLED menu exposes scale, drift, trigger-delay, and signature parameters.",
+  "controls": [
+    {
+      "name": "MODEL (encoder/knob)",
+      "scope": "Global",
+      "description": "Selects synthesis algorithm from 40+ models. Encoder scrolls menu; push selects.",
+      "detail": "40+ models · includes CSAW, VOSM, FM, PLUK, STRN, DRUM, NOIS, etc."
+    },
+    {
+      "name": "COARSE",
+      "scope": "Global",
+      "description": "Coarse pitch tuning over ~8 octaves.",
+      "detail": "Quantized to semitone when SCALE is active"
+    },
+    {
+      "name": "FINE",
+      "scope": "Global",
+      "description": "Fine pitch tuning ±1 semitone.",
+      "detail": "±100 cents"
+    },
+    {
+      "name": "TIMBRE",
+      "scope": "Global",
+      "description": "Model-dependent primary tone parameter. Generally sweeps brightness or spectral density.",
+      "detail": "CV summed with attenuverter-scaled TIMBRE jack"
+    },
+    {
+      "name": "COLOR",
+      "scope": "Global",
+      "description": "Model-dependent secondary tone parameter. Character or sub-parameter per model.",
+      "detail": "CV summed with COLOR jack (unattenuverted)"
+    },
+    {
+      "name": "META (switch)",
+      "scope": "Global",
+      "description": "Routes FM CV to model selection instead of pitch — allows CV-driven model morphing.",
+      "detail": "OFF: FM jack = pitch FM · ON: FM jack = model selection"
+    },
+    {
+      "name": "FM Attenuverter",
+      "scope": "Global",
+      "description": "Scales and inverts the FM CV input (pitch or model depending on META).",
+      "detail": "CCW: invert · noon: zero · CW: unity"
+    },
+    {
+      "name": "TIMBRE Attenuverter",
+      "scope": "Global",
+      "description": "Scales and inverts the TIMBRE CV input.",
+      "detail": "±unity"
+    }
+  ],
+  "inputs": [
+    { "name": "TRIG", "description": "Fires internal short AD envelope (VCA+brightness) and retriggers physical models. Resets wavetable phase on some models.", "voltage": ">2V edge" },
+    { "name": "V/OCT", "description": "1V/octave pitch input. Precalibrated; unattenuated.", "voltage": "-3V to +7V" },
+    { "name": "FM", "description": "Frequency or MODEL modulation depending on META switch. Scaled by FM attenuverter.", "voltage": "±5V" },
+    { "name": "TIMBRE", "description": "TIMBRE parameter CV, scaled by TIMBRE attenuverter.", "voltage": "±5V" },
+    { "name": "COLOR", "description": "COLOR parameter CV. Unattenuverted — attenuate externally if needed.", "voltage": "±5V" }
+  ],
+  "outputs": [
+    { "name": "OUT", "description": "Main audio output of selected synthesis model.", "voltage": "±5V" }
+  ],
+  "behaviors": [
+    {
+      "name": "META mode (CV-driven model morphing)",
+      "trigger": "META switch ON + CV on FM jack",
+      "description": "FM CV selects model instead of pitch. Slow CV sweeps through timbres; stepped CV picks discrete models. Attenuverter sets morph range."
+    },
+    {
+      "name": "Internal AD envelope",
+      "trigger": "TRIG patched + AD-enabled model",
+      "description": "TRIG fires a short internal envelope that ducks amplitude and brightness — adds percussive attack without external VCA. Physical models use TRIG as the exciter/strike."
+    },
+    {
+      "name": "SCALE quantizer (menu)",
+      "trigger": "menu: SCALE = non-off",
+      "description": "Built-in quantizer locks V/OCT and COARSE to selectable scales (chromatic, major, minor, Japanese, raga, etc.). Makes Braids self-quantizing against random or imprecise CV sources."
+    },
+    {
+      "name": "SIGNATURE (lo-fi bitcrush)",
+      "trigger": "menu: SIGN = non-zero",
+      "description": "Signature parameter progressively downsamples and bit-reduces the output for deliberate aliased/lo-fi textures. Levels 1–4 range from subtle grit to heavy 8-bit character."
+    },
+    {
+      "name": "DRIFT (analog-style detune)",
+      "trigger": "menu: DRFT = non-zero",
+      "description": "Adds slow random pitch drift simulating analog VCO instability. Makes digital oscillator feel breathing/alive, especially when stacked with external VCOs."
+    },
+    {
+      "name": "AD envelope shaping (AD parameter)",
+      "trigger": "menu: AD decay settings",
+      "description": "Menu exposes separate attack/decay times for the internal envelope, plus timbre-mod amount (ATIM) and color-mod amount (ACOL). Enables a self-contained voice without external envelopes."
+    },
+    {
+      "name": "Trigger-delay (TDLY)",
+      "trigger": "menu: TDLY > 0",
+      "description": "Delays internal trigger processing to compensate for upstream sequencer-or-envelope latency. Tightens stacked hits when sequencing from modules with slower edges."
+    },
+    {
+      "name": "Paques easter egg",
+      "trigger": "specific menu combination / long-press",
+      "description": "Hidden Paques (Easter) model added in firmware 1.9 for April Fools — available when certain menu conditions are met. Part of Braids' lore and exposed in later firmwares."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Self-contained percussive voice",
+      "patch": "Model: DRUM (bass drum or snare) · SIGN 2 for crunch · TRIG from clock · V/OCT fixed · internal AD shapes hit · OUT direct to mixer · one cable sequenced drum",
+      "diagram": "Braids:\n* Model: DRUM/BD\n* Menu: SIGN 2\n\n- Clock (Out) t> Braids (TRIG)\n- Braids (OUT) -> Mixer (In)"
+    },
+    {
+      "name": "META-morphing texture",
+      "patch": "META switch ON · slow LFO into FM jack · FM attenuverter sets model sweep range · TRIG from clock so model changes are sampled on each edge · timbre evolves rhythmically across model groups",
+      "diagram": "Braids:\n* META: ON\n\n- Keyboard (Pitch) p> Braids (V/OCT)\n- Slow LFO (Out) >> Braids (FM) // selects model\n- Clock (Out) t> Braids (TRIG)\n- Braids (OUT) -> Filter (In) -> Output (In)"
+    },
+    {
+      "name": "Drifting analog-style bass",
+      "patch": "Model: CSAW or VOWL · DRFT menu at 2 · SIGN at 1 for subtle aliasing warmth · sequencer on V/OCT · envelope into TIMBRE CV for filter-like sweep · feels like a vintage VCO",
+      "diagram": "Braids:\n* Model: CSAW\n* Menu: DRFT 2, SIGN 1\n\n- Sequencer (Pitch) p> Braids (V/OCT)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Braids (TIMBRE)\n- Braids (OUT) -> Filter (In) -> VCA (In) -> Output (In)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Plucked string with quantized random",
+      "patch": "Model: PLUK · SCALE = pentatonic · random CV into V/OCT is quantized by Braids' internal quantizer · clock on TRIG fires pluck · no external quantizer needed",
+      "diagram": "Braids:\n* Model: PLUK\n* Menu: SCAL = PENTATONIC\n\n- Noise (Out) >> S&H (In)\n- Clock (Out) t> S&H (Trig)\n- S&H (Out) p> Braids (V/OCT) // Braids quantizes internally\n- Clock (Out) t> Braids (TRIG)\n- Braids (OUT) -> Reverb (In) -> Output (In)"
+    },
+    {
+      "name": "FM bell with bitcrush",
+      "patch": "Model: FM · COARSE set for bell register · SIGN at 3 (heavy bitcrush) · TIMBRE CV from envelope modulates FM index · COLOR slow-swept by LFO for evolving timbral motion · 8-bit DX-style bells",
+      "diagram": "Braids:\n* Model: FM\n* Menu: SIGN 3\n\n- Sequencer (Pitch) p> Braids (V/OCT)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Braids (TIMBRE)\n- LFO (Out) >> Braids (COLOR)\n- Envelope (Out) >> VCA (CV)\n- Braids (OUT) -> VCA (In) -> Reverb (In) -> Output (In)"
+    },
+    {
+      "name": "Wavetable scanning pad",
+      "patch": "Model: WTBL · slow LFO on TIMBRE scans wavetable X · slow LFO (different rate) on COLOR scans Y · V/OCT from sustained chord · DRFT 1 adds breathing motion · lush evolving pad",
+      "diagram": "Braids:\n* Model: WTBL\n* Menu: DRFT 1\n\n- Keyboard (Pitch) p> Braids (V/OCT)\n- LFO 1 (Out) >> Braids (TIMBRE)\n- LFO 2 (Out) >> Braids (COLOR)\n- Braids (OUT) -> Stereo Chorus (In) -> Reverb (In) -> Output (In)"
+    },
+    {
+      "name": "Filtered noise drone",
+      "patch": "Model: NOIS or METL · V/OCT sets filter frequency of the model · slow LFO on COLOR modulates resonance · SIGN at 0 keeps signal clean · sustained noise-based texture",
+      "diagram": "Braids:\n* Model: NOIS\n\n- LFO 1 (Out) >> Braids (TIMBRE)\n- LFO 2 (Out) >> Braids (COLOR)\n- Offset (Out) p> Braids (V/OCT) // fixed tonal center\n- Braids (OUT) -> Reverb (In) -> Output (In)"
+    },
+    {
+      "name": "Trigger-delay drum compensation",
+      "patch": "Model: DRUM/SN · sequencer with slow gate edges · menu TDLY set to compensate · Braids hits fall exactly on grid · useful when paired with slower sequencers or gate sources",
+      "diagram": "Braids:\n* Model: DRUM/SN\n* Menu: TDLY = 4\n\n- Sequencer (Gate) t> Braids (TRIG)\n- Sequencer (Pitch) p> Braids (V/OCT)\n- Braids (OUT) -> Mixer (In)"
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://doepfer.de/a100_man/A140_man.pdf",
+      "https://doepfer.de/a140.htm"
+    ]
+  },
+  "slug": "doepfer--a-140",
+  "name": "A-140",
+  "manufacturer": "Doepfer",
+  "hp": 8,
+  "tags": ["ENVELOPE", "FUNCTION", "UTILITY"],
+  "description": "Classic ADSR envelope generator. Gate input triggers envelope; Retrig re-opens attack while gate held. Two identical positive outputs (~0 to +8V) plus an inverted output (~0 to -8V). 3-position time range switch spans <100µs to minutes.",
+  "controls": [
+    {
+      "name": "A",
+      "scope": "Envelope",
+      "description": "Attack time — rise from 0V to peak (~+8V) after gate on.",
+      "detail": "L: sub-ms · M: standard · H: up to minutes (set by Time Range)"
+    },
+    {
+      "name": "D",
+      "scope": "Envelope",
+      "description": "Decay time — fall from peak to sustain level.",
+      "detail": "L: sub-ms · M: standard · H: up to minutes (set by Time Range)"
+    },
+    {
+      "name": "S",
+      "scope": "Envelope",
+      "description": "Sustain level — steady voltage held while gate remains high.",
+      "detail": "0 to ~+8V"
+    },
+    {
+      "name": "R",
+      "scope": "Envelope",
+      "description": "Release time — fall from sustain to 0V after gate off.",
+      "detail": "L: sub-ms · M: standard · H: up to minutes (set by Time Range)"
+    },
+    {
+      "name": "Time Range",
+      "scope": "Envelope",
+      "description": "3-position range switch scales all four time stages (A, D, R).",
+      "detail": "L: <100µs–fast · M: standard mid-range · H: up to minutes"
+    },
+    {
+      "name": "ADSR Control",
+      "scope": "Indicator",
+      "description": "LED tracks envelope output voltage for visual feedback.",
+      "detail": "brightness ∝ output"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Gate",
+      "description": "Gate input. Rising edge starts A→D→S phase; falling edge starts R phase.",
+      "voltage": "+3 to +12V",
+      "normalizedTo": "A-100 bus INT.GATE line (disable via internal red jumper)"
+    },
+    {
+      "name": "Retrig",
+      "description": "Re-trigger input. Pulse restarts envelope from current level while Gate is still high.",
+      "voltage": "trigger/gate"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Output",
+      "description": "Positive envelope output.",
+      "voltage": "~0 to +8V"
+    },
+    {
+      "name": "Output",
+      "description": "Second identical positive envelope output (hard-wired copy, no buffer).",
+      "voltage": "~0 to +8V"
+    },
+    {
+      "name": "Inverse Output",
+      "description": "Inverted envelope — mirrored around 0V.",
+      "voltage": "~0 to -8V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Standard ADSR shape",
+      "trigger": "gate high",
+      "description": "On gate rising edge, output rises to peak over A time, falls to S level over D time, holds at S until gate off, then falls to 0V over R time."
+    },
+    {
+      "name": "Gate-length release",
+      "trigger": "short gate during A or D",
+      "description": "If gate falls before sustain is reached, envelope begins R from the current voltage level, producing shortened percussive shapes."
+    },
+    {
+      "name": "Re-triggering",
+      "trigger": "pulse → Retrig while gate high",
+      "description": "Each Retrig pulse restarts A→D from current envelope value without requiring gate to cycle. Driving Retrig from an LFO produces repeating envelopes locked to the gate duration."
+    },
+    {
+      "name": "System bus gate normalling",
+      "trigger": "no cable in Gate",
+      "description": "Gate jack is normalled to the A-100 system bus INT.GATE line, so MIDI-CV or keyboard gates reach all A-140 modules without patching. Insert a cable to break the bus normal."
+    },
+    {
+      "name": "Bipolar modulation from Inverse Out",
+      "trigger": "Output + Inverse Output summed",
+      "description": "Inverse Output carries the same shape mirrored to negative voltages, useful for simultaneous opening/closing of paired VCAs or crossfader duck patches."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic voice envelope",
+      "patch": "Gate → Gate · Output → VCA CV · Inverse Output → VCF CV for sweep-down",
+      "diagram": "A-140:\n* A: fast · D: med · S: 6 · R: med · Time Range: M\n- Keyboard (Gate) g> A-140 (Gate)\n- A-140 (Output) >> VCA (CV)\n- A-140 (Inverse Output) >> VCF (CV) // filter closes as envelope opens"
+    },
+    {
+      "name": "Retrig-driven tremolo envelope",
+      "patch": "LFO square → Retrig repeats A/D bursts while key held · Output → VCA",
+      "diagram": "A-140:\n* A: fast · D: slow · S: 0 · R: med · Time Range: L\n- Keyboard (Gate) g> A-140 (Gate)\n- LFO (Sqr) t> A-140 (Retrig)\n- A-140 (Output) >> VCA (CV) // percussive bursts inside each note"
+    },
+    {
+      "name": "Dual destination from twin outputs",
+      "patch": "Both positive outputs drive independent targets without a mult — one to VCA, one to pitch FM",
+      "diagram": "A-140:\n* A: slow · D: med · S: 4 · R: slow\n- Gate Source (Gate) g> A-140 (Gate)\n- A-140 (Output) >> VCA (CV)\n- A-140 (Output) >> VCO (Exp FM) // small pitch rise on attack"
+    },
+    {
+      "name": "Ducking sidechain",
+      "patch": "Drum gate → Gate · Inverse Output → VCA CV on pad voice for rhythmic duck",
+      "diagram": "A-140:\n* A: very fast · D: med · S: 0 · R: med\n- Drum (Gate) g> A-140 (Gate)\n- Pad Voice (Audio) -> VCA (In)\n- A-140 (Inverse Output) >> VCA (CV) // VCA dips on each hit"
+    },
+    {
+      "name": "Slow drone morph",
+      "patch": "Time Range H for minute-long sweeps · Output → filter cutoff for slowly evolving timbre",
+      "diagram": "A-140:\n* A: 10 · D: 10 · S: 5 · R: 10 · Time Range: H\n- Manual Gate (Gate) g> A-140 (Gate)\n- A-140 (Output) >> VCF (Cutoff) // multi-minute opening"
+    }
+  ]
+}

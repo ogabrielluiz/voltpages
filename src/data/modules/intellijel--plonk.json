@@ -1,0 +1,251 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.16",
+    "sources": [
+      "https://intellijel.com/downloads/manuals/plonk_manual_v1.16_2020.11.08.pdf",
+      "https://intellijel.com/shop/eurorack/plonk/",
+      "https://forum.intellijel.com/tag/plonk"
+    ]
+  },
+  "slug": "intellijel--plonk",
+  "name": "Plonk",
+  "manufacturer": "Intellijel",
+  "hp": 12,
+  "tags": ["DRUM", "OSCILLATOR", "RESONATOR", "SAMPLER"],
+  "description": "Duophonic physical-modeling percussion voice built with Applied Acoustics Systems. Mallet + noise exciters drive six resonator types (string, beam, marimba, drumhead, membrane, plate). 128 presets, four CV destinations, USB SysEx.",
+  "controls": [
+    {
+      "name": "ENCODER",
+      "scope": "Display",
+      "description": "Push-encoder for browsing menus and editing values. Context-dependent.",
+      "detail": "Turn: scroll · click: select/enter value edit"
+    },
+    {
+      "name": "TRIGGER Button",
+      "scope": "Transport",
+      "description": "Big red button manually triggers the exciter for auditioning or hand-played sequences.",
+      "detail": "Useful for previewing while browsing presets"
+    },
+    {
+      "name": "PITCH Knob",
+      "scope": "Global",
+      "description": "Tunes base pitch. Summed with PITCH CV input and offset by PITCH menu settings.",
+      "detail": "Continuous sweep ±2 oct when Quantize OFF · stepped chromatic when Quantize ON"
+    },
+    {
+      "name": "PITCH Button",
+      "scope": "Menu",
+      "description": "Opens Pitch menu: Octave and Quantize options.",
+      "detail": "Octave sets base · Quantize locks PITCH knob to semitones"
+    },
+    {
+      "name": "DECAY Knob",
+      "scope": "Global",
+      "description": "Scales overall sound decay by stretching both noise envelope decay and resonator decay.",
+      "detail": "CW=100% of preset values · summed with DECAY CV input"
+    },
+    {
+      "name": "EXCITER Button",
+      "scope": "Menu",
+      "description": "Opens Exciter parameters: mallet/noise mix, mallet stiffness, noise AHR envelope and LP/HP filters with their Qs and envelope amounts.",
+      "detail": "12+ exciter parameters · edited with ENCODER"
+    },
+    {
+      "name": "OBJECT Button",
+      "scope": "Menu",
+      "description": "Opens Object (resonator) parameters: type, decay, position, tone, inharmonicity, low-cut, pitch-env amount/decay, polyphony.",
+      "detail": "Six resonator types · polyphony 1 or 2"
+    },
+    {
+      "name": "MOD Button",
+      "scope": "Menu",
+      "description": "Assigns destination for MOD input. Includes exciter/object parameters plus special functions: Choke Both/Res/Noise, Preset Step, Randomize, Morph, R Pitch.",
+      "detail": "Depth: LOW ±16 · MEDIUM ±32 · HIGH ±64 · FULL ±128"
+    },
+    {
+      "name": "CONFIG Button",
+      "scope": "Menu",
+      "description": "Opens Configuration menu: Output Gain, Saturation, Bitcrusher, VEL Mode, Init Preset, Global Config.",
+      "detail": "Output Gain -20/+40 dB · Saturation 0-60 dB · Bitcrusher off-to-1bit"
+    },
+    {
+      "name": "LOAD Button",
+      "scope": "Preset",
+      "description": "Enters preset load menu. Preview with TRIGGER while browsing; click ENCODER to commit.",
+      "detail": "128 preset slots · current shown with star"
+    },
+    {
+      "name": "SAVE Button",
+      "scope": "Preset",
+      "description": "Saves current patch to a chosen slot with optional name edit.",
+      "detail": "Confirm with Y/N prompt"
+    },
+    {
+      "name": "X Knob",
+      "scope": "Modulation",
+      "description": "Bipolar manual control for the parameter assigned to the X destination.",
+      "detail": "Summed with X CV input and preset base value"
+    },
+    {
+      "name": "Y Knob",
+      "scope": "Modulation",
+      "description": "Bipolar manual control for the parameter assigned to the Y destination.",
+      "detail": "Summed with Y CV input"
+    },
+    {
+      "name": "X Button",
+      "scope": "Modulation",
+      "description": "Assigns X knob/input destination. Second press sets modulation DEPTH.",
+      "detail": "16+ destinations incl. Saturation/Bitcrusher"
+    },
+    {
+      "name": "Y Button",
+      "scope": "Modulation",
+      "description": "Assigns Y knob/input destination.",
+      "detail": "Same destination list as X"
+    },
+    {
+      "name": "X Input Attenuverter",
+      "scope": "X Input",
+      "description": "Scales and flips incoming CV at the X jack before it sums with X knob and preset value.",
+      "detail": "Noon = zero · CCW = inverted · CW = positive"
+    },
+    {
+      "name": "MOD Input Attenuverter",
+      "scope": "MOD Input",
+      "description": "Scales and flips MOD input CV. Gate-triggered destinations fire above 1.5V.",
+      "detail": "±5V range · noon = zero"
+    },
+    {
+      "name": "DECAY Input Attenuverter",
+      "scope": "DECAY Input",
+      "description": "Scales and flips CV offset added to DECAY knob.",
+      "detail": "±5V range"
+    },
+    {
+      "name": "Y Input Attenuverter",
+      "scope": "Y Input",
+      "description": "Scales and flips Y jack CV.",
+      "detail": "±5V range"
+    }
+  ],
+  "inputs": [
+    { "name": "X", "description": "CV input for the X-assigned parameter, summed with X knob position and preset value", "voltage": "±5V" },
+    { "name": "MOD", "description": "CV input for MOD-assigned destination. Gate-style targets (Choke, Preset Step, Randomize) fire above 1.5V", "voltage": "±5V" },
+    { "name": "DECAY", "description": "CV offset for DECAY knob", "voltage": "±5V" },
+    { "name": "Y", "description": "CV input for the Y-assigned parameter", "voltage": "±5V" },
+    { "name": "PITCH", "description": "1V/oct pitch input, summed with PITCH knob. Only read while TRIG is high — use X/Y/MOD → R Pitch for real-time FM", "voltage": "1V/oct" },
+    { "name": "TRIG", "description": "Fires the exciter. Requires at least 1 ms high; in AHR envelope mode the gate length sustains the hold phase", "voltage": "gate/trigger" },
+    { "name": "VEL", "description": "Velocity/accent input, normalized to +5V. Behavior set by VEL Mode: accent, dynamics, or volume", "voltage": "0–5V", "normalizedTo": "+5V (so all notes are accented if nothing patched)" }
+  ],
+  "outputs": [
+    { "name": "OUT", "description": "Mono audio output of the physical-modeling voice", "voltage": "audio" }
+  ],
+  "behaviors": [
+    {
+      "name": "Two-Voice Polyphony",
+      "trigger": "OBJECT → Polyphony = 2",
+      "description": "With poly=2, a new trigger allocates a new voice while the previous note rings out naturally. Modulation applied via X/Y/MOD only affects the newest note; older voices freeze at their last modulation value."
+    },
+    {
+      "name": "Six Resonator Types",
+      "trigger": "OBJECT → Resonator Type",
+      "description": "String (plucked/bowed), Beam (bells, claves, woodblocks), Marimba (chromatic percussion), Drumhead (drums), Membrane (dissonant drums), Plate (cymbals, gongs). Inharmonicity and Tone massively reshape each type's character."
+    },
+    {
+      "name": "Preset Step via MOD",
+      "trigger": "MOD destination = Preset Step",
+      "description": "MOD CV selects a preset in range A-B every trigger; 0V picks first, +5V picks last, linear between. Tribal kits that shift kick/snare/hat across presets 1, 5, 9, 13 (factory kits) let one voice do a drum machine. Previous sound rings out when switching."
+    },
+    {
+      "name": "Morph Between Presets",
+      "trigger": "MOD destination = Morph + target preset",
+      "description": "MOD input crossfades exciter and object settings between current preset and a chosen destination. Resonator type does not morph — stays fixed — but every other parameter smoothly interpolates, for evolving percussive textures."
+    },
+    {
+      "name": "Randomize on Trigger",
+      "trigger": "MOD destination = Randomize",
+      "description": "Each trigger (or encoder press) randomizes every exciter/object parameter except polyphony. Great for serendipitous sound design; Saturation and Bitcrusher are exempt so they stay consistent."
+    },
+    {
+      "name": "Choke Groups",
+      "trigger": "MOD destination = Choke Both/Res/Noise",
+      "description": "A gate above 1.5V at MOD applies a fast envelope that kills the selected part. Designed for long-ring presets (open hats, drones) that need to be cut short by another event — classic closed-hat-chokes-open-hat pattern."
+    },
+    {
+      "name": "AHR Noise Envelope",
+      "trigger": "EXCITER → Noise Envelope Type = AHR",
+      "description": "Adds a Hold stage that holds at peak while TRIG is high. Use long gates to sustain bowed strings, open hi-hats, or drones. In AR mode the envelope ignores gate length and fires a fixed attack/release."
+    },
+    {
+      "name": "Live Knob Overrides",
+      "trigger": "loading a preset",
+      "description": "Unlike most synths, Plonk presets don't snap knobs — PITCH/DECAY/X/Y remain at their current physical position and modulate the loaded patch. A 'long decay' preset may sound short if DECAY is turned down. Always sweep knobs when auditioning."
+    },
+    {
+      "name": "VEL Mode Selection",
+      "trigger": "CONFIG → VEL Mode",
+      "description": "Accent: VEL high adds a volume accent. Dynamics: VEL voltage scales exciter strength (MIDI velocity feel). Volume: VEL directly controls output level — use for external tremolo/fade envelopes."
+    },
+    {
+      "name": "Saturation + Bitcrusher",
+      "trigger": "CONFIG or X/Y/MOD destination",
+      "description": "Asymmetric saturation (0–60 dB) and bit reduction (off to 1-bit) sit at the end of the audio path. Available as mod destinations for per-hit grit. Exempt from Randomize so patch sits consistently."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Drum kit from one voice via Preset Step",
+      "patch": "Load kit preset (1, 5, 9, or 13) · MOD destination = Preset Step · MOD input from a CV sequencer running stepped voltages · each sequence step picks kick/snare/hat · gate sequencer fires TRIG · instant one-voice drum machine",
+      "diagram": "Plonk:\n* Preset kit loaded · MOD=Preset Step · Poly=2\n\n- CV Sequencer (CV) >> Plonk (MOD)\n- Gate Sequencer (Gate) t> Plonk (TRIG)\n- Plonk (OUT) -> Output (In) // one voice, drum kit"
+    },
+    {
+      "name": "Duophonic marimba with MIDI velocity",
+      "patch": "Resonator = Marimba · Polyphony = 2 · VEL Mode = dynamics · MIDI-CV gate to TRIG, pitch to PITCH, velocity to VEL · X assigned to Mallet Stiffness · Y to Resonator Position · expressive keyboard-playable marimba",
+      "diagram": "Plonk:\n* Marimba · Poly=2 · VEL=dynamics\n* X=M Stiffness · Y=R Position\n\n- MIDI-CV (Pitch) p> Plonk (PITCH)\n- MIDI-CV (Gate) g> Plonk (TRIG)\n- MIDI-CV (Velocity) >> Plonk (VEL)\n- Plonk (OUT) -> VCA (In) // velocity-sensitive marimba"
+    },
+    {
+      "name": "Open hat choked by closed hat",
+      "patch": "Preset with long plate resonator and AHR noise env · Polyphony = 1 so new trigger chokes old · alternative: MOD = Choke Both · send closed-hat trigger into MOD to silence open-hat tail on demand · 808-style hat interaction from a single voice",
+      "diagram": "Plonk:\n* Plate preset · Poly=1 · MOD=Choke Both\n\n- Open-hat Gate (Out) g> Plonk (TRIG)\n- Closed-hat Trig (Out) t> Plonk (MOD)\n- Plonk (OUT) -> Mixer (In) // choke-group hats"
+    },
+    {
+      "name": "Morphing melodic percussion",
+      "patch": "Load beam/bell preset · MOD = Morph with destination = marimba preset · slow LFO on MOD input · texture slowly drifts between bell and marimba character · pair with melodic sequence on PITCH for evolving percussive melody",
+      "diagram": "Plonk:\n* Beam preset · MOD=Morph → Marimba preset\n\n- Slow LFO (Out) >> Plonk (MOD)\n- Sequencer (Pitch) p> Plonk (PITCH)\n- Sequencer (Gate) g> Plonk (TRIG)\n- Plonk (OUT) -> Output (In) // morphing timbre"
+    },
+    {
+      "name": "Generative randomized kit",
+      "patch": "MOD = Randomize · any trigger to MOD input = randomize before next hit · route clock divided by 4 to MOD and TRIG to MOD simultaneously, or use a separate random-trig source · every N hits produces a fresh random percussion timbre",
+      "diagram": "Plonk:\n* MOD=Randomize · Poly=2\n\n- Clock Source (Out) t> Plonk (TRIG)\n- Clock Divider (/4) t> Plonk (MOD)\n- Plonk (OUT) -> Reverb (In) // periodic sound-design lottery"
+    },
+    {
+      "name": "Resonator FM via R Pitch",
+      "patch": "MOD destination = R Pitch · audio-rate source (LFO or VCO) into MOD · attenuverter sets FM index · pitched percussion gains inharmonic metallic edge · PITCH input and TRIG still work normally · classic DX-like bell when combined with beam resonator",
+      "diagram": "Plonk:\n* Beam · MOD=R Pitch\n\n- Audio LFO (Out) >> Plonk (MOD)\n- Sequencer (Pitch) p> Plonk (PITCH)\n- Sequencer (Gate) g> Plonk (TRIG)\n- Plonk (OUT) -> VCA (In) // resonator FM"
+    },
+    {
+      "name": "Bowed string drone via AHR",
+      "patch": "Resonator = String · Noise Envelope Type = AHR · Mallet:Noise = 0:100 (pure noise excitation) · long gate at TRIG holds the noise, bowing the string · DECAY long · sounds like a sustained cello or tanpura · use slow LFO on X → R Tone for breathing timbre",
+      "diagram": "Plonk:\n* String · AHR env · Mallet:Noise=0:100\n* X=R Tone · long TRIG gate\n\n- Long Gate (Out) g> Plonk (TRIG)\n- Slow LFO (Out) >> Plonk (X)\n- Plonk (OUT) -> Reverb (In) // bowed drone"
+    },
+    {
+      "name": "Per-hit saturation mod",
+      "patch": "X destination = Saturation · X input from envelope follower on the drum hit's accent · accented hits get gritty distortion, soft hits stay clean · or drive X from a stepped sequence for rhythmic saturation accents that don't affect pitch or decay",
+      "diagram": "Plonk:\n* X=Saturation · depth MEDIUM\n\n- Accent Sequence (CV) >> Plonk (X)\n- Gate Sequencer (Gate) g> Plonk (TRIG)\n- Sequencer (Pitch) p> Plonk (PITCH)\n- Plonk (OUT) -> Output (In) // rhythmic saturation accents"
+    },
+    {
+      "name": "Polyphonic tom fills with pitch ramp",
+      "patch": "Drumhead preset · Polyphony = 2 · Y = R PEnv Amnt · stepped sequence on PITCH runs tom melody · stepped sequence on Y varies pitch-envelope amount per tom · ratchet gates on TRIG create rolling fills where newer hits overlap older ones (poly=2)",
+      "diagram": "Plonk:\n* Drumhead · Poly=2 · Y=R PEnv Amnt\n\n- Pitch Sequencer (Pitch) p> Plonk (PITCH)\n- Mod Sequencer (CV) >> Plonk (Y)\n- Ratchet Gates (Out) g> Plonk (TRIG)\n- Plonk (OUT) -> Mixer (In) // overlapping tom fills"
+    },
+    {
+      "name": "Snare with noise-density sweep",
+      "patch": "Membrane preset · X = N Density · slow LFO on X · the noise clicks transition smoothly from granular crackle to continuous white noise across the pattern · snare timbre evolves without changing pitch, attack, or decay",
+      "diagram": "Plonk:\n* Membrane · X=N Density\n\n- Slow LFO (Out) >> Plonk (X)\n- Gate (Out) g> Plonk (TRIG)\n- Plonk (OUT) -> Compressor (In) // density-morphing snare"
+    }
+  ]
+}

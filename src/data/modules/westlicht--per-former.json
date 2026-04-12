@@ -1,0 +1,211 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "0.1.40",
+    "sources": [
+      "https://westlicht.github.io/performer/manual/",
+      "https://westlicht.github.io/performer/manual/manual.pdf",
+      "https://github.com/westlicht/performer",
+      "https://modulargrid.net/e/westlicht-per-former--",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=213251"
+    ]
+  },
+  "slug": "westlicht--per-former",
+  "name": "PER|FORMER",
+  "manufacturer": "Westlicht",
+  "hp": 34,
+  "tags": ["SEQUENCER", "CLOCK", "MIDI", "QUANTIZER"],
+  "description": "Open-source 8-track performance sequencer. 16 sequences × 64 steps per track, three track modes (Note/Curve/MIDI-CV), song mode with 64 slots, Launchpad integration, microSD storage.",
+  "controls": [
+    {
+      "name": "Encoder",
+      "scope": "Global",
+      "description": "Rotary encoder with push-button. Edits values on selected field; long press and SHIFT combos open alternate functions.",
+      "detail": "Push to confirm · rotate to edit"
+    },
+    {
+      "name": "T1–T8 (Track buttons)",
+      "scope": "Global",
+      "description": "Eight track-select buttons with bi-color LEDs. Indicate current track, activity, mute state. Hold + S-button for direct step selection.",
+      "detail": "8 buttons · bi-color LEDs"
+    },
+    {
+      "name": "S1–S16 (Step buttons)",
+      "scope": "Global",
+      "description": "Sixteen step buttons for step entry/edit. Hold step + rotate encoder to adjust its value; SHIFT+S for persistent selection.",
+      "detail": "16 buttons · bi-color LEDs"
+    },
+    {
+      "name": "F1–F5 (Function buttons)",
+      "scope": "Global",
+      "description": "Five context-sensitive function keys. Labels render on screen — meaning changes per page (page navigation, quick parameter edit).",
+      "detail": "Screen-labeled"
+    },
+    {
+      "name": "PLAY",
+      "scope": "Global",
+      "description": "Start/stop master clock. SHIFT+PLAY pauses/restarts. PAGE+PLAY toggles recording mode.",
+      "detail": "Also doubles as transport hold"
+    },
+    {
+      "name": "TEMP",
+      "scope": "Global",
+      "description": "Temporary tempo display/edit. Holds over the tempo page without leaving current screen.",
+      "detail": "Hold for tempo overlay"
+    },
+    {
+      "name": "PATT",
+      "scope": "Global",
+      "description": "Temporary pattern selector. Hold to switch patterns; combine with S-buttons to launch per-track pattern.",
+      "detail": "16 patterns per track"
+    },
+    {
+      "name": "PERF",
+      "scope": "Global",
+      "description": "Opens performer/mute interface for live mute-and-fill gestures per track.",
+      "detail": "Track mute + fill"
+    },
+    {
+      "name": "PREV / NEXT",
+      "scope": "Global",
+      "description": "Page navigation. SHIFT+PREV/NEXT shifts steps left/right with wrap-around within the sequence.",
+      "detail": "Also navigate history"
+    },
+    {
+      "name": "SHIFT / PAGE",
+      "scope": "Global",
+      "description": "Modifier keys. SHIFT accesses alternate roles and edit modes; PAGE + Track/Step button enters specific pages directly.",
+      "detail": "12 pages available"
+    }
+  ],
+  "inputs": [
+    { "name": "CV IN 1–4", "description": "Four assignable CV inputs. Route to any global/track/sequence parameter via the routing matrix.", "voltage": "-5V to +5V" },
+    { "name": "CLOCK IN", "description": "External analog clock input. Auto-detect in default clock mode.", "voltage": "TTL level" },
+    { "name": "RESET IN / RUN IN", "description": "Reset pulse input; run/stop input per setup.", "voltage": "TTL level" },
+    { "name": "MIDI IN (TRS)", "description": "MIDI input on 3.5mm TRS. Configurable Type-A/B. Accepts clock, notes, CC.", "voltage": "MIDI" },
+    { "name": "USB HOST", "description": "USB host port for class-compliant MIDI devices including Novation Launchpads and keyboards.", "voltage": "USB MIDI" }
+  ],
+  "outputs": [
+    { "name": "CV OUT 1–8", "description": "Eight CV outputs — one per track (or routed independently).", "voltage": "-5V to +5V" },
+    { "name": "GATE OUT 1–8", "description": "Eight gate outputs — one per track. Gate length and retrigger configurable per step.", "voltage": "5V" },
+    { "name": "CLOCK OUT", "description": "Clock output. Division configurable from 1/768 to 4× quarter-note.", "voltage": "TTL · 24 PPQN MIDI or analog" },
+    { "name": "RESET OUT / RUN OUT", "description": "Reset and run outputs for slaving external gear.", "voltage": "TTL" },
+    { "name": "MIDI OUT (TRS)", "description": "MIDI output for up to 8 simultaneous tracks as MIDI notes/CC.", "voltage": "MIDI" }
+  ],
+  "behaviors": [
+    {
+      "name": "Three track modes",
+      "trigger": "per-track Mode setting",
+      "description": "Note mode — step sequencer with gate/pitch/velocity/mod layers. Curve mode — step-based modulation with curve shapes, adjustable min/max. MIDI/CV mode — MIDI-to-CV+gate with mono or poly operation plus built-in arpeggiator."
+    },
+    {
+      "name": "Curve shapes",
+      "trigger": "Curve track · select shape per step",
+      "description": "Each step in Curve mode chooses from preset curve shapes (ramp up/down, expo, log, sine, step). Creates smooth CV modulation rather than stepped — sequence-driven envelope or LFO-like output per track."
+    },
+    {
+      "name": "Arpeggiator",
+      "trigger": "MIDI/CV mode + Arp enabled",
+      "description": "Nine arp modes: Up, Down, Up/Down, Down/Up, Up&Down, Down&Up, Converge, Diverge, Random. Octave expansion up to multiple octaves. Fed by MIDI input; outputs on the track's CV/gate pair."
+    },
+    {
+      "name": "Run modes",
+      "trigger": "per-sequence Run mode setting",
+      "description": "Forward, Backward, Pendulum, Ping-Pong, Random, Random Walk playback. Combined with per-track divisor (1/1 to 1/768) and rotation offset, creates non-linear generative sequencing from fixed patterns."
+    },
+    {
+      "name": "Play modes (Aligned vs Free)",
+      "trigger": "per-track Play mode",
+      "description": "Aligned: step position derives from elapsed time — deterministic, predictable. Free: step advances relative to previous position — 'analog' feel where tempo changes shift phase. Aligned recommended for most uses."
+    },
+    {
+      "name": "Step conditions",
+      "trigger": "per-step Condition setting",
+      "description": "Conditions gate step firing: Fill (only during fill), !Fill, First (only first pass), !First, Pre (follows prior step condition), !Pre, N:M iteration (e.g. 2:4 = every 2nd of 4 cycles). Layer multiple tracks with different N:M for evolving polymeters."
+    },
+    {
+      "name": "Song mode",
+      "trigger": "Song page",
+      "description": "64 slots per song. Each slot references 8 patterns (one per track) plus bars/measures count. Chain slots for linear arrangement; pattern-chain mode allows fast live pattern launching across tracks."
+    },
+    {
+      "name": "Snapshot system",
+      "trigger": "SHIFT + snapshot key",
+      "description": "Captures temporary pattern copy for real-time editing without touching the original. Revert to restore, commit to save — safe live tweaking without destroying source patterns."
+    },
+    {
+      "name": "Routing matrix",
+      "trigger": "Routing page",
+      "description": "Up to 16 routes. Maps 4 CV inputs, 8 CV outputs (for cross-track mod without patching), and MIDI controllers (pitch bend, CC, notes) to global (Tempo/Swing), track (Transpose, Octave, Slide, Rotation), and sequence (First/Last Step, Divisor, Scale, Run Mode) parameters."
+    },
+    {
+      "name": "Scale system",
+      "trigger": "per-sequence Scale setting",
+      "description": "24 preset scales — chromatic, western modes, world scales, equal temperaments from 5-TET to 24-TET — plus 4 user scales with semitone or voltage mode (-5V to +5V). Per-sequence, so different tracks/patterns can use different tunings."
+    },
+    {
+      "name": "Launchpad grid integration",
+      "trigger": "connect Novation Launchpad via USB",
+      "description": "Supports Mini MK1-3, S, MK2, Pro, X. Sequence Mode: 64×64 virtual grid for step editing on hardware grid. Pattern Mode: column = track launch, row = scene. Mute/fill/toggle via shift combos."
+    },
+    {
+      "name": "Recording modes",
+      "trigger": "PAGE+PLAY · choose mode",
+      "description": "Overdub (non-destructive add), Overwrite (replace), Step Record (sequential note entry). Accepts CV/gate from inputs or MIDI notes from USB/TRS."
+    },
+    {
+      "name": "microSD project storage",
+      "trigger": "Save/Load page",
+      "description": "Projects, user scales, and system settings saved to microSD (slots 0-127 each). Calibration stored separately in flash. Swap cards or back up sessions without losing tunings."
+    },
+    {
+      "name": "Clock auto-master/slave",
+      "trigger": "Clock mode: Auto (default)",
+      "description": "Auto-detects signal on CLOCK IN or MIDI clock and switches to slave; falls back to master when absent. Internal master runs at 192 PPQN. Tempo 1–1000 BPM, tap tempo, ±10% nudging for DJ sync."
+    },
+    {
+      "name": "Step slide and micro-timing",
+      "trigger": "per-step slide/nudge",
+      "description": "Each Note step has Slide (glides pitch from prior step) and per-step timing nudge. Combined with track Slide Time parameter (routable), enables portamento phrasing without a dedicated slew module."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "8-voice polyphonic rig",
+      "patch": "all 8 tracks Note mode · each track one voice · CV OUT n to VCO n, GATE OUT n to envelope n · 8 independent monophonic sequences for 8 VCOs · or use MIDI/CV poly mode on one track driving 8 CV+gate pairs",
+      "diagram": "PER|FORMER:\n* Tracks 1-8: Note mode\n* Scale: Minor\n\nVCO 1:\nVCO 2:\n\n- PER|FORMER (CV OUT 1) p> VCO 1 (V/Oct)\n- PER|FORMER (GATE OUT 1) g> Envelope 1 (Trig)\n- PER|FORMER (CV OUT 2) p> VCO 2 (V/Oct)\n- PER|FORMER (GATE OUT 2) g> Envelope 2 (Trig)\n- PER|FORMER (CLOCK OUT) c> External (Clock)"
+    },
+    {
+      "name": "Curve-mode LFO bank",
+      "patch": "tracks 5-8 Curve mode with different shapes · per-track divisors /1, /2, /3, /4 · creates bank of related LFOs · mutate via Rotation routed to a CV input",
+      "diagram": "PER|FORMER:\n* Tracks 5-8: Curve mode\n* T5 divisor /1, T6 /2, T7 /3, T8 /4\n* Routing: CV IN 1 → T5 Rotation\n\nFilter:\nVCA:\n\n- PER|FORMER (CV OUT 5) >> Filter (Cutoff)\n- PER|FORMER (CV OUT 6) >> Filter (Resonance)\n- PER|FORMER (CV OUT 7) >> VCA (CV)\n- LFO (Out) >> PER|FORMER (CV IN 1) // mutate"
+    },
+    {
+      "name": "Euclidean polymeter",
+      "patch": "track 1 16 steps, divisor /1 · track 2 13 steps /1 · track 3 7 steps /1 · step conditions N:M = 2:3, 3:5, 1:4 on accent steps · evolving poly-rhythm from short patterns",
+      "diagram": "PER|FORMER:\n* T1: 16 steps /1, cond. 2:3 on step 1\n* T2: 13 steps /1\n* T3: 7 steps /1, cond. 3:5 on step 1\n\nDrum 1:\nDrum 2:\nDrum 3:\n\n- PER|FORMER (GATE OUT 1) t> Drum 1 (Trig)\n- PER|FORMER (GATE OUT 2) t> Drum 2 (Trig)\n- PER|FORMER (GATE OUT 3) t> Drum 3 (Trig)"
+    },
+    {
+      "name": "Launchpad step-entry live",
+      "patch": "Launchpad connected via USB host · Sequence Mode enabled · tap grid pads to program patterns during playback · switch to Pattern Mode for live pattern launching per track",
+      "diagram": "PER|FORMER:\n* USB: Launchpad\n* Performance: Sequence Mode\n\nVCO:\n\n- PER|FORMER (CV OUT 1) p> VCO (V/Oct)\n- PER|FORMER (GATE OUT 1) g> Envelope (Trig)"
+    },
+    {
+      "name": "CV-recorded melody",
+      "patch": "PAGE+PLAY record mode · Overdub · external keyboard CV into CV IN 1 via routing to T1 pitch · gate from keyboard into CV IN 2 · hit play and play keyboard live · quantized to sequence scale",
+      "diagram": "PER|FORMER:\n* Recording: Overdub\n* Routing: CV IN 1 → T1 Pitch, CV IN 2 → T1 Gate\n* T1 Scale: Pentatonic\n\nKeyboard:\n\n- Keyboard (CV) p> PER|FORMER (CV IN 1)\n- Keyboard (Gate) g> PER|FORMER (CV IN 2)\n- PER|FORMER (CV OUT 1) p> VCO (V/Oct)"
+    },
+    {
+      "name": "MIDI arp to CV",
+      "patch": "track 1 MIDI/CV mode with Arp Up/Down · external MIDI keyboard via USB host · hold chord · arp output on CV OUT 1 + GATE OUT 1 · sequence modulation on track 2-3 as classical arp accompaniment",
+      "diagram": "PER|FORMER:\n* T1: MIDI/CV, Arp Up/Down, 2 octaves\n* USB: MIDI Keyboard\n\nVCO:\nFilter:\n\n- Keyboard (MIDI) >> PER|FORMER (USB HOST)\n- PER|FORMER (CV OUT 1) p> VCO (V/Oct)\n- PER|FORMER (GATE OUT 1) g> Envelope (Trig)\n- PER|FORMER (CV OUT 2) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Snapshot live remix",
+      "patch": "PERF button · take snapshot of pattern · live edit steps while playing · revert on demand to original · perform variations without touching source patterns · commit best takes",
+      "diagram": "PER|FORMER:\n* PERF: snapshot active\n\nVCO:\n\n- PER|FORMER (CV OUT 1) p> VCO (V/Oct)\n- PER|FORMER (GATE OUT 1) g> Envelope (Trig)\n- PER|FORMER (CV OUT 2) >> Filter (Cutoff) // modulated live"
+    }
+  ]
+}

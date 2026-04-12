@@ -1,0 +1,135 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.expert-sleepers.co.uk/es9.html",
+      "https://www.expert-sleepers.co.uk/downloads/manuals/es9_user_manual_1.3.pdf",
+      "https://www.expert-sleepers.co.uk/es9firmware.html",
+      "https://modulargrid.net/e/expert-sleepers-es-9"
+    ]
+  },
+  "slug": "expert-sleepers--es-9",
+  "name": "ES-9",
+  "manufacturer": "Expert Sleepers",
+  "hp": 16,
+  "tags": ["I/O", "MIDI", "MIXER", "UTILITY"],
+  "description": "Class-compliant 16-in / 16-out USB-C audio interface with 14 DC-coupled 3.5mm inputs, 8 DC-coupled 3.5mm outputs, balanced 1/4\" mains, headphones, S/PDIF, on-board 8x8 crosspoint mixer with EQ, and ES-5 / MIDI expansion headers.",
+  "controls": [
+    {
+      "name": "HEADPHONE VOLUME",
+      "scope": "Global",
+      "description": "Analog volume knob for the 1/4\" headphone output. Push-button: hold ~1 s to swap between the two configuration slots stored in flash (hosted / standalone).",
+      "detail": "LED C lit = hosted slot last loaded · LED D lit = standalone slot last loaded"
+    }
+  ],
+  "inputs": [
+    { "name": "IN 1–14", "description": "Fourteen 3.5mm TS analog inputs, DC-coupled. Accept audio or CV. Illuminated jacks: red = positive V · blue = negative V · purple = audio. Per-pair switchable DC-blocking filters (enable for audio, disable for CV).", "voltage": "±10V gives 0 dBFS" },
+    { "name": "S/PDIF IN (TOSlink)", "description": "Optical S/PDIF digital input. Appears as DAW channels 15/16 by default. Disabled when the configuration tool enables a second mixer instead.", "voltage": "24-bit · 44.1 / 48 / 88.2 / 96 kHz" },
+    { "name": "USB-C", "description": "Class-compliant USB 2.0 audio / MIDI. macOS, iOS, Linux driverless; Windows driver available. Host powers nothing — module runs on Eurorack rails. LED B lights on successful host connection." },
+    { "name": "GT1 header (rear)", "description": "10-pin ribbon to an ES-5 expansion. Adds 8 digital outputs driven by DAW channels 7–8 by default.", "voltage": "ES-5 level" },
+    { "name": "GT2 header (rear)", "description": "4-pin MIDI breakout header. Pins: 1 OUT-4, 2 OUT-5, 3 IN-5, 4 IN-4. Uses 3.3 V low-voltage-signaling (MMA LVS-compliant). LED C = MIDI in from host to breakout · LED D = breakout to host.", "voltage": "3.3V LVS" },
+    { "name": "JP1 jumper (rear)", "description": "Fit jumper to force DFU firmware-update boot when USB updater cannot reach runtime." }
+  ],
+  "outputs": [
+    { "name": "MAIN OUT L / R", "description": "Pair of balanced 1/4\" TRS outputs, AC-coupled. Driven by mixer 1 outputs 1–2 by default (= DAW 1/2). For monitors or desk.", "voltage": "line level · AC-coupled" },
+    { "name": "HEADPHONE OUT", "description": "1/4\" TRS stereo headphone jack, DC-coupled. Driven by mixer 1 outputs 3–4 by default (blend of DAW 1/2 and 3/4).", "voltage": "DC-coupled" },
+    { "name": "OUT 1–8", "description": "Eight 3.5mm TS analog outputs, DC-coupled. Usable for audio or CV. Default routing: mixer outputs 5–8 to OUT 1–4, DAW channels 9–16 to OUT 1–8 (fully remappable).", "voltage": "±10V max · DC-coupled" },
+    { "name": "S/PDIF OUT (TOSlink)", "description": "Optical S/PDIF digital output. Fed by DAW channels 5/6 by default.", "voltage": "24-bit · 44.1 / 48 / 88.2 / 96 kHz" }
+  ],
+  "behaviors": [
+    {
+      "name": "Hosted vs standalone configurations",
+      "trigger": "USB connect / hold knob ~1 s",
+      "description": "Two independent routings live in flash. On first USB handshake the module loads the hosted slot; without USB it boots the standalone slot. Hold the knob for a second to manually swap slots. LEDs C and D indicate the active slot. Makes live recovery from USB dropouts graceful."
+    },
+    {
+      "name": "On-board 8×8 crosspoint mixer",
+      "trigger": "Configuration Tool or MIDI CC",
+      "description": "Forms eight mono mixes from any eight of: hardware inputs 1–14, internal buses 1–16, USB outputs 1–16, mixer-2 outputs 1–8, or the S/PDIF-processor outputs. Runs on-chip, so mixing keeps working when no host is connected."
+    },
+    {
+      "name": "S/PDIF or Mixer 2 mutex",
+      "trigger": "Options radio in Configuration Tool",
+      "description": "The third DSP block is either the S/PDIF I/O or a second 8×8 mixer — not both. Enabling mixer 2 disables TOSlink; DAW channels 15/16 are then free for an extra mixer bus feeding the hardware."
+    },
+    {
+      "name": "Per-pair input DC blocking",
+      "trigger": "Input DC Blocking check-boxes in Configuration Tool",
+      "description": "ADCs have switchable DC-blocking filters organised in pairs (1/2, 3/8, 4/5, 6/7, 9/10, 11/12, 13/14). Enable for audio to kill DC offsets and pops; disable for CV capture. A pair is either on or off — no per-channel override."
+    },
+    {
+      "name": "Up to 4-band per-input EQ",
+      "trigger": "Mixer 1 EQ panel",
+      "description": "Each of the eight mixer-1 inputs can have up to four bands of EQ: LP/HP 1st or 2nd order, low shelf, high shelf, peak, or phase-invert. Each band sets frequency, Q and gain. DSP usage is shown in the tool; cap at 100 %."
+    },
+    {
+      "name": "Mix smoothing for live MIDI control",
+      "trigger": "Mix Smoothing check-boxes · MIDI CC 0–63 into mixer",
+      "description": "Interpolates and slew-limits macro-mix values (7-bit, MIDI-compatible) into the underlying 16-bit raw mix. Hides the stair-stepping when a MIDI controller rides a fader. Smoothing shares DSP budget with EQ."
+    },
+    {
+      "name": "MIDI CC mixer control",
+      "trigger": "Mixer MIDI channels set in Options · MIDI CC",
+      "description": "Mix faders are mapped CC 0–63 counting by channel first then mixer (mix 1 ch 1 = CC 0, mix 1 ch 8 = CC 7, mix 2 ch 1 = CC 8…). For stereo-linked channels the lower-numbered CC controls gain and the higher-numbered CC becomes pan. USB and DIN channels can be set independently or disabled."
+    },
+    {
+      "name": "Output DC offsets",
+      "trigger": "Output DC offsets section in Configuration Tool",
+      "description": "Each of OUT 1–8 accepts a trim value that adds a steady DC offset to compensate for downstream miscalibration. Implemented internally via the mixer hardware — a mixer must be routed to that output for the offset to take effect."
+    },
+    {
+      "name": "ES-5 expansion",
+      "trigger": "10-pin ribbon from GT1 to ES-5",
+      "description": "Adds the ES-5's eight digital outputs and further ESX-8xx expansion chains without consuming 3.5mm outputs. ES-5 is driven by DAW channels 7/8 by default; remap via routing. Used for gates, triggers, clocks, and third-party class-compliant CV expansions."
+    },
+    {
+      "name": "SysEx external control",
+      "trigger": "Expert Sleepers SysEx over USB or DIN",
+      "description": "Manufacturer ID 00H 21H 27H, device byte 19H. Supports configuration dump (09H) / request (23H), save (24H) / restore (25H) / reset (26H) to either flash slot, set mix (60H–6FH), set filter (39H), set inputs / outputs routing (40H–43H / 50H–53H), version query (22H). Enables rack-side automation without the GUI tool."
+    },
+    {
+      "name": "MIDI Thru standalone",
+      "trigger": "MIDI Thru checkbox · no USB",
+      "description": "When enabled and running standalone, the DIN MIDI OUT becomes a hardware thru of DIN MIDI IN. Ignored when a USB host is connected. Lets the breakout keep merging/forwarding external gear in unhosted rigs."
+    },
+    {
+      "name": "Illuminated jacks as visual meter",
+      "trigger": "Any signal on a 3.5mm jack",
+      "description": "Each 3.5mm socket has a bicolor LED ring: red = positive voltage, blue = negative voltage, purple = audio (rapid alternation). Gives instant visual confirmation of polarity and level without a dedicated meter — diagnostic gold when troubleshooting routing."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "DAW multitrack recording of modular",
+      "patch": "enable DC-blocking on input pairs used for audio · route each module's audio out to IN 1–14 · set DAW to 16 tracks mapped to inputs 1–14 + S/PDIF 15/16 · arm and record · 14 simultaneous modular channels + optional stereo S/PDIF from an outboard converter",
+      "diagram": "ES-9:\n* Input DC Blocking: all on\n\nDrums:\n\nBass:\n\nSynth:\n\nFX:\n\n- Drums (Out) -> ES-9 (IN 1)\n- Bass (Out) -> ES-9 (IN 2)\n- Synth (L) -> ES-9 (IN 3)\n- Synth (R) -> ES-9 (IN 4)\n- FX (L) -> ES-9 (IN 5)\n- FX (R) -> ES-9 (IN 6)\n- ES-9 (USB-C) -> Output (DAW)"
+    },
+    {
+      "name": "Plug-in FX loop via send / return",
+      "patch": "route two modular outs into IN 13/14 (DC block on) · in the DAW insert a reverb/compressor plug-in on those inputs · route the DAW plug-in output back through USB channels 15/16 · ES-9 maps USB 15/16 to OUT 7/8 via the mixer · near-zero-latency plug-in as a modular insert",
+      "diagram": "ES-9:\n* Mixer 1: USB 15 -> OUT 7, USB 16 -> OUT 8\n\nSource:\n\nDAW:\n\n- Source (L) -> ES-9 (IN 13)\n- Source (R) -> ES-9 (IN 14)\n- ES-9 (Out USB-C) -> DAW (Plugin In)\n- DAW (Plugin Out) -> ES-9 (In USB-C)\n- ES-9 (OUT 7) -> Mixer (L)\n- ES-9 (OUT 8) -> Mixer (R)"
+    },
+    {
+      "name": "Silent Way / CV Tools CV sequencing",
+      "patch": "disable DC-blocking on IN pairs used for CV capture (not needed for outputs) · in the DAW load Silent Way / Bitwig CV Tools · send 1V/oct to ES-9 USB channels 9–16 which drive OUT 1–8 DC-coupled · any modular VCO/filter controlled from the DAW in perfect sync",
+      "diagram": "ES-9:\n* Outputs: DC-coupled\n\nDAW:\n\nVCO:\n\nFilter:\n\n- DAW (Pitch) -> ES-9 (USB-C)\n- ES-9 (OUT 1) p> VCO (V/Oct)\n- ES-9 (OUT 2) >> Filter (Cutoff)\n- ES-9 (OUT 3) g> VCO (Gate)\n- VCO (Out) -> Output (L)"
+    },
+    {
+      "name": "Standalone mixer (no laptop)",
+      "patch": "Reset to defaults suitable for standalone · Save to Flash (standalone) · mixer 1 inputs set to hardware IN 1–8 · mixer 1 out 1/2 → MAIN OUT · out 3/4 → HEADPHONES · ES-9 now functions as an 8-in stereo mixer with EQ and headphones, no USB host",
+      "diagram": "ES-9:\n* Reset: defaults (standalone)\n* Mixer 1 inputs: IN 1-8\n* Mix 1/2: MAIN OUT\n* Mix 3/4: HEADPHONES\n\nSource1:\n\nSource2:\n\n- Source1 (Out) -> ES-9 (IN 1)\n- Source2 (Out) -> ES-9 (IN 2)\n- ES-9 (MAIN OUT L) -> Output (Monitor L)\n- ES-9 (MAIN OUT R) -> Output (Monitor R)\n- ES-9 (HEADPHONE OUT) -> Output (Phones)"
+    },
+    {
+      "name": "ES-5 gates + analog CV hybrid",
+      "patch": "connect ES-5 via GT1 ribbon · DAW channels 7/8 drive the ES-5 (eight gate outs) · DAW channels 9–16 drive OUT 1–8 for analog CV / audio · one module handles bit-accurate gates and continuous CV from one plug-in instance",
+      "diagram": "ES-9:\n* ES-5 expander: connected\n\nDAW:\n\nDrum:\n\nVCO:\n\n- DAW (Pitch) -> ES-9 (USB-C)\n- ES-9 (OUT 1) p> VCO (V/Oct)\n- ES-9 (ES-5-1) t> Drum (Trig) // DAW ch 7/8\n- VCO (Out) -> Output (L)"
+    },
+    {
+      "name": "Live MIDI-controller mixing",
+      "patch": "Options · set USB Mixer MIDI channel to 1 · enable Mix Smoothing on the mixes you will ride · map CC 0–7 on a USB MIDI controller to mixer 1 faders · performative level / mute control of eight modular channels with slew-limited smooth transitions",
+      "diagram": "ES-9:\n* Mixer MIDI channel (USB): 1\n* Mix Smoothing: Mix 1 on\n\nController:\n\nMonitor:\n\n- Controller (USB) -> ES-9 (USB-C) // CC 0-7\n- ES-9 (MAIN OUT L) -> Monitor (L)\n- ES-9 (MAIN OUT R) -> Monitor (R)"
+    }
+  ]
+}

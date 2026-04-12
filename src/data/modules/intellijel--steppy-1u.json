@@ -1,0 +1,139 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "1.2.3",
+    "sources": [
+      "https://intellijel.com/shop/eurorack/1u/steppy-1u/",
+      "https://intellijel.com/downloads/manuals/steppy-1u_manual_1.2_2020.10.26.pdf",
+      "https://intellijel.com/support/"
+    ]
+  },
+  "slug": "intellijel--steppy-1u",
+  "name": "Steppy 1U",
+  "manufacturer": "Intellijel",
+  "hp": 28,
+  "tags": ["SEQUENCER", "CLOCK", "GATE", "TRIGGER"],
+  "description": "Four-track 64-step gate sequencer with external clocking, per-track length, gate length, clock division, swing, delay, probability, ratchets, loopy performance looping, and preset memory.",
+  "controls": [
+    {
+      "name": "MULTIFUNCTION Buttons",
+      "scope": "Play / Select / Edit",
+      "description": "Set gates in Play mode and act as track, page, mute, and parameter buttons in Select and Edit modes.",
+      "detail": "16 step buttons · 4 track buttons · 4 page buttons"
+    },
+    {
+      "name": "SELECT button",
+      "scope": "Global",
+      "description": "Enables Select mode for track, page, mute, page-follow, loopy, clear, and reset operations.",
+      "detail": "toggle or momentary"
+    },
+    {
+      "name": "EDIT button",
+      "scope": "Global",
+      "description": "Enables Edit mode and Step Edit mode for track-wide and per-step parameter editing.",
+      "detail": "short press = Edit · long press = Step Edit"
+    },
+    {
+      "name": "SAVE / RST button",
+      "scope": "Global",
+      "description": "Saves and recalls presets in Edit mode and toggles RUN / RESET boot behavior when held during power-up.",
+      "detail": "save preset · hold on boot = RUN/RESET mode"
+    },
+    {
+      "name": "LOAD button",
+      "scope": "Edit",
+      "description": "Loads, clears, or selects a preset slot from the eight internal memories.",
+      "detail": "8 preset slots"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "CLK IN",
+      "description": "External clock or trigger input. Steppy advances one step on each pulse.",
+      "voltage": "trigger or clock"
+    },
+    {
+      "name": "RST IN",
+      "description": "Reset or run gate input. In RESET mode it returns all tracks to step 1; in RUN mode it also gates playback.",
+      "voltage": "trigger or gate"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT A",
+      "description": "Gate output for Track A.",
+      "voltage": "+5V gate"
+    },
+    {
+      "name": "OUT B",
+      "description": "Gate output for Track B.",
+      "voltage": "+5V gate"
+    },
+    {
+      "name": "OUT C",
+      "description": "Gate output for Track C.",
+      "voltage": "+5V gate"
+    },
+    {
+      "name": "OUT D",
+      "description": "Gate output for Track D.",
+      "voltage": "+5V gate"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Four independent tracks",
+      "trigger": "patch a clock to CLK IN",
+      "description": "Steppy plays four simultaneous gate tracks, each with its own pattern length, mute state, clock division, swing, delay, and probability."
+    },
+    {
+      "name": "Per-step editing",
+      "trigger": "long-press EDIT",
+      "description": "Step Edit mode adds ratchets, per-step gate length, per-step delay, and per-step probability on top of the track-wide settings."
+    },
+    {
+      "name": "Loopy performance mode",
+      "trigger": "Select mode plus Loopy",
+      "description": "Holding one or two steps in Play mode can loop a short slice of the pattern for fills, stutters, and live improvisation."
+    },
+    {
+      "name": "Page follow",
+      "trigger": "enable Page Follow in Select mode",
+      "description": "Long patterns can auto-follow the current play position across the four 16-step pages."
+    },
+    {
+      "name": "Run / reset boot mode",
+      "trigger": "hold SAVE / RST on power-up",
+      "description": "Steppy can boot in either RESET mode or RUN mode, so the reset jack can either only reset or also act as a remote transport gate."
+    },
+    {
+      "name": "Preset memory",
+      "trigger": "use SAVE or LOAD in Edit mode",
+      "description": "Eight preset slots store all four tracks and their performance parameters."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Four-part drum grid",
+      "patch": "Clock into CLK IN · Track A triggers kick · Track B triggers snare · Track C triggers hat · Track D triggers percussion · each track can run its own length for layered polyrhythms.",
+      "diagram": "Steppy 1U:\n* Track A: 16 steps\n* Track B: 12 steps\n* Track C: 8 steps\n* Track D: 5 steps\n\nClock:\nKick:\nSnare:\nHat:\nPerc:\n\n- Clock (Out) c> Steppy 1U (CLK IN)\n- Steppy 1U (OUT A) t> Kick (Trig)\n- Steppy 1U (OUT B) t> Snare (Trig)\n- Steppy 1U (OUT C) t> Hat (Trig)\n- Steppy 1U (OUT D) t> Perc (Trig)"
+    },
+    {
+      "name": "Polyrhythm layers",
+      "patch": "Different clock divisions and pattern lengths turn one master pulse into four gate streams that realign only on the downbeat, making a compact polyrhythmic engine.",
+      "diagram": "Steppy 1U:\n* Track A: length 16\n* Track B: length 15\n* Track C: length 13\n* Track D: length 11\n\nClock:\nEnvelope:\nVCA:\nOutput:\n\n- Clock (Out) c> Steppy 1U (CLK IN)\n- Steppy 1U (OUT A) g> Envelope (Trig)\n- Steppy 1U (OUT B) g> Envelope (Trig)\n- Steppy 1U (OUT C) g> Envelope (Trig)\n- Steppy 1U (OUT D) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Loopy fill",
+      "patch": "A larger pattern runs underneath while Loopy brackets a short cluster of active steps and repeats it for a fill, then the track resumes its full cycle.",
+      "diagram": "Steppy 1U:\n* Track A: 32 steps\n* Loopy: on\n\nClock:\nDrum:\nOutput:\n\n- Clock (Out) c> Steppy 1U (CLK IN)\n- Steppy 1U (OUT A) t> Drum (Trig)\n- Drum (Out) -> Output (In)\n\n"
+    },
+    {
+      "name": "Bar reset transport",
+      "patch": "RST IN clears all four tracks to step 1 on the bar line, keeping patterns aligned even when they have different lengths or when the clock is stopped and restarted.",
+      "diagram": "Steppy 1U:\n* RUN / RESET: RESET mode\n* Track A: 16 steps\n* Track B: 10 steps\n\nClock:\nReset Pulse:\nKick:\nSnare:\n\n- Clock (Out) c> Steppy 1U (CLK IN)\n- Reset Pulse (Gate) g> Steppy 1U (RST IN)\n- Steppy 1U (OUT A) t> Kick (Trig)\n- Steppy 1U (OUT B) t> Snare (Trig)"
+    }
+  ]
+}

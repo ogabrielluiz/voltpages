@@ -1,0 +1,416 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://frap.tools/docs/MANUALONE.pdf",
+      "https://frap.tools/products/brenso/",
+      "https://frap.tools/study-for-brenso-and-falistri-1/",
+      "https://www.perfectcircuit.com/frap-tools-brenso.html",
+      "https://schneidersladen.de/en/frap-tools-brenso",
+      "https://modulargrid.net/e/frap-tools-brenso"
+    ]
+  },
+  "slug": "frap-tools--brenso",
+  "name": "BRENSO",
+  "manufacturer": "Frap Tools",
+  "hp": 30,
+  "tags": ["OSCILLATOR", "VCO", "WAVESHAPER", "WAVEFOLDER", "LFO"],
+  "description": "Dual analog complex oscillator. Two triangle-core VCOs with through-zero + exponential FM, Lock/Flip Sync, a four-bus modulation routing, Triangle Shaper, PWM + Pulse Shaper, Wavefolder with Ping, and AM/RM. Green section also runs as sub-audio LFO.",
+  "controls": [
+    {
+      "name": "Coarse Frequency",
+      "scope": "per oscillator (yellow, green)",
+      "description": "Primary tuning knob.",
+      "detail": "audio rate: 27.5 Hz – 7040 Hz · LFO mode (green): 0.15 Hz – ~40 Hz"
+    },
+    {
+      "name": "Fine Frequency",
+      "scope": "per oscillator",
+      "description": "Fine offset. Not affected by Frequency Lock.",
+      "detail": "±1 semitone · always live"
+    },
+    {
+      "name": "Coarse Frequency Lock",
+      "scope": "per oscillator",
+      "description": "Button freezes digital sample of current Coarse voltage; subsequent knob twists are ignored until unlocked.",
+      "detail": "LED shows lock state (green for green VCO, yellow for yellow)"
+    },
+    {
+      "name": "Frequency Scale (LFO) Switch",
+      "scope": "Green oscillator",
+      "description": "Moves green into sub-audio range for complex LFO use.",
+      "detail": "audio: 27.5 Hz – 7040 Hz · LFO: ~0.15 Hz – ~40 Hz · factor ~176×"
+    },
+    {
+      "name": "FM Deviation",
+      "scope": "per oscillator",
+      "description": "Overall FM amount for the per-oscillator bus.",
+      "detail": "sums linear TZFM and exponential FM · range in Hz (not index)"
+    },
+    {
+      "name": "Exponential FM Attenuator",
+      "scope": "per oscillator",
+      "description": "Scales the exponential FM source.",
+      "detail": "fully CCW: no expo FM · audio/CV · default source: other oscillator's sine"
+    },
+    {
+      "name": "Linear TZFM Attenuator",
+      "scope": "per oscillator",
+      "description": "Scales the through-zero linear FM source.",
+      "detail": "fully CCW: no lin-TZ · default source: other oscillator's sine"
+    },
+    {
+      "name": "V/oct Integrator Level",
+      "scope": "Green oscillator",
+      "description": "CCW → +0, CW → slew-lag applied to yellow's V/oct onto green (glide/integrator).",
+      "detail": "time-lag drift · CW: longer integration"
+    },
+    {
+      "name": "Phase Relationship LED",
+      "scope": "Global",
+      "description": "Red LED displays acoustic beats between the two oscillator frequencies.",
+      "detail": "visual tuner / fine-tuning aid"
+    },
+    {
+      "name": "Sync Switch",
+      "scope": "Green oscillator",
+      "description": "Three-way sync selector for green synced to yellow.",
+      "detail": "Lock: digital pitch-error correction · off: free · Flip: inverts waveform direction on primary's duty cycle"
+    },
+    {
+      "name": "Sync Jumper (back)",
+      "scope": "Yellow oscillator",
+      "description": "Selects yellow's sync source (Lock or Flip) when external signal hits yellow Sync In.",
+      "detail": "set at build · Lock (default) or Flip"
+    },
+    {
+      "name": "Square / Shaped Pulse Switch",
+      "scope": "Yellow oscillator",
+      "description": "Selects whether Square out and internal source are the pure square or the Pulse-Shaped square.",
+      "detail": "up: Pulse-Shaped · down: raw square"
+    },
+    {
+      "name": "Triangle Shaper",
+      "scope": "Timbre (yellow path)",
+      "description": "Three-way mix of sine, triangle, and a logarithmic wave.",
+      "detail": "CCW: sine · noon: triangle · CW: log · CV via Triangle Shaper CV · attenuator per CV"
+    },
+    {
+      "name": "Pulse Width",
+      "scope": "Timbre (yellow path)",
+      "description": "Comparator threshold — the PWM amount.",
+      "detail": "center: ~50% symmetry · CW/CCW: asymmetric duty cycle"
+    },
+    {
+      "name": "PWM Source Switch",
+      "scope": "Timbre (yellow path)",
+      "description": "Selects what feeds the PWM comparator: Triangle Shaper output (modulated pulse) or pure yellow triangle (classic PWM).",
+      "detail": "up: Triangle Shaper · down: pure triangle"
+    },
+    {
+      "name": "Pulse Shaper",
+      "scope": "Timbre (yellow path)",
+      "description": "Second waveshaper applied to the PWM output. Emphasises high or low harmonics of the pulse.",
+      "detail": "CCW: bright highs · noon: neutral · CW: low-harmonic emphasis"
+    },
+    {
+      "name": "Wavefolder Source",
+      "scope": "Timbre (yellow path)",
+      "description": "Crossfader between Triangle Shaper and Pulse Shaper signals entering the wavefolder.",
+      "detail": "CCW: triangle-shaped · CW: pulse-shaped · noon: 50/50 · wavefolder improves when fully at one side"
+    },
+    {
+      "name": "Wavefolder",
+      "scope": "Timbre (yellow path)",
+      "description": "Adjusts number of folds.",
+      "detail": "CCW: clean (no folds) · CW: maximum folds · range split into six layout graphics"
+    },
+    {
+      "name": "Wavefolder Ping Decay",
+      "scope": "Timbre (yellow path)",
+      "description": "Exponential decay of the trigger envelope used to excite the wavefolder.",
+      "detail": "CCW: fast decay · CW: slow tail"
+    },
+    {
+      "name": "Wavefolder Symmetry",
+      "scope": "Timbre (yellow path)",
+      "description": "Biases folds toward positive or negative half-cycle (unbalanced folding).",
+      "detail": "noon: symmetric · CW: fold positive more · CCW: fold negative more"
+    },
+    {
+      "name": "Modulation Bus Level",
+      "scope": "Timbre Modulation Bus",
+      "description": "VCA on the modulation source feeding all four Timbre CV inputs.",
+      "detail": "CCW: fully closed (VCA shut) · CW: unity · CV via F.4"
+    },
+    {
+      "name": "AM/RM Switch",
+      "scope": "Amplitude",
+      "description": "Two- or four-quadrant operation of final multiplier.",
+      "detail": "up: 2-quadrant AM · down: 4-quadrant ring mod"
+    },
+    {
+      "name": "AM/RM CV Attenuverter",
+      "scope": "Amplitude",
+      "description": "Scales the AM/RM modulator CV input.",
+      "detail": "bipolar · affects crossfade between Timbre and modulated signal"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "V/Oct Input",
+      "description": "Pitch CV, 1 V/oct tracking over >6 octaves.",
+      "voltage": "1 V/oct · >90 kΩ impedance"
+    },
+    {
+      "name": "V/Oct Integrator CV",
+      "description": "Sums into the green integrator for delayed/glide V/oct lag.",
+      "voltage": "±10 V · 7 V knob offset"
+    },
+    {
+      "name": "FM Deviation CV",
+      "description": "CV over the total FM deviation amount.",
+      "voltage": "±10 V · 5 V knob offset · attenuverter"
+    },
+    {
+      "name": "Exponential FM Input",
+      "description": "External exponential FM source. Semi-normalled to other oscillator's sine.",
+      "voltage": "audio/CV · >90 kΩ",
+      "normalizedTo": "other oscillator's sine"
+    },
+    {
+      "name": "Linear TZ FM Input",
+      "description": "External through-zero linear FM source. Semi-normalled to other oscillator's sine.",
+      "voltage": "audio/CV · >30 kΩ",
+      "normalizedTo": "other oscillator's sine"
+    },
+    {
+      "name": "Sync Input",
+      "description": "External signal drives the selected sync behaviour for its oscillator.",
+      "voltage": "min 2 Vpp · ±5 V suggested"
+    },
+    {
+      "name": "Triangle Shaper CV",
+      "description": "Modulates the Triangle Shaper position.",
+      "voltage": "±10 V · 7 V knob offset · semi-normalled to Mod Bus output"
+    },
+    {
+      "name": "PWM CV",
+      "description": "Modulates the Pulse-Width comparator threshold.",
+      "voltage": "±10 V · 9 V knob offset · semi-normalled to Mod Bus output"
+    },
+    {
+      "name": "Pulse Shaper CV",
+      "description": "Modulates the Pulse Shaper.",
+      "voltage": "±10 V usable",
+      "normalizedTo": "Mod Bus output when unpatched"
+    },
+    {
+      "name": "Wavefolder Source CV",
+      "description": "Modulates the source crossfader.",
+      "voltage": "±10 V · 7 V knob offset",
+      "normalizedTo": "Mod Bus output when unpatched"
+    },
+    {
+      "name": "Wavefolder CV",
+      "description": "Modulates the fold amount.",
+      "voltage": "±10 V · 10 V knob offset",
+      "normalizedTo": "Mod Bus output when unpatched"
+    },
+    {
+      "name": "Wavefolder Symmetry CV",
+      "description": "Modulates fold asymmetry.",
+      "voltage": "±10 V · >50 kΩ"
+    },
+    {
+      "name": "Wavefolder Ping Input",
+      "description": "Trigger fires the wavefolder's nonlinear decay envelope, modulating the fold amount.",
+      "voltage": "trigger/gate · >90 kΩ"
+    },
+    {
+      "name": "AM/RM Input",
+      "description": "External modulator for the final amplitude-modulation section.",
+      "voltage": "±5 V suggested",
+      "normalizedTo": "green sine when unpatched"
+    },
+    {
+      "name": "AM/RM CV Input",
+      "description": "CV over the AM/RM crossfade.",
+      "voltage": "±10 V · 6 V knob offset"
+    },
+    {
+      "name": "Modulation Bus Input",
+      "description": "Source feeding the internal VCA and four-destination Timbre bus.",
+      "voltage": "audio/CV",
+      "normalizedTo": "green sine when unpatched"
+    },
+    {
+      "name": "Modulation Bus Level CV",
+      "description": "CV over the Mod Bus VCA.",
+      "voltage": "±10 V · 6 V knob offset · attenuverter"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Sine (yellow) / Sine (green)",
+      "description": "Per-oscillator sine output.",
+      "voltage": "±5 V · unloaded"
+    },
+    {
+      "name": "Triangle (yellow) / Triangle (green)",
+      "description": "Per-oscillator triangle output.",
+      "voltage": "±5 V · triangle-core native"
+    },
+    {
+      "name": "Square (yellow) / Square (green)",
+      "description": "Per-oscillator square output.",
+      "voltage": "±5 V"
+    },
+    {
+      "name": "Sawtooth (green)",
+      "description": "Green-only sawtooth output.",
+      "voltage": "±5 V · symmetry trimmable"
+    },
+    {
+      "name": "Square / Shaped Pulse (yellow)",
+      "description": "Switch-selected: raw yellow square, or PWM + Pulse-Shaper result.",
+      "voltage": "±5 V"
+    },
+    {
+      "name": "Modulation Bus Out",
+      "description": "Post-VCA Mod Bus signal. Fed to the four Timbre CV inputs via semi-normal.",
+      "voltage": "±5 V"
+    },
+    {
+      "name": "Final Output",
+      "description": "Yellow's processed signal after Triangle Shaper, Pulse Shaper, Source crossfader, Wavefolder, and AM/RM.",
+      "voltage": "±5 V · pre-mixer level"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Triangle-core through-zero linear FM",
+      "trigger": "patch signal into Linear TZ FM In (or leave semi-normalled)",
+      "description": "Both oscillators are triangle-core with true through-zero linear FM — modulator crossing zero reverses carrier phase instead of folding. Preserves pitch when modulated by bipolar signals. Default semi-normal uses the opposite oscillator's sine, enabling complex-OSC-style mutual FM without external patching."
+    },
+    {
+      "name": "Mixed linear + exponential FM",
+      "trigger": "raise both LinTZ and Expo attenuators",
+      "description": "FM Deviation knob applies the total FM amount; the per-oscillator LinTZ and Expo attenuators choose the blend. Any combination of linear-TZ and exponential FM is available on each carrier simultaneously — not one-or-the-other. Patch separate signals into Lin and Expo inputs to use up to four FM sources per oscillator."
+    },
+    {
+      "name": "Lock sync (pitch correction)",
+      "trigger": "Sync Switch → Lock",
+      "description": "Digital correction that uses the primary's square wave to subtly shift the secondary's core thresholds. Fixes tracking drift when secondary is within a semitone of a desired integer ratio. Preserves waveform — unlike classic hard sync it does not create harsh spikes."
+    },
+    {
+      "name": "Flip sync (reverse sync)",
+      "trigger": "Sync Switch → Flip",
+      "description": "At each primary duty-cycle edge, the secondary's triangle core reverses direction instead of resetting. Produces complex waveforms with articulation sharper than hard sync but without the full-cycle discontinuity. Not phase-based — no preferred frequency ratio, so primary frequency can sit above or below the secondary."
+    },
+    {
+      "name": "Coarse Frequency Lock",
+      "trigger": "press Coarse Frequency Lock button",
+      "description": "Samples the coarse knob position and ignores subsequent movement. Fine knob + CV inputs still work. Prevents accidental pitch bumps during performance. Press again to recall the knob's live value — without this, moving the knob after unlock jumps to its physical position."
+    },
+    {
+      "name": "V/oct Integrator",
+      "trigger": "green Integrator knob off fully CCW",
+      "description": "Patches into the green V/oct path behind an integrator. CCW: no lag (normal tracking). CW: increasing glide — green tracks the same V/oct but with asymmetric smoothing. Patch an extra CV into V/Oct Integrator CV input to offset green by a variable amount for automated detuning or octave jumps."
+    },
+    {
+      "name": "Four-bus modulation routing",
+      "trigger": "patch or leave semi-norm on Timbre CV inputs",
+      "description": "Modulation Bus (green-sine default source → VCA) feeds all four Timbre CVs (Triangle Shaper, Pulse Shaper, Wavefolder Source, Wavefolder). Patching any Timbre CV jack breaks the normal for that destination only. Enables single-VCA dynamic timbre control with FM-like spectral changes from the level CV."
+    },
+    {
+      "name": "Wavefolder Ping",
+      "trigger": "trigger / gate into Ping input",
+      "description": "Rising edge excites the wavefolder through a nonlinear decay envelope. The fold amount swells then decays at the Ping Decay rate. Creates natural-sounding percussive timbres from a steady oscillator — acoustic instruments' decay-spectrum behaviour mimicked without an external envelope."
+    },
+    {
+      "name": "AM / RM final stage",
+      "trigger": "AM/RM switch + modulator at AM/RM In",
+      "description": "Two-quadrant (AM): green sine only modulates positive half, giving classic amplitude modulation. Four-quadrant (RM): all four quadrants, ring modulation of the Timbre signal by green sine. AM/RM knob is a crossfader between the Timbre signal and its amplitude-modulated copy — fully CCW passes Timbre dry."
+    },
+    {
+      "name": "Green as complex LFO",
+      "trigger": "Frequency Scale switch (green) → LFO",
+      "description": "Green oscillator drops into sub-audio. Its sine/triangle/saw/square remain, and its signal is still available as the default modulator for the Timbre bus and AM/RM — turning BRENSO into a one-module modulation matrix (complex LFO + oscillator) with no external LFO needed."
+    },
+    {
+      "name": "Self-modulating timbre",
+      "trigger": "patch Yellow Final Output into Mod Bus Input",
+      "description": "Feeds BRENSO's own final output back into the Mod Bus. The Timbre stages are modulated by the post-processed signal itself. Combined with the Level VCA and envelope, this produces self-oscillating wavefolder textures and chaotic feedback timbres."
+    },
+    {
+      "name": "Sawtooth only on green",
+      "trigger": "inspect outputs",
+      "description": "Yellow provides sine, triangle, square/shaped pulse, and Final. Green adds a sawtooth output (sine, triangle, saw, square). Asymmetric output set between oscillators — remember that only green gives saw; yellow's sawtooth-equivalent is the Pulse Shaper output."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Complex-OSC lead",
+      "patch": "Yellow V/Oct from sequencer · green Coarse tuned an octave + fifth above yellow · leave Linear TZ FM inputs unpatched (semi-norm = mutual FM) · raise yellow Linear TZ attenuator to taste · Triangle Shaper ~noon, Wavefolder CW · Final Output has morphing harmonic content that tracks pitch.",
+      "diagram": "BRENSO:\n* Yellow: audio\n* Green: audio, +oct +5th\n* Yellow Lin TZ Atten: ~2 o'clock\n* Wavefolder: ~3 o'clock\n\n- Sequencer (Pitch) p> BRENSO (V/Oct)\n- BRENSO (Final Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Self-pinging kick",
+      "patch": "Green in LFO mode, slow · clock into Wavefolder Ping In · Ping Decay CW (long) · Wavefolder knob CCW so Ping adds the folds · yellow coarse at low kick frequency · Final Output is a pinged kick with natural fold-decay tone · no external envelope used.",
+      "diagram": "BRENSO:\n* Green: LFO mode\n* Yellow Coarse: ~50 Hz\n* Wavefolder: CCW\n* Ping Decay: CW\n\n- Clock (Out) t> BRENSO (Wavefolder Ping)\n- BRENSO (Final Out) -> VCA (In)\n- Ping Env (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Flip-sync noise oscillator",
+      "patch": "Yellow coarse at middle pitch · green Sync Switch → Flip · green Coarse modulated by noise source through Exponential FM input · green outputs a pitch-chaotic waveform flipped by yellow · harsh inharmonic tones for noise-music passages.",
+      "diagram": "BRENSO:\n* Green Sync: Flip\n* Yellow Coarse: mid\n\n- SAPÈL (White Noise) >> BRENSO.Green (Expo FM In)\n- BRENSO.Green (Sine) -> Filter (In)"
+    },
+    {
+      "name": "TZFM modulator sequencing",
+      "patch": "Two separate V/Oct sources · one to yellow V/Oct, another through a quantizer to BRENSO's Linear TZ In · the TZ modulator now plays its own melody modulating yellow · spectral complexity tracks two simultaneous lines · quintessential 'FM with Through-Zero' patch.",
+      "diagram": "BRENSO:\n* Yellow Lin TZ Atten: CW\n* FM Deviation: noon\n\n- Seq 1 (Pitch) p> BRENSO.Yellow (V/Oct)\n- Seq 2 (Pitch) p> Quantizer (In)\n- Quantizer (Out) p> VCO Mod (V/Oct)\n- VCO Mod (Out) -> BRENSO.Yellow (Lin TZ FM In)"
+    },
+    {
+      "name": "Snappy exponential FM",
+      "patch": "Envelope into Yellow Exponential FM input · Expo attenuator raised · each gate fires an exponential frequency bloom on yellow · Final output to VCA with same envelope · 808-style tonal percussion when yellow tuned to ~40 Hz.",
+      "diagram": "BRENSO:\n* Yellow Coarse: ~40 Hz\n* Yellow Expo Atten: ~2 o'clock\n\n- Gate (Out) t> Envelope (Trig)\n- Envelope (Out) >> BRENSO.Yellow (Expo FM In)\n- BRENSO (Final Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+    },
+    {
+      "name": "Self-patched feedback timbre",
+      "patch": "Final Output → Mod Bus Input · Mod Bus Level CW · four Timbre CVs all fed from the Mod Bus · BRENSO modulates its own waveshaper/folder with its post-processed output · chaotic oscillations · modulate Mod Bus Level CV with slow LFO to sweep feedback depth.",
+      "diagram": "BRENSO:\n* Mod Bus Level: CW\n* Timbre CVs: semi-normalled\n\n- BRENSO (Final Out) -> BRENSO (Mod Bus In)\n- LFO (Slow Out) >> BRENSO (Mod Bus Level CV)\n- BRENSO (Final Out) -> Filter (In)"
+    },
+    {
+      "name": "Noise-modulated wavefolder",
+      "patch": "Pink noise into Wavefolder CV · Wavefolder knob CCW (baseline clean) · noise adds random folding micro-variations on every sample · creates an analog-chorus-like shimmer around sustained tones.",
+      "diagram": "BRENSO:\n* Wavefolder: CCW\n\n- SAPÈL (Pink Noise) >> BRENSO (Wavefolder CV)\n- BRENSO (Final Out) -> Output (In)"
+    },
+    {
+      "name": "Complex LFO modulation matrix",
+      "patch": "Green in LFO mode · green sine feeds default Mod Bus Input · Mod Bus Out to Filter cutoff via external cable · green triangle to a VCA CV · green square to a clock divider · one oscillator as a five-destination modulation source for the whole patch.",
+      "diagram": "BRENSO:\n* Green: LFO mode\n\n- BRENSO (Mod Bus Out) >> Filter (Cutoff)\n- BRENSO.Green (Triangle) >> VCA (CV)\n- BRENSO.Green (Square) c> Clock Div (In)\n- BRENSO.Green (Saw) >> Reverb (Time CV)"
+    },
+    {
+      "name": "Classic dual-VCO ring mod",
+      "patch": "AM/RM switch down (4-quadrant / ring) · AM/RM knob CW (full modulated signal) · modulator at AM/RM In is green sine (semi-norm) · yellow tuned to root, green tuned to interval above · Final Output is their ring-modulated spectrum · envelope the VCA for bell tones.",
+      "diagram": "BRENSO:\n* AM/RM Switch: Ring (down)\n* AM/RM Knob: CW\n\n- BRENSO (Final Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Lock sync for drift-free stacks",
+      "patch": "Yellow and green tuned to same note · green Sync Switch → Lock · temperature drift is corrected by Lock circuit · two oscillators stay in unison with minimal beating · ideal for thick unison leads where PMM drift would mask the intended detuning.",
+      "diagram": "BRENSO:\n* Green Sync: Lock\n* Yellow Coarse = Green Coarse\n\n- Sequencer (Pitch) p> BRENSO (V/Oct)\n- BRENSO.Yellow (Sine) -> Mixer (In 1)\n- BRENSO.Green (Sine) -> Mixer (In 2)"
+    },
+    {
+      "name": "PWM at audio rate",
+      "patch": "Green in audio rate · green sine through semi-norm into PWM CV · PWM knob ~noon · yellow Pulse output takes on a screaming FM-PW timbre as green modulates duty cycle at audio rate · Pulse Shaper CW for bright tone.",
+      "diagram": "BRENSO:\n* Green: audio rate\n* Pulse Shaper: CW\n\n- BRENSO (Final Out) -> Filter (In)"
+    },
+    {
+      "name": "Dual-output poly split",
+      "patch": "Yellow and green each plays its own V/Oct (patch main V/Oct to yellow, and yellow V/Oct + offset via 321 to green) · yellow's Square and green's Saw go to two separate voices in a stereo patch · BRENSO as two independent VCOs with shared pitch backbone.",
+      "diagram": "BRENSO:\n* Green: audio\n\n- Seq 1 (Pitch) p> BRENSO (V/Oct)\n- Seq 1 (Pitch) p> 321 (In)\n- 321 (Sum) p> BRENSO (V/Oct Integrator In)\n- BRENSO.Yellow (Square) -> Voice L (In)\n- BRENSO.Green (Saw) -> Voice R (In)"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/shop/eurorack/1u/headphones-1u/",
+      "https://intellijel.com/downloads/manuals/headphones-1u_manual_2021.08.05.pdf",
+      "https://intellijel.com/support/"
+    ]
+  },
+  "slug": "intellijel--headphones-1u",
+  "name": "Headphones 1U",
+  "manufacturer": "Intellijel",
+  "hp": 10,
+  "tags": ["I/O", "MIXER", "UTILITY"],
+  "description": "Stereo headphone amplifier and line output. Left input is normalled to right, and version 2 adds a rear 3-pin link for direct audio from compatible Intellijel modules and cases.",
+  "controls": [
+    {
+      "name": "HEADPHONE Level",
+      "scope": "Global",
+      "description": "Sets the listening level for the headphone output.",
+      "detail": "single gain knob"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "L Input",
+      "description": "Left audio input. Normalled to the right input for mono monitoring.",
+      "voltage": "eurorack audio",
+      "normalizedTo": "R Input"
+    },
+    {
+      "name": "R Input",
+      "description": "Right audio input. Receives the left signal when the right jack is left empty.",
+      "voltage": "eurorack audio"
+    },
+    {
+      "name": "3-Pin Link Connector",
+      "description": "Rear-panel input for direct audio from compatible Intellijel modules or cases. Used on version 2 modules.",
+      "voltage": "line or eurorack audio"
+    },
+    {
+      "name": "JP1 Jumper",
+      "description": "Rear jumper that normals L to R when the link connector is unused. Remove it when using the rear link.",
+      "voltage": "n/a"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "HEADPHONE Out",
+      "description": "Stereo 1/4 inch headphone output. Also works as a stereo line output.",
+      "voltage": "headphone or line level"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Mono on left",
+      "trigger": "leave R Input empty",
+      "description": "A mono source patched to L Input feeds both headphone channels through the internal normal."
+    },
+    {
+      "name": "Rear-link monitoring",
+      "trigger": "patch a compatible Intellijel module to the 3-pin link connector",
+      "description": "Version 2 can receive audio directly from a linked module or case without front-panel patch cables."
+    },
+    {
+      "name": "Headphones as line out",
+      "trigger": "use the 1/4 inch jack as an output",
+      "description": "The headphone jack doubles as a stereo line output for recording, desk monitoring, or a quick PA feed."
+    },
+    {
+      "name": "JP1 link normal",
+      "trigger": "rear link connector unused",
+      "description": "The JP1 jumper restores the internal left-to-right normal when the rear link is not in use."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Case monitor",
+      "patch": "Stereo mixer to L Input and R Input · headphone jack to cans · one 1U module gives a quick private monitor path inside the case.",
+      "diagram": "Headphones 1U:\n* HEADPHONE Level: noon\n\nStereo Mixer 1U:\n\nOutput:\n\n- Stereo Mixer 1U (OUT L) -> Headphones 1U (L Input)\n- Stereo Mixer 1U (OUT R) -> Headphones 1U (R Input)\n- Headphones 1U (HEADPHONE Out) -> Output (Phones)"
+    },
+    {
+      "name": "Mono utility monitor",
+      "patch": "Mono synth to L Input only · the internal normal feeds both ears · fast level check without repatching a right channel.",
+      "diagram": "Headphones 1U:\n* HEADPHONE Level: low\n\nVCO:\nOutput:\n\n- VCO (Out) -> Headphones 1U (L Input)\n- Headphones 1U (HEADPHONE Out) -> Output (Phones)"
+    },
+    {
+      "name": "Direct line feed",
+      "patch": "Use the headphone jack as a stereo line output for a recorder or small mixer · same routing, no case-wide output module required.",
+      "diagram": "Headphones 1U:\n* HEADPHONE Level: noon\n\nMixer:\nRecorder:\n\n- Mixer (Out L) -> Headphones 1U (L Input)\n- Mixer (Out R) -> Headphones 1U (R Input)\n- Headphones 1U (HEADPHONE Out) -> Recorder (In)"
+    }
+  ]
+}

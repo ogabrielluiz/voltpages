@@ -1,0 +1,200 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "http://www.schippmann-music.com/downloads/CS-8_VCF-02_Man10_DE.pdf",
+      "https://imagescdn.juno.co.uk/manual/602582-01U.pdf",
+      "https://modulargrid.net/e/schippmann-vcf-02-",
+      "https://www.bigcitymusic.com/products/vcf-02-filter",
+      "https://cymrubeats.com/product/schippmann-cs-8-vcf-02/",
+      "https://reverb.com/item/24567828-schippmann-cs-8-series-vcf-02-eurorack-multimode-filter-module"
+    ]
+  },
+  "slug": "schippmann--vcf-02",
+  "name": "CS-8 Series VCF-02",
+  "manufacturer": "Schippmann",
+  "hp": 24,
+  "tags": ["VCF", "FILTER", "PHASER", "DISTORTION"],
+  "description": "Fully analog multimode filter with 121 selectable filter shapes built by combining five filter taps (ALL, BP6, LP12, BP18, LP24) with per-tap sign inversion. Unique Emph, 2nd Harm, and Drop parameters.",
+  "controls": [
+    {
+      "name": "Freq",
+      "scope": "Global",
+      "description": "Cutoff / centre frequency. Knob range 2Hz to 35kHz; external CV extends to 40kHz at top and essentially no limit at bottom.",
+      "detail": "2Hz – 35kHz knob · ~40kHz via CV"
+    },
+    {
+      "name": "Reso",
+      "scope": "Global",
+      "description": "Resonance / Q factor from 0 (no peak) to self-oscillation. Onset depends on Emph setting (~Reso=6 when Emph=1, ~Reso=8 when Emph=0.3).",
+      "detail": "0 – ∞ · self-osc onset shifts with Emph"
+    },
+    {
+      "name": "Emph",
+      "scope": "Global",
+      "description": "Level of emphasis / self-oscillation independent from resonance Q. Low values produce a whisper-quiet self-osc that sits in the mix; high values produce large self-osc levels.",
+      "detail": "0.05 (weak) – 1 (strong) · unique per-filter-level control"
+    },
+    {
+      "name": "Drop",
+      "scope": "Low-pass modes only",
+      "description": "Compensates the low-frequency gain loss that occurs when resonance is raised on LP filters. Only active in low-pass configurations; yellow on-LED confirms.",
+      "detail": "-12dB to 0dB · LP only · -3 to -6dB is a good compromise"
+    },
+    {
+      "name": "Gain",
+      "scope": "Global",
+      "description": "Output gain trim between filter tap and output jack. Red clip LED warns of output stage clipping.",
+      "detail": "-20dB to 0dB · use to tame self-osc levels"
+    },
+    {
+      "name": "Input1",
+      "scope": "Audio",
+      "description": "Attenuator for audio input 1. Paired with a switch selecting 0dB or +20dB boost for the input preamp.",
+      "detail": "-∞ to 0dB · switch: 0 / +20dB"
+    },
+    {
+      "name": "Input2",
+      "scope": "Audio",
+      "description": "Attenuator for audio input 2. Paired with a phase-reverse switch (0° / 180°).",
+      "detail": "-∞ to 0dB · switch: 0° / 180°"
+    },
+    {
+      "name": "CV1 / CV2",
+      "scope": "FM CV",
+      "description": "Two scalable frequency CV inputs with adjustable attenuation and a 0°/180° phase invert switch each. Range per input: 0 to 3.6 oct/V.",
+      "detail": "0 – 3.6 oct/V per input · phase invert per input"
+    },
+    {
+      "name": "CV-Res",
+      "scope": "Resonance CV",
+      "description": "Attenuator and phase-invert for the Reso CV input. 0V-5V drives resonance from 0 to self-oscillation.",
+      "detail": "0 – self-osc/5V · phase invert included"
+    },
+    {
+      "name": "2nd Harm button",
+      "scope": "Global",
+      "description": "Adds soft 2nd-harmonic (overtone) distortion post-filter. Enhances warmth, increases at higher resonance. Button inactive when CV is patched into 2nd H jack (LED still shows status).",
+      "detail": "On / Off · lights red when active · CV overrides button"
+    },
+    {
+      "name": "ALL / BP6 / LP12 / BP18 / LP24 buttons",
+      "scope": "Slope / tap mixer",
+      "description": "Five filter-tap selectors. Each button cycles off → green (+ added) → red (- subtracted) except ALL which is on/off only (blue). Combinations of the five produce 121 distinct filter shapes.",
+      "detail": "off / green(+) / red(-) · ALL = blue on/off · CV override per tap"
+    }
+  ],
+  "inputs": [
+    { "name": "Input1", "description": "AC-coupled audio input 1 with +20dB preamp option.", "voltage": "±12V AC" },
+    { "name": "Input2", "description": "AC-coupled audio input 2 with phase reverse.", "voltage": "±12V AC" },
+    { "name": "CV1", "description": "DC CV input for frequency modulation. Scaling set by CV1 knob (0 to 3.6 oct/V).", "voltage": "±12V" },
+    { "name": "CV2", "description": "DC CV input for frequency modulation. Scaling set by CV2 knob.", "voltage": "±12V" },
+    { "name": "1 V/Oct", "description": "Calibrated 1V/octave input for pitch-tracking filter cutoff.", "voltage": "1V/oct" },
+    { "name": "0.5 V/Oct", "description": "Non-calibrated 0.5V/octave input for slower cutoff tracking.", "voltage": "0.5V/oct" },
+    { "name": "Emph 0-5 V", "description": "CV input added to Emph knob value. Covers entire Emph range.", "voltage": "-5V to +5V" },
+    { "name": "Reso 0-5 V", "description": "CV input for resonance. +5V with Reso=10 = maximum; -5V with Reso=10 drops Reso to 0.", "voltage": "-5V to +5V" },
+    { "name": "Reso (CV)", "description": "DC CV routed through CV-Res attenuator and phase switch.", "voltage": "±12V" },
+    { "name": "ALL", "description": "Gate-style CV override for ALL tap: ≥+3V = on, ≤+2V = off. Button disabled while patched.", "voltage": "-12V to +12V (AC or DC)" },
+    { "name": "BP6 / LP12 / BP18 / LP24", "description": "Tap-override CV inputs: ≥+3V = inverted, ≥+1V = non-inverted, <+1V = off. Sockets accept full audio range.", "voltage": "-12V to +12V (AC or DC)" },
+    { "name": "2nd H", "description": "CV override for 2nd Harmonic button. ≥+3V on, ≤+2V off, hysteresis between.", "voltage": "-12V to +12V" }
+  ],
+  "outputs": [
+    { "name": "Output", "description": "DC-coupled filtered audio output. Offset trimmable via rear P7 trimmer.", "voltage": "Clip LED at output stage limit" }
+  ],
+  "behaviors": [
+    {
+      "name": "121 filter shapes by tap summing",
+      "trigger": "combining ALL/BP6/LP12/BP18/LP24 button states",
+      "description": "Each tap can be off, added (+, green), or subtracted (-, red). ALL is on/off. Sum of signs produces 27 low-pass, 18 high-pass, 13 band-pass, and 63 all-pass/notch/phaser shapes. Classic Moog-style 24dB LP is +LP24; high-pass is ALL on + LP12 red. The filter types chart in the manual lists labeled presets (T1-T9, B1-B5, H1-H5, A1-A21)."
+    },
+    {
+      "name": "Emph decoupled from Reso",
+      "trigger": "turning Emph independently of Reso",
+      "description": "Unique to this filter: Emph sets the AMPLITUDE of self-oscillation, not the threshold. Low Emph = self-osc barely audible, high Emph = huge self-osc. Reso sets Q. Combination allows whispered singing resonance behind a dry signal — impossible on standard filters."
+    },
+    {
+      "name": "Drop compensates LP bass loss",
+      "trigger": "turning Drop up on LP modes with resonance",
+      "description": "Recovers low-frequency gain that typical LP filters lose as resonance rises. -3 to -6dB is a good compromise between compensation and overload. Drop only operates in low-pass shapes (yellow on-LED indicates). Pushing Drop too hard saturates the filter input for optional overdrive."
+    },
+    {
+      "name": "2nd harmonic warmth",
+      "trigger": "2nd Harm button active or CV > +3V",
+      "description": "Adds soft even-harmonic distortion that emphasizes 2nd harmonic (octave up). Effect deepens with resonance level. Produces a 'warm' coloration distinct from the ladder-style overdrive of classic filters."
+    },
+    {
+      "name": "CV tap override",
+      "trigger": "cable patched into any tap CV jack (ALL, BP6, LP12, BP18, LP24, 2nd H)",
+      "description": "Patching disables the corresponding button. CV voltage determines state: <+1V off, +1V to +3V green (non-inverted), >+3V red (inverted). Allows sequenced filter-morph patches by stepping between tap states under CV."
+    },
+    {
+      "name": "Dual CV inputs for FM",
+      "trigger": "patching CV1 and CV2 with knobs past 0",
+      "description": "Each of CV1/CV2 has its own attenuator and phase-invert. Scale 0 to 3.6 oct/V. Sockets are DC-coupled for audio-rate FM. Phase invert lets two correlated modulators partially cancel or reinforce. Combined with 1V/Oct and 0.5V/Oct sockets, the filter has five simultaneous frequency CV paths."
+    },
+    {
+      "name": "Knob-programming caveat",
+      "trigger": "rapid real-time twisting of Freq or Reso",
+      "description": "Manual explicitly states these are programming controls, not performance potentiometers. Abusing them voids warranty coverage. Real-time sweeps should be done via CV — the module is designed to be sequencer / foot-pedal / external-controller driven."
+    },
+    {
+      "name": "Clip LED at output",
+      "trigger": "output stage signal exceeds headroom",
+      "description": "Red clip LED on front panel shows output clipping — use Gain knob to back off, especially at high self-oscillation levels or with Drop pushed. Drive LED on the input side independently lights at 2Vpp to indicate overdrive onset."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic 24dB ladder-style LP",
+      "patch": "LP24 green only · all others off · Reso ~6 Emph 0.5 · Drop -3dB to compensate bass loss · envelope into CV1 · sounds like a Moog ladder but with Schippmann transparency",
+      "diagram": "VCF-02:\n* LP24: green\n* Reso: 6\n* Emph: 0.5\n* Drop: -3dB\n* CV1: 1 oct/V\n\nVCO:\n\nEnvelope:\n\nVCA:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- Envelope (Out) >> VCF-02 (CV1)\n- VCF-02 (Output) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Super notch for formant shaping",
+      "patch": "Preset A6: ALL blue · LP24 red · BP18 green · LP12 green · BP6 red · deep 4-pole-style notch · modulate Freq for vocal-formant sweeps",
+      "diagram": "VCF-02:\n* ALL: blue on\n* LP24: red\n* BP18: green\n* LP12: green\n* BP6: red\n* Reso: 4\n\nVCO:\n\nLFO:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- LFO (Tri) >> VCF-02 (CV1)\n- VCF-02 (Output) -> Output (In)"
+    },
+    {
+      "name": "Whisper self-oscillation behind mix",
+      "patch": "Emph 0.1 · Reso 10 · 1V/Oct from sequencer · self-oscillating sine sits quietly in the mix as a ghost melody under a dry lead · unique Emph/Reso split makes this possible",
+      "diagram": "VCF-02:\n* LP24: green\n* Reso: 10 (self-osc)\n* Emph: 0.1 (whisper)\n\nSequencer:\n\n- Sequencer (Pitch) p> VCF-02 (1 V/Oct)\n- VCF-02 (Output) -> Mixer (In 2)"
+    },
+    {
+      "name": "Two-stage phaser",
+      "patch": "Preset A9: ALL blue · LP24 green · BP18 red · LP12 red · BP6 red · audio rate LFO into CV2 with 180 invert · rich phaser tone",
+      "diagram": "VCF-02:\n* ALL: blue on\n* LP24: green\n* BP18: red\n* LP12: red\n* BP6: red\n* Reso: 2\n* CV2 phase: 180\n\nVCO:\n\nLFO:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- LFO (Tri) >> VCF-02 (CV2)\n- VCF-02 (Output) -> Output (In)"
+    },
+    {
+      "name": "CV-morphed filter type",
+      "patch": "Sequencer gate/CV into LP12 and LP24 jacks (overrides buttons) · different steps yield different filter shapes per step · the filter becomes a filter-type sequencer",
+      "diagram": "VCF-02:\n* ALL: blue on\n\nSequencer:\n\nVCO:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- Sequencer (CV 1) >> VCF-02 (LP12) // steps through off/+/-\n- Sequencer (CV 2) >> VCF-02 (LP24) // independent morph\n- VCF-02 (Output) -> Output (In)"
+    },
+    {
+      "name": "Audio-rate resonance FM",
+      "patch": "LP24 green · Reso ~7 · VCO sine into Reso CV via CV-Res at ~50% · resonance wobbles at audio rate generating FM-like sidebands around the resonance peak",
+      "diagram": "VCF-02:\n* LP24: green\n* Reso: 7\n* CV-Res: ~50%\n\nVCO A:\n\nVCO B:\n\n- VCO A (Saw) -> VCF-02 (Input1)\n- VCO B (Triangle) >> VCF-02 (Reso) // audio-rate resonance\n- VCF-02 (Output) -> Output (In)"
+    },
+    {
+      "name": "Warm 2nd-harm bass",
+      "patch": "LP12 green · LP24 green (both LP same sign = +6dB bass boost) · 2nd Harm on · Drop -6dB · saturated, warm, deep bass where the Schippmann's 2nd harmonic distortion sits perfectly",
+      "diagram": "VCF-02:\n* LP12: green\n* LP24: green\n* 2nd Harm: ON\n* Drop: -6dB\n* Reso: 5\n\nVCO:\n\nEnvelope:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- Envelope (Out) >> VCF-02 (CV1)\n- VCF-02 (Output) -> Output (In)"
+    },
+    {
+      "name": "Phase-cancel dual CV sweep",
+      "patch": "CV1 knob ~2 oct/V · CV2 knob same · CV2 phase switch 180 · same modulator into both · the two opposing CVs partially cancel to yield a subtle filter nudge without full sweep range",
+      "diagram": "VCF-02:\n* CV1: 2 oct/V · phase 0\n* CV2: 2 oct/V · phase 180\n\nLFO:\n\nVCO:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- LFO (Tri) >> VCF-02 (CV1)\n- LFO (Tri) >> VCF-02 (CV2) // phase-inverted, partial cancel\n- VCF-02 (Output) -> Output (In)"
+    },
+    {
+      "name": "Band-pass triple-RC wah",
+      "patch": "Preset B3: BP6 on · LP12 red · BP18 off · LP24 green · narrow 6/12 band-pass · slow envelope follower on cutoff for wah motion",
+      "diagram": "VCF-02:\n* BP6: green\n* LP12: red\n* LP24: green\n* Reso: 5\n\nVCO:\n\nEnvelope Follower:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- Envelope Follower (Out) >> VCF-02 (CV1)\n- VCF-02 (Output) -> Output (In)"
+    },
+    {
+      "name": "HP from all-pass minus LP",
+      "patch": "ALL blue on · LP12 red · BP6 and BP18 off · clean 6dB HP preset H1 · resonance emphasizes the corner with no bass build-up · great for removing rumble on pads while keeping motion",
+      "diagram": "VCF-02:\n* ALL: blue on\n* LP12: red\n* Reso: 4\n\nVCO:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- Envelope (Out) >> VCF-02 (CV1)\n- VCF-02 (Output) -> Output (In)"
+    }
+  ]
+}

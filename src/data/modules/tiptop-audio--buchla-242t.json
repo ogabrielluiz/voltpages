@@ -1,0 +1,239 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://tiptopaudio.com/buchla/",
+      "https://tiptopaudio.com/manuals/Buchla_&_Tiptop_Audio_242t.pdf",
+      "https://modulargrid.net/e/tiptop-audio-buchla-242t",
+      "https://www.perfectcircuit.com/tiptop-242t-programmable-pulser.html",
+      "https://www.synthtopia.com/content/2025/02/05/tiptop-audio-buchla-242t-programmable-pulser-module-now-available/"
+    ]
+  },
+  "slug": "tiptop-audio--buchla-242t",
+  "name": "Buchla 242t Programmable Pulser",
+  "manufacturer": "Tiptop Audio",
+  "hp": 16,
+  "tags": ["SEQUENCER", "CLOCK", "TRIGGER", "GATE"],
+  "description": "Licensed Eurorack reissue of the Buchla 200-series 242 pulser. 4×12 LED matrix replaces the original pin matrix — three independent pulse patterns (A/B/C) clocked by an internal period from 2ms to 10s+ per stage, plus alternating, all-pulse and ramp outputs.",
+  "controls": [
+    {
+      "name": "PERIOD offset",
+      "scope": "Internal clock",
+      "description": "Right knob · sets base stage period from ~2ms (audio rate) to ~10 seconds or longer · labeled .002 to 10/OFF",
+      "detail": "CW past '10' reaches OFF, stopping the internal clock"
+    },
+    {
+      "name": "PERIOD attenuverter",
+      "scope": "Internal clock",
+      "description": "Left knob · bipolar CV attenuator on period modulation · adds or subtracts from offset knob",
+      "detail": "Enables CV-controlled tempo/period sweeps"
+    },
+    {
+      "name": "Vertical-row encoder",
+      "scope": "Matrix edit",
+      "description": "Lower-left knob · scrolls cursor through rows n / A / B / C to select which row is edited",
+      "detail": "Combined with horizontal encoder to address a matrix cell"
+    },
+    {
+      "name": "Horizontal-row encoder",
+      "scope": "Matrix edit",
+      "description": "Lower-right knob · scrolls cursor through stages 1-12",
+      "detail": "Combined with vertical encoder to address a matrix cell"
+    },
+    {
+      "name": "on/off button",
+      "scope": "Matrix edit",
+      "description": "Toggles the currently-selected matrix cell on/off · long press clears the whole matrix",
+      "detail": "'n' row selects stage count; A/B/C rows set pulse pattern per output"
+    },
+    {
+      "name": "start button",
+      "scope": "Transport",
+      "description": "Manually starts the internal clock and matrix playback",
+      "detail": "Also triggered by start input on INPUTS jack"
+    },
+    {
+      "name": "single pulse button",
+      "scope": "Transport",
+      "description": "Emits one manual pulse without starting the clock",
+      "detail": "Useful for step-advance testing or filling in patterns live"
+    },
+    {
+      "name": "stop button",
+      "scope": "Transport",
+      "description": "Manually stops the internal clock",
+      "detail": "Also triggered by stop input on INPUTS jack"
+    },
+    {
+      "name": "Pulse-length jumper (rear)",
+      "scope": "Global output",
+      "description": "Short = pulser's internal brief width or CLK IN width · Long = fixed 1ms · factory default Long for Eurorack compatibility",
+      "detail": "Back of module; requires removing from rack"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "start IN",
+      "description": "Pulse input · rising edge starts the internal clock",
+      "voltage": "gate/trigger"
+    },
+    {
+      "name": "stop IN",
+      "description": "Pulse input · rising edge stops the internal clock",
+      "voltage": "gate/trigger"
+    },
+    {
+      "name": "PERIOD CV",
+      "description": "Modulation CV scaled by the PERIOD attenuverter · sweeps stage period across the full range",
+      "voltage": "±5V typical"
+    },
+    {
+      "name": "CLK IN",
+      "description": "External clock input · replaces internal clock for stage advance · each rising edge advances one stage",
+      "voltage": "gate/trigger"
+    },
+    {
+      "name": "RST IN",
+      "description": "External reset · returns playback to the end stage / wraps the pattern",
+      "voltage": "gate/trigger"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ALL OUT",
+      "description": "Continuous pulse train at the internal (or CLK IN) rate regardless of matrix content · direct tap on the pulser",
+      "voltage": "gate/trigger"
+    },
+    {
+      "name": "MATRIX A",
+      "description": "Pulses programmed in row A of the matrix · active on stages 1 to 'n'",
+      "voltage": "gate/trigger"
+    },
+    {
+      "name": "MATRIX B",
+      "description": "Pulses programmed in row B of the matrix",
+      "voltage": "gate/trigger"
+    },
+    {
+      "name": "MATRIX C",
+      "description": "Pulses programmed in row C of the matrix",
+      "voltage": "gate/trigger"
+    },
+    {
+      "name": "ALTER (×2)",
+      "description": "Two jacks emitting alternating pulses from the pulser · pulse N goes to one, N+1 to the other · ping-pong rhythm pairs",
+      "voltage": "gate/trigger"
+    },
+    {
+      "name": "Ramp OUT (gray)",
+      "description": "Continuous falling ramp synced to the pulser · spans one stage period · ideal for driving a 292t LPG strike directly",
+      "voltage": "0-10V ramp"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Three-row independent matrix",
+      "trigger": "program cells in rows A, B, C",
+      "description": "Rows A, B, C each output their own pulse pattern through their own jack. The 'n' row at the top selects how many of the 12 stages are active per row — patterns of different lengths can run simultaneously against each other, producing polymeter (e.g. A=5, B=7, C=12)."
+    },
+    {
+      "name": "Internal vs external clock",
+      "trigger": "patch CLK IN",
+      "description": "External clock on CLK IN takes over stage advance for MATRIX A/B/C and the ALTER outputs. However, ALL OUT and the ramp output remain driven by the internal clock period — so external clocking does not silence the internal pulse/ramp."
+    },
+    {
+      "name": "Ramp for LPG strike",
+      "trigger": "patch gray Ramp OUT to 292t-style LPG",
+      "description": "The gray ramp output is specifically designed to open a Buchla 292t (or any vactrol LPG) directly without needing an envelope generator. The ramp's falling slope acts as the decay envelope; period controls the LPG's decay time."
+    },
+    {
+      "name": "Ping-pong via ALTER pair",
+      "trigger": "patch both ALTER outputs to paired destinations",
+      "description": "The two ALTER jacks split every-other pulse — pulse 1 to jack 1, pulse 2 to jack 2, pulse 3 to jack 1 again, etc. Use for stereo ping-pong triggering of two drum voices, or left/right envelopes, without any logic module."
+    },
+    {
+      "name": "Audio-rate operation",
+      "trigger": "turn PERIOD offset fully CCW (.002s)",
+      "description": "Period range extends to ~2ms, which is audio-rate (~500Hz fundamental). The ALL OUT and matrix outputs become clock-like square waves suitable as audio sources for PWM-style patches or unusual drones."
+    },
+    {
+      "name": "OFF position stops internal clock",
+      "trigger": "PERIOD offset full CW past '10'",
+      "description": "Panel label .002-10-OFF: past the '10-seconds' end the knob hits OFF, halting the internal clock. Lets you freeze playback with one gesture without touching the stop button or a stop pulse."
+    },
+    {
+      "name": "Long-press matrix clear",
+      "trigger": "hold on/off button",
+      "description": "Long press of the on/off button clears all programmed pulse cells. Shorter press only toggles the currently-selected cell. Use for fresh starts during live programming without navigating to each cell."
+    },
+    {
+      "name": "Pulse-length jumper trade-off",
+      "trigger": "move rear jumper to Short",
+      "description": "Default 'Long' = 1ms fixed width, compatible with envelope-generator triggers. 'Short' uses the pulser's native (much briefer) width or the CLK IN pulse width directly — useful when clocking fast digital destinations that might miss a 1ms pulse-train edge."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Three-part polymetric drum pattern",
+      "patch": "program A=kick pattern (length 4), B=hats (length 7), C=snare (length 12) · same internal clock · each MATRIX output to its drum voice · classic Buchla-style polymetric groove that never repeats the same way for 84 bars",
+      "diagram": "242t:\n* n(A)=4, n(B)=7, n(C)=12\n* A: 1,3 · B: 1,4,6 · C: 5,9,11\n* PERIOD: ~125ms (120 BPM sixteenths)\n\nKick:\nHats:\nSnare:\n\n- 242t (MATRIX A) g> Kick (Trig)\n- 242t (MATRIX B) g> Hats (Trig)\n- 242t (MATRIX C) g> Snare (Trig)"
+    },
+    {
+      "name": "Direct LPG strike via ramp",
+      "patch": "ramp OUT to 292t (or any vactrol LPG) CV · matrix A triggers the 259t/258t voice · each stage fires a self-enveloping note with no extra envelope module needed · PERIOD knob shapes the decay",
+      "diagram": "242t:\n* A: 1,3,5,7\n* PERIOD: ~400ms\n\nVCO:\nLPG:\n\n- VCO (Out) -> LPG (In)\n- 242t (Ramp OUT) >> LPG (CV) // self-striking ramp\n- 242t (MATRIX A) t> VCO (Trig)"
+    },
+    {
+      "name": "Ping-pong stereo envelopes",
+      "patch": "ALL OUT drives a steady pulse · wait, use ALTER 1 → L envelope, ALTER 2 → R envelope · two mono voices get alternating triggers · result = stereo ping-pong rhythmic pattern without any logic or switch module",
+      "diagram": "242t:\n* PERIOD: 250ms\n\nEnv L:\nEnv R:\nVoice L:\nVoice R:\n\n- 242t (ALTER 1) t> Env L (Trig)\n- 242t (ALTER 2) t> Env R (Trig)"
+    },
+    {
+      "name": "Externally-clocked pattern with kept ramp",
+      "patch": "master clock to CLK IN · matrix runs in sync to rack tempo · but ALL OUT and ramp keep running on the internal PERIOD — use the ramp for free-running modulation that does not sync to clock while the matrix stays tight",
+      "diagram": "242t:\n* Internal PERIOD: 1.3s (modulation rate)\n\nMaster Clock:\nFilter:\nVCO:\n\n- Master Clock (Out) c> 242t (CLK IN)\n- 242t (MATRIX A) t> VCO (Trig) // synced rhythm\n- 242t (Ramp OUT) >> Filter (Cutoff) // free-running mod"
+    },
+    {
+      "name": "Audio-rate matrix drone",
+      "patch": "PERIOD at full CCW (~2ms) · matrix A and B programmed with different patterns · outputs become audio-rate square-wave-like tones whose harmonic content depends on the on/off pattern · through a filter for subtractive-style lead",
+      "diagram": "242t:\n* PERIOD: fully CCW (~2ms)\n* A: 1,2,4,6,8 · B: 1,3,5,9\n\nFilter:\nVCA:\n\n- 242t (MATRIX A) -> Filter (In)\n- 242t (MATRIX B) -> Filter (In) // sum via in\n- Filter (Out) -> VCA (In)"
+    },
+    {
+      "name": "CV-swept tempo",
+      "patch": "slow LFO to PERIOD CV input · attenuverter sets sweep depth · matrix keeps pattern, but period swells and contracts over time · great for accelerando/decelerando gestures with hands-free",
+      "diagram": "242t:\n* A: 1,4,7,10\n* PERIOD attenuverter: 2 o'clock\n\nLFO:\nDrum:\n\n- LFO (Out) >> 242t (PERIOD CV) // tempo breathes\n- 242t (MATRIX A) t> Drum (Trig)"
+    },
+    {
+      "name": "Reset to cut pattern short",
+      "patch": "program A=12 stages but send a reset pulse at stage 8 via external source · matrix wraps early · combine with CLK IN for effective variable pattern length driven by external gate logic",
+      "diagram": "242t:\n* A: 1-12 all on\n* Via CLK IN\n\nMaster Clock:\nReset Trig:\nDrum:\n\n- Master Clock (Out) c> 242t (CLK IN)\n- Reset Trig (Out) t> 242t (RST IN) // cut pattern early\n- 242t (MATRIX A) t> Drum (Trig)"
+    },
+    {
+      "name": "Start/stop performance transport",
+      "patch": "use start and stop buttons (or CV) as live transport · hold stop during breakdowns, punch start to re-enter · single-pulse button fills with one-off hits during pauses · patterns resume from where they stopped",
+      "diagram": "242t:\n* A: 1,3,5,7,9,11\n\nFootswitch:\nDrum:\n\n- Footswitch (Start) g> 242t (start IN)\n- Footswitch (Stop) g> 242t (stop IN)\n- 242t (MATRIX A) t> Drum (Trig)"
+    },
+    {
+      "name": "Generative melody via ALL OUT + quantizer",
+      "patch": "ALL OUT steady clock · matrix A triggers a random/S&H voice · B triggers a second voice · C triggers an accent · three-voice generative line with polyrhythm between them",
+      "diagram": "242t:\n* n(A)=5, n(B)=7, n(C)=3\n\nS&H:\nVCO:\nNoise:\nQuantizer:\nDrum:\nAccent Drum:\n\n- Noise (Out) >> S&H (In)\n- 242t (ALL OUT) c> S&H (Trig)\n- S&H (Out) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- 242t (MATRIX A) g> VCO (Gate)\n- 242t (MATRIX B) t> Drum (Trig)\n- 242t (MATRIX C) t> Accent Drum (Trig)"
+    },
+    {
+      "name": "Ratchet fills via audio-rate + gate",
+      "patch": "main slow pattern on MATRIX A · use a VCA in its signal path whose CV comes from a gate source · when gate opens, let a second 242t at audio-rate pass through — creates ratcheting fills on demand · single module + VCA trick",
+      "diagram": "242t:\n* A: 1,3,5,7 · PERIOD: 300ms\n\nFast 242t:\nVCA:\nMixer:\nDrum:\n\n- 242t (MATRIX A) t> Drum (Trig) // main pulse\n- Fast 242t (ALL OUT) -> VCA (In) // audio-rate\n- VCA (Out) -> Mixer (In 2) // ratchet when gated\n- 242t (MATRIX A) g> VCA (CV)"
+    },
+    {
+      "name": "Matrix ALL + A/B as clock divider",
+      "patch": "ALL OUT = master clock · program A to fire on stages 1,5,9 (÷4) · B on 1,7 (÷6) · C on 1 (÷12) · single module emits master clock plus three integer divisions for tempo-locked modulations",
+      "diagram": "242t:\n* A: 1,5,9 · B: 1,7 · C: 1\n\nEnvelope:\nLFO Trigger:\nFilter:\n\n- 242t (ALL OUT) c> Envelope (Trig) // master\n- 242t (MATRIX A) t> LFO Trigger (Reset) // ÷4\n- 242t (MATRIX B) >> Filter (Cutoff) // ÷6 slow accent\n- 242t (MATRIX C) t> LFO Trigger (Reset) // ÷12 downbeat"
+    },
+    {
+      "name": "Self-patched tempo nudge",
+      "patch": "ALTER 1 into PERIOD CV with attenuverter mostly CCW · every other stage gives a tiny tempo kick · feels like swing or humanized drift baked into the pulser itself",
+      "diagram": "242t:\n* A: 1,3,5,7,9,11\n* PERIOD attenuverter: 10 o'clock (small)\n\nDrum:\n\n- 242t (ALTER 1) >> 242t (PERIOD CV) // subtle swing\n- 242t (MATRIX A) t> Drum (Trig)"
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://doepfer.de/a1602.htm",
+      "https://doepfer.de/a100_man/A160_2_jumper.pdf",
+      "https://www2.doepfer.eu/en/item/a160-2",
+      "https://a100.ideenhase.de/2023/01/11/a-160-2-clock-trigger-divider-ii/?lang=en"
+    ]
+  },
+  "slug": "doepfer--a-160-2",
+  "name": "A-160-2",
+  "manufacturer": "Doepfer",
+  "hp": 4,
+  "tags": ["CLOCK", "LOGIC", "TRIGGER", "UTILITY"],
+  "description": "Clock/trigger divider with 7 outputs and three switchable divisor sets: powers of two, primes, or integers. Two output modes — Gate (50% binary) and Trigger (AND'd with clock, inherits its pulsewidth). Jumper-selectable clock edge, reset polarity, output polarity.",
+  "controls": [
+    {
+      "name": "Division Mode",
+      "scope": "Divisor set",
+      "description": "3-position switch picks which divisor set the seven outputs use.",
+      "detail": "POW2: 2·4·8·16·32·64·128 · PRIME: 2·3·5·7·11·13·17 · INT: 2·3·4·5·6·7·8"
+    },
+    {
+      "name": "Output Mode",
+      "scope": "Pulse shape",
+      "description": "Selects between standard divided gates and trigger-masked pulses.",
+      "detail": "Gate: 50% duty binary divide · Trigger: output AND clock, pulsewidth = clock pulsewidth"
+    },
+    {
+      "name": "Clock Edge (jumper)",
+      "scope": "Internal",
+      "description": "Internal jumper selects rising or falling edge of clock input as the count trigger.",
+      "detail": "installed: rising · removed: falling"
+    },
+    {
+      "name": "Gate Output Polarity (jumper)",
+      "scope": "Internal",
+      "description": "Inverts all seven outputs when removed.",
+      "detail": "installed: normal · removed: inverted"
+    },
+    {
+      "name": "Reset Behaviour (jumper)",
+      "scope": "Internal",
+      "description": "Chooses level-triggered vs edge-triggered reset.",
+      "detail": "installed: level · removed: edge"
+    },
+    {
+      "name": "Reset Input Polarity (jumper)",
+      "scope": "Internal",
+      "description": "Polarity for reset: level mode picks high/low; edge mode picks rising/falling.",
+      "detail": "installed: high/rising · removed: low/falling"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Clock In",
+      "description": "Digital clock/trigger input. Accepts any pulse source — LFO square, MIDI-sync gate, sequencer trigger.",
+      "voltage": "digital / gate"
+    },
+    {
+      "name": "Reset In",
+      "description": "Synchronously resets all divider counters. Level or edge mode and polarity are jumper-selected.",
+      "voltage": "digital / gate"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Out 1 (÷2)",
+      "description": "Divided clock — ÷2 in all three modes.",
+      "voltage": "0 to ~+10V"
+    },
+    {
+      "name": "Out 2",
+      "description": "POW2: ÷4 · PRIME: ÷3 · INT: ÷3.",
+      "voltage": "0 to ~+10V"
+    },
+    {
+      "name": "Out 3",
+      "description": "POW2: ÷8 · PRIME: ÷5 · INT: ÷4.",
+      "voltage": "0 to ~+10V"
+    },
+    {
+      "name": "Out 4",
+      "description": "POW2: ÷16 · PRIME: ÷7 · INT: ÷5.",
+      "voltage": "0 to ~+10V"
+    },
+    {
+      "name": "Out 5",
+      "description": "POW2: ÷32 · PRIME: ÷11 · INT: ÷6.",
+      "voltage": "0 to ~+10V"
+    },
+    {
+      "name": "Out 6",
+      "description": "POW2: ÷64 · PRIME: ÷13 · INT: ÷7.",
+      "voltage": "0 to ~+10V"
+    },
+    {
+      "name": "Out 7",
+      "description": "POW2: ÷128 · PRIME: ÷17 · INT: ÷8.",
+      "voltage": "0 to ~+10V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Binary bar/beat divisions",
+      "trigger": "POW2 mode",
+      "description": "Standard powers-of-two divisions produce musical bar, half, quarter, eighth relationships when clock is a 16th or 32nd. Ideal for song-structure gates."
+    },
+    {
+      "name": "Prime-number polyrhythms",
+      "trigger": "PRIME mode",
+      "description": "Divisors share no common factors, so outputs drift apart maximally. ÷11 and ÷13 only re-align every 143 clocks, yielding long, non-repeating rhythmic textures."
+    },
+    {
+      "name": "Odd-meter integer grid",
+      "trigger": "INT mode",
+      "description": "Sequential integer divides give triplet, quintuplet, septuplet relationships useful for odd-meter patterns that still resolve periodically."
+    },
+    {
+      "name": "Trigger mode pulsewidth masking",
+      "trigger": "Output Mode: Trigger",
+      "description": "Outputs are AND'd with the raw clock, so each divided pulse takes the clock's pulsewidth rather than a 50% gate. Useful for drum-style triggers that sit inside the clock phase instead of stretching across it."
+    },
+    {
+      "name": "Synchronous reset on bar boundary",
+      "trigger": "bar-length pulse → Reset In",
+      "description": "A reset pulse per bar realigns every output to phase 0, preventing drift when the divider is re-entered mid-song or when the clock is stopped/started."
+    },
+    {
+      "name": "Hardware-configured polarity",
+      "trigger": "internal jumpers",
+      "description": "Clock edge, output polarity, reset level vs edge, and reset polarity are all jumper-selectable on the PCB — no front-panel way to change. Relevant when interfacing non-Doepfer gate standards."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic rhythm scaffolding",
+      "patch": "Master clock (16ths) → Clock In · POW2 mode · Out 1 = 8ths · Out 2 = quarters · Out 3 = half · use for kick/snare/hat",
+      "diagram": "A-160-2:\n* Division Mode: POW2 · Output Mode: Gate\n- Master Clock (Clk) c> A-160-2 (Clock In)\n- A-160-2 (Out 1 (÷2)) c> Hat (Trig)\n- A-160-2 (Out 2) c> Snare (Trig)\n- A-160-2 (Out 3) c> Kick (Trig)"
+    },
+    {
+      "name": "Prime polyrhythm drone",
+      "patch": "PRIME mode · Out 4 (÷7), Out 5 (÷11), Out 6 (÷13) each trigger slow envelopes on separate drones",
+      "diagram": "A-160-2:\n* Division Mode: PRIME · Output Mode: Gate\n- Master Clock (Clk) c> A-160-2 (Clock In)\n- A-160-2 (Out 4) g> ADSR 1 (Gate)\n- A-160-2 (Out 5) g> ADSR 2 (Gate)\n- A-160-2 (Out 6) g> ADSR 3 (Gate) // 7:11:13 drift"
+    },
+    {
+      "name": "Seven-step odd meter",
+      "patch": "INT mode · Out 6 (÷7) resets a sequencer every seven clocks for 7/8 phrasing",
+      "diagram": "A-160-2:\n* Division Mode: INT · Output Mode: Trigger\n- Master Clock (Clk) c> A-160-2 (Clock In)\n- Master Clock (Clk) c> Sequencer (Clk)\n- A-160-2 (Out 6) t> Sequencer (Reset) // 7-step cycle"
+    },
+    {
+      "name": "Reset-locked fills",
+      "patch": "Bar-length reset keeps divider phase aligned after tempo changes or on-the-fly re-patching",
+      "diagram": "A-160-2:\n* Division Mode: POW2\n- Clock (Clk) c> A-160-2 (Clock In)\n- Bar Pulse (Trig) t> A-160-2 (Reset In) // re-phase each bar\n- A-160-2 (Out 3) c> Fill Gate (Trig)"
+    },
+    {
+      "name": "Trigger-mode hi-hat shuffle",
+      "patch": "Trigger mode inherits clock pulsewidth — shape clock with narrow gates to get tight hi-hat triggers on divided outputs",
+      "diagram": "A-160-2:\n* Division Mode: POW2 · Output Mode: Trigger\n- Narrow-PW Clock (Clk) c> A-160-2 (Clock In)\n- A-160-2 (Out 1 (÷2)) t> Hat (Trig)\n- A-160-2 (Out 2) t> Open Hat (Trig) // short pulses"
+    },
+    {
+      "name": "Slow LFO from divided clock",
+      "patch": "POW2 mode · Out 7 (÷128) drives a slew limiter to produce a smooth minute-long pseudo-LFO synced to clock",
+      "diagram": "A-160-2:\n* Division Mode: POW2\n- Clock (Clk) c> A-160-2 (Clock In)\n- A-160-2 (Out 7) >> Slew (In)\n- Slew (Out) >> VCF (Cutoff) // slow sweep tied to tempo"
+    }
+  ]
+}

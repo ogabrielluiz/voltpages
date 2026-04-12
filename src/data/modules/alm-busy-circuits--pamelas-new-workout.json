@@ -1,0 +1,167 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "206",
+    "sources": [
+      "https://busycircuits.com/pages/alm017",
+      "https://assets.busycircuits.com/docs/alm017-manual.pdf",
+      "https://www.perfectcircuit.com/alm-busy-circuits-pamelas-new-workout.html",
+      "https://clockfacemodular.com/en/products/alm-busy-pamelas-new-workout"
+    ]
+  },
+  "slug": "alm-busy-circuits--pamelas-new-workout",
+  "name": "Pamela's NEW Workout",
+  "manufacturer": "ALM Busy Circuits",
+  "hp": 8,
+  "tags": ["CLOCK", "LFO", "SEQUENCER", "RANDOM", "LOGIC", "QUANTIZER"],
+  "description": "Programmable clocked modulation source with 8 independent outputs. Each output freely configurable as gate, triangle, sine, envelope, or random, with Euclidean patterns, random skipping, quantization and inter-output logic. BPM 10-300.",
+  "controls": [
+    {
+      "name": "Program Knob",
+      "scope": "global",
+      "description": "Push-turn encoder. Twist scrolls outputs/values, click selects, long-hold (>1s) enters extended parameter menu per output.",
+      "detail": "Push: select · Twist: adjust · Hold: extended params · blue illuminated"
+    },
+    {
+      "name": "Start / Stop Button",
+      "scope": "global",
+      "description": "Starts and stops the internal clock. Stop also resets clock position.",
+      "detail": "single press: start/stop & reset"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Clk",
+      "description": "External clock input. Syncs internal clock at 1-48 PPQN (24 PPQN DIN Sync default).",
+      "voltage": "rising edge 700mV min · 0-5V"
+    },
+    {
+      "name": "Run",
+      "description": "Gate-level run/stop input. Assignable alternatives: Reset, Load Sequenced Bank, Rotate Outputs, Load CV Bank.",
+      "voltage": "0-5V gate"
+    },
+    {
+      "name": "CV 1",
+      "description": "Unipolar CV input. Assignable to any output parameter with per-target attenuation and offset. Ignored outside range.",
+      "voltage": "0-5V · unipolar only"
+    },
+    {
+      "name": "CV 2",
+      "description": "Bipolar CV input. Assignable to any output parameter with per-target attenuation and offset. 0V = 50%.",
+      "voltage": "-5 to +5V · bipolar"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT 1-8",
+      "description": "Eight independent clocked CV/gate outputs with green level LEDs. Each fully programmable.",
+      "voltage": "0-5V · 10-bit · 500Hz max update · buffered low impedance"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Clock divisions and multipliers",
+      "trigger": "per-output Modifier setting",
+      "description": "Each output can be set to a multiplier or divisor of the master clock from /512 to x48, including non-integer triplet and dotted values. Four utility modifiers replace the rate: constant ON (gate high), OFF, single start pulse, and single stop pulse — useful for resetting external sequencers."
+    },
+    {
+      "name": "Waveform shapes",
+      "trigger": "per-output Wave parameter",
+      "description": "Six base waveforms per step: Gate, Triangle, Sine, Envelope, Random, Smooth Random. A full cycle fits one step. Width parameter reshapes each: gate pulse-width, triangle/sine skew towards saw, envelope release length, smooth random peak roundness. Random does not respond to Width."
+    },
+    {
+      "name": "Complex swing via Delay + Dly",
+      "trigger": "Delay > 0 · Dly divisor set",
+      "description": "Delay shifts the start of waveform generation by a percentage of step time; Dly specifies which steps are delayed (every step, every other, every third). Dly=2 produces classic swing. Combined with Phase offset this covers most common groove templates without external MIDI-style swing."
+    },
+    {
+      "name": "Euclidean patterns",
+      "trigger": "EStep > 0 · ETrig set",
+      "description": "EStep sets total steps, ETrig sets the number of hits distributed as equidistantly as possible. ERot rotates the resulting pattern by N steps. Non-hit steps are skipped entirely — no waveform fires. Works on any waveform type, not just gates."
+    },
+    {
+      "name": "Random skip and Loop",
+      "trigger": "RSkip > 0 · Loop > 0",
+      "description": "RSkip is a percentage chance each step is skipped. Loop specifies a number of beats after which the random sequence resets — re-seeds from the saved seed, so loops are recallable after power cycle. Setting Loop=0 re-seeds the RNG for a fresh pattern."
+    },
+    {
+      "name": "Quantizer (10-bit, 5 octaves)",
+      "trigger": "Quant set to scale",
+      "description": "Quantises the final output voltage to a selected scale (Major, Minor, Harmonic Minor, Pentatonic Major/Minor, Lydian, Phrygian, Japanese, root+fifth, I/IV/VI chords, 12-tone chromatic). Applied after all other processing. When quantised, random-waveform outputs are S&H across empty euclidean/skipped steps instead of dropping to 0V, producing more musical sequences."
+    },
+    {
+      "name": "Inter-output logic (AND / OR / XOR)",
+      "trigger": "Logic parameter set per output",
+      "description": "Each output can combine its raw signal with any one other output via AND, OR, or XOR. Enables rhythm subdivision, rhythm thinning, or rhythm expansion from a single device — e.g. OUT 1 x4 AND OUT 2 /3 fires only on coincident beats."
+    },
+    {
+      "name": "Slop (timing humanisation)",
+      "trigger": "Slop > 0%",
+      "description": "Slop introduces a percentage chance of small random timing offsets per step. Humanises rigid clock patterns — classic drunk-drummer feel on hi-hats, or light 5-10% slop for subtle natural groove."
+    },
+    {
+      "name": "CV assignment with per-target atten/offset",
+      "trigger": "parameter highlighted → Assign button",
+      "description": "Any parameter except Steps can be assigned to CV 1 or CV 2. Each assignment has its own software attenuation (signed, acts as attenuverter) and offset. Multiple parameters can follow the same CV input with different scaling."
+    },
+    {
+      "name": "Run input assignable modes",
+      "trigger": "Run set to non-default",
+      "description": "Beyond start/stop, Run can trigger: Reset (resets all outputs to initial state), Load Sequenced Bank (advances through saved banks — direction set by CV 1 level), Rotate Outputs (shifts pattern assignment across outputs, direction by CV 1), Load CV Bank (CV 1 voltage selects bank A-P)."
+    },
+    {
+      "name": "Save banks (a-z × 8 slots)",
+      "trigger": "output save menu",
+      "description": "26 banks each holding 8 output configurations, plus all-output group save/load. Seeds for random waveforms are saved — so a loop from 6 months ago replays identically. Saving while clock is running may introduce small timing glitches."
+    },
+    {
+      "name": "Mute toggle shortcut",
+      "trigger": "hold program knob + click Start/Stop (firmware 189+)",
+      "description": "Holding the encoder while tapping Start/Stop toggles the current output's mute state without scrolling into a menu — live performance feature for dropping voices in and out of a patch."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Euclidean drum bed",
+      "patch": "OUT 1 E(3,16) → kick · OUT 2 E(5,16) ERot=2 → snare · OUT 3 E(7,16) ERot=5 → hat · three primes produce a 16-step groove that never loops identically within a phrase · classic Euclidean rhythm generator",
+      "diagram": "Pamela's NEW Workout:\n* OUT 1: Gate x1, EStep=16 ETrig=3\n* OUT 2: Gate x1, EStep=16 ETrig=5 ERot=2\n* OUT 3: Gate x1, EStep=16 ETrig=7 ERot=5\n\n- Pamela's NEW Workout (OUT 1) t> Kick (Trig)\n- Pamela's NEW Workout (OUT 2) t> Snare (Trig)\n- Pamela's NEW Workout (OUT 3) t> Hat (Trig)"
+    },
+    {
+      "name": "Quantised random melody",
+      "patch": "OUT 1 Random wave · /4 · Quant=Pentatonic Minor · Level=100% → VCO V/oct · OUT 2 Gate /4 → envelope · new pitch on every beat, always in scale · loop=8 creates a recallable 8-beat melody",
+      "diagram": "Pamela's NEW Workout:\n* OUT 1: Random wave, /4, Quant=Pm, Loop=8\n* OUT 2: Gate /4\n\n- Pamela's NEW Workout (OUT 1) p> VCO (V/oct) // scale-locked random melody\n- Pamela's NEW Workout (OUT 2) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+    },
+    {
+      "name": "Logic AND for ghost notes",
+      "patch": "OUT 1 gate /16 (dense) · OUT 2 E(5,16) (sparse pattern) · OUT 1 Logic=AND channel 2 · OUT 1 now fires only where both are high · syncopated ghost hits filtered from a straight 16th pulse",
+      "diagram": "Pamela's NEW Workout:\n* OUT 1: Gate /16, Logic=AND ch2\n* OUT 2: Gate x1, EStep=16 ETrig=5\n\n- Pamela's NEW Workout (OUT 1) t> Perc (Trig) // dense AND sparse = ghost hits"
+    },
+    {
+      "name": "Sine quadrature stereo",
+      "patch": "OUT 5 Sine /1 bar Phase=0 → Pan L CV · OUT 6 Sine /1 bar Phase=25 (90°) → Pan R CV · 90° offset creates circular stereo motion · tempo-synced without external LFO",
+      "diagram": "Pamela's NEW Workout:\n* OUT 5: Sine /1, Phase=0\n* OUT 6: Sine /1, Phase=25\n\n- Pamela's NEW Workout (OUT 5) >> VCA L (CV)\n- Pamela's NEW Workout (OUT 6) >> VCA R (CV) // quadrature pan"
+    },
+    {
+      "name": "DIN Sync tempo master",
+      "patch": "External DIN Sync device → Clk (24 PPQN) · Run input tracks external start/stop · Pam syncs tightly as slave while still generating all 8 clocked outputs · bridges legacy drum machines to modular",
+      "diagram": "Pamela's NEW Workout:\n* Clock sub-menu: PPQN=24, Run=Y\n* OUT 1: Gate /4\n* OUT 2: Triangle /1\n\nExt DIN Sync:\n\n- Ext DIN Sync (Clock) c> Pamela's NEW Workout (Clk)\n- Ext DIN Sync (Run) g> Pamela's NEW Workout (Run) // slave sync\n- Pamela's NEW Workout (OUT 1) t> Drum (Trig)\n- Pamela's NEW Workout (OUT 2) >> Filter (Cutoff)"
+    },
+    {
+      "name": "Humanised hi-hat via Slop",
+      "patch": "OUT 1 Gate /16 EStep=16 ETrig=12 · Slop=15% · each hit drifts slightly in time · repetitive pattern stops feeling robotic · raise to 30% for drunk-drummer feel",
+      "diagram": "Pamela's NEW Workout:\n* OUT 1: Gate /16, EStep=16 ETrig=12, Slop=15%\n\n- Pamela's NEW Workout (OUT 1) t> Hi-Hat (Trig) // humanised timing"
+    },
+    {
+      "name": "CV1 sweeps Euclidean rotation",
+      "patch": "External slow LFO → CV 1 input · Assign CV 1 to OUT 1 ERot parameter · attenuation set so full range covers 0-16 · slow sweep walks pattern through all 16 rotations · performance mutation without touching encoder",
+      "diagram": "Pamela's NEW Workout:\n* OUT 1: Gate /16, EStep=16 ETrig=5\n* CV 1 → ERot (OUT 1), full range\n\nLFO:\n\n- LFO (Out) >> Pamela's NEW Workout (CV 1)\n- Pamela's NEW Workout (OUT 1) t> Drum (Trig) // CV sweeps through all rotations"
+    },
+    {
+      "name": "Bank advance via Run",
+      "patch": "Run input reconfigured to Load Sequenced Bank · slow clock output (OUT 8 /64) → Run · CV 1 low (forward direction) · every 64 beats the full 8-output setup advances to the next saved bank · automatic scene progression for long-form pieces",
+      "diagram": "Pamela's NEW Workout:\n* Run mode: Load Sequenced Bank\n* OUT 8: Gate /64\n* Banks a, b, c, d saved\n\n- Pamela's NEW Workout (OUT 8) g> Pamela's NEW Workout (Run) // self-advance banks\n- Pamela's NEW Workout (OUT 1) t> Drum 1 (Trig)\n- Pamela's NEW Workout (OUT 2) t> Drum 2 (Trig)"
+    }
+  ]
+}
