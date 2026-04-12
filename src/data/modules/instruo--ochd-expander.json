@@ -45,15 +45,18 @@
   "patchIdeas": [
     {
       "name": "Push-pull modulation",
-      "patch": "LFO 3 out → VCF cutoff · Inv LFO 3 → VCA CV · filter opens as VCA closes"
+      "patch": "LFO 3 out → VCF cutoff · Inv LFO 3 → VCA CV · filter opens as VCA closes",
+      "diagram": "ochd expander:\n- ochd (LFO 3) >> VCF (Cutoff)\n- ochd expander (Inv LFO 3) >> VCA (CV) // mirrors LFO 3 for push-pull"
     },
     {
       "name": "Voltage-controlled LFO speed",
-      "patch": "Sequencer CV → Speed CV · LFO rate follows sequence for rhythmically evolving modulation"
+      "patch": "Sequencer CV → Speed CV · LFO rate follows sequence for rhythmically evolving modulation",
+      "diagram": "ochd expander:\n- Sequencer (CV) >> ochd expander (Speed CV)\n- ochd (LFO 1) >> VCF (Cutoff)\n- ochd expander (Inv LFO 1) >> VCA (CV) // rate steps with sequence"
     },
     {
       "name": "Double the modulation sources",
-      "patch": "Use all 8 ochd outs + all 8 inverted outs for 16 distinct triangle waves from a single 4+4HP pair"
+      "patch": "Use all 8 ochd outs + all 8 inverted outs for 16 distinct triangle waves from a single 4+4HP pair",
+      "diagram": "ochd expander:\n- ochd (LFO 2) >> VCO (FM)\n- ochd expander (Inv LFO 2) >> Filter (Res)\n- ochd (LFO 5) >> Pan (CV)\n- ochd expander (Inv LFO 5) >> Delay (Time) // 16 waves total from the pair"
     }
   ]
 }

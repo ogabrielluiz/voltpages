@@ -83,15 +83,18 @@
   "patchIdeas": [
     {
       "name": "CV-controlled reverb decay",
-      "patch": "Load Reverb Hall · assign CV to Control 2 (Decay) · LFO → CV for evolving decay times"
+      "patch": "Load Reverb Hall · assign CV to Control 2 (Decay) · LFO → CV for evolving decay times",
+      "diagram": "FX AID 1U:\n* Program: Reverb Hall\n* CV assign: Control 2 (Decay)\n- Voice (Out) -> FX AID 1U (L)\n- LFO (Out) >> FX AID 1U (CV / D/W)\n- FX AID 1U (L) -> Mixer (In L)\n- FX AID 1U (R) -> Mixer (In R)"
     },
     {
       "name": "Clocked delay",
-      "patch": "Load Delay Clock Sync · clock → CV input (assign CV to Control 1) · clock divides/multiplies delay time"
+      "patch": "Load Delay Clock Sync · clock → CV input (assign CV to Control 1) · clock divides/multiplies delay time",
+      "diagram": "FX AID 1U:\n* Program: Delay Clock Sync\n* CV assign: Control 1 (Time)\n- Voice (Out) -> FX AID 1U (L)\n- Clock (Out) c> FX AID 1U (CV / D/W)\n- FX AID 1U (L) -> Output (L)\n- FX AID 1U (R) -> Output (R)"
     },
     {
       "name": "Shimmer pad generator",
-      "patch": "Load Shimmer Input Dual · slow attack source → L input · D/W at 100% for pure shimmer"
+      "patch": "Load Shimmer Input Dual · slow attack source → L input · D/W at 100% for pure shimmer",
+      "diagram": "FX AID 1U:\n* Program: Shimmer Input Dual\n* D/W: 100% wet\n- Pad Source (Out) -> FX AID 1U (L)\n- FX AID 1U (L) -> Output (L)\n- FX AID 1U (R) -> Output (R)"
     }
   ]
 }

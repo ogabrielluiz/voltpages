@@ -80,15 +80,18 @@
   "patchIdeas": [
     {
       "name": "Portamento generator",
-      "patch": "MIDI-CV → Upper SL In · Out → VCO 1V/oct · Time knob sets glide"
+      "patch": "MIDI-CV → Upper SL In · Out → VCO 1V/oct · Time knob sets glide",
+      "diagram": "A-170:\n* Time (Upper SL): to taste\n- MIDI-CV (CV) p> A-170 (In Upper SL)\n- A-170 (Out Upper SL) p> VCO (1V/oct) // glide amount set by Time"
     },
     {
       "name": "AR envelope for bass",
-      "patch": "Gate → Lower SL In · Rise/Fall set individually · Out → VCA CV"
+      "patch": "Gate → Lower SL In · Rise/Fall set individually · Out → VCA CV",
+      "diagram": "A-170:\n* Time Range (Lower SL): M\n- Gate Source (Gate) g> A-170 (In Lower SL)\n- A-170 (Out Lower SL) >> VCA (CV) // AR shape from Rise/Fall knobs"
     },
     {
       "name": "Glissando AM",
-      "patch": "Pitch CV → VCO1 direct & via Upper SL → VCO2 (modulator) · produces timbral sweep"
+      "patch": "Pitch CV → VCO1 direct & via Upper SL → VCO2 (modulator) · produces timbral sweep",
+      "diagram": "A-170:\n- Pitch CV (CV) p> VCO1 (1V/oct)\n- Pitch CV (CV) p> A-170 (In Upper SL)\n- A-170 (Out Upper SL) p> VCO2 (1V/oct) // lagged pitch for AM sweep\n- VCO2 (Out) >> VCO1 (FM/Lin)"
     }
   ]
 }
