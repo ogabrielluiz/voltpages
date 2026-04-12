@@ -68,19 +68,23 @@
   "patchIdeas": [
     {
       "name": "Feedback waveshaping",
-      "patch": "Any output → Rate CV · attenuverter sets depth · creates exponential curves and pseudo-square waves from triangles"
+      "patch": "Any output → Rate CV · attenuverter sets depth · creates exponential curves and pseudo-square waves from triangles",
+      "diagram": "OCHD:\n* Rate Attenuverter: sets feedback depth\n- OCHD (LFO 4) >> OCHD (Rate CV) // self-patch warps all 8 shapes\n- OCHD (LFO 1) >> VCO (FM)\n- OCHD (LFO 8) >> FILTER (Cutoff)"
     },
     {
       "name": "8-parameter granular drifter",
-      "patch": "8 outputs → 8 CV inputs on granular module · each parameter evolves at independent rate · never repeats"
+      "patch": "8 outputs → 8 CV inputs on granular module · each parameter evolves at independent rate · never repeats",
+      "diagram": "OCHD:\n* Rate: noon\n- OCHD (LFO 1) >> GRANULAR (START)\n- OCHD (LFO 2) >> GRANULAR (WRAP)\n- OCHD (LFO 3) >> GRANULAR (SIZE)\n- OCHD (LFO 4) >> GRANULAR (PITCH)\n- OCHD (LFO 5) >> GRANULAR (TONE)\n- OCHD (LFO 6) >> GRANULAR (BLUR)\n- OCHD (LFO 7) >> GRANULAR (SHAPE)\n- OCHD (LFO 8) >> GRANULAR (SCAN) // 8 independently drifting params"
     },
     {
       "name": "Audio-rate FM",
-      "patch": "LFO 1 at max Rate (160Hz+) → VCO FM input · organic triangle-wave FM with free-running drift"
+      "patch": "LFO 1 at max Rate (160Hz+) → VCO FM input · organic triangle-wave FM with free-running drift",
+      "diagram": "OCHD:\n* Rate: fully CW (LFO 1 at 160Hz+)\n- OCHD (LFO 1) -> VCO (FM In)\n- VCO (Out) -> MIXER (In) // triangle FM with free-running drift"
     },
     {
       "name": "Rhythmic CV freeze",
-      "patch": "Clock gate → Rate CV · attenuverter fully CCW · all LFOs freeze on gate high · resume on low"
+      "patch": "Clock gate → Rate CV · attenuverter fully CCW · all LFOs freeze on gate high · resume on low",
+      "diagram": "OCHD:\n* Rate Attenuverter: fully CCW (invert)\n- CLOCK (Out) g> OCHD (Rate CV) // negative CV stalls all 8 LFOs\n- OCHD (LFO 1) >> VCA (CV)\n- OCHD (LFO 5) >> FILTER (Cutoff)"
     }
   ]
 }

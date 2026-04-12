@@ -132,23 +132,28 @@
   "patchIdeas": [
     {
       "name": "Ambient drone cloud",
-      "patch": "Load sustaining pad · SIZE 2-4s · RATE 1-2Hz · BLUR high · SHAPE Bell · LATCH · self-sustaining textural drone"
+      "patch": "Load sustaining pad · SIZE 2-4s · RATE 1-2Hz · BLUR high · SHAPE Bell · LATCH · self-sustaining textural drone",
+      "diagram": "MULTIGRAIN:\n* SIZE: 2-4s\n* RATE: 1-2Hz\n* SHAPE: Bell\n* BLUR: high\n* LATCH: ON\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // self-sustaining drone, no external trigger needed"
     },
     {
       "name": "Rhythmic grain percussion",
-      "patch": "Load drum loop · RATE clock-synced · SIZE 100-200ms · SCAN forward · RATE-SIZE link 2-4x · rearranged beats"
+      "patch": "Load drum loop · RATE clock-synced · SIZE 100-200ms · SCAN forward · RATE-SIZE link 2-4x · rearranged beats",
+      "diagram": "MULTIGRAIN:\n* SIZE: 100-200ms\n* SCAN: forward\n* RATE-SIZE link: 2-4x\n- CLOCK (Out) c> MULTIGRAIN (SYNC)\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // rate locks to external clock"
     },
     {
       "name": "Scene morph macro",
-      "patch": "Set contrasting Scene A/B · slow LFO → MORPH CV · all parameters evolve simultaneously · one cable"
+      "patch": "Set contrasting Scene A/B · slow LFO → MORPH CV · all parameters evolve simultaneously · one cable",
+      "diagram": "MULTIGRAIN:\n* Scene A / Scene B: contrasting settings\n* MORPH ATT: ~2 o'clock\n- LFO (Out) >> MULTIGRAIN (MORPH CV)\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // one cable morphs all params"
     },
     {
       "name": "Live granular looper",
-      "patch": "Set SOUND to Live mode · audio in → Looping Recorder · THRSH for auto-freeze · granularize live input"
+      "patch": "Set SOUND to Live mode · audio in → Looping Recorder · THRSH for auto-freeze · granularize live input",
+      "diagram": "MULTIGRAIN:\n* SOUND: Live mode\n* Looping Recorder: armed\n- SOURCE (Out L) -> MULTIGRAIN (IN L)\n- SOURCE (Out R) -> MULTIGRAIN (IN R)\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // live input granularized in realtime"
     },
     {
       "name": "Probability shape mixing",
-      "patch": "Different SHAPE per scene · MORPH 25% from A · 75% chance Shape A / 25% Shape B per grain"
+      "patch": "Different SHAPE per scene · MORPH 25% from A · 75% chance Shape A / 25% Shape B per grain",
+      "diagram": "MULTIGRAIN:\n* Scene A SHAPE: Hann\n* Scene B SHAPE: Decay\n* MORPH fader: 25% toward B\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // shape chosen probabilistically per grain"
     }
   ]
 }
