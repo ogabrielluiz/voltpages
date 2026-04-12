@@ -97,15 +97,18 @@
   "patchIdeas": [
     {
       "name": "Envelope-controlled VCA with bias",
-      "patch": "Osc → IN 1 · Env → CV 1 · LEVEL at noon for minimal bleed · linear response"
+      "patch": "Osc → IN 1 · Env → CV 1 · LEVEL at noon for minimal bleed · linear response",
+      "diagram": "Quad VCA:\n* Level 1: noon\n* Linear / Exponential Response: Linear (CW)\n- VCO (Out) -> Quad VCA (IN 1)\n- Envelope (Out) >> Quad VCA (CV 1)\n- Quad VCA (OUT 1) -> Output (In)"
     },
     {
       "name": "Submix + independent voice",
-      "patch": "3 voices → IN 1–3 · OUT 3 → destination (submix) · IN 4 independent → OUT 4 for fourth voice"
+      "patch": "3 voices → IN 1–3 · OUT 3 → destination (submix) · IN 4 independent → OUT 4 for fourth voice",
+      "diagram": "Quad VCA:\n- Voice 1 (Out) -> Quad VCA (IN 1)\n- Voice 2 (Out) -> Quad VCA (IN 2)\n- Voice 3 (Out) -> Quad VCA (IN 3)\n- Quad VCA (OUT 3) -> Mixer (In A) // 3-voice submix\n- Voice 4 (Out) -> Quad VCA (IN 4)\n- Quad VCA (OUT 4 / MIX) -> Mixer (In B) // independent voice"
     },
     {
       "name": "FM index control",
-      "patch": "Modulator osc → IN 1 · OUT 1 → FM input · LEVEL sets base index · Env → CV 1 for dynamic FM"
+      "patch": "Modulator osc → IN 1 · OUT 1 → FM input · LEVEL sets base index · Env → CV 1 for dynamic FM",
+      "diagram": "Quad VCA:\n* Level 1: base FM index\n- Modulator VCO (Out) -> Quad VCA (IN 1)\n- Envelope (Out) >> Quad VCA (CV 1) // dynamic index\n- Quad VCA (OUT 1) >> Carrier VCO (FM In)"
     }
   ]
 }

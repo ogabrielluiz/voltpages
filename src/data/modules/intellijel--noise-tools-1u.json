@@ -107,15 +107,18 @@
   "patchIdeas": [
     {
       "name": "Random note sequencer",
-      "patch": "PULSE internal clock · WHITE → SAMPLE IN · HOLD → VCO 1V/oct · SLEW → filter CV"
+      "patch": "PULSE internal clock · WHITE → SAMPLE IN · HOLD → VCO 1V/oct · SLEW → filter CV",
+      "diagram": "Noise Tools 1U:\n* Clock/Random Switch: CLOCK\n* Sample/Track Switch: SAMPLE\n- Noise Tools 1U (WHITE) -> Noise Tools 1U (SAMPLE IN)\n- Noise Tools 1U (HOLD) p> VCO (1V/oct) // stepped random pitches\n- Noise Tools 1U (SLEW) >> VCF (Cutoff) // smoothed random sweep"
     },
     {
       "name": "Noise modulation source",
-      "patch": "PINK → VCF cutoff CV · WHITE → VCO PWM for noisy, organic timbres"
+      "patch": "PINK → VCF cutoff CV · WHITE → VCO PWM for noisy, organic timbres",
+      "diagram": "Noise Tools 1U:\n- Noise Tools 1U (PINK) >> VCF (Cutoff) // slow organic wobble\n- Noise Tools 1U (WHITE) >> VCO (PWM)"
     },
     {
       "name": "Random gate bursts",
-      "patch": "RANDOM mode · Pulse Rate sets density · PULSE → trigger destinations"
+      "patch": "RANDOM mode · Pulse Rate sets density · PULSE → trigger destinations",
+      "diagram": "Noise Tools 1U:\n* Clock/Random Switch: RANDOM\n* Pulse Rate: density\n- Noise Tools 1U (PULSE) t> Envelope (Trig)\n- Noise Tools 1U (PULSE) t> Drum (Trig)"
     }
   ]
 }
