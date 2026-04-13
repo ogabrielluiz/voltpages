@@ -118,133 +118,437 @@
   "patchIdeas": [
     {
       "name": "808-style kick drum",
-      "patch": "Model 14 (bass drum) · HARMONICS at 9 o'clock (low tuning) · TIMBRE at 9 o'clock (soft click) · MORPH at 10 o'clock (medium decay) · short trigger from sequencer · AUX = distorted variation for layering",
-      "diagram": "Plaits:\n* Model: 14 (bass drum)\n- Sequencer (Trig) t> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (In 1)\n- Plaits (AUX) -> Mixer (In 2) // distorted layer"
+      "patch": "Use the analog bass drum model as a self-contained 808-style kick — pitch via HARMONICS, click via TIMBRE, decay via MORPH.",
+      "steps": [
+        "Select Model 14 (Analog bass drum, red bank).",
+        "Set HARMONICS to about 9 o'clock for low tuning / soft attack sharpness.",
+        "Set TIMBRE to about 9 o'clock for a gentle click — CW for a snappier transient.",
+        "Set MORPH to about 10 o'clock for medium decay.",
+        "Patch sequencer trigger → Plaits TRIG.",
+        "Patch Plaits OUT → mixer.",
+        "Optional: patch Plaits AUX → mixer at low level for a second bass-drum variant layered underneath."
+      ],
+      "signalOut": "Plaits OUT — the 808-style kick. AUX is an alternate analog-bass-drum-circuit emulation that layers well.",
+      "hear": "A deep kick with clean attack. Turn MORPH CW for longer 808 tails; TIMBRE CW for a brighter snappier click; HARMONICS CW for pitched snare-body territory.",
+      "diagram": "Plaits:\n* Model: 14 (Analog bass drum)\n* HARMONICS: ~9 o'clock\n* TIMBRE: ~9 o'clock\n* MORPH: ~10 o'clock\n\n- Sequencer (Trig) t> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (In 1)\n- Plaits (AUX) -> Mixer (In 2) // alt bass drum layer"
     },
     {
       "name": "DX7 electric piano",
-      "patch": "Model 4 (Plaits formant bank, select keyboard FM preset) · HARMONICS turned to EP harmonic preset position · TIMBRE at 70% (moderate FM index) · MORPH short (tight decay) · V/Oct from keyboard · internal LPG active · clean playable FM piano voice from one module",
-      "diagram": "Plaits:\n* Model: 4 (FM)\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- Keyboard (Gate) g> Plaits (Trigger) // activates internal LPG\n- Plaits (OUT) -> Output (In)"
+      "patch": "The 2-op FM model is Plaits' DX7 core — set carrier/modulator ratio with TIMBRE, modulation index with HARMONICS, and let the internal LPG provide the EP decay.",
+      "steps": [
+        "Select Model 3 (Two-operator FM, green bank).",
+        "Set HARMONICS at noon to start with a simple integer ratio.",
+        "Set TIMBRE to about 11 o'clock for a modest FM index (brighter = more CW).",
+        "Set MORPH below noon for CCW feedback character (or past noon for aggressive rough feedback).",
+        "Hold left button and set TIMBRE for LPG response (VCFA/VCA mix) and MORPH for LPG decay time — tune to taste of a tine-like release.",
+        "Patch keyboard pitch → Plaits V/OCT.",
+        "Patch keyboard gate → Plaits TRIG (this activates the internal LPG with each note).",
+        "Patch Plaits OUT → your output."
+      ],
+      "signalOut": "Plaits OUT — FM electric piano voice, shaped by the internal LPG envelope.",
+      "hear": "A glassy Rhodes-like tone that brightens on attack and fades like a bell. Sweep HARMONICS for different ratios (integer = musical, non-integer = inharmonic), TIMBRE for FM depth.",
+      "diagram": "Plaits:\n* Model: 3 (2-op FM)\n* HARMONICS: noon\n* TIMBRE: ~11 o'clock (FM index)\n* MORPH: below noon\n\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- Keyboard (Gate) g> Plaits (Trigger) // activates internal LPG\n- Plaits (OUT) -> Output (In)"
     },
     {
       "name": "Drum machine from one module",
-      "patch": "MODEL CV from 3-step sequencer outputting 0V / 0.31V / 0.62V · TRIG from clock · 0V = kick (Model 14) · 0.31V = snare (Model 15) · 0.62V = hi-hat (Model 16) · sequence all three drum voices with one Plaits and one sequencer",
-      "diagram": "Plaits:\n- Sequencer (CV Out) >> Plaits (Model CV) // 0/0.31/0.62V selects kick/snare/hat\n- Clock (Out) t> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (In)"
+      "patch": "Plaits's MODEL CV is sampled on every trigger — cycle through three drum models with one CV track to play kick, snare, and hi-hat from a single module.",
+      "steps": [
+        "Set Plaits's base model to Model 14 (Analog bass drum).",
+        "Prepare a 3-step CV track: 0V, +0.31V, +0.62V. Each 0.31V step moves MODEL CV by one model position.",
+        "Patch that CV track → Plaits MODEL CV.",
+        "Patch your clock → Plaits TRIG. Plaits samples MODEL CV on the trigger edge, so steps settle exactly at each hit.",
+        "Patch Plaits OUT → drum mixer.",
+        "Voila: step 1 plays kick (14), step 2 plays snare (15), step 3 plays hi-hat (16)."
+      ],
+      "signalOut": "Plaits OUT — monophonic drum voice rotating through kick/snare/hi-hat per step.",
+      "hear": "A basic drum pattern from a single Plaits. Because MODEL CV only samples on trigger, model changes never glitch mid-hit. Swap the base model to reach different clusters (e.g. Model 10 for filtered noise + particle noise + inharmonic string percussion).",
+      "diagram": "Plaits:\n* Base Model: 14 (Analog bass drum)\n\n- Sequencer (CV Out) >> Plaits (Model CV) // 0V/+0.31V/+0.62V\n- Clock (Out) t> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (In)"
     },
     {
       "name": "Chiptune arpeggiator",
-      "patch": "Model 8 (speech/LPC bank, orange) · clock → TRIG · TIMBRE swept to select phoneme/arpeggio mode · AUX = NES-style triangle wave bass line · mix OUT + AUX for two independent voices from one module",
-      "diagram": "Plaits:\n* Model: 8 (speech/LPC)\n- Clock (Out) c> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (In 1) // arpeggio lead\n- Plaits (AUX) -> Mixer (In 2) // triangle bass"
+      "patch": "The speech/LPC model produces rhythmic phoneme bursts. Patch a clock into TRIG for word-by-word articulation, mix OUT + AUX for arp + bass-line texture.",
+      "steps": [
+        "Select Model 8 (Vowel and speech synthesis).",
+        "Patch a clock → Plaits TRIG. Each trigger utters a word/phoneme from the current bank.",
+        "Set HARMONICS to choose between formant filter, SAM, and LPC vowels (CCW to CW).",
+        "Set TIMBRE for species selection (Daleks → chipmunks).",
+        "Use the MORPH attenuverter to attenuate the MORPH CV source if you patch one (selects which phoneme/word).",
+        "Patch Plaits OUT → mixer (arpeggiated lead).",
+        "Patch Plaits AUX → mixer (the unfiltered vocal-cords signal — grittier, bass-register character)."
+      ],
+      "signalOut": "Plaits OUT (lead) and Plaits AUX (unfiltered vocal cords, bassier).",
+      "hear": "Rhythmic vocal-synthesis patterns. AUX alone makes an interesting formant-y bass; OUT alone is the fully filtered speech. Sweep HARMONICS live for vowel→word transitions.",
+      "diagram": "Plaits:\n* Model: 8 (Vowel/speech)\n\n- Clock (Out) c> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (In 1) // arpeggio lead\n- Plaits (AUX) -> Mixer (In 2) // raw vocal cords"
     },
     {
-      "name": "Granular ambient CV",
-      "patch": "Model 9 · hold right button + HARMONICS full CCW to enter LFO mode · HARMONICS at 2 o'clock (wide pitch spread across grains) · OUT and AUX = two non-repeating, slowly wandering random CV sources · patch to filter FM and reverb send for ambient self-generating textures",
-      "diagram": "Plaits:\n* Model: 9 (LFO mode)\n- Plaits (OUT) >> Filter (FM CV) // random wandering CV\n- Plaits (AUX) >> Reverb (Send CV) // independent second stream"
+      "name": "Granular cloud LFO (dual random CV source)",
+      "patch": "Plaits's granular cloud model in LFO mode emits two unrelated slow random CVs — use OUT + AUX as two independent modulation streams.",
+      "steps": [
+        "Select Model 9 (Granular cloud, red bank).",
+        "Enter LFO mode: hold right button A + turn HARMONICS full CCW (drops to 0.015–16Hz range).",
+        "Set HARMONICS to ~2 o'clock for a wide pitch spread across the 8 enveloped grains.",
+        "Set TIMBRE and MORPH to taste — these now affect grain density and duration at sub-audio rates.",
+        "Patch Plaits OUT → modulation destination 1 (filter FM, wavefolder, etc.).",
+        "Patch Plaits AUX → modulation destination 2 (reverb send, delay feedback, etc.).",
+        "No TRIG, no V/OCT — Plaits self-generates the modulation."
+      ],
+      "signalOut": "Plaits OUT + Plaits AUX — two slow, non-repeating random CVs.",
+      "hear": "Ambient self-generating textures. The two CV streams never correlate, which produces drift between whatever you patch them into. Model 9 in LFO mode is the classic 'free Marbles' trick.",
+      "diagram": "Plaits:\n* Model: 9 (Granular cloud, LFO mode)\n* HARMONICS: ~2 o'clock\n\n- Plaits (OUT) >> Filter (FM CV) // random wandering CV\n- Plaits (AUX) >> Reverb (Send CV) // independent second stream"
     },
     {
       "name": "Self-patch feedback FM",
-      "patch": "Model 3 (2-op FM) · OUT → MORPH CV input via attenuverter set at 10 o'clock · audio-rate feedback creates metallic, chaotic tones · TIMBRE controls carrier/modulator ratio · HARMONICS adjusts base FM depth · sweep MORPH attenuverter for feedback amount control",
-      "diagram": "Plaits:\n* Model: 3 (2-op FM)\n- Plaits (OUT) >> Plaits (Morph CV) // audio-rate self feedback\n- Plaits (OUT) -> Output (In)"
+      "patch": "Feed Plaits's OUT back into its MORPH CV via the attenuverter — audio-rate feedback produces metallic, chaotic tones.",
+      "steps": [
+        "Select Model 3 (Two-operator FM).",
+        "Set the MORPH attenuverter (third small attenuverter under MORPH) to about 10 o'clock (modest, so feedback doesn't blow up).",
+        "Patch Plaits OUT → Plaits MORPH CV. This feeds the audio signal into the feedback parameter of the 2-op FM model.",
+        "Set TIMBRE to define the FM modulation index (around noon to start).",
+        "Set HARMONICS to set the carrier/modulator ratio.",
+        "Patch V/OCT from your keyboard or sequencer.",
+        "Patch Plaits OUT → output (note the same jack also goes to MORPH CV — Plaits's OUT is a voltage source that can drive multiple inputs since the MORPH input is high-impedance; no stackable needed if your Plaits's Model OUT cable can drive both simultaneously, but use a mult / stackable if unsure)."
+      ],
+      "signalOut": "Plaits OUT — FM tone with self-feedback, clean at low attenuverter, chaotic near unity.",
+      "hear": "Metallic bells and ugly digital crunch depending on how far CW you push the MORPH attenuverter. Great for FM percussion and experimental drones.",
+      "diagram": "Plaits:\n* Model: 3 (2-op FM)\n* MORPH Atten: ~10 o'clock\n\n- Plaits (OUT) >> Plaits (Morph CV) // audio-rate self feedback\n- Plaits (OUT) -> Output (In)"
     },
     {
       "name": "Bowed string drone",
-      "patch": "Model 12 (modal resonator/string) · no trigger patched · MORPH at 3 o'clock (long resonance) · V/Oct from keyboard or fixed pitch CV · LEVEL input from slow LFO for breathing bow pressure · mix OUT + AUX for stereo spread",
-      "diagram": "Plaits:\n* Model: 12 (modal)\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- LFO (Out) >> Plaits (Level) // breathing bow pressure\n- Plaits (OUT) -> Mixer (L)\n- Plaits (AUX) -> Mixer (R)"
+      "patch": "The modal resonator played by its own internal dust-noise excitation when TRIG is unpatched — slow LEVEL modulation gives the feel of an uneven bow.",
+      "steps": [
+        "Select Model 13 (Modal resonator bank, red bank).",
+        "Do NOT patch anything into TRIG. When TRIG is unpatched, Plaits excites the resonator with internal dust noise — perfect for drones.",
+        "Set MORPH to ~3 o'clock for long resonance / slow energy absorption.",
+        "Set HARMONICS to pick a material (full CCW = string-like, CW = metallic/bell).",
+        "Set TIMBRE to adjust excitation brightness.",
+        "Patch keyboard (or fixed CV) → Plaits V/OCT.",
+        "Patch a slow LFO → Plaits LEVEL. This simulates uneven bow pressure.",
+        "Patch Plaits OUT → mixer L and Plaits AUX → mixer R for a stereo spread (AUX is the raw dust-noise exciter, useful as a companion texture)."
+      ],
+      "signalOut": "Plaits OUT (resonated tone) and AUX (raw exciter signal).",
+      "hear": "A sustained bowed string-like drone that wavers with the LFO modulation. The AUX output sits underneath as a raw textural companion — mix it low for realism, louder for an experimental feel.",
+      "diagram": "Plaits:\n* Model: 13 (Modal resonator, TRIG unpatched)\n* MORPH: ~3 o'clock\n\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- LFO (Out) >> Plaits (Level) // breathing bow pressure\n- Plaits (OUT) -> Mixer (L)\n- Plaits (AUX) -> Mixer (R)"
     },
     {
       "name": "Supersaw / unison lead",
-      "patch": "Model 9 (sawtooth grains) · HARMONICS at 9 o'clock (tight unison) · TIMBRE full CW (bright, dense) · V/Oct from sequencer · TRIG from gate · mix OUT + AUX (slightly detuned grain clusters) for wide supersaw sound",
-      "diagram": "Plaits:\n* Model: 9 (grains)\n- Sequencer (CV) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (L)\n- Plaits (AUX) -> Mixer (R) // detuned grain cluster"
+      "patch": "The granular cloud model at audio rate is effectively 8 detuned sawtooth oscillators — with HARMONICS low and TIMBRE high, you get a rich supersaw swarm from one Plaits.",
+      "steps": [
+        "Select Model 9 (Granular cloud).",
+        "Set HARMONICS at ~9 o'clock for a tight detune spread (more CW = wider detune chaos).",
+        "Set TIMBRE full CW for maximum grain density (the 'saw count').",
+        "Set MORPH around noon for medium grain overlap.",
+        "Patch sequencer pitch → Plaits V/OCT.",
+        "Patch sequencer gate → Plaits TRIG.",
+        "Patch Plaits OUT → mixer L and Plaits AUX → mixer R. AUX is a sine-wave variant of the same grains — layering OUT (sawtooth) + AUX (sines) gives the hollowed-center supersaw effect without an external detuner."
+      ],
+      "signalOut": "Plaits OUT (saw supersaw) + Plaits AUX (sine variant) → stereo mix.",
+      "hear": "A wide, thick lead. Tighten HARMONICS for a closer unison; open it up for more chorus-y separation. TIMBRE full CW is the brightest; pull back for a softer swarm.",
+      "diagram": "Plaits:\n* Model: 9 (Granular cloud)\n* HARMONICS: ~9 o'clock\n* TIMBRE: full CW\n* MORPH: noon\n\n- Sequencer (CV) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (L)\n- Plaits (AUX) -> Mixer (R) // sine-variant grain cluster"
     },
     {
       "name": "Talking bass",
-      "patch": "Model 8 (speech synthesis) · MORPH positioned at formant vowel transition · V/Oct set for bass register (0V–1V) · slow LFO on TIMBRE CV at 1 o'clock attenuverter · MORPH CV from envelope for vowel-on-note effect · rhythmic gate triggers for consonant attacks",
-      "diagram": "Plaits:\n* Model: 8 (speech)\n- Sequencer (CV) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Plaits (Trigger)\n- LFO (Out) >> Plaits (Timbre CV)\n- Envelope (Out) >> Plaits (Morph CV) // vowel-on-note\n- Plaits (OUT) -> Output (In)"
+      "patch": "Drive the speech model in the bass register with envelope-modulated MORPH for vowel-on-note articulation — robotic bass lines.",
+      "steps": [
+        "Select Model 8 (Vowel and speech synthesis).",
+        "Set TIMBRE to low/bass species (CCW, deeper registers).",
+        "Set HARMONICS to your desired word/phoneme bank.",
+        "Set MORPH at a vowel transition point (experiment).",
+        "Set MORPH attenuverter (right small atten) to ~1 o'clock.",
+        "Patch bass-register sequencer pitch (0V–1V) → Plaits V/OCT.",
+        "Patch sequencer gate → Plaits TRIG (each trigger fires a new word).",
+        "Patch a slow LFO → Plaits TIMBRE CV (shifts vowel species over time).",
+        "Patch an envelope → Plaits MORPH CV (sweeps through phonemes on each note).",
+        "Patch Plaits OUT → your output."
+      ],
+      "signalOut": "Plaits OUT — filtered vocal synthesis at bass pitches.",
+      "hear": "A robotic, vocoder-like bass that 'speaks' a new phoneme on each note. Good for electro, IDM, glitch.",
+      "diagram": "Plaits:\n* Model: 8 (Vowel/speech)\n\n- Sequencer (CV) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Plaits (Trigger)\n- LFO (Out) >> Plaits (Timbre CV)\n- Envelope (Out) >> Plaits (Morph CV) // vowel-on-note\n- Plaits (OUT) -> Output (In)"
     },
     {
       "name": "Beat-synced model switching",
-      "patch": "Slow ascending CV ramp (0–5V over 8 bars) → MODEL CV · clock → TRIG · model only changes on each trigger so switching is always in-time · HARMONICS and TIMBRE stay fixed, timbre character evolves bar by bar as model index advances",
+      "patch": "A slow CV ramp on MODEL CV + trigger on every beat — Plaits steps through models one per beat instead of smoothly morphing. Timbral evolution locked to rhythm.",
+      "steps": [
+        "Patch a slow ascending CV ramp (0–5V over 8 bars, e.g. from an LFO in saw mode, or a slow sequencer) → Plaits MODEL CV.",
+        "Patch your clock → Plaits TRIG. Plaits samples MODEL CV only on trigger edges, so model changes are quantized to beats.",
+        "Leave HARMONICS, TIMBRE, MORPH at whatever position you want — they apply to whichever model is currently active.",
+        "Patch V/OCT and LEVEL as usual for your pitch and dynamics.",
+        "Patch Plaits OUT → output."
+      ],
+      "signalOut": "Plaits OUT — a voice whose synthesis model advances beat-by-beat.",
+      "hear": "A voice that slowly evolves through all 16 synthesis models over 8 bars, changing character on every trigger without ever glitching mid-note. Endless generative texture patch.",
       "diagram": "Plaits:\n- LFO (Ramp) >> Plaits (Model CV) // 0-5V over 8 bars\n- Clock (Out) c> Plaits (Trigger) // samples Model CV on edge\n- Plaits (OUT) -> Output (In)"
     },
     {
       "name": "AUX bass reinforcement",
-      "patch": "Dual-output voice · OUT = lead through filter + VCA1 with main envelope · AUX = sub bass through VCA2 with longer envelope · Model: Virtual Analog (AUX gives sub square) or String/Modal (AUX = raw exciter) · one Plaits covers lead and sub-bass layers simultaneously",
-      "diagram": "Plaits:\n* Model: Virtual Analog (or String)\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> VCA 1 (CV)\n- Envelope (Out) >> VCA 2 (CV) // longer decay\n- Plaits (OUT) -> Filter (In) -> VCA 1 (In) // lead\n- Plaits (AUX) -> VCA 2 (In) // sub bass\n- VCA 1 (Out) -> Mixer (In 1)\n- VCA 2 (Out) -> Mixer (In 2)"
+      "patch": "OUT plays the lead through a filter + VCA; AUX is a model-dependent variant (sub-square, raw exciter, etc.) routed to a second VCA for independent processing — two layers per trigger, one Plaits.",
+      "steps": [
+        "Select a model whose AUX output is useful — Model 1 (virtual analog) gives AUX = sum of two hard-synced waves; Model 3 (FM) gives AUX = sub-oscillator; Models 11/12/13 give AUX = raw exciter.",
+        "Patch sequencer pitch → Plaits V/OCT.",
+        "Patch sequencer gate → external envelope TRIG.",
+        "Patch Plaits OUT → filter → VCA 1 (the lead path).",
+        "Patch Plaits AUX → VCA 2 (the sub/bass path, typically unfiltered).",
+        "Patch envelope → VCA 1 CV (main decay).",
+        "Patch envelope (or a longer-release envelope) → VCA 2 CV for a different tail.",
+        "Mix VCA 1 and VCA 2 outputs."
+      ],
+      "signalOut": "VCA 1 out (Plaits OUT, lead) + VCA 2 out (Plaits AUX, bass/sub).",
+      "hear": "A voice with two processed layers from a single note. Swap envelopes for different time relationships — longer AUX decay gives sustained bass under staccato lead, etc.",
+      "diagram": "Plaits:\n* Model: Virtual Analog (or 2-op FM, or String/Modal for exciter AUX)\n\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> VCA 1 (CV)\n- Envelope (Out) >> VCA 2 (CV) // longer decay\n- Plaits (OUT) -> Filter (In) -> VCA 1 (In) // lead\n- Plaits (AUX) -> VCA 2 (In) // sub / variant\n- VCA 1 (Out) -> Mixer (In 1)\n- VCA 2 (Out) -> Mixer (In 2)"
     },
     {
       "name": "FM input self-feedback drone",
-      "patch": "Model 1 (Virtual Analog) or Model 3 (2-op FM) · MAIN fed back through attenuator into FM input · chaotic self-FM builds into metallic drone · AUX mixed in as cleaner layer to anchor pitch · FM attenuverter sets feedback intensity",
-      "diagram": "Plaits:\n* Model: Virtual Analog (or 2-op FM)\n- Plaits (OUT) -> Attenuator (In)\n- Attenuator (Out) >> Plaits (FM) // chaotic self-FM\n- Plaits (AUX) -> Mixer (In 1) // clean layer\n- Plaits (OUT) -> Mixer (In 2)"
+      "patch": "Feed OUT back into the FM input through an attenuator — any pitched model becomes a chaotic self-FM drone. AUX adds a clean pitch anchor.",
+      "steps": [
+        "Select Model 1 (Virtual Analog) or Model 3 (2-op FM) as the starting character.",
+        "Patch Plaits OUT → attenuator input.",
+        "Set the attenuator CCW to start (no feedback), then raise slowly.",
+        "Patch attenuator output → Plaits FM.",
+        "Set Plaits FM attenuverter (center small atten) to ~1 o'clock to give the feedback some depth.",
+        "As you raise the attenuator, the signal begins FM-ing itself — expect growls, bells, and chaos.",
+        "Patch Plaits AUX → mixer as a clean pitch anchor (AUX on Model 1 is the hard-sync'd variant, on Model 3 is the sub-osc — both stable).",
+        "Patch Plaits OUT → mixer as the main feedback voice."
+      ],
+      "signalOut": "Mixer Out — clean AUX layer + chaotic OUT layer.",
+      "hear": "Self-FM ugly-beautiful drones. Back off the attenuator if it locks into harsh squeals; push it for metallic digital noise. AUX grounds the pitch so the whole thing doesn't wander off.",
+      "diagram": "Plaits:\n* Model: 1 (Virtual Analog) or 3 (2-op FM)\n\n- Plaits (OUT) -> Attenuator (In)\n- Attenuator (Out) >> Plaits (FM) // chaotic self-FM\n- Plaits (AUX) -> Mixer (In 1) // clean layer\n- Plaits (OUT) -> Mixer (In 2)"
     },
     {
       "name": "Morphing swarm pad",
-      "patch": "Model 6 (Wavetable) · slow LFO on MORPH sweeps waveform bank · audio-rate LFO on TIMBRE adds swarm motion · S&H on HARMONICS steps through wavetable rows · MAIN into reverb for wide evolving pad · held V/Oct, no TRIG (continuous tone)",
-      "diagram": "Plaits:\n* Model: Wavetable\n- LFO 1 (Slow) >> Plaits (Morph CV)\n- LFO 2 (Audio) >> Plaits (Timbre CV)\n- S&H (Out) >> Plaits (Harmonics CV)\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> Reverb (In) -> Output (In)"
+      "patch": "Wavetable model with multi-rate modulation on every CV input — slow LFO walks MORPH through columns, audio-rate LFO on TIMBRE adds swarm, S&H on HARMONICS steps wavetable banks. Never-repeating pad.",
+      "steps": [
+        "Select Model 6 (Wavetable).",
+        "Patch a slow LFO (triangle or sine, ~0.05Hz) → Plaits MORPH CV. This sweeps the wavetable column (row index).",
+        "Patch an audio-rate LFO (~20Hz tri/sine) → Plaits TIMBRE CV via an attenuator set low. Adds a swarm-like shimmer.",
+        "Patch a clocked S&H → Plaits HARMONICS CV. Each clock pulse picks a new wavetable bank.",
+        "Patch keyboard (or a long held V/OCT) → Plaits V/OCT.",
+        "No TRIG, no LEVEL CV — continuous tone.",
+        "Patch Plaits OUT → reverb → output. AUX carries the low-fi version if you want a lofi layer underneath."
+      ],
+      "signalOut": "Plaits OUT → reverb — evolving wide pad.",
+      "hear": "A pad that swims through timbral territory without ever settling. The three different modulation speeds (slow, audio, clocked) ensure the voice never repeats exactly.",
+      "diagram": "Plaits:\n* Model: 6 (Wavetable)\n\n- LFO 1 (Slow) >> Plaits (Morph CV)\n- LFO 2 (Audio) >> Plaits (Timbre CV)\n- S&H (Out) >> Plaits (Harmonics CV)\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> Reverb (In) -> Output (In)"
     },
     {
       "name": "Karplus drone (held LEVEL)",
-      "patch": "Model 7 (Plucked String) · never trigger · constant high CV into LEVEL holds the LPG open so the string self-oscillates into a continuous drone · V/Oct sets pitch · HARMONICS tweaks damping · OUT through VCA for volume control",
-      "diagram": "Plaits:\n* Model: Plucked String\n- Offset (Constant +5V) >> Plaits (Level) // holds LPG open, string self-oscillates\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> VCA (In) -> Output (In)"
+      "patch": "The Inharmonic String model self-oscillates when LEVEL is held open — constant high LEVEL CV bypasses the need to retrigger, giving a continuous Karplus-Strong drone.",
+      "steps": [
+        "Select Model 12 (Inharmonic string modeling).",
+        "Patch a constant +5V offset → Plaits LEVEL. This holds the internal LPG fully open so the string feeds back and self-oscillates.",
+        "Do NOT patch TRIG (that would interrupt the feedback with discrete excitations).",
+        "Patch keyboard or fixed CV → Plaits V/OCT.",
+        "Set HARMONICS to taste — CCW = more string-like, CW = more inharmonic.",
+        "Set MORPH to set the feedback / damping time — longer for sustained drones.",
+        "Patch Plaits OUT → external VCA → output. External VCA lets you volume-control the drone; Plaits itself has no envelope-modulated amplitude in this mode."
+      ],
+      "signalOut": "Plaits OUT → external VCA → output.",
+      "hear": "A long, pitched string drone with changing harmonic character as HARMONICS and MORPH shift. Works beautifully as an ambient bed under other voices.",
+      "diagram": "Plaits:\n* Model: 12 (Inharmonic string)\n\n- Offset (+5V) >> Plaits (Level) // holds LPG open, string self-oscillates\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> VCA (In) -> Output (In)"
     },
     {
       "name": "Generative model-switcher",
-      "patch": "Clocked random gate source (Turing Machine or S&H) drives MODEL CV so each new note picks a different synthesis model · sequencer provides V/OCT · envelope opens LEVEL · MODEL CV is only sampled on trigger edges, keeping the model stable for the whole note",
+      "patch": "Random CV source on MODEL CV picks a different synthesis model for every note — combined with a melody sequencer, you get a generative phrase where each note has its own character.",
+      "steps": [
+        "Patch your clock → Turing Machine (or any clocked random CV source) clock input.",
+        "Patch Turing Machine CV out → Plaits MODEL CV. Each clock samples a fresh random value.",
+        "Patch your melody sequencer's pitch → Plaits V/OCT.",
+        "Patch your melody sequencer's gate → Plaits TRIG. This samples MODEL CV (locking the model for the note) AND triggers the internal envelope.",
+        "Patch an envelope → Plaits LEVEL if you want finer amplitude shaping beyond the internal one.",
+        "Patch Plaits OUT → mixer."
+      ],
+      "signalOut": "Plaits OUT — a melodic phrase where every note is a different synthesis model.",
+      "hear": "Kaleidoscopic generative phrases. Since MODEL CV samples on trigger, the model stays stable per note — no glitching mid-hit. Pair a musical sequencer with randomized timbre for instant variety.",
       "diagram": "Plaits:\n- Clock (Out) c> Turing (Clock)\n- Turing (CV) >> Plaits (Model CV) // random model per step\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Plaits (Trigger) // samples Model CV\n- Envelope (Out) >> Plaits (Level)\n- Plaits (OUT) -> Mixer (In)"
     },
     {
       "name": "Modal resonator as external FX",
-      "patch": "Model 12 (Modal) · external drum loop patched into LEVEL input which doubles as the external excitation jack on physical-modeling models · sequencer on V/OCT plays tuned resonances · Plaits sings back the drum loop as pitched modal body · no TRIG needed",
-      "diagram": "Plaits:\n* Model: Modal\n- Drum Loop (Out) -> Plaits (Level) // external exciter into LPG/IN\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> Mixer (In)"
+      "patch": "The Modal and Inharmonic String models excite from whatever's patched into LEVEL when TRIG is unpatched — turn a drum loop into tuned resonant hits.",
+      "steps": [
+        "Select Model 13 (Modal resonator) or Model 12 (Inharmonic string) — both accept external excitation via LEVEL.",
+        "Do NOT patch anything into TRIG. That keeps the resonator listening to LEVEL as its exciter.",
+        "Patch a drum loop (or any percussive audio) → Plaits LEVEL.",
+        "Patch a sequencer pitch CV → Plaits V/OCT. Tunes the resonant body.",
+        "Set HARMONICS for material (string vs. metal) and MORPH for decay time.",
+        "Patch Plaits OUT → mixer. Each drum hit now rings the resonator at the current V/OCT pitch."
+      ],
+      "signalOut": "Plaits OUT — external audio ringing a pitched resonator.",
+      "hear": "Drum hits become pitched chimes, bells, or plucked strings. Change V/OCT live for a performance effect; sequence V/OCT for melodic resonance lines over the original loop.",
+      "diagram": "Plaits:\n* Model: 13 (Modal) — TRIG unpatched\n\n- Drum Loop (Out) -> Plaits (Level) // external exciter\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> Mixer (In)"
     },
     {
       "name": "Chord + bass split",
-      "patch": "Model 11 (Chord) · OUT = full chord through chorus and VCA1 (pad envelope) · AUX = root note only through LPF and VCA2 (shorter bass envelope) · one Plaits plays chord pad and bass line simultaneously from the same V/OCT",
-      "diagram": "Plaits:\n* Model: Chord\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Envelope 1 (Trig)\n- Sequencer (Gate) g> Envelope 2 (Trig)\n- Plaits (OUT) -> Chorus (In) -> VCA 1 (In) // chord pad\n- Plaits (AUX) -> Filter (LPF In) -> VCA 2 (In) // root bass\n- Envelope 1 (Out) >> VCA 1 (CV)\n- Envelope 2 (Out) >> VCA 2 (CV)"
+      "patch": "The Chord model's OUT is the full 4-note chord; AUX is the root alone. Route them through separate VCAs and processing for chord pad + bass from one Plaits.",
+      "steps": [
+        "Select Model 7 (Chords).",
+        "Set HARMONICS to choose chord type (majors, minors, sus, etc.).",
+        "Set TIMBRE for chord inversion and transposition.",
+        "Set MORPH for waveform character (string-machine to wavetable).",
+        "Patch sequencer pitch → Plaits V/OCT.",
+        "Patch sequencer gate → Envelope 1 TRIG AND Envelope 2 TRIG (both envelopes fire per note but can have different shapes).",
+        "Patch Plaits OUT → chorus → VCA 1 (the chord pad path).",
+        "Patch Plaits AUX → LPF → VCA 2 (the root-bass path).",
+        "Patch Envelope 1 (long release) → VCA 1 CV for sustained chord pad.",
+        "Patch Envelope 2 (short decay) → VCA 2 CV for punchy bass.",
+        "Mix both VCA outputs."
+      ],
+      "signalOut": "VCA 1 (chord pad) + VCA 2 (bass) → mixer.",
+      "hear": "A chord that sustains as a pad while its root plays as a punctuated bass line — all from one note on one module. Add detune/chorus on the pad for width.",
+      "diagram": "Plaits:\n* Model: 7 (Chords)\n\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Sequencer (Gate) g> Envelope 1 (Trig)\n- Sequencer (Gate) g> Envelope 2 (Trig)\n- Plaits (OUT) -> Chorus (In) -> VCA 1 (In) // chord pad\n- Plaits (AUX) -> Filter (LPF In) -> VCA 2 (In) // root bass\n- Envelope 1 (Out) >> VCA 1 (CV)\n- Envelope 2 (Out) >> VCA 2 (CV)"
     },
     {
       "name": "Snare from Particle Noise",
-      "patch": "Model 16 (Particle Noise) · OUT → BPF → VCA with short envelope = snare body · AUX → HPF → VCA with very snappy envelope = snare snap · sum both VCAs for a complete snare voice from a single Plaits · TRIG from clock/sequencer",
-      "diagram": "Plaits:\n* Model: Particle Noise\n- Clock (Out) t> Plaits (Trigger)\n- Clock (Out) t> Envelope 1 (Trig)\n- Clock (Out) t> Envelope 2 (Trig) // snappy\n- Plaits (OUT) -> Filter (BPF In) -> VCA 1 (In) // body\n- Plaits (AUX) -> Filter (HPF In) -> VCA 2 (In) // snap\n- Envelope 1 (Out) >> VCA 1 (CV)\n- Envelope 2 (Out) >> VCA 2 (CV)\n- VCA 1 (Out) -> Mixer (In 1)\n- VCA 2 (Out) -> Mixer (In 2)"
+      "patch": "Particle Noise's OUT and AUX are two different flavors of dust — route one through a BPF for body and the other through an HPF for snap, and you have a two-layer snare from one Plaits.",
+      "steps": [
+        "Select Model 11 (Particle noise).",
+        "Set HARMONICS for frequency randomization (more CW = wider scatter).",
+        "Set MORPH to select filter type (CCW = reverberating allpass, CW = resonant bandpass).",
+        "Patch your clock/trigger → Plaits TRIG AND → Envelope 1 TRIG AND → Envelope 2 TRIG.",
+        "Patch Plaits OUT → BPF → VCA 1 (snare body).",
+        "Patch Plaits AUX → HPF → VCA 2 (raw dust noise, for the snap).",
+        "Patch Envelope 1 (short decay, medium body) → VCA 1 CV.",
+        "Patch Envelope 2 (very snappy, 10–30ms decay) → VCA 2 CV.",
+        "Mix VCA 1 + VCA 2 outputs."
+      ],
+      "signalOut": "Mix of VCA 1 (body) + VCA 2 (snap) = snare.",
+      "hear": "A two-layer snare with body and attack independently shapeable. Swap BPF/HPF frequencies for rimshot/clap flavors; lengthen Envelope 1 decay for brush sounds.",
+      "diagram": "Plaits:\n* Model: 11 (Particle noise)\n\n- Clock (Out) t> Plaits (Trigger)\n- Clock (Out) t> Envelope 1 (Trig)\n- Clock (Out) t> Envelope 2 (Trig) // snappy\n- Plaits (OUT) -> Filter (BPF In) -> VCA 1 (In) // body\n- Plaits (AUX) -> Filter (HPF In) -> VCA 2 (In) // snap\n- Envelope 1 (Out) >> VCA 1 (CV)\n- Envelope 2 (Out) >> VCA 2 (CV)\n- VCA 1 (Out) -> Mixer (In 1)\n- VCA 2 (Out) -> Mixer (In 2)"
     },
     {
       "name": "Bouncing ball inharmonic string",
-      "patch": "Model 13 (Inharmonic String) · MATHS self-patched as bouncing-ball trigger source with accelerating hits · same bouncing envelope through env follower modulates MORPH so damping shortens with each bounce · MAIN into reverb for decaying tail",
-      "diagram": "Plaits:\n* Model: Inharmonic String\n- MATHS (EOR) t> MATHS (Trig) // bouncing ball self-patch\n- MATHS (Out) t> Plaits (Trigger)\n- MATHS (Out) >> Env Follower (In)\n- Env Follower (Out) >> Plaits (Morph CV) // damping tracks bounce\n- Plaits (OUT) -> Reverb (In) -> Output (In)"
+      "patch": "Drive Plaits's Inharmonic String model from MATHS's self-accelerating bouncing-ball envelope — an envelope follower on the same envelope shortens the damping on each bounce.",
+      "steps": [
+        "Set up MATHS's Bouncing Ball patch (see MATHS sheet): CH 1 Cycle ON, CH 1 Variable Out 1 → CH 2 Signal In, CH 2 Out → CH 1 Fall CV.",
+        "Select Plaits Model 12 (Inharmonic string modeling).",
+        "Take MATHS CH 1 Unity Out through a mult. One copy → env follower IN, another → Plaits TRIG.",
+        "Patch env follower OUT → Plaits MORPH CV. As the bounce envelope rises, MORPH rises too — damping shortens on each accelerating bounce.",
+        "Patch sequencer pitch → Plaits V/OCT (or a fixed voltage for a single pitch).",
+        "Patch Plaits OUT → reverb → output."
+      ],
+      "signalOut": "Plaits OUT → reverb — plucked string notes that accelerate and de-dampen with each bounce.",
+      "hear": "A ball bouncing on a dampened string: each strike is shorter and brighter than the last, until it stalls. Reverb glues the tails together.",
+      "diagram": "Plaits:\n* Model: 12 (Inharmonic string)\n\n- MATHS.CH 1 (Unity Out) t> Plaits (Trigger) // bouncing ball trigger\n- MATHS.CH 1 (Unity Out) >> Env Follower (In)\n- Env Follower (Out) >> Plaits (Morph CV) // damping tracks bounce\n- Plaits (OUT) -> Reverb (In) -> Output (In)"
     },
     {
       "name": "Wavetable audio-rate sync",
-      "patch": "Model 6 (Wavetable) · audio-rate VCO square patched into TRIG input retriggers the wavetable read at audio rate · produces hard-sync-style artifacts and formant sidebands · LFO on MORPH moves the wavetable position · V/OCT from sequencer plays melody",
-      "diagram": "Plaits:\n* Model: Wavetable\n- VCO (Square) t> Plaits (Trigger) // audio-rate retrig, hard-sync artifacts\n- LFO (Out) >> Plaits (Morph CV)\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> Filter (In) -> Output (In)"
+      "patch": "Audio-rate signal into Plaits's TRIG retriggers the wavetable read every VCO cycle — hard-sync artifacts, formant sidebands, and screaming upper harmonics.",
+      "steps": [
+        "Select Model 6 (Wavetable oscillator).",
+        "Patch a VCO's square or pulse output (audio rate) → Plaits TRIG. This forces wavetable re-read every VCO cycle.",
+        "Patch an LFO → Plaits MORPH CV. Sweeps the column index (morph direction).",
+        "Patch your sequencer's pitch → Plaits V/OCT AND → the external VCO's V/OCT (both track together).",
+        "Set HARMONICS to pick a wavetable bank.",
+        "Patch Plaits OUT → filter → output. The filter tames the aliasing sidebands."
+      ],
+      "signalOut": "Plaits OUT → filter → output.",
+      "hear": "Hard-sync-like scream, but with wavetable shape variation instead of straight saw. Sweeping MORPH changes character drastically — textural, digital, sometimes vocal.",
+      "diagram": "Plaits:\n* Model: 6 (Wavetable)\n\n- VCO (Square) t> Plaits (Trigger) // audio-rate retrig, hard-sync artifacts\n- LFO (Out) >> Plaits (Morph CV)\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> Filter (In) -> Output (In)"
     },
     {
       "name": "Speech formant sequencer",
-      "patch": "Model 8 (Speech) · slow sequencer on TIMBRE steps through vowels · fast sequencer on MORPH drives articulation/consonants · separate melody sequencer on V/OCT · the three sequencers run at different lengths/rates for evolving phonetic phrases",
-      "diagram": "Plaits:\n* Model: Speech\n- Sequencer 1 (Slow CV) >> Plaits (Timbre CV) // vowel steps\n- Sequencer 2 (Fast CV) >> Plaits (Morph CV) // articulation\n- Sequencer 3 (Pitch) p> Plaits (V/Oct) // melody\n- Sequencer 3 (Gate) g> Plaits (Trigger)\n- Plaits (OUT) -> Reverb (In) -> Output (In)"
+      "patch": "Three sequencers at different rates drive TIMBRE (vowel species), MORPH (phoneme), and V/OCT (melody). Evolving phonetic phrases.",
+      "steps": [
+        "Select Model 8 (Vowel and speech).",
+        "Patch a slow sequencer CV → Plaits TIMBRE CV. Steps through vowel species (Daleks ↔ chipmunks).",
+        "Patch a faster sequencer CV → Plaits MORPH CV. Drives articulation / phoneme-within-word.",
+        "Patch a melody sequencer's pitch → Plaits V/OCT.",
+        "Patch the melody sequencer's gate → Plaits TRIG (fires a new word per note).",
+        "Optional: set each sequencer to a different length (7, 11, 13 steps) for long non-repeating phrases.",
+        "Patch Plaits OUT → reverb → output."
+      ],
+      "signalOut": "Plaits OUT → reverb → output.",
+      "hear": "Plaits 'speaks' a melody, with vowel character drifting slowly and articulation shifting per-note. Phase-offset sequencer lengths ensure no exact repetition.",
+      "diagram": "Plaits:\n* Model: 8 (Vowel/speech)\n\n- Sequencer 1 (Slow CV) >> Plaits (Timbre CV) // vowel steps\n- Sequencer 2 (Fast CV) >> Plaits (Morph CV) // articulation\n- Sequencer 3 (Pitch) p> Plaits (V/Oct) // melody\n- Sequencer 3 (Gate) g> Plaits (Trigger)\n- Plaits (OUT) -> Reverb (In) -> Output (In)"
     },
     {
       "name": "Grain cloud with env-follower density",
-      "patch": "Model 13 (Granular Cloud) · external audio source into envelope follower · follower output drives HARMONICS (grain count) and MORPH (grain density/spread) so louder input = denser cloud · Plaits MAIN into reverb · V/OCT fixed or slow-sequenced for tonal center",
-      "diagram": "Plaits:\n* Model: Granular Cloud\n- External Audio (Out) -> Env Follower (In)\n- Env Follower (Out) >> Plaits (Harmonics CV)\n- Env Follower (Out) >> Plaits (Morph CV)\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> Reverb (In) -> Output (In)"
+      "patch": "External audio drives Plaits's Granular Cloud density — louder input = denser cloud. Plaits mirrors the dynamics of whatever's feeding it.",
+      "steps": [
+        "Select Model 9 (Granular cloud).",
+        "Patch an external audio source (drum loop, voice, anything dynamic) → env follower IN.",
+        "Patch env follower OUT → Plaits HARMONICS CV. Louder = wider pitch randomization across grains.",
+        "Patch the same env follower OUT → Plaits MORPH CV. Louder = longer grain duration (denser cloud).",
+        "Patch a slow sequencer pitch → Plaits V/OCT for a shifting tonal center.",
+        "Do NOT patch TRIG — Plaits runs continuously.",
+        "Patch Plaits OUT → reverb → output."
+      ],
+      "signalOut": "Plaits OUT → reverb → output.",
+      "hear": "A granular cloud that swells and retreats with whatever audio you're feeding the follower. Works great as a reactive pad under a drum track — dynamic source = dynamic response.",
+      "diagram": "Plaits:\n* Model: 9 (Granular cloud)\n\n- External Audio (Out) -> Env Follower (In)\n- Env Follower (Out) >> Plaits (Harmonics CV)\n- Env Follower (Out) >> Plaits (Morph CV)\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> Reverb (In) -> Output (In)"
     },
     {
       "name": "DX7-style audio-rate FM pair",
-      "patch": "Plaits as analog carrier with an external VCO as modulator, wired like a 2-op DX7 algorithm. Model 1 (Virtual Analog) · external VCO (modulator) → FM input on Plaits through envelope-scaled VCA (index) · Plaits OUT → modulator VCO lin FM for cross-modulation feedback · V/Oct from sequencer tracks both · envelope drives FM index VCA for evolving DX7-style bell and EP timbres.",
-      "diagram": "Plaits:\n* Model: Virtual Analog\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Sequencer (Pitch) p> VCO Mod (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Index VCA (CV)\n- VCO Mod (Out) -> Index VCA (In)\n- Index VCA (Out) >> Plaits (FM) // modulator into carrier\n- Plaits (OUT) >> VCO Mod (Lin FM) // cross-mod feedback\n- Plaits (OUT) -> VCA Out (In)\n- Envelope (Out) >> VCA Out (CV)\n- VCA Out (Out) -> Output (In)"
+      "patch": "Plaits as the carrier, an external VCO as the modulator, wired like a 2-op DX7 algorithm with envelope-scaled FM index and cross-modulation feedback.",
+      "steps": [
+        "Select Plaits Model 1 (Virtual Analog) — a clean sine/triangle base.",
+        "Patch sequencer pitch → Plaits V/OCT AND → external VCO Mod's V/OCT. Both track together.",
+        "Patch sequencer gate → an external envelope's TRIG.",
+        "Patch envelope → index VCA's CV input.",
+        "Patch external VCO Mod's output → index VCA's audio input.",
+        "Patch index VCA's output → Plaits FM. The envelope now scales FM depth over time.",
+        "Patch Plaits OUT → external VCO Mod's Lin FM input. This cross-modulates the modulator with the carrier — DX7 feedback-style.",
+        "Patch Plaits OUT → output VCA's audio input.",
+        "Patch envelope → output VCA's CV (overall note amplitude).",
+        "Patch output VCA → your mixer/output."
+      ],
+      "signalOut": "Output VCA → output — DX7-style FM voice with time-varying index and cross-mod feedback.",
+      "hear": "Classic DX7 territory: bells, electric pianos, marimbas. The cross-mod feedback gives a metallic edge the internal 2-op FM model alone can't produce.",
+      "diagram": "Plaits:\n* Model: 1 (Virtual Analog)\n\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Sequencer (Pitch) p> VCO Mod (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Index VCA (CV)\n- VCO Mod (Out) -> Index VCA (In)\n- Index VCA (Out) >> Plaits (FM) // modulator into carrier\n- Plaits (OUT) >> VCO Mod (Lin FM) // cross-mod feedback\n- Plaits (OUT) -> VCA Out (In)\n- Envelope (Out) >> VCA Out (CV)\n- VCA Out (Out) -> Output (In)"
     },
     {
       "name": "Three-voice just-intonation drone",
-      "patch": "Plaits plus two external VCOs tuned to just-intonation intervals. Plaits (Model: Virtual Analog or Wavetable) tuned to root · VCO 2 tuned a perfect fifth up (3:2) · VCO 3 tuned a major third up (5:4) · all three into a mixer · slow LFO fans into Plaits FM and both VCO fine-tune inputs via separate attenuators at different depths for shifting beating between partials · no trigger, LEVEL held high for continuous drone.",
-      "diagram": "Plaits:\n* Model: Virtual Analog\n- Offset (+5V) >> Plaits (Level) // continuous drone\n- Plaits (OUT) -> Mixer (In 1) // root\n- VCO 2 (Out) -> Mixer (In 2) // perfect fifth (3:2)\n- VCO 3 (Out) -> Mixer (In 3) // major third (5:4)\n- Slow LFO (Out) >> Plaits (FM) // shallow\n- Slow LFO (Out) >> VCO 2 (Fine Tune CV) // moderate\n- Slow LFO (Out) >> VCO 3 (Fine Tune CV) // deep\n- Mixer (Out) -> Output (In)"
+      "patch": "Plaits as root, two external VCOs tuned to 3:2 and 5:4 ratios above — all three drift in fine tune via one LFO for shifting beating partials.",
+      "steps": [
+        "Select Plaits Model 1 (Virtual Analog) or Model 6 (Wavetable) — clean tonal source.",
+        "Patch a constant +5V offset → Plaits LEVEL. Drone mode — internal LPG stays open.",
+        "Tune external VCO 2 to a perfect fifth above Plaits (3:2 ratio — slightly sharp of a tempered fifth).",
+        "Tune external VCO 3 to a major third above Plaits (5:4 ratio — flat of a tempered major third, around +386 cents).",
+        "Patch Plaits OUT → mixer (root).",
+        "Patch VCO 2 out → mixer (perfect fifth).",
+        "Patch VCO 3 out → mixer (major third).",
+        "Patch a slow LFO → Plaits FM (shallow depth via FM attenuverter CCW).",
+        "Patch same LFO → VCO 2 Fine Tune (moderate depth, through an attenuator).",
+        "Patch same LFO → VCO 3 Fine Tune (deeper depth).",
+        "Mixer → output."
+      ],
+      "signalOut": "Mixer out → output — three-note just-intonation drone, slightly drifting.",
+      "hear": "A rich harmonic drone where intervals pulse in and out of perfect alignment as the LFO re-tunes each voice independently. Different modulation depths per voice ensure the three partials never sync up simultaneously.",
+      "diagram": "Plaits:\n* Model: 1 (Virtual Analog)\n\n- Offset (+5V) >> Plaits (Level) // continuous drone\n- Plaits (OUT) -> Mixer (In 1) // root\n- VCO 2 (Out) -> Mixer (In 2) // perfect fifth (3:2)\n- VCO 3 (Out) -> Mixer (In 3) // major third (5:4)\n- Slow LFO (Out) >> Plaits (FM) // shallow\n- Slow LFO (Out) >> VCO 2 (Fine Tune CV) // moderate\n- Slow LFO (Out) >> VCO 3 (Fine Tune CV) // deep\n- Mixer (Out) -> Output (In)"
     },
     {
       "name": "Plaits + uBurst granular crossfeed",
-      "patch": "Audio-as-CV feedback loop using uBurst as a Beads stand-in. Plaits (Model: Wavetable or FM) → uBurst IN · uBurst Left Out → Plaits Timbre CV via attenuator (audio-rate modulation) · LFO → Plaits Harmonics CV · random CV → uBurst Density · uBurst Right Out → reverb · crossfeeding granular texture and carrier timbre produces evolving clouds that never settle.",
-      "diagram": "Plaits:\n* Model: Wavetable\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> uBurst (IN L)\n- uBurst (Out L) -> Attenuator (In)\n- Attenuator (Out) >> Plaits (Timbre CV) // audio-as-CV feedback\n- LFO (Out) >> Plaits (Harmonics CV)\n- Random CV (Out) >> uBurst (Density CV)\n- uBurst (Out R) -> Reverb (In) -> Output (In)"
+      "patch": "Plaits into uBurst's granular processor, uBurst's left output back into Plaits's TIMBRE CV — audio-as-CV feedback that never settles.",
+      "steps": [
+        "Select Plaits Model 6 (Wavetable) or Model 3 (2-op FM).",
+        "Patch sequencer pitch → Plaits V/OCT.",
+        "Patch Plaits OUT → uBurst IN L.",
+        "Patch uBurst OUT L → attenuator IN.",
+        "Set the attenuator low to start — audio into a CV input gets wild.",
+        "Patch attenuator OUT → Plaits TIMBRE CV. Now the granular-processed signal modulates Plaits's timbre at audio rate.",
+        "Patch an LFO → Plaits HARMONICS CV for slower wavetable drift.",
+        "Patch a random CV → uBurst Density CV.",
+        "Patch uBurst OUT R → reverb → output. (L is the feedback loop; R is what you hear.)"
+      ],
+      "signalOut": "uBurst OUT R → reverb → output.",
+      "hear": "Grains feed timbre into the source of those same grains. The loop never settles — constant evolution. Adjust the attenuator and uBurst density to find stable-but-moving regions vs. chaotic lockup.",
+      "diagram": "Plaits:\n* Model: 6 (Wavetable)\n\n- Sequencer (Pitch) p> Plaits (V/Oct)\n- Plaits (OUT) -> uBurst (IN L)\n- uBurst (Out L) -> Attenuator (In)\n- Attenuator (Out) >> Plaits (Timbre CV) // audio-as-CV feedback\n- LFO (Out) >> Plaits (Harmonics CV)\n- Random CV (Out) >> uBurst (Density CV)\n- uBurst (Out R) -> Reverb (In) -> Output (In)"
     },
     {
       "name": "Shared S&H chord generator",
-      "patch": "One random value splits into harmonically-related pitches. Noise → S&H IN · Clock → S&H trig + envelope trig · S&H OUT → Quantizer 1 → Plaits V/Oct (voice 1) · same S&H OUT → +5V offset → Quantizer 2 → external VCO V/Oct (voice 2, transposed) · envelope opens both voices simultaneously so each clock pulse produces a fresh two-note chord in the chosen scale.",
-      "diagram": "Plaits:\n- Noise (Out) >> S&H (In)\n- Clock (Out) t> S&H (Trig)\n- Clock (Out) t> Envelope (Trig)\n- S&H (Out) p> Quantizer 1 (In)\n- Quantizer 1 (Out) p> Plaits (V/Oct)\n- S&H (Out) >> Offset (+5V In)\n- Offset (Out) p> Quantizer 2 (In)\n- Quantizer 2 (Out) p> VCO 2 (V/Oct)\n- Envelope (Out) >> Plaits (Level)\n- Envelope (Out) >> VCA 2 (CV)\n- Plaits (OUT) -> Mixer (In 1)\n- VCO 2 (Out) -> VCA 2 (In) -> Mixer (In 2)"
+      "patch": "One random S&H value, two quantizers with an interval offset between them — one random pick yields a fresh two-note diatonic chord on every clock.",
+      "steps": [
+        "Patch noise → S&H IN.",
+        "Patch your clock → S&H TRIG AND → Envelope TRIG.",
+        "Patch S&H OUT → Quantizer 1 IN.",
+        "Patch Quantizer 1 OUT → Plaits V/OCT (voice 1 pitch).",
+        "Patch same S&H OUT → an offset/mixer that adds a musical interval in V/OCT (e.g. +0.417V for a perfect fifth, +0.333V for a major third).",
+        "Patch offset OUT → Quantizer 2 IN.",
+        "Patch Quantizer 2 OUT → external VCO V/OCT (voice 2 pitch).",
+        "Patch Envelope → Plaits LEVEL (voice 1 amplitude).",
+        "Patch Envelope → VCA 2 CV (voice 2 amplitude).",
+        "Mix Plaits OUT (voice 1) + external VCO → VCA 2 OUT (voice 2) at a mixer."
+      ],
+      "signalOut": "Mixer out = Plaits OUT (voice 1) + VCO 2 (voice 2, interval-offset).",
+      "hear": "Each clock triggers two voices in harmonic parallel — a random 'melody' where every note is paired with its diatonic partner. Set both quantizers to the same scale for guaranteed in-key harmony.",
+      "diagram": "Plaits:\n\n- Noise (Out) >> S&H (In)\n- Clock (Out) t> S&H (Trig)\n- Clock (Out) t> Envelope (Trig)\n- S&H (Out) p> Quantizer 1 (In)\n- Quantizer 1 (Out) p> Plaits (V/Oct)\n- S&H (Out) >> Offset (In)\n- Offset (Out) p> Quantizer 2 (In)\n- Quantizer 2 (Out) p> VCO 2 (V/Oct)\n- Envelope (Out) >> Plaits (Level)\n- Envelope (Out) >> VCA 2 (CV)\n- Plaits (OUT) -> Mixer (In 1)\n- VCO 2 (Out) -> VCA 2 (In) -> Mixer (In 2)"
     }
   ]
 }
