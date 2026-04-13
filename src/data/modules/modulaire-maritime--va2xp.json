@@ -1,0 +1,195 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.modulaire-maritime.com/modules",
+      "https://www.modulargrid.net/e/modulaire-maritime-va2xp",
+      "https://www.modulaire-maritime.com/product-page/va2xp"
+    ]
+  },
+  "slug": "modulaire-maritime--va2xp",
+  "name": "VA2XP",
+  "manufacturer": "Modulaire Maritime",
+  "hp": 8,
+  "tags": ["MIXER", "VCA", "I/O", "UTILITY"],
+  "description": "4-channel stereo enhancer-mixer and output module. Channel 1 combines stereo crossfade and panning, channels 2 and 3 pan with CV, channel 4 handles stereo input, and cue/headphone monitoring stays independent.",
+  "controls": [
+    {
+      "name": "Channel 1 Level / Crossfade",
+      "scope": "Channel 1",
+      "description": "Sets the manual amount of crossfade and overall level on channel 1.",
+      "detail": "crossfade and level combined"
+    },
+    {
+      "name": "Channel 1 Pan",
+      "scope": "Channel 1",
+      "description": "Places channel 1 left or right while the crossfade stage moves underneath it.",
+      "detail": "stereo balance"
+    },
+    {
+      "name": "Channel 2 Pan",
+      "scope": "Channel 2",
+      "description": "Manual pan position for channel 2.",
+      "detail": "stereo balance"
+    },
+    {
+      "name": "Channel 3 Pan",
+      "scope": "Channel 3",
+      "description": "Manual pan position for channel 3.",
+      "detail": "stereo balance"
+    },
+    {
+      "name": "Channel 4 Level",
+      "scope": "Channel 4",
+      "description": "Manual level for the stereo input channel.",
+      "detail": "stereo channel"
+    },
+    {
+      "name": "Cue / Mix Button",
+      "scope": "Global",
+      "description": "Selects whether the cue input is monitored in the headphone path or mixed into the main output path.",
+      "detail": "push-button select"
+    },
+    {
+      "name": "Headphone Level",
+      "scope": "Global",
+      "description": "Sets the headphone amp level.",
+      "detail": "monitor output"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Channel 1 In L",
+      "description": "Left or mono input for channel 1.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Channel 1 In R",
+      "description": "Right input for channel 1 when used as stereo.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Channel 1 CV",
+      "description": "Voltage control of channel 1 movement.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Channel 2 In L",
+      "description": "Left or mono input for channel 2.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Channel 2 In R",
+      "description": "Right input for channel 2 when used as stereo.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Channel 2 CV",
+      "description": "Voltage control of channel 2 movement.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Channel 3 In L",
+      "description": "Left or mono input for channel 3.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Channel 3 In R",
+      "description": "Right input for channel 3 when used as stereo.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Channel 3 CV",
+      "description": "Voltage control of channel 3 movement.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Channel 4 In L",
+      "description": "Left input for the stereo channel 4 section.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Channel 4 In R",
+      "description": "Right input for the stereo channel 4 section.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Cue In",
+      "description": "Cue input for headphone previewing.",
+      "voltage": "audio"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Main Out L",
+      "description": "Main stereo output, left channel.",
+      "voltage": "line / modular level"
+    },
+    {
+      "name": "Main Out R",
+      "description": "Main stereo output, right channel.",
+      "voltage": "line / modular level"
+    },
+    {
+      "name": "Headphones",
+      "description": "Headphone amplifier output.",
+      "voltage": "monitor level"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Stereo crossfade on channel 1",
+      "trigger": "channel 1 used as a mono source",
+      "description": "Channel 1 can act like a levelled mono-to-stereo enhancer, with crossfade and panning moving together under manual control and CV."
+    },
+    {
+      "name": "Independent panning on channels 2 and 3",
+      "trigger": "channels 2 or 3 receive stereo audio",
+      "description": "Channels 2 and 3 move the left and right sides with CV and manual pan control, which gives each stereo source its own motion field."
+    },
+    {
+      "name": "Stereo channel 4",
+      "trigger": "channel 4 receives a stereo pair",
+      "description": "Channel 4 is the straightforward stereo input stage. It keeps the last channel available for a fixed stereo source that only needs level control."
+    },
+    {
+      "name": "Cue monitoring",
+      "trigger": "cue input selected",
+      "description": "The cue path can be monitored through headphones without changing the main mix. That makes it useful as a performance preview bus."
+    },
+    {
+      "name": "Mono-to-stereo lift",
+      "trigger": "mono source into a channel pair",
+      "description": "A single mono source can be spread across the stereo field and still respond to pan CV, which makes the module act like a compact width expander."
+    },
+    {
+      "name": "Visual mix feedback",
+      "trigger": "signal present on channels",
+      "description": "Front-panel LEDs show every channel, so gain staging and pan movement are visible even when the final output is feeding headphones or a downstream mixer."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Mono-to-stereo spread",
+      "patch": "One mono voice into channel 1 · slow LFO into channel 1 CV · pan knob centered then pushed slowly outward · the voice grows width instead of just getting louder.",
+      "diagram": "VA2XP:\n\nVCO:\nLFO:\nOutput:\n\n- VCO (Out) -> VA2XP (Channel 1 In L)\n- LFO (Out) >> VA2XP (Channel 1 CV)\n- VA2XP (Main Out L) -> Output (L)\n- VA2XP (Main Out R) -> Output (R)"
+    },
+    {
+      "name": "Four-voice panorama",
+      "patch": "Four stereo-ish sources across channels 1-4 · channel 1 takes crossfade duties · channels 2 and 3 pan the movement · channel 4 anchors the end of the stereo field.",
+      "diagram": "VA2XP:\n\nVoice 1:\nVoice 2:\nVoice 3:\nVoice 4:\nOutput:\n\n- Voice 1 (Out) -> VA2XP (Channel 1 In L)\n- Voice 2 (Out) -> VA2XP (Channel 2 In L)\n- Voice 3 (Out) -> VA2XP (Channel 3 In L)\n- Voice 4 (Out) -> VA2XP (Channel 4 In L)\n- VA2XP (Main Out L) -> Output (L)\n- VA2XP (Main Out R) -> Output (R)"
+    },
+    {
+      "name": "Cue preview bus",
+      "patch": "Drums and synths into the main mix · a separate source into Cue In · headphones monitor the cue path while the main outs keep the audience mix untouched.",
+      "diagram": "VA2XP:\n\nDrums:\nSynth:\nClick:\nOutput:\n\n- Drums (Out) -> VA2XP (Channel 2 In L)\n- Synth (Out) -> VA2XP (Channel 3 In L)\n- Click (Out) -> VA2XP (Cue In)\n- VA2XP (Main Out L) -> Output (L)\n- VA2XP (Main Out R) -> Output (R)\n- VA2XP (Headphones) -> Output (Phones)"
+    },
+    {
+      "name": "Animated stereo stem",
+      "patch": "A slow modulation source into the three pan CV inputs · each stereo pair moves on a different trajectory · the module behaves like a compact stereo choreographer for a mixed rig.",
+      "diagram": "VA2XP:\n\nLFO:\nOutput:\n\n- LFO (Out) >> VA2XP (Channel 1 CV)\n- LFO (Out) >> VA2XP (Channel 2 CV)\n- LFO (Out) >> VA2XP (Channel 3 CV)\n- VA2XP (Main Out L) -> Output (L)\n- VA2XP (Main Out R) -> Output (R)"
+    }
+  ]
+}

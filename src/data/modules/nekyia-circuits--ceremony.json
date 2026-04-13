@@ -1,0 +1,171 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://nekyiacircuits.com/",
+      "https://modulargrid.com/e/nekyia-circuits-ceremony-",
+      "https://schneidersladen.de/en/nekyia-circuits-ceremony"
+    ]
+  },
+  "slug": "nekyia-circuits--ceremony",
+  "name": "Ceremony",
+  "manufacturer": "Nekyia Circuits",
+  "hp": 10,
+  "tags": ["VCF", "FILTER", "RESONATOR", "VCA"],
+  "description": "Dual 18dB resonant twin-peak filter inspired by Rob Hordijk. Morphs from lowpass to bandpass, crossfades two inputs, self-oscillates when driven, and adds FM, feedback and output VCA control.",
+  "controls": [
+    {
+      "name": "Freq A",
+      "scope": "Filter A",
+      "description": "Sets the first resonant peak frequency.",
+      "detail": "manual cutoff / resonance center"
+    },
+    {
+      "name": "Freq B",
+      "scope": "Filter B",
+      "description": "Sets the second resonant peak frequency.",
+      "detail": "manual cutoff / resonance center"
+    },
+    {
+      "name": "Both",
+      "scope": "Global frequency link",
+      "description": "Moves both peaks together and tracks 1V/oct when patched.",
+      "detail": "Both CV input tracks 1V/oct"
+    },
+    {
+      "name": "LP/BP",
+      "scope": "Response morph",
+      "description": "Morphs the response from lowpass toward twin-peak bandpass.",
+      "detail": "continuous curve morph"
+    },
+    {
+      "name": "Resonance",
+      "scope": "Global",
+      "description": "Raises resonance until the filter self-oscillates and pings cleanly.",
+      "detail": "voltage controlled"
+    },
+    {
+      "name": "Feed A",
+      "scope": "Filter A",
+      "description": "Routes input back into frequency control for richer harmonics.",
+      "detail": "feedback path"
+    },
+    {
+      "name": "Feed B",
+      "scope": "Filter B",
+      "description": "Routes input back into the second frequency control.",
+      "detail": "feedback path"
+    },
+    {
+      "name": "FM Mod",
+      "scope": "Filter interaction",
+      "description": "Sets how much Frequency B modulates Frequency A.",
+      "detail": "voltage controlled"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Audio In A",
+      "description": "First audio input path for the crossfader stage.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Audio In B",
+      "description": "Second audio input path for the crossfader stage.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Freq A CV",
+      "description": "Attenuverted frequency CV for filter A.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Freq B CV",
+      "description": "Attenuverted frequency CV for filter B.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Both CV",
+      "description": "Tracks 1V/oct and moves both frequencies equally.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "FM CV",
+      "description": "Controls the amount of frequency modulation between the two peaks.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Resonance CV",
+      "description": "Controls resonance voltage-wise.",
+      "voltage": "CV"
+    },
+    {
+      "name": "VCA CV",
+      "description": "Controls the output VCA on the main output.",
+      "voltage": "CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT",
+      "description": "Main filtered output with voltage-controlled VCA.",
+      "voltage": "audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Twin-peak morph",
+      "trigger": "LP/BP control",
+      "description": "The response continuously moves from lowpass to twin-peak bandpass without switching modes."
+    },
+    {
+      "name": "Frequency linking",
+      "trigger": "Both CV",
+      "description": "The Both input tracks 1V/oct and moves both resonant peaks together."
+    },
+    {
+      "name": "Frequency FM",
+      "trigger": "FM Mod",
+      "description": "Frequency B can modulate Frequency A for evolving harmonic motion."
+    },
+    {
+      "name": "Feedback coloration",
+      "trigger": "Feed A or Feed B",
+      "description": "Routing the input back into the frequency controls adds harmonics and makes simple signals ring."
+    },
+    {
+      "name": "Self-oscillation pings",
+      "trigger": "high resonance",
+      "description": "At higher resonance settings the filter self-oscillates and can be pinged for plucks and bell tones."
+    },
+    {
+      "name": "Output dynamics",
+      "trigger": "VCA CV",
+      "description": "The main output VCA lets the module shape its own level instead of forcing an external VCA."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Twin-peak bell",
+      "patch": "Raise resonance until the module pings · drive Both with a sequencer pitch line · use the twin-peak response as a bell-like resonator with two tunable partials.",
+      "diagram": "Ceremony:\n* LP/BP: noon\n* Resonance: high\n* FM Mod: low\n\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Ceremony (Both CV)\n- Sequencer (Gate) g> Ceremony (Audio In A)\n- Ceremony (OUT) -> Output (In)"
+    },
+    {
+      "name": "Crossfaded stereo filter",
+      "patch": "Run two audio sources into the crossfader inputs · sweep LP/BP and the input blend together · the output keeps the sources glued into one moving resonant image.",
+      "diagram": "Ceremony:\n* LP/BP: lowpass\n* Resonance: medium\n* Feed A: low\n* Feed B: low\n\nVCO A:\nVCO B:\nOutput:\n\n- VCO A (Out) -> Ceremony (Audio In A)\n- VCO B (Out) -> Ceremony (Audio In B)\n- Ceremony (OUT) -> Output (In)"
+    },
+    {
+      "name": "Self-oscillating drone",
+      "patch": "Use high resonance and low feed values · patch Both from a slow CV source · the module becomes a pitched dual-peak drone with a narrow center and ringing shoulders.",
+      "diagram": "Ceremony:\n* LP/BP: 3 o'clock\n* Resonance: max\n* FM Mod: slow\n\nLFO:\nOutput:\n\n- LFO (Out) >> Ceremony (Both CV)\n- Ceremony (OUT) -> Output (In)"
+    },
+    {
+      "name": "Feedback acid line",
+      "patch": "Send a saw wave into Audio In A · raise Feed A and FM Mod · the input feeds back into the frequency network and the filter moves from clean to vocal to gritty in one gesture.",
+      "diagram": "Ceremony:\n* LP/BP: 2 o'clock\n* Feed A: high\n* FM Mod: medium\n\nVCO:\nOutput:\n\n- VCO (Saw) -> Ceremony (Audio In A)\n- Ceremony (OUT) -> Output (In)"
+    }
+  ]
+}

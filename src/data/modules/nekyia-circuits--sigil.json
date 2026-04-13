@@ -1,0 +1,140 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://nekyiacircuits.com/product/sigil/",
+      "https://nekyiacircuits.com/wp-content/uploads/2026/02/Sigil.pdf",
+      "https://modulargrid.net/d/vendors/view/1089",
+      "https://www.reddit.com/r/modular/comments/1qxjukn/nekyia_circuits_new_releases_resonating_wet_pings/"
+    ]
+  },
+  "slug": "nekyia-circuits--sigil",
+  "name": "Sigil",
+  "manufacturer": "Nekyia Circuits",
+  "hp": 4,
+  "tags": ["FUNCTION", "ENVELOPE", "LFO", "SLEW"],
+  "description": "Compact analog function generator. Voltage-controlled rise and fall, cycle toggle, variable exp-to-log shape, trigger/slew jumper, EOC pulse, and bipolar output attenuverter in 4HP.",
+  "controls": [
+    {
+      "name": "Rise",
+      "scope": "Global",
+      "description": "Sets attack / rise time.",
+      "detail": "CW: longer · voltage-controlled"
+    },
+    {
+      "name": "Fall",
+      "scope": "Global",
+      "description": "Sets decay / fall time.",
+      "detail": "CW: longer · voltage-controlled"
+    },
+    {
+      "name": "Shape",
+      "scope": "Global",
+      "description": "Morphs both slopes from exponential to linear to logarithmic.",
+      "detail": "CCW: exp · noon: linear · CW: log"
+    },
+    {
+      "name": "Output Attenuverter",
+      "scope": "Global",
+      "description": "Scales and inverts the output.",
+      "detail": "-10V to +10V range"
+    },
+    {
+      "name": "Cycle",
+      "scope": "Global",
+      "description": "Manually toggles cycle mode on and off.",
+      "detail": "momentary button"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Cycle CV",
+      "description": "CV input that toggles cycle mode when it crosses the high threshold.",
+      "voltage": "+/-5V",
+      "normalizedTo": "off"
+    },
+    {
+      "name": "Trigger / Slew In",
+      "description": "Trigger input in envelope mode; slew input when the rear jumper is set for slew behavior.",
+      "voltage": "trigger or audio / CV"
+    },
+    {
+      "name": "Rise CV",
+      "description": "Voltage control over rise time.",
+      "voltage": "+/-5V"
+    },
+    {
+      "name": "Fall CV",
+      "description": "Voltage control over fall time.",
+      "voltage": "+/-5V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "EOC",
+      "description": "End-of-cycle trigger output.",
+      "voltage": "0-10V gate"
+    },
+    {
+      "name": "OUT",
+      "description": "Main function output, shaped by the attenuverter.",
+      "voltage": "+/-10V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Envelope mode",
+      "trigger": "trigger into input",
+      "description": "A trigger fires the rise and fall stages as a compact AD-style envelope. With a gate held high, it behaves like a longer ASR contour."
+    },
+    {
+      "name": "Cycle toggle",
+      "trigger": "Cycle button or Cycle CV",
+      "description": "Cycle mode loops the envelope into a self-running LFO. A high pulse on Cycle CV flips the mode state rather than acting as a level input."
+    },
+    {
+      "name": "Slope morphing",
+      "trigger": "Shape knob",
+      "description": "The single Shape control bends both rise and fall curves together, from snappy exponential response through linear to slower logarithmic motion."
+    },
+    {
+      "name": "Slew limiter mode",
+      "trigger": "rear jumper set to slew",
+      "description": "The input becomes a slew limiter instead of a trigger input. That lets Sigil smooth pitch or CV lines and accept gates or audio as control-rate material."
+    },
+    {
+      "name": "EOC chaining",
+      "trigger": "EOC pulse",
+      "description": "End-of-cycle pulses are ready to trigger the next envelope or clock another module. This makes chained ping-pong or ratchet-style patches easy."
+    },
+    {
+      "name": "Bipolar output",
+      "trigger": "Output attenuverter",
+      "description": "The output stage can invert the envelope and stretch it into a bipolar control signal. Negative settings make the same contour pull down instead of push up."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Plucked contour",
+      "patch": "Trigger into Sigil · Rise short · Fall medium · Shape around noon · OUT to VCA CV · classic pluck with a controllable tail and an EOC pulse ready to fire the next event.",
+      "diagram": "Sigil:\n* Rise: short\n* Fall: medium\n* Shape: noon\n* Cycle: off\n\nVCA:\nVCO:\n\n- Clock (Trig) t> Sigil (Trigger / Slew In)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- VCO (Out) -> VCA (In)\n- Sigil (OUT) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Self-running slope",
+      "patch": "Cycle on · Shape toward log for longer arcs · EOC patched back to the input · one button turns the module into a looping LFO with voltage-controlled timing.",
+      "diagram": "Sigil:\n* Rise: medium\n* Fall: medium\n* Shape: 2 o'clock\n* Cycle: on\n\nFilter:\nOutput:\n\n- Sigil (EOC) t> Sigil (Trigger / Slew In)\n- Sigil (OUT) >> Filter (Cutoff)\n- Sigil (OUT) -> Output (In)"
+    },
+    {
+      "name": "Asymmetric glide",
+      "patch": "Rear jumper in slew mode · pitch CV into the input · Rise faster than Fall · OUT to VCO V/Oct · upward moves snap while downward moves drift, which makes the same line feel hand-played.",
+      "diagram": "Sigil:\n* Rise: fast\n* Fall: slow\n* Shape: noon\n\nSequencer:\nVCO:\n\n- Sequencer (Pitch) p> Sigil (Trigger / Slew In)\n- Sigil (OUT) p> VCO (V/Oct)\n- VCO (Out) -> Output (In)"
+    },
+    {
+      "name": "Toggle ratchet",
+      "patch": "Positive trigger pulses into the Cycle CV input · Cycle state flips each hit · OUT alternates between envelope and LFO behavior without touching the panel, which makes it useful for ratchets and wobble basses.",
+      "diagram": "Sigil:\n* Cycle: off\n* Shape: noon\n\nClock:\nVCA:\nOutput:\n\n- Clock (Out) g> Sigil (Cycle CV)\n- Sigil (OUT) >> VCA (CV)\n- Noise (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    }
+  ]
+}

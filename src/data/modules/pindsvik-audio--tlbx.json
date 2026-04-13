@@ -1,0 +1,123 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.pindsvikaudio.com/shop/tlbx-24",
+      "https://www.pindsvikaudio.com/shop/tlbx-24/document/15",
+      "https://modulargrid.net/e/pindsvik-audio-tlbx"
+    ]
+  },
+  "slug": "pindsvik-audio--tlbx",
+  "name": "TLBX",
+  "manufacturer": "Pindsvik Audio",
+  "hp": 2,
+  "tags": ["UTILITY", "MIXER", "MULT", "ATTENUATOR"],
+  "description": "2HP precision utility for multing, mixing and differencing audio or CV. Generates 1V and 5V references, normalizes sections together, and doubles as a range converter, octave transposer and comparator.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "MULT IN",
+      "description": "Feed the precision mult section.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "MIX IN 1",
+      "description": "Primary mixer input.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "MIX IN 2",
+      "description": "Secondary mixer input, normalized to MIX IN 1 when unpatched.",
+      "voltage": "audio / CV",
+      "normalizedTo": "MIX IN 1"
+    },
+    {
+      "name": "DIFF IN 1",
+      "description": "Primary adder/subtractor input.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "DIFF IN 2",
+      "description": "Secondary adder/subtractor input.",
+      "voltage": "audio / CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "MULT OUT 1",
+      "description": "Precision mult output and 1V reference when nothing is patched.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "MULT OUT 2",
+      "description": "Precision mult output and 5V reference when nothing is patched.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "MIX OUT",
+      "description": "Precision summed output from the two mixer inputs.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "DIFF SUM",
+      "description": "Adder output from the diff section.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "DIFF DIFF",
+      "description": "Subtractor output from the diff section.",
+      "voltage": "audio / CV"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Reference source",
+      "trigger": "leave MULT input unpatched",
+      "description": "The mult section turns into a calibrated 1V / 5V reference pair for pitch transposition and voltage checking."
+    },
+    {
+      "name": "Normalized mix",
+      "trigger": "patch one signal into MIX IN 1",
+      "description": "MIX IN 2 follows MIX IN 1 when left open, turning the section into a precision 2x multiplier or small signal adder."
+    },
+    {
+      "name": "Adder / subtractor",
+      "trigger": "patch both DIFF inputs",
+      "description": "The diff section exposes summed and difference outputs, which makes it useful for stereo-to-mono, bipolar offsets and phase comparison."
+    },
+    {
+      "name": "Voltage range conversion",
+      "trigger": "use the sections together",
+      "description": "The normalization between sections lets TLBX translate between 0-5V, -5-5V and 0-10V signal ranges without a full utility row."
+    },
+    {
+      "name": "Comparator-like behavior",
+      "trigger": "run CV through the diff and sum paths",
+      "description": "The precision structure and fixed references make it easy to derive threshold-style results or octave-locked pitch offsets."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Reference calibrator",
+      "patch": "Leave MULT unpatched · use 1V and 5V refs to calibrate oscillators, VCA trims or sequencer offsets · the tiny module becomes a bench reference tucked into the rack.",
+      "diagram": "TLBX:\n\nVCO:\nVCA:\n\n- TLBX (MULT OUT 1) p> VCO (V/Oct)\n- TLBX (MULT OUT 2) >> VCA (CV)\n- VCO (Out) -> Output (In)"
+    },
+    {
+      "name": "Octave doubler",
+      "patch": "Feed a sequencer row into MIX IN 1 and leave MIX IN 2 normalized · take the MIX output as a precise 2x version of the line for octave jumps or range expansion.",
+      "diagram": "TLBX:\n\nSequencer:\nVCO:\nOutput:\n\n- Sequencer (Pitch) p> TLBX (MIX IN 1)\n- TLBX (MIX OUT) p> VCO (V/Oct)\n- VCO (Out) -> Output (In)"
+    },
+    {
+      "name": "Stereo gain trim",
+      "patch": "Use DIFF as a precision mono-to-stereo helper · sum one source and subtract another · the module acts as a tiny matrix for balancing two adjacent voices.",
+      "diagram": "TLBX:\n\nVoice A:\nVoice B:\nMixer:\nOutput:\n\n- Voice A (Out) -> TLBX (DIFF IN 1)\n- Voice B (Out) -> TLBX (DIFF IN 2)\n- TLBX (DIFF SUM) -> Mixer (L)\n- TLBX (DIFF DIFF) -> Mixer (R)\n- Mixer (Out) -> Output (In)"
+    },
+    {
+      "name": "Range shifter",
+      "patch": "Use the three sections as a chain · mult a pitch line, mix in an offset and subtract the result against a second lane · the patch moves between 0-5V, bipolar and unipolar control ranges cleanly.",
+      "diagram": "TLBX:\n\nSequencer:\nQuantizer:\nOutput:\n\n- Sequencer (Pitch) p> TLBX (MULT IN)\n- TLBX (MULT OUT 1) p> Quantizer (In)\n- Quantizer (Out) p> Output (In)"
+    }
+  ]
+}

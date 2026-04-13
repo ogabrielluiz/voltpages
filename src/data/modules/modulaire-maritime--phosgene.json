@@ -1,0 +1,127 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.modulaire-maritime.com/modules",
+      "https://www.modulargrid.net/e/modulaire-maritime-phosgene",
+      "https://www.modulaire-maritime.com/product-page/phosg%C3%A8ne"
+    ]
+  },
+  "slug": "modulaire-maritime--phosgene",
+  "name": "Phosgène",
+  "manufacturer": "Modulaire Maritime",
+  "hp": 2,
+  "tags": ["OSCILLATOR", "WAVESHAPER"],
+  "description": "2HP digital wavetable/FM oscillator. Two banks of 30 wavetables run in parallel with separate outputs, 100Hz FM base, V/Oct tracking, octave and octave-displace switching, and stored bank/wave/octave settings.",
+  "controls": [
+    {
+      "name": "Bank",
+      "scope": "Global",
+      "description": "Selects between the two wavetable banks.",
+      "detail": "2 banks of 30 waves"
+    },
+    {
+      "name": "Wave",
+      "scope": "Global",
+      "description": "Chooses the wavetable within the selected bank.",
+      "detail": "30 waves per bank"
+    },
+    {
+      "name": "Octave",
+      "scope": "Global",
+      "description": "Sets the oscillator octave.",
+      "detail": "tracks across 8 octaves"
+    },
+    {
+      "name": "Octave Displace",
+      "scope": "Wavetable path",
+      "description": "Shifts wavetable playback down the octave scale without affecting the FM path.",
+      "detail": "wavetables only"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "V/Oct",
+      "description": "Pitch input for the oscillator.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "Bank CV",
+      "description": "External modulation of the wavetable bank.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Wave CV",
+      "description": "External modulation of the wavetable selection.",
+      "voltage": "CV"
+    },
+    {
+      "name": "FM CV",
+      "description": "External modulation of the FM path.",
+      "voltage": "CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "WT OUT",
+      "description": "Wavetable output path.",
+      "voltage": "audio"
+    },
+    {
+      "name": "FM OUT",
+      "description": "Frequency-modulation output path.",
+      "voltage": "audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Parallel oscillator paths",
+      "trigger": "use both outputs",
+      "description": "Phosgène exposes wavetable and FM in parallel. That makes it easy to split a patch into a harmonically stable path and a harsher FM path without needing a second oscillator."
+    },
+    {
+      "name": "100Hz FM base",
+      "trigger": "FM CV active",
+      "description": "The FM path uses a 100Hz base. The result is a darker, more controlled modulation spectrum that stays useful for basses and low, metallic sidebands."
+    },
+    {
+      "name": "Octave displace",
+      "trigger": "Octave Displace switch",
+      "description": "The octave-displace function only applies to the wavetable path. FM keeps the full range, so the same pitch gesture can drive low folded tables while leaving FM wide open."
+    },
+    {
+      "name": "Stored startup state",
+      "trigger": "power cycle",
+      "description": "The module recalls the last bank, wave and octave settings after reboot. That makes it behave like a preset oscillator even though it is still a hands-on 2HP voice."
+    },
+    {
+      "name": "High-octave alias texture",
+      "trigger": "octave high with noisy tables",
+      "description": "The 11-bit wavetable engine and high octave range can produce deliberate digital trash at the top end. That makes it suitable for brittle leads, percussion and noisy texture."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Parallel voice split",
+      "patch": "WT OUT to a filter and FM OUT to a second voice or distortion path · one oscillator becomes both the clean source and the aggressive source at once.",
+      "diagram": "Phosgène:\n* Bank: 1\n* Wave: mid\n* Octave: 0\n* Octave Displace: off\n\nFilter:\nDistortion:\nMixer:\n\n- Phosgène (WT OUT) -> Filter (In)\n- Phosgène (FM OUT) -> Distortion (In)\n- Filter (Out) -> Mixer (In 1)\n- Distortion (Out) -> Mixer (In 2)"
+    },
+    {
+      "name": "Dark FM bass",
+      "patch": "FM CV pushed from a sequencer or envelope · 100Hz FM base keeps the modulation under control · WT OUT can stay low while FM OUT carries the bite.",
+      "diagram": "Phosgène:\n* Bank: 1\n* Wave: bass\n* Octave: -1\n* Octave Displace: off\n\nEnvelope:\nVCA:\nOutput:\n\n- Sequencer (Pitch) p> Phosgène (V/Oct)\n- Envelope (Out) >> Phosgène (FM CV)\n- Phosgène (FM OUT) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Low drone with displaced tables",
+      "patch": "Octave Displace on · a slowly moving wavetable bank feeds the main output · keep FM low or unused for a stable low drone with bright aliasing edges when you open the octave switch.",
+      "diagram": "Phosgène:\n* Bank: 2\n* Wave: 12\n* Octave: -2\n* Octave Displace: on\n\nFilter:\nOutput:\n\n- Phosgène (WT OUT) -> Filter (In)\n- Phosgène (FM OUT) -> Output (Spare)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Glitch percussion voice",
+      "patch": "Fast pitch steps into V/Oct · rapid wave changes on the wavetable CV input · the top end folds into brittle digital percussion while FM adds an independent metallic accent.",
+      "diagram": "Phosgène:\n* Bank: 1\n* Wave: 7\n* Octave: 1\n* Octave Displace: off\n\nClock:\nVCA:\nOutput:\n\n- Clock (Out) c> Sequencer (Clock)\n- Sequencer (Pitch) p> Phosgène (V/Oct)\n- Sequencer (CV) >> Phosgène (Wave CV)\n- Phosgène (WT OUT) -> VCA (In)\n- Clock (Out) t> VCA (CV)\n- VCA (Out) -> Output (In)"
+    }
+  ]
+}

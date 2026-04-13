@@ -1,0 +1,271 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://bastl-instruments.com/eurorack/modules/citadel-alchemist",
+      "https://bastl-instruments.com/support/helpline/citadel-alchemist",
+      "https://bastl-instruments.com/content/files/manual-citadel-alchemist-web.pdf",
+      "https://shop.bastl-instruments.com/eurorack/citadel-alchemist.html"
+    ]
+  },
+  "slug": "bastl-instruments--citadel-alchemist",
+  "name": "Citadel Alchemist",
+  "manufacturer": "Bastl Instruments",
+  "hp": 16,
+  "tags": ["OSCILLATOR", "SEQUENCER", "MIDI", "EFFECTS", "UTILITY"],
+  "description": "Patchable hybrid-synthesis voice with MIDI, tempo-synced pattern generation, dual FX and stereo I/O. Monophonic but heavily modulatable, it doubles as a voice, rhythm source and MIDI bridge.",
+  "controls": [
+    {
+      "name": "PITCH",
+      "scope": "Voice",
+      "description": "Sets the core pitch in a ±3 octave range from the base note.",
+      "detail": "macro knob"
+    },
+    {
+      "name": "PITCH MOD",
+      "scope": "Voice",
+      "description": "Attenuverts incoming pitch modulation.",
+      "detail": "attenuverter"
+    },
+    {
+      "name": "TIMBRE",
+      "scope": "Voice",
+      "description": "Sweeps the sound engine across the five synthesis modes.",
+      "detail": "FILTER · FM · HYPERSINE · SUPERSAW · GLITCHNOISE"
+    },
+    {
+      "name": "TIMBRE MOD",
+      "scope": "Voice",
+      "description": "Modulates timbre with bipolar depth control.",
+      "detail": "attenuverted CV"
+    },
+    {
+      "name": "RATIO",
+      "scope": "Voice",
+      "description": "Sets oscillator detune ratios and waveform blend relationships.",
+      "detail": "macro knob"
+    },
+    {
+      "name": "ENV",
+      "scope": "Voice",
+      "description": "Shapes the envelope behavior and pushes the sound toward drone, body or transient focus.",
+      "detail": "macro knob"
+    },
+    {
+      "name": "ENV MOD",
+      "scope": "Voice",
+      "description": "Attenuverted envelope modulation input.",
+      "detail": "updates on trigger"
+    },
+    {
+      "name": "LFO FREQUENCY",
+      "scope": "LFO",
+      "description": "Sets the built-in LFO rate.",
+      "detail": "syncable or free-running"
+    },
+    {
+      "name": "LFO MOD",
+      "scope": "LFO",
+      "description": "Sets depth and polarity for LFO modulation.",
+      "detail": "attenuverter"
+    },
+    {
+      "name": "MODE",
+      "scope": "Voice",
+      "description": "Selects the synthesis mode or morph target.",
+      "detail": "CV-capable"
+    },
+    {
+      "name": "SHIFT",
+      "scope": "Global",
+      "description": "Secondary action button for triggering and alternate panel functions.",
+      "detail": "momentary"
+    },
+    {
+      "name": "TAP TEMPO",
+      "scope": "Clock",
+      "description": "Sets the internal tempo generator.",
+      "detail": "tap-tempo"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "NOTE IN",
+      "description": "Quantized pitch input; updates on trigger and follows the selected scale.",
+      "voltage": "-0.2V to 7V"
+    },
+    {
+      "name": "PLAY IN",
+      "description": "Quantized pitch trigger input for the arpeggio-style upper voices.",
+      "voltage": "3V+ trigger"
+    },
+    {
+      "name": "PITCH MOD",
+      "description": "Pitch modulation input with attenuverter.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "TIMBRE MOD",
+      "description": "Modulates the timbre sweep.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "MODE IN",
+      "description": "CV-selects or morphs the synthesis mode.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "ENV MOD",
+      "description": "Modulates the envelope macro.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "LFO RESET",
+      "description": "Resets the internal LFO phase.",
+      "voltage": "0V to 5V"
+    },
+    {
+      "name": "CLK IN",
+      "description": "External tempo clock input.",
+      "voltage": "0V to 5V"
+    },
+    {
+      "name": "RESET IN",
+      "description": "Resets the internal pattern generator.",
+      "voltage": "0V to 5V"
+    },
+    {
+      "name": "C IN",
+      "description": "Auxiliary control input for the pattern engine.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "G IN",
+      "description": "Auxiliary gate input for the pattern engine.",
+      "voltage": "0V to 5V"
+    },
+    {
+      "name": "TRIGGER IN",
+      "description": "Triggers the sound engine.",
+      "voltage": "0V to 5V"
+    },
+    {
+      "name": "L/R IN",
+      "description": "Stereo audio input for processing through the internal mixer and effects.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "TRS MIDI IN",
+      "description": "Front-panel TRS MIDI input for clock, notes, CC and pitch bend.",
+      "voltage": "MIDI"
+    },
+    {
+      "name": "USB-C",
+      "description": "Rear USB-C port for firmware updates, USB MIDI in/out and sample upload.",
+      "voltage": "USB"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "CLK OUT",
+      "description": "Tempo output from the internal clock generator.",
+      "voltage": "0V to 5V"
+    },
+    {
+      "name": "ENV OUT",
+      "description": "Patchable envelope output.",
+      "voltage": "0V to 5V"
+    },
+    {
+      "name": "CV OUT",
+      "description": "Gate-pattern CV output from the sequencer engine.",
+      "voltage": "0V to 5V"
+    },
+    {
+      "name": "LFO TRI OUT",
+      "description": "Triangle LFO output.",
+      "voltage": "0V to 5V"
+    },
+    {
+      "name": "LFO PULSE OUT",
+      "description": "Pulse LFO output.",
+      "voltage": "0V to 5V"
+    },
+    {
+      "name": "L/R OUT",
+      "description": "Stereo DC-coupled audio output.",
+      "voltage": "-5V to +5V"
+    },
+    {
+      "name": "HEADPHONE OUT",
+      "description": "Front-panel headphone output.",
+      "voltage": "2Vpp"
+    },
+    {
+      "name": "SYNC OUT",
+      "description": "Analog sync output.",
+      "voltage": "0V to 5V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Five-mode synth voice",
+      "trigger": "turn TIMBRE or change MODE",
+      "description": "The voice moves through FILTER, FM, HYPERSINE, SUPERSAW and GLITCHNOISE while the ratio and envelope macros reshape how the mode behaves."
+    },
+    {
+      "name": "Scale-locked note updates",
+      "trigger": "patch NOTE IN or PLAY IN",
+      "description": "The internal quantizer holds the current scale, updates notes on trigger and can preview octave and root changes through bank combinations."
+    },
+    {
+      "name": "Pattern generator with CV and gate",
+      "trigger": "use the sequencer engine",
+      "description": "The built-in pattern engine generates CV and gate streams that can be synced, reset and customized from the web editor."
+    },
+    {
+      "name": "LFO-driven groove drift",
+      "trigger": "use the internal LFO",
+      "description": "The LFO can sync to clock, reset to phase zero or free-run, which makes the module behave like a small self-contained groove engine."
+    },
+    {
+      "name": "Stereo FX split",
+      "trigger": "feed stereo audio into L/R IN",
+      "description": "The module can process external stereo audio through its dual effects section and return it as a stereo voice or modulation source."
+    },
+    {
+      "name": "USB and TRS MIDI bridge",
+      "trigger": "connect MIDI to TRS or USB-C",
+      "description": "The module receives clock and notes over TRS MIDI and sends or receives USB MIDI on the rear connector."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Scale-locked arp lead",
+      "patch": "NOTE IN takes the melody · PLAY IN advances the upper arpeggio voice · CLK IN locks the rhythm · TIMBRE at noon and RATIO slightly detuned produce a moving but still coherent lead · L/R OUT goes straight to the main output.",
+      "diagram": "Citadel Alchemist:\n* MODE: FILTER\n* TIMBRE: noon\n* RATIO: slight detune\n* ENV: medium\n\nSequencer:\nClock:\n\n- Sequencer (Pitch) p> Citadel Alchemist (NOTE IN)\n- Clock (Out) c> Citadel Alchemist (CLK IN)\n- Sequencer (Gate) g> Citadel Alchemist (PLAY IN)\n- Citadel Alchemist (L/R OUT) -> Output (In)"
+    },
+    {
+      "name": "Mode-morph drone",
+      "patch": "MODE CV moves between synthesis types · LFO into TIMBRE MOD and ENV MOD keeps the sound alive without constant re-patching · leave PLAY IN untriggered for long-held tones and slow harmonic drift.",
+      "diagram": "Citadel Alchemist:\n* MODE: FM\n* ENV: long\n* LFO: synced slow\n\nLFO:\nEnvelope:\n\n- LFO (Out) >> Citadel Alchemist (TIMBRE MOD)\n- Envelope (Out) >> Citadel Alchemist (ENV MOD)\n- Citadel Alchemist (L/R OUT) -> Output (In)"
+    },
+    {
+      "name": "Clocked gate machine",
+      "patch": "CLK IN drives the internal tempo generator · CV OUT and CLK OUT feed external drums and envelopes · use SHIFT and TAP TEMPO to re-center the feel while the module stays locked to the rack clock.",
+      "diagram": "Citadel Alchemist:\n* MODE: GLITCHNOISE\n* ENV: short\n\nDrum:\nEnvelope:\n\n- Clock (Out) c> Citadel Alchemist (CLK IN)\n- Citadel Alchemist (CV OUT) >> Drum (Accent)\n- Citadel Alchemist (CLK OUT) t> Drum (Trig)\n- Citadel Alchemist (ENV OUT) >> Envelope (Trig)\n- Drum (Out) -> Output (In)"
+    },
+    {
+      "name": "Stereo FX insert",
+      "patch": "Audio into L/R IN runs through the internal dual FX block · set TIMBRE low and ENV medium for a wider, slower-moving smear · L/R OUT returns the processed signal as a stereo insert point.",
+      "diagram": "Citadel Alchemist:\n* MODE: FILTER\n* TIMBRE: low\n* ENV: medium\n\nAudio Source:\n\n- Audio Source (L) -> Citadel Alchemist (L/R IN)\n- Audio Source (R) -> Citadel Alchemist (L/R IN)\n- Citadel Alchemist (L/R OUT) -> Output (L)\n- Citadel Alchemist (L/R OUT) -> Output (R)"
+    },
+    {
+      "name": "MIDI bridge voice",
+      "patch": "USB-C on the rear bridges a DAW or controller into the module while the front panel stays fully patchable · use the pattern generator to sequence the voice and export the result as stereo audio or CV for the rest of the rack.",
+      "diagram": "Citadel Alchemist:\n* MODE: SUPERSAW\n* ENV: medium\n\nComputer:\nOutput:\n\n- Computer (USB MIDI) >> Citadel Alchemist (USB-C)\n- Citadel Alchemist (CV OUT) >> Filter (Cutoff)\n- Citadel Alchemist (L/R OUT) -> Output (In)"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://infinitedigits.myshopify.com/products/ezeptocore",
+      "https://modulargrid.net/e/infinite-digits-ezeptocore",
+      "https://get.ezeptocore.com"
+    ]
+  },
+  "slug": "infinite-digits--ezeptocore",
+  "name": "EZEPTOCORE",
+  "manufacturer": "Infinite Digits",
+  "hp": 8,
+  "tags": ["SAMPLER", "GLITCH", "CLOCK", "EFFECTS"],
+  "description": "Algorithmic breakbeat sampler and sample mangler. Streams SD-card audio, re-slices it in real time, and layers 16 effects around an internal rungler sequencer, clock division and sample-analysis triggers.",
+  "controls": [
+    {
+      "name": "AMEN",
+      "scope": "Slice sequencer",
+      "description": "Sets the looping random-sequencer pattern that evolves slice order and break movement.",
+      "detail": "rungler / Turing-style core"
+    },
+    {
+      "name": "BREAK",
+      "scope": "Pattern / timing",
+      "description": "Scales the break-mangling side of the engine, shaping how aggressively the sample is reworked.",
+      "detail": "links to slice timing and FX behavior"
+    },
+    {
+      "name": "EFFECTS",
+      "scope": "FX preset bank",
+      "description": "Selects the current effect preset and intensity for the sample-mangling chain.",
+      "detail": "16 onboard effects"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Clock In",
+      "description": "Syncs the internal sequencer and timebase.",
+      "voltage": "clock / trigger"
+    },
+    {
+      "name": "Sample Select CV",
+      "description": "Chooses among the 16 sample banks.",
+      "voltage": "CV"
+    },
+    {
+      "name": "FX Intensity CV",
+      "description": "Modulates the strength of the selected effect preset.",
+      "voltage": "CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Audio Out",
+      "description": "Processed sample output from the internal SD streamer and FX chain.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Clock Out",
+      "description": "Mirrors the master clock with built-in division and multiplication.",
+      "voltage": "clock"
+    },
+    {
+      "name": "Trigger Out",
+      "description": "Analysis-derived trigger output for slice accents and rhythmic extraction.",
+      "voltage": "trigger"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Rungler breaks",
+      "trigger": "AMEN knob",
+      "description": "The internal looping random sequencer generates evolving slice patterns instead of a fixed step order."
+    },
+    {
+      "name": "Real-time slicing",
+      "trigger": "clocked sample playback",
+      "description": "Samples stream directly from SD storage and can be chopped, sliced and transformed without preloading into a fixed program."
+    },
+    {
+      "name": "Tempo compensation",
+      "trigger": "clock input or tempo change",
+      "description": "The engine keeps sample playback pitched in time when the master clock changes, so breaks stay locked to tempo."
+    },
+    {
+      "name": "Preset FX stack",
+      "trigger": "EFFECTS knob",
+      "description": "Sixteen onboard effects are selected through curated presets, with the BREAK control shaping how hard the module leans into them."
+    },
+    {
+      "name": "Analysis triggers",
+      "trigger": "percussive sample content",
+      "description": "Kick, snare and transient analysis can produce trigger outs that follow the loop's rhythmic structure."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Amen break mangler",
+      "patch": "Load a breakbeat · clock it from the rack master clock · use AMEN for evolving slice order · BREAK for more violent reshaping · monitor Audio Out for a constantly mutating breakcore loop.",
+      "diagram": "EZEPTOCORE:\n* AMEN: noon\n* BREAK: 1 o'clock\n* EFFECTS: 11 o'clock\n\nClock:\n\n- Clock (Out) c> EZEPTOCORE (Clock In)\n- EZEPTOCORE (Audio Out) -> Output (In)\n- EZEPTOCORE (Clock Out) c> Clock Divider (In)"
+    },
+    {
+      "name": "Bank-hopped drum rack",
+      "patch": "CV-scan the 16 sample banks while the master clock runs · each bank swap changes the loop character from drum kit to glitch bed · use Trigger Out to clock a companion envelope or drum voice.",
+      "diagram": "EZEPTOCORE:\n* AMEN: slow\n* EFFECTS: low\n\nSequencer:\nEnvelope:\nOutput:\n\n- Sequencer (CV) >> EZEPTOCORE (Sample Select CV)\n- Clock (Out) c> EZEPTOCORE (Clock In)\n- EZEPTOCORE (Trigger Out) t> Envelope (Trig)\n- EZEPTOCORE (Audio Out) -> Output (In)"
+    },
+    {
+      "name": "FX-smeared stutter",
+      "patch": "Push BREAK and rotate EFFECTS to lean into time-stretch, tape stop and beat-repeat behavior · use a short break loop as source material · the result lands between sample slicing and live DJ destruction.",
+      "diagram": "EZEPTOCORE:\n* BREAK: max\n* EFFECTS: 2 o'clock\n\nMixer:\nOutput:\n\n- Mixer (Out) -> EZEPTOCORE (Audio In)\n- Clock (Out) c> EZEPTOCORE (Clock In)\n- EZEPTOCORE (Audio Out) -> Output (In)"
+    },
+    {
+      "name": "Triggered slice accents",
+      "patch": "Use Trigger Out for slice-derived accents · patch the trigger to an envelope and VCA · the module's analysis engine turns dense sample edits into rhythmic side-chains for a drum bus.",
+      "diagram": "EZEPTOCORE:\n* AMEN: 2 o'clock\n\nEnvelope:\nVCA:\nDrum Loop:\nOutput:\n\n- Drum Loop (Out) -> EZEPTOCORE (Audio In)\n- EZEPTOCORE (Trigger Out) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- EZEPTOCORE (Audio Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    }
+  ]
+}

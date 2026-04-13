@@ -1,0 +1,107 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.midiphy.com/en/zetasid/",
+      "https://www.midiphy.com/en/shop-details/207/107/zetasid",
+      "https://www.midiphy.com/en/nexusmidi/"
+    ]
+  },
+  "slug": "midiphy--zetasid",
+  "name": "zetaSID",
+  "manufacturer": "midiphy",
+  "hp": 4,
+  "tags": ["OSCILLATOR", "MIDI", "SEQUENCER", "EFFECTS"],
+  "description": "Expandable SID-based modular voice with OLED UI, CV/gate input and phybus linking. Runs lead or drum engines with six LFOs, dual envelopes, wave sequencers, arpeggiators and total recall.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "CV In",
+      "description": "Assigns pitch or modulation, configurable from bipolar CV ranges.",
+      "voltage": "−5V to +5V or 0V to 10V"
+    },
+    {
+      "name": "Gate In",
+      "description": "Triggers the voice from an external gate source.",
+      "voltage": "gate"
+    },
+    {
+      "name": "phybus MIDI In 1",
+      "description": "Receives MIDI data over the phybus expansion link.",
+      "voltage": "MIDI"
+    },
+    {
+      "name": "phybus MIDI In 2",
+      "description": "Second phybus MIDI input for expanded control routing.",
+      "voltage": "MIDI"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Audio Out",
+      "description": "Eurorack-level audio output from the SID engine.",
+      "voltage": "audio"
+    },
+    {
+      "name": "phybus MIDI Out",
+      "description": "Sends MIDI data back out across the phybus network.",
+      "voltage": "MIDI"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Monophonic voice core",
+      "trigger": "CV / gate input",
+      "description": "The module boots as a single SID voice that can be played like a compact modular synth voice."
+    },
+    {
+      "name": "Stereo pair link",
+      "trigger": "link two zetaSID modules via phybus",
+      "description": "Two modules combine into a true stereo instrument voice with shared patch cooperation."
+    },
+    {
+      "name": "Polyphonic cluster",
+      "trigger": "chain multiple zetaSID modules",
+      "description": "Up to twelve modules can form six stereo voices, with the user interface split across cooperating modules."
+    },
+    {
+      "name": "Lead and drum engines",
+      "trigger": "select the engine mode",
+      "description": "The lead engine provides LFOs, envelopes, wave sequencers and arpeggiators, while the drum engine focuses on parallel percussion instruments."
+    },
+    {
+      "name": "Total recall",
+      "trigger": "save or reload sessions",
+      "description": "MicroSD-backed patch and session storage makes the module practical for repeatable performances and preset banks."
+    },
+    {
+      "name": "MIDI expansion",
+      "trigger": "add nexusMIDI or another phybus expander",
+      "description": "Unused CV and gate inputs can be repurposed once the module is expanded into a larger MIDI-controlled cluster."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "SID lead voice",
+      "patch": "Patch a keyboard or sequencer into CV / gate · use the lead engine's envelopes and arpeggiator for classic SID phrasing · send Audio Out straight to the rack mixer.",
+      "diagram": "zetaSID:\n* Engine: Lead\n* Mode: Monophonic\n* ROM: on\n\nKeyboard:\nOutput:\n\n- Keyboard (Pitch) p> zetaSID (CV In)\n- Keyboard (Gate) g> zetaSID (Gate In)\n- zetaSID (Audio Out) -> Output (In)"
+    },
+    {
+      "name": "Stereo pair",
+      "patch": "Link two zetaSID modules in phybus stereo mode · keep one focused on filter movement and the other on oscillator motion · the pair behaves like a single wider instrument voice.",
+      "diagram": "zetaSID A:\n* Engine: Lead\n* Pair: left\n\nzetaSID B:\n* Engine: Lead\n* Pair: right\n\nOutput:\n\n- zetaSID A (Audio Out) -> Output (L)\n- zetaSID B (Audio Out) -> Output (R)"
+    },
+    {
+      "name": "Drum engine rack",
+      "patch": "Switch to the drum engine · use gate and trigger inputs to play multiple percussion instruments from one compact voice module · the output becomes a programmable SID drum machine.",
+      "diagram": "zetaSID:\n* Engine: Drum\n* Trigger Matrix: active\n\nClock:\nOutput:\n\n- Clock (Out) c> zetaSID (Gate In)\n- zetaSID (Audio Out) -> Output (In)"
+    },
+    {
+      "name": "Poly chain cluster",
+      "patch": "Chain several modules for more voices · spread one shared patch over multiple OLED screens · the old SID sound scales from monophonic to dense polyphony without leaving the rack.",
+      "diagram": "zetaSID 1:\n* Engine: Lead\n\nzetaSID 2:\n* Engine: Lead\n\nOutput:\n\n- zetaSID 1 (Audio Out) -> Output (L)\n- zetaSID 2 (Audio Out) -> Output (R)"
+    }
+  ]
+}

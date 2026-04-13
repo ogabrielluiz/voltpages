@@ -1,0 +1,141 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.thonk.co.uk/shop/thonk-synth-vc4/",
+      "https://www.thonk.co.uk/wp-content/uploads/2026/02/t10-VC4-Manual-v1.pdf",
+      "https://modulargrid.net/e/thonk-synth-vc4"
+    ]
+  },
+  "slug": "thonk-synth--t10-vc4",
+  "name": "T10 VC4",
+  "manufacturer": "Thonk Synth",
+  "hp": 4,
+  "tags": ["VCA", "MIXER"],
+  "description": "Quad linear DC-coupled VCA. Four identical channels with individual outputs, A+C and B+D mix outputs, and +5V-normalled CV inputs for manual-open behavior when unpatched.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "IN A",
+      "description": "Signal input for channel A.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "IN B",
+      "description": "Signal input for channel B.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "IN C",
+      "description": "Signal input for channel C.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "IN D",
+      "description": "Signal input for channel D.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "CV A",
+      "description": "CV input for channel A. Normalled high when unpatched.",
+      "voltage": "0V to +5V",
+      "normalizedTo": "+5V"
+    },
+    {
+      "name": "CV B",
+      "description": "CV input for channel B. Normalled high when unpatched.",
+      "voltage": "0V to +5V",
+      "normalizedTo": "+5V"
+    },
+    {
+      "name": "CV C",
+      "description": "CV input for channel C. Normalled high when unpatched.",
+      "voltage": "0V to +5V",
+      "normalizedTo": "+5V"
+    },
+    {
+      "name": "CV D",
+      "description": "CV input for channel D. Normalled high when unpatched.",
+      "voltage": "0V to +5V",
+      "normalizedTo": "+5V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT A",
+      "description": "Individual output for channel A. Still contributes to the mix outputs when patched.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "OUT B",
+      "description": "Individual output for channel B. Still contributes to the mix outputs when patched.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "OUT C",
+      "description": "Individual output for channel C. Still contributes to the mix outputs when patched.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "OUT D",
+      "description": "Individual output for channel D. Still contributes to the mix outputs when patched.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "A+C MIX",
+      "description": "Mix of channels A and C.",
+      "voltage": "-10V to +10V"
+    },
+    {
+      "name": "B+D MIX",
+      "description": "Mix of channels B and D, with A+C inverted into the bus when A+C is left unpatched.",
+      "voltage": "-10V to +10V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Four linear VCAs",
+      "trigger": "signal into IN A-D",
+      "description": "The module behaves as four independent linear VCAs. Each channel is DC coupled, so it is equally happy with audio, envelopes or slow control voltages."
+    },
+    {
+      "name": "Open when unpatched",
+      "trigger": "CV jack left empty",
+      "description": "Each CV input is normalled to +5V. That means an unpatched channel is fully open and acts like a straight-through mixer path until CV is inserted."
+    },
+    {
+      "name": "A+C subgroup",
+      "trigger": "use A+C MIX",
+      "description": "Channels A and C sum to a dedicated subgroup output. That makes the left pair an instant stereo or stem bus when you want two voices glued together."
+    },
+    {
+      "name": "B+D subgroup",
+      "trigger": "use B+D MIX",
+      "description": "Channels B and D form the second subgroup output. When A+C is left unpatched, those channels are inverted into the B+D bus for a wider composite mix."
+    },
+    {
+      "name": "Individual taps stay live",
+      "trigger": "patch OUT A-D",
+      "description": "Taking an individual output does not remove the channel from the mix outputs. You can split a channel to a separate destination and keep it in the summed bus at the same time."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Four-voice VCA mix",
+      "patch": "Four voices into IN A-D · four envelopes into CV A-D · A+C MIX to the left bus · B+D MIX to the right bus · a tiny quad stem mixer with no menu layer.",
+      "diagram": "T10 VC4:\n\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\nEnvelope 1:\nEnvelope 2:\nEnvelope 3:\nEnvelope 4:\nOutput:\n\n- VCO 1 (Out) -> T10 VC4 (IN A)\n- VCO 2 (Out) -> T10 VC4 (IN B)\n- VCO 3 (Out) -> T10 VC4 (IN C)\n- VCO 4 (Out) -> T10 VC4 (IN D)\n- Envelope 1 (Out) >> T10 VC4 (CV A)\n- Envelope 2 (Out) >> T10 VC4 (CV B)\n- Envelope 3 (Out) >> T10 VC4 (CV C)\n- Envelope 4 (Out) >> T10 VC4 (CV D)\n- T10 VC4 (A+C MIX) -> Output (L)\n- T10 VC4 (B+D MIX) -> Output (R)"
+    },
+    {
+      "name": "Stereo drum stem",
+      "patch": "Kick and snare on A/B · hats and percussion on C/D · use the two mix buses as left/right stems · the individual outs remain available for separate processing.",
+      "diagram": "T10 VC4:\n\nKick:\nSnare:\nHats:\nPerc:\nOutput:\n\n- Kick (Out) -> T10 VC4 (IN A)\n- Snare (Out) -> T10 VC4 (IN B)\n- Hats (Out) -> T10 VC4 (IN C)\n- Perc (Out) -> T10 VC4 (IN D)\n- T10 VC4 (OUT A) -> Output (Kick tap)\n- T10 VC4 (OUT B) -> Output (Snare tap)\n- T10 VC4 (A+C MIX) -> Output (L)\n- T10 VC4 (B+D MIX) -> Output (R)"
+    },
+    {
+      "name": "Manual-open modulation hub",
+      "patch": "Leave CV A-D empty to open all four channels · patch audio or CV into the inputs · use the module as a passive-feeling four-channel level hub with the +5V normals doing the lifting.",
+      "diagram": "T10 VC4:\n\nLFO 1:\nLFO 2:\nFilter:\nOutput:\n\n- LFO 1 (Out) -> T10 VC4 (IN A)\n- LFO 2 (Out) -> T10 VC4 (IN C)\n- T10 VC4 (OUT A) >> Filter (Cutoff)\n- T10 VC4 (OUT C) >> Output (Pan CV)\n- T10 VC4 (A+C MIX) -> Output (In)"
+    }
+  ]
+}
