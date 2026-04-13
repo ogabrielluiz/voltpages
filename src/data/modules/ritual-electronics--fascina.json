@@ -1,0 +1,128 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.ritualelectronics.com/shop/distortion-8/re018-fascina-155",
+      "https://www.ritualelectronics.com/manuals",
+      "https://modulargrid.net/e/ritual-electronics-fascina"
+    ]
+  },
+  "slug": "ritual-electronics--fascina",
+  "name": "Fascina",
+  "manufacturer": "Ritual Electronics",
+  "hp": 8,
+  "tags": ["VCA", "COMPRESSOR", "DISTORTION", "UTILITY"],
+  "description": "Dual complex VCA with anti-click dynamics, CV and audio control, and hard limiting. The module can act as a saturator, sidechain element, envelope follower or compact compressor.",
+  "controls": [
+    {
+      "name": "Level",
+      "scope": "Global",
+      "description": "Sets the initial level.",
+      "detail": "initial volume control"
+    },
+    {
+      "name": "Drive",
+      "scope": "Global",
+      "description": "Pushes the VCA into the limiter and saturator region.",
+      "detail": "hard gain stage"
+    },
+    {
+      "name": "CV Attenuverter",
+      "scope": "Global",
+      "description": "Attenuates or inverts the CV input.",
+      "detail": "bipolar attenuverter"
+    },
+    {
+      "name": "Ctrl Attenuverter",
+      "scope": "Global",
+      "description": "Attenuates or inverts the control-input signal.",
+      "detail": "bipolar attenuverter"
+    },
+    {
+      "name": "Anti-click",
+      "scope": "Global",
+      "description": "Toggles the anti-click system.",
+      "detail": "on/off switch"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "VCA IN",
+      "description": "Audio or CV input to the main VCA.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "VCA CV IN",
+      "description": "Main control-voltage input for the VCA level.",
+      "voltage": "CV"
+    },
+    {
+      "name": "CONTROL IN",
+      "description": "Audio input to the control VCA, used for ducking, expansion and envelope-follower style routing.",
+      "voltage": "audio"
+    },
+    {
+      "name": "CTRL CV IN",
+      "description": "Control-voltage input for the control VCA path.",
+      "voltage": "CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "VCA OUT",
+      "description": "Audio or CV output of the main VCA.",
+      "voltage": "audio / CV"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Anti-click gating",
+      "trigger": "short envelope into VCA CV IN",
+      "description": "The anti-click system keeps fast attacks clean, so percussive envelopes do not produce zipper noise or pops."
+    },
+    {
+      "name": "Control-path modulation",
+      "trigger": "audio into CONTROL IN",
+      "description": "The control input can be treated as a second audio-rate modulator, making ducking, expansion and sidechain-style movement easy to patch."
+    },
+    {
+      "name": "Limiter drive",
+      "trigger": "raise Drive",
+      "description": "Drive pushes the circuit into a limiter and saturator range, turning the VCA into a compact distortion stage."
+    },
+    {
+      "name": "Dynamic ducking",
+      "trigger": "control attenuverter set negative",
+      "description": "Inverted control input produces ducking rather than expansion, so another audio stream can pull the level down instead of up."
+    },
+    {
+      "name": "Patch-programmable dynamics",
+      "trigger": "cross-patch the inputs and output",
+      "description": "The module can be re-purposed as an envelope follower, sample-and-hold source, preamp or stereo compressor depending on how the two VCAs are patched."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Clickless pluck",
+      "patch": "Short envelope into VCA CV IN · Drive low · Anti-click on · the module behaves like a fast clean VCA for plucks and bass accents.",
+      "diagram": "Fascina:\n* Anti-click: on\n* Drive: low\n\nEnvelope:\nVCO:\nOutput:\n\n- Envelope (Out) >> Fascina (VCA CV IN)\n- VCO (Out) -> Fascina (VCA IN)\n- Fascina (VCA OUT) -> Output (In)"
+    },
+    {
+      "name": "Sidechain ducking",
+      "patch": "Kick audio into CONTROL IN · inversion on the ctrl attenuverter for ducking · pad audio into VCA IN · the kick briefly pulls the pad down without a separate compressor.",
+      "diagram": "Fascina:\n* Ctrl attenuverter: negative\n\nKick:\nPad:\nOutput:\n\n- Kick (Out) -> Fascina (CONTROL IN)\n- Pad (Out) -> Fascina (VCA IN)\n- Kick (Out) >> Fascina (CTRL CV IN)\n- Fascina (VCA OUT) -> Output (In)"
+    },
+    {
+      "name": "Dirty preamp",
+      "patch": "Audio source into VCA IN · Drive up · Level trimmed back after saturation · the module becomes a compact preamp and limiter for modular or line-level sources.",
+      "diagram": "Fascina:\n* Drive: high\n* Level: trimmed\n\nAudio Source:\nFilter:\nOutput:\n\n- Audio Source (Out) -> Fascina (VCA IN)\n- Fascina (VCA OUT) -> Filter (In)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Dual distortion bus",
+      "patch": "Patch a drum bus into the VCA path and modulate the control path with a second audio source · the result is a dual-stage distortion with rhythmically moving gain structure.",
+      "diagram": "Fascina:\n* Drive: medium-high\n\nDrum Bus:\nModulator:\nOutput:\n\n- Drum Bus (Out) -> Fascina (VCA IN)\n- Modulator (Out) -> Fascina (CONTROL IN)\n- Fascina (VCA OUT) -> Output (In)"
+    }
+  ]
+}

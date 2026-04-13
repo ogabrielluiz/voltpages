@@ -1,0 +1,227 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.modulaire-maritime.com/modules",
+      "https://www.modulaire-maritime.com/copie-de-ena-ii",
+      "https://modulargrid.net/e/modulaire-maritime-total-sub",
+      "https://modulargrid.net/e/vendors/view/825"
+    ]
+  },
+  "slug": "modulaire-maritime--total-sub",
+  "name": "Total Sub",
+  "manufacturer": "Modulaire Maritime",
+  "hp": 8,
+  "tags": ["CLOCK", "LFO", "RANDOM", "NOISE", "QUANTIZER", "UTILITY", "GATE"],
+  "description": "Hybrid modulation hub with four CV LFOs, random and sample-and-hold sources, clock division, quantized gate patterns and a hidden rhythmic sequencer.",
+  "controls": [
+    {
+      "name": "LFO 1 Rate",
+      "scope": "LFO 1",
+      "description": "Sets the speed of the first LFO.",
+      "detail": "range I / II"
+    },
+    {
+      "name": "LFO 1 Range",
+      "scope": "LFO 1",
+      "description": "Selects the slow or fast range for LFO 1.",
+      "detail": "I / II"
+    },
+    {
+      "name": "LFO 2 Rate",
+      "scope": "LFO 2",
+      "description": "Sets the speed of LFO 2.",
+      "detail": "triangle or square"
+    },
+    {
+      "name": "LFO 3 Rate",
+      "scope": "LFO 3",
+      "description": "Sets the speed of LFO 3.",
+      "detail": "OTA-based"
+    },
+    {
+      "name": "LFO 4 Rate",
+      "scope": "LFO 4",
+      "description": "Sets the speed of the fourth LFO and the internal gate engine.",
+      "detail": "0.1 Hz to 35 Hz"
+    },
+    {
+      "name": "LFO 4 Wave Select",
+      "scope": "LFO 4",
+      "description": "Chooses the active waveform for LFO 4.",
+      "detail": "six waveforms"
+    },
+    {
+      "name": "Random Mode",
+      "scope": "Random / S&H",
+      "description": "Switches the random wave between stepped and smoothed behavior.",
+      "detail": "stepped / smoothed"
+    },
+    {
+      "name": "Clock Divider",
+      "scope": "Global clock",
+      "description": "Sets the division stage for the gate sequencer and clock outputs.",
+      "detail": "/2 /4 /8 /16"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "S&H IN",
+      "description": "External source for the sample-and-hold stage instead of noise.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "TRIG IN",
+      "description": "Trigger input for the sample-and-hold stage.",
+      "voltage": "trigger"
+    },
+    {
+      "name": "LFO 1 CV",
+      "description": "Voltage control for LFO 1 frequency multiplication.",
+      "voltage": "CV"
+    },
+    {
+      "name": "LFO 1 RESET",
+      "description": "Resets LFO 1 phase.",
+      "voltage": "trigger"
+    },
+    {
+      "name": "LFO 2 CV",
+      "description": "Voltage control for LFO 2 frequency.",
+      "voltage": "CV"
+    },
+    {
+      "name": "LFO 3 CV",
+      "description": "Voltage control for LFO 3 frequency.",
+      "voltage": "CV"
+    },
+    {
+      "name": "LFO 4 CV",
+      "description": "Voltage control for LFO 4 frequency and gate-pattern behavior.",
+      "voltage": "CV"
+    },
+    {
+      "name": "EXT CLOCK IN",
+      "description": "External clock input that can replace the internal clock source automatically.",
+      "voltage": "clock"
+    },
+    {
+      "name": "CLOCK DIV RESET",
+      "description": "Resets the divider section.",
+      "voltage": "trigger"
+    },
+    {
+      "name": "MULTIPLY CV",
+      "description": "Controls frequency multiplication depth.",
+      "voltage": "CV"
+    },
+    {
+      "name": "PHASE CV",
+      "description": "Applies phase modulation and gate rarefaction.",
+      "voltage": "CV"
+    },
+    {
+      "name": "DEPTH CV",
+      "description": "Sets output depth and gate density.",
+      "voltage": "CV"
+    },
+    {
+      "name": "QNT CV",
+      "description": "Quantizes the selected LFO waveform or gate pattern.",
+      "voltage": "CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "S&H OUT",
+      "description": "Sample-and-hold output.",
+      "voltage": "0V to 7V"
+    },
+    {
+      "name": "LFO 1 OUT",
+      "description": "First LFO output.",
+      "voltage": "unipolar or bipolar"
+    },
+    {
+      "name": "LFO 2 OUT",
+      "description": "Second LFO output.",
+      "voltage": "unipolar or bipolar"
+    },
+    {
+      "name": "LFO 3 OUT",
+      "description": "Third LFO output.",
+      "voltage": "unipolar or bipolar"
+    },
+    {
+      "name": "LFO 4 OUT",
+      "description": "Fourth LFO output and rhythmic gate source.",
+      "voltage": "unipolar or bipolar"
+    },
+    {
+      "name": "CLK /2",
+      "description": "Clock divider output at half rate.",
+      "voltage": "gate"
+    },
+    {
+      "name": "CLK /4",
+      "description": "Clock divider output at quarter rate.",
+      "voltage": "gate"
+    },
+    {
+      "name": "CLK /8",
+      "description": "Clock divider output at eighth rate.",
+      "voltage": "gate"
+    },
+    {
+      "name": "CLK /16",
+      "description": "Clock divider output at sixteenth rate.",
+      "voltage": "gate"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Four LFOs plus random source",
+      "trigger": "module running",
+      "description": "Total Sub combines four LFOs with S&H and random waveforms, so it can act as the modulation center of a small system."
+    },
+    {
+      "name": "Clock-aware modulation",
+      "trigger": "EXT CLOCK IN active",
+      "description": "An external clock can replace the internal clock automatically, and the divider follows along."
+    },
+    {
+      "name": "Gate pattern generation",
+      "trigger": "LFO 4 in random mode with QNT CV",
+      "description": "The module can turn its rhythm logic into strategic gate patterns, ratchets and fills rather than plain periodic pulses."
+    },
+    {
+      "name": "Hidden sequencer behavior",
+      "trigger": "clock division and reset",
+      "description": "The divider and reset logic form a hidden gate sequencer that can produce more musical rhythm variants than a basic clock splitter."
+    },
+    {
+      "name": "CV shaping",
+      "trigger": "MULTIPLY, PHASE, DEPTH and QNT CVs",
+      "description": "The extra CV inputs let you reshape waveforms, modulate gate density and quantize motion without leaving the module."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Clocked modulation hub",
+      "patch": "Use an external clock to lock the module, then fan out the divider, LFOs and S&H to drums, filters and VCAs.",
+      "diagram": "Total Sub:\nSequencer:\nDrum:\nFilter:\nVCA:\nOutput:\n\n- Sequencer (Clock) c> Total Sub (EXT CLOCK IN)\n- Total Sub (CLK /4) c> Drum (Trig)\n- Total Sub (S&H OUT) >> Filter (Cutoff)\n- Total Sub (LFO 1 OUT) >> VCA (CV)\n- Total Sub (LFO 4 OUT) >> Drum (Accent)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Rhythm generator",
+      "patch": "Let the divider outputs drive several drum voices while the random and quantized outputs keep the groove from repeating too predictably.",
+      "diagram": "Total Sub:\nClock Source:\nKick:\nSnare:\nHat:\nOutput:\n\n- Clock Source (Out) c> Total Sub (EXT CLOCK IN)\n- Total Sub (CLK /2) c> Kick (Trig)\n- Total Sub (CLK /8) c> Snare (Trig)\n- Total Sub (LFO 4 OUT) c> Hat (Trig)\n- Total Sub (S&H OUT) >> Hat (Pitch)\n- Hat (Out) -> Output (In)"
+    },
+    {
+      "name": "Modulated drone control",
+      "patch": "Use the LFOs to move a drone voice while the sample-and-hold output nudges the filter and VCA in irregular steps.",
+      "diagram": "Total Sub:\nVCO:\nFilter:\nVCA:\nOutput:\n\n- VCO (Out) -> Filter (In)\n- Total Sub (LFO 2 OUT) >> Filter (Cutoff)\n- Total Sub (S&H OUT) >> VCO (FM)\n- Total Sub (LFO 3 OUT) >> VCA (CV)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://modulargrid.net/e/tunefish-modular-uturing-machine",
+      "https://github.com/TomWhitwell/TuringMachine",
+      "https://www.musicthing.co.uk/"
+    ]
+  },
+  "slug": "tunefish-modular--uturing-machine",
+  "name": "uTuring Machine",
+  "manufacturer": "Tunefish Modular",
+  "hp": 6,
+  "tags": ["SEQUENCER", "RANDOM", "CLOCK"],
+  "description": "Random looping sequencer built on a 16-bit shift register. A length control locks or mutates a clocked CV loop, with expander headers for pulse and voltage variations.",
+  "controls": [
+    {
+      "name": "Length",
+      "scope": "Global",
+      "description": "Selects the loop length in steps. Short lengths produce tight phrases; longer lengths reveal more of the register's internal pattern.",
+      "detail": "step length selector · doubles the effective loop when the loop control is at the locked extreme"
+    },
+    {
+      "name": "Loop / Probability",
+      "scope": "Global",
+      "description": "Sets how likely the register is to keep its current state versus slipping into a new mutation. Noon is the most changeable region.",
+      "detail": "locked at the extremes · mutable through the middle"
+    },
+    {
+      "name": "Write",
+      "scope": "Global",
+      "description": "Forces the next incoming bit high or low while held. Used to sculpt a looping phrase without fully breaking the pattern.",
+      "detail": "momentary write/edit switch"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "CLOCK IN",
+      "description": "Advances the shift register on each rising edge.",
+      "voltage": ">1V clock / trigger"
+    },
+    {
+      "name": "KNOB CV",
+      "description": "CV over the loop/probability control for voltage-driven mutation.",
+      "voltage": "±5V"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "CV OUT",
+      "description": "Main stepped voltage output from the current register state.",
+      "voltage": "0 to ~5V"
+    },
+    {
+      "name": "PULSE OUT",
+      "description": "Gate-style pulse output derived from the register state and shared clock.",
+      "voltage": "0 / +5V gate"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Shift-register sequencing",
+      "trigger": "clock edge",
+      "description": "Each pulse shifts the internal 16-bit register and produces a new stepped voltage. The pattern can stay fully locked or drift into evolving mutation depending on the loop control."
+    },
+    {
+      "name": "Loop locking",
+      "trigger": "loop control at an extreme",
+      "description": "At the locked extremes the current phrase repeats. Small offsets away from lock introduce gradual changes instead of hard resets."
+    },
+    {
+      "name": "Write editing",
+      "trigger": "Write switch held",
+      "description": "Holding Write forces incoming bits high or low so a performer can paint a phrase into the loop without rebuilding the sequence from scratch."
+    },
+    {
+      "name": "Expander bus",
+      "trigger": "expander attached",
+      "description": "The shared bus can drive expander panels such as Pulse and Volts, turning the core sequence into extra gate and CV streams without changing the main panel."
+    },
+    {
+      "name": "Audio-rate clocking",
+      "trigger": "audio oscillator into CLOCK IN",
+      "description": "Audio-rate clocking pushes the register into metallic, alias-heavy stepping. The output behaves more like digital percussion than a conventional melody generator."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Locked melody",
+      "patch": "Clock from a master sequencer · Length at 8 · Loop fully locked · quantize CV OUT to a minor scale · use PULSE OUT for envelope retriggers · a repeatable melody that still slips when the loop knob is nudged.",
+      "diagram": "uTuring Machine:\n* Length: 8\n* Loop: locked\n\nClock:\nQuantizer:\nVCO:\nEnvelope:\nVCA:\n\n- Clock (Out) c> uTuring Machine (CLOCK IN)\n- uTuring Machine (CV OUT) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- uTuring Machine (PULSE OUT) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+    },
+    {
+      "name": "Probabilistic bass",
+      "patch": "Slow LFO into KNOB CV · Loop set near noon · Length 16 · probability wanders between locked and mutable states · quantized CV OUT drives a bass VCO while PULSE OUT clocks hats.",
+      "diagram": "uTuring Machine:\n* Length: 16\n\nLFO:\nQuantizer:\nBass VCO:\nHat:\n\n- LFO (Out) >> uTuring Machine (KNOB CV)\n- Clock (Out) c> uTuring Machine (CLOCK IN)\n- uTuring Machine (CV OUT) p> Quantizer (In)\n- Quantizer (Out) p> Bass VCO (V/Oct)\n- uTuring Machine (PULSE OUT) t> Hat (Trig)"
+    },
+    {
+      "name": "Write-switch loop sculpting",
+      "patch": "Lock the loop, then tap Write on selected clocks to force highs or lows into the register · the pattern becomes a performance instrument rather than a static preset · CV OUT stays melodic while PULSE OUT gets re-shaped.",
+      "diagram": "uTuring Machine:\n* Length: 12\n* Loop: locked\n\nClock:\nVCO:\nEnvelope:\nVCA:\n\n- Clock (Out) c> uTuring Machine (CLOCK IN)\n- uTuring Machine (CV OUT) p> VCO (V/Oct)\n- uTuring Machine (PULSE OUT) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+    },
+    {
+      "name": "Pulse expander groove",
+      "patch": "Add the Pulse expander · route several derived pulse outputs to kick, snare and percussion voices · keep the core loop locked for repeatability while the pulse subset creates polyrhythms.",
+      "diagram": "uTuring Machine:\n* Length: 16\n* Loop: locked\n\nPulse:\n\nKick:\nSnare:\nPerc:\n\n- Clock (Out) c> uTuring Machine (CLOCK IN)\n- uTuring Machine (PULSE OUT) t> Pulse (In)\n- Pulse (Out 1) t> Kick (Trig)\n- Pulse (Out 2) t> Snare (Trig)\n- Pulse (Out 4) t> Perc (Trig)"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://dpw.se/product-category/eurorack/",
+      "https://dpw.se/product/sw3-splice/",
+      "https://modulargrid.net/e/dpw-design-sw3-splice",
+      "https://modulargrid.net/e/vendors/view/381"
+    ]
+  },
+  "slug": "dpw-design--sw3-splice",
+  "name": "SW3 Splice",
+  "manufacturer": "DPW Design",
+  "hp": 6,
+  "tags": ["SWITCH", "UTILITY", "I/O"],
+  "description": "Fully analog click-free wave splicer for audio or CV. Two linked lanes can hard-switch or transparently splice between A and B without added latency.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "A1",
+      "description": "First source input for lane 1.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "B1",
+      "description": "Second source input for lane 1.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "A2",
+      "description": "First source input for lane 2.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "B2",
+      "description": "Second source input for lane 2.",
+      "voltage": "audio / CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT1",
+      "description": "Lane 1 output after switching or splice selection.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "OUT2",
+      "description": "Lane 2 output after switching or splice selection.",
+      "voltage": "audio / CV"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Click-free splice",
+      "trigger": "A and B are matched or slope-aligned",
+      "description": "The module can splice between two signals without clicks when their level or slope relationship allows a seamless transition."
+    },
+    {
+      "name": "Hard switching",
+      "trigger": "manual or CV control",
+      "description": "If you want a sharper result, the same lanes can act as traditional analog switches instead of transparent splices."
+    },
+    {
+      "name": "Stereo link",
+      "trigger": "linked mode enabled",
+      "description": "The two lanes can be linked so a single control decision moves both sides together for stereo work."
+    },
+    {
+      "name": "Audio or CV routing",
+      "trigger": "either signal type patched",
+      "description": "The SW3 does not care whether the input is audio or control voltage, which makes it useful as a general-purpose route selector."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Stereo source splice",
+      "patch": "Switch between two stereo sources without clicks, then send the result to the main output pair.",
+      "diagram": "SW3 Splice:\nSource A:\nSource B:\nOutput:\n\n- Source A (L) -> SW3 Splice (A1)\n- Source B (L) -> SW3 Splice (B1)\n- Source A (R) -> SW3 Splice (A2)\n- Source B (R) -> SW3 Splice (B2)\n- SW3 Splice (OUT1) -> Output (L)\n- SW3 Splice (OUT2) -> Output (R)"
+    },
+    {
+      "name": "CV-controlled percussion switch",
+      "patch": "Use one lane for kick sources and the other for noise bursts, then switch them with a gate to make a single drum voice change character cleanly.",
+      "diagram": "SW3 Splice:\nKick:\nNoise:\nEnvelope:\nOutput:\n\n- Kick (Out) -> SW3 Splice (A1)\n- Noise (Out) -> SW3 Splice (B1)\n- Envelope (Out) >> SW3 Splice (A2)\n- Envelope (Out) >> SW3 Splice (B2)\n- SW3 Splice (OUT1) -> Output (In)"
+    },
+    {
+      "name": "Mono into stereo field",
+      "patch": "Split a mono source across the two lanes, then route the outputs to a stereo mixer for a wide, deliberately switched field.",
+      "diagram": "SW3 Splice:\nVCO:\nMixer:\nOutput:\n\n- VCO (Out) -> SW3 Splice (A1)\n- VCO (Out) -> SW3 Splice (B1)\n- VCO (Out) -> SW3 Splice (A2)\n- VCO (Out) -> SW3 Splice (B2)\n- SW3 Splice (OUT1) -> Mixer (In 1)\n- SW3 Splice (OUT2) -> Mixer (In 2)\n- Mixer (Out) -> Output (In)"
+    }
+  ]
+}

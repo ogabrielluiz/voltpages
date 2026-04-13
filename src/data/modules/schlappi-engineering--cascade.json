@@ -1,0 +1,121 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://schlappiengineering.com/products/cascade",
+      "https://modulargrid.net/e/schlappi-engineering-cascade",
+      "https://schlappiengineering.com/"
+    ]
+  },
+  "slug": "schlappi-engineering--cascade",
+  "name": "Cascade",
+  "manufacturer": "Schlappi Engineering",
+  "hp": 4,
+  "tags": ["UTILITY", "SWITCH", "I/O", "MIXER"],
+  "description": "Passive expander for Eddy that exposes its stereo VCA or feedback-filter taps and its clean, compression and distortion bus outs for parallel routing.",
+  "controls": [],
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "VCA/Filter 1 L",
+      "description": "Left side of Eddy channel 1's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "VCA/Filter 1 R",
+      "description": "Right side of Eddy channel 1's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "VCA/Filter 2 L",
+      "description": "Left side of Eddy channel 2's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "VCA/Filter 2 R",
+      "description": "Right side of Eddy channel 2's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "VCA/Filter 3 L",
+      "description": "Left side of Eddy channel 3's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "VCA/Filter 3 R",
+      "description": "Right side of Eddy channel 3's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Clean L",
+      "description": "Left channel of the clean bus output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Clean R",
+      "description": "Right channel of the clean bus output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Dist L",
+      "description": "Left channel of the distortion bus output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Dist R",
+      "description": "Right channel of the distortion bus output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Comp L",
+      "description": "Left channel of the compression bus output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Comp R",
+      "description": "Right channel of the compression bus output.",
+      "voltage": "audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Triple stereo VCA access",
+      "trigger": "Cascade connected to Eddy",
+      "description": "The upper three stereo pairs expose the per-channel VCA outputs so Eddy can be broken out as three independent stereo VCAs."
+    },
+    {
+      "name": "Feedback filter taps",
+      "trigger": "EQ/CH switch set to filter mode",
+      "description": "The same upper three pairs can instead expose the feedback filter taps, letting the Eddy signal path be split for parallel processing."
+    },
+    {
+      "name": "Bus output splitting",
+      "trigger": "Cascade connected to Eddy",
+      "description": "The lower three stereo pairs provide simultaneous clean, distortion and compression bus outs so the same performance can be sent to multiple destinations."
+    },
+    {
+      "name": "Passive expansion",
+      "trigger": "used with Eddy",
+      "description": "Cascade is passive and does not increase current draw. It only reveals paths already present inside Eddy."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Parallel stem split",
+      "patch": "Use the clean bus for the main mix, the distortion bus for grit, and the compression bus for side processing while the upper pairs feed individual effect chains.",
+      "diagram": "Cascade:\nFilter:\nDelay:\nCompressor:\nMixer:\nOutput:\n\n- Cascade (Clean L) -> Mixer (In 1)\n- Cascade (Dist L) -> Distortion (In)\n- Cascade (Comp L) -> Compressor (In)\n- Cascade (VCA/Filter 1 L) -> Filter (In)\n- Cascade (VCA/Filter 2 L) -> Delay (In)\n- Cascade (VCA/Filter 3 L) -> Output (In)"
+    },
+    {
+      "name": "Triple stereo VCA lane",
+      "patch": "Treat the upper three stereo pairs as three separate VCAs and fan them into a three-way stereo processing chain.",
+      "diagram": "Cascade:\nFilter:\nReverb:\nDelay:\nOutput:\n\n- Cascade (VCA/Filter 1 L) -> Filter (In L)\n- Cascade (VCA/Filter 1 R) -> Filter (In R)\n- Cascade (VCA/Filter 2 L) -> Reverb (In L)\n- Cascade (VCA/Filter 2 R) -> Reverb (In R)\n- Cascade (VCA/Filter 3 L) -> Delay (In L)\n- Cascade (VCA/Filter 3 R) -> Delay (In R)\n- Filter (Out) -> Output (In)"
+    },
+    {
+      "name": "Feedback filter parallelism",
+      "patch": "Flip the upper section to feedback-filter mode and send the three taps to different processors while the bus outputs keep the mix intact.",
+      "diagram": "Cascade:\nFilter:\nPhaser:\nOutput:\n\n- Cascade (VCA/Filter 1 L) -> Filter (In)\n- Cascade (VCA/Filter 2 L) -> Phaser (In)\n- Cascade (VCA/Filter 3 L) -> Output (In L)\n- Cascade (Clean R) -> Output (In R)"
+    }
+  ]
+}

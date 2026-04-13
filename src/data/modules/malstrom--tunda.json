@@ -1,0 +1,113 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.malstromaudio.com/modules",
+      "https://www.malstromaudio.com/",
+      "https://modulargrid.net/e/vendors/view/1041",
+      "https://schneidersladen.de/malstrom-tunda"
+    ]
+  },
+  "slug": "malstrom--tunda",
+  "name": "Tunda",
+  "manufacturer": "Malstrom",
+  "hp": 2,
+  "tags": ["UTILITY", "MIXER", "MULT", "ATTENUATOR"],
+  "description": "Cascaded buffer utility that can act as a 4:1 mixer, 1:4 mult, 2:2 split, precision amplifier or attenuator while keeping audio and CV steady.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "In 1",
+      "description": "First cascaded buffer input. Use it as the head of a mix, mult or scaling chain.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "In 2",
+      "description": "Second cascaded buffer input.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "In 3",
+      "description": "Third cascaded buffer input.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "In 4",
+      "description": "Fourth cascaded buffer input.",
+      "voltage": "audio / CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Out 1",
+      "description": "First cascaded buffer output.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "Out 2",
+      "description": "Second cascaded buffer output.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "Out 3",
+      "description": "Third cascaded buffer output.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "Out 4",
+      "description": "Fourth cascaded buffer output.",
+      "voltage": "audio / CV"
+    },
+    {
+      "name": "Average Out",
+      "description": "Average output for controlled summing without level runaway.",
+      "voltage": "audio / CV"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "4:1 mix",
+      "trigger": "four sources patched into the chain",
+      "description": "Tunda can behave like a compact averaging mixer when you feed it multiple signals and take the average output."
+    },
+    {
+      "name": "1:4 mult",
+      "trigger": "one source into the first stage",
+      "description": "A single source can be distributed through the cascade as a buffered mult without the sag of passive splitting."
+    },
+    {
+      "name": "2:2 split",
+      "trigger": "two branches patched",
+      "description": "The cascade can be used as two buffered branches, making it easy to keep a pitch or modulation path clean and stable."
+    },
+    {
+      "name": "Precision scaling",
+      "trigger": "use the buffer chain for gain staging",
+      "description": "The module is intended for exact ratios such as x2, x3, x4 or 0.75, 0.5 and 0.25, which makes it useful for CV and audio alike."
+    },
+    {
+      "name": "Chainable routing",
+      "trigger": "multiple Tundas patched together",
+      "description": "The cascade can be extended by linking several units, so the utility scales with the size of the patch instead of capping it."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Buffered pitch fan-out",
+      "patch": "Feed one sequencer CV into the first stage and use the cascade to drive several oscillators without losing tuning stability.",
+      "diagram": "Tunda:\nSequencer:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\n\n- Sequencer (Pitch) p> Tunda (In 1)\n- Tunda (Out 1) p> VCO 1 (V/Oct)\n- Tunda (Out 2) p> VCO 2 (V/Oct)\n- Tunda (Out 3) p> VCO 3 (V/Oct)\n- Tunda (Out 4) p> VCO 4 (V/Oct)"
+    },
+    {
+      "name": "Averaged voice mix",
+      "patch": "Send four voices into the four stages and take the average output to keep the sum controlled before the final mixer.",
+      "diagram": "Tunda:\nVoice 1:\nVoice 2:\nVoice 3:\nVoice 4:\nOutput:\n\n- Voice 1 (Out) -> Tunda (In 1)\n- Voice 2 (Out) -> Tunda (In 2)\n- Voice 3 (Out) -> Tunda (In 3)\n- Voice 4 (Out) -> Tunda (In 4)\n- Tunda (Average Out) -> Output (In)"
+    },
+    {
+      "name": "Modulation scaler",
+      "patch": "Use Tunda to scale a slow LFO upward into audio-range motion or pull it down into a gentle attenuated sweep.",
+      "diagram": "Tunda:\nLFO:\nFilter:\nOutput:\n\n- LFO (Out) -> Tunda (In 1)\n- Tunda (Out 1) >> Filter (Cutoff)\n- Tunda (Average Out) -> Output (In)"
+    }
+  ]
+}

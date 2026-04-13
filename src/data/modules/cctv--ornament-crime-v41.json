@@ -1,0 +1,161 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.cctv.fm/product-page/ornament-and-crime-v4-1-diy-kit",
+      "https://www.cctv.fm/blog",
+      "https://firmware.phazerville.com/Quadrants",
+      "https://firmware.phazerville.com/Setup-About"
+    ]
+  },
+  "slug": "cctv--ornament-crime-v41",
+  "name": "Ornament and Crime v4.1",
+  "manufacturer": "CCTV",
+  "hp": 10,
+  "tags": ["UTILITY", "SEQUENCER", "CLOCK", "QUANTIZER", "MIDI"],
+  "description": "Phazerville-ready O.C. v4.1 DIY kit with eight CV inputs, eight CV outputs, dual audio I/O and expansion for triggers, USB and MIDI. Runs four applets at once on Teensy 4.1 hardware.",
+  "controls": [
+    {
+      "name": "Left Encoder",
+      "scope": "Global",
+      "description": "Navigates pages and coarse parameters; press actions depend on the active applet or setup screen.",
+      "detail": "rotate for pagination / coarse edits · press for select / edit"
+    },
+    {
+      "name": "Right Encoder",
+      "scope": "Global",
+      "description": "Moves the cursor and fine-adjusts parameters; long-press actions enter menus or confirm setup changes.",
+      "detail": "rotate for cursor / fine edits · press for select / confirm"
+    },
+    {
+      "name": "A",
+      "scope": "Quadrants / ORN8 mode",
+      "description": "Selects the northwest applet or acts as the first action button in the current app.",
+      "detail": "press to focus the top-left slot"
+    },
+    {
+      "name": "B",
+      "scope": "Quadrants / ORN8 mode",
+      "description": "Selects the northeast applet or the second action button in the current app.",
+      "detail": "press to focus the top-right slot"
+    },
+    {
+      "name": "X",
+      "scope": "Quadrants / ORN8 mode",
+      "description": "Selects the southwest applet or the third action button in the current app.",
+      "detail": "press to focus the bottom-left slot"
+    },
+    {
+      "name": "Y",
+      "scope": "Quadrants / ORN8 mode",
+      "description": "Selects the southeast applet or the fourth action button in the current app.",
+      "detail": "press to focus the bottom-right slot"
+    },
+    {
+      "name": "Z",
+      "scope": "Global",
+      "description": "Starts, stops or arms the internal clock depending on the current applet and mode.",
+      "detail": "clock transport / context-sensitive action"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "CV IN 1-8",
+      "description": "Eight control-voltage inputs for applets and DSP lanes.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "TRIG IN 1-8",
+      "description": "Eight trigger inputs exposed through the expansion ports.",
+      "voltage": "expansion trigger input"
+    },
+    {
+      "name": "AUDIO IN 1/2",
+      "description": "Stereo or dual-mono audio inputs for the DSP applets.",
+      "voltage": "audio level"
+    },
+    {
+      "name": "USB",
+      "description": "USB connection used for firmware, MIDI and host communication through the expansion interface.",
+      "voltage": "digital"
+    },
+    {
+      "name": "MIDI",
+      "description": "MIDI expansion input for clocking and remote control.",
+      "voltage": "digital"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "CV OUT 1-8",
+      "description": "Eight control-voltage outputs from the active applets.",
+      "voltage": "bipolar CV"
+    },
+    {
+      "name": "AUDIO OUT 1/2",
+      "description": "Stereo or dual-mono audio outputs from the DSP applets.",
+      "voltage": "audio level"
+    },
+    {
+      "name": "TRIG OUT 1-8",
+      "description": "Trigger outputs available through expansion and applet routing.",
+      "voltage": "expansion trigger output"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Quadrants multitasking",
+      "trigger": "Quadrants mode",
+      "description": "Loads four applets at once, one per quadrant, so CV utility, sequencing and DSP functions can run in parallel on the same hardware."
+    },
+    {
+      "name": "Dual audio pipeline",
+      "trigger": "audio applets active",
+      "description": "The Teensy 4.1 hardware supports two lanes of audio-rate DSP in addition to the CV applets, so the module can process sound and modulation together."
+    },
+    {
+      "name": "Trigger mapping",
+      "trigger": "assign trigger inputs in Phazerville",
+      "description": "Expansion trigger inputs can be mapped into applets, allowing external clocks, gates and resets to steer the currently loaded tools."
+    },
+    {
+      "name": "Calibration and control flip",
+      "trigger": "Setup / About",
+      "description": "The calibration screen handles encoder reversal, screen flip and output calibration without needing to reflash the firmware."
+    },
+    {
+      "name": "Applet menu switching",
+      "trigger": "long-press right encoder",
+      "description": "The right encoder opens the main app menu, where stored applets, presets and global settings are selected."
+    },
+    {
+      "name": "MIDI and USB expansion",
+      "trigger": "use expansion headers",
+      "description": "The expansion ports break out USB, MIDI and additional triggers so the module can act as a deep control hub rather than a simple quantizer."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Four applet hub",
+      "patch": "Quadrants mode with a quantizer, random source, clock utility and envelope applet loaded at once · the module acts as a compact modulation brain with one quadrant per task.",
+      "diagram": "Ornament and Crime v4.1:\n* Mode: Quadrants\n* App A: quantizer\n* App B: random\n* App X: clock utility\n* App Y: envelope\n\nKeyboard:\nVCO:\nVCA:\nEnvelope:\n\n- Keyboard (CV) p> Ornament and Crime v4.1 (CV IN 1)\n- Ornament and Crime v4.1 (CV OUT 1) p> VCO (V/Oct)\n- Ornament and Crime v4.1 (CV OUT 2) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+    },
+    {
+      "name": "Trigger-and-pitch sequencer",
+      "patch": "Use a sequencer applet to emit stepped pitch on CV OUT 1 and related gates on CV OUT 2/trigger mapping · a single module handles melody and articulation.",
+      "diagram": "Ornament and Crime v4.1:\n* Mode: sequencer applet\n\nVCO:\nEnvelope:\nVCA:\n\n- Clock (Out) c> Ornament and Crime v4.1 (TRIG IN 1)\n- Ornament and Crime v4.1 (CV OUT 1) p> VCO (V/Oct)\n- Ornament and Crime v4.1 (CV OUT 2) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+    },
+    {
+      "name": "Audio DSP lane",
+      "patch": "Two audio lanes feed a stereo DSP applet while CV IN 1 modulates a parameter map · the module can process the sound and the control path without leaving the rack.",
+      "diagram": "Ornament and Crime v4.1:\n* Mode: audio DSP\n\nDAW:\nOutput:\nLFO:\n\n- DAW (Out L) -> Ornament and Crime v4.1 (AUDIO IN 1)\n- DAW (Out R) -> Ornament and Crime v4.1 (AUDIO IN 2)\n- LFO (Out) >> Ornament and Crime v4.1 (CV IN 1)\n- Ornament and Crime v4.1 (AUDIO OUT 1) -> Output (In L)\n- Ornament and Crime v4.1 (AUDIO OUT 2) -> Output (In R)"
+    },
+    {
+      "name": "Clock-armed quantizer",
+      "patch": "Load a quantizer applet, clock it from the Z transport or an external trigger and route the output to a VCO · the same panel can stay in tune while the other applets run nearby.",
+      "diagram": "Ornament and Crime v4.1:\n* Mode: quantizer applet\n\nClock:\nQuantizer:\nVCO:\nEnvelope:\nVCA:\n\n- Clock (Out) c> Ornament and Crime v4.1 (TRIG IN 1)\n- Ornament and Crime v4.1 (CV OUT 1) p> VCO (V/Oct)\n- Ornament and Crime v4.1 (CV OUT 2) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+    }
+  ]
+}

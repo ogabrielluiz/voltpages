@@ -1,0 +1,123 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": false,
+    "sources": [
+      "https://www.hakenaudio.com/cvc-introduction",
+      "https://www.hakenaudio.com/cvc-details",
+      "https://www.hakenaudio.com/cvc-why",
+      "https://www.hakenaudio.com/store"
+    ]
+  },
+  "slug": "haken-audio--cvc",
+  "name": "CVC",
+  "manufacturer": "Haken Audio",
+  "hp": 10,
+  "tags": ["MIDI", "I/O", "UTILITY"],
+  "description": "Control Voltage Converter for EaganMatrix instruments. One unit yields 16 high-resolution outputs for four voices, with i2c connectivity, MIDI pass-through and voice activity LEDs.",
+  "controls": [],
+  "inputs": [
+    {
+      "name": "i2c IN (3.5 mm)",
+      "description": "Primary i2c input for Slim Continuum, ContinuuMini, EaganMatrix Module and EaganMatrix Micro.",
+      "voltage": "digital"
+    },
+    {
+      "name": "i2c IN (DIN5)",
+      "description": "Alternate i2c connection for older Thick Continuums and Osmose-compatible use.",
+      "voltage": "digital"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "W1-4",
+      "description": "Configurable outputs normally assigned to gate per voice.",
+      "voltage": "-9.9V to +10V"
+    },
+    {
+      "name": "X1-4",
+      "description": "Configurable outputs normally assigned to pitch per voice.",
+      "voltage": "-9.9V to +10V"
+    },
+    {
+      "name": "Y1-4",
+      "description": "Configurable outputs normally assigned to timbre per voice.",
+      "voltage": "-9.9V to +10V"
+    },
+    {
+      "name": "Z1-4",
+      "description": "Configurable outputs normally assigned to pressure per voice.",
+      "voltage": "-9.9V to +10V"
+    },
+    {
+      "name": "MIDI THRU",
+      "description": "DIN5 MIDI through connection for passing incoming MIDI data onward.",
+      "voltage": "digital"
+    },
+    {
+      "name": "VOICE ACTIVITY LED",
+      "description": "Per-voice status indicator showing when performance data is present.",
+      "voltage": "indicator"
+    },
+    {
+      "name": "POWER LED",
+      "description": "Blue power indicator.",
+      "voltage": "indicator"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Four-voice mapping",
+      "trigger": "single CVC attached",
+      "description": "A single unit maps one EaganMatrix performance stream to four voices, each with four discrete outputs."
+    },
+    {
+      "name": "Dual CVC expansion",
+      "trigger": "two units and interconnect kit",
+      "description": "A paired setup expands to eight voices and 32 control voltages without changing the control protocol."
+    },
+    {
+      "name": "Dynamic Base Voice",
+      "trigger": "subset outputs in the editor",
+      "description": "The CVC can be configured so only selected outputs are active, letting one performance switch between multiple monophonic patches."
+    },
+    {
+      "name": "Wide-range pitch bend",
+      "trigger": "expressive Continuum performance",
+      "description": "The 16-bit outputs and 8-octave bend range preserve fast finger motion without the smoothing common in MIDI-CV converters."
+    },
+    {
+      "name": "MIDI data playback",
+      "trigger": "MIDI data fed into the Continuum",
+      "description": "Performance data can be captured, played back and translated into control voltages through the CVC path."
+    },
+    {
+      "name": "Voice LEDs",
+      "trigger": "incoming performance data",
+      "description": "Each voice LED flashes when data is active, which makes the routing visible at a glance."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Four-voice translation",
+      "patch": "Connect a Continuum or EaganMatrix source to the CVC · route W for gate, X for pitch, Y for timbre and Z for pressure · patch the four outputs to four analog voices.",
+      "diagram": "CVC:\n* Voice mode: 4 voices\n\nContinuum:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\nEnvelope:\nVCA:\n\n- Continuum (i2c) >> CVC (i2c IN)\n- CVC (X1-4) p> VCO 1 (V/Oct)\n- CVC (X1-4) p> VCO 2 (V/Oct)\n- CVC (W1-4) g> Envelope (Trig)\n- CVC (Z1-4) >> VCA (CV)"
+    },
+    {
+      "name": "Pressure-controlled filter bank",
+      "patch": "Use Z as pressure, X as pitch and Y as timbre · the synth voice tracks the finger while pressure fans out to filter cutoff and VCA depth for expressive dynamics.",
+      "diagram": "CVC:\n\nFilter:\nVCA:\nVCO:\n\n- Continuum (i2c) >> CVC (i2c IN)\n- CVC (X1-4) p> VCO (V/Oct)\n- CVC (Y1-4) >> Filter (Cutoff)\n- CVC (Z1-4) >> VCA (CV)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Eight-voice stack",
+      "patch": "Pair two CVCs with the interconnect kit · keep one voice group for a bass split and one for a four-voice pad · the same EaganMatrix performance fans out across the rack.",
+      "diagram": "CVC A:\nCVC B:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\nVCO 5:\nVCO 6:\nVCO 7:\nVCO 8:\n\n- Continuum (i2c) >> CVC A (i2c IN)\n- Continuum (i2c) >> CVC B (i2c IN)\n- CVC A (X1-4) p> VCO 1 (V/Oct)\n- CVC A (X1-4) p> VCO 2 (V/Oct)\n- CVC B (X1-4) p> VCO 5 (V/Oct)\n- CVC B (X1-4) p> VCO 6 (V/Oct)"
+    },
+    {
+      "name": "Voice split by base voice",
+      "patch": "Use the Dynamic Base Voice feature to switch between monophonic patches during a performance · one hand motion can reassign the same control stream from lead to bass to chord duty.",
+      "diagram": "CVC:\n* Base Voice: dynamic\n\nVCO A:\nVCO B:\nFilter:\nVCA:\n\n- Continuum (i2c) >> CVC (i2c IN)\n- CVC (X1-4) p> VCO A (V/Oct)\n- CVC (X1-4) p> VCO B (V/Oct)\n- CVC (Y1-4) >> Filter (Cutoff)\n- CVC (Z1-4) >> VCA (CV)\n- VCO A (Out) -> VCA (In) -> Output (In)\n- VCO B (Out) -> Filter (In) -> Output (In)"
+    }
+  ]
+}

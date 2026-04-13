@@ -1,0 +1,111 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://blacknoisemodular.com/products/ether",
+      "https://rawcdn.githack.com/BlackNoiseModular/Eurorack/849ee842f2732cc04b2474088474b1993d2d9618/ETHER/BLACK-NOISE_ETHER_User-Manual_V1.pdf",
+      "https://blacknoisemodular.com/pages/resources"
+    ]
+  },
+  "slug": "black-noise--ether",
+  "name": "Ether",
+  "manufacturer": "Black Noise",
+  "hp": 4,
+  "tags": ["I/O", "UTILITY", "MIXER"],
+  "description": "Balanced output stage for Eurorack. Mono inputs normal to stereo, main and headphone levels are independent, and the module is calibrated for low-noise line and headphone duty.",
+  "controls": [
+    {
+      "name": "MAIN",
+      "scope": "Global",
+      "description": "Sets the balanced line-output level.",
+      "detail": "independent volume control · calibrated for +10 dBu max"
+    },
+    {
+      "name": "PHONES",
+      "scope": "Global",
+      "description": "Sets the headphone amplifier level.",
+      "detail": "independent volume control · stereo headphone amp"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "MONO IN L",
+      "description": "Main audio input. A mono source patched here is copied to the right channel when the right input is empty.",
+      "voltage": "eurorack audio"
+    },
+    {
+      "name": "MONO IN R",
+      "description": "Right audio input. Normalled to the left input when unpatched.",
+      "voltage": "eurorack audio",
+      "normalizedTo": "MONO IN L"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "BAL OUT L",
+      "description": "Balanced left line output for mixers, interfaces and long cable runs.",
+      "voltage": "line level"
+    },
+    {
+      "name": "BAL OUT R",
+      "description": "Balanced right line output for mixers, interfaces and long cable runs.",
+      "voltage": "line level"
+    },
+    {
+      "name": "HEADPHONE OUT",
+      "description": "Stereo headphone output with its own level control.",
+      "voltage": "headphone level"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Mono normaling",
+      "trigger": "leave MONO IN R unpatched",
+      "description": "The right input normalizes to the left, so a mono source becomes a stereo feed without a patch cable."
+    },
+    {
+      "name": "Separate monitor levels",
+      "trigger": "adjust MAIN and PHONES independently",
+      "description": "The line outputs and headphone amplifier have separate level controls, so the monitor mix and cue mix can be trimmed independently."
+    },
+    {
+      "name": "Balanced line drive",
+      "trigger": "route BAL OUT L/R to external gear",
+      "description": "The balanced outputs are tuned for studio and live audio gear, reducing hum and ground-loop issues over longer cable runs."
+    },
+    {
+      "name": "Headphone alternate output",
+      "trigger": "use HEADPHONE OUT as a line tap",
+      "description": "The headphone amp can serve as a second stereo output when an alternate feed is useful."
+    },
+    {
+      "name": "Input metering",
+      "trigger": "audio present on the inputs",
+      "description": "The two LEDs monitor the incoming level, giving a quick check for signal presence and overdrive without patching a meter."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Direct studio feed",
+      "patch": "Patch a stereo mix into MONO IN L/R · set MAIN for interface headroom · send BAL OUT L/R to the audio interface or monitor controller · Ether becomes the rack-to-studio bridge.",
+      "diagram": "Ether:\n* MAIN: set for +10 dBu\n* PHONES: optional\n\nMixer:\nInterface:\n\n- Mixer (L) -> Ether (MONO IN L)\n- Mixer (R) -> Ether (MONO IN R)\n- Ether (BAL OUT L) -> Interface (In L)\n- Ether (BAL OUT R) -> Interface (In R)"
+    },
+    {
+      "name": "Cue mix",
+      "patch": "Use the headphone output as a second stereo monitor feed · MAIN sends to front-of-house while PHONES drives a private cue mix for headphones or in-ear monitoring.",
+      "diagram": "Ether:\n* MAIN: monitor level\n* PHONES: cue level\n\nMixer:\nOutput:\n\n- Mixer (L) -> Ether (MONO IN L)\n- Mixer (R) -> Ether (MONO IN R)\n- Ether (BAL OUT L) -> Output (Main L)\n- Ether (BAL OUT R) -> Output (Main R)\n- Ether (HEADPHONE OUT) -> Output (Phones)"
+    },
+    {
+      "name": "Mono synth to stereo rig",
+      "patch": "Feed a mono voice into the left input only · the right channel normaling copies it through · the resulting stereo feed lands in the DAW or a live mixer with one cable less.",
+      "diagram": "Ether:\n\nVCO:\nFilter:\n\n- VCO (Out) -> Filter (In) -> Ether (MONO IN L)\n- Ether (BAL OUT L) -> DAW (In L)\n- Ether (BAL OUT R) -> DAW (In R)"
+    },
+    {
+      "name": "Pedal interface",
+      "patch": "Patch a modular voice into Ether and send the balanced outputs into a pedal chain or recording rig · the module provides the level matching and low-noise output stage needed for external processing.",
+      "diagram": "Ether:\n\nVCO:\nFX Pedal:\nOutput:\n\n- VCO (Out) -> Ether (MONO IN L)\n- Ether (BAL OUT L) -> FX Pedal (In)\n- FX Pedal (Out) -> Ether (MONO IN R)\n- Ether (HEADPHONE OUT) -> Output (Cue)"
+    }
+  ]
+}
