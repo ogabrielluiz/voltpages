@@ -37,8 +37,11 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
       />
     </div>
 
-    <p class="mt-4 md:mt-6 text-[11px] text-subtle tracking-wide">
-      <span id="module-count">{allModules.length} modules</span> ·
+    <p class="mt-4 md:mt-6 text-[11px] text-subtle tracking-wide flex items-center gap-2 flex-wrap justify-center">
+      <span id="module-count">{allModules.length} modules</span>
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/ogabrielluiz/voltpages" class="underline underline-offset-2 text-faint hover:text-fg">GitHub</a>
+      <span aria-hidden="true">·</span>
       <a href="https://github.com/ogabrielluiz/voltpages" class="underline underline-offset-2 text-faint hover:text-fg">contribute</a>
     </p>
 
