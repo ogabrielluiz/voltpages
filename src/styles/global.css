@@ -18,110 +18,57 @@
   --font-mono: "SF Mono", "Courier New", monospace;
 }
 
-/* Print mode */
+/* Print mode — the UI Print button is hidden, but browser-level Cmd+P still
+ * produces a readable sheet. Keep the styles; remove only the affordance. */
 @media print {
-  /* Hide navigation elements */
   nav, .pagefind-ui, #search {
     display: none !important;
   }
 
-  /* Reset background for ink */
   body {
     background: white !important;
     color: black !important;
   }
 
-  /* Remove sticky positioning */
   * {
     position: static !important;
   }
 
-  /* Clean section breaks */
   section {
     page-break-inside: avoid;
     border-color: #ccc !important;
-  }
-
-  /* Tighter spacing for paper */
-  section {
     padding: 12px 0 !important;
   }
 
-  /* Ensure links show URLs */
   a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 10px;
     color: #666;
   }
 
-  /* Hide back link */
-  a[href$="/"]  {
+  a[href$="/"] {
     display: none !important;
   }
 
-  /* QR code placeholder - shown only in print */
-  .print-qr {
-    display: block !important;
-  }
-
-  /* Hide the summary toggle; diagrams are force-opened by JS beforeprint. */
   details > summary {
     display: none !important;
   }
 
-  /* Hide the interactive zoom affordance on paper */
   .diagram-expand-btn {
     display: none !important;
   }
 
-  /* Keep each diagram + its attribution on the same page */
   .diagram-container {
     page-break-inside: avoid;
     break-inside: avoid;
   }
 
-  /* Promote the attribution mark on paper — full ink, darker text */
-  .diagram-mark {
+  .diagram-container .diagram-mark {
+    display: flex;
     color: #1a1a1a !important;
     border-top-color: #bdbdbd !important;
     font-size: 8.5px;
   }
-
-  /* Print-only brand footer at the end of each sheet */
-  .print-footer {
-    display: flex !important;
-  }
-}
-
-/* Print-only brand footer — hidden on screen, flex in print */
-.print-footer {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 32px;
-  padding-top: 12px;
-  border-top: 1px solid #bdbdbd;
-  font-family: 'SF Mono', 'Courier New', monospace;
-  font-size: 9px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #1a1a1a;
-}
-.print-footer .lockup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.print-footer svg {
-  flex-shrink: 0;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-
-/* Hide print-only elements on screen */
-.print-qr {
-  display: none;
 }
 
 /* Focus-visible for keyboard navigation */
@@ -131,6 +78,10 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 }
 
 /* Diagram lightbox */
+.diagram-shell {
+  position: relative;
+}
+
 .diagram-container {
   position: relative;
 }
@@ -146,31 +97,39 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   height: auto;
 }
 
+/*
+ * The expand button anchors to .diagram-shell (outside the scroll area) rather
+ * than to .diagram-container, so horizontal scroll of a wide diagram doesn't
+ * carry the button with it. Pulled slightly past the container's top-right so
+ * it reads as chrome rather than something drawn into the diagram.
+ */
 .diagram-expand-btn {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 28px;
-  height: 28px;
+  top: -12px;
+  right: -12px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'SF Mono', monospace;
-  font-size: 14px;
-  color: #666;
-  background: rgba(247, 245, 240, 0.85);
-  border: 1px solid #d5d0c6;
+  font-size: 15px;
+  color: #1a1a1a;
+  background: #fff;
+  border: 1px solid #1a1a1a;
+  border-radius: 2px;
   cursor: pointer;
   padding: 0;
   line-height: 1;
-  transition: background 0.1s, color 0.1s;
-  z-index: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition: background 0.1s, color 0.1s, transform 0.1s;
+  z-index: 2;
 }
 
 .diagram-expand-btn:hover {
-  background: #fff;
-  color: #1a1a1a;
-  border-color: #999;
+  background: #1a1a1a;
+  color: #fff;
+  transform: translateY(-1px);
 }
 
 .diagram-expand-btn:focus-visible {
@@ -245,7 +204,15 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   display: block;
 }
 
-/* Diagram attribution mark (small logo + wordmark under each diagram) */
+/* Diagram attribution mark (small logo + wordmark under each diagram).
+ * Inside the inline container it's visual noise — the reader already knows
+ * they're on Voltpages. Hide it there; keep it visible in the lightbox where
+ * a screenshot is likely to be taken and attribution is worth preserving.
+ */
+.diagram-container .diagram-mark {
+  display: none;
+}
+
 .diagram-mark {
   display: flex;
   align-items: center;

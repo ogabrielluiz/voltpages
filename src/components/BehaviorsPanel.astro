@@ -15,7 +15,7 @@ const { behaviors } = Astro.props;
       <div class={i > 0 ? "border-t border-border pt-3" : ""}>
         <div class="flex justify-between items-baseline mb-1">
           <span class="text-[15px] font-semibold text-fg">{behavior.name}</span>
-          <span class="text-xs font-mono text-subtle">{behavior.trigger}</span>
+          <span class="text-xs text-subtle italic">{behavior.trigger}</span>
         </div>
         <p class="text-sm text-muted leading-relaxed">{behavior.description}</p>
       </div>

@@ -17,8 +17,20 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <div class="max-w-[900px] mx-auto bg-bg min-h-screen">
   <nav class="px-4 md:px-7 pt-4 pb-0 flex justify-between items-center">
-    <a href={`${basePath}/`} class="text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase">&larr; All modules</a>
-    <button onclick="window.print()" class="text-xs font-mono text-subtle hover:text-fg tracking-wide uppercase px-2.5 py-1 border border-border hover:border-border-strong cursor-pointer bg-transparent">Print</button>
+    <a href={`${basePath}/`} class="flex items-center gap-2 text-xs font-mono text-subtle hover:text-fg no-underline tracking-[3px] uppercase" aria-label="Back to all modules">
+      <svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true" class="flex-shrink-0">
+        <rect x="5" y="5" width="38" height="38" rx="2" fill="#1a1a1a"/>
+        <g fill="none" stroke="#f7f5f0" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10" cy="10" r="1.8" stroke-width="1.2"/>
+          <circle cx="38" cy="10" r="1.8" stroke-width="1.2"/>
+          <circle cx="10" cy="38" r="1.8" stroke-width="1.2"/>
+          <circle cx="38" cy="38" r="1.8" stroke-width="1.2"/>
+          <path d="M 13 24 C 16 24, 17 32, 20 32 C 23 32, 23 16, 26 16 C 29 16, 30 24, 35 24" stroke-width="2"/>
+        </g>
+        <circle cx="26" cy="16" r="2" fill="#d9571f"/>
+      </svg>
+      <span>Voltpages</span>
+    </a>
   </nav>
   <ModuleHeader
     name={module.name}
@@ -98,22 +110,4 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
   )}
 
-  <!-- Print-only brand footer (hidden on screen) -->
-  <footer class="print-footer px-4 md:px-7 pb-6">
-    <div class="lockup">
-      <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true">
-        <rect x="5" y="5" width="38" height="38" rx="2" fill="#1a1a1a"/>
-        <g fill="none" stroke="#f7f5f0" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="10" cy="10" r="1.8" stroke-width="1.2"/>
-          <circle cx="38" cy="10" r="1.8" stroke-width="1.2"/>
-          <circle cx="10" cy="38" r="1.8" stroke-width="1.2"/>
-          <circle cx="38" cy="38" r="1.8" stroke-width="1.2"/>
-          <path d="M 13 24 C 16 24, 17 32, 20 32 C 23 32, 23 16, 26 16 C 29 16, 30 24, 35 24" stroke-width="2"/>
-        </g>
-        <circle cx="26" cy="16" r="2" fill="#d9571f"/>
-      </svg>
-      <span>Voltpages · {module.name}</span>
-    </div>
-    <span>ogabrielluiz.github.io/voltpages</span>
-  </footer>
 </div>
