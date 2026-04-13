@@ -11,56 +11,62 @@ const { inputs, outputs } = Astro.props;
 
 <div class="mt-6">
   <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">I/O</h2>
-  <table class="w-full border-collapse text-sm">
-    <tbody>
-      {inputs.length > 0 && (
-        <tr class="border-b border-border">
-          <td colspan="2" class="py-1.5 text-[10px] font-mono text-subtle uppercase tracking-[2px]">Inputs</td>
-        </tr>
-      )}
-      {inputs.map((input) => (
-        <tr class="border-b border-border">
-          <td class="py-2 w-[140px] align-top">
-            <div class="flex items-center gap-2">
-              <div class="w-2.5 h-2.5 rounded-full bg-input-green shrink-0"></div>
-              <span class="text-[15px] font-semibold text-fg">{input.name}</span>
-            </div>
-            {input.voltage && (
-              <div class="text-xs font-mono text-subtle mt-0.5 ml-[18px]">{input.voltage}</div>
-            )}
-          </td>
-          <td class="py-2 text-muted align-top">
-            {input.description}
-            {input.normalizedTo && (
-              <div class="font-mono text-xs text-subtle mt-0.5">norm: {input.normalizedTo}</div>
-            )}
-          </td>
-        </tr>
-      ))}
-      {outputs.length > 0 && (
-        <tr class="border-b border-border">
-          <td colspan="2" class="py-1.5 text-[10px] font-mono text-subtle uppercase tracking-[2px]">Outputs</td>
-        </tr>
-      )}
-      {outputs.map((output, i) => (
-        <tr class={i < outputs.length - 1 ? "border-b border-border" : ""}>
-          <td class="py-2 w-[140px] align-top">
-            <div class="flex items-center gap-2">
-              <div class="w-2.5 h-2.5 rounded-full bg-output-red shrink-0"></div>
-              <span class="text-[15px] font-semibold text-fg">{output.name}</span>
-            </div>
-            {output.voltage && (
-              <div class="text-xs font-mono text-subtle mt-0.5 ml-[18px]">{output.voltage}</div>
-            )}
-          </td>
-          <td class="py-2 text-muted align-top">
-            {output.description}
-            {output.normalizedTo && (
-              <div class="font-mono text-xs text-subtle mt-0.5">norm: {output.normalizedTo}</div>
-            )}
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 md:gap-x-12 gap-y-8">
+    {inputs.length > 0 && (
+      <section>
+        <h3 class="py-1.5 text-[10px] font-mono text-subtle uppercase tracking-[2px] border-b border-border">Inputs</h3>
+        <table class="w-full border-collapse text-sm">
+          <tbody>
+            {inputs.map((input, i) => (
+              <tr class={i < inputs.length - 1 ? "border-b border-border" : ""}>
+                <td class="py-2 w-[120px] align-top">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-input-green shrink-0"></div>
+                    <span class="text-[15px] font-semibold text-fg">{input.name}</span>
+                  </div>
+                  {input.voltage && (
+                    <div class="text-xs font-mono text-subtle mt-0.5 ml-[18px]">{input.voltage}</div>
+                  )}
+                </td>
+                <td class="py-2 text-muted align-top">
+                  {input.description}
+                  {input.normalizedTo && (
+                    <div class="font-mono text-xs text-subtle mt-0.5">norm: {input.normalizedTo}</div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+    )}
+    {outputs.length > 0 && (
+      <section>
+        <h3 class="py-1.5 text-[10px] font-mono text-subtle uppercase tracking-[2px] border-b border-border">Outputs</h3>
+        <table class="w-full border-collapse text-sm">
+          <tbody>
+            {outputs.map((output, i) => (
+              <tr class={i < outputs.length - 1 ? "border-b border-border" : ""}>
+                <td class="py-2 w-[120px] align-top">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-output-red shrink-0"></div>
+                    <span class="text-[15px] font-semibold text-fg">{output.name}</span>
+                  </div>
+                  {output.voltage && (
+                    <div class="text-xs font-mono text-subtle mt-0.5 ml-[18px]">{output.voltage}</div>
+                  )}
+                </td>
+                <td class="py-2 text-muted align-top">
+                  {output.description}
+                  {output.normalizedTo && (
+                    <div class="font-mono text-xs text-subtle mt-0.5">norm: {output.normalizedTo}</div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+    )}
+  </div>
 </div>

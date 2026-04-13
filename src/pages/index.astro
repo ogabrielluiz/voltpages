@@ -46,7 +46,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
     </p>
 
     <!-- Module grid — filtered by Pagefind -->
-    <div class="mt-8 md:mt-10 w-full max-w-[900px]">
+    <div class="mt-8 md:mt-10 w-full max-w-[1100px]">
       <div id="module-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 border-t border-l border-border">
         {allModules.map(({ slug, module }) => (
           <a href={`${basePath}/modules/${slug}/`}
