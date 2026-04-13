@@ -1,0 +1,180 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.thonk.co.uk/shop/workshop-computer-eurorack/",
+      "https://www.musicthing.co.uk/Computer_Program_Cards/",
+      "https://tomwhitwell.github.io/Workshop_Computer/",
+      "https://www.musicthing.co.uk/"
+    ]
+  },
+  "slug": "music-thing-modular--workshop-computer",
+  "name": "Workshop Computer",
+  "manufacturer": "Music Thing Modular",
+  "hp": 8,
+  "tags": ["SEQUENCER", "UTILITY", "MIDI", "EFFECTS", "RANDOM"],
+  "description": "Programmable 8HP music computer with hot-swappable program cards. Three knobs and a mode switch control cards that turn the module into sequencers, effects, MIDI bridges, or custom code.",
+  "controls": [
+    {
+      "name": "Main knob",
+      "scope": "Global",
+      "description": "Primary card-controlled parameter.",
+      "detail": "large knob · card-defined function"
+    },
+    {
+      "name": "Knob X",
+      "scope": "Global",
+      "description": "First auxiliary parameter for the active program card.",
+      "detail": "small knob · card-defined function"
+    },
+    {
+      "name": "Knob Y",
+      "scope": "Global",
+      "description": "Second auxiliary parameter for the active program card.",
+      "detail": "small knob · card-defined function"
+    },
+    {
+      "name": "Mode switch",
+      "scope": "Global",
+      "description": "Three-way switch used by many cards to select operating state or alternate behavior.",
+      "detail": "ON · OFF · MOMENTARY"
+    },
+    {
+      "name": "Program card slot",
+      "scope": "Global",
+      "description": "Hot-swappable firmware slot. The inserted card defines the module's current personality.",
+      "detail": "card is the firmware"
+    },
+    {
+      "name": "Card load / reset button",
+      "scope": "Global",
+      "description": "Reboots or loads the inserted card after power cycling or a manual reset.",
+      "detail": "recessed button"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Audio/CV In 1",
+      "description": "Card-configurable lane for audio or control voltage.",
+      "voltage": "card defined"
+    },
+    {
+      "name": "Audio/CV In 2",
+      "description": "Second card-configurable lane for audio or control voltage.",
+      "voltage": "card defined"
+    },
+    {
+      "name": "Precision CV In 1",
+      "description": "Precision control-voltage lane, typically used for pitch or exact parameter tracking.",
+      "voltage": "card defined"
+    },
+    {
+      "name": "Precision CV In 2",
+      "description": "Second precision control-voltage lane.",
+      "voltage": "card defined"
+    },
+    {
+      "name": "Pulse In 1",
+      "description": "Card-configurable trigger or gate lane.",
+      "voltage": "card defined"
+    },
+    {
+      "name": "Pulse In 2",
+      "description": "Second trigger, gate, or clock lane.",
+      "voltage": "card defined"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Audio/CV Out 1",
+      "description": "Card-configurable lane for audio or control voltage.",
+      "voltage": "card defined"
+    },
+    {
+      "name": "Audio/CV Out 2",
+      "description": "Second card-configurable lane for audio or control voltage.",
+      "voltage": "card defined"
+    },
+    {
+      "name": "Precision CV Out 1",
+      "description": "Precision control-voltage lane, typically used for pitch or exact parameter tracking.",
+      "voltage": "card defined"
+    },
+    {
+      "name": "Precision CV Out 2",
+      "description": "Second precision control-voltage lane.",
+      "voltage": "card defined"
+    },
+    {
+      "name": "Pulse Out 1",
+      "description": "Card-configurable trigger, gate, or clock output.",
+      "voltage": "card defined"
+    },
+    {
+      "name": "Pulse Out 2",
+      "description": "Second trigger, gate, or clock output.",
+      "voltage": "card defined"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Hot-swappable cards",
+      "trigger": "insert a new program card",
+      "description": "The active firmware changes immediately when a different card is loaded, so the same 8HP panel can behave like a sequencer, reverb, utility rack, or synth voice."
+    },
+    {
+      "name": "Reverb+ card",
+      "trigger": "load the Reverb+ card",
+      "description": "The card exposes a CV-controllable hall reverb plus random pulse and CV utilities, including freeze and Turing-Machine-style behavior."
+    },
+    {
+      "name": "Turing Machine card",
+      "trigger": "load the Turing Machine card",
+      "description": "The module becomes a random looping sequencer with tap-tempo clocking, multiple scales, pulse outputs, and CV lanes that can lock or drift."
+    },
+    {
+      "name": "Simple MIDI card",
+      "trigger": "load the Simple MIDI card",
+      "description": "The computer acts as a USB MIDI bridge that moves note, gate, and controller data between the modular and a host device."
+    },
+    {
+      "name": "Blank-card programming",
+      "trigger": "write a blank card",
+      "description": "Blank cards store user code, so the module can run custom RP2040 programs instead of only the shipped card set."
+    },
+    {
+      "name": "Card memory as firmware",
+      "trigger": "boot with any installed card",
+      "description": "The card contains the program image rather than the panel hardware itself, which makes the module effectively reconfigurable software in Eurorack form."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Turing Machine bassline",
+      "patch": "Load the Turing Machine card · tap a clock or feed one in · use the CV lane for pitch and the pulse lane for drum accents · one module becomes a repeatable random sequencer.",
+      "diagram": "Workshop Computer:\n* Card: Turing Machine\n* Mode switch: default\n\nClock:\nQuantizer:\nVCO:\nEnvelope:\nVCA:\nKick:\nOutput:\n\n- Clock (Out) c> Workshop Computer (Pulse In 2)\n- Workshop Computer (Pulse Out 1) t> Kick (Trig)\n- Workshop Computer (Precision CV Out 2) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Workshop Computer (Pulse Out 2) t> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Reverb freeze wash",
+      "patch": "Load Reverb+ · feed stereo audio into the top row · freeze with a pulse into the freeze input · modulate decay and wet mix from slow CV for evolving frozen pads.",
+      "diagram": "Workshop Computer:\n* Card: Reverb+\n* Main knob: wet/dry\n* Knob X: decay\n* Knob Y: tone\n\nPad:\nLFO:\nClock:\nMixer:\n\n- Pad (Out L) -> Workshop Computer (Audio/CV In 1)\n- Pad (Out R) -> Workshop Computer (Audio/CV In 2)\n- LFO (Out) >> Workshop Computer (Precision CV In 1)\n- LFO (Out) >> Workshop Computer (Precision CV In 2)\n- Clock (Out) g> Workshop Computer (Pulse In 1) // freeze\n- Workshop Computer (Audio/CV Out 1) -> Mixer (In L)\n- Workshop Computer (Audio/CV Out 2) -> Mixer (In R)"
+    },
+    {
+      "name": "USB-to-modular bridge",
+      "patch": "Load Simple MIDI · send note, gate, and controller data from a computer into the modular · use the precision CV lanes for pitch and the pulse lanes for envelopes and drum hits.",
+      "diagram": "Workshop Computer:\n* Card: Simple MIDI\n\nMIDI Controller:\nQuantizer:\nVCO:\nEnvelope:\nDrum:\nOutput:\n\n- MIDI Controller (Note) -> Workshop Computer (Audio/CV In 1)\n- MIDI Controller (Gate) -> Workshop Computer (Pulse In 1)\n- Workshop Computer (Precision CV Out 1) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Workshop Computer (Pulse Out 1) t> Envelope (Trig)\n- Workshop Computer (Pulse Out 2) t> Drum (Trig)\n- VCO (Out) -> Output (In)"
+    },
+    {
+      "name": "Toolbox utility card",
+      "patch": "Load a utility program card from the library · use the computer as a small source bank for clock, noise, and sample-and-hold duties · fold it into a bigger modular patch.",
+      "diagram": "Workshop Computer:\n* Card: Toolbox\n\nFilter:\nVCA:\nClock:\nNoise:\nEnvelope:\nOutput:\n\n- Workshop Computer (Pulse Out 1) c> Clock (In)\n- Workshop Computer (Audio/CV Out 1) -> Noise (In)\n- Workshop Computer (Audio/CV Out 2) -> VCA (In)\n- Workshop Computer (Precision CV Out 1) >> Filter (Cutoff)\n- Workshop Computer (Pulse Out 2) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+    },
+    {
+      "name": "Bytebeat percussion",
+      "patch": "Load a bytebeat-style card · run it at audio or clock rate · treat the computer as a compact digital percussion source with built-in modulation and pulse outs.",
+      "diagram": "Workshop Computer:\n* Card: Bytebeat\n\nClock:\nFilter:\nVCA:\nEnvelope:\nOutput:\n\n- Clock (Out) c> Workshop Computer (Pulse In 2)\n- Workshop Computer (Audio/CV Out 1) -> Filter (In)\n- Workshop Computer (Precision CV Out 1) >> Filter (Cutoff)\n- Workshop Computer (Pulse Out 1) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://serge-modular.com/docs/Stereo%20VCFQ%20sheet.pdf",
+      "https://serge-modular.com/serge_eurorack",
+      "https://serge-modular.com/serge_euro?lang=fr"
+    ]
+  },
+  "slug": "random-source--serge-stereo-variable-resonance-filter",
+  "name": "Serge Stereo VCFQ",
+  "manufacturer": "Random Source",
+  "hp": 18,
+  "tags": ["FILTER", "VCF", "RESONATOR", "OSCILLATOR"],
+  "description": "Stereo version of the classic Serge variable-Q filter. Paired low/band/high outputs, voltage-controlled frequency and resonance, and trigger pings turn it into a resonant filter or twin sine source.",
+  "controls": [
+    {
+      "name": "FREQ",
+      "scope": "Global",
+      "description": "Sets the center frequency of both stereo filter sections.",
+      "detail": "shared stereo frequency control"
+    },
+    {
+      "name": "Q",
+      "scope": "Global",
+      "description": "Sets resonance across both channels, from gentle peak to self-oscillation.",
+      "detail": "low Q to self-oscillation"
+    },
+    {
+      "name": "IN L level",
+      "scope": "Left channel",
+      "description": "Sets the amount of signal fed into the left filter path.",
+      "detail": "input attenuator"
+    },
+    {
+      "name": "IN R level",
+      "scope": "Right channel",
+      "description": "Sets the amount of signal fed into the right filter path.",
+      "detail": "input attenuator"
+    },
+    {
+      "name": "VC F",
+      "scope": "Global",
+      "description": "Attenuates frequency CV into the shared filter cutoff.",
+      "detail": "voltage control over FREQ"
+    },
+    {
+      "name": "VC Q",
+      "scope": "Global",
+      "description": "Attenuates resonance CV into the shared Q path.",
+      "detail": "voltage control over resonance"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN L",
+      "description": "Left audio input with level control.",
+      "voltage": "audio"
+    },
+    {
+      "name": "IN R",
+      "description": "Right audio input with level control.",
+      "voltage": "audio"
+    },
+    {
+      "name": "AUX IN",
+      "description": "Unattenuated auxiliary input that runs into both channels.",
+      "voltage": "audio"
+    },
+    {
+      "name": "TRIG IN",
+      "description": "Trigger input used to ping the filter at high resonance.",
+      "voltage": "trigger"
+    },
+    {
+      "name": "1V/OCT",
+      "description": "Pitch CV for tracking the filter as an oscillator.",
+      "voltage": "1V/oct"
+    },
+    {
+      "name": "FREQ CV",
+      "description": "Voltage control over filter frequency.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Q CV",
+      "description": "Voltage control over resonance.",
+      "voltage": "CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "LOW L",
+      "description": "Left low-pass output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "BAND L",
+      "description": "Left band-pass output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "HIGH L",
+      "description": "Left high-pass output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "LOW R",
+      "description": "Right low-pass output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "BAND R",
+      "description": "Right band-pass output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "HIGH R",
+      "description": "Right high-pass output.",
+      "voltage": "audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Stereo variable-Q filtering",
+      "trigger": "patch audio into IN L and IN R",
+      "description": "Both channels share the same frequency and Q controls, so one movement reshapes the stereo pair together."
+    },
+    {
+      "name": "Aux input summing",
+      "trigger": "patch AUX IN",
+      "description": "AUX IN runs into both channels without attenuation, making it the quickest way to feed a mono source into the stereo filter pair."
+    },
+    {
+      "name": "Ping mode",
+      "trigger": "high Q plus TRIG IN",
+      "description": "A trigger excites the resonant peak and rings the filter like a struck object."
+    },
+    {
+      "name": "Self-oscillation",
+      "trigger": "Q high and no damped input",
+      "description": "At high resonance the filter behaves like a sine source. The sheet calls out that patching HIGH back to IN pushes it into oscillation."
+    },
+    {
+      "name": "Pitch tracking",
+      "trigger": "patch 1V/OCT",
+      "description": "The filter can track pitch closely enough to act as a tuned voice, especially with the low-pass response and resonance pushed high."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Stereo formant wash",
+      "patch": "Pad into IN L and IN R · gentle Q · slowly move FREQ with an LFO · use LOW L and BAND R for a wide, speech-like stereo wash.",
+      "diagram": "Serge Stereo VCFQ:\n* FREQ: noon\n* Q: low\n* VC F: gentle\n* VC Q: gentle\n\nPad:\nLFO:\nOutput:\n\n- Pad (Out L) -> Serge Stereo VCFQ (IN L)\n- Pad (Out R) -> Serge Stereo VCFQ (IN R)\n- LFO (Out) >> Serge Stereo VCFQ (FREQ CV)\n- Serge Stereo VCFQ (LOW L) -> Output (L)\n- Serge Stereo VCFQ (BAND R) -> Output (R)"
+    },
+    {
+      "name": "Pinged resonator",
+      "patch": "Set Q high · send short triggers to TRIG IN · use AUX IN for a quiet source or leave it empty · the filter rings as a struck resonator instead of a static EQ.",
+      "diagram": "Serge Stereo VCFQ:\n* Q: high\n* FREQ: 1-2 o'clock\n* VC Q: high\n\nTrigger:\nNoise:\nOutput:\n\n- Trigger (Out) t> Serge Stereo VCFQ (TRIG IN)\n- Noise (Out) -> Serge Stereo VCFQ (AUX IN)\n- Serge Stereo VCFQ (BAND L) -> Output (L)\n- Serge Stereo VCFQ (BAND R) -> Output (R)"
+    },
+    {
+      "name": "Twin sine source",
+      "patch": "No input, Q full up, 1V/OCT tracking on the cutoff, and HIGH patched back into the inputs · the stereo filter turns into a dual sine voice.",
+      "diagram": "Serge Stereo VCFQ:\n* Q: full CW\n* FREQ: tuned\n* VC Q: none\n\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Serge Stereo VCFQ (1V/OCT)\n- Serge Stereo VCFQ (HIGH L) -> Serge Stereo VCFQ (IN L)\n- Serge Stereo VCFQ (HIGH R) -> Serge Stereo VCFQ (IN R)\n- Serge Stereo VCFQ (LOW L) -> Output (L)\n- Serge Stereo VCFQ (LOW R) -> Output (R)"
+    },
+    {
+      "name": "Mono source, stereo band split",
+      "patch": "Mono audio into AUX IN · use the band outputs as a stereo splitter for one source · FREQ sets the crossover point while the two sides stay phase-coherent.",
+      "diagram": "Serge Stereo VCFQ:\n* FREQ: noon\n* Q: medium\n\nMono Source:\nOutput:\n\n- Mono Source (Out) -> Serge Stereo VCFQ (AUX IN)\n- Serge Stereo VCFQ (BAND L) -> Output (L)\n- Serge Stereo VCFQ (BAND R) -> Output (R)"
+    },
+    {
+      "name": "Tuned filter voice",
+      "patch": "Pitch CV into 1V/OCT · gate to TRIG IN · use the low-pass outputs as a playable stereo voice with resonance as the tone control.",
+      "diagram": "Serge Stereo VCFQ:\n* Q: high\n* FREQ: tracked\n\nSequencer:\nGate Source:\nOutput:\n\n- Sequencer (Pitch) p> Serge Stereo VCFQ (1V/OCT)\n- Gate Source (Out) t> Serge Stereo VCFQ (TRIG IN)\n- Serge Stereo VCFQ (LOW L) -> Output (L)\n- Serge Stereo VCFQ (LOW R) -> Output (R)"
+    }
+  ]
+}

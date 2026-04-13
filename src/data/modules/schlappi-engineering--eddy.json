@@ -1,0 +1,201 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://schlappiengineering.com/products/eddy",
+      "https://cdn.shopify.com/s/files/1/0549/4538/2479/files/eddy_only_quickstart_031926.pdf?v=1775539053"
+    ]
+  },
+  "slug": "schlappi-engineering--eddy",
+  "name": "Eddy",
+  "manufacturer": "Schlappi Engineering",
+  "hp": 8,
+  "tags": ["MIXER", "VCA", "DISTORTION", "FILTER", "COMPRESSOR"],
+  "description": "Three-channel stereo submixer with CV control, sidechain compression, distortion, and normalized feedback filters. It covers clean mixing, feedback percussion, and aggressive bus processing in 8HP.",
+  "controls": [
+    {
+      "name": "Channel 1 level",
+      "scope": "Channel 1",
+      "description": "Sets the gain for the first stereo channel.",
+      "detail": "unity near noon"
+    },
+    {
+      "name": "Channel 2 level",
+      "scope": "Channel 2",
+      "description": "Sets the gain for the second stereo channel.",
+      "detail": "unity near noon"
+    },
+    {
+      "name": "Channel 3 level",
+      "scope": "Channel 3",
+      "description": "Sets the gain for the third stereo channel.",
+      "detail": "unity near noon"
+    },
+    {
+      "name": "Channel 4 / Sidechain level",
+      "scope": "Channel 4",
+      "description": "Sets the gain for the mono fourth input or sidechain path.",
+      "detail": "mono input or sidechain"
+    },
+    {
+      "name": "Channel 1 mode switch",
+      "scope": "Channel 1",
+      "description": "Turns the channel on, inverts it, or mutes it.",
+      "detail": "up: on · center: invert · down: off"
+    },
+    {
+      "name": "Channel 2 mode switch",
+      "scope": "Channel 2",
+      "description": "Turns the channel on, inverts it, or mutes it.",
+      "detail": "up: on · center: invert · down: off"
+    },
+    {
+      "name": "Channel 3 mode switch",
+      "scope": "Channel 3",
+      "description": "Turns the channel on, inverts it, or mutes it.",
+      "detail": "up: on · center: invert · down: off"
+    },
+    {
+      "name": "OUT select switch",
+      "scope": "Global",
+      "description": "Selects which mix bus appears at the main outputs.",
+      "detail": "DIST · COMP · MIX"
+    },
+    {
+      "name": "Sidechain switch",
+      "scope": "Global",
+      "description": "Chooses whether the fourth input is mono audio or sidechain control.",
+      "detail": "IN4 · SCHAIN"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "CV In 1",
+      "description": "Control voltage for channel 1 gain.",
+      "voltage": "0-10V"
+    },
+    {
+      "name": "CV In 2",
+      "description": "Control voltage for channel 2 gain.",
+      "voltage": "0-10V"
+    },
+    {
+      "name": "CV In 3",
+      "description": "Control voltage for channel 3 gain.",
+      "voltage": "0-10V"
+    },
+    {
+      "name": "CV In 4",
+      "description": "Control voltage for the fourth mono or sidechain channel.",
+      "voltage": "0-10V"
+    },
+    {
+      "name": "IN 1 L",
+      "description": "Left input of stereo channel 1.",
+      "voltage": "audio"
+    },
+    {
+      "name": "IN 1 R",
+      "description": "Right input of stereo channel 1.",
+      "voltage": "audio"
+    },
+    {
+      "name": "IN 2 L",
+      "description": "Left input of stereo channel 2.",
+      "voltage": "audio"
+    },
+    {
+      "name": "IN 2 R",
+      "description": "Right input of stereo channel 2.",
+      "voltage": "audio"
+    },
+    {
+      "name": "IN 3 L",
+      "description": "Left input of stereo channel 3.",
+      "voltage": "audio"
+    },
+    {
+      "name": "IN 3 R",
+      "description": "Right input of stereo channel 3.",
+      "voltage": "audio"
+    },
+    {
+      "name": "IN 4 / Sidechain",
+      "description": "Mono fourth input or compressor sidechain input.",
+      "voltage": "audio"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT L",
+      "description": "Main left output, carrying the selected bus.",
+      "voltage": "audio"
+    },
+    {
+      "name": "OUT R",
+      "description": "Main right output, carrying the selected bus.",
+      "voltage": "audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Stereo submix",
+      "trigger": "patch audio into the three stereo channels",
+      "description": "The module behaves as a compact stereo submixer with per-channel gain and CV control."
+    },
+    {
+      "name": "On / invert / off channel mode",
+      "trigger": "move a channel switch",
+      "description": "Each stereo channel can be passed normally, inverted, or muted, which makes the mixer useful for cancellation and widening tricks."
+    },
+    {
+      "name": "Sidechain compression",
+      "trigger": "select SCHAIN and feed IN 4",
+      "description": "The fourth input can act as a sidechain source, so kick-driven ducking is available without a dedicated compressor."
+    },
+    {
+      "name": "Output bus selection",
+      "trigger": "move OUT select",
+      "description": "DIST, COMP, and MIX buses are all available on the same main outputs, so the final flavor can change without re-patching."
+    },
+    {
+      "name": "Feedback normalization",
+      "trigger": "leave channels unpatched and raise the switches",
+      "description": "Unpatched channels can feed back internally, which makes no-input mixing and self-generating textures possible."
+    },
+    {
+      "name": "Feedback percussion",
+      "trigger": "use the normalized feedback paths",
+      "description": "The internal bandpass feedback network is tuned for tone-shaping and percussion rather than textbook equalization."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Clean stereo submix",
+      "patch": "Three stereo sources into channels 1-3 · OUT select on MIX · level pots around noon · use CV inputs for final automation on a compact stereo bus.",
+      "diagram": "Eddy:\n* OUT select: MIX\n* Sidechain: IN4\n* Channel 1 switch: on\n* Channel 2 switch: on\n* Channel 3 switch: on\n\nVCO A:\nVCO B:\nPad:\nOutput:\n\n- VCO A (Out L) -> Eddy (IN 1 L)\n- VCO A (Out R) -> Eddy (IN 1 R)\n- VCO B (Out L) -> Eddy (IN 2 L)\n- VCO B (Out R) -> Eddy (IN 2 R)\n- Pad (Out L) -> Eddy (IN 3 L)\n- Pad (Out R) -> Eddy (IN 3 R)\n- Eddy (OUT L) -> Output (L)\n- Eddy (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Sidechain pump",
+      "patch": "Pads on channels 1-3 · kick into IN 4 as the sidechain source · OUT select on COMP · the mix ducks around the kick without extra patching.",
+      "diagram": "Eddy:\n* OUT select: COMP\n* Sidechain: SCHAIN\n* Channel 1 switch: on\n* Channel 2 switch: on\n* Channel 3 switch: on\n\nKick:\nPad:\nOutput:\n\n- Pad (Out L) -> Eddy (IN 1 L)\n- Pad (Out R) -> Eddy (IN 1 R)\n- Pad (Out L) -> Eddy (IN 2 L)\n- Pad (Out R) -> Eddy (IN 2 R)\n- Pad (Out L) -> Eddy (IN 3 L)\n- Pad (Out R) -> Eddy (IN 3 R)\n- Kick (Out) -> Eddy (IN 4 / Sidechain)\n- Eddy (OUT L) -> Output (L)\n- Eddy (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Distorted bus",
+      "patch": "OUT select on DIST · drive the input levels harder · use the invert switches to hollow the center or reinforce the sides before the bus clips.",
+      "diagram": "Eddy:\n* OUT select: DIST\n* Channel 1 switch: on\n* Channel 2 switch: invert\n* Channel 3 switch: on\n\nVCO A:\nVCO B:\nOutput:\n\n- VCO A (Out L) -> Eddy (IN 1 L)\n- VCO A (Out R) -> Eddy (IN 1 R)\n- VCO B (Out L) -> Eddy (IN 2 L)\n- VCO B (Out R) -> Eddy (IN 2 R)\n- Eddy (OUT L) -> Output (L)\n- Eddy (OUT R) -> Output (R)"
+    },
+    {
+      "name": "No-input feedback texture",
+      "patch": "Leave the main stereo inputs empty · raise the channel switches to engage the normalized feedback network · inject one mono source on IN 4 if you want the texture to lock to a pulse.",
+      "diagram": "Eddy:\n* OUT select: MIX\n* Sidechain: IN4\n* Channel 1 switch: on\n* Channel 2 switch: on\n* Channel 3 switch: on\n\nClock:\nNoise:\nOutput:\n\n- Clock (Out) t> Noise (Trig)\n- Noise (Out) -> Eddy (IN 4 / Sidechain)\n- Eddy (OUT L) -> Output (L)\n- Eddy (OUT R) -> Output (R)"
+    },
+    {
+      "name": "Triple stereo VCA style sweep",
+      "patch": "Use the three stereo channels as a small voltage-controlled gain stage · animate all three CV inputs with envelopes for a wide moving mix before the output bus.",
+      "diagram": "Eddy:\n* OUT select: MIX\n* Channel 1 switch: on\n* Channel 2 switch: on\n* Channel 3 switch: on\n\nEnvelope A:\nEnvelope B:\nEnvelope C:\nVCO:\nOutput:\n\n- Envelope A (Out) >> Eddy (CV In 1)\n- Envelope B (Out) >> Eddy (CV In 2)\n- Envelope C (Out) >> Eddy (CV In 3)\n- VCO (Out L) -> Eddy (IN 1 L)\n- VCO (Out R) -> Eddy (IN 1 R)\n- Eddy (OUT L) -> Output (L)\n- Eddy (OUT R) -> Output (R)"
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.westonaudio.com/trivium.html",
+      "https://www.westonaudio.com/assets/files/triviummanual_r01.pdf"
+    ]
+  },
+  "slug": "weston-precision-audio--trivium",
+  "name": "Trivium",
+  "manufacturer": "Weston Precision Audio",
+  "hp": 12,
+  "tags": ["FILTER", "VCA", "ENVELOPE", "UTILITY"],
+  "description": "12HP analog voice core with state-variable filter, VCA, ADSR, AD/AR envelopes, routing switches, and a sidechainable pre/post path for clean voices or driven percussion.",
+  "controls": [
+    {
+      "name": "ADSR Attack",
+      "scope": "ADSR envelope",
+      "description": "Sets the attack time for the ADSR envelope.",
+      "detail": "1 ms to 7 s"
+    },
+    {
+      "name": "ADSR Decay",
+      "scope": "ADSR envelope",
+      "description": "Sets the decay time for the ADSR envelope.",
+      "detail": "1 ms to 7 s with CV"
+    },
+    {
+      "name": "ADSR Sustain",
+      "scope": "ADSR envelope",
+      "description": "Sets the sustain level for the ADSR envelope.",
+      "detail": "0V to 8V"
+    },
+    {
+      "name": "ADSR Release",
+      "scope": "ADSR envelope",
+      "description": "Sets the release time for the ADSR envelope.",
+      "detail": "2 ms to 7 s with CV"
+    },
+    {
+      "name": "AD/AR Attack",
+      "scope": "AD/AR envelope",
+      "description": "Sets the attack time for the AD/AR envelope.",
+      "detail": "1 ms to 7 s"
+    },
+    {
+      "name": "AD/AR Decay/Release",
+      "scope": "AD/AR envelope",
+      "description": "Sets the decay or release time for the AD/AR envelope.",
+      "detail": "2 ms to 7 s with CV"
+    },
+    {
+      "name": "AD/AR mode button",
+      "scope": "AD/AR envelope",
+      "description": "Selects whether the second envelope behaves as decay or release.",
+      "detail": "Decay / Release toggle"
+    },
+    {
+      "name": "Cutoff",
+      "scope": "Filter",
+      "description": "Sets the state-variable filter cutoff.",
+      "detail": "shared cutoff control"
+    },
+    {
+      "name": "Resonance",
+      "scope": "Filter",
+      "description": "Sets filter resonance and the edge of self-oscillation.",
+      "detail": "clean to self-oscillating"
+    },
+    {
+      "name": "Filter Env",
+      "scope": "Filter modulation",
+      "description": "Attenuverts the selected envelope before it reaches the filter.",
+      "detail": "center: zero · CW: positive · CCW: inverted"
+    },
+    {
+      "name": "Pre/Post switch",
+      "scope": "Routing",
+      "description": "Chooses whether the VCA sits before or after the filter.",
+      "detail": "pre-drive or post-filter"
+    },
+    {
+      "name": "VCA source switch",
+      "scope": "Routing",
+      "description": "Selects which control source opens the VCA.",
+      "detail": "ADSR · AD/AR · HOLD"
+    },
+    {
+      "name": "Filter source switch",
+      "scope": "Routing",
+      "description": "Selects which envelope modulates the filter.",
+      "detail": "ADSR · AD/AR"
+    },
+    {
+      "name": "Filter type switch",
+      "scope": "Filter",
+      "description": "Selects the filter response taken from the state-variable core.",
+      "detail": "Low Pass · Band Pass · High Pass"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Gate",
+      "description": "Triggers both envelopes.",
+      "voltage": ">1.5V gate"
+    },
+    {
+      "name": "Audio In",
+      "description": "AC-coupled audio input to the routing section.",
+      "voltage": "audio"
+    },
+    {
+      "name": "ADSR Decay CV",
+      "description": "Voltage control over ADSR decay time.",
+      "voltage": "CV"
+    },
+    {
+      "name": "ADSR Release CV",
+      "description": "Voltage control over ADSR release time.",
+      "voltage": "CV"
+    },
+    {
+      "name": "AD/AR Attack CV",
+      "description": "Voltage control over AD/AR attack time.",
+      "voltage": "CV"
+    },
+    {
+      "name": "AD/AR Decay/Release CV",
+      "description": "Voltage control over AD/AR decay or release time.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Cutoff CV",
+      "description": "Voltage control over filter cutoff.",
+      "voltage": "CV"
+    },
+    {
+      "name": "Resonance CV",
+      "description": "Voltage control over filter resonance.",
+      "voltage": "CV"
+    },
+    {
+      "name": "VCA Env CV",
+      "description": "Scales the selected VCA control source.",
+      "voltage": "CV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Audio Out",
+      "description": "Main routed audio output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "ADSR Env Out",
+      "description": "Front-panel ADSR envelope output.",
+      "voltage": "0-8V"
+    },
+    {
+      "name": "AD/AR Env Out",
+      "description": "Front-panel AD/AR envelope output.",
+      "voltage": "0-8V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Two envelopes",
+      "trigger": "Gate input",
+      "description": "The gate triggers both envelopes, and each envelope is also available as a standalone front-panel output."
+    },
+    {
+      "name": "Pre/Post routing",
+      "trigger": "Pre/Post switch",
+      "description": "Pre places the VCA before the filter so the filter can saturate. Post puts the filter before the VCA and lets the output stage add gain."
+    },
+    {
+      "name": "VCA source selection",
+      "trigger": "VCA source switch",
+      "description": "The VCA can follow the ADSR envelope, the AD/AR envelope, or stay held open."
+    },
+    {
+      "name": "Filter modulation selection",
+      "trigger": "Filter source switch",
+      "description": "The filter can follow either envelope, with the attenuverter deciding whether the move is positive or inverted."
+    },
+    {
+      "name": "State-variable response",
+      "trigger": "Filter type switch",
+      "description": "Low-pass, band-pass, and high-pass responses are available from the same core, with self-oscillation strongest in low-pass mode."
+    },
+    {
+      "name": "Percussive AD/AR shape",
+      "trigger": "AD/AR mode button",
+      "description": "The second envelope switches between decay and release behavior, with a slightly convex attack that suits pinged percussion."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Complete voice",
+      "patch": "Audio source into Audio In · Gate opens the envelopes · ADSR drives the VCA · ADSR also sweeps the filter in Post mode · a compact one-module voice.",
+      "diagram": "Trivium:\n* Pre/Post switch: Post\n* VCA source switch: ADSR\n* Filter source switch: ADSR\n* Filter type switch: Low Pass\n\nVCO:\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Trivium (Cutoff CV)\n- Sequencer (Gate) g> Trivium (Gate)\n- VCO (Out) -> Trivium (Audio In)\n- Trivium (Audio Out) -> Output (In)"
+    },
+    {
+      "name": "Pinged percussion",
+      "patch": "AD/AR mode selected · high resonance · short attack and decay · the filter rings like a struck body and the VCA follows the same percussive contour.",
+      "diagram": "Trivium:\n* Pre/Post switch: Pre\n* VCA source switch: AD/AR\n* Filter source switch: AD/AR\n* Filter type switch: Band Pass\n\nTrigger:\nOutput:\n\n- Trigger (Out) g> Trivium (Gate)\n- Trivium (Audio Out) -> Output (In)"
+    },
+    {
+      "name": "Self-oscillating lead",
+      "patch": "No audio input · resonance pushed up · cutoff tracks pitch CV · hold the VCA open and use the filter as a playable oscillator.",
+      "diagram": "Trivium:\n* Pre/Post switch: Post\n* VCA source switch: HOLD\n* Filter source switch: ADSR\n* Filter type switch: Low Pass\n* Resonance: high\n\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Trivium (Cutoff CV)\n- Sequencer (Gate) g> Trivium (Gate)\n- Trivium (Audio Out) -> Output (In)"
+    },
+    {
+      "name": "Pre-drive distortion",
+      "patch": "Pre mode lets the VCA overdrive the filter input before the filter stage · a kick or bass line gets a harder edge and a rounder resonant peak.",
+      "diagram": "Trivium:\n* Pre/Post switch: Pre\n* VCA source switch: ADSR\n* Filter source switch: ADSR\n* Filter type switch: High Pass\n\nBass VCO:\nEnvelope:\nOutput:\n\n- Bass VCO (Out) -> Trivium (Audio In)\n- Envelope (Out) >> Trivium (VCA Env CV)\n- Envelope (Out) >> Trivium (Cutoff CV)\n- Trivium (Audio Out) -> Output (In)"
+    },
+    {
+      "name": "Envelope router",
+      "patch": "Use the ADSR and AD/AR outputs as two independent modulation sources · one can shape another filter while the other drives a VCA or delay feedback path.",
+      "diagram": "Trivium:\n* Filter source switch: ADSR\n* VCA source switch: AD/AR\n\nFilter:\nVCA:\nDelay:\nClock:\n\n- Clock (Out) g> Trivium (Gate)\n- Trivium (ADSR Env Out) >> Filter (Cutoff)\n- Trivium (AD/AR Env Out) >> VCA (CV)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Delay (In)"
+    }
+  ]
+}
