@@ -4,6 +4,10 @@ const moduleFiles = import.meta.glob<Module>('../data/modules/*.json', { eager: 
 
 type Entry = { slug: string; module: Module };
 
+function isHidden(module: Module): boolean {
+  return module._meta?.hidden === true;
+}
+
 function loadAll(): Entry[] {
   return Object.entries(moduleFiles).map(([path, module]) => {
     const filename = path.split('/').pop()!.replace('.json', '');
@@ -17,7 +21,8 @@ function loadAll(): Entry[] {
 export function getAllModules(): Entry[] {
   return loadAll().filter((entry) =>
     entry.module._meta?.verified === true &&
-    !entry.module._meta?.expanderOf,
+    !entry.module._meta?.expanderOf &&
+    !isHidden(entry.module),
   );
 }
 
@@ -31,12 +36,19 @@ export function getModuleBySlug(slug: string): Module | undefined {
   return loadAll().find((entry) => entry.slug === slug)?.module;
 }
 
+export function isPublicModule(module: Module): boolean {
+  return module._meta?.verified === true &&
+    !module._meta?.expanderOf &&
+    !isHidden(module);
+}
+
 // Expanders belonging to a parent slug — verified only, sorted by name for stable render.
 export function getExpandersFor(parentSlug: string): Module[] {
   return loadAll()
     .filter((entry) =>
       entry.module._meta?.verified === true &&
-      entry.module._meta?.expanderOf === parentSlug,
+      entry.module._meta?.expanderOf === parentSlug &&
+      !isHidden(entry.module),
     )
     .map((entry) => entry.module)
     .sort((a, b) => a.name.localeCompare(b.name));

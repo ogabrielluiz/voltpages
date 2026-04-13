@@ -31,6 +31,7 @@ export interface ModuleMeta {
   firmwareVersion?: string;
   sources?: string[];
   expanderOf?: string;
+  hidden?: boolean;
 }
 
 export interface Module {

@@ -21,6 +21,10 @@
         "expanderOf": {
           "type": "string",
           "description": "Slug of the parent module this one expands. When set, this sheet is rendered inline on the parent's page and hidden from the top-level module listing."
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "When true, keep the sheet in the repo for research/reference purposes but do not generate a public page or surface it in the UI."
         }
       }
     },
