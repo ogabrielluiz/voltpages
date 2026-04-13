@@ -40,6 +40,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Astro 6 requires Node >=22.12 even when Bun is the package manager
+      # (its internal tooling uses the Node runtime). Match the deploy workflow.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
