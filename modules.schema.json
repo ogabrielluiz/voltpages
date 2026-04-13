@@ -107,10 +107,26 @@
         "required": ["name", "patch"],
         "properties": {
           "name": { "type": "string" },
-          "patch": { "type": "string" },
+          "patch": {
+            "type": "string",
+            "description": "Concise one-liner summarizing what the patch does and why. Served as-is when no walkthrough is authored."
+          },
           "diagram": {
             "type": "string",
             "description": "Patchflow notation for rendering a signal flow diagram"
+          },
+          "steps": {
+            "type": "array",
+            "description": "Ordered beginner-friendly instructions. Each step is one settings tweak or one patch cable. Consumed by the UI as a numbered list.",
+            "items": { "type": "string" }
+          },
+          "signalOut": {
+            "type": "string",
+            "description": "Where the useful signal comes out and what it is — e.g. 'CH 1 OUT — envelope CV, patch into a VCA'. Shown prominently so beginners know what to do with the result."
+          },
+          "hear": {
+            "type": "string",
+            "description": "What the reader should expect to hear or see once patched — concrete behavior, not metaphor."
           }
         }
       }

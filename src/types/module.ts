@@ -22,6 +22,9 @@ export interface PatchIdea {
   name: string;
   patch: string;
   diagram?: string;
+  steps?: string[];
+  signalOut?: string;
+  hear?: string;
 }
 
 export interface ModuleMeta {

@@ -41,6 +41,30 @@ for (const idea of patchIdeas) {
         <div class="pl-3 border-l-2 border-border-strong">
           <div class="text-[15px] font-semibold text-fg">{idea.name}</div>
           <div class="text-[13px] text-muted leading-relaxed mt-0.5">{idea.patch}</div>
+
+          {idea.steps && idea.steps.length > 0 && (
+            <div class="mt-2.5 text-[13px] leading-relaxed">
+              <div class="text-[10px] font-mono text-subtle uppercase tracking-[2px] mb-1">Walkthrough</div>
+              <ol class="list-decimal ml-5 text-muted space-y-0.5 marker:text-subtle marker:font-mono marker:text-[11px]">
+                {idea.steps.map((step) => (
+                  <li>{step}</li>
+                ))}
+              </ol>
+              {idea.signalOut && (
+                <div class="mt-2 text-muted">
+                  <span class="text-[10px] font-mono text-subtle uppercase tracking-[2px] mr-2">Signal out</span>
+                  {idea.signalOut}
+                </div>
+              )}
+              {idea.hear && (
+                <div class="mt-1 text-muted">
+                  <span class="text-[10px] font-mono text-subtle uppercase tracking-[2px] mr-2">Listen for</span>
+                  {idea.hear}
+                </div>
+              )}
+            </div>
+          )}
+
           {diagramSvg && (
             <details class="mt-2 group">
               <summary class="text-[11px] font-mono text-subtle cursor-pointer tracking-wide uppercase hover:text-fg select-none list-none inline-flex items-center gap-1 py-1">

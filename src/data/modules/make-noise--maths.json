@@ -50,14 +50,17 @@
     { "name": "CH 4 Fall CV", "description": "Voltage control of CH 4 fall time", "voltage": "±5V" }
   ],
   "outputs": [
-    { "name": "CH 1 Out", "description": "CH 1 function/envelope output", "voltage": "0–8V" },
+    { "name": "CH 1 Unity Out", "description": "CH 1 function/envelope tapped before the attenuverter. Patching here does NOT remove CH 1 from the SUM/OR bus.", "voltage": "0–8V" },
     { "name": "CH 1 EOR", "description": "End-of-rise gate from CH 1 only. Goes high at peak of CH 1 envelope.", "voltage": "0–5V gate" },
-    { "name": "CH 2 Out", "description": "CH 2 attenuverter output", "voltage": "±5V" },
-    { "name": "CH 3 Out", "description": "CH 3 attenuverter output", "voltage": "±5V" },
-    { "name": "CH 4 Out", "description": "CH 4 function/envelope output", "voltage": "0–8V" },
+    { "name": "Variable Out 1", "description": "CH 1 after its attenuverter. Normalled to the SUM/OR bus — patching removes CH 1 from SUM/OR.", "voltage": "±10V" },
+    { "name": "Variable Out 2 (CH 2 Out)", "description": "CH 2 attenuverter output. Normalled to the SUM/OR bus.", "voltage": "±10V" },
+    { "name": "Variable Out 3 (CH 3 Out)", "description": "CH 3 attenuverter output. Normalled to the SUM/OR bus.", "voltage": "±10V" },
+    { "name": "Variable Out 4", "description": "CH 4 after its attenuverter. Normalled to the SUM/OR bus — patching removes CH 4 from SUM/OR.", "voltage": "±10V" },
+    { "name": "CH 4 Unity Out", "description": "CH 4 function/envelope tapped before the attenuverter. Patching here does NOT remove CH 4 from the SUM/OR bus.", "voltage": "0–8V" },
     { "name": "CH 4 EOC", "description": "End-of-cycle gate from CH 4 only. Goes high at end of CH 4 fall stage.", "voltage": "0–5V gate" },
-    { "name": "Unity", "description": "Sum of all 4 channel outputs at unity gain", "voltage": "±10V" },
-    { "name": "OR", "description": "Maximum (analog OR) of CH 1 and CH 4", "voltage": "0–8V" }
+    { "name": "SUM", "description": "Analog sum of the four Variable Outs (post-attenuverter).", "voltage": "±10V" },
+    { "name": "INV", "description": "Inverted SUM — same shape as SUM, flipped. Useful for reversed modulation when the destination has no invert input.", "voltage": "±10V" },
+    { "name": "OR", "description": "Analog OR — highest instantaneous voltage across the four Variable Outs. Positive-only; ignores negative voltages.", "voltage": "0–10V" }
   ],
   "behaviors": [
     {
@@ -114,133 +117,392 @@
   "patchIdeas": [
     {
       "name": "Bouncing ball (self-accelerating envelope)",
-      "patch": "CH 1 Cycle ON · CH 1 OUT → CH 1 Fall CV (attenuate via CH 2 attenuverter at ~2 o'clock before patching to Fall CV) · positive feedback shortens fall each cycle · envelope speeds up like a bouncing ball losing energy · adjust CH 2 attenuverter to set acceleration rate",
-      "diagram": "MATHS:\n* CH 1: Cycle ON\n* CH 2: Attenuverter ~2 o'clock\n\n- MATHS.CH 1 (OUT) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Fall CV) // shortens fall each cycle"
+      "patch": "Positive-feedback envelope that speeds up on each cycle, like a ball bouncing and losing energy.",
+      "steps": [
+        "Press CH 1 Cycle so it's lit — the envelope free-runs.",
+        "Set the CH 1 attenuverter (center column, '1') to full CW so Variable Out 1 carries the envelope at unity.",
+        "Set the CH 2 attenuverter to about 2 o'clock — this knob sets the feedback depth.",
+        "Patch CH 1 Variable Out 1 (bottom row) → CH 2 Signal In.",
+        "Patch CH 2 Out → CH 1 Fall CV. Each cycle now shortens its own fall.",
+        "Patch CH 1 Unity Out (top, big arrow) → your VCA CV to actually hear the envelope."
+      ],
+      "signalOut": "CH 1 Unity Out — accelerating envelope, 0–8V.",
+      "hear": "A decay that gets shorter on every repetition until it chatters. Turn CH 2 attenuverter CW for faster acceleration, CCW to slow it down; near noon the feedback stalls and it free-runs steady.",
+      "diagram": "MATHS:\n* CH 1: Cycle ON\n* CH 1 Atten: full CW\n* CH 2 Atten: ~2 o'clock\n\n- MATHS.CH 1 (Variable Out 1) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Fall CV) // shortens fall each cycle\n- MATHS.CH 1 (Unity Out) >> VCA (CV) // audible envelope"
     },
     {
       "name": "Quadrature LFOs",
-      "patch": "CH 1 EOR → CH 4 TRIG · CH 4 EOC → CH 1 TRIG · Cycle OFF on both · Rise and Fall matched on both channels · CH 1 OUT and CH 4 OUT = two LFOs 90° apart · patch to filter cutoff + VCA for animated timbral motion",
-      "diagram": "MATHS:\n* CH 1: Cycle OFF, Rise + Fall matched\n* CH 4: Cycle OFF, Rise + Fall matched\n\n- MATHS.CH 1 (EOR) g> MATHS.CH 4 (Trig)\n- MATHS.CH 4 (EOC) g> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> Filter (Cutoff)\n- MATHS.CH 4 (OUT) >> VCA (CV)"
+      "patch": "Two LFOs, 90° out of phase, running off each other's end-of-stage pulses — no Cycle button needed.",
+      "steps": [
+        "Leave CH 1 and CH 4 Cycle buttons OFF.",
+        "Set CH 1 Rise and Fall to the same time, matching what you want as the overall LFO period.",
+        "Set CH 4 Rise and Fall to the same matching time.",
+        "Patch CH 1 EOR → CH 4 Trigger.",
+        "Patch CH 4 EOC → CH 1 Trigger. The pair now self-sustains.",
+        "Briefly press CH 1 Cycle once to kick it off, then release.",
+        "Take CH 1 Unity Out → Filter Cutoff (or any CV destination).",
+        "Take CH 4 Unity Out → VCA CV (90° ahead of CH 1)."
+      ],
+      "signalOut": "CH 1 Unity Out and CH 4 Unity Out — two 0–8V envelopes, 90° apart.",
+      "hear": "Two modulation sources that feel related but never land at the same place at the same time — filter and VCA breathe against each other for animated timbral motion.",
+      "diagram": "MATHS:\n* CH 1: Cycle OFF, Rise + Fall matched\n* CH 4: Cycle OFF, Rise + Fall matched\n\n- MATHS.CH 1 (EOR) g> MATHS.CH 4 (Trig)\n- MATHS.CH 4 (EOC) g> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (Unity Out) >> Filter (Cutoff)\n- MATHS.CH 4 (Unity Out) >> VCA (CV)"
     },
     {
       "name": "ASR envelope with sustain plateau",
-      "patch": "Gate → CH 1 SIGNAL IN (not TRIG) · Rise = attack time · Fall = release time · while gate is high, output holds at full voltage as a sustain plateau · Gate → TRIG gives AD only; Signal In gives true ASR",
-      "diagram": "MATHS:\n* CH 1: Rise = attack, Fall = release\n\n- Gate Source (Gate) g> MATHS.CH 1 (Signal In) // not TRIG — gives true ASR\n- MATHS.CH 1 (OUT) >> VCA (CV)"
+      "patch": "Trick MATHS into acting like an attack-sustain-release envelope by patching the gate into Signal In instead of Trigger.",
+      "steps": [
+        "Set CH 1 Rise to your desired attack time.",
+        "Set CH 1 Fall to your desired release time.",
+        "Patch your gate source → CH 1 Signal In (NOT Trigger).",
+        "Patch CH 1 Unity Out → VCA CV."
+      ],
+      "signalOut": "CH 1 Unity Out — envelope that attacks, holds, then releases, 0–8V.",
+      "hear": "While the gate is high, the envelope reaches full level and stays there (the plateau). When the gate drops, it falls at the Fall rate. Using Trigger instead gives AD only — no sustain.",
+      "diagram": "MATHS:\n* CH 1: Rise = attack, Fall = release\n\n- Gate Source (Gate) g> MATHS.CH 1 (Signal In) // not Trig — gives true ASR\n- MATHS.CH 1 (Unity Out) >> VCA (CV)"
     },
     {
       "name": "Push-pull crossfade",
-      "patch": "CH 1 Cycle ON, slow rate · CH 1 OUT → VCA 1 CV (opens) · CH 1 INV (via CH 2 attenuverter full CW on CH 1 OUT) → VCA 2 CV (closes) · SUM = combined output · MATHS envelope simultaneously fades between two sound sources",
-      "diagram": "MATHS:\n* CH 1: Cycle ON, slow rate\n* CH 2: Attenuverter full CCW (invert)\n\n- MATHS.CH 1 (OUT) >> VCA 1 (CV) // opens\n- MATHS.CH 1 (OUT) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> VCA 2 (CV) // inverted — closes\n- VCA 1 (Out) -> Mixer (In)\n- VCA 2 (Out) -> Mixer (In)"
+      "patch": "One MATHS envelope simultaneously opens one VCA while closing another — crossfades between two sound sources with a single modulator.",
+      "steps": [
+        "Press CH 1 Cycle and set Rise + Fall for a slow sweep (several seconds).",
+        "Set CH 2 attenuverter full CCW — this inverts whatever enters CH 2 Signal In.",
+        "Patch CH 1 Unity Out → VCA 1 CV. (Unity Out stays available; patching it does not remove CH 1 from the SUM bus.)",
+        "Patch CH 1 Variable Out 1 → CH 2 Signal In. Now CH 2 holds an inverted copy of the CH 1 envelope.",
+        "Patch CH 2 Out → VCA 2 CV.",
+        "Patch sound source A → VCA 1, sound source B → VCA 2, and mix their outputs."
+      ],
+      "signalOut": "VCA 1 Out + VCA 2 Out summed at a mixer — crossfaded audio.",
+      "hear": "As the envelope rises, VCA 1 opens and VCA 2 closes; as it falls, the reverse. Continuous movement between the two sources instead of a hard cut.",
+      "diagram": "MATHS:\n* CH 1: Cycle ON, slow rate\n* CH 1 Atten: full CW\n* CH 2 Atten: full CCW (invert)\n\n- MATHS.CH 1 (Unity Out) >> VCA 1 (CV) // opens\n- MATHS.CH 1 (Variable Out 1) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> VCA 2 (CV) // inverted — closes\n- VCA 1 (Out) -> Mixer (In)\n- VCA 2 (Out) -> Mixer (In)"
     },
     {
       "name": "Envelope follower",
-      "patch": "Audio source → CH 4 SIGNAL IN · CH 4 Rise at noon · CH 4 Fall adjusted CW for slower tracking or CCW for tighter tracking · OR OUT = positive-only envelope following audio amplitude · use OR OUT to modulate filter cutoff for auto-wah",
-      "diagram": "MATHS:\n* CH 4: Rise noon, Fall CW for slower tracking\n\n- Audio Source (Out) -> MATHS.CH 4 (Signal In)\n- MATHS (OR) >> Filter (Cutoff) // auto-wah envelope"
+      "patch": "Turn MATHS into an envelope follower — pull a smooth CV that tracks the amplitude of any incoming audio.",
+      "steps": [
+        "Set CH 4 Rise at noon.",
+        "Set CH 4 Fall past noon CW for gentle tracking, or CCW for tighter faster tracking.",
+        "Patch your audio source (voice, drum loop, whatever) → CH 4 Signal In.",
+        "Patch OR Out → your CV destination (Filter Cutoff is the classic target)."
+      ],
+      "signalOut": "OR Out — positive-only CV that rises and falls with audio amplitude.",
+      "hear": "Auto-wah behavior: the filter opens on loud transients and closes on quiet passages. Fall knob is your release — turn it CW to smooth out quick transients, CCW to make it snappy.",
+      "diagram": "MATHS:\n* CH 4: Rise noon, Fall past noon CW\n\n- Audio Source (Out) -> MATHS.CH 4 (Signal In)\n- MATHS (OR) >> Filter (Cutoff) // auto-wah envelope"
     },
     {
       "name": "Complex modulation shape (dual LFO mixer)",
-      "patch": "CH 1 Cycle ON · Rise + Fall set for slow rate (4–8s total) · CH 4 Cycle ON · Rise + Fall set for fast rate (0.5–1s total) · CH 2 attenuverter at 1 o'clock · CH 3 attenuverter at 11 o'clock · SUM OUT = slow + fast LFO combined with offset asymmetry · patch to filter FM",
-      "diagram": "MATHS:\n* CH 1: Cycle ON, slow (4-8s)\n* CH 4: Cycle ON, fast (0.5-1s)\n* CH 2: Attenuverter ~1 o'clock\n* CH 3: Attenuverter ~11 o'clock\n\n- MATHS.CH 1 (OUT) >> MATHS.CH 2 (In)\n- MATHS.CH 4 (OUT) >> MATHS.CH 3 (In)\n- MATHS (Unity) >> Filter (FM) // combined dual-LFO shape"
+      "patch": "Combine a slow and a fast LFO into one ever-shifting modulation signal, with independent level + polarity on each.",
+      "steps": [
+        "Press CH 1 Cycle; set Rise and Fall for a slow cycle (4–8s total).",
+        "Press CH 4 Cycle; set Rise and Fall for a fast cycle (0.5–1s total).",
+        "Set CH 2 attenuverter to ~1 o'clock (positive, moderate).",
+        "Set CH 3 attenuverter to ~11 o'clock (slight negative).",
+        "Patch CH 1 Variable Out 1 → CH 2 Signal In. (This also removes CH 1 from SUM, so SUM only carries what CH 2/3/4 contribute.)",
+        "Patch CH 4 Variable Out 4 → CH 3 Signal In. (Same — removes CH 4 from SUM.)",
+        "Patch SUM Out → your modulation target (Filter FM, Wavefolder CV, anything)."
+      ],
+      "signalOut": "SUM Out — slow LFO + fast LFO, each scaled and signed by their respective attenuverters.",
+      "hear": "Modulation that lopes slowly but jitters on short timescales. Adjust the attenuverters to rebalance — CH 2 dominates = slow character wins, CH 3 dominates = fast chatter wins.",
+      "diagram": "MATHS:\n* CH 1: Cycle ON, slow (4-8s)\n* CH 4: Cycle ON, fast (0.5-1s)\n* CH 2 Atten: ~1 o'clock\n* CH 3 Atten: ~11 o'clock\n\n- MATHS.CH 1 (Variable Out 1) >> MATHS.CH 2 (In)\n- MATHS.CH 4 (Variable Out 4) >> MATHS.CH 3 (In)\n- MATHS (SUM) >> Filter (FM) // combined dual-LFO shape"
     },
     {
       "name": "Analog clock divider",
-      "patch": "Fast clock → CH 1 TRIG · CH 1 Rise set longer than clock period · retrigger blocked during Rise phase · CH 1 EOR = every other trigger · CH 1 OUT → CH 4 TRIG for further division · stack EOR/EOC for /2, /4 outputs from one clock",
-      "diagram": "MATHS:\n* CH 1: Rise longer than clock period\n* CH 4: Rise longer than CH 1 OUT period\n\n- Clock Source (Clk) c> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (EOR) g> Destination (/2 Clock)\n- MATHS.CH 1 (OUT) g> MATHS.CH 4 (Trig)\n- MATHS.CH 4 (EOC) g> Destination (/4 Clock)"
+      "patch": "Abuse MATHS's retrigger-blocking to turn one fast clock into multiple slower ones — one channel per division.",
+      "steps": [
+        "Set CH 1 Rise to a length longer than your clock's period. MATHS ignores triggers arriving during Rise, so you get half-speed.",
+        "Patch your clock → CH 1 Trigger.",
+        "Patch CH 1 EOR → destination as a /2 clock.",
+        "For further division: set CH 4 Rise longer than CH 1's envelope period.",
+        "Patch CH 1 Unity Out → CH 4 Trigger.",
+        "Patch CH 4 EOC → destination as a /4 clock."
+      ],
+      "signalOut": "CH 1 EOR (/2 clock) and CH 4 EOC (/4 clock). Both are 0–5V gates.",
+      "hear": "Two clock lanes derived from one master, each slower than the previous. Change the Rise lengths on the fly to shift the divisions live.",
+      "diagram": "MATHS:\n* CH 1: Rise longer than clock period\n* CH 4: Rise longer than CH 1 envelope period\n\n- Clock Source (Clk) c> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (EOR) g> Destination (/2 Clock)\n- MATHS.CH 1 (Unity Out) g> MATHS.CH 4 (Trig)\n- MATHS.CH 4 (EOC) g> Destination (/4 Clock)"
     },
     {
       "name": "Directional portamento (asymmetric glide)",
-      "patch": "Pitch CV → CH 1 SIGNAL IN · CH 1 Rise CCW (fast up) · CH 1 Fall 2 o'clock (slow down) · Curve noon · CH 1 OUT → VCO V/Oct · pitch snaps up instantly, glides down slowly · reverse Rise/Fall for opposite feel",
-      "diagram": "MATHS:\n* CH 1: Rise CCW (fast up), Fall ~2 o'clock (slow down), Curve noon\n\n- Sequencer (Pitch) p> MATHS.CH 1 (Signal In)\n- MATHS.CH 1 (OUT) p> VCO (V/Oct) // snaps up, glides down"
+      "patch": "Slew pitch CV differently depending on direction — e.g. snap up instantly, glide down slowly.",
+      "steps": [
+        "Set CH 1 Rise full CCW (near-instant attack when pitch jumps up).",
+        "Set CH 1 Fall to ~2 o'clock (slow descent when pitch drops).",
+        "Set Vari-Response (Curve) at noon for a linear glide.",
+        "Patch your pitch sequencer → CH 1 Signal In (NOT Trigger — Signal In lets MATHS act as a slew limiter).",
+        "Patch CH 1 Unity Out → VCO V/Oct."
+      ],
+      "signalOut": "CH 1 Unity Out — slewed pitch CV, tracks input but asymmetrically in time.",
+      "hear": "Notes that rise cleanly but fall with a downward glide (or vice versa if you reverse Rise and Fall). Great for fretless-bass and synth-lead expressiveness.",
+      "diagram": "MATHS:\n* CH 1: Rise CCW (fast up), Fall ~2 o'clock (slow down), Curve noon\n\n- Sequencer (Pitch) p> MATHS.CH 1 (Signal In)\n- MATHS.CH 1 (Unity Out) p> VCO (V/Oct) // snaps up, glides down"
     },
     {
       "name": "Sub-harmonic generator",
-      "patch": "Audio-rate VCO OUT → CH 4 TRIG · CH 4 Cycle mode ON · CH 4 Rise and Fall short but longer than one VCO cycle · CH 4 EOC = sub-octave pulse output · mix CH 4 EOC with VCO audio at SUM for Trautonium-style bass reinforcement",
+      "patch": "Feed a VCO into CH 4 Trigger at audio rate; CH 4's Cycle running a bit slower than the VCO emits a sub-octave pulse.",
+      "steps": [
+        "Press CH 4 Cycle.",
+        "Set CH 4 Rise + Fall very short, but slightly longer than one period of your audio-rate VCO (e.g. a few hundred microseconds).",
+        "Patch VCO Out (audio-rate) → CH 4 Trigger. CH 4 tries to retrigger but can't keep up — you get one MATHS cycle per N VCO cycles.",
+        "Patch CH 4 EOC → a mixer as your sub-octave pulse.",
+        "Mix in the original VCO for a Trautonium-style bass reinforcement."
+      ],
+      "signalOut": "CH 4 EOC — pulse train at a sub-octave of the incoming VCO.",
+      "hear": "A buzzy square-ish sub-octave below the VCO's pitch. Sweeping Rise/Fall changes the ratio — 2:1 for one octave down, 3:1 for a fifth below, and so on.",
       "diagram": "MATHS:\n* CH 4: Cycle ON, Rise + Fall short (> 1 VCO cycle)\n\n- VCO (Out) -> MATHS.CH 4 (Trig) // audio-rate trigger\n- MATHS.CH 4 (EOC) -> Mixer (In) // sub-octave pulse"
     },
     {
       "name": "Voltage comparator / gate extractor",
-      "patch": "Slow CV or audio → CH 2 SIGNAL IN · CH 2 attenuverter full CW · CH 2 OUT → CH 1 SIGNAL IN · CH 1 Rise and Fall both full CCW · CH 1 EOR outputs a gate whenever the input signal exceeds the CH 1 threshold · use EOR to trigger other events from a crossing point",
-      "diagram": "MATHS:\n* CH 2: Attenuverter full CW\n* CH 1: Rise + Fall full CCW (instant)\n\n- CV Source (Out) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Signal In)\n- MATHS.CH 1 (EOR) g> Destination (Trig) // gate on threshold crossing"
+      "patch": "Instant Rise + Fall turns CH 1 into a threshold detector — EOR fires a gate whenever the input crosses a level.",
+      "steps": [
+        "Set CH 1 Rise full CCW and Fall full CCW (instant response, no slew).",
+        "Set CH 2 attenuverter full CW (unity pass-through). This lets you scale the input up if it's weak.",
+        "Patch your slow CV or audio source → CH 2 Signal In.",
+        "Patch CH 2 Out → CH 1 Signal In. (Using CH 2 Out means you can trim the signal level; patch directly to CH 1 Signal In if you don't need scaling.)",
+        "Patch CH 1 EOR → wherever you want the threshold-crossing gate."
+      ],
+      "signalOut": "CH 1 EOR — 0–5V gate that fires whenever the scaled input crosses above CH 1's internal threshold.",
+      "hear": "A gate every time the source rises past a certain voltage. Useful for extracting rhythmic events from an audio envelope or CV shape.",
+      "diagram": "MATHS:\n* CH 2 Atten: full CW\n* CH 1: Rise + Fall full CCW (instant)\n\n- CV Source (Out) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Signal In)\n- MATHS.CH 1 (EOR) g> Destination (Trig) // gate on threshold crossing"
     },
     {
       "name": "Coupled oscillators (quadrature-triggered pair)",
-      "patch": "CH 1 EOR → CH 4 TRIG · CH 4 EOC → CH 1 TRIG · Cycle OFF on both · briefly engage CH 1 Cycle to kick the pair off, then release · channels ping-pong and free-run 90° apart without Cycle mode engaged · self-sustaining quadrature without external clock",
-      "diagram": "MATHS:\n* CH 1: Cycle OFF (briefly ON to kick off)\n* CH 4: Cycle OFF\n\n- MATHS.CH 1 (EOR) g> MATHS.CH 4 (Trig)\n- MATHS.CH 4 (EOC) g> MATHS.CH 1 (Trig) // self-sustaining pair\n- MATHS.CH 1 (OUT) >> Destination A (CV)\n- MATHS.CH 4 (OUT) >> Destination B (CV)"
+      "patch": "Get quadrature LFOs without Cycle mode — CH 1 and CH 4 trigger each other forever after a single kick.",
+      "steps": [
+        "Leave CH 1 and CH 4 Cycle OFF.",
+        "Set Rise + Fall equal on both channels to whatever period you want.",
+        "Patch CH 1 EOR → CH 4 Trigger.",
+        "Patch CH 4 EOC → CH 1 Trigger. The pair is now mutually reinforcing.",
+        "Briefly press CH 1 Cycle once to kick the pair into motion, then release.",
+        "Take CH 1 Unity Out and CH 4 Unity Out as your two CVs — they run 90° apart forever."
+      ],
+      "signalOut": "CH 1 Unity Out and CH 4 Unity Out — two 0–8V LFOs, 90° out of phase.",
+      "hear": "Same sonic result as the Quadrature LFOs patch, but without Cycle mode engaged — so they're more easily resettable (cut the EOR→Trig cable to stop, re-kick to restart).",
+      "diagram": "MATHS:\n* CH 1: Cycle OFF (briefly ON to kick off)\n* CH 4: Cycle OFF\n\n- MATHS.CH 1 (EOR) g> MATHS.CH 4 (Trig)\n- MATHS.CH 4 (EOC) g> MATHS.CH 1 (Trig) // self-sustaining pair\n- MATHS.CH 1 (Unity Out) >> Destination A (CV)\n- MATHS.CH 4 (Unity Out) >> Destination B (CV)"
     },
     {
       "name": "Formant complex oscillator",
-      "patch": "CH 1 Cycle ON at audio rate · Rise very short · Curve full CW (expo) for sharp formant pulse · CH 4 Cycle ON at slow LFO rate · CH 4 OUT → CH 1 Rise CV · modulating Rise sweeps formant peak like a Mangrove-style complex oscillator",
-      "diagram": "MATHS:\n* CH 1: Cycle ON, audio rate, Rise short, Curve full CW\n* CH 4: Cycle ON, slow LFO\n\n- MATHS.CH 4 (OUT) >> MATHS.CH 1 (Rise CV) // sweeps formant\n- MATHS.CH 1 (OUT) -> VCA (In)"
+      "patch": "Run CH 1 at audio rate with a sharp shape, modulate its Rise with a slow LFO — get a Mangrove-style formant oscillator with a sweeping peak.",
+      "steps": [
+        "Press CH 1 Cycle. Set Rise very short and Fall very short so the cycle runs at audio rate.",
+        "Turn Vari-Response (Curve) full CW for a sharp exponential pulse shape.",
+        "Press CH 4 Cycle. Set CH 4 Rise + Fall for a slow LFO rate (several seconds total).",
+        "Patch CH 4 Unity Out → CH 1 Rise CV. This modulates CH 1's rise time up and down.",
+        "Patch CH 1 Unity Out → VCA audio input."
+      ],
+      "signalOut": "CH 1 Unity Out — pitched audio at audio rate with a shifting formant shape.",
+      "hear": "A voice-like tone whose timbre sweeps between a bright pulse and a softer rounded peak. Scale CH 4's modulation via its attenuverter (CH 4 Atten centered position) if the depth is too wild.",
+      "diagram": "MATHS:\n* CH 1: Cycle ON, audio rate, Rise short, Curve full CW\n* CH 4: Cycle ON, slow LFO\n\n- MATHS.CH 4 (Unity Out) >> MATHS.CH 1 (Rise CV) // sweeps formant\n- MATHS.CH 1 (Unity Out) -> VCA (In)"
     },
     {
       "name": "Self-modulating cycle (audio-rate FM)",
-      "patch": "CH 1 Cycle ON at audio rate · CH 1 OUT → CH 2 SIGNAL IN · CH 2 attenuverter moderate · CH 2 contributes to SUM · SUM OUT → CH 1 Rise CV · signal FMs its own rise time producing chaotic pitched FM · tame via CH 2 attenuverter",
-      "diagram": "MATHS:\n* CH 1: Cycle ON, audio rate\n* CH 2: Attenuverter ~1-2 o'clock\n\n- MATHS.CH 1 (OUT) >> MATHS.CH 2 (In)\n- MATHS (Unity) >> MATHS.CH 1 (Rise CV) // self-FM feedback\n- MATHS.CH 1 (OUT) -> VCA (In)"
+      "patch": "Feed CH 1's audio-rate cycle back into its own Rise CV through CH 2 — produces chaotic pitched FM.",
+      "steps": [
+        "Press CH 1 Cycle. Set Rise short enough to hit audio rate.",
+        "Set CH 2 attenuverter between 1 and 2 o'clock (start moderate; this is your chaos knob).",
+        "Set CH 1 and CH 3/4 attenuverters to noon so only CH 2 contributes to SUM.",
+        "Patch CH 1 Unity Out → CH 2 Signal In.",
+        "Patch SUM Out → CH 1 Rise CV. The channel now modulates its own rise time from its own output.",
+        "Patch CH 1 Unity Out (a second cable from the same jack is fine here since Unity Out isn't normalled) → VCA audio input."
+      ],
+      "signalOut": "CH 1 Unity Out — audio-rate, pitched, with self-FM character.",
+      "hear": "A buzzy FM-like tone. CH 2 attenuverter tilts the character — CCW stable and clean, past noon bright and chaotic. Tame too much screech by pulling CH 2 attenuverter back toward noon.",
+      "diagram": "MATHS:\n* CH 1: Cycle ON, audio rate\n* CH 2 Atten: ~1-2 o'clock\n\n- MATHS.CH 1 (Unity Out) >> MATHS.CH 2 (In)\n- MATHS (SUM) >> MATHS.CH 1 (Rise CV) // self-FM feedback\n- MATHS.CH 1 (Unity Out) -> VCA (In)"
     },
     {
       "name": "Krell patch (self-evolving random)",
-      "patch": "CH 4 Cycle ON · CH 4 EOC → S&H TRIG · Noise → S&H IN · S&H OUT → CH 4 Rise CV · each cycle samples new random voltage that sets the next rise time · envelope durations wander autonomously · classic Todd Barton Krell from one MATHS channel",
-      "diagram": "MATHS:\n* CH 4: Cycle ON\n\n- MATHS.CH 4 (EOC) t> S&H (Trig)\n- Noise (Out) >> S&H (In)\n- S&H (Out) >> MATHS.CH 4 (Rise CV) // random rise time each cycle\n- MATHS.CH 4 (OUT) >> VCA (CV)"
+      "patch": "Todd Barton's classic: each envelope cycle samples a new random voltage, which sets the next cycle's timing. Envelope durations wander autonomously.",
+      "steps": [
+        "Press CH 4 Cycle — the channel will free-run.",
+        "Patch noise → external S&H audio input.",
+        "Patch CH 4 EOC → external S&H trigger input. Every time CH 4 completes a cycle, S&H grabs a new random voltage.",
+        "Patch S&H Out → CH 4 Rise CV. Now each new random voltage sets the next rise time.",
+        "Patch CH 4 Unity Out → VCA CV."
+      ],
+      "signalOut": "CH 4 Unity Out — random-length envelopes, 0–8V.",
+      "hear": "A stream of envelopes whose lengths keep shifting. No two are the same. Swap S&H → Rise for S&H → Fall for a different flavor; patch both for full randomness.",
+      "diagram": "MATHS:\n* CH 4: Cycle ON\n\n- MATHS.CH 4 (EOC) t> S&H (Trig)\n- Noise (Out) >> S&H (In)\n- S&H (Out) >> MATHS.CH 4 (Rise CV) // random rise time each cycle\n- MATHS.CH 4 (Unity Out) >> VCA (CV)"
     },
     {
       "name": "Trigger-to-gate converter (VC pulse width)",
-      "patch": "Short trigger → CH 1 TRIG · CH 1 Rise sets trigger delay · CH 1 Fall sets output gate width · CH 1 EOR goes high at end of Rise and stays high through Fall · use Rise CV for voltage-controlled delay, Fall CV for voltage-controlled pulse width",
+      "patch": "Short trigger in, shaped gate out — with independent voltage control over delay and width.",
+      "steps": [
+        "Set CH 1 Rise to the delay you want between incoming trigger and the gate starting.",
+        "Set CH 1 Fall to the output gate's pulse width.",
+        "Patch your trigger source → CH 1 Trigger.",
+        "Patch CH 1 EOR → destination that expects a gate. EOR goes high at end of Rise and stays high through Fall.",
+        "Optional: patch a CV → CH 1 Rise CV for voltage-controlled delay, or CH 1 Fall CV for voltage-controlled pulse width."
+      ],
+      "signalOut": "CH 1 EOR — 0–5V gate, delayed by Rise, width = Fall.",
+      "hear": "Take any click or trigger, come out with a properly-shaped, timed gate. Useful for swing, retriggering envelope tails, sample-playback windows.",
       "diagram": "MATHS:\n* CH 1: Rise = delay, Fall = gate width\n\n- Trigger Source (Trig) t> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (EOR) g> Destination (Gate) // delayed gate of Fall width"
     },
     {
       "name": "Bipolar VCA (attenuverter trick)",
-      "patch": "Signal → CH 2 SIGNAL IN · CH 2 attenuverter = manual bipolar level · CH 2 OUT = scaled/inverted copy of input · no envelope required — MATHS used purely as manual-control bipolar VCA / inverter · identical trick on CH 3 with different normalization",
-      "diagram": "MATHS:\n* CH 2: Attenuverter = level (CCW invert, CW unity)\n\n- Signal Source (Out) -> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) -> Destination (In) // bipolar scaled/inverted copy"
+      "patch": "Use CH 2 (or CH 3) as a manual-control bipolar VCA — no envelope needed, the attenuverter is the level knob.",
+      "steps": [
+        "Patch your signal source → CH 2 Signal In.",
+        "Set CH 2 attenuverter: full CW = unity pass, noon = silence, full CCW = inverted pass. Between these is scaled (CW) or scaled-and-inverted (CCW).",
+        "Patch CH 2 Out → your destination."
+      ],
+      "signalOut": "CH 2 Out — input scaled and optionally inverted by the attenuverter setting.",
+      "hear": "Manual volume control over any signal, with the ability to flip polarity. CH 3 works identically but has a different default offset when unpatched. Great for taming an LFO's depth or inverting a CV without needing a dedicated attenuverter.",
+      "diagram": "MATHS:\n* CH 2 Atten: level (CCW invert, CW unity)\n\n- Signal Source (Out) -> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) -> Destination (In) // bipolar scaled/inverted copy"
     },
     {
       "name": "Voltage-controlled pulse delay",
-      "patch": "Clock → CH 1 TRIG · CV source → CH 1 Rise CV · each incoming trigger is delayed by the CV-controlled Rise time before CH 1 EOR fires · use to shift a clock lane relative to master for swing / phase offsets on demand",
+      "patch": "Voltage-controlled delay on any trigger — shift a clock lane by a CV-amount for swing, phase offsets, generative timing.",
+      "steps": [
+        "Patch your clock (or any trigger source) → CH 1 Trigger.",
+        "Patch a CV source (LFO, sequencer, random) → CH 1 Rise CV. Positive voltage lengthens Rise, negative shortens it.",
+        "Patch CH 1 EOR → destination. EOR goes high at the end of Rise — that's your delayed trigger."
+      ],
+      "signalOut": "CH 1 EOR — delayed gate, timing controlled by Rise CV.",
+      "hear": "Swing or lag applied to any clock lane. Modulate Rise CV with an LFO for drifting time, with a random CV for generative rhythm.",
       "diagram": "MATHS:\n* CH 1: Rise CV = delay amount\n\n- Clock Source (Clk) c> MATHS.CH 1 (Trig)\n- CV Source (Out) >> MATHS.CH 1 (Rise CV)\n- MATHS.CH 1 (EOR) g> Destination (Clk) // delayed by CV"
     },
     {
       "name": "Full-wave rectifier (absolute value)",
-      "patch": "Bipolar signal → CH 1 SIGNAL IN (passes positive half) · same signal → CH 4 SIGNAL IN after inversion via CH 2 full CCW (passes negative half, flipped) · OR OUT takes max of CH 1 and CH 4 = absolute value · use for envelope-follower front end or unusual wavefolding",
-      "diagram": "MATHS:\n* CH 2: Attenuverter full CCW (invert)\n* CH 1 & CH 4: Rise + Fall full CCW (pass-through)\n\n- Signal Source (Out) -> MATHS.CH 1 (Signal In)\n- Signal Source (Out) -> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) -> MATHS.CH 4 (Signal In) // inverted copy\n- MATHS (OR) -> Destination (In) // |signal|"
+      "patch": "Two channels + OR = |signal|. Pass the positive half through one channel, invert and pass the negative half through the other, max them together.",
+      "steps": [
+        "Set CH 1 and CH 4: Rise full CCW, Fall full CCW (both channels act as pass-through for Signal In).",
+        "Set CH 2 attenuverter full CCW — CH 2 Out is an inverted copy of whatever enters CH 2 Signal In.",
+        "Patch your bipolar signal → CH 1 Signal In (CH 1 passes only the positive half because Unity Out is 0–8V).",
+        "Patch the same bipolar signal → CH 2 Signal In.",
+        "Patch CH 2 Out → CH 4 Signal In (CH 4 now receives a flipped copy; it passes only the previously-negative half, now flipped to positive).",
+        "Patch OR Out → destination. OR takes the higher of CH 1 and CH 4 at any instant — that's |signal|."
+      ],
+      "signalOut": "OR Out — positive-only rectified version of the bipolar input.",
+      "hear": "A signal that's been flipped to always-positive. Doubles perceived rate for any symmetric wave and makes a useful envelope-follower front end.",
+      "diagram": "MATHS:\n* CH 1 & CH 4: Rise + Fall full CCW (pass-through)\n* CH 2 Atten: full CCW (invert)\n\n- Signal Source (Out) -> MATHS.CH 1 (Signal In)\n- Signal Source (Out) -> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) -> MATHS.CH 4 (Signal In) // inverted copy\n- MATHS (OR) -> Destination (In) // |signal|"
     },
     {
       "name": "Pseudo-VCA with soft clip",
-      "patch": "Audio → CH 1 SIGNAL IN · CV → CH 2 SIGNAL IN · CH 2 attenuverter sets modulation depth · SUM OUT combines audio with CV offset = AM-scaled output that saturates at SUM rails · no true multiplication but usable as a gritty VCA substitute",
-      "diagram": "MATHS:\n* CH 1: Rise + Fall CCW (pass-through)\n* CH 2: Attenuverter sets AM depth\n\n- Audio Source (Out) -> MATHS.CH 1 (Signal In)\n- CV Source (Out) >> MATHS.CH 2 (In)\n- MATHS (Unity) -> Destination (In) // AM-scaled with soft clip"
+      "patch": "No VCA available? SUM an audio signal with a CV and let the SUM bus rails clip — a gritty AM-style VCA substitute.",
+      "steps": [
+        "Set CH 1 Rise full CCW + Fall full CCW (pass-through for audio at CH 1 Signal In).",
+        "Set CH 1 attenuverter at noon (so CH 1 itself doesn't contribute a raw copy to SUM — the signal goes through as a consequence of being at the channel).",
+        "Set CH 2 attenuverter somewhere between noon and full CW — this sets AM depth.",
+        "Patch your audio source → CH 1 Signal In.",
+        "Patch your CV source → CH 2 Signal In.",
+        "Patch SUM Out → destination. SUM adds audio and CV, clipping softly at the ±10V rails when the CV swing pushes it there."
+      ],
+      "signalOut": "SUM Out — audio gated/scaled by the CV at CH 2, with soft clipping.",
+      "hear": "Grittier than a clean VCA — the CV doesn't multiply, it adds, and the output saturates when the sum exceeds rails. Good for lo-fi character.",
+      "diagram": "MATHS:\n* CH 1: Rise + Fall full CCW (pass-through)\n* CH 2 Atten: sets AM depth\n\n- Audio Source (Out) -> MATHS.CH 1 (Signal In)\n- CV Source (Out) >> MATHS.CH 2 (In)\n- MATHS (SUM) -> Destination (In) // AM-scaled with soft clip"
     },
     {
       "name": "Stepped random modulation (no S&H module)",
-      "patch": "Clock → CH 1 TRIG · CH 1 EOR → CH 4 TRIG · Noise or slow LFO → CH 4 SIGNAL IN · CH 4 Rise + Fall full CCW so the channel tracks input at trigger moments only · CH 4 OUT = stepped random modulation derived purely from MATHS + noise",
-      "diagram": "MATHS:\n* CH 1: Rise short, Fall short\n* CH 4: Rise + Fall full CCW (sample-on-trig)\n\n- Clock Source (Clk) c> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (EOR) g> MATHS.CH 4 (Trig)\n- Noise (Out) >> MATHS.CH 4 (Signal In)\n- MATHS.CH 4 (OUT) >> Destination (CV) // stepped random"
+      "patch": "Turn CH 4 into a sample-and-hold without needing a dedicated S&H module — full CCW Rise/Fall means CH 4 tracks its Signal In only during trigger moments.",
+      "steps": [
+        "Set CH 4 Rise full CCW, Fall full CCW (instant tracking, instant settle — effectively sample-on-trigger).",
+        "Patch your clock → CH 1 Trigger.",
+        "Patch CH 1 EOR → CH 4 Trigger (so CH 4 samples once per clock).",
+        "Patch noise (or any slow-changing CV) → CH 4 Signal In.",
+        "Patch CH 4 Unity Out → your modulation destination."
+      ],
+      "signalOut": "CH 4 Unity Out — stepped random CV that updates on every clock.",
+      "hear": "A sample-and-held voltage that changes each clock step. Use as pitch CV via a quantizer, or as a filter cutoff mod for chaotic bit-crush feel.",
+      "diagram": "MATHS:\n* CH 4: Rise + Fall full CCW (sample-on-trig)\n\n- Clock Source (Clk) c> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (EOR) g> MATHS.CH 4 (Trig)\n- Noise (Out) >> MATHS.CH 4 (Signal In)\n- MATHS.CH 4 (Unity Out) >> Destination (CV) // stepped random"
     },
     {
       "name": "Triple cross-modulated LFO ring",
-      "patch": "CH 1 and CH 4 Cycle ON at different rates · CH 1 OUT → CH 2 IN (attenuated) · CH 4 OUT → CH 3 IN (attenuated) · SUM OUT → CH 1 Rise CV via mult · CH 4 OUT → CH 1 Fall CV · three-node cross-coupled modulation ring produces ever-shifting complex LFO",
-      "diagram": "MATHS:\n* CH 1: Cycle ON\n* CH 4: Cycle ON (different rate)\n* CH 2 & CH 3: Attenuverters moderate\n\n- MATHS.CH 1 (OUT) >> MATHS.CH 2 (In)\n- MATHS.CH 4 (OUT) >> MATHS.CH 3 (In)\n- MATHS (Unity) >> MATHS.CH 1 (Rise CV) // cross-mod\n- MATHS.CH 4 (OUT) >> MATHS.CH 1 (Fall CV)"
+      "patch": "CH 1 and CH 4 cycle at different rates, feed each other through CH 2 and CH 3, and the SUM modulates CH 1's Rise — an ever-shifting complex LFO.",
+      "steps": [
+        "Press CH 1 Cycle; set Rise + Fall for a medium LFO rate.",
+        "Press CH 4 Cycle; set Rise + Fall for a noticeably different rate (~2×).",
+        "Set CH 2 and CH 3 attenuverters to moderate positions (~1-2 o'clock).",
+        "Patch CH 1 Variable Out 1 → CH 2 Signal In.",
+        "Patch CH 4 Variable Out 4 → CH 3 Signal In.",
+        "Patch SUM Out → CH 1 Rise CV. This feeds the mixed LFO state back into CH 1's timing.",
+        "Patch CH 4 Unity Out → CH 1 Fall CV. Direct influence from CH 4 onto CH 1's fall timing.",
+        "Take SUM Out (or CH 1 Unity Out) → your destination."
+      ],
+      "signalOut": "SUM Out — complex evolving modulation; or CH 1 Unity Out for just CH 1's voice.",
+      "hear": "A modulation signal that never repeats the same shape twice. The CH 2 and CH 3 attenuverters are your two personality knobs — turn them to reshape the behavior, from almost-stable to wild lockup territory.",
+      "diagram": "MATHS:\n* CH 1: Cycle ON\n* CH 4: Cycle ON (different rate)\n* CH 2 & CH 3 Atten: moderate\n\n- MATHS.CH 1 (Variable Out 1) >> MATHS.CH 2 (In)\n- MATHS.CH 4 (Variable Out 4) >> MATHS.CH 3 (In)\n- MATHS (SUM) >> MATHS.CH 1 (Rise CV) // cross-mod\n- MATHS.CH 4 (Unity Out) >> MATHS.CH 1 (Fall CV)"
     },
     {
       "name": "Ratchet / burst generator",
-      "patch": "Gate → CH 1 TRIG · CH 1 set for short AD envelope · CH 1 OUT → CH 4 Rise CV · CH 4 Cycle ON · CH 4 only cycles while CH 1 envelope is high, accelerating as envelope rises · CH 4 EOC → drum VCA envelope trigger · yields a ratcheted burst per incoming gate",
-      "diagram": "MATHS:\n* CH 1: Rise short, Fall short (AD)\n* CH 4: Cycle ON\n\n- Gate Source (Gate) g> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> MATHS.CH 4 (Rise CV) // windows + accelerates CH 4\n- MATHS.CH 4 (EOC) t> VCA Env (Trig) // ratchet bursts"
+      "patch": "Window CH 4's Cycle with a short envelope from CH 1 — each incoming gate produces a burst of accelerating pulses.",
+      "steps": [
+        "Set CH 1 Rise and Fall short (AD envelope, ~100-500ms total length).",
+        "Press CH 4 Cycle — CH 4 runs free.",
+        "Patch your gate/clock source → CH 1 Trigger.",
+        "Patch CH 1 Unity Out → CH 4 Rise CV. When CH 1 fires, its envelope controls CH 4's speed — starts fast at the peak, slows as CH 1 fades.",
+        "Patch CH 4 EOC → your drum VCA envelope's trigger. Each CH 4 cycle fires a hit.",
+        "Silence CH 4 between bursts by ensuring CH 4 Rise (with CV at 0V) is too long to cycle on its own."
+      ],
+      "signalOut": "CH 4 EOC — trigger stream with rachet bursts, one burst per incoming gate.",
+      "hear": "A burst of hits per trigger, accelerating at the onset and trailing off as CH 1's envelope fades. Perfect for generative drum fills, snare rolls, hihat flurries.",
+      "diagram": "MATHS:\n* CH 1: Rise short, Fall short (AD)\n* CH 4: Cycle ON\n\n- Gate Source (Gate) g> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (Unity Out) >> MATHS.CH 4 (Rise CV) // windows + accelerates CH 4\n- MATHS.CH 4 (EOC) t> VCA Env (Trig) // ratchet bursts"
     },
     {
       "name": "Classic Krell with dual random CVs",
-      "patch": "Todd Barton Krell pattern expanded across MATHS plus two external S&H channels. CH 4 Cycle ON · CH 4 EOR → S&H 1 trig + S&H 2 trig · Noise → both S&H inputs · S&H 1 → CH 4 Rise CV (random attack each cycle) · S&H 2 → CH 4 Fall CV (random decay) · CH 4 OUT through quantizer → VCO V/Oct · CH 4 OUT → VCA CV · self-evolving melody with random attack, decay and pitch on every note.",
-      "diagram": "MATHS:\n* CH 4: Cycle ON\n\n- MATHS.CH 4 (EOR) t> S&H 1 (Trig)\n- MATHS.CH 4 (EOR) t> S&H 2 (Trig)\n- Noise (Out) >> S&H 1 (In)\n- Noise (Out) >> S&H 2 (In)\n- S&H 1 (Out) >> MATHS.CH 4 (Rise CV) // random attack each cycle\n- S&H 2 (Out) >> MATHS.CH 4 (Fall CV) // random decay each cycle\n- MATHS.CH 4 (OUT) >> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- MATHS.CH 4 (OUT) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+      "patch": "Todd Barton's Krell pattern extended: MATHS + two external S&H channels give you random attack, random decay, AND random pitch on every note.",
+      "steps": [
+        "Press CH 4 Cycle.",
+        "Patch noise → S&H 1 Input.",
+        "Patch noise → S&H 2 Input.",
+        "Patch CH 4 EOR → S&H 1 Trigger.",
+        "Patch CH 4 EOR → S&H 2 Trigger (both S&Hs sample fresh values each cycle).",
+        "Patch S&H 1 Out → CH 4 Rise CV (randomizes the attack time of each cycle).",
+        "Patch S&H 2 Out → CH 4 Fall CV (randomizes the decay time).",
+        "Patch CH 4 Unity Out → Quantizer input.",
+        "Patch Quantizer Out → VCO V/Oct (pitch follows the envelope's contour, snapped to scale).",
+        "Patch CH 4 Unity Out → VCA CV to gate the voice.",
+        "Patch VCO → VCA → your output."
+      ],
+      "signalOut": "VCA audio output — self-evolving melody.",
+      "hear": "A never-repeating phrase where every note has its own attack length, decay length, and pitch. Scale the quantizer to taste. The whole patch self-sustains — no external clock needed.",
+      "diagram": "MATHS:\n* CH 4: Cycle ON\n\n- MATHS.CH 4 (EOR) t> S&H 1 (Trig)\n- MATHS.CH 4 (EOR) t> S&H 2 (Trig)\n- Noise (Out) >> S&H 1 (In)\n- Noise (Out) >> S&H 2 (In)\n- S&H 1 (Out) >> MATHS.CH 4 (Rise CV) // random attack each cycle\n- S&H 2 (Out) >> MATHS.CH 4 (Fall CV) // random decay each cycle\n- MATHS.CH 4 (Unity Out) >> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- MATHS.CH 4 (Unity Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
     },
     {
       "name": "Buchla low-pass-gate bongo",
-      "patch": "West-coast plucked resonance using MATHS as the gate envelope. Clock → CH 1 TRIG · CH 1 Rise very short, Fall medium, Curve CW (expo) · CH 1 OUT → VCA CV (acts as LPG contour) · random CV → VCO pitch · VCO → VCA audio in · short percussive pings follow the envelope's expo decay giving the classic DPO-plus-Optomix bongo character without a dedicated LPG.",
-      "diagram": "MATHS:\n* CH 1: Rise very short, Fall medium, Curve full CW (expo)\n\n- Clock (Out) c> MATHS.CH 1 (Trig)\n- Random CV (Out) p> VCO (V/Oct)\n- VCO (Out) -> VCA (In)\n- MATHS.CH 1 (OUT) >> VCA (CV) // LPG-style plucked contour\n- VCA (Out) -> Output (In) // Buchla bongo"
+      "patch": "Use MATHS's exponential fall as a pluck/LPG contour — get Buchla-style plucked percussion without a dedicated LPG.",
+      "steps": [
+        "Set CH 1 Rise very short.",
+        "Set CH 1 Fall to medium (a few hundred ms).",
+        "Turn Vari-Response (Curve) full CW for an exponential fall — the plucked character comes from this shape.",
+        "Patch your clock → CH 1 Trigger.",
+        "Patch random CV → VCO V/Oct (or a sequencer for melody).",
+        "Patch VCO Out → VCA audio input.",
+        "Patch CH 1 Unity Out → VCA CV. This envelope shapes the VCA like a Buchla LPG would — sharp attack, expo release.",
+        "Patch VCA Out → your output."
+      ],
+      "signalOut": "VCA Out — plucked percussive tones.",
+      "hear": "Bongo/bell-like percussive hits with natural decay. Random pitch + exponential MATHS envelope = DPO-plus-Optomix character in a pinch. Tighten Fall for shorter plucks, extend for bells.",
+      "diagram": "MATHS:\n* CH 1: Rise very short, Fall medium, Curve full CW (expo)\n\n- Clock (Out) c> MATHS.CH 1 (Trig)\n- Random CV (Out) p> VCO (V/Oct)\n- VCO (Out) -> VCA (In)\n- MATHS.CH 1 (Unity Out) >> VCA (CV) // LPG-style plucked contour\n- VCA (Out) -> Output (In) // Buchla bongo"
     },
     {
       "name": "Self-patched Both (CH 1 ↔ CH 4 cross-mod)",
-      "patch": "Classic MATHS illustrated 'Both' patch. CH 1 Cycle ON · CH 4 Cycle ON · CH 1 OUT → CH 4 Rise CV (via CH 3 attenuverter to tame) · CH 4 OUT → CH 1 Fall CV (via CH 2 attenuverter) · each channel reshapes the other's timing, producing warping complex LFO shapes · SUM OUT → VCO V/Oct for chaotic melodic drift.",
-      "diagram": "MATHS:\n* CH 1: Cycle ON\n* CH 4: Cycle ON\n* CH 2 & CH 3: Attenuverters moderate\n\n- MATHS.CH 1 (OUT) >> MATHS.CH 3 (In)\n- MATHS.CH 3 (Out) >> MATHS.CH 4 (Rise CV) // CH 1 warps CH 4\n- MATHS.CH 4 (OUT) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Fall CV) // CH 4 warps CH 1\n- MATHS (Unity) p> VCO (V/Oct) // summed chaotic pitch"
+      "patch": "The illustrated 'Both' patch from the MATHS manual — CH 1 and CH 4 reshape each other's timing, producing warping complex LFO shapes.",
+      "steps": [
+        "Press CH 1 Cycle and CH 4 Cycle (both free-run).",
+        "Set CH 2 and CH 3 attenuverters to moderate settings (~1-2 o'clock) — these tame the cross-modulation depth.",
+        "Patch CH 1 Variable Out 1 → CH 3 Signal In.",
+        "Patch CH 3 Out → CH 4 Rise CV. CH 1's envelope now warps CH 4's rise timing.",
+        "Patch CH 4 Variable Out 4 → CH 2 Signal In.",
+        "Patch CH 2 Out → CH 1 Fall CV. CH 4's envelope warps CH 1's fall timing.",
+        "Patch CH 1 Unity Out (or CH 4 Unity Out) → your mod destination. For chaotic melody, patch via a quantizer to VCO V/Oct."
+      ],
+      "signalOut": "CH 1 Unity Out or CH 4 Unity Out — two complex LFOs that shape each other's timing.",
+      "hear": "Two related LFOs that constantly warp and reshape each other. Beautiful for evolving pads, chaotic sequencing, or generative modulation streams. Start with attenuverters low for gentle interaction, increase for full lockup territory.",
+      "diagram": "MATHS:\n* CH 1: Cycle ON\n* CH 4: Cycle ON\n* CH 2 & CH 3 Atten: moderate\n\n- MATHS.CH 1 (Variable Out 1) >> MATHS.CH 3 (In)\n- MATHS.CH 3 (Out) >> MATHS.CH 4 (Rise CV) // CH 1 warps CH 4\n- MATHS.CH 4 (Variable Out 4) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Fall CV) // CH 4 warps CH 1\n- MATHS.CH 1 (Unity Out) p> VCO (V/Oct) // chaotic pitch drift"
     },
     {
       "name": "Slew + sum + inverter (three jobs, one module)",
-      "patch": "MATHS as a utility swiss-army knife. Sequencer CV → CH 1 SIGNAL IN, Rise short + Fall short = portamento slew → VCO pitch · LFO → CH 4 SIGNAL IN with CH 4 used as inverter via SUM polarity (or mult through CH 2 attenuverter full CCW) → filter cutoff · CH 2 + CH 3 summed = mixed modulation → VCA CV · one MATHS simultaneously provides glide, inversion and CV summing for a whole voice.",
-      "diagram": "MATHS:\n* CH 1: Rise short, Fall short (slew)\n* CH 2: Attenuverter full CCW (invert)\n* CH 3: Attenuverter ~1 o'clock\n\n- Sequencer (Pitch) p> MATHS.CH 1 (Signal In)\n- MATHS.CH 1 (OUT) p> VCO (V/Oct) // slewed pitch\n- LFO (Out) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> Filter (Cutoff) // inverted LFO\n- Mod A (Out) >> MATHS.CH 3 (In)\n- MATHS (Unity) >> VCA (CV) // CH 2+CH 3 summed"
+      "patch": "Use MATHS as a utility swiss-army knife — portamento on one channel, inversion on another, CV summing on a third. One module, three jobs for a whole voice.",
+      "steps": [
+        "Set CH 1 Rise and Fall both short (portamento slew — the slew time is shared by both directions).",
+        "Set CH 2 attenuverter full CCW (CH 2 Out will be an inverted copy of its input).",
+        "Set CH 3 attenuverter at ~1 o'clock (positive scaling for mod mixing).",
+        "Patch your sequencer pitch → CH 1 Signal In.",
+        "Patch CH 1 Unity Out → VCO V/Oct (pitch with portamento).",
+        "Patch an LFO → CH 2 Signal In.",
+        "Patch CH 2 Out → Filter Cutoff (inverted LFO).",
+        "Patch a second modulator → CH 3 Signal In.",
+        "Patch SUM Out → VCA CV. SUM carries CH 2 + CH 3 combined."
+      ],
+      "signalOut": "Three outputs: CH 1 Unity Out (slewed pitch), CH 2 Out (inverted LFO), SUM Out (mixed mod).",
+      "hear": "One MATHS doing three utility jobs for a single voice — glide on pitch, inverted modulation on filter, and mixed modulation on amplitude. Efficient use of HP when you don't have dedicated slew/inverter/mixer modules.",
+      "diagram": "MATHS:\n* CH 1: Rise short, Fall short (slew)\n* CH 2 Atten: full CCW (invert)\n* CH 3 Atten: ~1 o'clock\n\n- Sequencer (Pitch) p> MATHS.CH 1 (Signal In)\n- MATHS.CH 1 (Unity Out) p> VCO (V/Oct) // slewed pitch\n- LFO (Out) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> Filter (Cutoff) // inverted LFO\n- Mod A (Out) >> MATHS.CH 3 (In)\n- MATHS (SUM) >> VCA (CV) // CH 2+CH 3 summed"
     }
   ]
 }
