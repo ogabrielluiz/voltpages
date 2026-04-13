@@ -2,12 +2,26 @@
 
 Add cheat sheets for eurorack modules by creating a JSON data file.
 
+## Local setup
+
+```bash
+git clone https://github.com/ogabrielluiz/voltpages.git
+cd voltpages
+bun install
+git config core.hooksPath .githooks   # enable the pre-commit validator
+```
+
+The pre-commit hook runs `bun run validate` automatically when you stage
+changes under `src/data/modules/`, `modules.schema.json`, or the validator
+itself — same check CI runs. Skip it for a work-in-progress commit with
+`git commit --no-verify` (CI will still enforce it on the PR).
+
 ## Adding a module
 
-1. Fork and clone the repo
+1. Fork and clone the repo (see above)
 2. Create `src/data/modules/manufacturer--module-name.json`
-3. Run `bun run validate` to check your file
-4. Open a PR
+3. Run `bun run validate` to check your file (the pre-commit hook does this for you on commit)
+4. Open a PR — the PR template has a checklist to walk through
 
 ### Filename convention
 
@@ -51,3 +65,17 @@ Many modules don't have a PDF — that's fine. Write the JSON by hand using the 
 ## Need help writing a sheet?
 
 If you have the module's PDF manual or know the module well, you can ask any AI assistant to help structure the JSON. Use the MATHS example as a template to show it what format you need.
+
+## Reporting a problem
+
+- Broken sheet, wrong data, rendering glitch? [Open a bug report](https://github.com/ogabrielluiz/voltpages/issues/new?template=bug-report.yml).
+- Want a module covered? [Request one](https://github.com/ogabrielluiz/voltpages/issues/new?template=module-request.yml).
+
+## How CI checks your PR
+
+Two things run on every PR that touches module data, the schema, or the renderer:
+
+1. `bun run validate` — schema, tag enum, filename convention, patchflow diagram parsing.
+2. `bun run build` — full site build. Catches renderer drift (e.g. a schema change that breaks a component) that the validator alone would miss.
+
+Both also run on direct pushes to `main` as a safety net before deploy.

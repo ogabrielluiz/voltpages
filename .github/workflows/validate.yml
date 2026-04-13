@@ -1,10 +1,38 @@
 name: Validate
 
+# Run on PRs and on pushes to main so schema / renderer / data drift is caught
+# before the deploy workflow picks the commit up. The path filters keep
+# unrelated commits (e.g. README tweaks) from spinning up the runner.
 on:
   pull_request:
     paths:
       - 'src/data/modules/**'
       - 'modules.schema.json'
+      - 'scripts/validate-modules.ts'
+      - 'src/lib/**'
+      - 'src/types/**'
+      - 'src/components/**'
+      - 'src/pages/**'
+      - 'src/styles/**'
+      - 'astro.config.mjs'
+      - 'package.json'
+      - 'bun.lock'
+      - '.github/workflows/validate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/data/modules/**'
+      - 'modules.schema.json'
+      - 'scripts/validate-modules.ts'
+      - 'src/lib/**'
+      - 'src/types/**'
+      - 'src/components/**'
+      - 'src/pages/**'
+      - 'src/styles/**'
+      - 'astro.config.mjs'
+      - 'package.json'
+      - 'bun.lock'
+      - '.github/workflows/validate.yml'
 
 jobs:
   validate:
@@ -17,4 +45,13 @@ jobs:
           bun-version: latest
 
       - run: bun install --frozen-lockfile
-      - run: bun run validate
+
+      # Schema + diagram check over all sheets. Fast; the authoritative source
+      # of truth for "is this sheet well-formed".
+      - name: Validate module data
+        run: bun run validate
+
+      # Integration check — catches drift where a schema or component change
+      # breaks the renderer even when individual JSONs still validate.
+      - name: Build site
+        run: bun run build

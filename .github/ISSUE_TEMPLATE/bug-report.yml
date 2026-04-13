@@ -1,0 +1,52 @@
+name: Bug report
+description: Report something wrong on voltpages — a broken sheet, a rendering glitch, or a diagram that doesn't match the module
+labels: ["bug"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or URL
+      description: Which page surfaces the bug? A module slug like `make-noise--maths` or a full URL is fine.
+      placeholder: make-noise--maths
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: What's broken?
+      options:
+        - Wrong module data (control, I/O, behavior, spec)
+        - Patch idea doesn't work as written
+        - Patchflow diagram renders incorrectly
+        - Missing / truncated text
+        - Page fails to load or 404s
+        - Styling / layout glitch
+        - Search / navigation
+        - Something else
+    validations:
+      required: true
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened
+      description: Describe what's wrong as concretely as you can. Screenshots welcome.
+      placeholder: |
+        The Fall CV input on MATHS is listed as 0–5V but the manual specifies ±5V.
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Source for the correction (if applicable)
+      description: For data bugs, what's the authoritative reference? Manufacturer manual page, manufacturer spec, forum thread, etc.
+      placeholder: |
+        Make Noise MATHS user manual v3.0, page 4.
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser / OS (for rendering or layout bugs)
+      placeholder: e.g. Safari 18 on macOS 15.1

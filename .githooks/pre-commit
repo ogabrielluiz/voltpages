@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+#
+# Pre-commit hook for voltpages.
+#
+# Runs `bun run validate` only when the commit touches module data or the
+# schema, so commits that change unrelated files (CSS, docs, scripts, etc.)
+# stay fast. The validator catches schema violations, unknown tags, filename
+# drift, and diagram-syntax errors before they reach CI.
+#
+# Enable once per clone:
+#   git config core.hooksPath .githooks
+
+set -euo pipefail
+
+# Staged paths — filter to additions, copies, modifications, renames.
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+
+needs_validate=false
+while IFS= read -r path; do
+  case "$path" in
+    src/data/modules/*.json | modules.schema.json | scripts/validate-modules.ts)
+      needs_validate=true
+      break
+      ;;
+  esac
+done <<< "$staged"
+
+if [ "$needs_validate" = false ]; then
+  exit 0
+fi
+
+if ! command -v bun >/dev/null 2>&1; then
+  echo "pre-commit: bun is not installed. Install from https://bun.sh and retry." >&2
+  exit 1
+fi
+
+echo "pre-commit: running bun run validate..."
+if ! bun run validate; then
+  cat >&2 <<'EOF'
+
+pre-commit: validation failed. Fix the errors above and re-stage.
+
+To bypass (not recommended — CI will run the same checks):
+  git commit --no-verify
+EOF
+  exit 1
+fi
