@@ -78,7 +78,7 @@
     },
     {
       "name": "HOLD",
-      "description": "Gate freezes slew core at current voltage until released.",
+      "description": "High gate slows the slew core to near-standstill, effectively freezing the output until released.",
       "voltage": "+2V low / +3V high threshold"
     },
     {
@@ -151,18 +151,103 @@
   "patchIdeas": [
     {
       "name": "Improved saw oscillator",
-      "patch": "Loop mode · FALL → TRIG. · slow rise + fast fall · resets instantly to 0V",
-      "diagram": "Contour 1:\n* Slew/Loop: Loop\n* Full/Audio: Audio\n* Rise: slow\n* Fall: fast\n- Contour 1 (FALL) t> Contour 1 (TRIG.) // self-reset for clean saw\n- Contour 1 (OUT) -> VCF (In)"
+      "patch": "Loop mode, audio range. Self-patch FALL gate to TRIG. so each cycle resets instantly to 0V for a clean saw edge.",
+      "diagram": "Contour 1:\n* Slew/Loop: Loop\n* Full/Audio: Audio\n* Rise: slow\n* Fall: fast\n- Contour 1 (FALL) t> Contour 1 (TRIG.) // self-reset for clean saw\n- Contour 1 (OUT) -> VCF (In)",
+      "steps": [
+        "Flip the Slew/Loop switch to Loop (right).",
+        "Flip the Full/Audio switch to Audio (right).",
+        "Push the Rise slider near the top (slow rising).",
+        "Push the Fall slider all the way to the bottom (fastest fall).",
+        "Centre both Bend knobs (linear slopes).",
+        "Patch Contour 1 FALL output into its own TRIG. input.",
+        "Patch Contour 1 OUT into a VCF input, then the VCF into your mixer.",
+        "Move the Rise slider to change pitch; the fall now snaps to 0V instantly."
+      ],
+      "signalOut": "OUT — audio-rate sawtooth, 0 to +10V, fundamental set by Rise slider.",
+      "hear": "A bright, buzzy sawtooth tone. Without the self-patch the waveform sounds duller; with FALL→TRIG. the reset edge sharpens it noticeably."
     },
     {
-      "name": "Pulse width modifier",
-      "patch": "Slew mode · pulse → TRIG. · RISE output = width-controlled pulse · FALL = delayed pulse",
-      "diagram": "Contour 1:\n* Slew/Loop: Slew\n- Pulse LFO (Out) t> Contour 1 (TRIG.)\n- Contour 1 (RISE) g> VCA (Gate) // width-controlled pulse\n- Contour 1 (FALL) g> Drum (Trig) // delayed pulse"
+      "name": "AR envelope from a gate",
+      "patch": "Slew mode. Feed any gate into GATE; Contour 1 rises to +10V while high, falls back to IN voltage when released.",
+      "diagram": "Contour 1:\n* Slew/Loop: Slew\n* Full/Audio: Full\n- Sequencer (Gate) g> Contour 1 (GATE)\n- Contour 1 (OUT) >> VCA (CV)\n- VCO (Out) -> VCA (In)",
+      "steps": [
+        "Flip the Slew/Loop switch to Slew (left).",
+        "Flip the Full/Audio switch to Full (left).",
+        "Set the Rise slider low-to-middle (short attack).",
+        "Set the Fall slider around the middle (medium release).",
+        "Centre both Bend knobs for linear slopes.",
+        "Patch a gate from a sequencer or keyboard into the GATE input.",
+        "Patch a VCO into a VCA input, and Contour 1 OUT into the VCA CV.",
+        "Play notes: the envelope opens the VCA while the gate is high."
+      ],
+      "signalOut": "OUT — unipolar 0 to +10V AR envelope synced to the incoming gate.",
+      "hear": "Classic attack-release shape under each note. Longer Fall slider gives lingering tails; a concave Fall bend makes the release feel more natural."
+    },
+    {
+      "name": "AD envelope with trigger reset",
+      "patch": "Slew mode. A rising edge on TRIG. resets to 0V and fires a full rise→fall — great for drums and plucks.",
+      "diagram": "Contour 1:\n* Slew/Loop: Slew\n- Sequencer (Trig) t> Contour 1 (TRIG.)\n- Contour 1 (OUT) >> VCA (CV)\n- VCO (Out) -> VCA (In)",
+      "steps": [
+        "Flip the Slew/Loop switch to Slew (left).",
+        "Set Rise slider near the bottom for a fast attack.",
+        "Set Fall slider low-to-middle for a short decay.",
+        "Turn the Fall Bend knob slightly counter-clockwise (concave) for a natural decay.",
+        "Patch a trigger source into TRIG.",
+        "Patch Contour 1 OUT into a VCA CV input.",
+        "Tap the front-panel Trigger button to preview the envelope without patching."
+      ],
+      "signalOut": "OUT — one-shot AD envelope, 0 to +10V, fires on each trigger edge.",
+      "hear": "Snappy percussive envelope. Every trigger punches the output up to +10V and back down; Fall slider controls the decay length."
     },
     {
       "name": "Envelope follower",
-      "patch": "Slew mode · audio → IN · Rise slider max fast · Fall slider moderate",
-      "diagram": "Contour 1:\n* Slew/Loop: Slew\n* Rise: max fast\n* Fall: moderate\n- Audio Source (Out) -> Contour 1 (IN)\n- Contour 1 (OUT) >> VCF (Cutoff) // envelope follower CV"
+      "patch": "Slew mode, full range. Fast Rise tracks peaks, moderate Fall sets decay — extract a CV envelope from any audio.",
+      "diagram": "Contour 1:\n* Slew/Loop: Slew\n* Full/Audio: Full\n* Rise: fastest\n* Fall: moderate\n- Audio Source (Out) -> Contour 1 (IN)\n- Contour 1 (OUT) >> VCF (Cutoff)",
+      "steps": [
+        "Flip the Slew/Loop switch to Slew (left).",
+        "Flip the Full/Audio switch to Full (left).",
+        "Push the Rise slider all the way down (fastest attack).",
+        "Set the Fall slider around the middle for a musical decay.",
+        "Turn the Fall Bend knob counter-clockwise (concave) for a natural release.",
+        "Patch an audio source (drum loop, voice, guitar) into the IN jack.",
+        "Patch Contour 1 OUT into a VCF cutoff input as the follower CV.",
+        "Raise the Rise slider slightly if sharp transients cause clicks."
+      ],
+      "signalOut": "OUT — positive envelope CV tracking the amplitude of the IN signal.",
+      "hear": "The filter opens and closes with the dynamics of the source. Fast transients punch through; slower material produces smoother swells."
+    },
+    {
+      "name": "Pulse width and delay from a trigger",
+      "patch": "Slew mode. A trigger produces two gates: RISE is wide during the rise time, FALL fires afterward — the rise time becomes the delay.",
+      "diagram": "Contour 1:\n* Slew/Loop: Slew\n- Clock (Trig) t> Contour 1 (TRIG.)\n- Contour 1 (RISE) g> VCA (Gate) // width gate\n- Contour 1 (FALL) g> Drum (Trig) // delayed trigger",
+      "steps": [
+        "Flip the Slew/Loop switch to Slew (left).",
+        "Set the Rise slider to control the gate width you want on RISE.",
+        "Set the Fall slider to control the gate width you want on FALL.",
+        "Patch a clock or trigger source into TRIG.",
+        "Patch RISE (+5V gate) into a VCA gate or drum trigger — this fires immediately.",
+        "Patch FALL (+5V gate) into a second trigger destination — this fires after the rise completes.",
+        "Adjust the Rise slider to change the delay between the two events."
+      ],
+      "signalOut": "RISE — +5V gate during rise stage · FALL — +5V gate during fall, delayed by the rise time.",
+      "hear": "Two rhythmic hits per incoming trigger, spaced by the Rise setting. Great for creating flams, echo-like doubles, or timed gate windows."
+    },
+    {
+      "name": "FM/AM VCO with audio IN",
+      "patch": "Loop mode, audio range. Feed an external oscillator into IN; Contour 1 oscillates on top of it, combining FM and AM.",
+      "diagram": "Contour 1:\n* Slew/Loop: Loop\n* Full/Audio: Audio\n- Modulator VCO (Out) -> Contour 1 (IN)\n- Pitch CV (1V/oct) >> Contour 1 (Rise Rate CV) // normalled to Fall\n- Contour 1 (OUT) -> Mixer (In)",
+      "steps": [
+        "Flip the Slew/Loop switch to Loop (right).",
+        "Flip the Full/Audio switch to Audio (right).",
+        "Set Rise and Fall sliders to roughly equal positions for a symmetric waveform.",
+        "Centre both Bend knobs (required for clean 1V/oct tracking).",
+        "Patch a 1V/oct pitch CV into Rise Rate CV (it normals to Fall Rate CV for tracking).",
+        "Patch a second oscillator's output into the IN jack — start with a low amplitude.",
+        "Patch Contour 1 OUT into a mixer or VCF.",
+        "Raise the modulator amplitude to deepen the FM/AM effect; try bend CV for extra motion."
+      ],
+      "signalOut": "OUT — audio oscillator whose lower bound is modulated by the IN signal, producing combined frequency and amplitude modulation.",
+      "hear": "A complex, metallic timbre that morphs as you change the modulator's pitch and level. Small amounts sound like vibrato + tremolo; large amounts get aggressive and FM-like."
     }
   ]
 }

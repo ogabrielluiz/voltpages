@@ -146,42 +146,132 @@
   "patchIdeas": [
     {
       "name": "Quadrature stereo modulation",
-      "patch": "QUAD mode · slider 1 sets LFO rate · SINE 1 → left filter cutoff, SINE 3 → right filter cutoff (180° out of phase) · creates swirling stereo filter motion · sliders 2/3 attenuate per-side depth",
+      "patch": "QUAD mode · SINE 1 and SINE 3 (180° apart) sweep stereo filter cutoffs; SINE 2 and SINE 4 modulate L/R VCAs.",
+      "steps": [
+        "Press the central mode button until the yellow QUAD LED lights up.",
+        "Set Slider 1 (master rate) to a slow position — around the 0.5 Hz mark.",
+        "Leave Sliders 2/3/4 around mid (these set per-channel amplitude in QUAD mode).",
+        "Patch Batumi SINE 1 → Filter L Cutoff CV input.",
+        "Patch Batumi SINE 3 → Filter R Cutoff CV input (this output is 180° out of phase with SINE 1).",
+        "Patch Batumi SINE 2 → VCA L CV; SINE 4 → VCA R CV.",
+        "Send your stereo source through Filter L → VCA L and Filter R → VCA R."
+      ],
+      "signalOut": "Four jacks — SINE 1/2/3/4 — each -5V to +5V bipolar sine at the same master rate, staggered 0°/90°/180°/270°.",
+      "hear": "A wide swirling stereo filter motion: the left side opens as the right closes. SINE 2/4 add a slow tremolo offset between the two sides. Slow Slider 1 to taste; raise Sliders 2/3 to deepen the per-side amplitude.",
       "diagram": "Batumi:\n* Mode: QUAD\n* Slider 1: slow\n\n- Batumi (SINE 1) >> Filter L (Cutoff)\n- Batumi (SINE 3) >> Filter R (Cutoff) // 180° phase\n- Batumi (SINE 2) >> VCA L (CV)\n- Batumi (SINE 4) >> VCA R (CV)"
     },
     {
       "name": "Clocked polyrhythm LFO",
-      "patch": "DIVIDE mode · CH 1 RESET/SYNC jumper = SYNC · master clock → RESET/SYNC 1 · sliders 2–4 pick /2, /3, /8 · square outputs act as clock-locked polyrhythmic triggers · sine outputs modulate four different destinations locked to tempo",
+      "patch": "DIVIDE mode locked to an external clock; SQUARE 2/3/4 fire polyrhythmic triggers, SINE 1 modulates a filter at the master rate.",
+      "steps": [
+        "Power off, install the rear jumper 8 to put RESET/SYNC 1 into SYNC mode (default from factory).",
+        "Power on. Press the central mode button until the blue DIVIDE LED lights up.",
+        "Set Slider 2 to /2, Slider 3 to /3, Slider 4 to /8 (read divisions on the right-hand slider scale).",
+        "Patch your master clock → Batumi RESET/SYNC 1. Slider 1 now follows the clock as master rate.",
+        "Patch Batumi SQUARE 2 → Drum A trigger input.",
+        "Patch Batumi SQUARE 3 → Drum B trigger input.",
+        "Patch Batumi SQUARE 4 → Drum C trigger input.",
+        "Patch Batumi SINE 1 → Filter Cutoff CV."
+      ],
+      "signalOut": "SQUARE 2/3/4 — -5V to +5V tempo-locked square waves at master/2, /3, /8 (use as gates/triggers). SINE 1 — -5V to +5V sine at the master rate.",
+      "hear": "Three tempo-locked drum patterns running at /2, /3, /8 against your clock — a steady polyrhythm that locks tightly to the master tempo, with the filter breathing once per master cycle.",
       "diagram": "Batumi:\n* Mode: DIVIDE\n* Jumper 8: SYNC\n* Slider 2: /2\n* Slider 3: /3\n* Slider 4: /8\n\n- Clock (Out) c> Batumi (RESET/SYNC 1)\n- Batumi (SQUARE 2) t> Drum A (Trig)\n- Batumi (SQUARE 3) t> Drum B (Trig)\n- Batumi (SQUARE 4) t> Drum C (Trig)\n- Batumi (SINE 1) >> Filter (Cutoff)"
     },
     {
       "name": "Stacked complex LFO",
-      "patch": "PHASE mode · CH 2 SINE → CH 3 FRQ·PH·DIV (phase CV) · sliders 2/3/4 set base phase offsets · adding one LFO into another's phase modulation produces evolving non-sinusoidal composite shapes on CH 3 and CH 4 · use as drone modulator",
+      "patch": "PHASE mode · self-patch SINE 2 into the FRQ·PH·DIV 3 jack so one LFO modulates another's phase, producing evolving composite waveforms.",
+      "steps": [
+        "Press the central mode button until the yellow PHASE LED lights up.",
+        "Set Slider 1 (master rate) to a slow position — around 0.1 Hz for drone use.",
+        "Set Slider 2 to roughly 90°, Slider 3 to roughly 180° (read phase on the middle slider scale).",
+        "Patch Batumi SINE 2 → Batumi FRQ·PH·DIV 3 (self-patch — SINE 2 now CV-modulates the phase of CH 3).",
+        "Patch Batumi SINE 3 → VCA CV on a drone voice.",
+        "Patch Batumi SINE 4 → Filter Cutoff."
+      ],
+      "signalOut": "SINE 3 — -5V to +5V composite waveform (no longer a pure sine — phase is being modulated). SINE 4 — -5V to +5V phase-shifted sine at master rate.",
+      "hear": "SINE 3 takes on a non-sinusoidal, evolving shape that drifts as Slider 2's offset and the self-patch interact. Use as a drone modulator: the VCA gain warbles in unfamiliar contours while the filter pans more predictably.",
       "diagram": "Batumi:\n* Mode: PHASE\n* Slider 2: 90°\n* Slider 3: 180°\n\n- Batumi (SINE 2) >> Batumi (FRQ·PH·DIV 3) // self-patch phase mod\n- Batumi (SINE 3) >> VCA (CV)\n- Batumi (SINE 4) >> Filter (Cutoff)"
     },
     {
       "name": "V/oct LFO pitch tracking",
-      "patch": "FREE mode · keyboard V/oct → FRQ 1 input · slider 1 sets base rate · LFO now tracks pitch 1V/oct up to ~500Hz · use as sub-audio vibrato source that follows the melody, or as a tracked FM source for a VCO at audio rate",
+      "patch": "FREE mode · keyboard V/oct into FRQ 1 lets CH 1 track pitch up to ~500 Hz — use as a tracked vibrato source or a tracked audio-rate FM modulator.",
+      "steps": [
+        "Press the central mode button until the red FREE LED lights up.",
+        "Set Slider 1 to mid (the per-channel base rate for CH 1 in FREE mode).",
+        "Patch your keyboard / sequencer Pitch CV → a stackable / mult.",
+        "From the mult: one copy → Batumi FRQ 1 (CH 1 now tracks pitch 1V/oct).",
+        "From the mult: another copy → VCO V/Oct.",
+        "Patch Batumi SINE 1 → VCO FM input (linear or expo)."
+      ],
+      "signalOut": "Batumi SINE 1 — -5V to +5V sine whose frequency tracks pitch (slider sets base rate, +5V at FRQ 1 pushes up into audio range, ~500 Hz max).",
+      "hear": "At low slider values, a vibrato that stays musically consistent across the keyboard — it does not get faster relative to pitch as you play higher. Push slider toward audio rate for chime-like FM sidebands that scale with the played note.",
       "diagram": "Batumi:\n* Mode: FREE\n* Slider 1: mid\n\n- Keyboard (CV) p> Batumi (FRQ 1)\n- Batumi (SINE 1) >> VCO (FM)\n- Keyboard (CV) p> VCO (V/Oct)"
     },
     {
       "name": "Pause-and-reverse performance",
-      "patch": "QUAD mode · manual gate (hold button) → RESET/SYNC 2 pauses all four LFOs mid-phrase · separate trigger → RESET/SYNC 3 reverses direction · creates glitch freezes and retrograde swells during performance",
+      "patch": "QUAD mode · manual gate into RESET/SYNC 2 pauses all LFOs while held; trigger into RESET/SYNC 3 reverses direction — both jacks only active in synced modes.",
+      "steps": [
+        "Press the central mode button until the yellow QUAD LED lights up.",
+        "Set Slider 1 to a moderate rate — around 1 Hz so the freeze is audible.",
+        "Patch a manual gate source (footswitch, button, or held gate) → Batumi RESET/SYNC 2 (pauses all four LFOs while high).",
+        "Patch a separate manual trigger → Batumi RESET/SYNC 3 (reverses LFO direction on each trigger).",
+        "Patch Batumi SINE 1 → Filter Cutoff.",
+        "Patch Batumi SINE 2 → VCA CV.",
+        "Confirm QUAD LED is still lit — these aux jacks do nothing in FREE mode."
+      ],
+      "signalOut": "SINE 1 / SINE 2 — -5V to +5V sines at master rate. Output voltage freezes in place while RESET/SYNC 2 is high; direction inverts on each RESET/SYNC 3 trigger.",
+      "hear": "Hit the gate and the modulation freezes mid-sweep — a sudden glitch hold. Tap the reverse trigger and the filter swell crests, retreats, and rebuilds in retrograde. Great for performance stutters and palindrome swells.",
       "diagram": "Batumi:\n* Mode: QUAD\n\n- Button (Gate) g> Batumi (RESET/SYNC 2) // pause\n- Button (Trig) t> Batumi (RESET/SYNC 3) // reverse\n- Batumi (SINE 1) >> Filter (Cutoff)\n- Batumi (SINE 2) >> VCA (CV)"
     },
     {
       "name": "Drone with trapezoid gates",
-      "patch": "Rear jumper cluster sets SAW/ASGN to trapezoid · DIVIDE mode · SAW/ASGN outputs 1–4 → four VCA CV inputs · drone VCOs mixed through those VCAs · gated polyrhythmic crossfades create a slow evolving drone without an external sequencer",
+      "patch": "DIVIDE mode · SAW/ASGN outputs jumpered to trapezoid become four staggered VCA gates — a self-running polyrhythmic crossfade for drone voices.",
+      "steps": [
+        "Power off. Set the rear ASGN jumper cluster 9 to TRAPEZOID (per fig. 2 on the back of the module).",
+        "Power on. Press the central mode button until the blue DIVIDE LED lights up.",
+        "Set Slider 1 to a slow rate (e.g. 0.05 Hz). Set Slider 2 to /2 and Slider 3 to /3 (Slider 4 to /8 for an even longer cycle).",
+        "Patch Batumi SAW/ASGN 1 → VCA 1 CV.",
+        "Patch Batumi SAW/ASGN 2 → VCA 2 CV.",
+        "Patch Batumi SAW/ASGN 3 → VCA 3 CV.",
+        "Patch Batumi SAW/ASGN 4 → VCA 4 CV.",
+        "Patch VCO 1 Out → VCA 1 In; VCO 2 Out → VCA 2 In; repeat for all four drone voices.",
+        "Sum VCA outputs into a stereo mixer."
+      ],
+      "signalOut": "SAW/ASGN 1–4 — -5V to +5V trapezoid gates, each at master rate divided per slider. Use the positive half-swings as VCA gates.",
+      "hear": "Four drone voices crossfade in slow polyrhythmic waves — each takes the spotlight at its own division of the master, with smooth trapezoid edges instead of hard gates. A self-evolving drone with no external sequencer.",
       "diagram": "Batumi:\n* Mode: DIVIDE\n* ASGN: Trapezoid\n* Slider 2: /2\n* Slider 3: /3\n\n- Batumi (SAW/ASGN 1) >> VCA 1 (CV)\n- Batumi (SAW/ASGN 2) >> VCA 2 (CV)\n- Batumi (SAW/ASGN 3) >> VCA 3 (CV)\n- Batumi (SAW/ASGN 4) >> VCA 4 (CV)\n- VCO 1 (Out) -> VCA 1 (In)\n- VCO 2 (Out) -> VCA 2 (In)"
     },
     {
       "name": "Phase-sweep chorus",
-      "patch": "PHASE mode · audio rate on CH 1 via V/oct into FRQ 1 (slider 1 high, +5V on FRQ 1 pushes into audio) · sliders 2–4 set phase offsets · slow external LFO modulates FRQ·PH·DIV 2 for moving phase · sum sine outputs through a mixer for a phase-shifter-style chorus on the composite tone",
+      "patch": "PHASE mode · CH 1 driven into audio range via V/oct on FRQ 1; a slow external LFO sweeps phase on CH 2; sum the four sines for a phase-shifter-style chorus.",
+      "steps": [
+        "Press the central mode button until the yellow PHASE LED lights up.",
+        "Set Slider 1 high (toward 100 Hz) to start near audio rate.",
+        "Patch Pitch CV → Batumi FRQ 1 (1V/oct, +5V pushes CH 1 well into audio range, up to ~500 Hz). Above 100 Hz the manual notes that amplitude and waveform precision degrade — embrace it.",
+        "Set Slider 2 to ~90°, Slider 3 to ~180°, Slider 4 to ~270°.",
+        "Patch a slow external LFO → Batumi FRQ·PH·DIV 2 (CV-modulates CH 2's phase shift).",
+        "Patch SINE 1 → Mixer In 1; SINE 2 → Mixer In 2; SINE 3 → Mixer In 3; SINE 4 → Mixer In 4.",
+        "Listen to the mixer sum."
+      ],
+      "signalOut": "Mixer sum — four -5V to +5V sines at the same audio frequency, three of them with phase offsets that sweep slowly around CH 2.",
+      "hear": "A hollow, comb-filtered chorus tone on the summed output — as the slow LFO walks CH 2's phase, the cancellations and reinforcements between the four sines move, producing a phase-shifter-style sweep on the composite waveform.",
       "diagram": "Batumi:\n* Mode: PHASE\n* Slider 1: high (audio rate)\n\n- Pitch CV (Out) p> Batumi (FRQ 1)\n- Slow LFO (Out) >> Batumi (FRQ·PH·DIV 2) // phase sweep\n- Batumi (SINE 1) -> Mixer (In 1)\n- Batumi (SINE 2) -> Mixer (In 2)\n- Batumi (SINE 3) -> Mixer (In 3)\n- Batumi (SINE 4) -> Mixer (In 4)"
     },
     {
       "name": "Tap-tempo modulation bank",
-      "patch": "Jumper 8 = SYNC · manual tap-gate on RESET/SYNC 1 sets master rate · DIVIDE mode fans the tempo into /2, /3, /8 on the other channels · four tempo-locked modulation voices from a single tap",
+      "patch": "Jumper 8 = SYNC · manual tap on RESET/SYNC 1 sets master tempo; DIVIDE mode fans that tempo into four locked modulation voices.",
+      "steps": [
+        "Power off, confirm the rear jumper 8 is installed (SYNC mode — this is the factory default).",
+        "Power on. Press the central mode button until the blue DIVIDE LED lights up.",
+        "Patch a tap button (or footswitch) → Batumi RESET/SYNC 1. Tap a steady tempo to set the master rate.",
+        "Set Slider 2 to /2, Slider 3 to /3, Slider 4 to /8 to spread divisions across the channels.",
+        "Patch Batumi SINE 1 → Delay Time CV (modulates at the tap rate).",
+        "Patch Batumi SINE 2 → Filter Cutoff (half-time sweep).",
+        "Patch Batumi SQUARE 3 → Envelope Trig input (third-time gate).",
+        "Patch Batumi SAW/ASGN 4 → Pan CV (eighth-time slow pan)."
+      ],
+      "signalOut": "SINE 1 — -5V to +5V sine at tap rate. SINE 2 — at tap/2. SQUARE 3 — -5V to +5V square at tap/3. SAW/ASGN 4 — at tap/8.",
+      "hear": "One tap, four tempo-locked modulation voices: delay time wobbles in time, filter sweeps every other beat, an envelope retriggers every third tap, and the pan crawls across the stereo field once per eight taps.",
       "diagram": "Batumi:\n* Mode: DIVIDE\n* Jumper 8: SYNC\n\n- Tap Button (Gate) c> Batumi (RESET/SYNC 1)\n- Batumi (SINE 1) >> Delay (Time)\n- Batumi (SINE 2) >> Filter (Cutoff)\n- Batumi (SQUARE 3) t> Envelope (Trig)\n- Batumi (SAW/ASGN 4) >> Pan (CV)"
     }
   ]

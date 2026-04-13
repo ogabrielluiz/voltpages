@@ -218,52 +218,182 @@
   "patchIdeas": [
     {
       "name": "Polyrhythmic 16-tap delay",
-      "patch": "Synth → IN L · load factory preset 16tap Beat · external clock → CLK delay · GROOVE = Hard Swing · GROOVE AMT ~70 · per-tap pan alternates L/R · each drum hit scatters across 16 taps in groove time",
+      "patch": "Load preset 8 '16tap Beat'. External clock locks CLK TIME. GROOVE = Hard Swing shoves the 16 tap positions into a swung grid; per-tap pans spread them across the stereo field.",
+      "steps": [
+        "Hold LOAD, turn encoder to preset 8 '16tap Beat', push encoder to load.",
+        "Press ROUTING+CONFIG, set routing to DLY only.",
+        "Press EDIT, then GROOVE TYPE button; turn encoder to 'Hard Swing'.",
+        "Press GROOVE AMT button; turn encoder to ~70 (strong swing).",
+        "Press TAP#, then PAN red button; set odd taps hard left, even taps hard right for L/R scatter.",
+        "Patch external clock (0–5V square) to Rainmaker CLK (delay) — TEMPO is overridden.",
+        "Patch synth/drums to IN L.",
+        "Patch OUT L to mixer L, OUT R to mixer R.",
+        "Set DRY/MIX to ~1 o'clock (mostly wet) so the groove is audible."
+      ],
+      "signalOut": "OUT L / OUT R — dry plus 16 swung, stereo-panned echoes at -5V to +5V, clock-locked to your external CLK.",
+      "hear": "Every hit scatters into 16 swung echoes that leap between the left and right speakers — a polyrhythmic drum fill from a single note.",
       "diagram": "Rainmaker:\n* Preset: 16tap Beat · GROOVE: Hard Swing · AMT 70\n* Routing: DLY only\n\nClock:\n\n- Synth (Out) -> Rainmaker (IN L)\n- Clock (Out) c> Rainmaker (CLK Delay)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
       "name": "Karplus-Strong string synth",
-      "patch": "Noise burst (triggered by gate) → IN L · Routing = CMB only · Comb Feedback ~90% · config = Guitar · 1V/OCT from sequencer → Rainmaker 1V/OCT · COMB SIZE CV driven by pitch · tuned plucked string voice with comb resonance",
+      "patch": "Comb-only routing plus 1V/OCT on COMB SIZE turns the 64-tap comb into a plucked string. A gated noise burst excites it; Guitar feedback config gives an exponential-averaging string timbre.",
+      "steps": [
+        "Press ROUTING+CONFIG, set routing to CMB only.",
+        "In the Comb section, press TAPS+FB once then press again to reach FEEDBACK config; turn encoder to 'Guitar'.",
+        "Press CLK SRC; turn encoder to '1V/OCT' so COMB SIZE tracks pitch.",
+        "Turn COMB FEEDBACK knob to ~90% (long ringing decay, just under runaway).",
+        "Patch sequencer Gate to ENV Trig.",
+        "Patch Noise to VCA In, ENV Out to VCA CV — short bursts are the excite signal.",
+        "Patch VCA Out to Rainmaker IN L.",
+        "Patch sequencer Pitch (1V/oct) to Rainmaker 1V/OCT jack.",
+        "Patch Rainmaker OUT L and OUT R to mixer.",
+        "Set DRY/MIX full CW (fully wet — you want the string, not the click)."
+      ],
+      "signalOut": "OUT L / OUT R — pitched plucked-string tone at -5V to +5V, decay length set by COMB FEEDBACK, pitch tracks 1V/oct.",
+      "hear": "A bright, plucked steel-string that plays your sequencer. Higher feedback = longer sustain; swap Guitar → Sitar for a bent, rectified shimmer, Clarinet for a hollow square-wave tone, Raw for noisy overdrive.",
       "diagram": "Rainmaker:\n* Routing: CMB only · Comb FB: 90% · Config: Guitar\n* COMB CLK SRC: 1V/OCT\n\nSequencer:\n\nNoise:\n\nENV:\n\nVCA:\n\n- Sequencer (Gate) g> ENV (Trig)\n- Noise (Out) -> VCA (In)\n- ENV (Out) >> VCA (CV)\n- VCA (Out) -> Rainmaker (IN L)\n- Sequencer (Pitch) p> Rainmaker (1V/OCT)\n- Rainmaker (OUT L) -> Output (In)"
     },
     {
       "name": "Ascending pitch-shift cascade",
-      "patch": "Tap 1 pitch = 0 · Tap 2 = +2 · Tap 3 = +4 ... tap 16 = +16 semitones · Groove = Straight · input any sound · each echo rises a whole step creating a 16-step ascending arpeggio from a single hit",
+      "patch": "Set each tap's PITCH SHIFT to a different semitone so one input hit triggers a 16-step ascending line through the echoes.",
+      "steps": [
+        "Press EDIT, then GROOVE TYPE; turn encoder to 'Straight' for an even grid.",
+        "Turn DELAY FEEDBACK knob to ~9 o'clock (low — you want each cascade to die before the next hit).",
+        "Press TAP# (red EDIT/TAP# button). Press PITCH SHIFT red button.",
+        "Select tap 1 (blue button), turn encoder to 0 semis. Tap 2 = +1, Tap 3 = +2 … Tap 16 = +15 (per-tap range is -16 to +15).",
+        "Tip: push the encoder once to access ramp presets — 'Rising' sets all 16 taps to a ramp automatically.",
+        "Set each tap LEVEL equal (press LEVEL button, set all to ~24).",
+        "Patch source (pluck, vocal, drum) to IN L.",
+        "Patch OUT L and OUT R to mixer.",
+        "Set DRY/MIX to ~1 o'clock (mostly wet)."
+      ],
+      "signalOut": "OUT L / OUT R — single input hit sprays 16 echoes rising chromatically at -5V to +5V.",
+      "hear": "Play one note and hear a 16-step chromatic staircase climb away from you. Swap to +2 steps per tap (0, +2, +4 …) for a whole-tone ladder, or use the 'Rise/Fall' ramp preset for a pitch arch.",
       "diagram": "Rainmaker:\n* Taps 1-16: pitch shift 0,+2,+4...+16\n* GROOVE: Straight · DLY FB: low\n\n- Synth (Out) -> Rainmaker (IN L)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
       "name": "Spectral filter bank reverb",
-      "patch": "Voice → IN L · each tap filter type = BP · cutoffs tuned to harmonic series (100Hz, 200Hz, 300Hz...) · high Q · tap pitches = 0 · voice acquires resonant filter-bank body · per-tap pans spread harmonic series across stereo field",
+      "patch": "Tune each tap filter to a harmonic of the source and pan them across the stereo field — Rainmaker becomes a 16-band resonant filter bank.",
+      "steps": [
+        "Press TAP#, then TYPE red button; set every tap TYPE to 'BP' (bandpass).",
+        "Press Q red button; set every tap Q to ~12 (high resonance, just below self-oscillation).",
+        "Press CUT red button; set taps to a harmonic series: tap 1 ~100Hz, tap 2 ~200Hz, tap 3 ~300Hz … tap 16 ~1.6kHz (use the display readout).",
+        "Press PITCH SHIFT, set all taps to 0 semitones (no transposition).",
+        "Press PAN; sweep pans evenly 7L → 7R across taps 1–16.",
+        "Press LEVEL, set all taps equal (~24).",
+        "Patch voice/pad to IN L.",
+        "Patch OUT L / OUT R to mixer.",
+        "Set DRY/MIX to 12 o'clock for a resonant halo over the dry source."
+      ],
+      "signalOut": "OUT L / OUT R — source plus 16 resonant bandpass echoes tuned to a harmonic series, spread across stereo.",
+      "hear": "Your voice gains a choral, organ-like resonant body — each harmonic rings out from a different point in the stereo field. Lower the tap cutoffs for a darker formant; raise Q for near-self-oscillating drones.",
       "diagram": "Rainmaker:\n* Tap filters: BP · cutoffs harmonic series\n* Tap Q: high · Tap pans: spread L↔R\n\n- Voice (Out) -> Rainmaker (IN L)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
       "name": "Generative random reflections",
-      "patch": "Ambient source → IN L · trigger operation = Randomize destination: Tap Pitch Shifts · clock → TRIG divided to 4 bars · each bar Rainmaker randomizes all 16 tap pitches · constantly evolving generative reharmonization",
+      "patch": "A slow clock into TRIG fires the Randomizer every few bars, scrambling only tap pitches — the reharmonization rewrites itself under an ambient bed.",
+      "steps": [
+        "Press ROUTING+CONFIG three times to reach TRIGGER MODE; turn encoder to 'Randomize'.",
+        "Press EDIT, then RAND button; turn encoder to destination 'Tap Pitch Shifts' (only pitches get randomized).",
+        "Turn DELAY FEEDBACK to ~11 o'clock for a tail that carries between randomizations.",
+        "Press EDIT, then GROOVE TYPE; turn encoder to 'Early Reflection' (sparse, reverb-like).",
+        "Patch your ambient source (pad, field recording) to IN L.",
+        "Patch a clock divider set to every 4 bars (≥+1V pulse) to Rainmaker TRIG.",
+        "Patch OUT L / OUT R to mixer.",
+        "Set DRY/MIX to ~1 o'clock so the wet bed dominates."
+      ],
+      "signalOut": "OUT L / OUT R — ambient source plus a reflection cloud whose pitches re-scramble every 4 bars.",
+      "hear": "A slowly reharmonizing halo under your pad — every four bars the echoes land on a new set of intervals. Switch the rand destination to 'All delay' for a more dramatic shuffle.",
       "diagram": "Rainmaker:\n* TRIG op: Randomize · Dest: Tap Pitch Shifts\n\nClock Div:\n\n- Ambient (Out) -> Rainmaker (IN L)\n- Clock Div (Out) t> Rainmaker (TRIG)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
       "name": "Dual delay + Karplus split",
-      "patch": "Routing = L:DLY R:CMB · left channel drum loop → IN L · pitch sequence → IN R + pitch-voice CV via 1V/OCT · left gets rhythmic delay, right gets tuned Karplus string · one module = two effects",
+      "patch": "Routing 'L:DLY R:CMB' runs the rhythm delay on the left input and the Karplus comb on the right — two effects from one module.",
+      "steps": [
+        "Press ROUTING+CONFIG; turn encoder to 'L:DLY R:CMB' (left input → delay → OUT L; right input → comb → OUT R).",
+        "In the Comb section press TAPS+FB twice and set FEEDBACK config to 'Guitar' (Karplus).",
+        "Press CLK SRC; set to '1V/OCT'.",
+        "Turn COMB FEEDBACK to ~85% for a singing string.",
+        "For the delay side, press EDIT then GROOVE TYPE; pick 'Swing'. Turn DELAY FEEDBACK to ~11 o'clock.",
+        "Patch drum loop to IN L (delay side).",
+        "Patch excite noise/pluck to IN R (comb side).",
+        "Patch sequencer Pitch (1V/oct) to Rainmaker 1V/OCT.",
+        "Patch OUT L and OUT R to mixer (stereo split).",
+        "Set DRY/MIX to 12 o'clock."
+      ],
+      "signalOut": "OUT L — drum loop + rhythmic delay. OUT R — pitched Karplus string. Each at -5V to +5V.",
+      "hear": "Left ear gets a swinging rhythmic echo of the drums; right ear gets a tracked Karplus melody — the two effects run in parallel out of one module.",
       "diagram": "Rainmaker:\n* Routing: L:DLY R:CMB\n* Comb: Karplus config\n\nSequencer:\n\n- Drums (Out) -> Rainmaker (IN L)\n- Excite (Out) -> Rainmaker (IN R)\n- Sequencer (Pitch) p> Rainmaker (1V/OCT)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
       "name": "Freeze-and-pitch glitch",
-      "patch": "Source → IN L · TRIG op = Freeze · moment of interesting audio → tap TRIG to freeze · LFO → PITCH SHIFT CV · frozen buffer gets pitch-shifted wildly · play over the morphing texture",
+      "patch": "TRIG set to Freeze locks the delay buffer; a slow LFO into PITCH SHIFT CV shifts all 16 taps ±2 octaves while you play over the melting loop.",
+      "steps": [
+        "Press ROUTING+CONFIG three times to TRIGGER MODE; turn encoder to 'Freeze'.",
+        "Turn DELAY FEEDBACK to ~2 o'clock (high — the frozen loop regenerates).",
+        "Press EDIT, GROOVE TYPE; choose 'Straight'.",
+        "Patch source to IN L and start playing.",
+        "Tap Rainmaker's big red TRIGGER button (or send a manual gate to TRIG) on the moment you want to freeze.",
+        "Patch a slow bipolar LFO (±5V, 0.05–0.3 Hz) to PITCH SHIFT CV — the global pitch shift sweeps all 16 taps ±2 octaves.",
+        "Patch OUT L / OUT R to mixer.",
+        "Set DRY/MIX full CW for all wet so only the melting buffer is heard.",
+        "Tap TRIGGER again to unfreeze and grab a new slice."
+      ],
+      "signalOut": "OUT L / OUT R — a frozen delay buffer whose pitch sweeps up and down as the LFO runs, at -5V to +5V.",
+      "hear": "The moment you hit TRIGGER, the delay stops listening and starts looping — and the LFO drags the pitch of the loop down into subs and up into shimmer. Keep playing dry over the top for a slowly dissolving ghost.",
       "diagram": "Rainmaker:\n* TRIG op: Freeze · DLY FB: high\n\nLFO:\n\nManual Gate:\n\n- Source (Out) -> Rainmaker (IN L)\n- Manual Gate (Out) t> Rainmaker (TRIG) // freeze\n- LFO (Out) >> Rainmaker (PITCH SHIFT CV)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
       "name": "Reverse reverb tail",
-      "patch": "Drum → IN L · TRIG op = Gated Reverse · gate from drum hit → TRIG · during gate, delay plays reverse-buffer · at gate fall, plays forward again · each hit leaves a spectral reverse tail that leads into the next hit",
+      "patch": "TRIG set to 'Gated Reverse' plays the delay line backwards while the gate is high — each drum hit leaves a reverse-swell into the next.",
+      "steps": [
+        "Press ROUTING+CONFIG three times to TRIGGER MODE; turn encoder to 'Gated Reverse'.",
+        "Press EDIT, GROOVE TYPE; choose 'Early Reflection' (sparse, reverb-like spread).",
+        "Turn DELAY FEEDBACK to ~12 o'clock (several audible laps).",
+        "Press EDIT, REVERSE+WET/DRY — make sure WET/DRY (internal delay mix) is ~12 o'clock.",
+        "Patch drum to IN L.",
+        "Patch the drum's trigger output (or a gate from its envelope) to Rainmaker TRIG. Gate HIGH = reverse, LOW = forward.",
+        "Patch OUT L / OUT R to mixer.",
+        "Set global DRY/MIX to ~1 o'clock.",
+        "Play the drum pattern — each hit leaves a reverse-swell trail into the next."
+      ],
+      "signalOut": "OUT L / OUT R — drum with a reverse-swell tail that leads into each next hit, at -5V to +5V.",
+      "hear": "Every drum hit blooms backwards before the next one lands — like a shoegaze reverse reverb but rhythmic, sitting inside the 16-tap reflection grid.",
       "diagram": "Rainmaker:\n* TRIG op: Gated Reverse\n* GROOVE: Early Reflection · FB: 50%\n\n- Drum (Out) -> Rainmaker (IN L)\n- Drum Trig (Out) g> Rainmaker (TRIG)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
-      "name": "Pitched piles chord generator",
-      "patch": "Mono voice → IN L · PILES=4 per tap · per-tap pitch: 0, +4, +7, +12 · Groove = Straight · every delay tap plays a major-7 chord · single-note input yields chordal echo cascade",
+      "name": "Stacked chord generator",
+      "patch": "STACK = 4 per tap with per-stack pitches 0 / +4 / +7 / +12 turns every delay tap into a major-7 chord — one note in, chordal cascade out.",
+      "steps": [
+        "Press EDIT, then TAP STACK button (labelled PILES on panel, renamed to STACK in v1.05 firmware).",
+        "Turn encoder to set STACK = 4 across taps (or press to configure stacks individually).",
+        "Set the four stack pitch offsets to 0, +4, +7, +12 semitones (major 7 chord).",
+        "Press EDIT, GROOVE TYPE; choose 'Straight'.",
+        "Turn DELAY FEEDBACK to ~10 o'clock (a couple of chord cascades before decay).",
+        "Patch a mono VCO/voice to IN L.",
+        "Patch OUT L / OUT R to mixer.",
+        "Set DRY/MIX to ~1 o'clock."
+      ],
+      "signalOut": "OUT L / OUT R — single mono note sprays a maj7 chord at every delay tap, at -5V to +5V.",
+      "hear": "Play one note, hear a glossy major-7 chord cascade away from you, tap after tap. Swap the stack pitches to 0 / +3 / +7 / +10 for a minor-7 voicing, or 0 / +5 / +7 for parallel fifths.",
       "diagram": "Rainmaker:\n* PILES: 4 · per-pile pitch: 0,+4,+7,+12\n* GROOVE: Straight\n\n- VCO (Out) -> Rainmaker (IN L)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
       "name": "Tempo-locked modulated resonator",
-      "patch": "Routing = DLY+CMB · Rainmaker CLK OUT → external envelope trigger (tempo-locked) · TIME MOD WAVE = Triangle, LEVEL mid, RATE slow · delay times slowly shift around grid · comb adds modal body · percussion source becomes pitched evolving rhythmic motif",
+      "patch": "Parallel DLY+CMB routing plus a slow TIME MOD LFO warps delay timing around the grid; Rainmaker's CLK out keeps the rest of the patch locked in time.",
+      "steps": [
+        "Press ROUTING+CONFIG; turn encoder to 'DLY+CMB' (parallel sum).",
+        "Press EDIT, GROOVE TYPE; choose 'Roller Coaster'. Press GROOVE AMT; set to ~50.",
+        "Press EDIT, TIME MOD WAVE; turn encoder to 'Triangle'. Press TIME MOD LEVEL to ~5; press TIME MOD RATE to a slow setting (~0.1 Hz).",
+        "In the Comb section, press TAPS+FB; set #taps to 32. Turn COMB FEEDBACK to ~40% for modal body.",
+        "Tap TEMPO button three times to set beat time — yellow LED flashes at beat.",
+        "Patch percussion to IN L.",
+        "Patch Rainmaker's CLK output to an external ENV's Trig input — external voice is now locked to Rainmaker's delay beat.",
+        "Patch OUT L / OUT R to mixer.",
+        "Set DRY/MIX to 12 o'clock."
+      ],
+      "signalOut": "OUT L / OUT R — delayed percussion fused with comb modal resonance, at -5V to +5V. CLK out at 0–5V square locks external gear to the delay beat.",
+      "hear": "A rhythmic percussion echo that shifts around the grid like a roller-coaster while the comb adds a singing modal body underneath — every external module hanging off Rainmaker's CLK stays in lockstep.",
       "diagram": "Rainmaker:\n* Routing: DLY+CMB · TIME MOD: Tri · slow\n* GROOVE: Roller Coaster · AMT 50\n\n- Perc (Out) -> Rainmaker (IN L)\n- Rainmaker (CLK) c> ENV (Trig) // tempo lock\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     }
   ]

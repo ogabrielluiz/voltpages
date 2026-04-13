@@ -86,18 +86,99 @@
   "patchIdeas": [
     {
       "name": "Stereo bandpass sweep",
-      "patch": "Link ON · LFO → HPF CV · LPF set bandwidth · resonance on both edges",
+      "patch": "Link ON · LFO sweeps HPF CV (bandpass center) · LPF sets bandwidth · resonance on both edges.",
+      "steps": [
+        "Flip the Link switch (B, top-left) ON — LPF now follows HPF as bandwidth.",
+        "Flip HP Resonance switch (D) ON and LP Resonance switch (E) ON so both edges resonate.",
+        "Set Resonance pot (C) to about 2 o'clock; set LPF pot (A) about 9 o'clock (narrow band) and HPF pot (F) at 12 o'clock.",
+        "Patch your stereo source: VCO L (Out) → IN1 (jack 5), VCO R (Out) → IN2 (jack 6).",
+        "Patch a slow LFO (~0.1 Hz triangle) → HPF CV (jack 3) — sweeps the bandpass center.",
+        "Patch OUT1 (jack 6, lower) → Mixer L, OUT2 → Mixer R.",
+        "Widen the LPF pot to taste — further open = wider band; almost closed = razor-thin pass."
+      ],
+      "signalOut": "OUT1 / OUT2 — stereo audio inside the swept band, ±5V; mostly silent outside the passband.",
+      "hear": "A wah-like spectral window that slides up and down the stereo field; both edges ring as the LFO sweeps, like a vocal vowel scanning the spectrum.",
       "diagram": "DUAL DAGGER:\n* Link: ON\n* HP Resonance: ON\n* LP Resonance: ON\n- VCO L (OUT) -> Dual Dagger (IN1)\n- VCO R (OUT) -> Dual Dagger (IN2)\n- LFO (CV) >> Dual Dagger (HPF CV) // sweeps bandpass center\n- Dual Dagger (OUT1) -> Mixer (L)\n- Dual Dagger (OUT2) -> Mixer (R)"
     },
     {
       "name": "Dual resonant peak",
-      "patch": "Mono → IN1 · mix OUT1+OUT2 · PANLP CV sets distance between two resonant LP peaks",
+      "patch": "Mono noise → IN1 · sum OUT1+OUT2 · PANLP CV splits the two LP peaks for double-resonant comb.",
+      "steps": [
+        "Leave Link switch (B) OFF; flip LP Resonance switch (E) ON.",
+        "Set Resonance pot (C) to about 3 o'clock (rich peak, no self-osc with Lo jumper).",
+        "Set LPF pot (A) at 12 o'clock; HPF pot (F) fully counter-clockwise (out of the way).",
+        "Patch Noise (Out) → IN1 (jack 5). Leave IN2 unpatched — IN1 is normalled to IN2.",
+        "Patch a slow LFO (bipolar, ±5V) → PANLP CV (jack 4) — pushes LPF1 up while LPF2 goes down.",
+        "Patch OUT1 → Mixer CH 1, OUT2 → Mixer CH 2 (or sum to mono).",
+        "Adjust LFO depth to control how far apart the two resonant peaks separate."
+      ],
+      "signalOut": "OUT1 / OUT2 — two filtered noise streams, each with its own moving resonant peak around the LPF cutoff, ±5V.",
+      "hear": "Two whistling formants drifting apart and back together over a noise bed — like two bottles being blown at slowly diverging pitches.",
       "diagram": "DUAL DAGGER:\n* LP Resonance: ON\n- Noise (OUT) -> Dual Dagger (IN1) // IN2 normalled from IN1\n- LFO (CV) >> Dual Dagger (PANLP CV) // splits the two LP peaks\n- Dual Dagger (OUT1) -> Mixer (CH1)\n- Dual Dagger (OUT2) -> Mixer (CH2)"
     },
     {
-      "name": "Sine VCO voice",
-      "patch": "Hi jumper · resonance max → HPF self-oscillates · LPF smooths · second channel FM via PANHP",
-      "diagram": "DUAL DAGGER:\n* HP Resonance: ON (Hi jumper, max)\n- Keyboard (Pitch) p> Dual Dagger (HPF CV) // V/Oct tracking\n- LFO (CV) >> Dual Dagger (PANHP CV) // FM channel 2\n- Dual Dagger (OUT1) -> Output (L)\n- Dual Dagger (OUT2) -> Output (R)"
+      "name": "Sine VCO voice with stereo detune",
+      "patch": "Hi jumper · resonance max · HPF self-oscillates tracking V/Oct · LPF smooths · PANHP detunes the two channels.",
+      "steps": [
+        "Power down, set the back-panel jumper to Hi (allows self-oscillation), power up.",
+        "Flip HP Resonance switch (D) ON; turn Resonance pot (C) fully clockwise — HPFs sing as sine VCOs.",
+        "Set LPF pot (A) about 2 o'clock so the LPF stays well above the sine pitch (clean tone).",
+        "Patch Keyboard (Pitch) → HPF CV (jack 3) — V/Oct tracking over several octaves (set HPF pot to mid for a useful range).",
+        "Patch a slow LFO (small depth) → PANHP CV (jack 4) — detunes the channel-1 sine vs channel-2 sine.",
+        "Patch OUT1 → Output L, OUT2 → Output R.",
+        "Tune by ear at one keyboard note: rotate HPF pot until the pitch matches a reference oscillator at the same V/Oct."
+      ],
+      "signalOut": "OUT1 / OUT2 — two slightly detuned sine waves tracking V/Oct, ±5V; LPF removes any harmonic crud above the sine.",
+      "hear": "A warm stereo sine voice with a slow chorus shimmer from the PANHP detune — Juno-style fattened mono lead spread across the field.",
+      "diagram": "DUAL DAGGER:\n* HP Resonance: ON · Hi jumper · Res max\n- Keyboard (Pitch) p> Dual Dagger (HPF CV) // V/Oct tracking\n- LFO (CV) >> Dual Dagger (PANHP CV) // detune channel 2\n- Dual Dagger (OUT1) -> Output (L)\n- Dual Dagger (OUT2) -> Output (R)"
+    },
+    {
+      "name": "Resonant kick drum",
+      "patch": "Hi jumper · self-oscillating HPF pinged by a fast decay envelope on HPF CV — stereo kick with PANHP detune.",
+      "steps": [
+        "Set the back-panel jumper to Hi; flip HP Resonance switch (D) ON; turn Resonance pot (C) fully clockwise so HPF self-oscillates.",
+        "Set HPF pot (F) low (around 9 o'clock, ~60-80 Hz body pitch); set LPF pot (A) about 1 o'clock to tame the click.",
+        "Patch a fast AD envelope (5-10 ms attack, 200-400 ms decay, ~5V peak) → HPF CV (jack 3) — each trigger pings the pitch up and back down.",
+        "Patch a small fixed offset or slow LFO → PANHP CV (jack 4) for a touch of stereo width.",
+        "Trigger the envelope from your clock or sequencer.",
+        "Patch OUT1 → Mixer L, OUT2 → Mixer R.",
+        "Shorten the decay for a tighter kick; raise HPF pot for tom-style pitches."
+      ],
+      "signalOut": "OUT1 / OUT2 — pitched percussive thumps following the envelope, ±5V; silent between hits.",
+      "hear": "A bass-drum thump with a pitch sweep down — short attack, body that drops in pitch as the envelope decays, with subtle stereo placement.",
+      "diagram": "DUAL DAGGER:\n* HP Resonance: ON · Hi jumper · Res max\n* Link: OFF\n- Clock (Out) t> Envelope (Trig)\n- Envelope (Out) >> Dual Dagger (HPF CV) // pings pitch\n- LFO (CV) >> Dual Dagger (PANHP CV) // stereo width\n- Dual Dagger (OUT1) -> Mixer (L)\n- Dual Dagger (OUT2) -> Mixer (R)"
+    },
+    {
+      "name": "Doubled mono filter (parallel HP+LP peaks)",
+      "patch": "Mono source → IN1 · both HP and LP resonance ON · sum OUT1+OUT2 for a fat double-peak sound.",
+      "steps": [
+        "Leave Link switch (B) OFF; flip both HP Resonance (D) and LP Resonance (E) ON.",
+        "Set Resonance pot (C) about 2 o'clock (resonant but not screaming).",
+        "Set LPF pot (A) about 11 o'clock and HPF pot (F) about 2 o'clock — two peaks in different parts of the spectrum.",
+        "Patch a harmonically rich source (sawtooth VCO) → IN1 (jack 5). Leave IN2 unpatched (IN1 normalled).",
+        "Patch your envelope or LFO → LPF CV (jack 1) to sweep the LP peak.",
+        "Patch a second slow LFO → HPF CV (jack 3) to drift the HP peak independently.",
+        "Sum OUT1 + OUT2 to a single mixer channel for a thick mono signal with two independent resonant formants."
+      ],
+      "signalOut": "OUT1 + OUT2 summed — one mono signal carrying two resonant peaks (one LP, one HP), ±5V each.",
+      "hear": "A double-peaked vocal-formant timbre, like 'oo' and 'ee' vowels stacked, with each peak swept by its own modulator.",
+      "diagram": "DUAL DAGGER:\n* HP Resonance: ON · LP Resonance: ON · Link: OFF\n- Saw VCO (OUT) -> Dual Dagger (IN1) // IN2 normalled\n- Envelope (Out) >> Dual Dagger (LPF CV)\n- LFO (CV) >> Dual Dagger (HPF CV)\n- Dual Dagger (OUT1) -> Mixer (CH1)\n- Dual Dagger (OUT2) -> Mixer (CH1) // sum mono"
+    },
+    {
+      "name": "Mid-Side stereo width filter",
+      "patch": "Encode L/R to M/S externally (e.g. SumDif) · M → IN1, S → IN2 · PANLP offsets cutoff between mid and side for width control.",
+      "steps": [
+        "Leave Link switch (B) OFF; both Resonance switches OFF for a clean tone.",
+        "Set LPF pot (A) about 2 o'clock; HPF pot (F) fully counter-clockwise (out of the way).",
+        "Use an external M/S encoder (Shakmat SumDif or similar): feed your stereo L/R into it; route Mid out → IN1 (jack 5) and Side out → IN2 (jack 6).",
+        "Patch a slow LFO → PANLP CV (jack 4) — opens LPF1 (mid) while closing LPF2 (side), and vice versa.",
+        "Take OUT1 (filtered Mid) → external decoder Mid in; OUT2 (filtered Side) → decoder Side in.",
+        "Decoder L/R → mixer L/R for the final stereo signal.",
+        "Adjust LFO depth to control how dramatically the mid vs side spectrum diverges over time."
+      ],
+      "signalOut": "OUT1 — filtered Mid signal; OUT2 — filtered Side signal; both ±5V, ready for M/S decoding.",
+      "hear": "Stereo width that breathes: when the Side is darker than Mid the image collapses to centre; when Side is brighter than Mid the image flares wide.",
+      "diagram": "DUAL DAGGER:\n* Link: OFF · Resonance: OFF\n- Stereo (L) -> SumDif Encode (In L)\n- Stereo (R) -> SumDif Encode (In R)\n- SumDif Encode (Mid) -> Dual Dagger (IN1)\n- SumDif Encode (Side) -> Dual Dagger (IN2)\n- LFO (CV) >> Dual Dagger (PANLP CV) // breathes width\n- Dual Dagger (OUT1) -> SumDif Decode (Mid)\n- Dual Dagger (OUT2) -> SumDif Decode (Side)\n- SumDif Decode (Out L) -> Mixer (L)\n- SumDif Decode (Out R) -> Mixer (R)"
     }
   ]
 }

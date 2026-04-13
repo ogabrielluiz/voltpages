@@ -1,0 +1,325 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "firmwareVersion": "01.02.05",
+    "sources": [
+      "https://www.mordax.net/products/data",
+      "https://mordax.link/DATA_User_Guide",
+      "https://modulargrid.net/e/mordax-data-black",
+      "https://waveformmagazine.com/waveform-reviews/mordax-data/",
+      "https://www.perfectcircuit.com/mordax-data-multifunction-tool.html",
+      "https://www.manualslib.com/manual/2811899/Mordax-Data.html",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=149152"
+    ]
+  },
+  "slug": "mordax--data",
+  "name": "DATA",
+  "manufacturer": "Mordax Systems",
+  "hp": 16,
+  "tags": ["UTILITY", "CLOCK", "LFO", "OSCILLATOR", "I/O"],
+  "description": "Multifunction measurement and signal tool. Seven menu-selected programs: oscilloscope, spectrum analyzer, spectrograph, tuner, dual wave output, quad clock output, voltage monitor. Color display with buffered through jacks on all four inputs.",
+  "controls": [
+    {
+      "name": "Encoder",
+      "scope": "Global",
+      "description": "Push-turn encoder. Twist to scroll menus or parameter values. Push to enter a program, select a parameter, or toggle between list-scroll and value-edit.",
+      "detail": "Push: select · Twist: scroll/edit · Push+turn in some screens: coarse adjust"
+    },
+    {
+      "name": "Menu Button",
+      "scope": "Global",
+      "description": "Return to the main menu from any program. Press and hold for ~1.5s inside Oscilloscope to open the secondary top menu (XY Scope, MIN-MODE).",
+      "detail": "Tap: back to main menu · Hold 1.5s (in Scope): secondary menu"
+    },
+    {
+      "name": "Soft Buttons 2-1 – 2-4 (top row)",
+      "scope": "Global",
+      "description": "Four context-sensitive buttons along the top of the display. Labels map to the boxes shown at the top edge of the screen for the active program.",
+      "detail": "Top row · Left→Right: 2-1, 2-2, 2-3, 2-4"
+    },
+    {
+      "name": "Soft Buttons 1-1 – 1-4 (bottom row)",
+      "scope": "Global",
+      "description": "Four context-sensitive buttons along the bottom of the display. Labels map to the boxes shown at the bottom edge of the screen. 1-4 opens Settings from the main menu.",
+      "detail": "Bottom row · Left→Right: 1-1, 1-2, 1-3, 1-4 · 1-4 on main menu: Settings"
+    },
+    {
+      "name": "Display",
+      "scope": "Global",
+      "description": "Full-color LCD. Renders waveforms, FFT graphs, tuner readout, clock parameters, volt meter, and all menus.",
+      "detail": "Color · scratch-resistant window"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "IN 1",
+      "description": "Channel 1 signal input. Clock (Internal Master) mode: Run/Stop gate. Clock (External Sync) mode: external 16th-note clock. Tuner / Scope / Spectrum: measurement input.",
+      "voltage": "±10V · AC or DC coupled per on-screen setting"
+    },
+    {
+      "name": "IN 2",
+      "description": "Channel 2 signal input. In Clock program (both Internal and External modes) acts as Reset input — send a gate to reset the clock's measure position.",
+      "voltage": "±10V · AC or DC coupled per on-screen setting"
+    },
+    {
+      "name": "IN 3",
+      "description": "Channel 3 signal input. In Clock and Wave Output programs doubles as a user-assignable CV input — route to any output's div/mult, offset, frequency, or amplitude with selectable attenuation.",
+      "voltage": "±10V · AC or DC coupled per on-screen setting · CV range ±5V (10Vpp)"
+    },
+    {
+      "name": "IN 4",
+      "description": "Channel 4 signal input. In Clock and Wave Output programs doubles as a user-assignable CV input — route to any output parameter with per-destination attenuation.",
+      "voltage": "±10V · AC or DC coupled per on-screen setting · CV range ±5V (10Vpp)"
+    },
+    {
+      "name": "THRU 1–4",
+      "description": "Buffered copies of the four inputs. Always live regardless of active program — use DATA as an inline probe without splitting cables.",
+      "voltage": "unity · buffered"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUT 1",
+      "description": "Program-dependent. Wave Output channel 1 (audio/LFO), Clock Output 1 (trigger), Voltage Monitor channel 1 CV or gate. Silent in Scope/Tuner/Spectrum programs.",
+      "voltage": "Wave: ±5V (10Vpp) · Clock: 0V to +5V · Volt Monitor CV: −5V to +10V"
+    },
+    {
+      "name": "OUT 2",
+      "description": "Program-dependent. Wave Output channel 2 (audio/LFO), Clock Output 2, Voltage Monitor channel 2.",
+      "voltage": "Wave: ±5V · Clock: 0V to +5V · Volt Monitor CV: −5V to +10V"
+    },
+    {
+      "name": "OUT 3",
+      "description": "Program-dependent. Clock Output 3 or Voltage Monitor channel 3 (CV / momentary gate / latched gate). Silent in Scope, Tuner, Spectrum, and Wave Output programs.",
+      "voltage": "Clock: 0V to +5V · Volt Monitor CV: −5V to +10V · Gate: user-set HI/LOW"
+    },
+    {
+      "name": "OUT 4",
+      "description": "Program-dependent. Clock Output 4 or Voltage Monitor channel 4 (CV / momentary gate / latched gate). Silent in Scope, Tuner, Spectrum, and Wave Output programs.",
+      "voltage": "Clock: 0V to +5V · Volt Monitor CV: −5V to +10V · Gate: user-set HI/LOW"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Program switching",
+      "trigger": "Menu button, then encoder, push to enter",
+      "description": "Only one program runs at a time. Switching programs re-assigns the meaning of IN 1–4 and what OUT 1–4 emit. The buffered THRU jacks keep passing signal regardless of program."
+    },
+    {
+      "name": "Oscilloscope — four channels + triggering",
+      "trigger": "Oscilloscope program",
+      "description": "Four channel traces at once. TIME scale 50µs to 5.0s per division (12 divisions full screen, so 600µs to 60s total window). Per-channel SCALE 1V/2V/5V per division, AC/DC coupling, vertical position. Trigger modes AUTO (free-run) and NORM (triggers on crossing LEVEL with RISE or FALL edge); AUTO recommended for slow signals."
+    },
+    {
+      "name": "Oscilloscope cursors",
+      "trigger": "Scope · top-left soft button 2-1 (CUR)",
+      "description": "Two cursors per axis — AX/BX on time, AY/BY on voltage — with live delta (BX-AX, BY-AY) readout. Y cursor references any of the four channel SCALEs on the fly. DISPLAY parameter keeps cursors visible while the pop-up is closed."
+    },
+    {
+      "name": "Oscilloscope XY Scope",
+      "trigger": "Scope · hold Menu ~1.5s, then XY SCOPE",
+      "description": "Renders a Lissajous pair: CH1(X) & CH2(Y), or CH3(X) & CH4(Y). Independent scale/offset per channel via the XY SCOPE pop-up so the XY figure and the waveform traces can be sized separately."
+    },
+    {
+      "name": "Oscilloscope Minimal Display Mode",
+      "trigger": "Scope · hold Menu ~1.5s, then MIN-MODE",
+      "description": "Hides grid, channel labels, and soft-button legends — just the traces. All soft buttons disabled except the small MIN-MODE indicator in the top-left; click it again to exit."
+    },
+    {
+      "name": "Tuner",
+      "trigger": "Tuner program · signal on selected input channel",
+      "description": "Displays nearest chromatic note, target frequency, measured frequency, and Hz difference. Any of IN 1–4 can be picked via bottom soft buttons. Typical accuracy ±0.01 Hz. Range 27.50 Hz to 2,960 Hz (A0 to ~F#7). Push 2-1 NORMALIZE for small signals (≤6Vpp)."
+    },
+    {
+      "name": "Voltage Monitor — 4 CV/Gate sources",
+      "trigger": "Voltage Monitor program · OUTPUT pop-up (2-4), then channel button 1-1 to 1-4",
+      "description": "Each of OUT 1–4 is independently set to CV (constant −5V to +10V), GATE-MO (gate while button held), or GATE-LA (latching toggle). Gate HI / LOW voltages are user-configurable per channel. IN 1–4 are scoped live on the display. Outputs retain their set values when switching to Tuner / Scope / Spectral programs."
+    },
+    {
+      "name": "Wave Output — dual generator",
+      "trigger": "Wave Output program",
+      "description": "Two precision generators on OUT 1 and OUT 2. Shapes: SINE, SQR, SAW, TRI. Per-channel FREQ (0.01 Hz to 9,999.99 Hz manual; 0.01 Hz to 4,200 Hz under CV), PHASE, AMP (−200% to +200%, negative inverts), OFFSET (−100% to +100%, re-centers the wave). Output ±5V (10Vpp)."
+    },
+    {
+      "name": "Wave Output — 1V/oct pitch tracking",
+      "trigger": "Wave Output · CV pop-up (2-3) assigns an input to WAVE1/WAVE2 FREQ, MODE set to 1V/OCT",
+      "description": "Set the base TUNE to note C0 (16.35 Hz), then CV IN accepts 1V/oct over C0 to C8 (8 octaves). Normal functional CV range 0V to +8V; larger inputs up to +10V still produce sound but become unstable above ~15,800 Hz."
+    },
+    {
+      "name": "Wave Output — waveshaping (CLIP / FOLD)",
+      "trigger": "Wave Output · MODE pop-up (2-4) · SHAPE · CLIP or FOLD",
+      "description": "CLIP squashes the wave flat once AMP × OFFSET pushes past ±5V — useful on sines and saws (no effect on square). FOLD reflects the waveform back when it passes ±5V; in FOLD mode the AMP control is relabeled FOLD and 50% produces an unmodified wave, 100% a first reflection."
+    },
+    {
+      "name": "Clock Output — 4 outputs, 32 div/mult values",
+      "trigger": "Clock Output program",
+      "description": "Four clock outputs with per-channel DIV/MULT (32 values from /48 to ×48, including triplets like ×3, ×6 4T, ×12 8T, ×48 128T) and OFFSET (±96 ticks, one quarter note). Internal Master (set BPM) or External Sync (IN 1 expects 16th-note pulses / PPQN 4). Press 1-4 for RUN/STOP, 1-3 for RESET; IN 2 is Reset gate in both modes. Clock outs 0V to +5V."
+    },
+    {
+      "name": "Clock Output — CV-assignable IN 3 / IN 4",
+      "trigger": "Clock · CV pop-up (2-3)",
+      "description": "IN 3 or IN 4 (range ±5V / 10Vpp) can modulate any Clock 1–4 DIV/MULT or OFFSET, with independent attenuation per destination. One CV source can drive several outputs at once for complex polyrhythmic modulation."
+    },
+    {
+      "name": "Spectrum Analyzer & Spectrograph",
+      "trigger": "Spectrum Analyzer or Spectrograph program",
+      "description": "FFT of the selected input channel (switch with bottom soft buttons). Spectrum draws bar-graph magnitude vs frequency with the peak bin's frequency read out at top. Spectrograph scrolls the same FFT as a color-coded heat map over time. Window type (square, Hann, etc.) selectable via 2-1."
+    },
+    {
+      "name": "Memory — 8 system-state snapshots",
+      "trigger": "Settings (1-4 on main menu) · MEMORY page",
+      "description": "Eight slots save a snapshot of every program's current state (Scope channel positions and TIME, Wave Output shape/freq/amp, Clock BPM, etc). 1-1 SAVE, 1-4 LOAD. Useful for recall between test routines or live performances."
+    },
+    {
+      "name": "Front-panel reset",
+      "trigger": "Hold 1-1 + 1-4 + 2-1 + 2-4 together (four corner soft buttons)",
+      "description": "Reboots DATA without cycling rack power. Same effect as a power cycle, but only affects DATA. Useful if a program locks or firmware misbehaves."
+    },
+    {
+      "name": "microSD firmware update",
+      "trigger": "Place .bin (DSxxxxxx for system or DBxxxxxx for bootloader) on microSD root, reinsert, power up",
+      "description": "System firmware auto-detects on boot. Bootloader firmware updates via Settings → MISC → BOOTLOADER FIRMWARE UPDATE. Current system v01.02.05 (230107) fixes NORM trigger lock-up on low-freq signals at fast timebase."
+    },
+    {
+      "name": "Calibration routines",
+      "trigger": "Settings · MISC page",
+      "description": "AUTO CALIBRATION recalibrates the ADCs using internally-routed reference voltages — run after ~30 min warm-up when moving to a new environment. MANUAL CALIBRATION of the DACs requires a sub-millivolt DMM on OUT 1–4 and is rarely needed after factory burn-in."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Calibrate an analog VCO",
+      "patch": "Use the Tuner program to trim an analog VCO's 1V/oct scaling against DATA's reference.",
+      "steps": [
+        "Press Menu, scroll with the encoder to Tuner, push to enter.",
+        "Patch your VCO's main out into DATA IN 1 (channel 1 should be highlighted in the bottom bar).",
+        "Patch a steady 0V (or a known C2 reference) into the VCO's V/oct, read the note on DATA, trim the VCO's offset/tune until it reads C2 exactly.",
+        "Patch a +3V reference (from a precision source) into the VCO V/oct — DATA should now read C5.",
+        "If it reads flat or sharp, adjust the VCO's scale trimmer until C5 lines up with 0.00 Hz NOTE DIF.",
+        "Repeat the 0V / +3V check until both octaves lock within a few cents (Hz equivalent).",
+        "If the VCO output is weak (<6Vpp), press 2-1 to engage NORMALIZE for cleaner detection."
+      ],
+      "signalOut": "None (measurement patch). DATA IN 1 reads note name, measured frequency, and Hz difference.",
+      "hear": "Tuner display shows nearest note name and Hz difference. A well-calibrated VCO holds within a few Hz across three octaves. Drift beyond a few Hz at C5 signals scale trim is off.",
+      "diagram": "DATA:\n* Program: Tuner\n* Input: IN 1\n\nVCO:\n\nReference:\n\n- Reference (Out) p> VCO (V/Oct)\n- VCO (Out) -> DATA (IN 1)"
+    },
+    {
+      "name": "Quad master clock",
+      "patch": "Drive four destinations from DATA's Clock Output at related divisions — whole notes, quarters, eighths, and triplets.",
+      "steps": [
+        "Press Menu, scroll to Clock Output, push to enter.",
+        "Set BPM with the encoder (e.g., 120) in Internal Master mode.",
+        "Assign OUT 1 to ×1 (quarter notes), OUT 2 to ×2 (8th notes), OUT 3 to ×3 (8th-note triplets, labelled 8T), OUT 4 to /4 (whole notes).",
+        "Patch OUT 1 into your main drum trigger.",
+        "Patch OUT 2 into a hi-hat trigger.",
+        "Patch OUT 3 into a percussion voice for a triplet layer.",
+        "Patch OUT 4 into an envelope that opens a pad once per bar.",
+        "Press soft-button 1-4 (RUN/STOP) to start; 1-3 (RESET) snaps all four outputs to beat one."
+      ],
+      "signalOut": "OUT 1–4 — trigger pulses, 0V low, +5V high (5Vpp).",
+      "hear": "A locked polyrhythm: four-on-the-floor kick, doubled hats, a triplet percussion pattern, and a slow pad swell every bar. All phases line up on downbeat after pressing RESET.",
+      "diagram": "DATA:\n* Program: Clock Output\n* Mode: Internal Master\n* BPM: 120\n* OUT 1: x1\n* OUT 2: x2\n* OUT 3: x3 (8T)\n* OUT 4: /4\n\nDrum:\n\nHats:\n\nPerc:\n\nEnvelope:\n\n- DATA (OUT 1) c> Drum (Trig)\n- DATA (OUT 2) c> Hats (Trig)\n- DATA (OUT 3) c> Perc (Trig)\n- DATA (OUT 4) t> Envelope (Trig)"
+    },
+    {
+      "name": "Dual LFO pair with phase offset",
+      "patch": "Use Wave Output for two slow LFOs with a deliberate phase offset — stereo-style movement from one module.",
+      "steps": [
+        "Press Menu, select Wave Output.",
+        "WAVE 1: TYPE sine, FREQ 0.20 Hz, AMP 100%, PHASE 0, OFFSET 0%.",
+        "WAVE 2: TYPE sine, FREQ 0.20 Hz, AMP 100%, PHASE 90, OFFSET 0%.",
+        "Patch OUT 1 to the filter cutoff CV of your left-channel VCF.",
+        "Patch OUT 2 to the filter cutoff CV of your right-channel VCF.",
+        "Run audio through both filters into a stereo mixer.",
+        "Adjust WAVE 2 PHASE between 0 and 180 to taste — 90 gives the widest stereo feel, 180 inverts for full anti-phase."
+      ],
+      "signalOut": "OUT 1 and OUT 2 — bipolar CV, ±5V sines at 0.2 Hz.",
+      "hear": "The two filters sweep in a lazy rotation. At 90° phase the stereo image pans as the cutoff opens and closes on opposite sides. Pull phase to 180° for full inversion, to 0° for mono sweep.",
+      "diagram": "DATA:\n* Program: Wave Output\n* WAVE 1: sine, 0.2Hz, 100%, 0deg\n* WAVE 2: sine, 0.2Hz, 100%, 90deg\n\nVCF L:\n\nVCF R:\n\n- DATA (OUT 1) >> VCF L (Cutoff)\n- DATA (OUT 2) >> VCF R (Cutoff)"
+    },
+    {
+      "name": "A4 reference tone for drift testing",
+      "patch": "Park DATA on 440 Hz and A/B-check an analog VCO for warm-up drift over 20 minutes.",
+      "steps": [
+        "Menu → Wave Output. WAVE 1: TYPE sine, FREQ 440.00 Hz, AMP 100%, OFFSET 0%.",
+        "Patch DATA OUT 1 into one channel of a mixer.",
+        "Patch your analog VCO into the other channel; tune by ear until the beating stops.",
+        "Patch the mixer output — or the VCO directly — into DATA IN 1, switch to Tuner to read the offset in Hz.",
+        "Record the VCO's starting note and NOTE DIF reading.",
+        "Leave the rack running; check back every 5 minutes for 20 minutes.",
+        "Watch how far the analog VCO drifts against DATA's digital 440 Hz — this maps the warm-up behaviour of your oscillator."
+      ],
+      "signalOut": "DATA OUT 1 — sine reference at 440.00 Hz, ±5V.",
+      "hear": "A steady pure tone from DATA. The unpatched analog VCO slowly drifts as it warms up — beating against DATA's tone builds, then disappears as you retune. Tuner reads the exact Hz gap between the two.",
+      "diagram": "DATA:\n* Program: Wave Output then Tuner\n* WAVE 1: sine, 440Hz, 100%\n\nVCO:\n\nMixer:\n\n- DATA (OUT 1) -> Mixer (In 1)\n- VCO (Out) -> Mixer (In 2)\n- VCO (Out) -> DATA (IN 1)"
+    },
+    {
+      "name": "Bench voltage source",
+      "patch": "Use Voltage Monitor as a four-channel DC source for poking at a new module's CV response.",
+      "steps": [
+        "Menu → Voltage Monitor.",
+        "Push soft-button 2-4 (OUTPUT) to open the channel output pop-up.",
+        "Set OUT 1 TYPE to CV, dial VOLTAGE to +1.00V with the encoder (push-turn for coarse).",
+        "Repeat for OUT 2, OUT 3, OUT 4 at +2.00V, +3.00V, and −2.00V.",
+        "Leave the OUTPUT pop-up — the four live values show at the bottom of the screen.",
+        "Patch OUT 1 into the CV input of the module under test; swap between OUT 1–4 to confirm each voltage response.",
+        "Patch the module's output back into DATA IN 1 — the Voltage Monitor displays it scoped live on the top panel."
+      ],
+      "signalOut": "OUT 1–4 — constant DC, user-set between −5V and +10V.",
+      "hear": "No audio — this is a measurement patch. The module under test should respond predictably at +1V, +2V, +3V (equal increments if the CV path is linear). IN 1–4 scope each reading live on the display.",
+      "diagram": "DATA:\n* Program: Voltage Monitor\n* OUT 1: CV +1V\n* OUT 2: CV +2V\n* OUT 3: CV +3V\n* OUT 4: CV -2V\n\nDUT:\n\n- DATA (OUT 1) >> DUT (CV In)\n- DUT (Out) -> DATA (IN 1)"
+    },
+    {
+      "name": "Spectral filter-sweep visualiser",
+      "patch": "Watch a VCF's resonance peak traverse the spectrum as an LFO sweeps its cutoff.",
+      "steps": [
+        "Menu → Spectrograph.",
+        "Patch a noise source into your VCF input.",
+        "Patch an LFO (0.1 Hz triangle) into the VCF cutoff CV.",
+        "Turn VCF resonance high but below self-oscillation.",
+        "Patch the VCF output into DATA IN 1 (use the bottom soft buttons to confirm channel 1 is the FFT source).",
+        "Let it run — the spectrograph paints the cutoff peak travelling up and down the frequency axis over time.",
+        "Swap to Spectrum Analyzer program to see a live bar-graph snapshot with peak-bin frequency read out instead of the scrolling heat map."
+      ],
+      "signalOut": "None (measurement patch). DATA displays the spectrum of IN 1.",
+      "hear": "A slowly sweeping whooshing noise through the filter. On the display, a bright band climbs and falls on the frequency axis tracing the resonant peak; low-level noise stays dim, the peak stays bright.",
+      "diagram": "DATA:\n* Program: Spectrograph\n\nNoise:\n\nVCF:\n* Resonance: high\n\nLFO:\n* Rate: 0.1Hz triangle\n\n- Noise (Out) -> VCF (In)\n- LFO (Out) >> VCF (Cutoff)\n- VCF (Out) -> DATA (IN 1)"
+    },
+    {
+      "name": "External-synced poly-clock",
+      "patch": "Chain DATA behind a master sequencer clock so every DATA output divides or multiplies that clock, with IN 2 as reset.",
+      "steps": [
+        "Menu → Clock Output. Open MODE (2-4) and set External Sync.",
+        "Patch your master clock (DAW / sequencer / Pam's) into DATA IN 1 — DATA expects PPQN 4 (16th-note pulses).",
+        "Patch the master sequencer's reset into DATA IN 2 so downbeats realign.",
+        "Assign OUT 1 ×1 (quarters), OUT 2 /2 (half notes), OUT 3 ×4 (16ths), OUT 4 ×3 (8T triplets).",
+        "Patch OUT 1 into a bass drum trigger.",
+        "Patch OUT 2 into a half-time snare.",
+        "Patch OUT 3 into a fast ratchet voice; OUT 4 into a triplet perc.",
+        "Start/stop the master — DATA follows. Triggering the master's reset snaps all four outputs back to beat one."
+      ],
+      "signalOut": "OUT 1–4 — trigger pulses, 0V to +5V, locked to the external clock.",
+      "hear": "The whole rhythm locks to your master clock. Stopping the master stops all four DATA outputs. Triggering reset snaps everything onto the downbeat together — useful after tempo changes or live edits.",
+      "diagram": "DATA:\n* Program: Clock Output\n* Mode: External Sync (PPQN 4)\n* OUT 1: x1\n* OUT 2: /2\n* OUT 3: x4\n* OUT 4: x3 (8T)\n\nMaster Clock:\n\nReset Source:\n\nKick:\n\nSnare:\n\nRatchet:\n\nPerc:\n\n- Master Clock (Out) c> DATA (IN 1)\n- Reset Source (Out) t> DATA (IN 2)\n- DATA (OUT 1) c> Kick (Trig)\n- DATA (OUT 2) c> Snare (Trig)\n- DATA (OUT 3) c> Ratchet (Trig)\n- DATA (OUT 4) c> Perc (Trig)"
+    },
+    {
+      "name": "Debug an unknown cable",
+      "patch": "Park DATA in Scope to identify what's on a mystery cable — CV, gate, audio, or nothing.",
+      "steps": [
+        "Menu → Oscilloscope.",
+        "Patch the mystery cable into DATA IN 1.",
+        "Push channel 1's bottom button to open its pop-up; set DC coupling, SCALE 5V/div as a starting point.",
+        "Push 2-4 (TIME) and turn the encoder to set 10MS/div (then adjust).",
+        "Set TRIG mode AUTO (top-row 2-2) until you know what's on the line — NORM hides non-triggering signals.",
+        "Read the trace: flat line = DC voltage, slow wave = LFO, fast wave = audio, pulse = gate/trigger.",
+        "Zoom the time scale — 5.0S/div for slow LFOs, 1MS/div for audio.",
+        "Toggle AC coupling if a large DC offset is hiding a small AC component.",
+        "Push 2-1 (CUR) and enable cursors to measure exact period or amplitude."
+      ],
+      "signalOut": "None (measurement patch). DATA displays the trace of IN 1.",
+      "hear": "No audio — visual identification. Flat trace at +2V means DC CV; a regular 1 Hz triangle means an LFO; a 4 kHz sine means audio. A single brief step means a trigger. Read amplitude from the Y cursor, period from the X cursor.",
+      "diagram": "DATA:\n* Program: Oscilloscope\n* CH 1: DC, 5V/div\n* TIME: 10ms/div\n* TRIG: AUTO\n\nMystery:\n\n- Mystery (Out) >> DATA (IN 1)"
+    }
+  ]
+}

@@ -169,18 +169,57 @@
   "patchIdeas": [
     {
       "name": "8-voice polyphony with MultiWAVE and QXG",
-      "patch": "Ch.Index Out → MultiWAVE Span CV · PoliMATHS outputs → QXG control headers · MultiWAVE → QXG signal headers",
-      "diagram": "POLIMATHS:\n* Mode: Channel Index\n* Cycle: Off\n- Keys (Gate) g> PoliMATHS (Activate) // fire envelope for selected voice\n- PoliMATHS (Channel Index Output) >> MultiWAVE (Span CV) // route voice\n- PoliMATHS (Channel Outputs 1–8) >> QXG (Control Inputs 1–4) // via header\n- MultiWAVE (Channel 1–8 Outputs) -> QXG (Signal Inputs 1–4) // via header"
+      "patch": "Pick voices with Span, fire an envelope per note, and hand the channel assignment off to MultiWAVE so each gate plays a different voice.",
+      "steps": [
+        "Press the Mode button until the Span Activity Window is WHITE (Channel Index mode).",
+        "Turn Cycle OFF (lightning bolt unlit).",
+        "Set Span to 12:00 and the Span CV Input attenuverter fully CW — this lets incoming Channel Index CV pick voices.",
+        "Set Rise short, Fall to taste, Curve at 12:00, Strength full CW, Osc fully CCW (pure envelope).",
+        "Patch your keyboard/sequencer Gate out → PoliMATHS Activate input.",
+        "Patch your keyboard/sequencer 1V/oct → MultiWAVE's pitch input (all voices follow pitch).",
+        "Patch PoliMATHS Channel Index Output → MultiWAVE Span CV input to route each note to a new voice.",
+        "Connect the PoliMATHS → QXG envelope header and MultiWAVE → QXG signal header on the back of the modules.",
+        "Turn up the QXG channel mixers and play — each gate fires a fresh voice with its own envelope."
+      ],
+      "signalOut": "QXG mix output — 8-voice polyphonic synth bus, line level.",
+      "hear": "Chords and held notes stack instead of stealing each other; each new key press lands on a fresh voice and rings out on its own envelope. Turn Span CV attenuverter back from full CW to mask some voices with a stuck cursor.",
+      "diagram": "POLIMATHS:\n* Span Mode: Channel Index (WHITE)\n* Cycle: OFF\n* Span: 12:00 · Span CV Atten: full CW\n* Rise: short · Fall: medium · Curve: 12:00\n* Strength: full CW · Osc: full CCW\n\n- Keys (Gate) g> POLIMATHS (Activate)\n- Keys (1V/oct) p> MULTIWAVE (Pitch)\n- POLIMATHS (Channel Index Out) >> MULTIWAVE (Span CV) // route voice per note\n- POLIMATHS (rear header) >> QXG (envelope header) // 8 VCA CVs\n- MULTIWAVE (rear header) >> QXG (signal header) // 8 voices\n- QXG (Mix Out) -> Output (In)"
     },
     {
-      "name": "Complex polyrhythm",
-      "patch": "Parallel mode · Span set to spread clock divisions · different Rise/Fall per channel via Spread",
-      "diagram": "POLIMATHS:\n* Mode: Parallel\n* Cycle: Off\n- Clock (Out) c> PoliMATHS (Activate) // divided per channel by Span\n- PoliMATHS (Channel Outputs 1–8) >> QXG (Control Inputs 1–4) // polyrhythmic VCAs"
+      "name": "Polyrhythmic 8-channel modulation bus",
+      "patch": "One clock, eight different divisions, each channel with its own envelope length via Spread.",
+      "steps": [
+        "Press the Mode button until the Span Activity Window is BLUE (Parallel mode).",
+        "Turn Cycle OFF.",
+        "Patch a steady clock (e.g. 1/16 notes) → PoliMATHS Activate input.",
+        "Turn Span to the right of 12:00 — the further CW, the bigger the spread of divisions (see panel Ch1=×1 up to Ch8=×16).",
+        "Set Rise short, Fall medium, Curve at 12:00, Osc fully CCW (envelope only), Strength full CW.",
+        "Turn the Spread Combo Pot to about 2 o'clock.",
+        "Set the Fall attenuverter slightly positive so rightmost channels ring out longer; set the Strength attenuverter slightly negative so they fade quieter.",
+        "Patch Channel Outputs 1–8 into eight modulation destinations (filter cutoffs, VCAs, pans, wavefolders…)."
+      ],
+      "signalOut": "Channel Outputs 1–8 — eight polyrhythmic unipolar envelopes, 0 to +9V.",
+      "hear": "A single clock blossoms into eight interlocking pulses — Ch1 ticks every clock, Ch8 only every 16 clocks, and the envelopes get longer and softer as you move right. Turn Span back toward 12:00 to collapse everyone onto ×1 and resync.",
+      "diagram": "POLIMATHS:\n* Span Mode: Parallel (BLUE)\n* Cycle: OFF\n* Span: right of 12:00 (spread divisions)\n* Rise: short · Fall: medium · Curve: 12:00\n* Osc: full CCW · Strength: full CW\n* Spread: ~2 o'clock\n* Fall Atten: slight + · Strength Atten: slight −\n\n- Clock (Out) c> POLIMATHS (Activate)\n- POLIMATHS (Ch 1) >> Filter (Cutoff)\n- POLIMATHS (Ch 2) >> VCA (CV)\n- POLIMATHS (Ch 3–8) >> other CV destinations (In) // polyrhythmic CV bus"
     },
     {
-      "name": "Audio-rate oscillator bank",
-      "patch": "Bipolar Oscillation mode · Osc full CW · Rate → 1v/oct pitch · Strength sets amplitude",
-      "diagram": "POLIMATHS:\n* Osc: Full CW\n* Oscillation Bias: Bipolar\n* Rate Attenuverter: Full CW\n- Keys (Pitch) p> PoliMATHS (Rate CV) // 1V/oct tracking\n- PoliMATHS (Channel Outputs 1–8) -> Mixer (In) // 8-osc bank"
+      "name": "Audio-rate 8-oscillator drone bank",
+      "patch": "Push the oscillator into audio range, tune with 1V/oct, stack all eight channels into one voice.",
+      "steps": [
+        "Long-press the Mode button until the Mode LED is ORANGE (Bipolar Oscillation).",
+        "Press the Mode button (short press) until the Span Activity Window is WHITE (Channel Index).",
+        "Hold Cycle button for 1 second until it turns PURPLE (Cycle ALL) so every channel keeps sounding.",
+        "Turn Osc panel control fully CW (full oscillation, no envelope shaping).",
+        "Turn Rate to about 3 o'clock and Rate attenuverter fully CW — this enables 1V/oct tracking on Rate CV.",
+        "Set Shape to 12:00 (triangle), Strength to about 2 o'clock.",
+        "Patch a 1V/oct source → Rate CV input.",
+        "Turn Spread slightly right — since Rate's attenuverter is full CW (tracking), Spread instead fans out across Strength/Osc/Fall/Shape so each channel sits differently in the mix.",
+        "Patch Channel Outputs 1–8 → 8-channel mixer (or a few submixes).",
+        "Hold Cycle + Mode for 1 second to toggle SubMixing ON if you want to collapse groups onto fewer outputs."
+      ],
+      "signalOut": "Mixer output of Channels 1–8 — stacked audio-rate oscillator bank, bipolar around 0V up to ±9V per channel.",
+      "hear": "A thick drone with eight detuned-ish voices. Change Shape for timbre (saw/triangle/ramp, push CV for noise), play the 1V/oct input for chords, and open Spread to scatter Strength or Rate so each channel has its own character.",
+      "diagram": "POLIMATHS:\n* Oscillation Bias: BIPOLAR (Mode long-press, ORANGE)\n* Span Mode: Channel Index (WHITE)\n* Cycle: ALL (PURPLE)\n* Osc: full CW\n* Rate: ~3 o'clock · Rate Atten: full CW (1V/oct)\n* Shape: 12:00 · Strength: ~2 o'clock\n\n- Pitch CV (1V/oct) p> POLIMATHS (Rate CV) // tracks pitch\n- POLIMATHS (Ch 1–8 Outputs) -> Mixer (In 1–8) // 8-osc drone\n- Mixer (Out) -> Output (In)"
     }
   ]
 }

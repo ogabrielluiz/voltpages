@@ -1,0 +1,176 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://happynerding.com/category/isolator/",
+      "https://modulargrid.net/e/happy-nerding-isolator",
+      "https://modulargrid.net/e/happy-nerding-isolator-2022-silver",
+      "https://www.noisebug.net/products/happy-nerding-isolator-v1",
+      "https://www.noisebug.net/products/happy-nerding-isolator",
+      "https://schneidersladen.de/en/happy-nerding-isolator-v2",
+      "https://www.analoguehaven.com/happy-nerding/isolator-v2/",
+      "https://trianglecore.rocks/store/eurorack/p/isolator-by-happy-nerding-headphone-and-balanced-line-output"
+    ]
+  },
+  "slug": "happy-nerding--isolator",
+  "name": "Isolator",
+  "manufacturer": "Happy Nerding",
+  "hp": 4,
+  "tags": ["I/O", "UTILITY", "MIXER"],
+  "description": "4 HP stereo output interface: transformer galvanic isolation to 1/4-inch TRS balanced outs plus headphone jack (v2 panel). Level drives the mains, Phones the cans. L input mono-normals to R when R is unpatched.",
+  "controls": [
+    {
+      "name": "Level",
+      "scope": "Main L+R",
+      "description": "Master attenuator feeding the isolated 1/4-inch TRS outputs. Controls both channels together — no per-channel trim.",
+      "detail": "stereo-linked attenuator · CCW: silent · CW: unity / line level"
+    },
+    {
+      "name": "Phones",
+      "scope": "Headphone out (v2)",
+      "description": "Independent level for the front-panel headphone jack. Moves separately from the balanced Level knob, so you can monitor loud while the mains stay muted.",
+      "detail": "dedicated headphone attenuator · independent of Level"
+    },
+    {
+      "name": "Headphone gain jumpers",
+      "scope": "Internal (rear PCB, v2)",
+      "description": "Two removable jumpers behind the panel set the headphone amp gain. Installed from factory for max gain; pull both if the amp is too loud/harsh with low-impedance cans.",
+      "detail": "both in: max gain (default) · both out: reduced gain"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "L In (3.5mm)",
+      "description": "Left channel audio input on a 3.5mm mini jack at eurorack line level. Normalled to the right channel so a mono signal plugged here alone reaches both balanced outs and both headphone sides.",
+      "voltage": "eurorack line level (±5V typical)",
+      "normalizedTo": "R channel when R In is unpatched (mono sum to stereo)"
+    },
+    {
+      "name": "R In (3.5mm)",
+      "description": "Right channel audio input on a 3.5mm mini jack at eurorack line level. Breaks the mono normalization once patched — L and R then stay discrete.",
+      "voltage": "eurorack line level (±5V typical)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Out L (1/4\" TRS)",
+      "description": "Left balanced line-level output through a transformer. Send to mixer/interface TRS input. DC blocked and galvanically isolated from the eurorack bus — no shared ground path to the destination.",
+      "voltage": "balanced line level · transformer-isolated"
+    },
+    {
+      "name": "Out R (1/4\" TRS)",
+      "description": "Right balanced line-level output through its own transformer. Matches Out L. If R In is unpatched, carries the L In signal (mono-to-stereo).",
+      "voltage": "balanced line level · transformer-isolated"
+    },
+    {
+      "name": "Phones",
+      "description": "Stereo headphone output driven by the on-board amp. Taken post-transformer so it benefits from the same isolation. Level set by Phones knob, not by Level.",
+      "voltage": "headphone amp · gain set by internal jumpers"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Transformer galvanic isolation",
+      "trigger": "always on (passive signal path)",
+      "description": "Both 1/4-inch outs pass through audio transformers. No DC path exists between the eurorack ground and the destination ground — this kills hum caused by connecting a laptop/mixer on a different outlet. Expect a very slight low-end roll-off and subtle harmonic coloration characteristic of small audio transformers."
+    },
+    {
+      "name": "Mono-to-stereo normalling",
+      "trigger": "R In jack empty",
+      "description": "With nothing in R In, the L In signal is internally routed to the right channel of both the balanced outs and the headphone amp. Plug only a mono source into L and get identical stereo output — no mult or splitter needed."
+    },
+    {
+      "name": "Independent headphone monitoring",
+      "trigger": "patch anything into L/R",
+      "description": "The Phones knob is separate from Level, so you can crank headphone monitoring while the balanced outs stay at performance level (or vice versa). Handy for check-listening before unmuting on a PA."
+    },
+    {
+      "name": "Headphone gain trim via jumpers",
+      "trigger": "open the module, rear PCB (v2)",
+      "description": "Default jumpers set the headphone amp for max gain so even 250-ohm studio cans drive loud. If low-impedance IEMs or 32-ohm cans distort or are harsh, power down and pull both jumpers to drop the gain stage."
+    },
+    {
+      "name": "v1 vs v2 panel",
+      "trigger": "hardware revision",
+      "description": "v1 (original, discontinued): one Level knob, two 3.5mm inputs, two 1/4-inch balanced outs, plus a ground-lift switch per channel on the front panel — no headphone output. v2 (current): adds a Phones knob and front-panel headphone jack and drops the ground-lift switches; internal jumpers set headphone gain. This sheet reflects v2 — the version sold today."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Final stereo out to a mixer",
+      "patch": "Route the stereo master from a eurorack mixer through Isolator into a studio desk or interface with no ground hum.",
+      "steps": [
+        "Patch your main stereo mixer (L) -> Isolator (L In) with a 3.5mm TS cable.",
+        "Patch your main stereo mixer (R) -> Isolator (R In).",
+        "Run a 1/4-inch TRS cable from Isolator (Out L) to the mixer/interface Left line input.",
+        "Run a second 1/4-inch TRS cable from Isolator (Out R) to the Right line input.",
+        "Start with Isolator Level fully CCW, un-mute the destination, then raise Level until the destination meters read around -12 dBFS on the loudest part.",
+        "If hum still appears, try a TS (unbalanced) cable on the destination end, or lift the destination's own ground at its end — v2 has no front-panel ground-lift switches."
+      ],
+      "signalOut": "Out L and Out R — transformer-isolated balanced line level to the destination's TRS inputs.",
+      "hear": "The full eurorack stereo mix arriving clean at the destination. Compared to a plain 3.5mm-to-1/4-inch cable, the noise floor drops and any 50/60 Hz buzz disappears. The transformer adds a subtle warmth on transients.",
+      "diagram": "Isolator:\n* Level: set to taste (start CCW)\n\nEurorack Mixer:\nAudio Interface:\n\n- Eurorack Mixer (Out L) -> Isolator (L In)\n- Eurorack Mixer (Out R) -> Isolator (R In)\n- Isolator (Out L) -> Audio Interface (In L) // 1/4 TRS balanced\n- Isolator (Out R) -> Audio Interface (In R)"
+    },
+    {
+      "name": "Mono jam to stereo PA",
+      "patch": "Send a single mono bus to both sides of the PA using the L-to-R normalled routing.",
+      "steps": [
+        "Patch your mono output (drum bus, single VCA, etc.) -> Isolator (L In).",
+        "Leave Isolator (R In) empty — this is the key step; the L signal normals to R internally.",
+        "Run 1/4-inch TRS from Isolator (Out L) -> PA Left; from (Out R) -> PA Right.",
+        "Set Level fully CCW, bring up the PA, then raise Level to reach the PA's target input level.",
+        "If one side still hums at the venue, swap cables or try a DI-style lift at the PA end — transformer isolation usually kills the loop on its own."
+      ],
+      "signalOut": "Out L and Out R — identical mono signal fed through two transformers to both PA sides.",
+      "hear": "Centered mono image across the PA with hum-free isolation. If the performance is mono but you only have a stereo snake, this saves a splitter cable and guarantees both sides match in level.",
+      "diagram": "Isolator:\n* R In: empty (mono normalling active)\n* Level: to PA target\n\nMono Bus:\nPA:\n\n- Mono Bus (Out) -> Isolator (L In)\n- Isolator (Out L) -> PA (Left)\n- Isolator (Out R) -> PA (Right) // normalled copy of L"
+    },
+    {
+      "name": "Silent headphone pre-check",
+      "patch": "Audition the rack on headphones with the balanced outs muted before unmuting the house.",
+      "steps": [
+        "Patch stereo mix -> Isolator (L In) and (R In) as usual.",
+        "Turn Isolator Level fully CCW so the 1/4-inch outs are silent — the PA stays dark.",
+        "Plug headphones into Isolator (Phones).",
+        "Bring up the Phones knob until monitoring is comfortable — the balanced outs remain muted because Phones is independent of Level.",
+        "When the patch is performance-ready, raise the Level knob to feed the PA.",
+        "Keep Phones steady or lower it once the room is loud, to protect your ears."
+      ],
+      "signalOut": "Phones jack only — headphone-level stereo. Out L / Out R stay silent while Level is CCW.",
+      "hear": "Full stereo mix in your headphones while the house speakers stay quiet. Perfect for tuning a new patch or sound-checking a sequence without disturbing the room.",
+      "diagram": "Isolator:\n* Level: full CCW (balanced outs muted)\n* Phones: to taste\n\nEurorack Mixer:\nHeadphones:\n\n- Eurorack Mixer (Out L) -> Isolator (L In)\n- Eurorack Mixer (Out R) -> Isolator (R In)\n- Isolator (Phones) -> Headphones (In) // balanced outs silent"
+    },
+    {
+      "name": "Laptop-free recording chain",
+      "patch": "Record the rack straight into a USB interface on battery power using Isolator to kill the laptop ground loop.",
+      "steps": [
+        "Run a 3.5mm stereo (or two TS) from the eurorack output mixer into Isolator (L In) and (R In).",
+        "Connect Isolator (Out L) and (Out R) to two line inputs on the USB interface with 1/4-inch TRS cables.",
+        "Unplug the laptop charger so the laptop runs on battery — this is the scenario where ground hum is worst without isolation.",
+        "Arm record on the DAW. Start Isolator Level CCW and raise it until the DAW peaks around -6 dBFS.",
+        "If a 50/60 Hz buzz persists even on battery, check whether the interface is also on its own ground — the Isolator already breaks the rack side.",
+        "Plug headphones into Isolator (Phones) for latency-free monitoring while you record."
+      ],
+      "signalOut": "Out L / Out R -> interface line ins. Phones -> direct monitoring without DAW round-trip latency.",
+      "hear": "A clean stereo recording free of the charger-whine and laptop-buzz that plagues direct 1/8-inch-to-1/4-inch captures. Latency-free direct monitoring in the cans while the DAW does its thing.",
+      "diagram": "Isolator:\n* Level: DAW peaks ~ -6 dBFS\n* Phones: comfortable\n\nEurorack Mixer:\nUSB Interface:\nHeadphones:\n\n- Eurorack Mixer (Out L) -> Isolator (L In)\n- Eurorack Mixer (Out R) -> Isolator (R In)\n- Isolator (Out L) -> USB Interface (Line 1)\n- Isolator (Out R) -> USB Interface (Line 2)\n- Isolator (Phones) -> Headphones (In) // zero-latency monitor"
+    },
+    {
+      "name": "Two destinations, one isolator",
+      "patch": "Feed a pedal chain from the balanced outs while the performer monitors on headphones at a different level.",
+      "steps": [
+        "Patch stereo mix -> Isolator (L In) and (R In).",
+        "Patch Isolator (Out L) and (Out R) via 1/4-inch TRS into a stereo pedal's L/R inputs — the isolation kills the notorious stompbox-power ground loop.",
+        "Plug headphones into Isolator (Phones).",
+        "Set Phones knob for comfortable listening, independent of the Level feeding the pedals.",
+        "Adjust Level so the pedal input LED sits below clip — most pedals expect lower-than-line level so back off if the pedal overdrives unintentionally.",
+        "If pedal-power hum returns despite isolation, try a different wall outlet for the pedal PSU or a dedicated isolated pedal-power brick."
+      ],
+      "signalOut": "Out L/R -> pedal chain at line/instrument level. Phones -> independent monitor at performer-comfortable level.",
+      "hear": "Pedal reverb/delay tails on the main mix with no ground buzz, while the player hears a separate balance on headphones. Great for stage or home-studio hybrid setups.",
+      "diagram": "Isolator:\n* Level: below pedal clip\n* Phones: performer comfort\n\nEurorack Mixer:\nStereo Pedal:\nHeadphones:\n\n- Eurorack Mixer (Out L) -> Isolator (L In)\n- Eurorack Mixer (Out R) -> Isolator (R In)\n- Isolator (Out L) -> Stereo Pedal (In L)\n- Isolator (Out R) -> Stereo Pedal (In R)\n- Isolator (Phones) -> Headphones (In)"
+    }
+  ]
+}

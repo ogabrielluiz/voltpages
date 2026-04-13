@@ -56,10 +56,10 @@
       "detail": "Bipolar attenuverter · interacts with blend parameters in alternate modes"
     },
     {
-      "name": "Blend / Mode / Spread / Feedback / Reverb",
+      "name": "Blend / Spread / Feedback / Reverb",
       "scope": "Global",
-      "description": "Single knob with four selectable functions chosen by short-pressing Freeze+Blend combo: dry/wet blend, stereo spread, feedback amount, reverb amount. LED color indicates current assignment.",
-      "detail": "Short-press mode button cycles: green=blend · orange=spread · red=feedback · yellow=reverb · held = shows all four"
+      "description": "Single knob with four selectable functions chosen by short-pressing the small Quality button: dry/wet blend, stereo spread, feedback amount, reverb amount. The Blend LED color indicates the currently selected assignment.",
+      "detail": "Short-press Quality cycles slot: green=Dry/Wet · red=Spread · orange=Feedback · yellow=Reverb (holding FREEZE + short-pressing Quality instead cycles the four alternate algorithms)"
     },
     {
       "name": "In Gain",
@@ -89,18 +89,18 @@
       "description": "Continuous stereo grain cloud reading from the rolling buffer. POSITION scans, SIZE sets grain length, DENSITY sets rate, PITCH transposes. Blend knob accesses dry/wet, spread, feedback, reverb."
     },
     {
-      "name": "Stretch mode",
-      "trigger": "hold Freeze + rotate Blend to second slot",
+      "name": "Pitch-Shifter / Time-Stretcher mode",
+      "trigger": "hold FREEZE + short-press Quality button until Blend LED is yellow",
       "description": "Time-stretching / pitch-shifting algorithm. DENSITY becomes playback-speed control, SIZE becomes window/overlap. POSITION and PITCH decouple — you can hold pitch while stretching."
     },
     {
-      "name": "Looping delay mode",
-      "trigger": "alternate mode 3 (Freeze+Position combo)",
+      "name": "Looping Delay mode",
+      "trigger": "hold FREEZE + short-press Quality button until Blend LED is red",
       "description": "Classic pitch-shifting delay with feedback. SIZE sets delay time up to ~8s (mono) / ~4s (stereo). POSITION scans within the delay buffer to create tape-style scrubbing."
     },
     {
-      "name": "Spectral madness mode",
-      "trigger": "alternate mode 4 (Freeze+Size combo)",
+      "name": "Spectral Madness mode",
+      "trigger": "hold FREEZE + short-press Quality button until Blend LED is pink",
       "description": "FFT-based spectral mangler. POSITION scans frequency bins, SIZE changes window length, DENSITY and TEXTURE perform magnitude clipping and phase randomization. Produces paul-stretch-like drones and phaser effects."
     },
     {
@@ -132,43 +132,136 @@
   "patchIdeas": [
     {
       "name": "Frozen ambient pad",
-      "patch": "Any audio source → IN L (feeds R via normal) · hit FREEZE · POSITION at noon · SIZE ~2 o'clock (large grains) · DENSITY ~2 o'clock (thick cloud) · Blend: reverb selected and set CW · instant evolving pad from a single captured phrase",
-      "diagram": "Clouds:\n* Mode: Granular (default)\n* Freeze: ON\n* Blend slot: Reverb\n\n- Source (Out) -> Clouds (IN L)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
+      "patch": "Capture a phrase, freeze the buffer, and drown it in reverb for an instant evolving pad.",
+      "steps": [
+        "Start in Granular mode (default on power-up — LED is green).",
+        "Short-press the small Quality/blend-select button until the Blend LED is yellow (Reverb slot).",
+        "Turn the Blend knob to ~3 o'clock (heavy reverb tail).",
+        "POSITION at noon, SIZE at ~2 o'clock (large grains), DENSITY at ~2 o'clock (thick synchronous cloud), TEXTURE at noon.",
+        "Patch your source → IN L (IN R is normalized from L for mono).",
+        "Patch OUT L → output L, OUT R → output R.",
+        "Play a few seconds of source, then press FREEZE — the button lights, buffer stops recording.",
+        "Unpatch the source or leave it — you're now hearing only the frozen buffer reverberated."
+      ],
+      "signalOut": "OUT L / OUT R — stereo reverberated grain cloud, ±8V, continues forever until you un-freeze.",
+      "hear": "A motionless lush pad that shimmers and breathes as grains re-scan the frozen snippet. Nudge POSITION by hand to scrub into different parts of the capture.",
+      "diagram": "Clouds:\n* Mode: Granular (green)\n* Freeze: ON (after capture)\n* Blend slot: Reverb (yellow), ~3 o'clock\n* Size: ~2 o'clock · Density: ~2 o'clock\n\n- Source (Out) -> Clouds (IN L)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
     },
     {
-      "name": "Pitch-shifted delay",
-      "patch": "Alternate mode 3 (looping delay) · SIZE sets delay time · PITCH CV from sequencer produces per-repetition pitch shift · Blend: feedback ~2 o'clock for multiple repeats · drum loop in, melodic delay out",
-      "diagram": "Clouds:\n* Mode: Looping Delay\n* Blend slot: Feedback (~2 o'clock)\n\n- Drum Loop (Out) -> Clouds (IN L)\n- Sequencer (Pitch) p> Clouds (V/OCT)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
+      "name": "Pitch-shifted looping delay",
+      "patch": "Switch to Looping Delay mode so SIZE becomes delay time and PITCH CV detunes each repeat.",
+      "steps": [
+        "Hold FREEZE and short-press the Quality/blend-select button repeatedly until the Blend LED turns red — that's Looping Delay mode. Release FREEZE.",
+        "Short-press the Quality button until the Blend LED is orange (Feedback slot), then set the Blend knob to ~2 o'clock for 3–4 audible repeats.",
+        "SIZE sets delay time — start at noon (~1s). DENSITY at noon. TEXTURE at noon.",
+        "Patch your drum loop → IN L.",
+        "Patch a sequencer CV → V/OCT — each clock step transposes the repeats by that interval.",
+        "Patch OUT L → output L, OUT R → output R.",
+        "Turn SIZE live to slide the delay tape-style."
+      ],
+      "signalOut": "OUT L / OUT R — dry+delayed drum loop ±8V, each repeat transposed by the V/OCT step.",
+      "hear": "A dub-style delay where the echoes climb the sequence. Short SIZE gives tight slapback; long SIZE gives tape scrubbing when you turn it live.",
+      "diagram": "Clouds:\n* Mode: Looping Delay (red) // hold FREEZE + tap Quality until red\n* Blend slot: Feedback (orange), ~2 o'clock\n* Size: noon (~1s)\n\n- Drum Loop (Out) -> Clouds (IN L)\n- Sequencer (Pitch) p> Clouds (V/OCT)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
     },
     {
       "name": "Audio-rate SIZE FM",
-      "patch": "Granular mode · VCO square → SIZE CV (audio rate) · Freeze ON over a held chord · POSITION slowly drifting via LFO · produces metallic, bell-like FM sidebands from the static source",
-      "diagram": "Clouds:\n* Mode: Granular\n* Freeze: ON\n\n- Held Chord (Out) -> Clouds (IN L)\n- VCO (Square) >> Clouds (SIZE CV) // audio-rate\n- LFO (Slow) >> Clouds (POSITION CV)\n- Clouds (OUT L) -> Mixer (L)\n- Clouds (OUT R) -> Mixer (R)"
+      "patch": "Modulate grain size at audio rate with a VCO to get bell-like sidebands on a frozen chord.",
+      "steps": [
+        "Confirm Granular mode (green Blend LED — power-cycle if unsure).",
+        "Short-press the Quality button until the Blend LED is green (Dry/Wet slot), set Blend knob fully CW (all wet).",
+        "POSITION at noon, SIZE at ~11 o'clock, DENSITY at ~2 o'clock (thick cloud), TEXTURE at noon.",
+        "Patch a held chord or sustained pad → IN L.",
+        "Press FREEZE to lock the buffer on the chord.",
+        "Patch a VCO square wave (50–500Hz) → SIZE CV, attenuverter at ~2 o'clock.",
+        "Patch a slow LFO (cycle ~20s) → POSITION CV, attenuverter at ~1 o'clock.",
+        "Patch OUT L → mixer L, OUT R → mixer R."
+      ],
+      "signalOut": "OUT L / OUT R — frozen chord mangled into FM-metallic tones ±8V, sidebands tracking the VCO.",
+      "hear": "The static chord turns into bell-like, clangy partials that shimmer as the VCO pitch changes. Slow POSITION drift keeps the texture from locking — each octave of the modulating VCO is a different bell.",
+      "diagram": "Clouds:\n* Mode: Granular\n* Freeze: ON\n* Blend slot: Dry/Wet (green), full CW\n\n- Held Chord (Out) -> Clouds (IN L)\n- VCO (Square) >> Clouds (SIZE CV) // audio-rate\n- LFO (Slow) >> Clouds (POSITION CV)\n- Clouds (OUT L) -> Mixer (L)\n- Clouds (OUT R) -> Mixer (R)"
     },
     {
-      "name": "Stretch-drone from field recording",
-      "patch": "Alternate mode 2 (stretch) · field recording into IN · DENSITY CCW (slow playback) · SIZE ~3 o'clock (huge window) · PITCH down 1 octave · Blend: reverb · dense slowed-down ambient bed",
-      "diagram": "Clouds:\n* Mode: Stretch\n* Pitch: -1 oct\n* Density: CCW\n\n- Field Rec (Out) -> Clouds (IN L)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
+      "name": "Stretch-drone from a field recording",
+      "patch": "Pitch-Shifter / Time-Stretcher mode slows a field recording to a crawl while you pitch it down an octave.",
+      "steps": [
+        "Hold FREEZE and short-press the Quality button until the Blend LED turns yellow (Pitch-Shifter/Time-Stretcher mode). Release FREEZE.",
+        "Short-press Quality until the Blend LED is yellow in the Reverb slot, Blend knob to ~2 o'clock for a wet tail.",
+        "DENSITY full CCW — in this mode DENSITY is the playback-speed control, so CCW means very slow.",
+        "SIZE at ~3 o'clock (huge stretch window), TEXTURE at noon.",
+        "PITCH knob CCW one octave (−12 semitones) — in this mode PITCH is decoupled from time.",
+        "Patch your field recording → IN L.",
+        "Patch OUT L → output L, OUT R → output R."
+      ],
+      "signalOut": "OUT L / OUT R — time-stretched field recording ±8V, pitched down an octave, with reverb.",
+      "hear": "A recognizable source — traffic, wind, voices — slowed to a glacial pad, an octave lower, drowning in its own reverb. Turn DENSITY live to speed the scrub up and down like a tape head.",
+      "diagram": "Clouds:\n* Mode: Pitch-Shifter / Time-Stretcher (yellow) // hold FREEZE + tap Quality until yellow\n* Pitch: -1 oct\n* Density: full CCW // playback speed\n* Size: ~3 o'clock\n* Blend slot: Reverb, ~2 o'clock\n\n- Field Rec (Out) -> Clouds (IN L)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
     },
     {
       "name": "Spectral phaser",
-      "patch": "Alternate mode 4 (spectral madness) · synth pad into IN · TEXTURE swept by LFO (phase randomization animation) · POSITION slowly drifted · produces paul-stretch/phaser-like sweeps on any sustained source",
-      "diagram": "Clouds:\n* Mode: Spectral Madness\n\n- Pad (Out) -> Clouds (IN L)\n- LFO 1 (Slow) >> Clouds (TEXTURE CV)\n- LFO 2 (Slower) >> Clouds (POSITION CV)\n- Clouds (OUT L) -> Mixer (L)\n- Clouds (OUT R) -> Mixer (R)"
+      "patch": "Spectral mode + two slow LFOs on TEXTURE and POSITION turn any sustained source into paul-stretch phaser.",
+      "steps": [
+        "Hold FREEZE and short-press the Quality button until the Blend LED turns pink — that's Spectral Madness. Release FREEZE.",
+        "Short-press Quality until Blend LED is green (Dry/Wet), Blend knob full CW (all wet).",
+        "POSITION noon, SIZE ~1 o'clock, DENSITY noon, TEXTURE noon as a starting point.",
+        "Patch a synth pad → IN L (something sustained — this mode needs steady input).",
+        "Patch LFO 1 (cycle ~15s) → TEXTURE CV, attenuverter ~2 o'clock — animates phase randomization.",
+        "Patch LFO 2 (cycle ~40s) → POSITION CV, attenuverter ~2 o'clock — sweeps frequency bins.",
+        "Patch OUT L → mixer L, OUT R → mixer R."
+      ],
+      "signalOut": "OUT L / OUT R — spectrally-phased pad ±8V, bins drifting with POSITION, phases smearing with TEXTURE.",
+      "hear": "A slow whooshing phaser laid over your pad — not the LFO-on-filter kind, the paul-stretch kind where partials seem to un-glue and float independently. SIZE past 2 o'clock turns it into smeared granular ice.",
+      "diagram": "Clouds:\n* Mode: Spectral Madness (pink) // hold FREEZE + tap Quality until pink\n* Blend slot: Dry/Wet, full CW\n\n- Pad (Out) -> Clouds (IN L)\n- LFO 1 (Slow) >> Clouds (TEXTURE CV)\n- LFO 2 (Slower) >> Clouds (POSITION CV)\n- Clouds (OUT L) -> Mixer (L)\n- Clouds (OUT R) -> Mixer (R)"
     },
     {
-      "name": "Trigger-gated shimmer grains",
-      "patch": "Granular mode · DENSITY full CCW (rare grains) · external TRIG from rhythmic source fires one grain per hit · PITCH set +7 semitones (fifth shimmer) · Blend: reverb CW · each trigger sprays a pitched grain into lush reverb",
-      "diagram": "Clouds:\n* Mode: Granular\n* Density: full CCW\n* Pitch: +7 semitones\n* Blend slot: Reverb (CW)\n\n- Source (Out) -> Clouds (IN L)\n- Clock (Out) t> Clouds (TRIG)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
+      "name": "Trigger-sprayed shimmer grains",
+      "patch": "One grain per trigger, pitched up a perfect fifth, drowned in reverb — a classic shimmer sprayer.",
+      "steps": [
+        "Confirm Granular mode (green Blend LED).",
+        "Short-press Quality until Blend LED is yellow (Reverb slot), Blend knob full CW.",
+        "DENSITY full CCW — at this extreme new grains only spawn on an external TRIG pulse.",
+        "SIZE at ~1 o'clock (medium-long grains), TEXTURE at noon.",
+        "PITCH knob CW to +7 semitones (reads on the display as +7) for a fifth shimmer.",
+        "Patch your source (pad, vocal, guitar) → IN L.",
+        "Patch a rhythmic clock or gate → TRIG — each pulse fires one pitched grain.",
+        "Patch OUT L → output L, OUT R → output R."
+      ],
+      "signalOut": "OUT L / OUT R — one pitched grain per trigger ±8V, drenched in reverb, dry source still audible via the wet/dry mix.",
+      "hear": "Each trigger sprays a bright fifth up into a cathedral. At faster clocks it becomes a shimmering harp; at 1/4-note clocks it sits like a glassy counter-melody.",
+      "diagram": "Clouds:\n* Mode: Granular (green)\n* Density: full CCW // 1 grain per TRIG\n* Pitch: +7 semitones\n* Blend slot: Reverb (yellow), full CW\n\n- Source (Out) -> Clouds (IN L)\n- Clock (Out) t> Clouds (TRIG)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
     },
     {
       "name": "Feedback runaway drone",
-      "patch": "Granular mode · Blend: feedback ~3 o'clock (near runaway) · POSITION held near noon · SIZE medium · input briefly captured then unplugged · feedback regenerates itself into an evolving drone that slowly mutates",
-      "diagram": "Clouds:\n* Mode: Granular\n* Blend slot: Feedback (~3 o'clock)\n\n- Source (Out) -> Clouds (IN L) // briefly, then unpatch\n- Clouds (OUT L) -> Mixer (L)\n- Clouds (OUT R) -> Mixer (R)"
+      "patch": "Crank the Feedback blend slot near runaway and let a short capture regenerate itself into an infinite drone.",
+      "steps": [
+        "Granular mode (green).",
+        "Short-press Quality until the Blend LED is orange (Feedback slot), Blend knob at ~3 o'clock — just shy of runaway.",
+        "POSITION noon, SIZE ~1 o'clock, DENSITY ~2 o'clock, TEXTURE ~1 o'clock.",
+        "Patch a source → IN L, play a few seconds of interesting material.",
+        "Press FREEZE — the buffer locks.",
+        "Unpatch IN L. The output now feeds itself through the feedback path.",
+        "Patch OUT L → mixer L, OUT R → mixer R.",
+        "Nudge Blend CCW if it screams; nudge CW to revive it."
+      ],
+      "signalOut": "OUT L / OUT R — self-regenerating grain drone ±8V, slowly mutating from the original capture.",
+      "hear": "A drone that started as your source but gradually smears into harmonic mush, then back into something vocal, then metallic — a slow hallucination. Texture and Size sculpt its character live.",
+      "diagram": "Clouds:\n* Mode: Granular\n* Freeze: ON\n* Blend slot: Feedback (orange), ~3 o'clock\n\n- Source (Out) -> Clouds (IN L) // briefly, then unpatch\n- Clouds (OUT L) -> Mixer (L)\n- Clouds (OUT R) -> Mixer (R)"
     },
     {
       "name": "Reverse-scrub tape effect",
-      "patch": "Granular · capture a melodic phrase · Freeze ON · slow LFO ramp DOWN into POSITION CV at maximum attenuverter · SIZE small-medium · DENSITY high · produces reverse-tape scrubbing from any captured phrase",
-      "diagram": "Clouds:\n* Mode: Granular\n* Freeze: ON (after capture)\n\n- Source (Phrase) -> Clouds (IN L) // capture then freeze\n- LFO (Ramp Down) >> Clouds (POSITION CV) // attenuverter max CCW\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
+      "patch": "Capture a melodic phrase, freeze it, then drive POSITION with a ramp-down LFO to scrub backwards.",
+      "steps": [
+        "Granular mode (green).",
+        "Short-press Quality until Blend LED is green (Dry/Wet), Blend knob full CW (all wet — we only want the reversed grains).",
+        "Patch a melodic source → IN L. Play the phrase.",
+        "Press FREEZE the moment the phrase ends — buffer holds.",
+        "SIZE at ~11 o'clock (small-medium grains), DENSITY at ~3 o'clock (dense overlap), TEXTURE at ~1 o'clock.",
+        "Patch a slow ramp-DOWN LFO (cycle ~6s) → POSITION CV, turn the POSITION attenuverter full CW to maximum positive.",
+        "A descending ramp across the buffer plays it backwards.",
+        "Patch OUT L → output L, OUT R → output R."
+      ],
+      "signalOut": "OUT L / OUT R — reversed rendition of the captured phrase ±8V, looping with the LFO.",
+      "hear": "Your phrase plays backwards, like a reversed tape — swells into notes instead of out of them. Speed up the LFO to chop it into glitchy reverse-stutters; slow it down for ambient backwards swell.",
+      "diagram": "Clouds:\n* Mode: Granular\n* Freeze: ON (after capture)\n* Blend slot: Dry/Wet, full CW\n\n- Source (Phrase) -> Clouds (IN L) // capture then freeze\n- LFO (Ramp Down) >> Clouds (POSITION CV) // attenuverter max CW\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
     }
   ]
 }

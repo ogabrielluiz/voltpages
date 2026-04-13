@@ -191,72 +191,242 @@
   "patchIdeas": [
     {
       "name": "Shimmer pad",
-      "patch": "Mode: SHM · BND switch · Size 1-2 o'clock · Dense 3 o'clock · Regen just past noon · Tone slightly CW · Index noon (no modulation) · Blend 2 o'clock · feed polyphonic chord source · octave-up shimmer feeds back into reverb, building a luminous pad above the dry signal",
+      "patch": "SHM mode + BND switch: an octave-up pitch shift feeds back into the reverb, blooming a luminous pad above a chord source.",
+      "steps": [
+        "Flip the upper (LIM/DST/SHM) switch to SHM.",
+        "Flip the lower (BND/LRP/JMP) switch to BND (smoothest modulation).",
+        "Set Size to 1–2 o'clock, Dense to 3 o'clock.",
+        "Set Regen to just past noon — enough to let the octave-up feedback build without running away.",
+        "Set Tone slightly CW (light HP cut) and leave Index at noon (LFO off).",
+        "Set Blend to 2 o'clock so the dry chord is still audible underneath the wet shimmer.",
+        "Patch a poly chord source (e.g. Plaits Model 7 or Rings) → Desmodus Versio In L (In R is normalled from In L).",
+        "Patch Desmodus Versio Out L → Mixer In L, Out R → Mixer In R."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — stereo wet audio (±5V) carrying the dry chord plus the octave-up shimmer halo.",
+      "hear": "Each chord sustains into a luminous cathedral tail one octave above the played notes, blooming and stacking as long as you play.",
       "diagram": "DESMODUS VERSIO:\n* Mode: SHM · BND switch\n* Size: 1-2 o'clock · Dense: 3 o'clock · Regen: just past noon · Blend: 2 o'clock\n- Chord Source (Out) -> Desmodus Versio (In L) // mono normals to In R\n- Desmodus Versio (Out L) -> Mixer (In L)\n- Desmodus Versio (Out R) -> Mixer (In R) // octave-up shimmer builds above dry"
     },
     {
       "name": "Dark ambient plate",
-      "patch": "Mode: LIM · BND switch · Size 10-11 o'clock · Dense 2-3 o'clock · Regen 9-11 o'clock · Tone noon or slightly CCW (subtle LP roll-off) · Index center (no LFO) · Blend 1-2 o'clock · short diffuse plate with no modulation artifacts · works as a natural room on any source",
+      "patch": "LIM mode with no LFO and a short, dense tank: a clean dark plate that works as a musical room on any stereo source.",
+      "steps": [
+        "Flip the upper switch to LIM (clean limiting) and the lower switch to BND.",
+        "Set Size to 10–11 o'clock (small space).",
+        "Set Dense to 2–3 o'clock (diffuse, reverb-y, not delay-y).",
+        "Set Regen to 9–11 o'clock (short decay, no runaway feedback).",
+        "Set Tone to noon or slightly CCW for a gentle lowpass roll-off on the tail.",
+        "Leave Index at noon so the internal LFO is disabled — no chorus/pitch wobble.",
+        "Set Blend to 1–2 o'clock.",
+        "Patch Source Out L → Desmodus Versio In L, Source Out R → Desmodus Versio In R.",
+        "Patch Desmodus Versio Out L → Output In L, Out R → Output In R."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — stereo wet+dry audio, short diffuse reverb tail, no modulation artifacts.",
+      "hear": "A short, dark plate reverb that sits gently behind the source — think intimate studio room, no warble, no shimmer.",
       "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Size: 10-11 o'clock · Dense: 2-3 o'clock · Regen: 9-11 o'clock · Blend: 1-2 o'clock\n- Source (Out L) -> Desmodus Versio (In L)\n- Source (Out R) -> Desmodus Versio (In R)\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // short diffuse plate, no modulation"
     },
     {
       "name": "Rhythmic ducking reverb",
-      "patch": "Mode: LIM · Regen past 3 o'clock · BND switch · patch kick or rhythmic gate source into In L · Tone slightly CW · Blend full CW · input transients automatically duck the infinite tail · reverb breathes in rhythm with the groove, no VCA or sidechain required",
+      "patch": "Regen past 3 o'clock puts the tank into built-in sidechain mode — incoming transients automatically duck the infinite tail.",
+      "steps": [
+        "Flip the upper switch to LIM, lower switch to BND.",
+        "Turn Regen past 3 o'clock — this is the built-in ducking zone (infinite tail + auto-ducked by input).",
+        "Set Tone slightly CW for a slight highpass, keeping the low end of the kick clear.",
+        "Set Size to 1 o'clock, Dense to 2–3 o'clock.",
+        "Set Blend full CW (wet-only — the dry kick will come in through your main mix, not through DV).",
+        "Patch Kick/Percussion Out → Desmodus Versio In L (normalled to In R).",
+        "Send the same Kick Out to your Mixer (dry channel) for reference.",
+        "Patch Desmodus Versio Out L → Mixer In L, Out R → Mixer In R."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — 100% wet infinite tail that ducks on every input transient, like a sidechained reverb bus.",
+      "hear": "An infinite ambient tail that dips on every kick hit and swells back up between hits — breathes in time with the groove without any external sidechain.",
       "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Regen: past 3 o'clock · Tone: slightly CW · Blend: full CW (wet)\n- Kick (Out) -> Desmodus Versio (In L) // normals to In R\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // transients carve space in infinite tail"
     },
     {
       "name": "Accumulating distortion freeze",
-      "patch": "Mode: DST · BND switch · Size noon · Dense 2 o'clock · Regen past noon · hold FSU button (or send sustained gate to FSU Gate) · each feedback cycle runs through distortion algorithm, building incrementally · 5-10 seconds: clean frozen buffer → heavy saturation → release FSU for distorted tail decay",
+      "patch": "DST mode + FSU freeze: each feedback cycle runs through the tank saturation, so a clean frozen buffer slowly melts into distortion.",
+      "steps": [
+        "Flip the upper switch to DST, lower switch to BND.",
+        "Set Size to noon, Dense to 2 o'clock.",
+        "Set Regen to past noon (infinite-feedback zone).",
+        "Set Blend to 2 o'clock and Tone to noon.",
+        "Patch a sustained source (pad, drone) → Desmodus Versio In L.",
+        "Patch a sustained gate (5–10 s, e.g. MATHS EOR or a held manual gate) → Desmodus Versio FSU Gate. Gate must be >+2V.",
+        "Patch Desmodus Versio Out L → Output In L, Out R → Output In R.",
+        "Trigger the gate and listen: the buffer freezes and each feedback lap picks up more saturation.",
+        "Release the FSU gate before it fully overloads to let the distorted tail decay naturally."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — a frozen buffer that progressively saturates; release the FSU gate to hear the distorted tail decay.",
+      "hear": "A sustained chord freezes, then slowly grows teeth: 2 seconds in it's still clean, 8 seconds in it's a fuzzed-out wall, 15 seconds in it's a roaring drone.",
       "diagram": "DESMODUS VERSIO:\n* Mode: DST · BND switch\n* Size: noon · Dense: 2 o'clock · Regen: past noon\n- Source (Out) -> Desmodus Versio (In L)\n- Gate Source (Out) g> Desmodus Versio (FSU Gate) // sustained gate freezes buffer\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // distortion compounds each feedback cycle"
     },
     {
       "name": "Drone voice from nothing",
-      "patch": "No audio patched to In L or In R · Mode: LIM or SHM · Regen past noon · press and hold FSU button (or gate FSU Gate high) · white noise burst sustains indefinitely in infinite feedback · Tone sweeps LP to HP to sculpt harmonic content · Size adjusts apparent pitch density · Dense shifts smear character · full drone synthesizer with no oscillator",
+      "patch": "With inputs unpatched and Regen past noon, DV self-oscillates — FSU kicks it into a sustained drone voice with no external VCO.",
+      "steps": [
+        "Leave In L and In R completely unpatched.",
+        "Flip the upper switch to LIM (clean drone) or SHM (octave-stacked drone).",
+        "Flip the lower switch to BND.",
+        "Set Regen past noon to enter the self-oscillation/infinite-feedback zone.",
+        "Set Tone to noon, Size to 11 o'clock, Dense to 2 o'clock, Blend full CW.",
+        "Press and hold FSU (or send a sustained gate >+2V to FSU Gate) — this injects a burst that seeds the tank.",
+        "Sweep Tone CCW/CW to shape the drone from bassy LP to whistling HP.",
+        "Turn Size to retune the drone (smaller = brighter, larger = deeper).",
+        "Sweep Dense to morph between pinged-delay and smeared-reverb character.",
+        "Patch Desmodus Versio Out L → Output In L, Out R → Output In R."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — a self-sustaining stereo drone, tuned and shaped by Tone, Size, and Dense. No oscillator needed.",
+      "hear": "A sustained eerie drone that rises out of silence when you hit FSU — sculpt it with Tone and Size like a filter-and-pitch pair, no VCO patched.",
       "diagram": "DESMODUS VERSIO:\n* Mode: LIM or SHM\n* Regen: past noon · inputs unpatched\n- Gate Source (Out) g> Desmodus Versio (FSU Gate) // injects noise burst, infinite feedback\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // shape with Tone/Size/Dense, no VCO"
     },
     {
       "name": "Modulated size for chorus-in-reverb",
-      "patch": "Mode: LIM · BND switch set to BND · slow sine LFO (e.g. Pamela's PRO Workout Out A sine, 0.1–0.3 Hz) → Size CV · Size knob at noon · Dense 2-3 o'clock · Regen just past noon · creates lush detuned chorus effect inside the reverb tank — modulation is wet-only, dry signal stays stable",
+      "patch": "A slow sine LFO into Size CV (BND mode) detunes the tank smoothly, producing a lush chorus that only colors the wet signal.",
+      "steps": [
+        "Flip the upper switch to LIM and lower switch to BND (smooth crossfade between sizes, no JMP glitches).",
+        "Set Size knob to noon, Dense to 2–3 o'clock, Regen just past noon.",
+        "Set Tone to noon, Blend to 2 o'clock.",
+        "Patch a slow sine LFO (Pam's, MATHS cycle, etc. at 0.1–0.3 Hz, 0–5V range) → Desmodus Versio Size CV.",
+        "Patch your mono source → Desmodus Versio In L (normals to In R).",
+        "Patch Desmodus Versio Out L → Output In L, Out R → Output In R.",
+        "Tune the LFO rate and depth live: slower and shallower for subtle warmth, faster for obvious wobble.",
+        "Because the modulation runs on the wet tank only, your dry signal stays perfectly in tune."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — dry signal on top of a slowly detuning chorus-reverb tail.",
+      "hear": "A warm, watery chorus that lives only inside the reverb — the original note stays stable while the tail slowly widens and bends around it.",
       "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Size: noon · Dense: 2-3 o'clock · Regen: just past noon\n- Source (Out) -> Desmodus Versio (In L)\n- LFO (Sine) >> Desmodus Versio (Size CV) // slow 0.1-0.3 Hz, wet-only detuned chorus\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
     },
     {
       "name": "Pitch-rise freeze",
-      "patch": "Mode: SHM · BND switch · Size 11 o'clock · Regen just past noon · Tone noon · hold FSU (or gate FSU Gate) · octave-up shift compounds inside frozen buffer · pad slowly rises in pitch over 10-30 seconds · release FSU before it gets too bright to allow natural shimmer tail to decay · dramatic textural build technique",
+      "patch": "Freeze a chord in SHM mode and the octave-up shift compounds every feedback pass — the pad rises an octave at a time.",
+      "steps": [
+        "Flip the upper switch to SHM, lower switch to BND.",
+        "Set Size to 11 o'clock, Regen just past noon, Tone at noon.",
+        "Set Blend to 2 o'clock.",
+        "Patch a sustained chord/pad source → Desmodus Versio In L.",
+        "Patch a long gate (from a manual gate, MATHS, Pam's euclidean with wide width) → Desmodus Versio FSU Gate.",
+        "Patch Desmodus Versio Out L → Output In L, Out R → Output In R.",
+        "Trigger the gate. The buffer freezes and the octave-up shimmer stacks each lap — the pad rises over 10–30 seconds.",
+        "Release the FSU gate before the tail gets painfully bright to let it decay naturally."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — a frozen pad whose pitch climbs in octaves while FSU is held, then decays as shimmer when released.",
+      "hear": "A chord gets frozen in time and slowly lifts up the scale — one octave, then two, then ghostly harmonics — until you let go and the whole tower decays into shimmer dust.",
       "diagram": "DESMODUS VERSIO:\n* Mode: SHM · BND switch\n* Size: 11 o'clock · Regen: just past noon · Tone: noon\n- Source (Out) -> Desmodus Versio (In L)\n- Gate Source (Out) g> Desmodus Versio (FSU Gate) // freeze, octave-up compounds\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // pitch rises 10-30s, release for shimmer decay"
     },
     {
       "name": "Gate-sequenced freeze stutter",
-      "patch": "Gate sequencer (e.g. Pamela's PRO Workout euclidean output) → FSU Gate input · Mode: LIM · BND switch · Regen past noon · Blend 3 o'clock · short gates (25ms–100ms): rapid freeze/release creates stuttered rhythmic reverb gating · long gates: sustained freeze pads · gate pattern locks stutter rhythm to clock",
+      "patch": "A rhythmic gate pattern into FSU Gate clocks freeze/release cycles — the reverb stutters in sync with your sequencer.",
+      "steps": [
+        "Flip the upper switch to LIM, lower switch to BND.",
+        "Set Regen past noon (infinite-feedback zone).",
+        "Set Size to 1 o'clock, Dense to 2 o'clock, Tone at noon, Blend to 3 o'clock (mostly wet).",
+        "Patch an audio source (pad, melody, drum loop) → Desmodus Versio In L.",
+        "Patch a Euclidean / trigger sequencer (e.g. Pam's PRO Workout) → Desmodus Versio FSU Gate. Gate must be >+2V.",
+        "Start with short gates (25–100 ms) for rhythmic stutter-gate reverb.",
+        "Switch to longer gates (500 ms+) for rhythmic freeze pads interleaved with live reverb.",
+        "Patch Desmodus Versio Out L → Output In L, Out R → Output In R."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — rhythmically freeze-gated reverb stutter, locked to the sequencer clock.",
+      "hear": "The reverb tail chops in and out in time with your clock — short gates bring frantic stutter, long gates carve the tail into sustained freeze pads between hits.",
       "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Regen: past noon · Blend: 3 o'clock\n- Source (Out) -> Desmodus Versio (In L)\n- Gate Seq (Euclidean) g> Desmodus Versio (FSU Gate) // short gates = rhythmic stutter\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
     },
     {
       "name": "Metallic IDM texture",
-      "patch": "BND switch: JMP · stepped random CV (S&H) → Size CV · Size knob 9 o'clock · Dense full CW · Mode: DST · Regen 2 o'clock · each random step hard-jumps delay time creating metallic pitch artifacts and digital noise bursts · combine with Tone CV (random or LFO) for evolving spectral texture",
+      "patch": "JMP switch turns every Size CV step into a hard cut — pair with S&H and DST for metallic pitch bursts and digital artifacts.",
+      "steps": [
+        "Flip the lower switch to JMP (instant size change = digital/glitchy artifacts).",
+        "Flip the upper switch to DST for added saturation.",
+        "Set Size knob to 9 o'clock, Dense full CW, Regen to 2 o'clock, Blend 1–2 o'clock.",
+        "Patch any source (drum loop, melody) → Desmodus Versio In L.",
+        "Patch a stepped random (S&H) CV source → Desmodus Versio Size CV. Expect 0–5V — clamp with an attenuator if needed.",
+        "Patch a slow LFO → Desmodus Versio Tone CV for slow spectral drift.",
+        "Patch Desmodus Versio Out L → Output In L, Out R → Output In R.",
+        "Each S&H tick hard-jumps the delay time: listen for pitched pings and metallic bursts."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — a glitchy, metallic reverb texture that flings pitched shards on every S&H step.",
+      "hear": "Clanking, metallic IDM bursts — every random step sends a shard of pitched delay through the saturated tank while the Tone CV slowly sweeps the overall color.",
       "diagram": "DESMODUS VERSIO:\n* Mode: DST · BND/LRP/JMP: JMP\n* Size: 9 o'clock · Dense: full CW · Regen: 2 o'clock\n- Source (Out) -> Desmodus Versio (In L)\n- S&H (Out) >> Desmodus Versio (Size CV) // hard-jump delay = metallic bursts\n- LFO (Out) >> Desmodus Versio (Tone CV) // evolving spectral texture\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
     },
     {
       "name": "Filter sweep inside reverb",
-      "patch": "Mode: LIM · BND switch · Regen past noon · Size noon · Dense 3 o'clock · triangle LFO → Tone CV · sweep full range LP to HP · Tone knob at noon (CV takes full control) · wah-like tonal motion happens inside the wet reverb tail itself — dry signal stays unchanged · Speed parameter controls LFO rate if using internal LFO on Index CW instead",
+      "patch": "Modulate Tone CV with a slow triangle LFO — the wet tail sweeps LP→HP while the dry signal stays untouched.",
+      "steps": [
+        "Flip the upper switch to LIM, lower switch to BND.",
+        "Set Regen past noon for a long tail, Size noon, Dense 3 o'clock, Blend 1–2 o'clock.",
+        "Leave Tone knob at noon so the CV has full authority (knob sums with CV).",
+        "Patch a triangle LFO (0.05–0.3 Hz, 0–5V range) → Desmodus Versio Tone CV.",
+        "Patch source → Desmodus Versio In L.",
+        "Patch Desmodus Versio Out L → Output In L, Out R → Output In R.",
+        "Listen as the LFO swings Tone from LP (CCW end) through disabled (noon) into HP (CW end) — the wah lives entirely inside the reverb tail."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — unchanged dry signal plus a wet tail that sweeps lowpass → open → highpass in a slow wah.",
+      "hear": "Your dry signal stays crisp while the reverb tail breathes — a slow wah that opens up, brightens into glass, then closes again underneath the source.",
       "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Size: noon · Dense: 3 o'clock · Regen: past noon · Tone: noon\n- Source (Out) -> Desmodus Versio (In L)\n- LFO (Triangle) >> Desmodus Versio (Tone CV) // wah-like LP->HP sweep inside wet tail\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
     },
     {
       "name": "Pinged tank drone",
-      "patch": "Mode: DST + BND · Regen below noon for release · inputs unpatched · gate sequencer pings FSU Gate · VCO sine at audio rate modulates Size CV for FM-like pitch · tank self-oscillates into pitched drone voice · Dense 2 o'clock · Tone noon · no audio input required",
+      "patch": "Ping the empty tank with FSU gates and FM the Size CV with an audio-rate sine — DV becomes its own pitched voice.",
+      "steps": [
+        "Leave In L and In R unpatched — this patch is a self-oscillating voice, not an effect.",
+        "Flip the upper switch to DST, lower switch to BND.",
+        "Set Regen around 10–11 o'clock (short release — each FSU ping fades between hits).",
+        "Set Size to 10 o'clock, Dense 2 o'clock, Tone noon, Blend full CW.",
+        "Patch a gate/trigger sequencer → Desmodus Versio FSU Gate to 'ping' the tank rhythmically (each gate = one attack).",
+        "Patch a VCO sine output → Desmodus Versio Size CV. The 0–5V CV window means audio-rate input here creates FM-style pitch modulation of the tank.",
+        "Patch Desmodus Versio Out L → Output In L, Out R → Output In R.",
+        "Tune the VCO to find pitched drone tones; each FSU ping plays the note."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — a pitched, pinged drone voice generated entirely from the self-oscillating tank plus audio-rate Size FM.",
+      "hear": "An FM-tinged, pinged drone voice — each gate plucks the tank, and the VCO-sine on Size CV warps the pitch into metallic drone melodies.",
       "diagram": "DESMODUS VERSIO:\n* Mode: DST · BND switch\n* Regen: below noon · Dense: 2 o'clock · Tone: noon · inputs unpatched\n- Gate Seq (Out) g> Desmodus Versio (FSU Gate) // rhythmic tank pings\n- VCO (Sine) >> Desmodus Versio (Size CV) // audio-rate FM of tank size\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // pitched self-oscillating drone"
     },
     {
       "name": "Reverb->delay->reverb shimmer chain",
-      "patch": "Mode: SHM + BND · Size short · DV wet feeds FX Aid (Delay->Shimmer program) · FX Aid return through VCA back into DV In R as feedback mixer ~30% · MATHS cycle envelope modulates return VCA to prevent runaway · infinite shimmer bloom with envelope-gated feedback control",
+      "patch": "Loop DV's wet out through an external delay and a MATHS-gated VCA back into In R — an external feedback bus for infinite shimmer bloom.",
+      "steps": [
+        "Flip the upper switch to SHM, lower switch to BND.",
+        "Set Size to 10–11 o'clock (short), Dense 2 o'clock, Regen just past noon, Blend 2 o'clock.",
+        "Patch your source → Desmodus Versio In L.",
+        "Patch Desmodus Versio Out L → FX Aid 1U In L (running a Delay→Shimmer program).",
+        "Patch FX Aid 1U Out L → VCA In.",
+        "Patch MATHS Channel 1 Cycle Out → VCA CV. Set the envelope shape so the VCA closes when the signal would otherwise run away.",
+        "Patch VCA Out → Desmodus Versio In R. Start with ~30% level for controlled feedback.",
+        "Patch Desmodus Versio Out R → Output In R (and Out L → Output In L for the main wet)."
+      ],
+      "signalOut": "Desmodus Versio Out L (main wet), Out R (right wet + external feedback return). An evolving infinite shimmer bus.",
+      "hear": "Every note blooms into an endless shimmer cloud, with MATHS periodically closing the VCA to keep the feedback from tipping into runaway howl.",
       "diagram": "DESMODUS VERSIO:\n* Mode: SHM · BND switch\n* Size: short · Blend: 2 o'clock\n- Source (Out) -> Desmodus Versio (In L)\n- Desmodus Versio (Out L) -> FX AID 1U (In L) // Delay->Shimmer program\n- FX AID 1U (Out L) -> VCA (In)\n- MATHS (CH1 Cycle) >> VCA (CV) // envelope tames runaway\n- VCA (Out) -> Desmodus Versio (In R) // ~30% feedback return\n- Desmodus Versio (Out R) -> Output (In R)"
     },
     {
       "name": "Audio-rate FSU gate bitcrush",
-      "patch": "Mode: DST · BND switch · square VCO at 20-200 Hz clocks FSU Gate as audio-rate pings · slow LFO modulates VCO freq for evolving texture · INDEX hard left for grit · Size 10 o'clock · Dense 2 o'clock · amplitude-modulated buzz carrier glitch",
+      "patch": "A square VCO at 20–200 Hz into FSU Gate forces the mute/freeze gate to buzz at audio rate — the input is chopped like a ring-mod carrier.",
+      "steps": [
+        "Flip the upper switch to DST, lower switch to BND.",
+        "Set Index hard left (random LFO = more grit) and Speed around noon.",
+        "Set Size to 10 o'clock, Dense 2 o'clock, Regen 12–1 o'clock, Blend 2 o'clock.",
+        "Patch source → Desmodus Versio In L.",
+        "Patch a square VCO running at 20–200 Hz (above +2V peak) → Desmodus Versio FSU Gate. Each square cycle triggers a micro freeze/release at audio rate.",
+        "Patch a slow LFO → the VCO's V/Oct input for evolving chop rate.",
+        "Patch Desmodus Versio Out L → Output In L, Out R → Output In R."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R — audio-rate gated/chopped version of the input, like ring mod through a reverb.",
+      "hear": "The source turns into a buzzing, bit-crushed growl — an audio-rate chop that sweeps pitch as the VCO drifts, layered over the saturated tank.",
       "diagram": "DESMODUS VERSIO:\n* Mode: DST · BND switch\n* Size: 10 o'clock · Dense: 2 o'clock · Index: hard left (grit)\n- Source (Out) -> Desmodus Versio (In L)\n- VCO (Square, 20-200 Hz) g> Desmodus Versio (FSU Gate) // audio-rate pings = AM carrier\n- LFO (Out) p> VCO (V/Oct) // slow freq drift\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
     },
     {
       "name": "Trigger-linked effects chain",
-      "patch": "Mode: LIM · BND switch · Regen past noon · Blend 3 o'clock · DV tail feeds envelope follower · EF gates fire on reverb bloom peaks · gates retrigger uBurst grains and Resonate strum · each tail peak excites downstream texture in self-organizing feedback bloom",
+      "patch": "Use DV's wet tail to drive an envelope follower that fires triggers into other modules — each reverb swell excites downstream textures.",
+      "steps": [
+        "Flip the upper switch to LIM, lower switch to BND.",
+        "Set Regen past noon, Size 12–1 o'clock, Dense 2 o'clock, Blend 3 o'clock.",
+        "Patch your source → Desmodus Versio In L.",
+        "Patch Desmodus Versio Out L → an envelope follower's audio input (Doepfer A-119, FH-2, or similar with a gate output).",
+        "Patch EF gate out → uBurst Trigger (grains fire on reverb peaks).",
+        "Patch EF gate out → Rings STRUM (sympathetic resonator excite).",
+        "Patch Desmodus Versio Out L → Mixer In L, Out R → Mixer In R.",
+        "Mix the uBurst and Rings outputs into the same bus — each reverb swell now triggers a downstream bloom."
+      ],
+      "signalOut": "Desmodus Versio Out L / Out R (wet reverb, ±5V audio) plus downstream uBurst and Rings outputs firing on every tail peak.",
+      "hear": "Every reverb swell peaks into a triggered grain burst and a Rings strum — the patch seems to play itself, blooming new textures in rhythm with the tail.",
       "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Regen: past noon · Blend: 3 o'clock\n- Source (Out) -> Desmodus Versio (In L)\n- Desmodus Versio (Out L) -> Env Follower (In)\n- Env Follower (Gate) t> uBurst (Trigger) // grains fire on tail peaks\n- Env Follower (Gate) t> Resonate (STRUM) // sympathetic strings excite\n- Desmodus Versio (Out L) -> Mixer (In L)\n- Desmodus Versio (Out R) -> Mixer (In R)"
     }
   ]

@@ -70,7 +70,7 @@
     },
     {
       "name": "PULSE OUT",
-      "description": "Gate output mirroring step 1 of the Pulses expander. Goes high whenever the scaled CV sits above the ~1.5V lock threshold.",
+      "description": "Gate output tapped from the shift register — goes high on clock steps whose register bit is 1. Useful as a rhythmic accent trigger that tracks the locked melody.",
       "voltage": "0 / +5V gate · synced to clock"
     },
     {
@@ -109,52 +109,167 @@
   "patchIdeas": [
     {
       "name": "Locked generative melody",
-      "patch": "Clock in from Pamela · Length=8 · big knob fully CW to lock · quantize CV OUT to minor pentatonic · nudge big knob CCW occasionally to evolve phrase",
+      "patch": "External clock drives a locked 8-step loop, CV OUT goes through a quantizer to an oscillator, and nudging the big knob CCW introduces slow mutations.",
+      "steps": [
+        "Set the LENGTH switch to 8.",
+        "Turn the BIG KNOB fully clockwise so the loop is locked (5 o'clock).",
+        "Set the SCALE knob to about noon (~2-3 V swing).",
+        "Patch your external clock (e.g. Pamela's) → Turing Machine CLOCK IN.",
+        "Patch Turing Machine CV OUT → quantizer IN; set the quantizer to minor pentatonic.",
+        "Patch quantizer OUT → VCO V/OCT.",
+        "Patch Turing Machine PULSE OUT → envelope TRIG; envelope → VCA CV; VCO → VCA → output.",
+        "To evolve the phrase, nudge the BIG KNOB just CCW of 5 o'clock — the LEDs will flicker and notes swap one at a time."
+      ],
+      "signalOut": "CV OUT — stepped 0 to ~5 V pitch CV into a quantizer, then to a VCO's V/OCT.",
+      "hear": "An 8-note in-key melody that repeats exactly while locked, with the PULSE OUT punching envelopes on the high notes. Nudge the big knob CCW and single notes begin to swap out, mutating the phrase.",
       "diagram": "Turing Machine:\n* Length: 8 · Big knob: fully CW (locked)\n\nClock:\n\nQuantizer:\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Turing Machine (CV OUT) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Turing Machine (PULSE OUT) g> Envelope (Trig)"
     },
     {
       "name": "Probability modulation",
-      "patch": "Slow LFO → KNOB CV · big knob at noon · module drifts between random and locked without touching the panel · great for evolving live sets",
+      "patch": "A very slow LFO into KNOB CV drifts the module between fully random and fully locked without touching the panel.",
+      "steps": [
+        "Set the BIG KNOB to noon (fully random).",
+        "Set the LENGTH switch to 8.",
+        "Patch a slow LFO (triangle, ~0.05 Hz / 20-second cycle) → Turing Machine KNOB CV.",
+        "Patch your external clock → Turing Machine CLOCK IN.",
+        "Patch Turing Machine CV OUT → VCO V/OCT (optionally through a quantizer).",
+        "Patch Turing Machine PULSE OUT → envelope TRIG for rhythmic accents.",
+        "Listen for the LFO peaks — the big knob 'virtually' sweeps to the extremes, locking the loop for a few bars before unlocking again."
+      ],
+      "signalOut": "CV OUT — stepped pitch CV that cycles between random and locked melody, feeding the VCO.",
+      "hear": "The module breathes between chaos and order: random burbling when the LFO is near zero, and a settled repeating melody when the LFO peaks positive or negative. Great for unattended live drift.",
       "diagram": "Turing Machine:\n* Big knob: noon\n\nLFO:\n* Rate: 0.05 Hz triangle\n\nClock:\n\nVCO:\n\n- LFO (Out) >> Turing Machine (KNOB CV)\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Turing Machine (CV OUT) p> VCO (V/Oct)"
     },
     {
       "name": "Write-switch melodic editing",
-      "patch": "Lock the big knob CW · performer holds write DOWN on strong beats to blank register · phrases emerge from a locked loop via subtraction · PULSE OUT becomes sparser over time",
+      "patch": "Lock the loop CW, then hold the WRITE switch DOWN on strong beats to carve phrases out by forcing zeros into the register.",
+      "steps": [
+        "Set the LENGTH switch to 16.",
+        "Turn the BIG KNOB fully clockwise to lock the loop.",
+        "Patch your clock → Turing Machine CLOCK IN.",
+        "Patch Turing Machine CV OUT → VCO V/OCT (optionally via a quantizer).",
+        "Patch Turing Machine PULSE OUT → drum module TRIG.",
+        "Let the loop play until you hear a phrase you like.",
+        "Hold the WRITE switch DOWN on strong beats to inject 0s — the drum thins out as register bits clear.",
+        "Flick WRITE UP on other beats to inject 1s and rebuild density. Release to centre to re-lock whatever pattern you landed on."
+      ],
+      "signalOut": "CV OUT — locked stepped pitch CV, editable in real time; PULSE OUT — gate that thins/densifies as you edit.",
+      "hear": "A locked 16-note line that you sculpt live: holding WRITE DOWN drops notes out of the melody and sparsens the drum, WRITE UP fills it back in. Performance-ready subtractive editing.",
       "diagram": "Turing Machine:\n* Length: 16 · Big knob: locked CW\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Turing Machine (CV OUT) p> VCO (V/Oct)\n- Turing Machine (PULSE OUT) g> Drum (Trig) // thins out as register clears"
     },
     {
       "name": "Bassline + drum pulse",
-      "patch": "Length=8 · PULSE OUT clocks hi-hat · main clock drives kick · quantized CV OUT drives bass VCO · both locked together from one sequencer source",
+      "patch": "One external clock drives both the kick and the Turing Machine — quantized CV OUT plays a locked bassline while PULSE OUT adds hats.",
+      "steps": [
+        "Set the LENGTH switch to 8.",
+        "Turn the BIG KNOB fully clockwise to lock the loop.",
+        "Set the SCALE knob to ~1 o'clock (roughly 2 octaves of swing).",
+        "Patch your external clock → Turing Machine CLOCK IN and mult the same clock → Kick drum TRIG.",
+        "Patch Turing Machine CV OUT → quantizer IN (set to a minor scale).",
+        "Patch quantizer OUT → bass VCO V/OCT; bass VCO → VCA → mixer.",
+        "Patch Turing Machine PULSE OUT → hi-hat TRIG.",
+        "Adjust SCALE to taste — lower for a narrow bass range, higher for octave jumps."
+      ],
+      "signalOut": "CV OUT (via quantizer) — 8-step locked bassline into bass VCO; PULSE OUT — hi-hat trigger.",
+      "hear": "A tight 8-step techno groove: steady kick on every beat, repeating bass riff underneath, and hats punching in on register highs. One clock, one module, a whole rhythm section.",
       "diagram": "Turing Machine:\n* Length: 8 · Big knob: CW locked\n\nClock:\n\nQuantizer:\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Clock (Out) c> Kick (Trig)\n- Turing Machine (CV OUT) p> Quantizer (In)\n- Quantizer (Out) p> Bass VCO (V/Oct)\n- Turing Machine (PULSE OUT) t> HiHat (Trig)"
     },
     {
       "name": "Volts expander 5-step sequencer",
-      "patch": "Volts expander attached · five faders set five voltages · module plays a 5-step sequence that can be locked or slipped · ignores Length switch, uses fader count",
+      "patch": "With a Volts expander attached and the loop locked, each of the 5 pots becomes a step of a tuned mini-sequencer.",
+      "steps": [
+        "Connect the Volts expander to the Turing Machine backpack header (power off first).",
+        "Set the LENGTH switch to 5 so the loop length matches the number of Volts pots.",
+        "Turn the BIG KNOB fully clockwise to lock the loop.",
+        "Patch your clock → Turing Machine CLOCK IN.",
+        "Patch Volts OUT → VCO V/OCT.",
+        "Patch Turing Machine PULSE OUT → envelope TRIG; envelope → VCA CV; VCO → VCA → output.",
+        "Tune each of the 5 Volts pots by ear while the loop plays — it is a locked 5-step tuned sequencer.",
+        "Nudge the BIG KNOB slightly off lock to reorder the steps on the fly."
+      ],
+      "signalOut": "Volts (Out) — stepped pitch CV, one value per pot, into the VCO V/OCT.",
+      "hear": "A locked 5-note phrase where every note's pitch is under your direct fingertip control via the pots — like a tiny hand-tuned step sequencer glued to the Turing Machine's shift register.",
       "diagram": "Turing Machine:\n* Big knob: CW locked\n\nVolts:\n* 5 faders set 5 CV steps\n\nClock:\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Volts (Out) p> VCO (V/Oct)\n- Turing Machine (PULSE OUT) g> Envelope (Trig)"
     },
     {
       "name": "Pulses expander euclidean-like rhythms",
-      "patch": "Pulses expander attached · 11 pulse outs pick out different bits of register · route bits 1/2/4/7 to kick/snare/hat/perc · locked loop gives repeatable euclidean-flavoured groove",
+      "patch": "The Pulses expander exposes 11 gate outputs, one per register bit — route a few to different drums for repeating euclidean-flavoured grooves.",
+      "steps": [
+        "Connect the Pulses expander to the backpack header (power off first).",
+        "Set the LENGTH switch to 16.",
+        "Turn the BIG KNOB fully clockwise to lock the loop.",
+        "Patch your clock → Turing Machine CLOCK IN.",
+        "Patch Pulses OUT 1 → Kick TRIG.",
+        "Patch Pulses OUT 2 → Snare TRIG.",
+        "Patch Pulses OUT 4 → HiHat TRIG.",
+        "Patch Pulses OUT 7 → Perc TRIG.",
+        "If you dislike the pattern, nudge the BIG KNOB CCW one click to swap a bit and re-lock — repeat until the groove lands."
+      ],
+      "signalOut": "Pulses (Out 1/2/4/7) — four 0/+5 V gate streams into four drum trigger inputs.",
+      "hear": "A locked 16-step drum pattern where each output fires on its own subset of steps — kick, snare, hats and perc sit in different-but-related rhythms like a hand-drawn euclidean groove.",
       "diagram": "Turing Machine:\n* Length: 16 · Big knob: CW locked\n\nPulses:\n* 11 pulse outs from register bits\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Pulses (Out 1) t> Kick (Trig)\n- Pulses (Out 2) t> Snare (Trig)\n- Pulses (Out 4) t> HiHat (Trig)\n- Pulses (Out 7) t> Perc (Trig)"
     },
     {
       "name": "Voltages expander dual CV",
-      "patch": "Voltages expander · 8 faders define two CV sequences tapped from different register bits · one for melody, one for filter sweep · move faders live to re-harmonize",
+      "patch": "The Voltages expander's 8 faders define two CV sequences — one for pitch, one for filter — moved live to re-harmonize.",
+      "steps": [
+        "Connect the Voltages expander to the backpack header (power off first).",
+        "Set the LENGTH switch to 8 to match the 8 faders.",
+        "Turn the BIG KNOB fully clockwise to lock the loop.",
+        "Patch your clock → Turing Machine CLOCK IN.",
+        "Patch Voltages CV A → VCO V/OCT (optionally via a quantizer).",
+        "Patch Voltages CV B → filter CUTOFF.",
+        "Tune the faders by ear: upper row for melody, lower row for brightness per step.",
+        "Turn Scale or the filter input attenuator to taste — each fader is now a note + a timbre, playing in lock-step."
+      ],
+      "signalOut": "Voltages (CV A) — stepped pitch CV to VCO; Voltages (CV B) — stepped modulation CV to filter cutoff.",
+      "hear": "A locked 8-step melody where every note also has its own filter brightness. Sliding a fader instantly re-tunes or re-colours that step without stopping the sequence.",
       "diagram": "Turing Machine:\n* Length: 8 · Big knob: CW locked\n\nVoltages:\n* 8 faders · 2 CV outs\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Voltages (CV A) p> VCO (V/Oct)\n- Voltages (CV B) >> Filter (Cutoff)"
     },
     {
       "name": "Noise source utility",
-      "patch": "Patch just NOISE OUT for white noise · use CLOCK IN audio-rate to skip the sequencing entirely · saves HP when a noise source is all you need",
+      "patch": "Ignore the sequencing entirely and use NOISE OUT as a dedicated white-noise source for hats and drones.",
+      "steps": [
+        "Leave CLOCK IN, KNOB CV and CV OUT unpatched.",
+        "Patch Turing Machine NOISE OUT → filter IN.",
+        "Set the filter to bandpass or high resonance for a hi-hat tone.",
+        "Patch an LFO → filter CUTOFF for a shimmering sweep, or leave static.",
+        "Patch an envelope → VCA CV; filter OUT → VCA IN → mixer.",
+        "Trigger the envelope from any clock for hats/cymbals/noise bursts."
+      ],
+      "signalOut": "NOISE OUT — ~10 Vpp white noise into the filter, then into a VCA.",
+      "hear": "A clean white-noise source — perfect for closed hats, wind textures or sample-and-hold fodder — with the rest of the Turing Machine sitting silent.",
       "diagram": "Turing Machine:\n\n- Turing Machine (NOISE OUT) -> Filter (In)\n- LFO (Out) >> Filter (Cutoff) // hi-hat-style perc\n- Envelope (Out) >> VCA (CV)"
     },
     {
       "name": "Audio-rate chaos oscillator",
-      "patch": "VCO square into CLOCK IN · big knob near noon · CV OUT becomes metallic digital noise tracked by VCO pitch · distinct from plain noise, good for drums/FX",
+      "patch": "Feed a VCO square into CLOCK IN — CV OUT becomes metallic digital grit tracked by the VCO pitch.",
+      "steps": [
+        "Set the BIG KNOB to noon (random) and LENGTH to any position.",
+        "Patch a VCO's square output (audio rate, ~100 Hz–1 kHz) → Turing Machine CLOCK IN.",
+        "Patch Turing Machine CV OUT → filter IN.",
+        "Patch an envelope → VCA CV, filter OUT → VCA IN → mixer.",
+        "Play the driving VCO's V/OCT from a keyboard or sequencer — CV OUT now tracks its pitch as inharmonic noise.",
+        "Sweep the BIG KNOB toward either lock point for metallic resonant tones; leave at noon for full noise."
+      ],
+      "signalOut": "CV OUT — audio-rate stepped signal (treated as audio here), 0 to ~5 V, into the filter.",
+      "hear": "A gritty, digital noise voice that follows the driving VCO's pitch — great for FX, crash cymbals, and growly bass-noise hybrids. Locks into metallic tones at the knob extremes.",
       "diagram": "Turing Machine:\n* Big knob: noon\n\nVCO:\n* Wave: square · audio rate\n\nFilter:\n\nEnvelope:\n\nVCA:\n\n- VCO (Square) c> Turing Machine (CLOCK IN)\n- Turing Machine (CV OUT) -> Filter (In)\n- Envelope (Out) >> VCA (CV)\n- Filter (Out) -> VCA (In)"
     },
     {
       "name": "Dual Turing duet",
-      "patch": "Two Turings share a clock · different lengths (8 and 12) · locked at different big-knob positions · polymetric duet quantized to same scale · one melody, one counter-line",
+      "patch": "Two Turing Machines share one clock but run different lengths and lock states — a polymetric two-part duet.",
+      "steps": [
+        "Set Turing A: LENGTH = 8, BIG KNOB fully CW (locked 8-step loop).",
+        "Set Turing B: LENGTH = 12, BIG KNOB fully CCW (locked 2×-length = 24-step loop).",
+        "Patch one external clock, mult it → Turing A CLOCK IN and → Turing B CLOCK IN.",
+        "Patch Turing A CV OUT → quantizer IN 1; quantizer OUT 1 → VCO 1 V/OCT.",
+        "Patch Turing B CV OUT → quantizer IN 2; quantizer OUT 2 → VCO 2 V/OCT.",
+        "Set both quantizer channels to the same scale (e.g. minor).",
+        "Trigger envelopes for both voices from the shared clock or from each module's PULSE OUT."
+      ],
+      "signalOut": "Turing A CV OUT and Turing B CV OUT — two stepped pitch CVs into one shared quantizer, feeding two VCOs.",
+      "hear": "Two locked melodies of 8 and 24 steps playing simultaneously in the same key — they only align every 24 beats, so the duet keeps finding new harmonic combinations without ever truly drifting.",
       "diagram": "Turing A:\n* Length: 8 · Big knob: CW locked\n\nTuring B:\n* Length: 12 · Big knob: CCW locked (2x = 24)\n\nQuantizer:\n\n- Clock (Out) c> Turing A (CLOCK IN)\n- Clock (Out) c> Turing B (CLOCK IN)\n- Turing A (CV OUT) p> Quantizer (In 1)\n- Turing B (CV OUT) p> Quantizer (In 2)\n- Quantizer (Out 1) p> VCO 1 (V/Oct)\n- Quantizer (Out 2) p> VCO 2 (V/Oct)"
     }
   ]

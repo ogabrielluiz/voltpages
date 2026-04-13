@@ -34,7 +34,7 @@
       "name": "SHAPE",
       "scope": "Granular",
       "description": "Grain window/envelope shape. Controls the amplitude envelope applied to each grain.",
-      "detail": "Options: Tukey, Hann, Decay, Bell, etc."
+      "detail": "7 discrete options: Bell, Sinc, Triangle, Decay, Ramp, Square, Tukey (default)"
     },
     {
       "name": "BLUR",
@@ -132,28 +132,84 @@
   "patchIdeas": [
     {
       "name": "Ambient drone cloud",
-      "patch": "Load sustaining pad · SIZE 2-4s · RATE 1-2Hz · BLUR high · SHAPE Bell · LATCH · self-sustaining textural drone",
+      "patch": "Latch a sustaining pad Sound with long grains, slow rate, Bell shape and heavy BLUR for a self-running drone.",
+      "steps": [
+        "Load a sustaining pad/chord WAV on SOUND 1 (ALT → /WAVS → pick a sample).",
+        "Set SIZE ~2 o'clock (~2 sec) and SHAPE to Bell.",
+        "Set RATE ~10 o'clock (around 1 Hz). Unlink RATE–SIZE if linked so grains don't all stack.",
+        "Set BLUR ~3 o'clock for a long reverb tail.",
+        "Set LEVEL at noon, TONE at noon, PITCH at noon.",
+        "Press LATCH, then tap SOUND 1 — grains keep firing without holding the button.",
+        "Patch OUT L → Mixer L, OUT R → Mixer R."
+      ],
+      "signalOut": "OUT L / OUT R — continuous stereo granular pad with long reverb tail, audio level (~10Vpp).",
+      "hear": "A sustained pad that keeps flowing without any trigger — long Bell-shaped grains from the sample bloom into the Blur reverb. Press LATCH again to stop; grains finish then Blur decays away.",
       "diagram": "MULTIGRAIN:\n* SIZE: 2-4s\n* RATE: 1-2Hz\n* SHAPE: Bell\n* BLUR: high\n* LATCH: ON\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // self-sustaining drone, no external trigger needed"
     },
     {
       "name": "Rhythmic grain percussion",
-      "patch": "Load drum loop · RATE clock-synced · SIZE 100-200ms · SCAN forward · RATE-SIZE link 2-4x · rearranged beats",
+      "patch": "Sync RATE to a clock and use short grains over a drum loop so Multigrain rearranges the beat one grain per pulse.",
+      "steps": [
+        "Load a drum or percussion loop on SOUND 1.",
+        "Press ALT, then press SYNC so SYNC lights YELLOW (RATE is now clock-synced).",
+        "Press RATE–SIZE link so RATE multiplies the clock and SIZE snaps to clock divisions.",
+        "Set SIZE ~10 o'clock (100–200 ms short grains).",
+        "Set RATE around 2 o'clock for 2x–4x the clock rate.",
+        "Set SCAN just CW of center for slow forward scanning through the loop.",
+        "Patch your master clock → SYNC. Patch a gate → GATE to play SOUND 1.",
+        "Patch OUT L → Mixer L, OUT R → Mixer R."
+      ],
+      "signalOut": "OUT L / OUT R — short clock-synced grains chopping the drum loop, audio level.",
+      "hear": "Your drum loop reshuffled into a tight stutter that stays locked to the clock. Turn SCAN further CW to walk through the loop, or CCW for reversed ordering.",
       "diagram": "MULTIGRAIN:\n* SIZE: 100-200ms\n* SCAN: forward\n* RATE-SIZE link: 2-4x\n- CLOCK (Out) c> MULTIGRAIN (SYNC)\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // rate locks to external clock"
     },
     {
       "name": "Scene morph macro",
-      "patch": "Set contrasting Scene A/B · slow LFO → MORPH CV · all parameters evolve simultaneously · one cable",
+      "patch": "One slow LFO into MORPH CV crossfades every knob between Scene A and Scene B — a one-cable macro control.",
+      "steps": [
+        "On SOUND 1, press SCENE A and dial a calm state (SIZE noon, BLUR low, PITCH noon, SHAPE Tukey, RATE ~11 o'clock).",
+        "Press SCENE B and dial a contrasting state (SIZE ~3 o'clock, BLUR ~3 o'clock, PITCH +1 oct, SHAPE Bell, RATE ~2 o'clock).",
+        "Slide MORPH fader to the left (Scene A) as the starting position.",
+        "Set MORPH ATT to ~2 o'clock.",
+        "Patch a slow LFO (≈0.05–0.2 Hz, ±5V) → MORPH CV.",
+        "Press LATCH + SOUND 1 so grains keep firing.",
+        "Patch OUT L / OUT R → Mixer."
+      ],
+      "signalOut": "OUT L / OUT R — continuously morphing granular voice, audio level.",
+      "hear": "Every parameter breathes between the two Scenes in step with the LFO: grain size, pitch, envelope shape and reverb all evolve together. REVERSE and SHAPE flip probabilistically at intermediate MORPH positions.",
       "diagram": "MULTIGRAIN:\n* Scene A / Scene B: contrasting settings\n* MORPH ATT: ~2 o'clock\n- LFO (Out) >> MULTIGRAIN (MORPH CV)\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // one cable morphs all params"
     },
     {
       "name": "Live granular looper",
-      "patch": "Set SOUND to Live mode · audio in → Looping Recorder · THRSH for auto-freeze · granularize live input",
+      "patch": "Assign a Sound to the Looping Recorder so incoming audio is granulated in real time, with optional THRSH auto-freeze.",
+      "steps": [
+        "Hold SOUND 1 and press SAMPLE — SOUND 1 turns MAGENTA (now a Live Sound, Looping Recorder active).",
+        "Patch a source → IN L, and its right channel → IN R (or leave R unpatched for mono).",
+        "In ALT → SAMPLE settings, set GAIN so audio registers cleanly; optionally set THRSH so the recorder auto-freezes when the input stops.",
+        "Set START full CW (newest audio), WRAP ~2 o'clock, SCAN at noon.",
+        "Set SIZE ~noon (~1 sec), SHAPE Tukey, RATE ~noon, BLUR ~11 o'clock.",
+        "Press LATCH + SOUND 1 so grains run continuously from live memory.",
+        "Press SAMPLE to Freeze/Unfreeze the buffer (button turns CYAN when frozen).",
+        "Patch OUT L / OUT R → Mixer."
+      ],
+      "signalOut": "OUT L / OUT R — granular rework of the last 8–32 seconds of live input, audio level.",
+      "hear": "Whatever you feed in is sliced into grains in real time. Freeze (SAMPLE) to lock the recent input as a static loop; unfreeze to keep capturing. THRSH auto-freezes on silence so pauses hold the previous phrase.",
       "diagram": "MULTIGRAIN:\n* SOUND: Live mode\n* Looping Recorder: armed\n- SOURCE (Out L) -> MULTIGRAIN (IN L)\n- SOURCE (Out R) -> MULTIGRAIN (IN R)\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // live input granularized in realtime"
     },
     {
       "name": "Probability shape mixing",
-      "patch": "Different SHAPE per scene · MORPH 25% from A · 75% chance Shape A / 25% Shape B per grain",
-      "diagram": "MULTIGRAIN:\n* Scene A SHAPE: Hann\n* Scene B SHAPE: Decay\n* MORPH fader: 25% toward B\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // shape chosen probabilistically per grain"
+      "patch": "SHAPE is discrete so MORPH becomes a probability crossfader between Scene A's shape and Scene B's shape, grain by grain.",
+      "steps": [
+        "On SOUND 1, press SCENE A and set SHAPE to Tukey. Leave other knobs where you like them.",
+        "Press SCENE B and set SHAPE to Decay. Match the other knobs to Scene A.",
+        "Set MORPH fader about 25% of the way from left (Scene A) toward right (Scene B).",
+        "Set SIZE ~noon, RATE ~1 o'clock so new grains fire often enough to hear the mix.",
+        "Press LATCH + SOUND 1.",
+        "Patch OUT L / OUT R → Mixer."
+      ],
+      "signalOut": "OUT L / OUT R — granular stream where each grain is Tukey or Decay with set probability, audio level.",
+      "hear": "About 75% of grains use the smooth Tukey envelope and 25% use the sharper Decay envelope — the overall mix stays steady but individual grains fade or click differently. Slide MORPH to rebias the ratio.",
+      "diagram": "MULTIGRAIN:\n* Scene A SHAPE: Tukey\n* Scene B SHAPE: Decay\n* MORPH fader: 25% toward B\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // shape chosen probabilistically per grain"
     }
   ]
 }

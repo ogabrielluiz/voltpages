@@ -164,38 +164,112 @@
   "patchIdeas": [
     {
       "name": "Classic 1/1 loop playback",
-      "patch": "Gene-Size CCW · Morph at noon (amber LED = 1/1) · Vari-Speed at 2:30 (green = 1/1 forward) · SOS full CW · nothing in Play · hear full splice loop",
-      "diagram": "MORPHAGENE:\n* Gene-Size: full CCW\n* Morph: noon (1/1)\n* Vari-Speed: 2:30 (Green)\n* S.O.S.: full CW\n\n- Sound Source (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (In)"
+      "patch": "Record a phrase into a Splice and play it back at original speed/length — Morphagene as a simple stereo looper.",
+      "steps": [
+        "Gene-Size full CCW (plays the whole Splice, not grains).",
+        "Morph at noon (Amber LED = 1/1 seamless loop, no overlaps, no gaps).",
+        "Vari-Speed at 2:30 (Green LED = 1/1 forward playback).",
+        "S.O.S. full CW (all loop, no live input in the output).",
+        "Patch sound source → Audio In L.",
+        "Hold REC + press Splice to capture a new Splice. Hit REC again to stop recording.",
+        "Patch Audio Out L → your output."
+      ],
+      "signalOut": "Audio Out L — the captured Splice looping forward at 1/1, ~10Vpp.",
+      "hear": "The recorded phrase playing back seamlessly at its original speed and length. Turn Vari-Speed for pitched/reversed playback; Morph CW for overlapping Genes.",
+      "diagram": "Morphagene:\n* Gene-Size: full CCW\n* Morph: noon (1/1)\n* Vari-Speed: 2:30 (Green)\n* S.O.S.: full CW\n\n- Sound Source (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (In)"
     },
     {
-      "name": "Clocked synchronous granulation",
-      "patch": "Clock → CLK In · Morph ≤ 2/1 · Gene-Size turned up · each clock pulse jumps to next Gene in chronological order · modulate Slide for timbral sweep",
-      "diagram": "MORPHAGENE:\n* Gene-Size: ~2:00\n* Morph: 10:00 (Red, Gene Shift)\n\n- Clock (Out) c> Morphagene (CLK In)\n- LFO (Out) >> Morphagene (Slide CV)\n- Morphagene (Audio Out L) -> Output (In)"
+      "name": "Clocked Gene Shift",
+      "patch": "With CLK patched and Morph below 2/1, each clock pulse steps chronologically through Genes within the Splice.",
+      "steps": [
+        "Record a Splice you want to chop (voice, melody, loop) into the Reel.",
+        "Gene-Size ~2 o'clock so each Gene is a short chunk rather than the full Splice.",
+        "Morph ~10 o'clock (Red LED = Gene Shift mode). Stay below noon.",
+        "Patch a clock (8th or 16th notes) → CLK In. Each pulse advances one Gene.",
+        "Patch a slow LFO → Slide CV and set its attenuverter to ~1 o'clock to sweep the Gene start point over time.",
+        "Patch Audio Out L → output."
+      ],
+      "signalOut": "Audio Out L — chronologically-stepped Genes, ~10Vpp, one new Gene per clock pulse.",
+      "hear": "The recorded Splice becomes a beat-synced stutter that marches forward one chunk at a time. The Slide LFO smears the chop points across the Splice for evolving timbre.",
+      "diagram": "Morphagene:\n* Gene-Size: ~2:00\n* Morph: 10:00 (Red, Gene Shift)\n\n- Clock (Out) c> Morphagene (CLK In)\n- LFO (Out) >> Morphagene (Slide CV)\n- Morphagene (Audio Out L) -> Output (In)"
     },
     {
       "name": "Time-stretch dub",
-      "patch": "Morph past 2/1 (Blue LED) · clock → CLK · Vari-Speed controls pitch independent of time · slow the clock to stretch a phrase without pitch-shifting",
-      "diagram": "MORPHAGENE:\n* Morph: 3:00 (Blue, Time Stretch)\n* Vari-Speed: noon (pitch control)\n\n- Clock (Out) c> Morphagene (CLK In)\n- Source (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (In)"
+      "patch": "Push Morph past 2/1 and an incoming clock stretches or compresses the Splice — Vari-Speed changes pitch only.",
+      "steps": [
+        "Record a melodic or vocal Splice into the Reel.",
+        "Morph to 3 o'clock (Blue LED = Time Stretch mode).",
+        "Vari-Speed noon stops normal playback; the clock drives the playhead now.",
+        "Patch a slow clock (e.g. 1 pulse per beat) → CLK In. Slow it down to stretch the phrase longer.",
+        "Patch a VCO LFO or an external CV → Vari-Speed CV to transpose independent of time.",
+        "Patch Audio Out L → output."
+      ],
+      "signalOut": "Audio Out L — the Splice stretched to the clock rate, ~10Vpp, pitch set independently by Vari-Speed.",
+      "hear": "A vocal or phrase that drags on for bars without pitch-shifting. Bend Vari-Speed and the pitch slides while the stretched phrase continues underneath — classic dub/granular feel.",
+      "diagram": "Morphagene:\n* Morph: 3:00 (Blue, Time Stretch)\n* Vari-Speed: noon (pitch control)\n\n- Clock (Out) c> Morphagene (CLK In)\n- Source (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (In)"
     },
     {
-      "name": "Tron bike race",
-      "patch": "Record a noisy Wogglebug + Erbe-Verb source into a new splice, using Wogglebug Freeze to sustain partials · SOS full CW · Vari-Speed 1/1 · Morph full CW for random pitch/pan on four overlapping Genes",
-      "diagram": "MORPHAGENE:\n* S.O.S.: full CW\n* Vari-Speed: 2:30 (1/1)\n* Morph: full CW (4 Genes, random pitch/pan)\n\n- Wogglebug (Ring Mod) -> Erbe-Verb (In)\n- Erbe-Verb (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (L)\n- Morphagene (Audio Out R) -> Output (R)"
+      "name": "Four-Gene stacking blur",
+      "patch": "Morph full CW stacks up to four overlapping Genes with random pitch and pan — a wall of disintegrating sound.",
+      "steps": [
+        "Pre-record a textural source (Wogglebug + Erbe-Verb, or any noisy layered patch) into a Splice.",
+        "Gene-Size at ~1 o'clock so Genes are bite-sized, not the full Splice.",
+        "Morph full CW (4 Genes, random pitch and panning applied automatically).",
+        "Vari-Speed 2:30 (1/1 forward) as a baseline.",
+        "S.O.S. full CW so you're hearing the loop, not the live input.",
+        "Patch Audio Out L → output L, Audio Out R → output R."
+      ],
+      "signalOut": "Audio Out L/R — stereo cloud of four overlapping Genes at random pitches and pans, ~10Vpp.",
+      "hear": "A disintegrating wash — the source recognizable, but scattered across pitch and stereo. Pull Morph back toward noon to gradually collapse the cloud into a clean loop.",
+      "diagram": "Morphagene:\n* Gene-Size: ~1:00\n* Morph: full CW (4 Genes, random pitch/pan)\n* Vari-Speed: 2:30\n* S.O.S.: full CW\n\n- Wogglebug (Ring Mod) -> Erbe-Verb (In)\n- Erbe-Verb (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (L)\n- Morphagene (Audio Out R) -> Output (R)"
     },
     {
       "name": "Touch-sliced sample player",
-      "patch": "Pressure Points Common Gate → Play · Row Y → Organize · each touchplate both triggers playback and selects a splice via its Y voltage",
-      "diagram": "MORPHAGENE:\n* Gene-Size: CCW (full splice)\n\n- Pressure Points (CH 4 Gate) g> Morphagene (Play)\n- Pressure Points (Tuned Voltage Out Y) >> Morphagene (Organize CV)\n- Morphagene (Audio Out L) -> Output (In)"
+      "patch": "Pressure Points gates Play and its Y output selects the Splice — each touch plays a different slice.",
+      "steps": [
+        "Record several Splices into the Reel so Organize has targets to pick from.",
+        "Gene-Size full CCW (play the whole Splice per touch).",
+        "Vari-Speed 2:30 (1/1 forward).",
+        "Patch Pressure Points Gate Out → Morphagene Play Gate.",
+        "Patch Pressure Points Tuned Voltage Out Y (0–5V row) → Morphagene Organize CV.",
+        "Patch Morphagene Audio Out L → output.",
+        "Press a touchplate — Play retriggers and Y voltage selects which Splice loads."
+      ],
+      "signalOut": "Audio Out L — whichever Splice the Y voltage currently selects, ~10Vpp, retriggered per touch.",
+      "hear": "Each touch fires a different sample from your Reel. Tune the Y voltages on each Pressure Points channel to pick your four favourite Splices for performance.",
+      "diagram": "Morphagene:\n* Gene-Size: CCW (full splice)\n* Organize: CV-controlled\n\n- Pressure Points (CH 4 Gate) g> Morphagene (Play Gate)\n- Pressure Points (Tuned Voltage Out Y) >> Morphagene (Organize CV)\n- Morphagene (Audio Out L) -> Output (In)"
     },
     {
-      "name": "Synchronous percussive stepper",
-      "patch": "Splice a percussive loop into 16 slices · clock → Shift In · clock/2 → Play In · each beat increments splice while the loop retriggers",
-      "diagram": "MORPHAGENE:\n* Gene-Size: CCW\n* Organize: step through splices\n\n- Clock (Out) c> Morphagene (Shift Gate)\n- Clock ÷2 (Out) g> Morphagene (Play)\n- Morphagene (Audio Out L) -> Output (In)"
+      "name": "Beat-synced stutter stepper",
+      "patch": "A percussive loop chopped into 16 Splices marches one Splice per clock pulse while Play retriggers on the downbeat.",
+      "steps": [
+        "Record a percussive loop into one Splice. Then use a clock at 16 pulses per bar into Splice Gate to drop 15 more Splice markers evenly across it.",
+        "Gene-Size full CCW so each Splice plays in full.",
+        "Morph noon (1/1 loop).",
+        "Vari-Speed 2:30 (1/1 forward).",
+        "Patch the master clock → Shift Gate (advances to next Splice each pulse).",
+        "Patch clock ÷2 → Play Gate (retriggers the current Splice every two pulses).",
+        "Patch Audio Out L → output."
+      ],
+      "signalOut": "Audio Out L — one Splice per pulse, retriggered every other pulse, ~10Vpp.",
+      "hear": "A chopped drum loop that marches forward slice by slice, retriggering so short slices ring out twice. Slow the clock to freeze on a slice and repeat.",
+      "diagram": "Morphagene:\n* Gene-Size: CCW\n* Morph: noon\n\n- Clock (Out) c> Morphagene (Shift Gate)\n- Clock ÷2 (Out) g> Morphagene (Play Gate)\n- Morphagene (Audio Out L) -> Output (In)"
     },
     {
-      "name": "Single-repeat microsound delay",
-      "patch": "Requires MG155+ with inop=1 in options.txt · create a short empty Splice · SOS as wet/dry · Morphagene becomes an always-recording input delay · tweak Vari-Speed for pitch-shifted echoes",
-      "diagram": "MORPHAGENE:\n* Firmware option: inop=1\n* Splice: short empty splice as delay length\n* S.O.S.: wet/dry\n\n- Source (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (In)\n- LFO (Out) >> Morphagene (Vari-Speed CV) // pitched echoes"
+      "name": "Input-only delay (inop=1)",
+      "patch": "With options.txt inop=1, Morphagene becomes an always-recording delay — the Splice length sets the delay time.",
+      "steps": [
+        "Power off. On the microSD, edit options.txt and set inop=1 (input-only mode). Save and reinsert.",
+        "Create one short empty Splice — its length will be the delay time.",
+        "S.O.S. to noon — acts as wet/dry mix now.",
+        "Vari-Speed 2:30 (1/1 forward).",
+        "Patch source audio → Audio In L.",
+        "Patch Audio Out L → output.",
+        "Patch a slow LFO → Vari-Speed CV, attenuverter at ~11 o'clock, for pitched echoes."
+      ],
+      "signalOut": "Audio Out L — dry+delayed audio, ~10Vpp, delay time = Splice length.",
+      "hear": "A single-tap delay whose pitch wobbles with the Vari-Speed LFO. Play live into it and Morphagene echoes back with chorus/vibrato character.",
+      "diagram": "Morphagene:\n* Firmware option: inop=1\n* Splice: short empty splice as delay length\n* S.O.S.: noon (wet/dry)\n\n- Source (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (In)\n- LFO (Out) >> Morphagene (Vari-Speed CV) // pitched echoes"
     }
   ]
 }

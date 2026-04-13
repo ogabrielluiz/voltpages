@@ -145,42 +145,155 @@
   "patchIdeas": [
     {
       "name": "Snappy transient via WARP",
-      "patch": "CH A shape from bank U · TIME ~50ms · WARP +80 compresses the attack · RSP -40 for sharp decay curve · TRIG from drum clock · OUT A → VCA CV on a noise source → resonator excitation",
+      "patch": "A percussive bank-U shape on channel A, time-warped tight and bent concave, used to excite a noise-fed resonator for crisp plucks.",
+      "steps": [
+        "Short-press CHANNEL until A is shown in the bottom-right of the OLED.",
+        "Rotate encoder A (SHAPE) to bank U and pick a snappy transient shape (U1–U10).",
+        "Rotate encoder B (TIME) until the display reads about 50 ms.",
+        "Press encoder C so it reads WARP, then rotate to +80 (compresses the attack).",
+        "Press encoder C again so it reads RSP, then rotate to -40 (sharpens the decay curve).",
+        "Patch your clock/drum trigger → TRIG A on Zadar.",
+        "Patch a noise source Out → VCA In.",
+        "Patch Zadar OUT A → VCA CV.",
+        "Patch VCA Out → the In of a resonant filter (self-oscillating) or a physical-modelling resonator."
+      ],
+      "signalOut": "Zadar OUT A — 0–10V unipolar envelope, 50 ms long, driving the VCA that gates the noise exciter.",
+      "hear": "A tight 50 ms tick of filtered noise that excites the resonator into a pitched ping. Dial WARP toward 0 for a softer thud; push to +100 for an almost click-like transient.",
       "diagram": "Zadar:\n* CH A shape: bank U\n* CH A TIME: 50ms\n* CH A WARP: +80\n* CH A RSP: -40\n\n- Clock (Out) t> Zadar (TRIG A)\n- Noise (Out) -> VCA (In)\n- Zadar (OUT A) >> VCA (CV)\n- VCA (Out) -> Resonator (In)"
     },
     {
       "name": "Looping LFO with CV shape select",
-      "patch": "CH B · REPEAT = ∞ · TIME ~2s · ASGN B assigned to SHP with +100 depth · slow LFO into ASGN B scans through the shape bank over time · OUT B becomes an evolving modulation source whose curve family changes",
+      "patch": "Channel B free-runs as an oscillator, while a slow external LFO scans through its shape bank via the ASGN input — the modulation family keeps mutating.",
+      "steps": [
+        "Short-press CHANNEL until B is selected.",
+        "Press MENU once to reach the CHAIN/LOOP page (fig. 5).",
+        "Press encoder B, rotate to REPEAT, and turn until the display shows ∞ (infinite → free-running oscillator).",
+        "On the same page, press encoder B again to reach TIME (or return to the main screen and use encoder B) and set TIME to about 2 s.",
+        "Press MENU once more — twice total from main — to reach CV ASSIGNMENTS (fig. 4).",
+        "Press encoder B and cycle the destination list until it reads SHP.",
+        "Rotate encoder B to set the depth bar to +100 (full shape scan).",
+        "Press MENU to return to the main screen.",
+        "Patch a slow LFO Out → ASGN B on Zadar.",
+        "Patch Zadar OUT B → Filter Cutoff."
+      ],
+      "signalOut": "Zadar OUT B — 0–10V unipolar modulation, 2 s per cycle, whose waveform morphs as the external LFO scans shapes.",
+      "hear": "A filter sweep that never repeats the same contour twice — each 2 s cycle is a different shape drawn from the library as the LFO crawls through the bank. Lower ASGN depth to stay within a single bank.",
       "diagram": "Zadar:\n* CH B REPEAT: ∞\n* CH B TIME: 2s\n* ASGN B: SHP (+100)\n\n- Slow LFO (Out) >> Zadar (ASGN B) // scans shapes\n- Zadar (OUT B) >> Filter (Cutoff)"
     },
     {
       "name": "Four-stage chain pad",
-      "patch": "Chain A→B→C→D · each channel long shape (bank X) · TIMEs 3s / 4s / 5s / 6s · PHASE 100% per channel plays them in strict sequence · single TRIG on A fires the full 18s progression across four outputs to four pad voices",
+      "patch": "A single trigger on channel A fires a 4-channel sequential chain; each channel drives a pad voice VCA so four voices swell in strict succession.",
+      "steps": [
+        "Press MENU once to reach the CHAIN/LOOP page.",
+        "Rotate encoder A to select the A→B→C→D (four-in-a-row, non-looped) algorithm from the 16 chain topologies.",
+        "Press encoder B, navigate to PHASE, rotate to 100%. Do the same for encoder C and encoder D. (PHASE 100% means each channel waits for the previous to finish.)",
+        "Press MENU twice to return to the main screen.",
+        "Short-press CHANNEL to select A; rotate encoder A to a long bank-X shape; rotate encoder B (TIME) to 3 s.",
+        "Short-press CHANNEL to select B; pick a long bank-X shape; set TIME to 4 s.",
+        "Repeat for C (5 s) and D (6 s).",
+        "Patch your gate source → TRIG A. (TRIG B/C/D are inactive for chained channels.)",
+        "Patch OUT A → VCA 1 CV, OUT B → VCA 2 CV, OUT C → VCA 3 CV, OUT D → VCA 4 CV."
+      ],
+      "signalOut": "Four separate jacks — OUT A, OUT B, OUT C, OUT D — each 0–10V, each rising in turn over 3/4/5/6 s.",
+      "hear": "An 18-second pad progression where voice 1 swells for 3 s, then voice 2 takes over for 4 s, then 3 for 5 s, then 4 for 6 s — a slow hand-off between four pad layers from a single gate.",
       "diagram": "Zadar:\n* Chain: A-B-C-D\n* PHASE B/C/D: 100%\n* CH A TIME: 3s\n* CH B TIME: 4s\n* CH C TIME: 5s\n* CH D TIME: 6s\n\n- Gate (Out) t> Zadar (TRIG A)\n- Zadar (OUT A) >> VCA 1 (CV)\n- Zadar (OUT B) >> VCA 2 (CV)\n- Zadar (OUT C) >> VCA 3 (CV)\n- Zadar (OUT D) >> VCA 4 (CV)"
     },
     {
       "name": "Pitch-tracked resonant exciter",
-      "patch": "CH C · bank U percussive shape · ASGN C assigned to TIM with -50 depth ≈ 1V/oct · pitch CV from sequencer into ASGN C makes envelope duration scale inversely with pitch · TRIG C from clock · OUT C excites a filter in self-oscillation for pitched pings",
-      "diagram": "Zadar:\n* CH C shape: bank U\n* ASGN C: TIM (-50)\n\n- Sequencer (Pitch) p> Zadar (ASGN C) // 1V/oct time\n- Clock (Out) t> Zadar (TRIG C)\n- Zadar (OUT C) -> Filter (In) // ping\n- Sequencer (Pitch) p> Filter (V/Oct)"
+      "patch": "Channel C becomes a pitch-tracked pinger: ASGN depth of -50 gives ~1V/oct time scaling, so envelopes shorten with pitch and the filter pings stay musical across the keyboard.",
+      "steps": [
+        "Short-press CHANNEL until C is selected.",
+        "Rotate encoder A to a percussive bank-U shape.",
+        "Press MENU once to reach the CV ASSIGNMENTS page.",
+        "Press encoder C, cycle the destination until it reads TIM.",
+        "Rotate encoder C until the bipolar bar shows -50 (inverted, half-height — this is the manual-specified 1V/oct tracking depth).",
+        "Press MENU twice to return to the main screen.",
+        "Patch your sequencer's Pitch CV (v/oct) → Zadar ASGN C. You will need a stackable/mult if the same pitch CV also drives the filter.",
+        "Patch your clock trigger → Zadar TRIG C.",
+        "Mult the pitch CV → Filter V/Oct (so the filter self-oscillates in tune).",
+        "Patch Zadar OUT C → Filter In (the envelope kicks the filter into ringing)."
+      ],
+      "signalOut": "Zadar OUT C — 0–10V percussive envelope whose duration now scales with pitch (halves per octave up), patched into the filter input to ping it.",
+      "hear": "Pitched, Rings-style pings that stay crisp across octaves — high notes ping tight, low notes ring longer, all from one shape. Adjust depth away from -50 to detune the tracking and get inharmonic results.",
+      "diagram": "Zadar:\n* CH C shape: bank U\n* ASGN C: TIM (-50)\n\n- Sequencer (Pitch) p> Mult (In)\n- Mult (Out) p> Zadar (ASGN C) // 1V/oct time\n- Mult (Out) p> Filter (V/Oct)\n- Clock (Out) t> Zadar (TRIG C)\n- Zadar (OUT C) -> Filter (In) // ping"
     },
     {
       "name": "Freeze-modulated drone",
-      "patch": "CH D · REPEAT = ∞ · TIME 30s · ASGN D assigned to FRZ with 50 threshold · gate into ASGN D freezes the drone envelope mid-sweep · releasing the gate resumes motion · perform-style hold for modulation swells",
-      "diagram": "Zadar:\n* CH D REPEAT: ∞\n* CH D TIME: 30s\n* ASGN D: FRZ (50)\n\n- Gate (Out) g> Zadar (ASGN D) // freeze while high\n- Zadar (OUT D) >> Filter (Cutoff)\n- Zadar (OUT D) >> VCA (CV)"
+      "patch": "Channel D free-runs a 30-second drone envelope; a performance gate into ASGN D freezes playback on command, letting you hold any point of the sweep as a static CV.",
+      "steps": [
+        "Short-press CHANNEL until D is selected.",
+        "Rotate encoder A to a long, evolving bank-X shape.",
+        "Press MENU once to reach CHAIN/LOOP, press encoder D to reach REPEAT, rotate until ∞.",
+        "Return to the main screen and rotate encoder B (TIME) to about 30 s.",
+        "Press MENU once to reach CV ASSIGNMENTS.",
+        "Press encoder D, cycle destination until it reads FRZ (freeze — binary comparator).",
+        "Rotate encoder D until the threshold bar sits around 50% (fires above ~5V).",
+        "Press MENU twice to return to the main screen.",
+        "Patch a manual gate or footswitch → ASGN D. (While the gate is above threshold, Zadar freezes OUT D.)",
+        "Patch Zadar OUT D → Filter Cutoff and/or a VCA CV on your drone voice."
+      ],
+      "signalOut": "Zadar OUT D — 0–10V slowly evolving CV, momentarily latched to whatever voltage it was at when the gate goes high.",
+      "hear": "A 30-second timbral tide that stops dead the instant you hit the gate, holding the current hue — release the gate and the motion resumes exactly where it froze. Perfect for stasis builds.",
+      "diagram": "Zadar:\n* CH D REPEAT: ∞\n* CH D TIME: 30s\n* ASGN D: FRZ (threshold ~50)\n\n- Gate (Out) g> Zadar (ASGN D) // freeze while high\n- Zadar (OUT D) >> Filter (Cutoff)\n- Zadar (OUT D) >> VCA (CV)"
     },
     {
       "name": "Quadrature modulator via copy",
-      "patch": "Program CH A with a sine shape · hold CHANNEL to copy A → B, C, D · set PHASE A=0, B=25%, C=50%, D=75% in chain menu (unchained) · four TRIGs from a single clock via mult produce four quadrature-offset modulators",
-      "diagram": "Zadar:\n* CH A: sine shape\n* Copied to B/C/D\n* PHASE A/B/C/D: 0/25/50/75\n\n- Clock (Out) t> Mult (In)\n- Mult (Out 1) t> Zadar (TRIG A)\n- Mult (Out 2) t> Zadar (TRIG B)\n- Mult (Out 3) t> Zadar (TRIG C)\n- Mult (Out 4) t> Zadar (TRIG D)\n- Zadar (OUT A) >> Filter L (Cutoff)\n- Zadar (OUT C) >> Filter R (Cutoff)"
+      "patch": "Dial channel A once, copy it to B/C/D, then phase-offset all four triggers — four identical envelopes running 90° apart from a single clock.",
+      "steps": [
+        "Short-press CHANNEL until A is selected.",
+        "Rotate encoder A to a smooth cyclic shape (a sine-like entry from any bank works well).",
+        "Rotate encoder B (TIME) to the cycle length you want — e.g. 2 s.",
+        "Press and HOLD the CHANNEL button to open the copy destination menu.",
+        "Rotate encoder A to select ALL, then press to confirm — A's settings paste to B, C, and D.",
+        "Press MENU once to reach CHAIN/LOOP. Make sure algorithm is the fully-unchained one (all four independent).",
+        "Press encoder A → PHASE → rotate to 0%. Encoder B → PHASE → 25%. Encoder C → PHASE → 50%. Encoder D → PHASE → 75%.",
+        "Press MENU twice to return to the main screen.",
+        "Patch your clock → a 4-way mult or stackable.",
+        "From the mult: Out 1 → TRIG A, Out 2 → TRIG B, Out 3 → TRIG C, Out 4 → TRIG D. (Channels are unchained so each TRIG is live.)",
+        "Take OUT A and OUT C to stereo filter L/R cutoffs (or any four CV destinations)."
+      ],
+      "signalOut": "Four jacks — OUT A, OUT B, OUT C, OUT D — each 0–10V, each identical in shape but staggered by a quarter cycle.",
+      "hear": "Four-voice quadrature motion: picture one LFO on filter cutoff that is 90° ahead of another on VCA, with a third and fourth further behind. Panned, this reads as a wide rotating modulation field.",
+      "diagram": "Zadar:\n* CH A: sine-like shape\n* Copied to B/C/D\n* PHASE A/B/C/D: 0/25/50/75\n\n- Clock (Out) t> Mult (In)\n- Mult (Out 1) t> Zadar (TRIG A)\n- Mult (Out 2) t> Zadar (TRIG B)\n- Mult (Out 3) t> Zadar (TRIG C)\n- Mult (Out 4) t> Zadar (TRIG D)\n- Zadar (OUT A) >> Filter L (Cutoff)\n- Zadar (OUT C) >> Filter R (Cutoff)"
     },
     {
       "name": "CV-morphing bass envelope",
-      "patch": "CH A percussive shape · TIME ~300ms · velocity CV into ASGN A assigned to WRP · soft hits → round envelope, hard hits → snappy envelope via warp sweep · OUT A → VCA on bass VCO · expressive dynamics from a single envelope",
+      "patch": "Velocity CV into ASGN A drives WARP, so soft hits play rounded envelopes and hard hits play snappy ones — a single envelope with dynamic shape.",
+      "steps": [
+        "Short-press CHANNEL until A is selected.",
+        "Rotate encoder A to a percussive bass-envelope shape (bank U works; any attack-decay shape).",
+        "Rotate encoder B (TIME) to about 300 ms.",
+        "Press MENU once to reach CV ASSIGNMENTS.",
+        "Press encoder A and cycle the destination until it reads WRP.",
+        "Rotate encoder A so the depth bar shows +80.",
+        "Press MENU twice to return to the main screen.",
+        "Patch your keyboard/MIDI-CV Velocity Out → ASGN A.",
+        "Patch your keyboard Gate Out → TRIG A.",
+        "Patch a bass VCO Out → VCA In.",
+        "Patch Zadar OUT A → VCA CV."
+      ],
+      "signalOut": "Zadar OUT A — 0–10V envelope, ~300 ms, whose attack/decay ratio now flexes with velocity.",
+      "hear": "Soft notes get a rounded, loungy thump; hard notes snap hard and bright. One envelope doing the work of three velocity layers.",
       "diagram": "Zadar:\n* CH A TIME: 300ms\n* ASGN A: WRP (+80)\n\n- Velocity (CV) >> Zadar (ASGN A) // warp by velocity\n- Gate (Out) g> Zadar (TRIG A)\n- Zadar (OUT A) >> VCA (CV)\n- VCO (Out) -> VCA (In)"
     },
     {
-      "name": "Chained euclidean-style rhythm",
-      "patch": "Chain looped A-B looped · CH A TIME 200ms REPEAT 2 · CH B TIME 300ms REPEAT 1 · PHASE A 100% makes the loop cycle · OUT A → kick VCA, OUT B → hat VCA · produces a polyrhythmic rhythm from a single trigger",
+      "name": "Chained looped rhythm",
+      "patch": "A looped 2-channel chain with different repeat counts produces a steady polyrhythm from a single trigger — channel A drives the kick envelope, channel B the hat envelope.",
+      "steps": [
+        "Press MENU once to reach CHAIN/LOOP.",
+        "Rotate encoder A to select a LOOPED A–B algorithm (any of the 2-channel looped variants from the 16 algorithms).",
+        "Press encoder A → REPEAT → rotate to 2 (A plays 3 cycles total). Inside a chain, infinite is disabled — finite values only.",
+        "Press encoder B → REPEAT → rotate to 1 (B plays 2 cycles total).",
+        "Press encoder A → PHASE → rotate to 100% (the manual requires at least one non-zero PHASE in a looped chain for the loop to advance).",
+        "Press MENU twice to reach the main screen.",
+        "Short-press CHANNEL → A. Rotate encoder A to a snappy bank-U shape; set encoder B (TIME) to 200 ms.",
+        "Short-press CHANNEL → B. Rotate encoder A to a brighter short shape; set TIME to 300 ms.",
+        "Patch your gate source → TRIG A (only the chain head accepts triggers).",
+        "Patch OUT A → Kick VCA CV, OUT B → Hat VCA CV.",
+        "Patch Kick voice Out → Kick VCA In, Hat voice Out → Hat VCA In."
+      ],
+      "signalOut": "OUT A (kick envelope) and OUT B (hat envelope) — 0–10V each, running in a repeating chain loop.",
+      "hear": "A rolling 2-against-3 pattern: three 200 ms kick thumps followed by two 300 ms hat chips, then the loop restarts — steady, off-kilter, and all from one clock pulse.",
       "diagram": "Zadar:\n* Chain: [A-B] looped\n* CH A TIME: 200ms · REPEAT 2\n* CH B TIME: 300ms · REPEAT 1\n* PHASE A: 100%\n\n- Gate (Out) t> Zadar (TRIG A)\n- Zadar (OUT A) >> Kick VCA (CV)\n- Zadar (OUT B) >> Hat VCA (CV)\n- Kick (Out) -> Kick VCA (In)\n- Hat (Out) -> Hat VCA (In)"
     }
   ]

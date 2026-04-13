@@ -199,52 +199,159 @@
   "patchIdeas": [
     {
       "name": "Drum kit from one voice via Preset Step",
-      "patch": "Load kit preset (1, 5, 9, or 13) · MOD destination = Preset Step · MOD input from a CV sequencer running stepped voltages · each sequence step picks kick/snare/hat · gate sequencer fires TRIG · instant one-voice drum machine",
+      "patch": "A kit preset (1, 5, 9, or 13) is a Preset Step bank: MOD CV picks kick/snare/hat per step while TRIG fires them.",
+      "steps": [
+        "Push LOAD, turn ENCODER to preset 1 (or 5, 9, 13), click ENCODER to load.",
+        "Push MOD button, turn ENCODER to 'Preset Step', click to confirm.",
+        "Click MOD button again; set Pst A:B to the kit range (e.g. 1:4).",
+        "Push OBJECT, scroll to Polyphony, set to 2 so previous hit rings out.",
+        "Patch CV sequencer (0-5V steps) → MOD input; set MOD attenuverter to ~3 o'clock.",
+        "Patch gate sequencer → TRIG.",
+        "Patch Plonk OUT → mixer/output."
+      ],
+      "signalOut": "OUT — mono percussion audio, line-level, sound switches per trigger.",
+      "hear": "One voice plays a full kit: low step = kick, mid step = snare, high step = hat. Tails from the previous preset ring out naturally.",
       "diagram": "Plonk:\n* Preset kit loaded · MOD=Preset Step · Poly=2\n\n- CV Sequencer (CV) >> Plonk (MOD)\n- Gate Sequencer (Gate) t> Plonk (TRIG)\n- Plonk (OUT) -> Output (In) // one voice, drum kit"
     },
     {
       "name": "Duophonic marimba with MIDI velocity",
-      "patch": "Resonator = Marimba · Polyphony = 2 · VEL Mode = dynamics · MIDI-CV gate to TRIG, pitch to PITCH, velocity to VEL · X assigned to Mallet Stiffness · Y to Resonator Position · expressive keyboard-playable marimba",
+      "patch": "Marimba resonator with Poly=2 plays legato melodies; VEL=dynamics makes velocity drive exciter strength.",
+      "steps": [
+        "Load any preset, push OBJECT, set Resonator Type to Marimba, Polyphony to 2.",
+        "Push CONFIG, scroll to VEL Mode, set to 'dynamics'.",
+        "Push X button, select 'M Stiffness', click; push X again, set DEPTH to MEDIUM.",
+        "Push Y button, select 'R Position', click to confirm.",
+        "Patch MIDI-CV pitch → PITCH; MIDI-CV gate → TRIG; velocity CV → VEL.",
+        "Set X and Y knobs to 12 o'clock; sweep while playing to find a voicing.",
+        "Patch Plonk OUT → VCA or mixer."
+      ],
+      "signalOut": "OUT — pitched mallet-on-wood audio, dynamics scale with VEL voltage.",
+      "hear": "A chromatic marimba that responds to how hard you play. X shifts hard/soft mallet character; Y moves strike from edge to center.",
       "diagram": "Plonk:\n* Marimba · Poly=2 · VEL=dynamics\n* X=M Stiffness · Y=R Position\n\n- MIDI-CV (Pitch) p> Plonk (PITCH)\n- MIDI-CV (Gate) g> Plonk (TRIG)\n- MIDI-CV (Velocity) >> Plonk (VEL)\n- Plonk (OUT) -> VCA (In) // velocity-sensitive marimba"
     },
     {
       "name": "Open hat choked by closed hat",
-      "patch": "Preset with long plate resonator and AHR noise env · Polyphony = 1 so new trigger chokes old · alternative: MOD = Choke Both · send closed-hat trigger into MOD to silence open-hat tail on demand · 808-style hat interaction from a single voice",
+      "patch": "A long plate preset rings as open hat; a trigger to MOD with Choke Both cuts it short like a closed hat.",
+      "steps": [
+        "LOAD a long-decay plate or metal hat preset; turn DECAY fully CW.",
+        "Push OBJECT, set Polyphony to 1 (new TRIG chokes old note).",
+        "Push MOD, select 'Choke Both', click to confirm.",
+        "Patch open-hat gate from your drum sequencer → TRIG.",
+        "Patch closed-hat trigger → MOD input; keep MOD attenuverter above 1 o'clock so pulses exceed 1.5V.",
+        "Patch Plonk OUT → mixer."
+      ],
+      "signalOut": "OUT — metallic hat audio; MOD gate above 1.5V cuts the tail fast.",
+      "hear": "Classic 808 hat interaction from a single voice — the closed-hat step silences the still-ringing open hat.",
       "diagram": "Plonk:\n* Plate preset · Poly=1 · MOD=Choke Both\n\n- Open-hat Gate (Out) g> Plonk (TRIG)\n- Closed-hat Trig (Out) t> Plonk (MOD)\n- Plonk (OUT) -> Mixer (In) // choke-group hats"
     },
     {
       "name": "Morphing melodic percussion",
-      "patch": "Load beam/bell preset · MOD = Morph with destination = marimba preset · slow LFO on MOD input · texture slowly drifts between bell and marimba character · pair with melodic sequence on PITCH for evolving percussive melody",
+      "patch": "Morph smoothly crossfades exciter and object parameters between two presets driven by a slow LFO.",
+      "steps": [
+        "LOAD a beam/bell preset you like.",
+        "Push MOD, turn ENCODER to 'Morph', click; click again to edit the target number.",
+        "Turn ENCODER to a marimba-style preset number, click to confirm.",
+        "Patch slow LFO (bipolar, ~0.1 Hz) → MOD input; MOD attenuverter to 2 o'clock.",
+        "Patch melodic pitch sequencer → PITCH; gates → TRIG.",
+        "Patch Plonk OUT → reverb → output."
+      ],
+      "signalOut": "OUT — pitched percussion audio that morphs timbre over time (resonator type stays fixed on source preset).",
+      "hear": "Each hit slowly drifts from bell-like strike to woody marimba and back. Resonator type does not change, but everything else does.",
       "diagram": "Plonk:\n* Beam preset · MOD=Morph → Marimba preset\n\n- Slow LFO (Out) >> Plonk (MOD)\n- Sequencer (Pitch) p> Plonk (PITCH)\n- Sequencer (Gate) g> Plonk (TRIG)\n- Plonk (OUT) -> Output (In) // morphing timbre"
     },
     {
       "name": "Generative randomized kit",
-      "patch": "MOD = Randomize · any trigger to MOD input = randomize before next hit · route clock divided by 4 to MOD and TRIG to MOD simultaneously, or use a separate random-trig source · every N hits produces a fresh random percussion timbre",
+      "patch": "MOD = Randomize: every MOD gate re-rolls all exciter and object parameters before the next hit.",
+      "steps": [
+        "LOAD any preset as starting point.",
+        "Push MOD, turn ENCODER to 'Randomize', click to confirm.",
+        "Push OBJECT, set Polyphony to 2 (so the last random sound can tail into the next).",
+        "Patch main clock → TRIG.",
+        "Patch clock divider /4 output → MOD input (MOD attenuverter above noon so pulse > 1.5V).",
+        "Patch Plonk OUT → reverb → output."
+      ],
+      "signalOut": "OUT — unpredictable percussion timbre, rerolled every 4th hit; Saturation/Bitcrusher remain fixed.",
+      "hear": "A rhythmic sound-design lottery: steady pulse, but every few hits the timbre jumps to something brand new.",
       "diagram": "Plonk:\n* MOD=Randomize · Poly=2\n\n- Clock Source (Out) t> Plonk (TRIG)\n- Clock Divider (/4) t> Plonk (MOD)\n- Plonk (OUT) -> Reverb (In) // periodic sound-design lottery"
     },
     {
       "name": "Resonator FM via R Pitch",
-      "patch": "MOD destination = R Pitch · audio-rate source (LFO or VCO) into MOD · attenuverter sets FM index · pitched percussion gains inharmonic metallic edge · PITCH input and TRIG still work normally · classic DX-like bell when combined with beam resonator",
-      "diagram": "Plonk:\n* Beam · MOD=R Pitch\n\n- Audio LFO (Out) >> Plonk (MOD)\n- Sequencer (Pitch) p> Plonk (PITCH)\n- Sequencer (Gate) g> Plonk (TRIG)\n- Plonk (OUT) -> VCA (In) // resonator FM"
+      "patch": "R Pitch as MOD destination lets audio-rate CV FM the resonator pitch for inharmonic metallic tones.",
+      "steps": [
+        "LOAD a beam or string preset.",
+        "Push MOD, turn ENCODER to 'R Pitch', click to confirm.",
+        "Patch a VCO (audio-rate sine or triangle) → MOD input.",
+        "Start with MOD attenuverter near noon; turn CW for more FM index, CCW for clean tone.",
+        "Patch sequencer pitch → PITCH and gates → TRIG.",
+        "Patch Plonk OUT → VCA → output."
+      ],
+      "signalOut": "OUT — pitched percussion with FM sidebands that shift with carrier ratio.",
+      "hear": "DX-style bells and clangs: still triggers like a drum, but each note has a metallic edge you dial in with the attenuverter.",
+      "diagram": "Plonk:\n* Beam · MOD=R Pitch\n\n- VCO (Out) >> Plonk (MOD)\n- Sequencer (Pitch) p> Plonk (PITCH)\n- Sequencer (Gate) g> Plonk (TRIG)\n- Plonk (OUT) -> VCA (In) // resonator FM"
     },
     {
       "name": "Bowed string drone via AHR",
-      "patch": "Resonator = String · Noise Envelope Type = AHR · Mallet:Noise = 0:100 (pure noise excitation) · long gate at TRIG holds the noise, bowing the string · DECAY long · sounds like a sustained cello or tanpura · use slow LFO on X → R Tone for breathing timbre",
+      "patch": "String resonator with AHR noise envelope and pure-noise exciter sustains while the gate is high — a bowed drone.",
+      "steps": [
+        "Push OBJECT, set Resonator Type to String, Polyphony to 1.",
+        "Push EXCITER, set Mallet/Noise Mix to 0:100 (pure noise).",
+        "In EXCITER, scroll to Noise Envelope Type, set to AHR.",
+        "Turn DECAY fully CW for a long resonant tail.",
+        "Push X button, select 'R Tone', click; push X again, set DEPTH to MEDIUM.",
+        "Patch a long gate (1-4 s) → TRIG — gate length = drone length.",
+        "Patch slow LFO → X input for a breathing timbre.",
+        "Patch Plonk OUT → reverb → output."
+      ],
+      "signalOut": "OUT — sustained bowed/pitched drone; gate length controls note duration.",
+      "hear": "Cello- or tanpura-like sustain that wavers as the LFO sweeps Tone. Release the gate and the string fades naturally.",
       "diagram": "Plonk:\n* String · AHR env · Mallet:Noise=0:100\n* X=R Tone · long TRIG gate\n\n- Long Gate (Out) g> Plonk (TRIG)\n- Slow LFO (Out) >> Plonk (X)\n- Plonk (OUT) -> Reverb (In) // bowed drone"
     },
     {
-      "name": "Per-hit saturation mod",
-      "patch": "X destination = Saturation · X input from envelope follower on the drum hit's accent · accented hits get gritty distortion, soft hits stay clean · or drive X from a stepped sequence for rhythmic saturation accents that don't affect pitch or decay",
+      "name": "Per-hit saturation accents",
+      "patch": "X=Saturation lets a CV sequence add grit only on accented steps, without changing pitch or decay.",
+      "steps": [
+        "LOAD any drum preset.",
+        "Push X button, turn ENCODER to 'Saturation', click to confirm.",
+        "Push X again, set DEPTH to MEDIUM (±32).",
+        "Patch an accent/CV sequencer → X input; X attenuverter to 3 o'clock.",
+        "Patch pitch sequencer → PITCH; gates → TRIG.",
+        "Set X knob to ~10 o'clock so clean hits sit below the grit threshold.",
+        "Patch Plonk OUT → output."
+      ],
+      "signalOut": "OUT — drum audio with per-hit asymmetric saturation (0-60 dB).",
+      "hear": "Soft steps stay clean; accent steps punch through with gritty distortion. Timing and pitch are unchanged.",
       "diagram": "Plonk:\n* X=Saturation · depth MEDIUM\n\n- Accent Sequence (CV) >> Plonk (X)\n- Gate Sequencer (Gate) g> Plonk (TRIG)\n- Sequencer (Pitch) p> Plonk (PITCH)\n- Plonk (OUT) -> Output (In) // rhythmic saturation accents"
     },
     {
       "name": "Polyphonic tom fills with pitch ramp",
-      "patch": "Drumhead preset · Polyphony = 2 · Y = R PEnv Amnt · stepped sequence on PITCH runs tom melody · stepped sequence on Y varies pitch-envelope amount per tom · ratchet gates on TRIG create rolling fills where newer hits overlap older ones (poly=2)",
+      "patch": "Drumhead + Poly=2 + Y=R PEnv Amnt plays overlapping toms with per-hit pitch-drop variation.",
+      "steps": [
+        "Push OBJECT, set Resonator Type to Drumhead, Polyphony to 2.",
+        "Push Y button, select 'R PEnv Amt' (Resonator Pitch Envelope Amount), click.",
+        "Push Y again, set DEPTH to HIGH (±64) for dramatic pitch drops.",
+        "Patch pitch sequencer → PITCH for tom melody.",
+        "Patch a second stepped CV sequencer → Y input to vary pitch-drop per step.",
+        "Patch ratcheting gate sequencer → TRIG for rolling fills.",
+        "Patch Plonk OUT → mixer."
+      ],
+      "signalOut": "OUT — polyphonic tom audio; ratchets overlap because voice 2 holds previous hit.",
+      "hear": "Rolling tom fills where each hit has its own pitch drop, and ratchets stack without choking. Fast ratchets sound natural, not glitchy.",
       "diagram": "Plonk:\n* Drumhead · Poly=2 · Y=R PEnv Amnt\n\n- Pitch Sequencer (Pitch) p> Plonk (PITCH)\n- Mod Sequencer (CV) >> Plonk (Y)\n- Ratchet Gates (Out) g> Plonk (TRIG)\n- Plonk (OUT) -> Mixer (In) // overlapping tom fills"
     },
     {
       "name": "Snare with noise-density sweep",
-      "patch": "Membrane preset · X = N Density · slow LFO on X · the noise clicks transition smoothly from granular crackle to continuous white noise across the pattern · snare timbre evolves without changing pitch, attack, or decay",
+      "patch": "X=N Density morphs the noise exciter between granular clicks and continuous white noise across a pattern.",
+      "steps": [
+        "LOAD a membrane snare preset (or set OBJECT Type = Membrane manually).",
+        "Push X button, turn ENCODER to 'N Density', click to confirm.",
+        "Push X again, set DEPTH to FULL (±128) for full density sweep.",
+        "Patch slow LFO (triangle, ~0.05 Hz) → X input; X attenuverter to 3 o'clock.",
+        "Set X knob near noon so the LFO sweeps the full density range.",
+        "Patch gate sequencer → TRIG; pitch sequencer → PITCH if desired.",
+        "Patch Plonk OUT → compressor → output."
+      ],
+      "signalOut": "OUT — evolving snare audio; pitch/attack/decay unchanged, only noise texture morphs.",
+      "hear": "The snare body stays constant while its noise goes from sparse sandy clicks to thick continuous white noise, bar by bar.",
       "diagram": "Plonk:\n* Membrane · X=N Density\n\n- Slow LFO (Out) >> Plonk (X)\n- Gate (Out) g> Plonk (TRIG)\n- Plonk (OUT) -> Compressor (In) // density-morphing snare"
     }
   ]

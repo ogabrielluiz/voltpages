@@ -226,28 +226,119 @@
   "patchIdeas": [
     {
       "name": "Frozen cloud",
-      "patch": "Layer alpha selected · Intensity near center · Length around 1/2 s · Scan around noon · Dry/Wet mostly wet · feed a slow pad into Input and let arbhar turn it into a stable frozen cloud with stereo spread.",
-      "diagram": "arbhar:\n* Layer: alpha\n* Intensity: noon\n* Length: ~1/2 s\n* Scan: noon\n* Dry/Wet: mostly wet\n\nVCO:\n\nMixer:\n\n- VCO (Out) -> arbhar (Input)\n- arbhar (Output 1) -> Mixer (L)\n- arbhar (Output 2) -> Mixer (R)"
+      "patch": "Capture a slow pad into layer alpha, then play it back as a stable granular cloud with stereo spread.",
+      "steps": [
+        "Press Layer until alpha's LED lights.",
+        "Patch a slow pad → Input. Press Capture, hold ~3 seconds of source, press Capture again to stop.",
+        "Set Intensity ~noon (dense continuous grains).",
+        "Set Length ~1 o'clock (~500 ms grains) and Grain Window noon (Gaussian, smooth fades).",
+        "Set Scan ~noon and Spray ~10 o'clock for a tight but moving cluster.",
+        "Set Pitch at unity and Dry/Wet ~3 o'clock (mostly wet).",
+        "Patch Output 1 → Mixer L and Output 2 → Mixer R."
+      ],
+      "signalOut": "Output 1 / Output 2 — stereo audio (~10 Vpp). Grains are coin-tossed between channels for a wide image.",
+      "hear": "The pad becomes a sustained, slowly drifting cloud that doesn't loop identically — grain start positions wander around Scan and pan randomly between L and R.",
+      "diagram": "arbhar:\n* Layer: alpha\n* Intensity: noon\n* Length: ~1 o'clock\n* Scan: noon\n* Dry/Wet: ~3 o'clock\n\nVCO:\n\nMixer:\n\n- VCO (Out) -> arbhar (Input)\n- arbhar (Output 1) -> Mixer (L)\n- arbhar (Output 2) -> Mixer (R)"
     },
     {
-      "name": "Onset sampler",
-      "patch": "Onset Input listens to a drum loop · Capture Pulse Input stays unpatched · Hold set short · Sensitivity turned up · detected attacks trigger fresh grains and the Pulse Output can clock an external envelope for a synced stutter.",
-      "diagram": "arbhar:\n* Sensitivity: high\n* Hold: short\n* Capture: armed\n\nDrum Loop:\nEnvelope:\nMixer:\n\n- Drum Loop (Out) -> arbhar (Onset Input)\n- Drum Loop (Out) -> arbhar (Input)\n- arbhar (Pulse Output) t> Envelope (Trig)\n- arbhar (Output 1) -> Mixer (L)\n- arbhar (Output 2) -> Mixer (R)"
+      "name": "Onset-driven stutter",
+      "patch": "Let arbhar listen to a drum loop, fire grains on every detected attack, and clock an external envelope from the Pulse Output.",
+      "steps": [
+        "Patch a drum loop → Input (also normalises to Onset Input).",
+        "Capture ~4 seconds into layer alpha (press Capture, then Capture again).",
+        "Set Sensitivity ~2 o'clock so quiet hits still trigger.",
+        "Set Hold ~9 o'clock (~50 ms minimum gap between detections).",
+        "Set Length ~10 o'clock (~100 ms short grains) and Intensity ~10 o'clock.",
+        "Patch Pulse Output → external Envelope (Trig) to fire a VCA in sync with detected hits.",
+        "Patch Output 1 → Mixer L, Output 2 → Mixer R, Dry/Wet ~2 o'clock."
+      ],
+      "signalOut": "Output 1 / Output 2 — granular stutter mixed with dry. Pulse Output emits a +5 V trigger on each detected onset.",
+      "hear": "Every drum hit punches a fresh grain out of the buffer; the external envelope opens in lockstep, so an outside voice ducks or fires along with the rhythm.",
+      "diagram": "arbhar:\n* Sensitivity: ~2 o'clock\n* Hold: ~9 o'clock\n* Length: ~10 o'clock\n\nDrum Loop:\nEnvelope:\nMixer:\n\n- Drum Loop (Out) -> arbhar (Input)\n- arbhar (Pulse Output) t> Envelope (Trig)\n- arbhar (Output 1) -> Mixer (L)\n- arbhar (Output 2) -> Mixer (R)"
     },
     {
-      "name": "Wavetable sweep",
-      "patch": "Layer omega linked · Scan CV from a slow LFO · Grain Window around Gaussian · Grain Direction centered · Pitch Deviation slightly clockwise · the buffer becomes a moving wavetable that slides through all layers as the LFO rises and falls.",
-      "diagram": "arbhar:\n* Layer: omega\n* Grain Window: noon\n* Grain Direction: noon\n* Pitch Deviation: slight CW\n\nLFO:\n\nOutput:\n\n- LFO (Out) >> arbhar (Scan CV Input)\n- arbhar (Output 1) -> Output (In)"
+      "name": "Omega wavetable sweep",
+      "patch": "Link all six layers under omega and sweep a slow LFO across the whole bank as one long wavetable.",
+      "steps": [
+        "Capture different short sources into layers alpha through zeta (cycle Layer + Capture six times).",
+        "Press Layer until omega is selected (all six LEDs lit).",
+        "Set Length ~9 o'clock (~50 ms grains), Grain Window noon (Gaussian).",
+        "Set Grain Direction noon (50/50 forward/reverse), Pitch at unity.",
+        "Patch a slow bipolar LFO (~0.1 Hz) → Scan CV Input.",
+        "Set Scan ~noon so the LFO sweeps the full layer chain.",
+        "Set Intensity ~1 o'clock and Dry/Wet full CW.",
+        "Patch Output 1 → Output L, Output 2 → Output R."
+      ],
+      "signalOut": "Output 1 / Output 2 — stereo wavetable-style sweep through all six captured layers.",
+      "hear": "A slow, evolving timbre that morphs across all six samples like one long wavetable. As the LFO rises, you cross from layer alpha's material into zeta's; turn Spray up to scramble within each layer.",
+      "diagram": "arbhar:\n* Layer: omega\n* Grain Window: noon\n* Grain Direction: noon\n* Length: ~9 o'clock\n\nLFO:\n\nOutput:\n\n- LFO (Slow) >> arbhar (Scan CV Input)\n- arbhar (Output 1) -> Output (L)\n- arbhar (Output 2) -> Output (R)"
     },
     {
-      "name": "Sound-on-sound smear",
-      "patch": "Dub set just past noon · Intensity at the low edge of continuous mode · Length long · Pitch at unity · repeated capture builds a smear of the original source while the dry path stays present under the wet grains.",
-      "diagram": "arbhar:\n* Dub: just past noon\n* Intensity: low continuous\n* Length: long\n* Pitch: unity\n\nVCO:\nOutput:\n\n- VCO (Saw) -> arbhar (Input)\n- arbhar (Output 1) -> Output (In)"
+      "name": "Dub sound-on-sound smear",
+      "patch": "Use the Dub knob to layer fresh captures over old ones, smearing a saw drone into a thick wash.",
+      "steps": [
+        "Press Layer until alpha is selected.",
+        "Patch a saw VCO → Input.",
+        "Set Dub just past noon (half-old / half-new on each new capture pass).",
+        "Press Capture and let ~5 seconds record, then press Capture again.",
+        "Repeat capture 3–4 times — each pass blends new audio with the previous content.",
+        "Set Intensity ~10 o'clock (low continuous engine), Length ~2 o'clock (long grains).",
+        "Set Pitch at unity, Dry/Wet ~2 o'clock.",
+        "Patch Output 1 → Output (In)."
+      ],
+      "signalOut": "Output 1 — mono mix of dry saw plus smeared granular layers (Output 2 unpatched normalises into Output 1).",
+      "hear": "Each capture pass thickens the buffer instead of replacing it, so the saw becomes a layered, blurred drone with the original still audible underneath the wet grains.",
+      "diagram": "arbhar:\n* Layer: alpha\n* Dub: just past noon\n* Intensity: ~10 o'clock\n* Length: ~2 o'clock\n\nVCO:\nOutput:\n\n- VCO (Saw) -> arbhar (Input)\n- arbhar (Output 1) -> Output (In)"
     },
     {
-      "name": "Pitch-shifted percussion",
-      "patch": "Strike engine active · Capture pulse from a sequencer gate · Pitch knob down an octave · Pitch Deviation turned up · each strike produces short pitched grains that sit on top of the dry rhythm as a pitched granular accent.",
-      "diagram": "arbhar:\n* Strike: ready\n* Pitch: -1 octave\n* Pitch Deviation: moderate CW\n\nSequencer:\nOutput:\n\n- Sequencer (Gate) g> arbhar (Capture Pulse Input)\n- Sequencer (Gate) t> arbhar (Strike Input)\n- arbhar (Output 1) -> Output (In)"
+      "name": "Strike percussion accents",
+      "patch": "Fire one short pitched grain per sequencer step with the strike engine, sitting on top of a dry rhythm.",
+      "steps": [
+        "Capture ~3 seconds of any tonal source into layer alpha.",
+        "Turn Intensity full CCW to disable the continuous engine — only strikes will sound.",
+        "Set Length ~10 o'clock (~80 ms), Grain Window noon.",
+        "Set Pitch at −12 semitones (one octave down from unity).",
+        "Set Pitch Deviation ~2 o'clock (CW = quantised intervals per grain).",
+        "Patch a sequencer Gate → Strike Input. Each gate fires one accent grain.",
+        "Set Dry/Wet ~2 o'clock so the dry rhythm stays audible.",
+        "Patch Output 1 → Output (In)."
+      ],
+      "signalOut": "Output 1 — dry source plus one short pitched grain per Strike trigger. Output 2 unpatched mirrors Output 1.",
+      "hear": "A pitched percussive accent on every step, transposed an octave down with quantised pitch jumps from Pitch Deviation. Continuous engine stays silent, so the rhythm is purely strike-driven.",
+      "diagram": "arbhar:\n* Layer: alpha\n* Intensity: full CCW\n* Pitch: -12 st\n* Pitch Deviation: ~2 o'clock\n\nSequencer:\nOutput:\n\n- Sequencer (Gate) t> arbhar (Strike Input)\n- arbhar (Output 1) -> Output (In)"
+    },
+    {
+      "name": "On-board mic field recorder",
+      "patch": "Use the panel microphone with no input cable to capture room sound, then play it back through the granular engine.",
+      "steps": [
+        "Leave Input and Onset Input unpatched — the on-module microphone normalises into the capture path.",
+        "Press Layer until alpha is selected.",
+        "Set Input Level ~11 o'clock and tap near the module to test the mic LED responds.",
+        "Press Capture, speak / play / scrape near the module for ~5 seconds, press Capture to stop.",
+        "Set Length ~12 o'clock (~750 ms), Intensity ~1 o'clock, Spray ~11 o'clock.",
+        "Set Scan slowly turning by hand or patch a slow LFO → Scan CV Input.",
+        "Set Dry/Wet full CW (wet only) and patch Output 1 / Output 2 → Mixer L / R."
+      ],
+      "signalOut": "Output 1 / Output 2 — granular playback of the mic recording. No external source, no cables on the input side.",
+      "hear": "Whatever you recorded acoustically (voice, keys, a tap on the case) comes back as a granular cloud you can scrub through with Scan. Useful as a self-contained sketchpad with no other modules patched in.",
+      "diagram": "arbhar:\n* Input: (unpatched - mic active)\n* Layer: alpha\n* Length: ~12 o'clock\n* Dry/Wet: full CW\n\nMixer:\n\n- (panel mic) -> arbhar (Input - normalised)\n- arbhar (Output 1) -> Mixer (L)\n- arbhar (Output 2) -> Mixer (R)"
+    },
+    {
+      "name": "1V/oct melodic granular voice",
+      "patch": "Capture a held tone, then play arbhar as a pitched instrument tracked by a sequencer's 1V/oct.",
+      "steps": [
+        "Patch a sustained VCO drone → Input.",
+        "Capture ~2 seconds into layer alpha, then press Capture again to stop.",
+        "Patch a sequencer 1V/oct → 1V/Octave Input (tracks grain transposition).",
+        "Patch the sequencer Gate → Strike Input (one grain per note).",
+        "Turn Intensity full CCW so only strikes sound.",
+        "Set Pitch at unity (your sequencer drives pitch from 0 V).",
+        "Set Length ~11 o'clock (~150 ms), Grain Window noon.",
+        "Set Dry/Wet full CW, Output 1 → Mixer L, Output 2 → Mixer R."
+      ],
+      "signalOut": "Output 1 / Output 2 — melodic granular voice. One pitched grain per sequencer gate, transposed by 1V/oct.",
+      "hear": "A plucky, vocal-ish lead that follows your sequence note for note. Sweep Scan to change the timbre source from inside the captured drone; raise Pitch Deviation CW for harmonised stacks.",
+      "diagram": "arbhar:\n* Layer: alpha\n* Intensity: full CCW\n* Pitch: unity\n* Length: ~11 o'clock\n\n- VCO (Drone) -> arbhar (Input)\n- Sequencer (1V/oct) p> arbhar (1V/Octave Input)\n- Sequencer (Gate) t> arbhar (Strike Input)\n- arbhar (Output 1) -> Mixer (L)\n- arbhar (Output 2) -> Mixer (R)"
     }
   ]
 }

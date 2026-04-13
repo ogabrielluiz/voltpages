@@ -89,32 +89,94 @@
   "patchIdeas": [
     {
       "name": "Six-LFO complex modulator",
-      "patch": "Six LFO outputs → A1/B1/A2/B2/A3/B3 · both chain switches down (6-into-1) · Out 3 → filter cutoff · per-LFO attenuverter sets contribution and polarity · slow evolving complex CV from six simple sources in 6 HP",
+      "patch": "Six LFOs summed through all three blocks into Out 3 as one evolving CV.",
+      "steps": [
+        "Flip both chain switches down (6-into-1 configuration — all blocks sum into Out 3).",
+        "Patch six different LFO outputs (ideally varied rates: slow, medium, fast) → A 1, B 1, A 2, B 2, A 3, B 3.",
+        "Start with every knob at center (silent) so you hear nothing at first.",
+        "Patch 3x MIA (Out 3) → filter cutoff (or any destination needing complex CV).",
+        "Dial each knob CW or CCW one at a time to add each LFO into the sum — CW adds it straight, CCW adds it inverted.",
+        "Balance the six contributions by ear; back off any LFO that dominates."
+      ],
+      "signalOut": "Out 3 — the sum of all six LFOs, each scaled and optionally inverted by its knob.",
+      "hear": "A slow, endlessly evolving CV that never quite repeats because six different rates are interfering. Great for filter cutoff, wavetable position, or FM index. If motion feels flat, invert one or two LFOs (turn those knobs CCW) to break the sync.",
       "diagram": "3x MIA:\n* Chain switches: both down (6-into-1)\n\nLFO 1:\nLFO 2:\nLFO 3:\nLFO 4:\nLFO 5:\nLFO 6:\nFilter:\n\n- LFO 1 (Out) >> 3x MIA (A 1)\n- LFO 2 (Out) >> 3x MIA (B 1)\n- LFO 3 (Out) >> 3x MIA (A 2)\n- LFO 4 (Out) >> 3x MIA (B 2)\n- LFO 5 (Out) >> 3x MIA (A 3)\n- LFO 6 (Out) >> 3x MIA (B 3)\n- 3x MIA (Out 3) >> Filter (Cutoff)"
     },
     {
       "name": "Stereo panner from one source",
-      "patch": "Mono source → A1 (full CW) · same source multed → B1 (full CCW inverts) · Out 1 L/R pair behaves like ±1 stereo · invert polarity with knobs to swap · adds simple stereo width without a dedicated panner",
+      "patch": "Mono source multed to A1 (CW) and B1 (CCW) for a dry/inverted pair routed L and R.",
+      "steps": [
+        "Keep both chain switches up (2-2-2 — block 1 stays independent).",
+        "Mult a mono source. Send copy 1 → A 1. Send copy 2 → B 1.",
+        "Turn A 1 knob fully clockwise (signal passes straight through at unity).",
+        "Turn B 1 knob fully counter-clockwise (signal is inverted at unity).",
+        "Patch 3x MIA (Out 1) → stereo L.",
+        "For the R side, move one of the copies to block 2 instead (e.g. A 2 full CW) and patch Out 2 → stereo R. Flip A 2 to CCW if you want the inverted mirror on the right."
+      ],
+      "signalOut": "Out 1 — the sum A 1 + B 1. With A CW and B CCW the sum near-cancels; use Out 2 as the out-of-phase partner for width.",
+      "hear": "Haas-style fake stereo width from a mono source. Not a true pan law, but useful for thickening a single VCO. Start B 1 near center and creep CCW — the sense of width grows as the two signals diverge in polarity.",
       "diagram": "3x MIA:\n* A1: full CW · B1: full CCW (invert)\n\nMono Source:\nMult:\n\n- Mono Source (Out) -> Mult (In)\n- Mult (Out 1) -> 3x MIA (A 1)\n- Mult (Out 2) -> 3x MIA (B 1)\n- 3x MIA (Out 1) -> Output (L)\n- 3x MIA (Out 2) -> Output (R) // use Out 2 as inverted mirror"
     },
     {
       "name": "CV transpose with attenuated modulation",
-      "patch": "Sequencer 1V/oct → A1 (full CW for tracking) · B1 unpatched (normalled offset, set to desired octave) · LFO vibrato → A2 · chain switch 1 down · Out 2 → VCO · sums pitch + transpose + vibrato with per-element polarity control",
+      "patch": "Sum sequencer pitch + manual octave offset + vibrato in blocks 1 and 2, chained to Out 2.",
+      "steps": [
+        "Flip chain switch 1 down (block 1 sums into block 2).",
+        "Patch sequencer 1V/oct → A 1. Turn A 1 fully clockwise (unity — preserves tracking).",
+        "Leave B 1 unpatched. Its knob is now a bipolar offset. Set B 1 to noon for no transpose; CW adds octaves up, CCW adds octaves down.",
+        "Patch vibrato LFO (sine) → A 2. Keep A 2 near center and open it slowly for vibrato depth.",
+        "Patch 3x MIA (Out 2) → VCO (1V/oct).",
+        "Check tracking first (A 1 at CW, everything else centered). Then dial in transpose with B 1 and vibrato with A 2."
+      ],
+      "signalOut": "Out 2 — sum of (A 1 pitch + B 1 offset) chained in, plus A 2 vibrato and B 2 (unused unless you add glide CV).",
+      "hear": "Sequencer melody with a live transpose knob and a vibrato fader. B 1 acts like a coarse tune; nudge it a few ticks for perfect octave jumps (test by ear against the sequence). A 2 lets you swell vibrato in and out during a performance.",
       "diagram": "3x MIA:\n* Chain 1: down · A1: full CW · B1: manual offset · A2: vibrato depth\n\nSequencer:\nLFO:\nVCO:\n\n- Sequencer (Pitch) p> 3x MIA (A 1)\n- LFO (Sine) >> 3x MIA (A 2)\n- 3x MIA (Out 2) p> VCO (V/Oct)"
     },
     {
       "name": "Polarity flipper for envelope",
-      "patch": "Envelope → A1 · A1 full CCW · Out 1 → VCA CV (down-expression) · same envelope multed → B1 full CW · Out 1 → filter (up-expression) · one envelope drives two parameters in opposite directions for instant ducking behavior",
+      "patch": "One envelope multed into A1 (inverted) and B1 (positive) feeds two destinations moving in opposite directions.",
+      "steps": [
+        "Keep chain switches up (block 1 independent; we'll use Out 1 and Out 2 separately).",
+        "Mult one envelope into two copies.",
+        "Copy 1 → A 1. Turn A 1 fully counter-clockwise (inverts the envelope).",
+        "Copy 2 → A 2. Turn A 2 fully clockwise (passes the envelope straight).",
+        "Patch 3x MIA (Out 1) → VCA CV — inverted envelope ducks the VCA when the original envelope fires.",
+        "Patch 3x MIA (Out 2) → filter cutoff — positive envelope opens the filter on the same trigger.",
+        "Back off either knob from the extremes if the response feels too extreme."
+      ],
+      "signalOut": "Out 1 — inverted envelope (for ducking). Out 2 — positive envelope (for swells).",
+      "hear": "One trigger makes the filter brighten while the VCA dips — instant ducking effect. Useful for kick-driven sidechain on a drone pad, or for classic 'open the filter but drop the level' brass stabs. Flip either knob past center to trim how much each side moves.",
       "diagram": "3x MIA:\n* A1: full CCW (invert) · B1: full CW\n\nEnvelope:\nMult:\nVCA:\nFilter:\n\n- Envelope (Out) -> Mult (In)\n- Mult (Out 1) >> 3x MIA (A 1)\n- Mult (Out 2) >> 3x MIA (B 1)\n- 3x MIA (Out 1) >> VCA (CV) // inverted = ducking\n- 3x MIA (Out 2) >> Filter (Cutoff) // positive = swell"
     },
     {
       "name": "Manual offset bank",
-      "patch": "All six inputs unpatched · each knob delivers a bipolar offset from normalized voltage · Out 1/2/3 → three destinations needing bias · use as a compact 6-source voltage source for thresholds, octave selects, or initial filter cutoff",
+      "patch": "All six inputs unpatched turns every knob into a bipolar manual offset; three separate Outs feed three destinations.",
+      "steps": [
+        "Leave every A and B input unpatched — each knob now rides the internal normalled offset voltage.",
+        "Keep both chain switches up (2-2-2) so each Out stays independent.",
+        "Knob center = 0 V. CW = positive offset, CCW = negative.",
+        "Patch Out 1 → filter cutoff. Set A 1 + B 1 to taste for a bias voltage (they sum).",
+        "Patch Out 2 → VCO 1V/oct. Tune A 2 and B 2 by ear to pick an octave/fifth offset.",
+        "Patch Out 3 → comparator threshold (or any CV destination). Set A 3 + B 3 for the threshold level.",
+        "Fine-tune while listening — there is no voltmeter, so trust ears or a tuner for pitch offsets."
+      ],
+      "signalOut": "Out 1, Out 2, Out 3 — three independent DC voltages set by knob pairs. Each Out = A + B summed.",
+      "hear": "Silence on its own — this is a CV utility. You hear the effect at the destinations: filter brightness bias, VCO at a chosen octave, comparator firing at a specific level. Two knobs per Out gives coarse/fine feel (use A for coarse, B for fine).",
       "diagram": "3x MIA:\n* all inputs unpatched · knobs set manual offsets\n\nFilter:\nVCO:\nComparator:\n\n- 3x MIA (Out 1) >> Filter (Cutoff) // A1+B1 offset = bias\n- 3x MIA (Out 2) p> VCO (V/Oct) // octave offset\n- 3x MIA (Out 3) >> Comparator (Threshold)"
     },
     {
       "name": "Mid/side audio summer",
-      "patch": "Stereo L → A1 full CW · stereo R → B1 full CW · Out 1 = L+R (mid) · L → A2 full CW · R → B2 full CCW · Out 2 = L-R (side) · DC-coupled pots preserve stereo imaging for side-chain tricks or M/S processing",
+      "patch": "Stereo L/R multed into two blocks: block 1 sums to Mid (L+R), block 2 subtracts to Side (L-R).",
+      "steps": [
+        "Mult stereo L into two copies, and stereo R into two copies.",
+        "Patch L copy 1 → A 1, R copy 1 → B 1. Turn both knobs fully clockwise for L+R at unity.",
+        "Patch L copy 2 → A 2, R copy 2 → B 2. A 2 fully clockwise, B 2 fully counter-clockwise for L−R.",
+        "Keep chain switches up (blocks independent).",
+        "Out 1 is the Mid channel (mono sum). Out 2 is the Side channel (stereo difference).",
+        "Send Mid and Side through separate processing (e.g. compress the Mid, EQ the Side), then decode back: (Mid+Side)/2 = L, (Mid−Side)/2 = R."
+      ],
+      "signalOut": "Out 1 — Mid (L+R). Out 2 — Side (L−R). DC-coupled, so audio passes clean.",
+      "hear": "On its own Out 1 collapses the stereo to mono and Out 2 gives the difference — Side often sounds like reverb tails, pan-effects and wide synths while center instruments vanish. Useful for M/S compression, sidechain from ambient content, or stereo-width tricks when you re-encode.",
       "diagram": "3x MIA:\n* A1: full CW · B1: full CW\n* A2: full CW · B2: full CCW (invert)\n\nStereo L:\nStereo R:\nMult:\n\n- Stereo L (Out) -> Mult (In L)\n- Stereo R (Out) -> Mult (In R)\n- Mult (L) -> 3x MIA (A 1)\n- Mult (R) -> 3x MIA (B 1)\n- Mult (L) -> 3x MIA (A 2)\n- Mult (R) -> 3x MIA (B 2)\n- 3x MIA (Out 1) -> Output (Mid)\n- 3x MIA (Out 2) -> Output (Side)"
     }
   ]

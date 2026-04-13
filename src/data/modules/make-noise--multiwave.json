@@ -200,18 +200,102 @@
   "patchIdeas": [
     {
       "name": "8-voice polyphony with PoliMATHS",
-      "patch": "PoliMATHS Ch.Index Out → MultiWAVE Span CV · PoliMATHS outputs → QXG control inputs via header · MultiWAVE → QXG signal inputs via header",
-      "diagram": "MULTIWAVE:\n* Mode: Channel Index\n- PoliMATHS (Channel Index Output) >> MultiWAVE (Span CV) // selects voice\n- MIDI/Keys (Pitch) p> MultiWAVE (TRPS) // global 1V/oct\n- MultiWAVE (Channel 1–8 Outputs) -> QXG (Signal Inputs 1–4) // via N.U.S.S. header\n- PoliMATHS (Channel Outputs 1–8) >> QXG (Control Inputs 1–4) // via N.U.S.S. header"
+      "patch": "Uses the N.U.S.S. header chain: PoliMATHS selects a channel on MultiWAVE while its own envelope outputs gate that voice's level on QXG.",
+      "steps": [
+        "Press MODE on MultiWAVE until the Span Activity Window is WHITE (Channel Index mode).",
+        "Set SPAN knob to 12:00 and SPAN CV attenuverter fully clockwise (translates Channel Index voltages 1:1).",
+        "Connect PoliMATHS CHANNEL INDEX OUT into MultiWAVE SPAN CV input.",
+        "Patch keyboard/MIDI 1V/oct into MultiWAVE TRPS — this transposes all 8 voices of Osc B at once.",
+        "Set BLEND around noon so both Osc A and Osc B are audible per channel.",
+        "Connect the MultiWAVE rear header ribbon to the QXG signal header (channels 1–8 become QXG signal ins 1–8).",
+        "Connect the PoliMATHS rear header ribbon to the QXG control header (envelopes 1–8 become QXG VCA CVs 1–8).",
+        "Play keys — PoliMATHS steals a voice per note, gates it through QXG, and MultiWAVE voices the pitch."
+      ],
+      "signalOut": "QXG main out — full 8-voice polyphonic voice-card, envelope-shaped.",
+      "hear": "A polysynth where every note steals the next free voice. Raise DETUNE slightly for analog chorus, or sweep SPREAD for per-voice timbral drift.",
+      "diagram": "MULTIWAVE:\n* Mode: Channel Index\n* Span: noon\n* Span CV atten: full CW\n* Blend: noon\n- PoliMATHS (Channel Index Output) >> MultiWAVE (Span CV) // selects voice\n- MIDI/Keys (Pitch) p> MultiWAVE (TRPS) // global 1V/oct\n- MultiWAVE (Channel 1–8 Outputs) -> QXG (Signal Inputs 1–4) // via N.U.S.S. header\n- PoliMATHS (Channel Outputs 1–8) >> QXG (Control Inputs 1–4) // via N.U.S.S. header"
     },
     {
-      "name": "Harmonic oscillator",
-      "patch": "Detune full CW · sequence Transpose instead of 1v/oct",
-      "diagram": "MULTIWAVE:\n* Detune: Full CW\n* Blend: noon\n- Sequencer (CV Out) p> MultiWAVE (TRPS) // transpose harmonic series\n- MultiWAVE (Channel 1–8 Outputs) -> Mixer (In)"
+      "name": "Harmonic oscillator drone",
+      "patch": "DETUNE fully CW stretches the 8 voices into a harmonic series instead of chorus — sequence TRPS to transpose the whole stack.",
+      "steps": [
+        "Turn DETUNE fully clockwise — Osc B on each channel now sits on a different integer harmonic of the root.",
+        "Set BLEND at noon so both oscillator banks are heard.",
+        "Set Osc A FOLLOW to GREEN (Integer Multiply) so Osc A also locks to musical ratios of Osc B.",
+        "Patch a slow sequencer CV into MultiWAVE TRPS (the 1V/oct global transpose).",
+        "Leave Activate, Accumulate, Reset unpatched so all eight channels stay on continuously.",
+        "Sum channel outputs 1–8 into a mixer — or press PAGE 2 + MODE (Span LED green) and take OUT 5 (Osc A mono mix) + OUT 6 (Osc B mono mix).",
+        "Slowly turn DETUNE back CCW and hear the harmonic stack collapse into unison chorus."
+      ],
+      "signalOut": "Summed channel outs 1–8 (or Page 2 mono mixes on 5/6) — a rich additive harmonic tone.",
+      "hear": "A pipe-organ/harmonica-like drone where each voice is a tuned partial. Transposing TRPS moves the whole harmonic series together; DETUNE CCW morphs it back toward a detuned unison pad.",
+      "diagram": "MULTIWAVE:\n* Detune: Full CW\n* Blend: noon\n* Follow (Osc A): Green (Integer Multiply)\n- Sequencer (CV Out) p> MultiWAVE (TRPS) // transpose harmonic series\n- MultiWAVE (Channel 1–8 Outputs) -> Mixer (In)"
     },
     {
-      "name": "Drifting polyphonic pads",
-      "patch": "Round mode Span=1 · slow LFO → Spread CV · Blend at noon · Mod Time slow",
+      "name": "Drifting polyphonic pad with Spread",
+      "patch": "Round mode cycles voices from a single clock; a slow LFO into SPREAD CV distributes modulation unevenly across the 8 channels.",
+      "steps": [
+        "Press MODE until the Span Activity Window is YELLOW (Round mode).",
+        "Set SPAN to 1 so each incoming trigger advances by one channel (simple round-robin).",
+        "Set BLEND at noon and MOD TIME slow (CCW of noon).",
+        "Pick a wavetable on Page 2 — PURPLE (Additive) or ORANGE (Organs) works well for pads.",
+        "Patch a slow clock (~1–4 Hz) into ACTIVATE — each tick lights the next channel.",
+        "Patch a slow LFO (~0.1 Hz) into SPREAD CV; set the SPREAD COMBO POT to act as attenuverter around noon.",
+        "Sum channel outputs 1–8 into a mixer.",
+        "Tweak the GOLD-legend attenuverters (A-WAVE, B-WAVE, MOD TIME, OSC A PITCH) to pick which parameters the Spread modulation reaches."
+      ],
+      "signalOut": "Summed channel outs 1–8 — an 8-voice evolving pad.",
+      "hear": "A lush chorused pad where each of the 8 voices slowly drifts through its wavetable at a different rate. Raise SPREAD depth for more divergence between voices.",
       "diagram": "MULTIWAVE:\n* Mode: Round\n* Span: 1\n* Blend: noon\n* Mod Time: slow\n- Clock (Trig) g> MultiWAVE (Activate) // round-robin voices\n- LFO (Out) >> MultiWAVE (Spread CV) // drift across channels\n- MultiWAVE (Channel 1–8 Outputs) -> Mixer (In)"
+    },
+    {
+      "name": "Parallel-clock rhythmic wavetable",
+      "patch": "Parallel mode fires each channel at its own clock division of a master clock — turning MultiWAVE into an 8-voice rhythm generator.",
+      "steps": [
+        "Press MODE until the Span Activity Window is CYAN (Parallel mode).",
+        "Set SPAN near 12:00 first (all channels on /1), then slowly turn it CCW to spread out divisions (Ch1 gets the largest, Ch8 the smallest).",
+        "Patch a steady clock (16th-notes works well) into ACTIVATE.",
+        "Patch the same clock into RESET every 1–2 bars so divisions stay phase-locked.",
+        "Set BLEND at noon; pick a percussive wavetable on Page 2 (BLUE Make Noise or PINK Sync).",
+        "Set OSC B PITCH to taste and turn DETUNE slightly CW for motion between voices.",
+        "Take channel outs 1–8 into 8 separate mixer channels — or Page 2 outs 7 (odd) and 8 (even) for a stereo split.",
+        "Nudge SPAN to re-map which channel plays which division."
+      ],
+      "signalOut": "Individual channel outs 1–8, or Page 2 odd/even sub-mixes on outs 7 & 8.",
+      "hear": "An 8-voice polyrhythm where each voice fires at a different clock division. Great for generative sequences and Reichian phasing.",
+      "diagram": "MULTIWAVE:\n* Mode: Parallel\n* Span: ~11 o'clock\n* Blend: noon\n- Clock (Trig) g> MultiWAVE (Activate)\n- Clock /16 (Trig) g> MultiWAVE (Reset) // realign divisions\n- MultiWAVE (Channel 1–8 Outputs) -> Mixer (Ins 1–8)"
+    },
+    {
+      "name": "Shift-register cascading arpeggio",
+      "patch": "Shift Register mode passes Modulation Dissemination values down the voice array each Activation, creating cascading timbral arpeggios.",
+      "steps": [
+        "Press MODE until the Span Activity Window is MAGENTA (Shift Register mode).",
+        "Set SPAN clockwise to Channel 4 — shift register will run from Ch4 forward to Ch8.",
+        "Patch a sequencer's CV out into OSC B V/OCT input — this CV seeds the shift register on each Activation.",
+        "Patch a clock into ACTIVATE. Every trigger loads the current V/Oct into Ch4 and shifts old values down to Ch5/6/7/8.",
+        "Set BLEND at noon. Turn OSC B WAVE attenuverter CW so wave position also shifts down the line.",
+        "Optional: patch Reset occasionally to clear the register.",
+        "Sum channel outputs 1–8 into a mixer — Ch1–3 hold static notes, Ch4–8 replay the last 5 sequencer notes in cascade."
+      ],
+      "signalOut": "Summed channel outs 1–8 — a static chord (Ch1–3) under a rippling 5-note echo (Ch4–8).",
+      "hear": "A shimmering 'delay-line of pitches': each new sequencer note pushes older notes further down the voice array and they slowly fade out.",
+      "diagram": "MULTIWAVE:\n* Mode: Shift Register\n* Span: CW to Ch4\n* Blend: noon\n- Sequencer (CV) p> MultiWAVE (V/Oct Osc B) // seeds register\n- Clock (Trig) g> MultiWAVE (Activate) // shifts register\n- MultiWAVE (Channel 1–8 Outputs) -> Mixer (In)"
+    },
+    {
+      "name": "Accumulate swelling chord",
+      "patch": "Stack multiple Activations in the Accumulate buffer, then trigger them all at once for a synchronized chord hit with overlapping Mod-Time motion.",
+      "steps": [
+        "Press MODE until the Span Activity Window is YELLOW (Round mode) and set SPAN to 1.",
+        "Patch a note-rate trigger (e.g. keyboard gate) into ACTIVATE — each press stages a channel (it lights ORANGE, not played yet).",
+        "Patch a slower clock (1/bar) into ACCUMULATE — on its tick all staged channels Activate together.",
+        "Set BLEND at noon and MOD TIME slow.",
+        "Turn DETUNE ~10 o'clock for analog-poly chorus.",
+        "On Page 2 enable Quantization (Follow button → YELLOW) so all pitches lock to 12-TET, A=440.",
+        "Sum channel outputs 1–8 into a mixer (or use Page 2 out 5/6 Osc A/B mixes)."
+      ],
+      "signalOut": "Summed channel outs 1–8 — a chord hit that rearticulates on every ACCUMULATE gate.",
+      "hear": "Each pressed key stages a voice (orange LED); on every bar the chord recalls with all new notes at once, like stacking a sampler's poly hold.",
+      "diagram": "MULTIWAVE:\n* Mode: Round\n* Span: 1\n* Detune: ~10 o'clock\n* Page 2 Quantize: Yellow (on)\n- Keys (Gate) g> MultiWAVE (Activate) // stage voice\n- Clock /bar (Trig) g> MultiWAVE (Accumulate) // release chord\n- Keys (Pitch) p> MultiWAVE (TRPS)\n- MultiWAVE (Channel 1–8 Outputs) -> Mixer (In)"
     }
   ]
 }

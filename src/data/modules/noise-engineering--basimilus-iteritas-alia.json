@@ -1,0 +1,319 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://noiseengineering.us/products/basimilus-iteritas-alia",
+      "https://manuals.noiseengineering.us/bia/",
+      "https://noiseengineering.us/pages/world-of-alia/",
+      "https://modulargrid.net/e/noise-engineering-basimilus-iteritas-alia",
+      "https://www.soundonsound.com/reviews/noise-engineering-basimilus-iteritas-alia",
+      "https://www.perfectcircuit.com/noise-engineering-basimilus-iteritas-alia.html"
+    ]
+  },
+  "slug": "noise-engineering--basimilus-iteritas-alia",
+  "name": "Basimilus Iteritas Alia",
+  "manufacturer": "Noise Engineering",
+  "hp": 10,
+  "tags": ["DRUM", "OSCILLATOR", "WAVEFOLDER", "VCO"],
+  "description": "Parameterized digital drum voice. Six-oscillator additive/FM engine with Infinifold wavefolder across three modes (Skin, Liquid, Metal). Pitch encoder, envelope output, and firmware-swappable Alia platform.",
+  "controls": [
+    {
+      "name": "Pitch",
+      "scope": "Global",
+      "description": "Rotary encoder sets fundamental pitch. Press to toggle between coarse semitone steps and fine tuning. Sums with Pitch CV.",
+      "detail": "encoder · press = coarse/fine · sums with Pitch CV (-2V to +5V)"
+    },
+    {
+      "name": "Morph",
+      "scope": "Global",
+      "description": "Continuously blends the waveform for all six oscillators through sine, triangle, saw, and square. Knob offsets the CV input.",
+      "detail": "sine → triangle → saw → square · CV 0-5V"
+    },
+    {
+      "name": "Attack",
+      "scope": "Global",
+      "description": "Shapes onset for all oscillators plus noise. CCW mixes in noise, dead center is an analog pop, CW slows attack. Knob offsets CV.",
+      "detail": "CCW: noise burst · noon: click · CW: slow attack"
+    },
+    {
+      "name": "Decay",
+      "scope": "Global",
+      "description": "Amplitude decay time for all oscillators. In Liquid mode also sets the pitch envelope length. Knob offsets CV.",
+      "detail": "short to long · affects pitch env in Liquid"
+    },
+    {
+      "name": "Harmonic",
+      "scope": "Global",
+      "description": "Harmonic count and decay for the six oscillators. CCW a single partial; moving CW introduces partials 2–6 with lengthening decays.",
+      "detail": "CCW: 1 partial · CW: 6 partials with long decays"
+    },
+    {
+      "name": "Fold",
+      "scope": "Global",
+      "description": "Infinifolder amount. Lower three quarters set a folding threshold; top quarter mixes in a signal-following pulse train for gritty buzz.",
+      "detail": "0-75%: threshold fold · 75%+: pulse-train buzz"
+    },
+    {
+      "name": "Spread",
+      "scope": "Global",
+      "description": "Frequency spacing of the five non-fundamental oscillators. Sweeps from strict harmonic series to prime/inharmonic spacings.",
+      "detail": "CCW/CW: harmonic · mid: prime/inharmonic"
+    },
+    {
+      "name": "Mode switch",
+      "scope": "Global",
+      "description": "Three-position toggle selects synthesis algorithm. Skin is 6-op additive; Liquid adds a pitch envelope to all partials; Metal phase-modulates two 3-op FM stacks.",
+      "detail": "Skin · Liquid · Metal · no CV"
+    },
+    {
+      "name": "Range switch",
+      "scope": "Global",
+      "description": "Octave range selector. Alto is +2 octaves; Treble is +4 octaves relative to Bass.",
+      "detail": "Bass · Alto (+2 oct) · Treble (+4 oct) · no CV"
+    },
+    {
+      "name": "Hit",
+      "scope": "Global",
+      "description": "Momentary button fires the envelope manually. Handy for live hits and auditioning patches without a cable patched to Trig.",
+      "detail": "momentary · manual envelope trigger"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Pitch",
+      "description": "1V/oct pitch CV for the fundamental oscillator. Sums with Pitch encoder value.",
+      "voltage": "-2V to +5V · 1V/oct"
+    },
+    {
+      "name": "Morph",
+      "description": "CV for waveshape blend. Sums with Morph knob.",
+      "voltage": "0-5V"
+    },
+    {
+      "name": "Attack",
+      "description": "CV for attack shape (noise/click/slow). Sums with Attack knob.",
+      "voltage": "0-5V"
+    },
+    {
+      "name": "Decay",
+      "description": "CV for decay time. Sums with Decay knob.",
+      "voltage": "0-5V"
+    },
+    {
+      "name": "Harm",
+      "description": "CV for harmonic count/decay. Sums with Harmonic knob.",
+      "voltage": "0-5V"
+    },
+    {
+      "name": "Fold",
+      "description": "CV for fold threshold and pulse-train injection. Sums with Fold knob.",
+      "voltage": "0-5V"
+    },
+    {
+      "name": "Spread",
+      "description": "CV for frequency spacing. Sums with Spread knob.",
+      "voltage": "0-5V"
+    },
+    {
+      "name": "Trig",
+      "description": "Rising-edge trigger fires the envelope. Accepts gates, triggers, and audio-rate signals for re-triggered texture.",
+      "voltage": "+1.8V threshold"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Out",
+      "description": "Main audio output. Low impedance. Internal loudness compensation evens level across parameter changes.",
+      "voltage": "~14Vpp max"
+    },
+    {
+      "name": "Env Out",
+      "description": "Copy of the internal amplitude envelope. Useful for modulating external VCAs, filters, or FX in sync with each hit.",
+      "voltage": "0-5V"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Skin mode",
+      "trigger": "Mode switch → Skin",
+      "description": "Six-operator additive engine with no inter-oscillator interaction. Each partial plays a static ratio set by Spread. Best for kicks, toms, and additive synth stabs. Fold and Harmonic are the primary timbre sculptors since there is no pitch envelope."
+    },
+    {
+      "name": "Liquid mode",
+      "trigger": "Mode switch → Liquid",
+      "description": "Skin architecture plus a pitch envelope applied to all six oscillators. Produces the characteristic 808/909 pitch drop without external patching. Decay scales both amplitude and pitch-envelope length together."
+    },
+    {
+      "name": "Metal mode",
+      "trigger": "Mode switch → Metal",
+      "description": "Two parallel three-operator phase-modulation stacks. Produces bells, cowbells, crashes, and alien timbres. Spread and Harmonic become FM ratio and index controls; small movements cause large timbral shifts."
+    },
+    {
+      "name": "Pitch encoder coarse/fine toggle",
+      "trigger": "press the Pitch encoder",
+      "description": "Press action toggles the encoder between coarse semitone steps and fine tuning. Replaces the continuous Pitch pot on the original Alter and allows precise re-tuning without drift. State persists across triggers."
+    },
+    {
+      "name": "Envelope output",
+      "trigger": "any trigger",
+      "description": "Env Out emits 0-5V mirroring the internal amplitude envelope. Patch into an external VCA CV, filter cutoff, or FX parameter so the effect tracks each hit's shape. Alia-only jack; not present on the original Alter."
+    },
+    {
+      "name": "Infinifold with pulse injection",
+      "trigger": "Fold knob in top quarter",
+      "description": "Below 75%, Fold sets a threshold and the engine stacks fold stages with amplitude compensation. Above 75%, a signal-following pulse train is injected at signal extrema for a gritty pitched buzz. Key zone for noisy snares and sub-bass grit."
+    },
+    {
+      "name": "Post-fold envelope restore",
+      "trigger": "any trigger",
+      "description": "After the folder, Alia re-applies a shape derived from the summed oscillators. This preserves percussive dynamics that folding normally flattens, so even maximum Fold retains attack punch instead of becoming a steady drone."
+    },
+    {
+      "name": "Audio-rate trig",
+      "trigger": "square/pulse VCO → Trig",
+      "description": "Trig accepts audio-rate input. Re-triggering the envelope at oscillator rates produces pitched digital textures, cross-modulated bells, and gritty metallic timbres. Pairs well with Metal mode and high Spread for inharmonic bell sequences."
+    },
+    {
+      "name": "Firmware swap",
+      "trigger": "rear micro-USB + Customer Portal",
+      "description": "Alia is a firmware-swappable platform. Rear micro-USB connects to Noise Engineering's Customer Portal to load any other Alia-compatible firmware (Manis, Cursus, Ataraxic, etc.) for free. Only one firmware runs at a time; swap is non-destructive."
+    },
+    {
+      "name": "Pitch CV range extended",
+      "trigger": "Pitch CV input",
+      "description": "Alia accepts -2V to +5V on Pitch CV (seven-octave span). Wider and signed compared to Alter's 0-8V range, so negative voltages from attenuverters and bipolar LFOs track musically without DC offset tricks."
+    },
+    {
+      "name": "Autocalibration on boot",
+      "trigger": "power up with Pitch CV unpatched",
+      "description": "On startup with nothing patched into Pitch CV, Alia runs an autocalibration routine for its oscillators. Leaves tracking tight across the full -2V to +5V pitch range. Skipped if a cable is present at boot."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic 909 kick",
+      "patch": "Liquid mode provides the pitch bloom of a 909 kick from a single module, clocked straight in.",
+      "steps": [
+        "Flip the Mode switch to Liquid.",
+        "Flip the Range switch to Bass.",
+        "Set Pitch encoder around 9 o'clock-equivalent low tuning, Decay to 2 o'clock, Attack to noon.",
+        "Set Morph to 10 o'clock, Harmonic to 10 o'clock, Fold to 10 o'clock.",
+        "Turn Spread fully CCW for strict harmonic series.",
+        "Patch your clock t> Basimilus Iteritas Alia Trig.",
+        "Patch Basimilus Iteritas Alia Out -> your drum mixer."
+      ],
+      "signalOut": "Out — audio, up to ~14Vpp.",
+      "hear": "A punchy kick with a short pitch drop. Lower Decay for a tighter 606 thump; raise Fold past noon for added drive on the body.",
+      "diagram": "Basimilus Iteritas Alia:\n* Mode: Liquid · Range: Bass\n* Pitch: low · Decay: 2 o'clock · Attack: noon · Morph: 10 o'clock · Harmonic: 10 o'clock · Fold: 10 o'clock · Spread: full CCW\n\nClock:\nMixer:\n\n- Clock (Out) t> Basimilus Iteritas Alia (Trig)\n- Basimilus Iteritas Alia (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Metal crash with morphing ratios",
+      "patch": "Modulates Spread and Harmonic so every Metal-mode hit lands on a different FM ratio, giving a single voice a library of crashes.",
+      "steps": [
+        "Flip Mode to Metal, Range to Treble.",
+        "Set Pitch to noon, Decay to 3 o'clock, Attack to noon.",
+        "Patch a slow triangle LFO >> Alia Spread CV.",
+        "Patch a stepped random (S&H) >> Alia Harm CV.",
+        "Patch a gate sequencer t> Alia Trig.",
+        "Patch Alia Out -> your drum mixer."
+      ],
+      "signalOut": "Out — audio, wash of metallic partials.",
+      "hear": "Each hit has a different bell/crash spectrum. Triangle LFO slowly shifts the character between hits; S&H scrambles harmonic count per trigger.",
+      "diagram": "Basimilus Iteritas Alia:\n* Mode: Metal · Range: Treble\n* Pitch: noon · Decay: 3 o'clock · Attack: noon\n\nLFO:\nS&H:\nGate Seq:\nMixer:\n\n- LFO (Tri) >> Basimilus Iteritas Alia (Spread)\n- S&H (Out) >> Basimilus Iteritas Alia (Harm)\n- Gate Seq (Out) t> Basimilus Iteritas Alia (Trig)\n- Basimilus Iteritas Alia (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Pulse-train snare",
+      "patch": "Pushes Fold past the pulse-injection threshold and uses the Attack noise blend to build a gritty digital snare.",
+      "steps": [
+        "Mode: Skin · Range: Alto.",
+        "Set Pitch around 10 o'clock, Decay 10 o'clock, Attack 9 o'clock (noise blend).",
+        "Set Morph to 3 o'clock, Harmonic to 1 o'clock, Spread to noon.",
+        "Turn Fold fully CW to engage the pulse-train buzz.",
+        "Patch your clock t> Alia Trig.",
+        "Patch a MATHS CH 1 envelope (triggered by the same clock) >> Alia Attack for velocity-scaled noise.",
+        "Patch Alia Out -> your drum mixer."
+      ],
+      "signalOut": "Out — gritty mid-frequency snare hit.",
+      "hear": "A buzzy 606-style snare whose noise-to-pitch balance follows the MATHS envelope. Shorten MATHS Rise for quicker snap.",
+      "diagram": "Basimilus Iteritas Alia:\n* Mode: Skin · Range: Alto\n* Pitch: 10 o'clock · Decay: 10 o'clock · Attack: 9 o'clock · Morph: 3 o'clock · Harmonic: 1 o'clock · Fold: full CW · Spread: noon\n\nMATHS:\n* CH 1: envelope\n\nClock:\nMixer:\n\n- Clock (Out) t> Basimilus Iteritas Alia (Trig)\n- Clock (Out) t> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> Basimilus Iteritas Alia (Attack)\n- Basimilus Iteritas Alia (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Env Out ducks the mix",
+      "patch": "Uses Alia's Env Out to sidechain-duck another audio bus in time with every kick.",
+      "steps": [
+        "Dial in a kick patch (Liquid, Bass, low Pitch, medium Decay).",
+        "Patch clock t> Alia Trig.",
+        "Patch Alia Out -> your drum mixer channel.",
+        "Patch Alia Env Out >> a VCA CV input with the attenuverter inverted (so +env lowers gain).",
+        "Route your pad/bass bus through that VCA.",
+        "Tune Alia's Decay knob until the duck length feels right."
+      ],
+      "signalOut": "Env Out — 0-5V envelope tracking each kick.",
+      "hear": "The pad/bass bus dips on every kick and recovers as the kick tail ends. Longer Alia Decay = slower release on the duck.",
+      "diagram": "Basimilus Iteritas Alia:\n* Mode: Liquid · Range: Bass\n\nClock:\nVCA:\n* Atten: inverted\nPad Bus:\nMixer:\n\n- Clock (Out) t> Basimilus Iteritas Alia (Trig)\n- Basimilus Iteritas Alia (Out) -> Mixer (In)\n- Basimilus Iteritas Alia (Env Out) >> VCA (CV) // inverted = duck\n- Pad Bus (Out) -> VCA (In)\n- VCA (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Pitched melodic voice",
+      "patch": "Uses sustained triggers and Decay full CW to turn Alia into a six-partial additive drone voice tracked by 1V/oct.",
+      "steps": [
+        "Mode: Skin · Range: Alto.",
+        "Turn Decay fully CW (long/sustained), Attack around 1 o'clock, Harmonic 11 o'clock, Fold 10 o'clock.",
+        "Turn Morph to 9 o'clock (near-sine) and Spread fully CCW (strict harmonic).",
+        "Patch a quantized sequencer p> Alia Pitch CV.",
+        "Patch a sustained gate (sequencer gate out) g> Alia Trig.",
+        "Patch Alia Out -> your main mixer."
+      ],
+      "signalOut": "Out — pitched additive voice, tracks 1V/oct across -2V to +5V.",
+      "hear": "A soft six-partial organ-like tone that follows the sequence. Open Harmonic for a brighter chord-ish timbre; close it for pure sine.",
+      "diagram": "Basimilus Iteritas Alia:\n* Mode: Skin · Range: Alto\n* Decay: full CW · Attack: 1 o'clock · Harmonic: 11 o'clock · Fold: 10 o'clock · Morph: 9 o'clock · Spread: full CCW\n\nSequencer:\nMixer:\n\n- Sequencer (Pitch) p> Basimilus Iteritas Alia (Pitch)\n- Sequencer (Gate) g> Basimilus Iteritas Alia (Trig)\n- Basimilus Iteritas Alia (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Audio-rate FM bell",
+      "patch": "Drives Trig at audio rates in Metal mode for a re-triggered digital bell sequence.",
+      "steps": [
+        "Mode: Metal · Range: Treble.",
+        "Set Pitch high (around 3 o'clock), Decay 2 o'clock, Harmonic full CW, Fold full CW.",
+        "Set Spread at 2 o'clock for between-positions aliasing character.",
+        "Patch a square-wave VCO (~50 Hz) t> Alia Trig.",
+        "Patch a slow sequencer or LFO p> that VCO's V/Oct for bell melody.",
+        "Patch Alia Out -> your mixer."
+      ],
+      "signalOut": "Out — pitched metallic bell with re-triggered FM grain.",
+      "hear": "A gritty bell tone whose pitch follows the VCO melody and whose grain tracks the audio-rate retrigger. Lower the VCO frequency for a buzzier timbre.",
+      "diagram": "Basimilus Iteritas Alia:\n* Mode: Metal · Range: Treble\n* Pitch: 3 o'clock · Decay: 2 o'clock · Harmonic: full CW · Fold: full CW · Spread: 2 o'clock\n\nVCO:\n* Wave: Square · ~50 Hz\n\nLFO:\nMixer:\n\n- VCO (Out) t> Basimilus Iteritas Alia (Trig) // audio-rate retrigger\n- LFO (Out) p> VCO (V/Oct) // bell melody\n- Basimilus Iteritas Alia (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Env-synced filter bark",
+      "patch": "Sends Alia's Env Out into an external filter's cutoff so each kick opens the filter on a separate synth line.",
+      "steps": [
+        "Dial Alia to a short Liquid-mode kick (Bass, Decay ~10 o'clock).",
+        "Patch clock t> Alia Trig.",
+        "Patch Alia Env Out >> Filter Cutoff CV input.",
+        "Route a separate VCO -> that Filter input (not Alia's audio).",
+        "Patch Filter Out -> Mixer.",
+        "Patch Alia Out -> Mixer too, so both are audible.",
+        "Adjust Filter base cutoff so the bark lands in the right register."
+      ],
+      "signalOut": "Env Out — 0-5V envelope · drives external filter cutoff.",
+      "hear": "The external VCO gets a percussive 'bark' every time Alia fires, like a kick-triggered filter accent. Longer Alia Decay = longer filter sweep.",
+      "diagram": "Basimilus Iteritas Alia:\n* Mode: Liquid · Range: Bass\n* Decay: 10 o'clock\n\nClock:\nVCO:\nFilter:\nMixer:\n\n- Clock (Out) t> Basimilus Iteritas Alia (Trig)\n- Basimilus Iteritas Alia (Env Out) >> Filter (Cutoff)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> Mixer (In)\n- Basimilus Iteritas Alia (Out) -> Mixer (In)"
+    },
+    {
+      "name": "Swept inharmonic drone",
+      "patch": "Holds a gate high and sweeps Spread between strict positions for a slowly morphing inharmonic drone.",
+      "steps": [
+        "Mode: Skin · Range: Bass.",
+        "Decay fully CW, Attack 1 o'clock, Harmonic full CW, Fold 11 o'clock.",
+        "Set Morph to noon, Pitch around 10 o'clock.",
+        "Patch a slow sine LFO (~20s cycle) >> Alia Spread CV.",
+        "Patch a sustained +5V gate g> Alia Trig (or hold the Hit button briefly to latch).",
+        "Patch Alia Out -> reverb -> mixer."
+      ],
+      "signalOut": "Out — continuous inharmonic pad texture.",
+      "hear": "A six-partial drone whose overtones drift between clean harmonic and prime-inharmonic spacings as the LFO moves. Strongest effect is around Spread noon.",
+      "diagram": "Basimilus Iteritas Alia:\n* Mode: Skin · Range: Bass\n* Decay: full CW · Attack: 1 o'clock · Harmonic: full CW · Fold: 11 o'clock · Morph: noon · Pitch: 10 o'clock\n\nLFO:\nGate Source:\nReverb:\nMixer:\n\n- Gate Source (Out) g> Basimilus Iteritas Alia (Trig) // sustained\n- LFO (Sine) >> Basimilus Iteritas Alia (Spread)\n- Basimilus Iteritas Alia (Out) -> Reverb (In)\n- Reverb (Out) -> Mixer (In)"
+    }
+  ]
+}

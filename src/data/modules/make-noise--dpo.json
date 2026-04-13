@@ -192,52 +192,175 @@
   "patchIdeas": [
     {
       "name": "Animated lead (classic DPO voice)",
-      "patch": "Sequencer → VCO B 1V/Oct · Shape, Angle CVs attenuators 12:00 · Fold ~9:00, Fold CV att 12:00 · Mod Bus Index 12:00 · gate → Strike · VCO A Mode: Amber (LFO), FREQ ~9:00, Follow full CW · monitor FINAL · VCO A as LFO animates VCO B Timbre via Mod Bus while Follow keeps harmonic ratio locked as sequence plays.",
+      "patch": "VCO A in LFO mode animates VCO B's Timbre via the Mod Bus while Follow keeps the harmonic relationship locked to the sequence.",
+      "steps": [
+        "Patch your sequencer's pitch CV → DPO VCO B 1V/Oct Input.",
+        "Set Shape panel control to 12:00, Shape CV attenuator to 12:00, Angle panel control to 12:00, Angle CV attenuator to 12:00.",
+        "Set Fold panel control to 9:00 and Fold CV attenuator to 12:00.",
+        "Set Mod Bus Index panel control to 12:00 — VCO A Sine (now LFO) feeds Shape/Angle/Fold equally.",
+        "Press the VCO A Mode button until the LED is Amber (LFO mode).",
+        "Set VCO A FREQ to around 9:00 so the LFO runs slow.",
+        "Turn the Follow knob full CW — VCO A now tracks VCO B's pitch, so modulation speed rises per octave.",
+        "Patch your sequencer's gate → DPO Strike Input for per-note Fold accents.",
+        "Patch DPO VCO B FINAL → your mixer or output."
+      ],
+      "signalOut": "VCO B FINAL — the post-Timbre audio output, up to 10Vpp, animated per note.",
+      "hear": "A bright, evolving lead: each sequencer note arrives with a Fold-driven accent, and the timbre pulses with a tracked LFO so fast notes shimmer and slow notes breathe. Raise Mod Bus Index for heavier animation.",
       "diagram": "DPO:\n* VCO A: Amber (LFO), FREQ ~9:00\n* VCO B: Shape/Angle att 12:00, Fold ~9:00\n* Follow: full CW\n* Mod Bus Index: 12:00\n\n- Sequencer (Pitch) p> DPO (VCO B 1V/Oct)\n- Gate Source (Gate) g> DPO (Strike)\n- DPO (VCO B FINAL) -> Output (In)"
     },
     {
       "name": "Bass drum",
-      "patch": "VCO A Sine → Optomix CH 1 · stepped random (Wogglebug) → VCO A Linear FM In (att 12:00) · Wogglebug Clock → Optomix STRIKE · FREQ VCO A ~9:00 · Optomix DAMP/CONTROL full CCW · kick with varying FM character per hit · mult same gate to FM Bus Index for dynamic index expansion.",
+      "patch": "Linear FM from stepped random voltages gives VCO A a different FM character per hit, then Optomix shapes the kick envelope.",
+      "steps": [
+        "Set VCO A FREQ panel control to roughly 9:00 for a kick fundamental.",
+        "Set the VCO A Linear FM attenuator to 12:00 (unipolar, half depth).",
+        "Patch DPO VCO A Sine Output → Optomix CH 1 Signal Input.",
+        "Patch Wogglebug Stepped Random → DPO VCO A Linear FM Input.",
+        "Patch Wogglebug Clock → Optomix CH 1 Strike Input (also triggers the kick envelope).",
+        "Turn Optomix CH 1 DAMP and CONTROL knobs full CCW for a short, tight body.",
+        "Patch Optomix CH 1 Output → your mixer or output.",
+        "Optional: mult the same clock → DPO FM Bus Index CV Input, attenuverter CW, for dynamic FM expansion per hit."
+      ],
+      "signalOut": "Optomix CH 1 Output — a percussive kick, roughly ±5V, pitched by VCO A FREQ.",
+      "hear": "A punchy analog kick drum with a slightly different FM crunch on every strike. Lowering VCO A FREQ gives deeper subs; raising the Linear FM attenuator adds more metallic edge.",
       "diagram": "DPO:\n* VCO A: FREQ ~9:00\n* VCO A Lin FM Att: 12:00\n\n- Wogglebug (Stepped) >> DPO (VCO A Lin FM)\n- Wogglebug (Clock) c> Optomix.CH 1 (Strike)\n- DPO (VCO A Sine) -> Optomix.CH 1 (Signal In)\n- Optomix.CH 1 (Out) -> Output (In) // kick"
     },
     {
       "name": "Skronky FM",
-      "patch": "VCO A Mode: Pink (Hard Sync to B) · Follow ~3:00 · VCO B Lin FM att 12:00 · FM Bus Index 12:00 · tune VCOs to unison/fifth/octave · sequencer → VCO B 1V/Oct · Follow lag creates discordant FM squelch each note change as VCO A slides to catch up · monitor VCO B Sine.",
+      "patch": "Hard Sync plus a partial Follow setting lets VCO A slide into sync on each new note, squelching as it catches up.",
+      "steps": [
+        "Tune VCO A and VCO B FREQ knobs to a simple interval — unison, fifth, or octave.",
+        "Press the VCO A Mode button until the LED is Pink (Hard Sync to VCO B).",
+        "Set Follow panel control to about 3:00 — VCO A lags slightly behind sequencer note changes.",
+        "Set the VCO B Linear FM attenuverter to 12:00 for moderate bidirectional FM via the Mod Bus.",
+        "Set FM Bus Index panel control to 12:00.",
+        "Patch your sequencer's pitch CV → DPO VCO B 1V/Oct Input.",
+        "Patch DPO VCO B Sine Output → your mixer or output.",
+        "Play the sequence — listen for the glissando-skronk on each note change."
+      ],
+      "signalOut": "VCO B Sine Output — 10Vpp sine carrying dynamic sync sidebands.",
+      "hear": "Each note triggers a brief, discordant FM squelch as VCO A slides into sync with VCO B. Turning Follow toward full CW tightens the response; toward CCW the skronk becomes more pronounced.",
       "diagram": "DPO:\n* VCO A: Pink (Sync to B)\n* Follow: ~3:00\n* VCO B Lin FM Att: 12:00\n* FM Bus Index: 12:00\n\n- Sequencer (Pitch) p> DPO (VCO B 1V/Oct)\n- DPO (VCO B Sine) -> Output (In) // skronky sync slides"
     },
     {
-      "name": "Strike Force (PP-controlled fold)",
-      "patch": "Shape and Fold knobs full CCW · Shape/Fold CV atts 12:00 · Pressure Points Common Gate → Strike · PP tuned voltage → VCO B 1V/Oct · PP Common Pressure → Mod Bus External Source · sound grows louder AND more damped with pressure — expressive one-handed DPO voicing.",
+      "name": "Strike Force (Pressure Points expressive voice)",
+      "patch": "Pressure Points drives pitch, Strike, and Mod Bus all from one hand — pressing harder opens Fold while damping Timbre via external Mod Bus source.",
+      "steps": [
+        "Turn Shape panel control and Fold panel control full CCW (zero).",
+        "Set Shape CV attenuator and Fold CV attenuator to 12:00.",
+        "Patch Pressure Points Tuned Output B (or C) → DPO VCO B 1V/Oct Input.",
+        "Patch Pressure Points Common Gate → DPO Strike Input.",
+        "Patch Pressure Points Common Pressure → DPO Mod Bus External Source Input (this replaces VCO A Sine as the Mod Bus source).",
+        "Set Mod Bus Index panel control to 12:00.",
+        "Patch DPO VCO B FINAL → your output.",
+        "Touch a Pressure Points pad, gradually increasing pressure — Strike opens the Fold while pressure shapes Timbre."
+      ],
+      "signalOut": "VCO B FINAL — up to 10Vpp audio, dynamically voiced by touch pressure.",
+      "hear": "A one-finger expressive voice: light touch gives a quiet, damped tone; heavier pressure makes the sound simultaneously louder and more harmonically rich as Strike kicks in and the Mod Bus drives Shape/Angle/Fold.",
       "diagram": "DPO:\n* VCO B: Shape/Fold full CCW, atts 12:00\n\n- Pressure Points (Tuned B) p> DPO (VCO B 1V/Oct)\n- Pressure Points (Common Gate) g> DPO (Strike)\n- Pressure Points (Pressure) >> DPO (Mod Bus Ext Source)\n- DPO (VCO B FINAL) -> Output (In)"
     },
     {
       "name": "Wobble bass",
-      "patch": "Fold, Angle, Shape 12:00 atts 12:00 · VCO A Mode: Amber (LFO), FREQ ~9:00 · Mod Bus Index full CW · FM Bus Index full CCW · Follow full CW · sequencer → VCO B 1V/Oct · wobble speed doubles per octave because VCO A LFO tracks B pitch via Follow · expressive dubstep-style bass.",
+      "patch": "VCO A as LFO modulates VCO B's Timbre, and Follow makes the wobble rate double per octave so it stays musical across the bassline.",
+      "steps": [
+        "Set Fold panel control to 12:00, Angle panel control to 12:00, Shape panel control to 12:00.",
+        "Set Fold CV attenuator, Angle CV attenuator, and Shape CV attenuator all to 12:00.",
+        "Press the VCO A Mode button until the LED is Amber (LFO).",
+        "Set VCO A FREQ panel control to around 9:00 — slow wobble.",
+        "Turn Mod Bus Index panel control full CW.",
+        "Turn FM Bus Index panel control full CCW (no cross-FM).",
+        "Turn Follow panel control full CW so VCO A LFO tracks VCO B pitch.",
+        "Patch your sequencer's pitch CV → DPO VCO B 1V/Oct Input.",
+        "Patch DPO VCO B FINAL → a filter → your output."
+      ],
+      "signalOut": "VCO B FINAL — up to 10Vpp wobbling bass audio, rate proportional to pitch.",
+      "hear": "Dubstep-style wobble bass where higher notes wobble twice as fast as lower notes, keeping the rhythm of modulation musically consistent. Rolling Follow back CCW breaks the lock and the wobble rate stays fixed.",
       "diagram": "DPO:\n* VCO A: Amber (LFO), FREQ ~9:00\n* VCO B: Fold/Angle/Shape 12:00\n* Follow: full CW\n* Mod Bus Index: full CW\n* FM Bus Index: full CCW\n\n- Sequencer (Pitch) p> DPO (VCO B 1V/Oct)\n- DPO (VCO B FINAL) -> Filter (In)\n- Filter (Out) -> Output (In)"
     },
     {
       "name": "Cross-FM drone",
-      "patch": "Both VCOs tuned to unison or fifth · FM Bus Index ~2:00 (near overdrive) · Mode: standard (no sync) · Follow CCW · no sequencer · slow LFO → FM Bus Index CV · index slowly modulates into/out of overdrive · monitor VCO B FINAL · evolving bidirectional cross-FM drone.",
+      "patch": "With both VCOs tuned to an interval and FM Bus Index near overdrive, a slow LFO on the Index CV pushes the pair in and out of FM chaos.",
+      "steps": [
+        "Press the VCO A Mode button until no LEDs are lit (standard triangle core).",
+        "Tune VCO A FREQ and VCO B FREQ to a consonant interval (unison or a fifth).",
+        "Set both Expo attenuators and Linear FM attenuators to 12:00 so the FM Bus reaches both sides evenly.",
+        "Set FM Bus Index panel control to around 2:00 — right at the edge of overdrive.",
+        "Set FM Bus Index CV attenuverter to 12:00 (half positive depth).",
+        "Turn Follow panel control full CCW — VCO A stays independent for a drifting drone.",
+        "Patch a slow LFO (~0.1 Hz) → DPO FM Bus Index CV Input.",
+        "Patch DPO VCO B FINAL → your output."
+      ],
+      "signalOut": "VCO B FINAL — up to 10Vpp evolving cross-FM drone.",
+      "hear": "A slowly shifting drone that breathes between clean interval tones and snarled bi-directional FM chaos as the Index crosses the 80% overdrive threshold. Retune VCO A/B for different harmonic bases.",
       "diagram": "DPO:\n* VCO A: standard\n* Both VCOs tuned to fifth\n* FM Bus Index: ~2:00\n\nLFO:\n\n- LFO (Out) >> DPO (FM Bus Index CV)\n- DPO (VCO B FINAL) -> Output (In)"
     },
     {
       "name": "External Lock chord stack",
-      "patch": "VCO B1 Square → DPO 2 VCO B Ext Lock · DPO 2 VCO B tuned to 3rd or 5th above · External Lock gently pulls the pair into harmonic relation · sum both FINAL outputs → mixer · chord-tuned stack without detuning drift. Add more DPOs the same way for thicker stacks.",
+      "patch": "Chain two DPOs via External Lock so their VCO Bs stay harmonically related without drifting — stack both FINALs for a locked chord.",
+      "steps": [
+        "On DPO 1, tune VCO B FREQ to the chord root.",
+        "On DPO 2, tune VCO B FREQ to a 3rd or 5th above.",
+        "Patch DPO 1 VCO B Square Output → DPO 2 VCO B External Lock Input.",
+        "Leave both DPOs in standard mode (no Sync/Lock/LFO LED on VCO A).",
+        "Patch DPO 1 VCO B FINAL → Mixer Input 1.",
+        "Patch DPO 2 VCO B FINAL → Mixer Input 2.",
+        "Fine-tune DPO 2 FREQ until it locks to the interval — External Lock pulls it to an integer relationship.",
+        "Patch Mixer Output → your output. Add more DPOs the same way for thicker chords."
+      ],
+      "signalOut": "Mixer Output — summed chord at modular level, each DPO contributing up to 10Vpp.",
+      "hear": "A stable, detune-free chord where the master DPO sets pitch and the slave tracks it harmonically. Nudging DPO 2 FREQ Fine Tune produces slight amplitude cancellations because External Lock is phase-reversed.",
       "diagram": "DPO 1:\n* VCO B tuned to root\n\nDPO 2:\n* VCO B tuned to 3rd\n\n- DPO 1 (VCO B Square) -> DPO 2 (Ext Lock)\n- DPO 1 (VCO B FINAL) -> Mixer (In)\n- DPO 2 (VCO B FINAL) -> Mixer (In)"
     },
     {
       "name": "West-coast bongo",
-      "patch": "Shape full CCW · Angle 12:00 · Fold 9:00 · Fold CV att 12:00 · gate → Strike AND → Optomix CH 1 Strike · VCO B FINAL → Optomix CH 1 Signal In · Optomix DAMP ~9:00 · random CV → VCO B 1V/Oct · each gate opens Fold + plucks LPG → classic bongo.",
+      "patch": "Strike opens Fold into a percussive chirp that is then plucked by Optomix — classic Buchla-style bongo from one gate.",
+      "steps": [
+        "Set Shape panel control full CCW (Sine), Angle panel control to 12:00, Fold panel control to 9:00.",
+        "Set Fold CV attenuator to 12:00.",
+        "Patch a random CV source (sample-and-hold) → DPO VCO B 1V/Oct Input for varying pitch per hit.",
+        "Patch your gate source → DPO Strike Input (Fold snaps to 100% on each gate).",
+        "Mult the same gate → Optomix CH 1 Strike Input.",
+        "Patch DPO VCO B FINAL → Optomix CH 1 Signal Input.",
+        "Set Optomix CH 1 DAMP knob to around 9:00 for a short pluck.",
+        "Patch Optomix CH 1 Output → your output."
+      ],
+      "signalOut": "Optomix CH 1 Output — a short percussive bongo hit, roughly ±5V, pitched by the random CV.",
+      "hear": "A wooden, pitched bongo tone on each gate. Each hit lands on a different note thanks to the random pitch CV; raising Angle toward 3:00 makes the hits more metallic.",
       "diagram": "DPO:\n* Shape: full CCW\n* Angle: 12:00\n* Fold: 9:00\n\n- Random CV (Out) p> DPO (VCO B 1V/Oct)\n- Gate (Trig) g> DPO (Strike)\n- Gate (Trig) g> Optomix.CH 1 (Strike)\n- DPO (VCO B FINAL) -> Optomix.CH 1 (Signal In)\n- Optomix.CH 1 (Out) -> Output (In) // bongo"
     },
     {
       "name": "Audio-rate Mod Bus injection",
-      "patch": "External audio source → Mod Bus External Source · Shape CV att, Angle CV att, Fold CV att all 12:00 · Mod Bus Index 2:00 · Timbre section modulated by arbitrary external signal at audio rate · works well with filtered noise, samples, another VCO's saw — very different character from default VCO A Sine.",
+      "patch": "Patching an external audio source into Mod Bus External Source replaces VCO A Sine as the Timbre modulator — Shape, Angle, and Fold are driven by your chosen signal at audio rate.",
+      "steps": [
+        "Tune VCO B FREQ panel control to a bass register (~9:00).",
+        "Patch an external audio source (filtered noise, sampler, another VCO's saw) → DPO Mod Bus External Source Input.",
+        "Set Shape CV attenuator, Angle CV attenuator, and Fold CV attenuator all to 12:00.",
+        "Set Mod Bus Index panel control to around 2:00 for heavy modulation.",
+        "Set Shape panel control to 9:00, Angle to 12:00, Fold to 9:00 as a starting timbre.",
+        "Patch your sequencer's pitch CV → DPO VCO B 1V/Oct Input.",
+        "Patch DPO VCO B FINAL → your output.",
+        "Swap the external source to hear how different spectra re-colour Timbre."
+      ],
+      "signalOut": "VCO B FINAL — up to 10Vpp, carrying Timbre modulation sourced from the external audio.",
+      "hear": "A radically different DPO voice: where internal VCO A Sine gives smooth cross-FM character, external noise crackles Timbre with grit, a sampler imprints rhythmic timbral shifts, and another VCO's saw adds dense sideband harmonics.",
       "diagram": "DPO:\n* Mod Bus Index: 2:00\n* Shape/Angle/Fold CV atts: 12:00\n* VCO B: FREQ bass range\n\n- External Audio (Out) -> DPO (Mod Bus Ext Source)\n- DPO (VCO B FINAL) -> Output (In)"
     },
     {
-      "name": "Quadrature LFOs from DPO",
-      "patch": "VCO A Mode: Amber (LFO) · VCO A Sine and VCO A Triangle outs = two phase-related LFOs · patch Sine to filter cutoff and Triangle to VCA CV · add Follow + sequencer → VCO B 1V/Oct to make VCO B audible voice while VCO A doubles as mod source · DPO as 1-VCO voice + dual modulator.",
+      "name": "DPO as voice + dual modulator",
+      "patch": "Put VCO A in LFO mode and tap its Sine and Triangle outputs as two phase-related LFOs while VCO B plays the sequence — one module, one voice, two mod sources.",
+      "steps": [
+        "Press the VCO A Mode button until the LED is Amber (LFO).",
+        "Set VCO A FREQ panel control to around 9:00 for slow motion.",
+        "Turn Follow panel control full CW — LFO rate tracks VCO B pitch.",
+        "Patch your sequencer's pitch CV → DPO VCO B 1V/Oct Input.",
+        "Patch DPO VCO A Sine Output → Filter Cutoff CV.",
+        "Patch DPO VCO A Triangle Output → VCA CV.",
+        "Patch DPO VCO B FINAL → Filter Input.",
+        "Patch Filter Output → VCA Input.",
+        "Patch VCA Output → your output."
+      ],
+      "signalOut": "VCA Output — the sequenced DPO voice, filtered and amplitude-shaped by VCO A's LFO taps.",
+      "hear": "A self-modulating voice where filter and VCA breathe in related-but-offset motion, driven entirely from one DPO. Raising VCO A FREQ into low audio range adds chorusing-like amplitude and cutoff wobble per note.",
       "diagram": "DPO:\n* VCO A: Amber (LFO)\n* Follow: full CW\n\n- Sequencer (Pitch) p> DPO (VCO B 1V/Oct)\n- DPO (VCO A Sine) >> Filter (Cutoff)\n- DPO (VCO A Triangle) >> VCA (CV)\n- DPO (VCO B FINAL) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
     }
   ]

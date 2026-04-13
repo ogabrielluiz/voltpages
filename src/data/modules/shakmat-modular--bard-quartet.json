@@ -52,8 +52,8 @@
   "inputs": [
     { "name": "IN 1–4 (Channel CV)", "description": "V/Oct CV inputs for each of the four quantizer channels.", "voltage": "-3 to +7V" },
     { "name": "TRSP (Transpose CV)", "description": "Transpose CV input. Can work as pre-quantize, post-quantize, or octave transposer per channel (set in Edit menu).", "voltage": "-5 to +5V" },
-    { "name": "Gate Input", "description": "Gate input used as Track & Hold (default) or Sample & Hold (selectable in Options). Assigned per channel in Edit menu.", "voltage": "0 to +5V" },
-    { "name": "Harmony CV", "description": "CV input for Harmony potentiometer position, selecting between the 8 harmony locations.", "voltage": "-5 to +5V" }
+    { "name": "GT IN (Gate Input)", "description": "Gate input used as Track & Hold (default) or Sample & Hold (rising-edge, selectable in Options). Assigned per channel in Edit menu.", "voltage": "0 to +5V" },
+    { "name": "HRMN (Harmony CV)", "description": "CV input for Harmony potentiometer position, selecting between the 8 harmony locations.", "voltage": "-5 to +5V" }
   ],
   "outputs": [
     { "name": "OUT 1–4 (Channel CV)", "description": "Quantized V/Oct outputs for each channel. Supports V/Oct, Hz/V, and 1.2V/Oct output norms.", "voltage": "-3 to +7V" },
@@ -88,99 +88,321 @@
     },
     {
       "name": "Channel Interaction (Normalization / Shift Register)",
-      "trigger": "0V at CV input",
-      "description": "When 0V detected at a channel input, G#=Normalization (follow previous channel), A#=Shift Register (follow previous on gate trigger). Enables cascading voice effects."
+      "trigger": "0V at CV input (CH 2–4)",
+      "description": "Option per channel (CH 2–4): F# = no interaction, G# = Normalisation (when 0V at IN, channel follows previous channel's input), A# = Shift Register (requires Gate In enabled for that channel; on GT IN rising edge, channel samples previous channel's value). Enables cascading voice effects."
     }
   ],
   "patchIdeas": [
     {
       "name": "Harmonic progression sequencer",
-      "patch": "LFO or sequencer → HRMN CV · all 4 channels play different scale roles · Harmony pot advances through 8 chord positions",
+      "patch": "LFO or sequencer drives HRMN CV to walk 8 chord positions while all 4 channels quantize a shared melody line.",
+      "steps": [
+        "On each channel (press Channel button 1, program scale, then 2, 3, 4): program the 8 harmonies on each channel to form chord voicings (e.g. CH 1 = root, CH 2 = 3rd, CH 3 = 5th, CH 4 = 7th).",
+        "Press Edit + µTune to open Options; confirm F# on keyboard is ON for channels you DON'T want interaction (independent quantizing).",
+        "Patch a slow sequencer or LFO → HRMN (Harmony CV input, jack 6).",
+        "Patch your pitch CV source → IN 1 (jack 3).",
+        "Mult the same pitch CV → IN 2, IN 3, IN 4 so all four channels quantize the same note against their respective harmonies.",
+        "Patch OUT 1 → VCO 1 V/Oct, OUT 2 → VCO 2, OUT 3 → VCO 3, OUT 4 → VCO 4.",
+        "Advance the HRMN sequencer slowly (one step every bar) and watch the Harmony LED ring 1–8 cycle.",
+        "Mix the four VCOs to hear chord changes underneath the melody."
+      ],
+      "signalOut": "OUT 1–4 — four quantized V/Oct pitch CVs, -3 to +7V, voicing changes with HRMN position.",
+      "hear": "Melody-over-chord: one shared note line played on four voices whose individual pitches shift each harmony step, producing a I-vi-IV-V style progression as HRMN walks 1→8.",
       "diagram": "BARD QUARTET:\n- Sequencer (CV) >> Bard Quartet (Harmony CV) // advances 8 chord positions\n- Sequencer (Pitch) p> Bard Quartet (IN 1)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
       "name": "Polyphonic arp",
-      "patch": "4 channels as arpeggiatores · clock → all CV inputs · different scales per channel · TRSP for transposition",
+      "patch": "All four channels run as independent arpeggiators clocked at IN 1–4; TRSP transposes the whole quartet.",
+      "steps": [
+        "Press ARPG (button F) to enter the Arpeggiator menu — ARPG LED lights solid.",
+        "Hold Channel button 1 and press ARPG to turn CH 1 into an arpeggiator (channel LED blinks). Repeat for channels 2, 3, 4.",
+        "In the Arp menu, use the keyboard column to pick Mode (Up ▲ / Down ▼ / Pendulum / Spiral / Random) and octave spread 1–4 per channel/harmony.",
+        "Press ARPG again to exit the menu.",
+        "Program the scale on each channel — these become the notes the arp walks.",
+        "Patch a clock → IN 1 (jack 3). Mult the same clock to IN 2, IN 3, IN 4 (arp clocks replace CV).",
+        "Patch an LFO or keyboard → TRSP (jack 4) and set Edit > Transpose = PRE or OCT per channel to taste.",
+        "Patch OUT 1–4 to four VCOs' V/Oct inputs."
+      ],
+      "signalOut": "OUT 1–4 — four stepped quantized arp lines, -3 to +7V, advancing on each IN clock edge.",
+      "hear": "Four arpeggios moving at the clock rate, each tracing its own scale + mode + spread; TRSP shifts the entire quartet up/down without breaking the scale.",
       "diagram": "BARD QUARTET:\n* ARPG: enabled on CH 1-4\n- Clock (Out) c> Bard Quartet (IN 1)\n- Clock (Out) c> Bard Quartet (IN 2)\n- Clock (Out) c> Bard Quartet (IN 3)\n- Clock (Out) c> Bard Quartet (IN 4)\n- LFO (CV) >> Bard Quartet (TRSP) // transposes all channels\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)"
     },
     {
       "name": "Shift register melody",
-      "patch": "A# option ON for channels 2-4 · gate sequence → Gate input · channel 1 plays melody · channels 2-4 echo it with delay",
+      "patch": "CH 1 carries a live melody; CH 2–4 echo it one gate-edge behind via A# Shift Register option.",
+      "steps": [
+        "Press Edit (button D). On the keyboard, press the GT IN column button for channels 2, 3, 4 so GT IN is assigned to each (required for Shift Register).",
+        "Press Edit + µTune together to open Options. Select CH 2, press keyboard A# — LED confirms Shift Register ON. Repeat for CH 3 and CH 4.",
+        "Press Edit + µTune again to exit Options.",
+        "Program the same scale on CH 1–4 (or different scales for stylized harmonization).",
+        "Leave IN 2, IN 3, IN 4 UNPATCHED — 0V is required at those inputs for Shift Register to engage.",
+        "Patch your pitch-CV sequencer → IN 1 (jack 3).",
+        "Patch a clock → GT IN (jack 2) — each rising edge shifts CH 1 → CH 2 → CH 3 → CH 4.",
+        "Patch OUT 1–4 to four VCOs; mix with short envelopes to hear the cascade."
+      ],
+      "signalOut": "OUT 1–4 — cascading pitches, -3 to +7V; OUT n = OUT n-1 from the previous GT IN clock.",
+      "hear": "A single melody smeared across four voices like a tape-loop delay made of pitches: CH 1 sings the current note, CH 2 sings the previous, CH 3 the one before that, CH 4 four steps behind.",
       "diagram": "BARD QUARTET:\n* CH 2-4: A# shift register mode\n- Sequencer (Pitch) p> Bard Quartet (IN 1)\n- Clock (Gate) g> Bard Quartet (Gate Input) // advances shift register\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
       "name": "SATB Vocal Quartet (Bass/Tenor/Alto/Soprano)",
-      "patch": "Four-part chorale · each harmony stores a root-position 4-note chord · harmony sequencer walks the song · clock gates Track & Hold · TRIG OUT retriggers envelopes on all voices",
-      "diagram": "BARD QUARTET:\n* Arp: OFF · 8 harmonies = 4-note chord voicings\n- Sequencer (Out) >> Bard Quartet (HRMN) // walks chord changes\n- Clock (Out) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> Bass VCO (V/Oct)\n- Bard Quartet (OUT 2) p> Tenor VCO (V/Oct)\n- Bard Quartet (OUT 3) p> Alto VCO (V/Oct)\n- Bard Quartet (OUT 4) p> Soprano VCO (V/Oct)\n- Bard Quartet (TRIG) t> Envelope (Trig) // retrigger all voices"
+      "patch": "Four-part chorale: each of the 8 harmonies stores a root-position 4-note chord, HRMN CV walks the song, GT IN fires Track & Hold.",
+      "steps": [
+        "Plan your progression (e.g. I-IV-V-vi-ii-V-I-V) and set Harmony pot to position 1.",
+        "Press Channel button 1, program CH 1 to the bass note of chord I using keyboard buttons. Repeat for CH 2 = tenor, CH 3 = alto, CH 4 = soprano.",
+        "Turn Harmony pot to position 2 and program the 4 voices for chord IV; repeat for all 8 harmonies.",
+        "Press Edit, then on the keyboard enable GT IN for all 4 channels so GT IN acts as Track & Hold per voice.",
+        "Patch a slow CV sequencer (8 steps, ±5V) → HRMN (jack 6) to walk the progression.",
+        "Patch a clock → GT IN (jack 2) — each rising edge latches the current chord.",
+        "Patch OUT 1 → Bass VCO, OUT 2 → Tenor VCO, OUT 3 → Alto VCO, OUT 4 → Soprano VCO.",
+        "Patch TRIG OUT (jack 1) → envelope trigger so each note-change re-articulates all four voices.",
+        "Leave IN 1–4 unpatched — the programmed scales output the root-position notes directly."
+      ],
+      "signalOut": "OUT 1–4 — four V/Oct chorale voices, -3 to +7V; TRIG OUT pulses on note change.",
+      "hear": "A chord-by-chord chorale: bass walks the tonic, tenor/alto/soprano move in strict four-part voicings as HRMN advances. TRIG OUT re-bowing all voices on each chord change for articulated changes.",
+      "diagram": "BARD QUARTET:\n* Arp: OFF · 8 harmonies = 4-note chord voicings\n- Sequencer (Out) >> Bard Quartet (HRMN)\n- Clock (Out) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> Bass VCO (V/Oct)\n- Bard Quartet (OUT 2) p> Tenor VCO (V/Oct)\n- Bard Quartet (OUT 3) p> Alto VCO (V/Oct)\n- Bard Quartet (OUT 4) p> Soprano VCO (V/Oct)\n- Bard Quartet (TRIG) t> Envelope (Trig) // retrigger all voices"
     },
     {
       "name": "Harmonic Orbit (HRMN-driven progression)",
-      "patch": "Slow LFO sweeps 8 harmonies programmed as I-vi-IV-V-iii-IV-ii-V · lead melody plays over auto-changing S&H pad voicings from CH2-4",
+      "patch": "Slow LFO sweeps 8 harmonies programmed as I-vi-IV-V-iii-IV-ii-V; lead on CH 1 rides over S&H pads on CH 2–4.",
+      "steps": [
+        "Press Edit + µTune to open Options; press keyboard C (Sample & Hold) so GT IN reacts to rising edges instead of levels. Exit Options.",
+        "With Harmony pot at position 1, program CH 1 = melody scale (e.g. C major), CH 2/3/4 = chord tones for I (C-E-G).",
+        "Advance Harmony pot to position 2, re-program chord tones for vi (A-C-E); repeat for positions 3–8 covering I-vi-IV-V-iii-IV-ii-V.",
+        "Press Edit, enable GT IN on CH 2, CH 3, CH 4 only (leave CH 1 Track & Hold OFF so the lead tracks freely).",
+        "Patch a slow LFO (period = 8 bars) → HRMN (jack 6).",
+        "Patch your melody sequencer → IN 1 (jack 3) — this drives the lead.",
+        "Patch a bar-rate clock → GT IN (jack 2) — latches pad voicings once per chord change.",
+        "Patch OUT 1 → Lead VCO, OUT 2–4 → three Pad VCOs."
+      ],
+      "signalOut": "OUT 1 — continuous quantized lead, -3 to +7V; OUT 2–4 — S&H pad voicings that update on clock rising edge.",
+      "hear": "A flowing lead line over a drifting 8-chord cycle: the lead moves in time with the sequencer while the pad voicings shift on each clock edge, creating the classic cinematic loop.",
       "diagram": "BARD QUARTET:\n* Harmonies 1-8: I-vi-IV-V-iii-IV-ii-V\n- Slow LFO (Out) >> Bard Quartet (HRMN)\n- Sequencer (Out) p> Bard Quartet (IN 1)\n- Clock (Out) g> Bard Quartet (Gate) // S&H pads\n- Bard Quartet (OUT 1) p> Lead VCO (V/Oct)\n- Bard Quartet (OUT 2) p> Pad VCO 1 (V/Oct)\n- Bard Quartet (OUT 3) p> Pad VCO 2 (V/Oct)\n- Bard Quartet (OUT 4) p> Pad VCO 3 (V/Oct)"
     },
     {
       "name": "Shift Register Chord Crawler",
-      "patch": "Single melody cascades CH1→CH2→CH3→CH4 via A# shift register · each channel offset +0/+5/+7/+12 semis · rolling 4-note voicing from one CV line",
+      "patch": "CH 1 receives a melody; A# Shift Register cascades it to CH 2–4 with octave offsets via the Edit-menu Octave column.",
+      "steps": [
+        "Press Edit + µTune to enter Options; enable A# (Shift Register) on CH 2, CH 3, CH 4. Exit Options.",
+        "Press Edit (D). On the keyboard OCT column, set CH 1 = 0, CH 2 = +0 (same), CH 3 = +1, CH 4 = +2 (or any inversion offsets you want). Exit Edit.",
+        "Also in Edit, enable GT IN on CH 2, CH 3, CH 4 (required for Shift Register triggering).",
+        "Program the same scale on all four channels so the shifted notes remain in key.",
+        "Leave IN 2, IN 3, IN 4 UNPATCHED (0V required for Shift Register engagement).",
+        "Patch your pitch sequencer → IN 1 (jack 3).",
+        "Patch a clock → GT IN (jack 2) — each rising edge walks the shift register CH 1→2→3→4.",
+        "Patch OUT 1–4 to a 4-in mixer, sum to one audio bus for rolling voicing texture."
+      ],
+      "signalOut": "Mixer sum of OUT 1–4 — a four-note rolling voicing that refreshes on each GT IN pulse.",
+      "hear": "A self-harmonizing melody: each note you play gets picked up by the next channel one clock later at a different octave, stacking into a four-note moving voicing.",
       "diagram": "BARD QUARTET:\n* CH 2-4: A# shift register · octaves +0/+5/+7/+12\n- Sequencer (Out) p> Bard Quartet (IN 1)\n- Clock (Out) g> Bard Quartet (Gate) // rising edge shifts\n- Bard Quartet (OUT 1) -> Mixer (In 1)\n- Bard Quartet (OUT 2) -> Mixer (In 2)\n- Bard Quartet (OUT 3) -> Mixer (In 3)\n- Bard Quartet (OUT 4) -> Mixer (In 4)"
     },
     {
       "name": "Polytonal Quartet (4 keys at once)",
-      "patch": "Each channel locked to different key center for deliberate polytonal drift · CH1 C major · CH2 F# major · CH3 Bb Dorian · CH4 E minor pentatonic · no TRSP, no grouping",
+      "patch": "Each channel locked to a different key center for deliberate polytonal drift — no TRSP, no grouping, no channel interaction.",
+      "steps": [
+        "Press Edit + µTune to enter Options; confirm F# (No Interaction) is ON for CH 2, CH 3, CH 4 so channels stay fully independent. Exit Options.",
+        "Press Channel 1 and program a C major scale on the keyboard.",
+        "Press Channel 2 and program F# major (the tritone against C).",
+        "Press Channel 3 and program Bb Dorian.",
+        "Press Channel 4 and program E minor pentatonic.",
+        "Patch four free-running LFOs (different rates) → IN 1, IN 2, IN 3, IN 4.",
+        "Leave TRSP unpatched so the polytonal relationships never collapse.",
+        "Patch OUT 1–4 to four VCOs and send each through its own filter/VCA chain."
+      ],
+      "signalOut": "OUT 1–4 — four independent quantized CVs each locked to its own key, -3 to +7V.",
+      "hear": "Four voices that never share a tonal center: brief consonances emerge when unrelated LFOs cross, but the overall effect is shimmering polytonal ambiguity.",
       "diagram": "BARD QUARTET:\n* CH1=C maj · CH2=F# maj · CH3=Bb Dor · CH4=E min pent\n- LFO 1 (Out) >> Bard Quartet (IN 1)\n- LFO 2 (Out) >> Bard Quartet (IN 2)\n- LFO 3 (Out) >> Bard Quartet (IN 3)\n- LFO 4 (Out) >> Bard Quartet (IN 4)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
       "name": "Parallel Harmonizer (Root/3rd/5th/Octave)",
-      "patch": "Melody CV multed to all 4 channels · same scale with degree offsets +0/+2/+4/+7 · Harmony knob morphs chord qualities across I-IV-V banks",
+      "patch": "Melody CV multed to all four channels; same scale but with degree offsets baked into each channel's programmed notes.",
+      "steps": [
+        "On CH 1, program your home scale (e.g. C major).",
+        "On CH 2, program the same scale but with each key shifted up a 3rd (D→F, E→G, etc.) so CH 2 quantizes to a third above.",
+        "On CH 3, program the scale shifted up a 5th; on CH 4, program it shifted up an octave.",
+        "Press Edit + µTune; confirm F# (No Interaction) ON for CH 2–4 so multed CVs quantize independently per channel.",
+        "Patch your melody VCO's CV → a 1-to-4 mult.",
+        "Patch mult outs → IN 1, IN 2, IN 3, IN 4.",
+        "Turn the Harmony pot slowly while playing to morph between I/IV/V chord-quality banks across all 8 harmonies you programmed.",
+        "Patch OUT 1–4 → four VCOs, mix to one channel."
+      ],
+      "signalOut": "OUT 1–4 — root / 3rd / 5th / octave of the same melody, each -3 to +7V.",
+      "hear": "A four-voice parallel harmony following the melody line in lock-step; turning HRMN re-colors all four voices to whatever chord-bank you programmed into that harmony slot.",
       "diagram": "BARD QUARTET:\n* Same scale all CH · offsets +0/+3rd/+5th/+oct\n- Melody VCO (CV) -> Mult (In)\n- Mult (Out1) p> Bard Quartet (IN 1)\n- Mult (Out2) p> Bard Quartet (IN 2)\n- Mult (Out3) p> Bard Quartet (IN 3)\n- Mult (Out4) p> Bard Quartet (IN 4)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
       "name": "Arp + 3 Drones",
-      "patch": "CH1-3 hold root/3rd/5th per harmony · CH4 arpeggiates same chord UP with octave spread 2 · sequencer walks HRMN for progression · TRIG OUT doubles as drum accent",
+      "patch": "CH 1–3 hold root/3rd/5th per harmony, CH 4 arpeggiates the same chord; HRMN sequencer walks progression; TRIG OUT doubles as drum accent.",
+      "steps": [
+        "Program CH 1 = root, CH 2 = 3rd, CH 3 = 5th for all 8 harmonies, forming triads.",
+        "Press ARPG, hold Channel 4 + ARPG to turn CH 4 into an arpeggiator (LED blinks).",
+        "In the Arp menu, set CH 4 Mode = Up (▲) and Octave Spread = 2; press ARPG again to exit.",
+        "Press Edit; assign TRIG OUT to CH 4 (or CH 1 — keyboard T OUT column) so drums trigger from note-changes on that channel.",
+        "Leave IN 1, IN 2, IN 3 unpatched — the scale's root output sits on OUT 1–3.",
+        "Patch a clock → IN 4 (jack 3) — advances the arp.",
+        "Patch a slow sequencer → HRMN (jack 6) to walk chord changes.",
+        "Patch OUT 1–3 → three drone VCOs; OUT 4 → arp VCO.",
+        "Patch TRIG OUT (jack 1) → drum accent input."
+      ],
+      "signalOut": "OUT 1–3 — three sustained chord-tone CVs; OUT 4 — arp CV; TRIG OUT — accent pulses on arp note changes.",
+      "hear": "Three drones sustain the current triad while CH 4 arpeggiates that triad across two octaves. Every arp step fires a drum accent, tying percussion to melody.",
       "diagram": "BARD QUARTET:\n* CH4: Arp UP · octave spread 2\n- Clock (Out) c> Bard Quartet (IN 4) // arp clock\n- Sequencer (Out) >> Bard Quartet (HRMN)\n- Bard Quartet (OUT 1) p> Drone VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> Drone VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> Drone VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> Arp VCO (V/Oct)\n- Bard Quartet (TRIG) t> Drum (Accent)"
     },
     {
       "name": "Quad Arp Polyrhythm",
-      "patch": "All 4 channels in Arp mode · clock divider /3 /5 /7 /8 feeds Expander gate ins · HRMN walks chords · octave spreads 1/2/3/4 for cascading polyrhythm · requires Bard Quartet Expand",
+      "patch": "All four channels run as arpeggiators with spreads 1/2/3/4; clock divider feeds IN 1–4; HRMN walks chord banks. (Expander optional — clocks route directly to IN jacks.)",
+      "steps": [
+        "Press ARPG, hold Channel 1 + ARPG to arm CH 1 as arp; repeat for CH 2, CH 3, CH 4.",
+        "In the Arp menu, set CH 1 spread = 1, CH 2 = 2, CH 3 = 3, CH 4 = 4 (use keyboard OCT column). Mode = Up for all. Exit ARPG.",
+        "Program a shared triad scale on each channel for all 8 harmonies.",
+        "Patch a master clock → clock divider; route /3 → IN 1, /5 → IN 2, /7 → IN 3, /8 → IN 4.",
+        "Patch a slow LFO → HRMN so chords drift under the polyrhythm.",
+        "Patch OUT 1–4 → four VCOs, each with its own envelope on TRIG OUT assigned per channel (or individual envelopes triggered from the same clock divider outs).",
+        "Mix the four voices to hear the polyrhythmic interlock."
+      ],
+      "signalOut": "OUT 1–4 — four arp lines advancing at /3, /5, /7, /8 of the master clock respectively.",
+      "hear": "A polyrhythmic chord cloud: short arpeggios (spread 1) chatter against long ones (spread 4); every 840 master ticks the whole pattern realigns.",
       "diagram": "BARD QUARTET:\n* All CH: Arp · spreads 1/2/3/4 · Expander required\n- Clock Divider (/3) c> Expander (Gate 1)\n- Clock Divider (/5) c> Expander (Gate 2)\n- Clock Divider (/7) c> Expander (Gate 3)\n- Clock Divider (/8) c> Expander (Gate 4)\n- LFO (Out) >> Bard Quartet (HRMN)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
       "name": "Microtonal Raga Channel",
-      "patch": "CH1 retuned to 22-shruti raga via µTune ±50¢ · CH2-4 stay 12-TET Ionian pad · TRSP routed POST-quantize on CH1 so raga intervals survive transposition",
+      "patch": "CH 1 retuned to a raga via µTune ±50¢; CH 2–4 stay 12-TET Ionian pad; CH 1 TRSP = POST so raga intervals survive transposition.",
+      "steps": [
+        "On CH 1, program the raga's chromatic notes across the keyboard (e.g. komal re, shuddha ga, tivra ma).",
+        "Press µTune (button E). Press Channel 1, then press each keyboard note that needs detuning and rotate Harmony pot — CW = up to +50¢, CCW = down to -50¢. Blinking key confirms detune.",
+        "Exit µTune. Program CH 2, CH 3, CH 4 = plain C Ionian (no microtuning).",
+        "Press Edit. On keyboard, set CH 1 TRSP column = POST (post-quantize transpose preserves the tuned intervals).",
+        "Set CH 2/3/4 TRSP = PRE or OFF so Ionian pads transpose the standard way.",
+        "Patch a drone CV → IN 1 (jack 3).",
+        "Patch a keyboard controller CV → TRSP (jack 4) for live transposition.",
+        "Patch a clock → GT IN (jack 2); enable GT IN on CH 2–4 in Edit so pads latch.",
+        "Patch OUT 1 → Sitar VCO, OUT 2–4 → three pad VCOs."
+      ],
+      "signalOut": "OUT 1 — microtonal sitar CV with raga intervals preserved; OUT 2–4 — 12-TET pad CVs.",
+      "hear": "A sitar-like lead that moves in authentic raga intervals over a Western Ionian pad. POST-transpose on CH 1 keeps the microtuned intervals intact; PRE on the pads lets them modulate normally.",
       "diagram": "BARD QUARTET:\n* CH1: raga scale + µTune · TRSP=POST · CH2-4=Ionian\n- Drone VCO (CV) p> Bard Quartet (IN 1)\n- Keyboard (CV) >> Bard Quartet (TRSP)\n- Clock (Out) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> Sitar VCO (V/Oct)\n- Bard Quartet (OUT 2) p> Pad VCO 1 (V/Oct)\n- Bard Quartet (OUT 3) p> Pad VCO 2 (V/Oct)\n- Bard Quartet (OUT 4) p> Pad VCO 3 (V/Oct)"
     },
     {
       "name": "TRIG-OUT Percussion Conductor",
-      "patch": "Random S&H CV feeds CH1 · every detected note-change fires drums via TRIG OUT · GATE IN from sequencer shapes deliberate melodic cadence over chaotic percussion",
+      "patch": "Random S&H feeds CH 1; TRIG OUT fires drums on every detected note-change; GT IN latches melody via a deliberate sequencer gate.",
+      "steps": [
+        "Program CH 1 with a sparse scale (pentatonic keeps rhythmic interest obvious).",
+        "Press Edit; on the keyboard T OUT column, assign TRIG OUT to CH 1 only so only CH 1 note-changes fire triggers.",
+        "Enable GT IN on CH 1 in Edit so the sequencer gate gates the Track & Hold.",
+        "Patch a random S&H (or noisy CV) → IN 1 (jack 3).",
+        "Patch your melody sequencer's gate → GT IN (jack 2) — dictates WHEN CH 1 latches new pitches.",
+        "Patch OUT 1 → Lead VCO V/Oct.",
+        "Patch TRIG OUT (jack 1) → drum envelope trigger to fire a drum on every note-change.",
+        "Also mult TRIG OUT → a rhythm sequencer's clock to vary percussion on pitch changes.",
+        "Tune the S&H rate against the sequencer gate rate to balance how often new notes (and thus drum hits) occur."
+      ],
+      "signalOut": "OUT 1 — quantized pentatonic melody; TRIG OUT — pulse on every CH 1 note-change, 0–5V.",
+      "hear": "A chaotic random source becomes a melodic lead whose every note-change cues a drum. Drum density is coupled to harmonic density, tying rhythm directly to pitch motion.",
       "diagram": "BARD QUARTET:\n- S&H (Out) >> Bard Quartet (IN 1)\n- Sequencer (Gate) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> Lead VCO (V/Oct)\n- Bard Quartet (TRIG) t> Drum Envelope (Trig) // fires on note change\n- Bard Quartet (TRIG) c> Rhythm Sequencer (Clock)"
     },
     {
       "name": "Split TRSP Routing (Pre/Post/Octave)",
-      "patch": "One keyboard CV into TRSP produces 4 simultaneous results · CH1=PRE (chromatic) · CH2=POST (diatonic) · CH3=OCTAVE · CH4=OFF static drone · shared Clock gates all",
+      "patch": "One keyboard CV into TRSP produces four simultaneous results — CH 1 = PRE (chromatic), CH 2 = POST (diatonic), CH 3 = OCTAVE, CH 4 = OFF.",
+      "steps": [
+        "Program the same diatonic scale on CH 1, CH 2, CH 3. Leave CH 4 as a static drone scale (or whichever static tone you want).",
+        "Press Edit. On keyboard, TRSP column:",
+        "  • CH 1 → press PRE (transposes before quantization — chromatic shift, notes jump in and out of scale).",
+        "  • CH 2 → press POST (transposes after quantization — diatonic shift, stays in key).",
+        "  • CH 3 → press OCT (transposes in whole octaves only).",
+        "  • CH 4 → press nothing (TRSP disabled — stays put).",
+        "Patch a 1V/oct keyboard CV → TRSP (jack 4).",
+        "Patch a clock → GT IN (jack 2); enable GT IN on CH 1–4 in Edit for latched pitches.",
+        "Patch a pitch sequencer → IN 1 (jack 3) to drive the shared melody.",
+        "Patch OUT 1–4 → four VCOs; mix and compare the four transpose behaviors side-by-side."
+      ],
+      "signalOut": "OUT 1 — chromatic-shifted melody; OUT 2 — diatonic-shifted melody; OUT 3 — octave-shifted melody; OUT 4 — static drone.",
+      "hear": "Four simultaneous answers to the question 'what does transpose mean?': chromatic jumps (CH 1) vs diatonic walk (CH 2) vs pure octave (CH 3) vs fixed drone (CH 4) — a perfect ear-training patch.",
       "diagram": "BARD QUARTET:\n* CH1 TRSP=PRE · CH2=POST · CH3=OCT · CH4=OFF\n- Keyboard (CV) >> Bard Quartet (TRSP)\n- Clock (Out) g> Bard Quartet (Gate)\n- Sequencer (Out) p> Bard Quartet (IN 1)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
       "name": "Grouped Wide Chord + Independent Bass/Lead",
-      "patch": "CH2+CH3 grouped for wide pad sharing scale at +octave · CH1 independent bassline · CH4 independent lead · slow seq walks HRMN for chord changes",
+      "patch": "CH 2 + CH 3 grouped for wide pad sharing scale (with CH 3 +1 oct); CH 1 independent bass; CH 4 independent lead; slow sequencer walks HRMN.",
+      "steps": [
+        "Press Channel 2 (hold) and press Channel 3 — LEDs light together, confirming CH 2 + CH 3 are grouped (scale is shared).",
+        "With the group active, program a chord-tone scale (CH 2/CH 3 now both use this scale).",
+        "Press Edit, set CH 3 OCT = +1 (keyboard OCT column) so CH 3 plays an octave above CH 2.",
+        "Press Channel 1, program independent bass scale. Press Channel 4, program independent lead scale.",
+        "Patch bass sequencer → IN 1, lead melody sequencer → IN 4.",
+        "Leave IN 2, IN 3 unpatched so the grouped pad plays the programmed root tone.",
+        "Patch a slow sequencer → HRMN to walk chord changes.",
+        "Patch a clock → GT IN (jack 2); in Edit, enable GT IN on CH 2 and CH 3 for latched pad.",
+        "Patch OUT 1 → Bass VCO, OUT 2 → Pad A, OUT 3 → Pad B (+oct), OUT 4 → Lead VCO."
+      ],
+      "signalOut": "OUT 1 — bass line; OUT 2/3 — wide grouped pad (root + octave); OUT 4 — lead line; all -3 to +7V.",
+      "hear": "Full-band texture from one module: a moving bassline underneath a wide two-octave pad, with an independent lead floating over the top as HRMN shifts the chord under everything.",
       "diagram": "BARD QUARTET:\n* CH2+CH3 grouped (+oct) · CH1=bass · CH4=lead\n- Bass Seq (Out) p> Bard Quartet (IN 1)\n- Pad Trig (Gate) g> Bard Quartet (Gate)\n- Melody Seq (Out) p> Bard Quartet (IN 4)\n- Slow Seq (Out) >> Bard Quartet (HRMN)\n- Bard Quartet (OUT 1) p> Bass VCO (V/Oct)\n- Bard Quartet (OUT 2) p> Pad VCO A (V/Oct)\n- Bard Quartet (OUT 3) p> Pad VCO B (V/Oct)\n- Bard Quartet (OUT 4) p> Lead VCO (V/Oct)"
     },
     {
       "name": "Generative Feedback Patch",
-      "patch": "CH1 OUT attenuated feeds CH2 IN · CH2 feeds CH3 · CH3 feeds CH4 · quantized feedback network · all channels on different scales (Pentatonic/Whole Tone/Blues/Dorian) · TRIG cascades S&H",
+      "patch": "Attenuated OUT 1 → IN 2 → OUT 2 → IN 3 → OUT 3 → IN 4: a quantized feedback chain across 4 different scales; TRIG OUT cascades S&H.",
+      "steps": [
+        "Program CH 1 = pentatonic, CH 2 = whole-tone, CH 3 = blues, CH 4 = dorian.",
+        "Press Edit + µTune and confirm F# (No Interaction) ON for CH 2–4 so feedback signals quantize without shift-register behavior. Exit Options.",
+        "Patch a slow random LFO → IN 1 (jack 3) as the seed.",
+        "Patch OUT 1 → external attenuator (~0.3 gain) to keep voltages in range, attenuator → IN 2.",
+        "Patch OUT 2 → IN 3 directly; OUT 3 → IN 4 directly.",
+        "Patch TRIG OUT (jack 1) → a clock divider; divider output → GT IN (jack 2) to latch all voices periodically.",
+        "In Edit, enable GT IN on all four channels so the divider clock re-samples the chain.",
+        "Patch OUT 1–4 → four VCOs to hear the cascading scale-hops."
+      ],
+      "signalOut": "OUT 1–4 — a quantized feedback chain; each OUT's pitch depends on the previous OUT's value at the last GT IN pulse.",
+      "hear": "A generative pitch web that never quite repeats: each note in each scale conditions the next in a different scale, producing melodic constellations that drift but stay musical.",
       "diagram": "BARD QUARTET:\n* CH1=Pent · CH2=Whole · CH3=Blues · CH4=Dorian\n- Random LFO (Out) >> Bard Quartet (IN 1)\n- Bard Quartet (OUT 1) -> Attenuator (In) // ~0.3 gain\n- Attenuator (Out) >> Bard Quartet (IN 2)\n- Bard Quartet (OUT 2) >> Bard Quartet (IN 3)\n- Bard Quartet (OUT 3) >> Bard Quartet (IN 4)\n- Bard Quartet (TRIG) c> Clock Divider (In)\n- Clock Divider (Out) g> Bard Quartet (Gate)"
     },
     {
       "name": "Chord Quality Morph via Microtune",
-      "patch": "Static root/3rd/5th/7th CVs on CH1-4 · same notes across all 8 harmonies · 3rd-degree note detuned +0¢ (major) through -17¢ (neutral) to -50¢ (minor) across harmonies · HRMN LFO morphs chord quality",
+      "patch": "Static CVs on CH 1–4 play root/3rd/5th/7th; 3rd-degree note detuned from 0¢ (major) toward -50¢ (minor) across harmonies; HRMN LFO morphs chord quality.",
+      "steps": [
+        "On Harmony 1, program CH 1 = root (e.g. C), CH 2 = major 3rd (E), CH 3 = 5th (G), CH 4 = 7th (B).",
+        "Copy the same notes into all 8 harmonies (ARPG copy/paste — hold ARPG, pick source harmony, release on target; see manual §Intra-slot manipulation).",
+        "Press µTune, press Channel 2 (3rd voice), press keyboard E (the 3rd).",
+        "Turn Harmony pot to position 1, µTune pot to 0¢. Advance to position 2, set -10¢. Continue stepping: H3 -20¢, H4 -30¢, H5 -40¢, H6 -50¢ (minor), H7 -40¢, H8 -20¢ — arc back toward major.",
+        "Exit µTune.",
+        "Patch four fixed-voltage sources (offset module or static 0V / +0.33V / +0.58V / +0.92V) → IN 1, IN 2, IN 3, IN 4 to fix root/3/5/7.",
+        "Patch a slow LFO → HRMN (jack 6) — this morphs the 3rd's tuning over time.",
+        "Patch OUT 1–4 → four VCOs; mix to one bus."
+      ],
+      "signalOut": "OUT 1 = root; OUT 2 = morphing 3rd (0¢↔-50¢); OUT 3 = 5th; OUT 4 = 7th.",
+      "hear": "A static chord that slowly morphs quality: major → neutral → minor → neutral → major as HRMN sweeps H1→H8. Only the 3rd bends; root/5th/7th stay fixed. Continuous chord-coloring without any pitch sequencing.",
       "diagram": "BARD QUARTET:\n* 3rd detune 0¢→-17¢→-50¢ across H1-8\n- Static CV 1 (Out) p> Bard Quartet (IN 1)\n- Static CV 2 (Out) p> Bard Quartet (IN 2)\n- Static CV 3 (Out) p> Bard Quartet (IN 3)\n- Static CV 4 (Out) p> Bard Quartet (IN 4)\n- Slow LFO (Out) >> Bard Quartet (HRMN) // morphs maj↔min\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
       "name": "Scene Recall Song Mode",
-      "patch": "10 memory slots = 10 song sections · drum trigger → Counter → CV steps slot recall · HRMN walks chord within each scene · Slot 1 intro / 2 verse / 3 chorus etc.",
-      "diagram": "BARD QUARTET:\n* 10 memory slots = song sections\n- Drum (Trig) t> Counter (Clock)\n- Counter (CV) >> Bard Quartet (Memory Recall) // section stepping\n- Sequencer (Out) >> Bard Quartet (HRMN)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
+      "patch": "10 memory slots = 10 song sections, loaded manually via Memory menu (keyboard buttons 1–10); HRMN walks chords within each scene. Memory slots are NOT CV-addressable — recall is keyboard-only.",
+      "steps": [
+        "Program Slot 1 = intro (CH 1–4 scales + 8 harmonies). Press Edit + ARPG to open Memory menu (Edit LED steady, ARPG blinks).",
+        "Press D# (Save), then press keyboard slot button 1 to confirm save. Edit + ARPG to exit.",
+        "Modify scales for verse section, then save to slot 2 via the same procedure. Repeat for 10 slots = 10 song sections.",
+        "To perform: press Edit + ARPG to enter Memory, press C# (Load), then press the slot button (1–10) you want to recall — Bard Quartet loads that scene's full state.",
+        "Patch a pitch sequencer → IN 1 (jack 3).",
+        "Patch a sequencer → HRMN (jack 6) to walk chord changes within the loaded scene.",
+        "Patch a clock → GT IN (jack 2); in Edit, assign GT IN per channel as needed.",
+        "Patch OUT 1–4 → four VCOs. Recall scenes manually (or via a MIDI foot controller sending keyboard button presses) to advance the song."
+      ],
+      "signalOut": "OUT 1–4 — four quantized voices whose full programming (scale + harmonies + arp + µTune) changes on each manual Load operation.",
+      "hear": "A complete song arrangement in one module: intro, verse, chorus, bridge, etc. each stored as a scene; within each scene HRMN walks the chord progression. Scene changes produce full re-voicings, not just chord substitutions.",
+      "diagram": "BARD QUARTET:\n* 10 memory slots = song sections (manual load via Edit+ARPG)\n- Sequencer (Out) >> Bard Quartet (HRMN)\n- Pitch Seq (Out) p> Bard Quartet (IN 1)\n- Clock (Out) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
       "name": "Quad S&H Chord Cloud",
-      "patch": "Four incommensurate LFOs (0.1/0.13/0.17/0.23 Hz) → CH1-4 · slow clock gates T&H · pentatonic all channels · octaves -2/-1/0/+1 · TRIG OUT taps tape delay for shimmering chord cloud",
+      "patch": "Four incommensurate LFOs (0.10/0.13/0.17/0.23 Hz) → IN 1–4; slow clock gates S&H; pentatonic on all channels; octaves -2/-1/0/+1; TRIG OUT taps tape delay.",
+      "steps": [
+        "Press Edit + µTune to enter Options; press keyboard C to switch GT IN behavior to Sample & Hold (rising-edge). Exit Options.",
+        "Program the same pentatonic scale on all four channels (press each Channel button and set keyboard notes to pentatonic degrees).",
+        "Press Edit; on keyboard OCT column set CH 1 = -2, CH 2 = -1, CH 3 = 0, CH 4 = +1. Also enable GT IN on all four channels. Exit Edit.",
+        "Patch four slow free-running LFOs with incommensurate rates (0.10, 0.13, 0.17, 0.23 Hz) → IN 1, IN 2, IN 3, IN 4.",
+        "Patch a slow clock (e.g. 1 Hz) → GT IN (jack 2) — every rising edge S&Hs all four channels simultaneously.",
+        "Press Edit; on keyboard T OUT column, assign TRIG OUT to the most active channel (CH 4).",
+        "Patch OUT 1–4 → four VCOs spread across a wide octave range; mix.",
+        "Patch TRIG OUT (jack 1) → tape-delay tap input to re-time the delay on each new note."
+      ],
+      "signalOut": "OUT 1–4 — four pentatonic pitches that refresh synchronously on each GT IN rising edge, spread across -2 to +1 octaves; TRIG OUT taps tape delay.",
+      "hear": "A shimmering pentatonic cloud: all four voices change together on each clock pulse, but because the LFOs are at unrelated rates, each voice picks a different random pentatonic pitch every time. The tape delay stretches and smears each new cloud into the next.",
       "diagram": "BARD QUARTET:\n* Pentatonic all CH · oct -2/-1/0/+1\n- LFO 1 (0.10Hz) >> Bard Quartet (IN 1)\n- LFO 2 (0.13Hz) >> Bard Quartet (IN 2)\n- LFO 3 (0.17Hz) >> Bard Quartet (IN 3)\n- LFO 4 (0.23Hz) >> Bard Quartet (IN 4)\n- Slow Clock (Out) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)\n- Bard Quartet (TRIG) t> Tape Delay (Tap)"
     }
   ]

@@ -13,85 +13,164 @@
     "MIDI",
     "UTILITY"
   ],
-  "description": "1U MIDI-to-CV converter providing pitch, gate, velocity, mod wheel, aftertouch, clock, and reset outputs. Receives MIDI from Intellijel MIDI 1U via internal ribbon cable.",
+  "description": "1U expander for Intellijel MIDI 1U. Adds 8 fully assignable CV/gate outputs via I2C. Chain up to four CVx for 32 outs and 8 extra synths (mono, poly, or drum). Jacks configured in Intellijel Config app.",
   "controls": [
     {
-      "name": "Channel Select",
-      "scope": "global",
-      "description": "MIDI channel configured via Intellijel 1U config app (no physical control).",
-      "detail": "Channels 1–16 · omni mode available · requires Midi 1U connected via ribbon"
+      "name": "Expander ID DIP",
+      "scope": "Rear panel",
+      "description": "Two DIP switches on the back assign this CVx an ID from 1 to 4 when chaining multiple CVx units. Each CVx must have a unique ID.",
+      "detail": "SW1 down/SW2 down = Exp 1 · SW1 up/SW2 down = Exp 2 · SW1 down/SW2 up = Exp 3 · SW1 up/SW2 up = Exp 4"
+    },
+    {
+      "name": "Output 1–8 assignment",
+      "scope": "Intellijel Config app",
+      "description": "Each of the 8 output jacks is independently configured via the Intellijel Config app: Output Type, source Synth (1–10), CC #, and CV polarity.",
+      "detail": "Output Type: Pitch · Gate · Gate (Any) · Trigger · Velocity · Aftertouch · CC · CC High-Res · Clock (Always/Running) · Reset · Run"
     }
   ],
   "inputs": [],
   "outputs": [
     {
-      "name": "Pitch",
-      "description": "1V/oct pitch CV derived from MIDI note number.",
-      "voltage": "0–8V (1V/oct)"
+      "name": "Out 1",
+      "description": "User-assignable CV/gate output. Type and source synth set in Intellijel Config app.",
+      "voltage": "0–5V or ±5V depending on assignment"
     },
     {
-      "name": "Gate",
-      "description": "Gate output, high when a MIDI note is held.",
-      "voltage": "0–5V gate"
+      "name": "Out 2",
+      "description": "User-assignable CV/gate output.",
+      "voltage": "0–5V or ±5V depending on assignment"
     },
     {
-      "name": "Velocity",
-      "description": "CV proportional to MIDI note-on velocity.",
-      "voltage": "0–5V"
+      "name": "Out 3",
+      "description": "User-assignable CV/gate output.",
+      "voltage": "0–5V or ±5V depending on assignment"
     },
     {
-      "name": "Mod Wheel",
-      "description": "CV tracking MIDI CC1 (mod wheel) value.",
-      "voltage": "0–5V"
+      "name": "Out 4",
+      "description": "User-assignable CV/gate output.",
+      "voltage": "0–5V or ±5V depending on assignment"
     },
     {
-      "name": "Aftertouch",
-      "description": "CV tracking MIDI channel aftertouch pressure.",
-      "voltage": "0–5V"
+      "name": "Out 5",
+      "description": "User-assignable CV/gate output.",
+      "voltage": "0–5V or ±5V depending on assignment"
     },
     {
-      "name": "Clock",
-      "description": "Clock pulse output derived from MIDI clock. Rate depends on configuration (typically 1/8th or 1/16th note).",
-      "voltage": "0–5V pulse"
+      "name": "Out 6",
+      "description": "User-assignable CV/gate output.",
+      "voltage": "0–5V or ±5V depending on assignment"
     },
     {
-      "name": "Reset",
-      "description": "Pulse output on MIDI Start or Continue messages for syncing sequencers.",
-      "voltage": "0–5V pulse"
+      "name": "Out 7",
+      "description": "User-assignable CV/gate output.",
+      "voltage": "0–5V or ±5V depending on assignment"
+    },
+    {
+      "name": "Out 8",
+      "description": "User-assignable CV/gate output.",
+      "voltage": "0–5V or ±5V depending on assignment"
     }
   ],
   "behaviors": [
     {
-      "name": "MIDI Note to CV/Gate",
-      "trigger": "MIDI note-on",
-      "description": "Converts incoming MIDI notes to 1V/oct pitch and gate. Follows standard last-note priority. Gate stays high for held notes."
+      "name": "Adds 8 MIDI synths",
+      "trigger": "I2C link to MIDI 1U",
+      "description": "Connecting one CVx raises MIDI 1U's synth count from 2 to 10. Synths 3–10 can be configured as monophonic, polyphonic, or drum (note-mapped)."
     },
     {
-      "name": "MIDI Clock Sync",
-      "trigger": "MIDI clock",
-      "description": "Outputs clock pulses derived from MIDI timing clock. Useful for synchronizing analog sequencers and clock dividers to MIDI."
+      "name": "Polyphonic MIDI-to-CV",
+      "trigger": "MIDI note-on on a Poly synth channel",
+      "description": "When multiple outs on the same CVx (or chained CVx) are assigned to the same Poly synth, voices are allocated across those outs — up to 8-voice polyphony with per-voice Pitch/Gate/Velocity."
     },
     {
-      "name": "Expression Outputs",
-      "trigger": "MIDI CC / aftertouch",
-      "description": "Velocity, mod wheel, and aftertouch each output independent CVs for expressive control of VCA, VCF, or other CV destinations."
+      "name": "Drum-note mapping",
+      "trigger": "MIDI note number on a Drum synth channel",
+      "description": "Each out on a Drum synth is bound to a specific MIDI note number and fires Gate, Trigger, or Velocity when that note arrives — for sample-kit trigger buses."
+    },
+    {
+      "name": "Free CC / clock routing",
+      "trigger": "MIDI CC, clock, start/stop on a mapped synth",
+      "description": "Any out can be re-purposed as a CC CV (uni/bipolar, optional High-Res), Aftertouch CV, extra Clock (arbitrary division 1–192), Reset, or Run gate."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Keyboard-controlled voice",
-      "patch": "Pitch → VCO V/Oct · Gate → envelope trigger · Velocity → VCA CV for dynamic response",
-      "diagram": "CVx:\n- CVx (Pitch) p> VCO (V/Oct)\n- CVx (Gate) g> Envelope (Trig)\n- CVx (Velocity) >> VCA (CV) // dynamic response\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In)"
+      "name": "4-voice polyphonic MIDI synth",
+      "patch": "Assign Outs 1–4 as Pitch and Outs 5–8 as Gate of a single Poly synth to get 4-voice MIDI polyphony into four VCO voices.",
+      "steps": [
+        "In Intellijel Config, Synths column, set Synth 3: MIDI Channel = 1, Type = Polyphonic.",
+        "Expander 1 column: Out 1×1 → Output Type = Pitch, Synth = 3.",
+        "Repeat for Out 1×2, 1×3, 1×4 → all Pitch, Synth 3 (this gives 4 voices).",
+        "Out 1×5 → Output Type = Gate, Synth = 3. Repeat for Out 1×6, 1×7, 1×8 (4 gates, one per voice).",
+        "Patch Out 1 → VCO A 1V/oct, Out 2 → VCO B 1V/oct, Out 3 → VCO C, Out 4 → VCO D.",
+        "Patch Out 5 → EG A trig, Out 6 → EG B trig, Out 7 → EG C, Out 8 → EG D (each EG drives its own VCA).",
+        "Play a 4-note chord on MIDI channel 1 from your DAW or keyboard."
+      ],
+      "signalOut": "Outs 1–4 — four independent 1V/oct pitch CVs, each ±5V. Outs 5–8 — four gates, 0–5V.",
+      "hear": "A true 4-voice polyphonic patch: each key press lights up one voice (round-robin), chords sustain across all four VCOs with independent envelopes.",
+      "diagram": "CVx:\n* Out 1-4 = Pitch (Poly Synth 3) · Out 5-8 = Gate (Poly Synth 3)\n\n- CVx (Out 1) p> VCO A (V/Oct)\n- CVx (Out 2) p> VCO B (V/Oct)\n- CVx (Out 3) p> VCO C (V/Oct)\n- CVx (Out 4) p> VCO D (V/Oct)\n- CVx (Out 5) g> EG A (Trig)\n- CVx (Out 6) g> EG B (Trig)\n- CVx (Out 7) g> EG C (Trig)\n- CVx (Out 8) g> EG D (Trig) // 4-voice MIDI polyphony"
     },
     {
-      "name": "Mod wheel filter sweep",
-      "patch": "Mod Wheel → VCF cutoff CV · play keyboard and use mod wheel for real-time filter control",
-      "diagram": "CVx:\n- CVx (Pitch) p> VCO (V/Oct)\n- CVx (Gate) g> Envelope (Trig)\n- CVx (Mod Wheel) >> VCF (Cutoff) // real-time sweep\n- VCO (Out) -> VCF (In)"
+      "name": "Paraphonic chord with Gate (Any)",
+      "patch": "Four pitch outs share a single envelope via Gate (Any) on Out 5 — cheap paraphonic chords through one VCA.",
+      "steps": [
+        "Synths column: Synth 4 = Polyphonic on MIDI Channel 2.",
+        "Expander column: Out 1×1 to Out 1×4 → Output Type = Pitch, Synth = 4.",
+        "Out 1×5 → Output Type = Gate (Any), Synth = 4 (fires whenever ANY voice is held).",
+        "Patch Out 1 → VCO 1, Out 2 → VCO 2, Out 3 → VCO 3, Out 4 → VCO 4 (all into a common mixer).",
+        "Patch Out 5 → envelope trigger; envelope → single VCA CV on the mixed VCO sum.",
+        "Send a chord on MIDI channel 2 — all four notes sound together through one envelope."
+      ],
+      "signalOut": "Out 5 — one master gate 0–5V that stays high while any voice is held.",
+      "hear": "A full chord opens and closes with one shared envelope shape (paraphonic). Cheaper on envelopes/VCAs than true poly but locked to a single amplitude shape.",
+      "diagram": "CVx:\n* Out 1-4 = Pitch (Poly Synth 4) · Out 5 = Gate (Any)\n\n- CVx (Out 1) p> VCO 1 (V/Oct)\n- CVx (Out 2) p> VCO 2 (V/Oct)\n- CVx (Out 3) p> VCO 3 (V/Oct)\n- CVx (Out 4) p> VCO 4 (V/Oct)\n- VCO 1-4 (Out) -> Mixer (In) -> VCA (In)\n- CVx (Out 5) g> EG (Trig)\n- EG (Out) >> VCA (CV) // shared paraphonic envelope"
     },
     {
-      "name": "MIDI-synced sequencer",
-      "patch": "Clock → sequencer clock in · Reset → sequencer reset · sequencer runs in time with DAW",
-      "diagram": "CVx:\n- CVx (Clock) c> Sequencer (Clock)\n- CVx (Reset) t> Sequencer (Reset) // DAW-synced\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)"
+      "name": "MIDI drum bus",
+      "patch": "Map 8 MIDI note numbers to 8 trigger outs for a drum rack driving individual sample modules.",
+      "steps": [
+        "Synths column: Synth 5 = Drum on MIDI Channel 10 (the GM drum channel).",
+        "Expander: Out 1×1 → Output Type = Trigger, Synth = 5, MIDI Note = C1 (kick).",
+        "Out 1×2 → Trigger, Synth 5, MIDI Note = D1 (snare).",
+        "Out 1×3 → Trigger, Synth 5, MIDI Note = F#1 (closed hat). Repeat 1×4–1×8 for other drum notes.",
+        "Patch each Out to its drum/sample module's trigger input (Out 1 → kick, Out 2 → snare, etc.).",
+        "Play the mapped drum notes on channel 10 from a DAW drum track — each note fires its own jack."
+      ],
+      "signalOut": "Out 1–8 — eight 5V/5ms trigger pulses, each firing on its mapped MIDI note number.",
+      "hear": "A full MIDI drum rack in the modular: kick on C1, snare on D1, hat on F#1, etc. Velocity can be added by assigning another CVx out as Velocity on the same note.",
+      "diagram": "CVx:\n* Synth 5 = Drum Ch10 · Out 1=Trig C1 · Out 2=Trig D1 · Out 3=Trig F#1 ... Out 8=Trig\n\n- CVx (Out 1) t> Kick (Trig)\n- CVx (Out 2) t> Snare (Trig)\n- CVx (Out 3) t> Hat (Trig) // per-note drum bus"
+    },
+    {
+      "name": "Mod wheel + aftertouch expression bus",
+      "patch": "Free up Outs 1–2 as two expressive CC CVs for filter and VCA colour, while keeping pitch/gate on the MIDI 1U.",
+      "steps": [
+        "Keep Synth 1 (MIDI 1U) as Monophonic on channel 1 — Pitch/Gate/Vel come off the MIDI 1U panel as usual.",
+        "Expander: Out 1×1 → Output Type = CC, CC Number = 1 (Mod Wheel), Synth = 1, CV Polarity = Unipolar 0–5V.",
+        "Out 1×2 → Output Type = Pressure (Aftertouch), Synth = 1.",
+        "Patch MIDI 1U Pitch → VCO 1V/oct, MIDI 1U Gate → EG trig.",
+        "Patch CVx Out 1 → VCF cutoff CV (mod wheel opens the filter).",
+        "Patch CVx Out 2 → VCA CV or a second VCF input (aftertouch adds emphasis when you press keys harder).",
+        "Play — mod wheel sweeps the filter, pressing harder on a controller with aftertouch adds colour."
+      ],
+      "signalOut": "Out 1 — mod wheel CV 0–5V into VCF. Out 2 — channel aftertouch CV 0–5V into VCA/VCF.",
+      "hear": "Expressive playing: mod wheel opens the filter, leaning into a key adds pressure-based modulation. Pitch and gate still come from MIDI 1U.",
+      "diagram": "CVx:\n* Out 1 = CC1 Mod Wheel (Synth 1) · Out 2 = Aftertouch (Synth 1)\n\n- MIDI 1U (Pitch) p> VCO (V/Oct)\n- MIDI 1U (Gate) g> EG (Trig)\n- CVx (Out 1) >> VCF (Cutoff) // mod wheel sweep\n- CVx (Out 2) >> VCA (CV) // aftertouch swell"
+    },
+    {
+      "name": "Extra clocks at different divisions",
+      "patch": "Three CVx outs become three independently divided clocks for polymetric sequencer sync.",
+      "steps": [
+        "Expander: Out 1×1 → Output Type = Clock (Always), Clock Division = 24 (quarter notes).",
+        "Out 1×2 → Clock (Always), Clock Division = 6 (16th notes).",
+        "Out 1×3 → Clock (Always), Clock Division = 32 (dotted 8ths — useful for polymeter).",
+        "Out 1×4 → Output Type = Reset (fires on MIDI Start).",
+        "Patch Out 1 → Sequencer A clock; Out 2 → Sequencer B clock; Out 3 → Sequencer C clock.",
+        "Patch Out 4 → all sequencers' Reset inputs (mult if needed).",
+        "Start playback in your DAW."
+      ],
+      "signalOut": "Out 1 — 1/4 note clock, Out 2 — 1/16 note clock, Out 3 — dotted-8th clock (all 0–5V pulses). Out 4 — reset pulse on Start.",
+      "hear": "Three sequencers run in time with the DAW but at different rates, creating a polyrhythmic interplay that all restart together when you press play.",
+      "diagram": "CVx:\n* Out 1 = Clock /24 · Out 2 = Clock /6 · Out 3 = Clock /32 · Out 4 = Reset\n\n- CVx (Out 1) c> Seq A (Clock)\n- CVx (Out 2) c> Seq B (Clock)\n- CVx (Out 3) c> Seq C (Clock)\n- CVx (Out 4) t> Seq A/B/C (Reset) // polymetric DAW sync"
     }
   ]
 }

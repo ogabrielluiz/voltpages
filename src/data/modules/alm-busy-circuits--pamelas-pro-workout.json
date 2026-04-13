@@ -3,7 +3,13 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "128"
+    "firmwareVersion": "128",
+    "sources": [
+      "https://busycircuits.com/alm034/",
+      "https://busycircuits.com/alm034/ALM034%20PAM%20PRO%20Manual.pdf",
+      "https://www.modulargrid.net/e/alm-busy-circuits-pamela-s-pro-workout",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=269117"
+    ]
   },
   "slug": "alm-busy-circuits--pamelas-pro-workout",
   "name": "Pamela's PRO Workout",
@@ -94,118 +100,371 @@
   "patchIdeas": [
     {
       "name": "Euclidean clave",
-      "patch": "Steps=16 · Triggers=7 · Rotate=0 · classic bell pattern · Rotate by 1-2 for Cuban feel",
+      "patch": "A 7-in-16 Euclidean pattern gives you the classic bell clave line with one output.",
+      "steps": [
+        "Push the program knob on the BPM screen, twist to ~120 BPM, push to confirm.",
+        "Twist to the OUT 1 screen, push+hold the knob ~1s to enter extended parameters.",
+        "Twist to Eucl Steps, push, set to 16, push to save.",
+        "Twist to Eucl Trigs, push, set to 7, push to save.",
+        "Twist to Eucl Shift, push, set to 0, push (push+hold to exit back).",
+        "Patch OUT 1 → your drum's trigger input.",
+        "Press Start / Stop to run the clock."
+      ],
+      "signalOut": "OUT 1 — gate pulses, 0–5V, at the 7-in-16 Euclidean positions.",
+      "hear": "The familiar 3-2 clave pattern. Change Shift to 1 or 2 for a rotated Cuban feel; higher values scatter the accents.",
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean Steps=16 Triggers=7 Rotate=0\n\n- Pamela's PRO Workout (OUT 1) t> Drum (Trig) // classic clave bell pattern"
     },
     {
       "name": "Internal S&H sequencer",
-      "patch": "Out A: Smooth Random · Loop=16 · Out B: gate /4 · Out A Cross Op: S&H · Cross Src: Out B · stepped random CV locked to quarter notes · patch Out A to oscillator V/oct for a clocked random melodic sequence with no external S&H module",
+      "patch": "OUT 2's quarter-note gate samples OUT 1's smooth random onto a melody — no external S&H needed.",
+      "steps": [
+        "On OUT 1 modifier, set divisor to x4 (fast free-running source).",
+        "OUT 1 extended: Shape = Smooth Random.",
+        "OUT 1 extended: Loop = 16 (beats to repeat the random seed).",
+        "OUT 1 extended: Cross Op = S&H, Cross Src = Out 2.",
+        "OUT 2 modifier: /4 (one gate per beat) — this is the S&H clock.",
+        "Patch OUT 1 → VCO 1V/oct.",
+        "Press Start / Stop. Quantise OUT 1 on its extended Quantiser screen to a scale you like."
+      ],
+      "signalOut": "OUT 1 — stepped pitch CV, 0–5V, updated on every OUT 2 gate.",
+      "hear": "A random melody that changes on every quarter note and repeats every 16 beats. Reseed via the Reset Seed shortcut to roll a new 16-beat phrase.",
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Smooth Random, Loop=16, Cross Op S&H, Cross Src OUT 2\n* OUT 2: Gate /4\n\n- Pamela's PRO Workout (OUT 1) p> VCO (V/oct) // stepped random melody on quarter notes"
     },
     {
       "name": "Polyrhythm with prime divisions",
-      "patch": "Out A: /7 gate · Out B: /11 gate · Out C: /13 gate · LCM = 1001 steps before pattern repeats · run all three to separate drum voices or oscillator triggers · near-infinite rhythmic variation for generative ambient without any randomness",
+      "patch": "Three prime divisors on three outputs create a polyrhythm that only resolves after 1001 beats.",
+      "steps": [
+        "OUT 1 modifier: /7. OUT 1 Shape = Gate, Width ~50%.",
+        "OUT 2 modifier: /11. OUT 2 Shape = Gate, Width ~50%.",
+        "OUT 3 modifier: /13. OUT 3 Shape = Gate, Width ~50%.",
+        "Patch OUT 1 → Drum 1 trigger.",
+        "Patch OUT 2 → Drum 2 trigger.",
+        "Patch OUT 3 → Drum 3 trigger.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1, OUT 2, OUT 3 — independent gates 0–5V at /7, /11, /13 of beat.",
+      "hear": "Three drums that never line up the same way twice within a set. A drifting generative feel with zero randomness — pure math.",
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /7\n* OUT 2: Gate /11\n* OUT 3: Gate /13\n\n- Pamela's PRO Workout (OUT 1) g> Drum 1 (Trig)\n- Pamela's PRO Workout (OUT 2) g> Drum 2 (Trig)\n- Pamela's PRO Workout (OUT 3) g> Drum 3 (Trig) // LCM 1001 steps before repeat"
     },
     {
       "name": "Gate masking for ghost notes",
-      "patch": "Out A: euclidean Steps=16 Triggers=13 (dense pattern) · Out B: euclidean Steps=16 Triggers=5 (sparse pattern) · Out A Cross Op: MASK · Cross Src: Out B · Out A triggers only fire where Out B pattern allows · dense rhythm filtered down to sparse, syncopated ghost hits",
+      "patch": "A dense Euclidean pattern is masked by a sparse one to produce syncopated ghost hits.",
+      "steps": [
+        "OUT 1 extended: Eucl Steps=16, Trigs=13 (dense pattern).",
+        "OUT 2 extended: Eucl Steps=16, Trigs=5 (sparse gate).",
+        "OUT 1 extended: Cross Op = MASK, Cross Src = Out 2. OUT 1 only passes when OUT 2 is high.",
+        "Patch OUT 1 → percussion trigger.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1 — gate pulses, 0–5V, only when OUT 2 pattern is high.",
+      "hear": "A sparse stutter of hits where the dense and sparse patterns overlap — exactly the ghost-note feel of live drumming. Change either Eucl Trigs value to re-sculpt density.",
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean 16/13, Cross Op MASK, Cross Src OUT 2\n* OUT 2: Euclidean 16/5\n\n- Pamela's PRO Workout (OUT 1) t> Drum (Trig) // dense pattern masked to sparse ghost hits"
     },
     {
-      "name": "Boolean rhythm logic",
-      "patch": "Out A: euclidean Steps=16 Triggers=7 Rotate=0 · Out B: euclidean Steps=16 Triggers=5 Rotate=3 · Out C: gate /1 · Out C Cross Op: AND · Cross Src: Out A · Out C fires only where both Out A and Out B coincide · sparse, syncopated intersections that shift with rotations",
+      "name": "Boolean rhythm logic (AND)",
+      "patch": "OUT 3 is copied from OUT 2 and AND'd against OUT 1 — firing only where the two Euclidean patterns coincide.",
+      "steps": [
+        "OUT 1 extended: Eucl Steps=16, Trigs=7, Shift=0.",
+        "OUT 2 extended: Eucl Steps=16, Trigs=5, Shift=3.",
+        "OUT 3 modifier: x1 (same grid resolution).",
+        "OUT 3 extended: Shape = Gate, Width ~25%.",
+        "OUT 3 extended: Cross Op = AND, Cross Src = Out 1. OUT 3 = (its own gate) AND OUT 1.",
+        "Also route OUT 2 via a second Cross path by stacking OUT 2 into OUT 3's CV input and assigning Eucl Trigs to CV — or simpler, set OUT 3 to copy OUT 2's pattern via Load/Save and AND against OUT 1.",
+        "Patch OUT 3 → percussion trigger.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 3 — gate pulses, 0–5V, only where OUT 1 and OUT 2 both fire.",
+      "hear": "A very sparse set of hits where both patterns align. Nudge OUT 2 Shift to walk the coincidences around — the pattern breathes without losing grid.",
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean 16/7 Rotate=0\n* OUT 2: Euclidean 16/5 Rotate=3\n* OUT 3: Gate /1, Cross Op AND, Cross Src OUT 1\n\n- Pamela's PRO Workout (OUT 3) t> Drum (Trig) // fires only where OUT 1 AND OUT 2 coincide"
     },
     {
       "name": "Wake/Nap call-and-response",
-      "patch": "Out A: melody CV source · Loop=4 · Wake=2 · Nap=1 · Out A plays two phrases then rests for one loop · Out B answers in the gap: Loop=4 · Wake=1 · Nap=2 · plays only while Out A rests · natural musical breathing and dialogue between two voices with no manual muting",
+      "patch": "Loop Wake/Nap on two outputs makes one voice call for two bars then rest while the other answers.",
+      "steps": [
+        "OUT 1 modifier: /4 (one step per beat). Shape = Smooth Random, Quantiser = a scale you like.",
+        "OUT 1 extended: Loop = 4 beats. Loop Wake = 2, Loop Nap = 1.",
+        "OUT 2 modifier: /4. Shape = Smooth Random, Quantiser = same scale, different note range via Offset.",
+        "OUT 2 extended: Loop = 4. Loop Wake = 1, Loop Nap = 2.",
+        "Patch OUT 1 → VCO 1 V/oct. Route a clock (separate output, or Pam's OUT 3 at /8) to VCO 1 envelope.",
+        "Patch OUT 2 → VCO 2 V/oct with its own envelope trigger.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1 and OUT 2 — quantised pitch CV 0–5V, each active only during its Wake loops.",
+      "hear": "Voice 1 plays for two bars, rests one; voice 2 fills the silence. Breathing call-and-response with no manual muting.",
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Melody CV, Loop=4, Wake=2, Nap=1\n* OUT 2: Melody CV, Loop=4, Wake=1, Nap=2\n\n- Pamela's PRO Workout (OUT 1) p> VCO 1 (V/oct) // call\n- Pamela's PRO Workout (OUT 2) p> VCO 2 (V/oct) // response in the gap"
     },
     {
       "name": "Drum fill every 8 bars",
-      "patch": "Out A: main drum trigger running continuously · Out B: fill trigger (Steps=16 Triggers=12) · Out B Loop=8 · Wake=1 · Nap=7 · Out B is silent for 7 bars then fires on bar 8 only · automatic periodic fills locked to musical phrase length",
+      "patch": "A dense fill pattern is silenced for 7 bars via Loop Nap, then bursts on the 8th bar only.",
+      "steps": [
+        "OUT 1 modifier: /4. Shape = Gate, Width ~30%. Continuous main kick trigger.",
+        "OUT 2 extended: Eucl Steps=16, Trigs=12. Dense fill pattern.",
+        "OUT 2 extended: Loop = 8 beats.",
+        "OUT 2 extended: Loop Wake = 1, Loop Nap = 7. Pattern runs for one 8-beat loop then sleeps for seven.",
+        "Patch OUT 1 → Kick trigger.",
+        "Patch OUT 2 → Fill drum trigger.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 2 — gate pulses, 0–5V, active only during the Wake loop.",
+      "hear": "Eight bars of just kick, then the final bar explodes into a dense tom fill. Repeats forever. Change Loop Nap for fill frequency.",
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Main drum trigger, continuous\n* OUT 2: Euclidean 16/12, Loop=8, Wake=1, Nap=7\n\n- Pamela's PRO Workout (OUT 1) t> Kick (Trig)\n- Pamela's PRO Workout (OUT 2) t> Fill Drum (Trig) // fires only on bar 8"
     },
     {
-      "name": "Smooth random portamento",
-      "patch": "Out A: Smooth Random · Rate multiplier ×4 · Loop=8 · Quantize=pentatonic · Out A → oscillator V/oct · gliding voltage snaps to scale degrees with portamento preserved between quantize steps · melodic random with no harsh jumps",
+      "name": "Smooth random portamento melody",
+      "patch": "Smooth Random into the Quantiser produces a gliding pentatonic melody without harsh jumps.",
+      "steps": [
+        "OUT 1 modifier: x4 (steps are 1/4 beat — fast source for smooth glide).",
+        "OUT 1 extended: Shape = Smooth Random.",
+        "OUT 1 extended: Slew ~40% to round the corners further.",
+        "OUT 1 extended: Loop = 8 beats so the phrase repeats every two bars.",
+        "OUT 1 extended: Quantiser = Pentatonic (pick your root).",
+        "Patch OUT 1 → VCO 1V/oct.",
+        "Route another output at /4 as trigger to your envelope/VCA."
+      ],
+      "signalOut": "OUT 1 — quantised pitch CV, 0–5V with slew, steps every 1/4 beat.",
+      "hear": "A gliding melody that slides between pentatonic notes rather than snapping — like portamento on an analog mono synth. Reset Seed to re-roll the loop.",
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Smooth Random, rate x4, Loop=8, Quantize=pentatonic\n\n- Pamela's PRO Workout (OUT 1) p> VCO (V/oct) // gliding pentatonic melody"
     },
     {
       "name": "Quadrature sine pair",
-      "patch": "Out A: sine LFO · rate /4 · Out B: sine LFO same rate · Phase=90 on Out B · patch Out A and Out B to X/Y inputs of a Lissajous-capable scope or to two VCA/filter parameters · creates circular modulation paths, rotating stereo effects, or smooth 2D parameter sweeps",
+      "patch": "Two sine LFOs at the same division, with 90° phase between them, drive circular stereo motion.",
+      "steps": [
+        "OUT 1 modifier: /4. Extended: Shape = Sine.",
+        "OUT 1 extended: Phase = 0%.",
+        "OUT 2 modifier: /4. Extended: Shape = Sine.",
+        "OUT 2 extended: Phase = 25% (a quarter cycle = 90°).",
+        "Patch OUT 1 → Left VCA CV (or filter cutoff L).",
+        "Patch OUT 2 → Right VCA CV.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1 and OUT 2 — sine CV, 0–5V (centered via Offset=50% if you want ±), quarter-phase offset.",
+      "hear": "Sound orbits the stereo field — as OUT 1 dips, OUT 2 rises. On a Lissajous scope the two trace a circle.",
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Sine LFO /4\n* OUT 2: Sine LFO /4, Phase=90\n\n- Pamela's PRO Workout (OUT 1) >> VCA L (CV)\n- Pamela's PRO Workout (OUT 2) >> VCA R (CV) // quadrature rotating stereo"
     },
     {
-      "name": "FLEX humanized hi-hat",
-      "patch": "Out A: euclidean Steps=16 Triggers=12 · FLEX Op: HUMAN · FLEX Amount: 15% · patch Out A to closed hi-hat trigger · subtle random micro-timing drift on every hit · sounds like a real drummer playing a repetitive pattern rather than a machine — increase Amount to 30-40% for obvious drunk-drummer feel",
+      "name": "FLEX humanised hi-hat",
+      "patch": "FLEX HUMAN scatters micro-timing around the grid so a 16th-note hat feels played, not programmed.",
+      "steps": [
+        "OUT 1 extended: Eucl Steps=16, Trigs=12.",
+        "OUT 1 extended: Shape = Gate, Width ~20% (tight hat pulse).",
+        "OUT 1 extended: FLEX Op = HUMAN.",
+        "OUT 1 extended: FLEX Amount = 15% (subtle drift).",
+        "Patch OUT 1 → closed hi-hat trigger.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1 — gate pulses, 0–5V, arriving slightly early or late on each step.",
+      "hear": "A hat pattern that feels loose and alive. Push FLEX Amount to 35–40% for an obvious drunk-drummer feel; 5–10% is enough to kill the stiff machine grid.",
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean 16/12, FLEX HUMAN 15%\n\n- Pamela's PRO Workout (OUT 1) t> Hi-Hat (Trig) // micro-timing drift per hit"
     },
     {
-      "name": "Euclidean polyrhythm engine (3:4:5:7)",
-      "patch": "Four interlocking euclidean patterns on four outputs · OUT 1: E(3,16) → kick · OUT 2: E(5,16) rotate+2 → snare · OUT 3: E(7,16) rotate+5 → hat · OUT 4: E(4,16) rotate+3 → perc · different trigger counts and rotations produce an evolving polyrhythmic groove that only resolves after hundreds of bars — a complete drum bed from one module",
-      "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean 16/3\n* OUT 2: Euclidean 16/5 Rotate=2\n* OUT 3: Euclidean 16/7 Rotate=5\n* OUT 4: Euclidean 16/4 Rotate=3\n\n- Pamela's PRO Workout (OUT 1) t> Kick (Trig)\n- Pamela's PRO Workout (OUT 2) t> Snare (Trig)\n- Pamela's PRO Workout (OUT 3) t> Hat (Trig)\n- Pamela's PRO Workout (OUT 4) t> Perc (Trig) // resolves every ~420 steps"
+      "name": "Euclidean four-piece drum bed",
+      "patch": "Four Euclidean outputs with different trigger counts and shifts drive kick, snare, hat, perc from one module.",
+      "steps": [
+        "OUT 1 extended: Eucl Steps=16, Trigs=3, Shift=0 (kick — downbeats).",
+        "OUT 2 extended: Eucl Steps=16, Trigs=5, Shift=2 (snare — backbeat-ish).",
+        "OUT 3 extended: Eucl Steps=16, Trigs=7, Shift=5 (hat — syncopated 16ths).",
+        "OUT 4 extended: Eucl Steps=16, Trigs=4, Shift=3 (perc — offbeat accents).",
+        "Patch OUT 1 → Kick, OUT 2 → Snare, OUT 3 → Hat, OUT 4 → Perc.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1–4 — four independent gate trains, 0–5V, each at its Euclidean positions.",
+      "hear": "A full polyrhythmic drum bed from one clock source. Tweak any Shift to walk the pattern, any Trigs to change density — the bed evolves without losing the pulse.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean 16/3\n* OUT 2: Euclidean 16/5 Rotate=2\n* OUT 3: Euclidean 16/7 Rotate=5\n* OUT 4: Euclidean 16/4 Rotate=3\n\n- Pamela's PRO Workout (OUT 1) t> Kick (Trig)\n- Pamela's PRO Workout (OUT 2) t> Snare (Trig)\n- Pamela's PRO Workout (OUT 3) t> Hat (Trig)\n- Pamela's PRO Workout (OUT 4) t> Perc (Trig) // full four-piece drum bed"
     },
     {
-      "name": "Self-clocking probability cascade",
-      "patch": "Slow output restarts Pam's itself · OUT 8: slowest division with EOC mode → patch into Pam's RUN input · OUT 1-4 with descending probability (100%, 75%, 50%, 25%) driving drum voices · each phrase restart re-rolls which steps fire, producing aleatoric phrase-to-phrase variation without any external randomness source",
-      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /4, p=100%\n* OUT 2: Gate /4, p=75%\n* OUT 3: Gate /4, p=50%\n* OUT 4: Gate /4, p=25%\n* OUT 8: /64, EOC pulse\n\n- Pamela's PRO Workout (OUT 8) g> Pamela's PRO Workout (RUN) // self-reset for aleatoric phrases\n- Pamela's PRO Workout (OUT 1) t> Kick (Trig)\n- Pamela's PRO Workout (OUT 2) t> Snare (Trig)\n- Pamela's PRO Workout (OUT 3) t> Hat (Trig)\n- Pamela's PRO Workout (OUT 4) t> Perc (Trig)"
+      "name": "Self-reseeding probability cascade",
+      "patch": "A slow output reseeds its own probability channels via Cross Op SEED, re-rolling which steps fire every phrase.",
+      "steps": [
+        "Settings → Input: Run = RESET (so RUN input can still receive a trigger, but we'll use SEED internally).",
+        "OUT 1 modifier: /4. Shape = Gate. Extended: Probability = 100% (always fires).",
+        "OUT 2 modifier: /4. Shape = Gate. Extended: Probability = 75%.",
+        "OUT 3 modifier: /4. Shape = Gate. Extended: Probability = 50%.",
+        "OUT 4 modifier: /4. Shape = Gate. Extended: Probability = 25%.",
+        "OUT 8 modifier: /32. Shape = Trigger pulse — this is the phrase boundary.",
+        "For each of OUT 2, 3, 4: Cross Op = SEED, Cross Src = Out 8. Each rising edge of OUT 8 reseeds their RNG.",
+        "Patch OUT 1–4 → Kick, Snare, Hat, Perc.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1–4 — gates 0–5V, each row with its own probability density.",
+      "hear": "A groove with a rock-solid kick and progressively sparser voices on the higher outputs. Every 32 beats the whole probability grid re-rolls — the pattern shifts without drifting.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /4, p=100%\n* OUT 2: Gate /4, p=75%, Cross Op SEED, Cross Src OUT 8\n* OUT 3: Gate /4, p=50%, Cross Op SEED, Cross Src OUT 8\n* OUT 4: Gate /4, p=25%, Cross Op SEED, Cross Src OUT 8\n* OUT 8: Trig /32\n\n- Pamela's PRO Workout (OUT 1) t> Kick (Trig)\n- Pamela's PRO Workout (OUT 2) t> Snare (Trig)\n- Pamela's PRO Workout (OUT 3) t> Hat (Trig)\n- Pamela's PRO Workout (OUT 4) t> Perc (Trig)"
     },
     {
-      "name": "Slow LFO envelope generator",
-      "patch": "Tempo-synced filter and amp swells using sine and ramp shapes · OUT 5: sine, /1 bar, Phase=90 → VCF cutoff · OUT 6: saw-down, /2 bars → VCA level · phase offset creates drifting filter bloom followed by amp decay · fully BPM-locked evolving pad motion with no dedicated LFO or envelope modules",
-      "diagram": "Pamela's PRO Workout:\n* OUT 5: Sine LFO /1 bar, Phase=90\n* OUT 6: Saw Down /2 bars\n\n- Pamela's PRO Workout (OUT 5) >> VCF (Cutoff)\n- Pamela's PRO Workout (OUT 6) >> VCA (Level) // tempo-synced pad swells"
+      "name": "Tempo-synced pad swells",
+      "patch": "A slow sine opens the filter while a slower descending ramp closes the amp — BPM-locked pad motion.",
+      "steps": [
+        "OUT 5 modifier: /16 (one cycle every 4 bars of 16ths, i.e. 1 bar). Shape = Sine.",
+        "OUT 5 extended: Phase = 25% (90°) so the peak lands on the bar backbeat.",
+        "OUT 6 modifier: /32 (2-bar cycle). Shape = Triangle with Width = 100% (saw-down).",
+        "Patch OUT 5 → VCF cutoff CV.",
+        "Patch OUT 6 → VCA level CV.",
+        "Press Start / Stop and play a sustained pad through the VCF/VCA chain."
+      ],
+      "signalOut": "OUT 5 — sine CV 0–5V per bar; OUT 6 — descending ramp CV 0–5V per 2 bars.",
+      "hear": "A filter that blooms once per bar over an amp that fades across two bars. Two slow curves on different cycles = the breathing swell of a tempo-locked pad.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 5: Sine LFO /16, Phase=90\n* OUT 6: Saw Down /32\n\n- Pamela's PRO Workout (OUT 5) >> VCF (Cutoff)\n- Pamela's PRO Workout (OUT 6) >> VCA (Level) // tempo-synced pad swells"
     },
     {
-      "name": "Euclidean chord arpeggiator",
-      "patch": "Gate and quantized CV share a division to create a melodic arp · OUT 1: E(5,8) triggers → envelope · OUT 2: S&H random, quantized A minor, /8, new-CV-on-trig-only → VCO V/oct · each euclidean hit simultaneously fires the envelope and advances a new scale-locked pitch · instant euclidean arpeggiator from one module",
-      "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean 8/5 Trig\n* OUT 2: S&H /8, Quantize=A minor, new-CV-on-trig\n\n- Pamela's PRO Workout (OUT 1) g> Envelope (Trig)\n- Pamela's PRO Workout (OUT 2) p> VCO (V/oct) // euclidean arp in A minor\n- Envelope (Out) >> VCA (CV)"
+      "name": "Euclidean arpeggiator",
+      "patch": "OUT 1's Euclidean gate also samples OUT 2's random CV, giving you a gate and a new pitch together.",
+      "steps": [
+        "OUT 1 modifier: x2. Extended: Eucl Steps=8, Trigs=5. Shape = Gate, Width ~30%.",
+        "OUT 2 modifier: x2. Extended: Shape = Classic Random.",
+        "OUT 2 extended: Quantiser = A minor.",
+        "OUT 2 extended: Cross Op = S&H, Cross Src = Out 1. New pitch samples only on each OUT 1 hit.",
+        "Patch OUT 1 → envelope trigger.",
+        "Patch OUT 2 → VCO 1V/oct.",
+        "Envelope out → VCA CV. VCO → VCA in.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1 — gate 0–5V at Euclidean positions; OUT 2 — quantised pitch CV 0–5V, stepped on each gate.",
+      "hear": "An arpeggio in A minor where every note lands on the Euclidean rhythm. Each note is a fresh random scale degree. Change Eucl Trigs for density; change Quantiser root for key.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean 8/5, Gate\n* OUT 2: Classic Random, Cross Op S&H, Cross Src OUT 1, Quantiser A minor\n\n- Pamela's PRO Workout (OUT 1) g> Envelope (Trig)\n- Pamela's PRO Workout (OUT 2) p> VCO (V/oct) // euclidean arp in A minor\n- Envelope (Out) >> VCA (CV)"
     },
     {
       "name": "Polyrhythmic burst generator",
-      "patch": "Three prime divisions merged via external OR logic for drum-fill chaos · OUT 1 /3, OUT 2 /5, OUT 3 /7 · all set to 2ms width · patch through logic OR to single percussion trigger · global FLEX swing 15% for human feel · dense, unpredictable rolls that never repeat identically within a phrase",
-      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /3, width 2ms\n* OUT 2: Gate /5, width 2ms\n* OUT 3: Gate /7, width 2ms\n\n- Pamela's PRO Workout (OUT 1) g> Logic OR (A)\n- Pamela's PRO Workout (OUT 2) g> Logic OR (B)\n- Pamela's PRO Workout (OUT 3) g> Logic OR (C)\n- Logic OR (Out) t> Percussion (Trig) // prime-division burst fills"
+      "patch": "Three prime divisions are OR'd together inside Pam's — dense percussion rolls from one output.",
+      "steps": [
+        "OUT 1 modifier: x3. Shape = Gate, Width ~10%.",
+        "OUT 2 modifier: x5. Shape = Gate, Width ~10%.",
+        "OUT 3 modifier: x7. Shape = Gate, Width ~10%. Cross Op = OR, Cross Src = Out 1.",
+        "OUT 4 modifier: x1. Shape = Gate. Cross Op = OR, Cross Src = Out 2. Extended: Cross then OR with Out 3 via a second stage (or use Pam's own sum via the AXON-style stacking described in the manual).",
+        "Simpler route: cascade OR through sequential outputs — OUT 2 Cross OR Out 1; OUT 3 Cross OR Out 2. OUT 3 now represents the union.",
+        "OUT 3 extended: FLEX Op = SWING, Amount = 15% for groove.",
+        "Patch OUT 3 → percussion trigger.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 3 — merged gate train, 0–5V, at the union of the three prime divisions.",
+      "hear": "Dense, never-identical percussion rolls. The prime divisions guarantee the pattern doesn't repeat within a typical phrase.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate x3\n* OUT 2: Gate x5, Cross Op OR, Cross Src OUT 1\n* OUT 3: Gate x7, Cross Op OR, Cross Src OUT 2, FLEX SWING 15%\n\n- Pamela's PRO Workout (OUT 3) t> Percussion (Trig) // prime-division burst fills"
     },
     {
-      "name": "Evolving generative brain",
-      "patch": "All 8 outputs orchestrating a full patch from one module · OUT 1: clock → external sequencer · OUT 2: gate → envelope · OUT 3: quantized CV → pitch · OUT 4: S&H → timbre · OUT 5: sine LFO → filter · OUT 6: ramp → amp swell · OUT 7: E(2,16) → reverb send · OUT 8: /64 pulse → scene/reset · Pam's becomes a complete generative conductor with clocks, gates, pitches, modulators and scene changes",
-      "diagram": "Pamela's PRO Workout:\n* OUT 1: Clock /16\n* OUT 2: Gate /4\n* OUT 3: S&H Quantized\n* OUT 4: S&H Smooth\n* OUT 5: Sine LFO /1\n* OUT 6: Ramp /2\n* OUT 7: Euclidean 16/2\n* OUT 8: /64 pulse\n\n- Pamela's PRO Workout (OUT 1) g> Sequencer (Clock)\n- Pamela's PRO Workout (OUT 2) g> Envelope (Trig)\n- Pamela's PRO Workout (OUT 3) p> VCO (V/oct)\n- Pamela's PRO Workout (OUT 4) >> VCO (Timbre)\n- Pamela's PRO Workout (OUT 5) >> VCF (Cutoff)\n- Pamela's PRO Workout (OUT 6) >> VCA (Level)\n- Pamela's PRO Workout (OUT 7) g> Reverb (Send Trig)\n- Pamela's PRO Workout (OUT 8) g> Sequencer (Reset) // full patch brain"
+      "name": "Eight-output generative brain",
+      "patch": "All eight outputs drive a full patch — clocks, gates, pitches, modulators, and scene changes from one module.",
+      "steps": [
+        "OUT 1 modifier: x4. Shape = Gate. Clock to external sequencer.",
+        "OUT 2 modifier: /4. Shape = Gate, Width ~20%. Note trigger to envelope.",
+        "OUT 3 modifier: /4. Shape = Classic Random. Quantiser = C minor. Cross Op = S&H, Cross Src = Out 2. Pitch per note.",
+        "OUT 4 modifier: x2. Shape = Smooth Random. Slew ~60%. Timbre modulator.",
+        "OUT 5 modifier: /16. Shape = Sine. Filter LFO.",
+        "OUT 6 modifier: /32. Shape = Triangle Width 100% (saw-down). VCA swell.",
+        "OUT 7 modifier: /1. Extended: Eucl Steps=16, Trigs=2. Reverb send trigger.",
+        "OUT 8 modifier: /64. Shape = Trigger pulse. Scene/reset pulse.",
+        "Patch each output as listed in the diagram and press Start / Stop."
+      ],
+      "signalOut": "OUT 1–8 — clocks, gates, pitch CV, mod CV, and slow pulses, all 0–5V, all BPM-locked.",
+      "hear": "A self-contained evolving piece from a single patch: sequenced pitches, breathing filter, ducking amp, occasional reverb throws, and a scene change every 64 beats.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Clock x4\n* OUT 2: Gate /4\n* OUT 3: Random + S&H, Quantiser C minor\n* OUT 4: Smooth Random x2\n* OUT 5: Sine /16\n* OUT 6: Saw-down /32\n* OUT 7: Euclidean 16/2\n* OUT 8: Trig /64\n\n- Pamela's PRO Workout (OUT 1) c> Sequencer (Clock)\n- Pamela's PRO Workout (OUT 2) g> Envelope (Trig)\n- Pamela's PRO Workout (OUT 3) p> VCO (V/oct)\n- Pamela's PRO Workout (OUT 4) >> VCO (Timbre)\n- Pamela's PRO Workout (OUT 5) >> VCF (Cutoff)\n- Pamela's PRO Workout (OUT 6) >> VCA (Level)\n- Pamela's PRO Workout (OUT 7) g> Reverb (Send Trig)\n- Pamela's PRO Workout (OUT 8) g> Sequencer (Reset) // full patch brain"
     },
     {
       "name": "Probability-swapped hi-hats",
-      "patch": "Same division with inverse probabilities produces natural closed/open hat variation · OUT 1 /16 probability 80% swing +8% → closed hat · OUT 2 /16 probability 20% swing 0% → open hat · the two rarely overlap and the differing swing adds groove · classic hat pattern with no programming",
-      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /16, p=80%, FLEX SWING +8%\n* OUT 2: Gate /16, p=20%, FLEX SWING 0%\n\n- Pamela's PRO Workout (OUT 1) t> Closed Hat (Trig)\n- Pamela's PRO Workout (OUT 2) t> Open Hat (Trig) // inverse probability variation"
+      "patch": "Two 16th-note hats with inverse probabilities rarely overlap — natural closed/open variation.",
+      "steps": [
+        "OUT 1 modifier: x4 (16th notes). Shape = Gate, Width ~15% (tight closed hat).",
+        "OUT 1 extended: Probability = 80%. FLEX Op = SWING, Amount = 8%.",
+        "OUT 2 modifier: x4. Shape = Gate, Width ~60% (longer for open hat).",
+        "OUT 2 extended: Probability = 20%. FLEX Op = SWING, Amount = 0%.",
+        "Patch OUT 1 → Closed hat trigger.",
+        "Patch OUT 2 → Open hat trigger.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1 — swung 80% closed-hat gates; OUT 2 — straight 20% open-hat gates. Both 0–5V.",
+      "hear": "A busy closed hat with occasional open-hat accents in the gaps — the classic dance-music hat ornament pattern, with no programming beyond two probabilities.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate x4, p=80%, FLEX SWING 8%\n* OUT 2: Gate x4, p=20%, FLEX SWING 0%\n\n- Pamela's PRO Workout (OUT 1) t> Closed Hat (Trig)\n- Pamela's PRO Workout (OUT 2) t> Open Hat (Trig) // inverse probability variation"
     },
     {
-      "name": "Phase-offset dual LFO FM+pan",
-      "patch": "Quadrature sines drive FM index and stereo pan for rotating motion · OUT 5 sine /1 bar phase 0° → VCO FM index · OUT 6 sine /1 bar phase 90° → stereo pan CV · the 90° offset makes spectral brightness peak as the sound crosses center · organic rotating timbre in stereo field",
-      "diagram": "Pamela's PRO Workout:\n* OUT 5: Sine LFO /1 bar, Phase=0\n* OUT 6: Sine LFO /1 bar, Phase=90\n\n- Pamela's PRO Workout (OUT 5) >> VCO (FM Index)\n- Pamela's PRO Workout (OUT 6) >> Panner (CV) // 90° offset brightness vs position"
+      "name": "Rotating FM brightness in stereo",
+      "patch": "Quadrature sines drive FM index and stereo pan — brightness peaks as the sound crosses center.",
+      "steps": [
+        "OUT 5 modifier: /16. Shape = Sine. Phase = 0%. Level = 40% (gentle FM depth).",
+        "OUT 6 modifier: /16. Shape = Sine. Phase = 25% (90°). Level = 100%, Offset = 0% (full pan sweep).",
+        "Patch OUT 5 → VCO FM index CV.",
+        "Patch OUT 6 → stereo panner CV.",
+        "Press Start / Stop with a sustained note playing through the VCO and panner."
+      ],
+      "signalOut": "OUT 5 — sine 0–2V for FM depth; OUT 6 — sine 0–5V for pan. 90° offset between them.",
+      "hear": "As the sound moves left, it brightens; crossing center, it peaks in harmonics; moving right, it darkens. Sound seems to physically orbit your head.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 5: Sine /16, Phase=0\n* OUT 6: Sine /16, Phase=25% (90°)\n\n- Pamela's PRO Workout (OUT 5) >> VCO (FM Index)\n- Pamela's PRO Workout (OUT 6) >> Panner (CV) // 90° offset brightness vs position"
     },
     {
-      "name": "Euclidean rotation performance",
-      "patch": "Live pattern mutation via CV rotation · external slow LFO or disting → Pam's CV 1 input · CV 1 assigned to OUT 1 Rotation parameter · OUT 1: E(5,16) → drum trigger · slowly sweep the CV to walk the pattern through all 16 possible rotations · performance-friendly live mutation without touching the encoder",
-      "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean 16/5, CV1 → Rotation\n\n- External LFO (Out) >> Pamela's PRO Workout (CV 1)\n- Pamela's PRO Workout (OUT 1) t> Drum (Trig) // CV sweeps through all 16 rotations"
+      "name": "CV-swept Euclidean rotation",
+      "patch": "An external slow LFO patched into CV 1 walks OUT 1's Euclidean Shift through all 16 rotations.",
+      "steps": [
+        "OUT 1 extended: Eucl Steps=16, Trigs=5, Shift=0. Shape = Gate.",
+        "On the Eucl Shift screen, twist past the minimum value to reveal the CV assign row.",
+        "Set CV source = CV1. Attenuation = 99%, Offset = 0%.",
+        "Patch a slow LFO (≥1 cycle per 16 bars) into Pam's CV 1 input. Use 0–5V range.",
+        "Patch OUT 1 → drum trigger.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1 — gates 0–5V whose position on the 16-step grid walks over time.",
+      "hear": "The drum pattern slowly morphs — every few bars the accents land somewhere new. Speed up the LFO for chaotic mutation, slow it down for glacial drift.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean 16/5, Eucl Shift ← CV 1\n\n- External LFO (Out) >> Pamela's PRO Workout (CV 1)\n- Pamela's PRO Workout (OUT 1) t> Drum (Trig) // CV sweeps through all 16 rotations"
     },
     {
       "name": "Clock-divided ratcheting kick",
-      "patch": "Probability on fast division creates rolls on main beats · OUT 1 /4 probability 100% → main kick · OUT 2 /32 probability 25% → ratchet voice · OR the two externally to the kick trigger · main downbeats always land, with sparse high-speed ratchets filling between them for techno-flavored momentum",
-      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /4, p=100%\n* OUT 2: Gate /32, p=25%\n\n- Pamela's PRO Workout (OUT 1) g> Logic OR (A)\n- Pamela's PRO Workout (OUT 2) g> Logic OR (B)\n- Logic OR (Out) t> Kick (Trig) // main beats with random ratchets"
+      "patch": "A fast probabilistic ratchet output is OR'd with the main kick — sparse 32nd-note ratchets fill between downbeats.",
+      "steps": [
+        "OUT 1 modifier: /4. Shape = Gate, Width ~25%. Probability = 100%. Main kick.",
+        "OUT 2 modifier: x8 (32nd notes). Shape = Gate, Width ~10%. Probability = 25%.",
+        "OUT 2 extended: Cross Op = OR, Cross Src = Out 1. OUT 2 merges its ratchets with the main kick.",
+        "Patch OUT 2 → Kick trigger. (Or route through an external OR gate if you prefer.)",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 2 — union of main /4 beats and ~25% of the 32nd-note positions, 0–5V.",
+      "hear": "A solid four-on-the-floor with sporadic high-speed ratchets between the main hits — techno-style drive without a rigid drill pattern.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /4, p=100%\n* OUT 2: Gate x8, p=25%, Cross Op OR, Cross Src OUT 1\n\n- Pamela's PRO Workout (OUT 2) t> Kick (Trig) // main beats with random ratchets"
     },
     {
-      "name": "Two-against-three melodic counterpoint",
-      "patch": "Two voices on different divisions create natural counterpoint · OUT 1 /4 trig + OUT 2 /4 quantized CV → Voice A (env + pitch) · OUT 3 /6 trig + OUT 4 /6 quantized CV → Voice B (env + pitch) · same scale on both, different octave ranges · 4-against-6 polymetric phrasing produces convergence and divergence without any sequencer programming",
-      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /4\n* OUT 2: S&H /4, Quantize=D dorian (low range)\n* OUT 3: Gate /6\n* OUT 4: S&H /6, Quantize=D dorian (high range)\n\n- Pamela's PRO Workout (OUT 1) g> Env A (Trig)\n- Pamela's PRO Workout (OUT 2) p> VCO A (V/oct)\n- Pamela's PRO Workout (OUT 3) g> Env B (Trig)\n- Pamela's PRO Workout (OUT 4) p> VCO B (V/oct) // 4-against-6 counterpoint"
+      "name": "Two-against-three counterpoint",
+      "patch": "Two voices on different divisions, same scale, drift in and out of phase — instant polymetric counterpoint.",
+      "steps": [
+        "OUT 1 modifier: /4. Shape = Gate, Width ~30%. Voice A trigger.",
+        "OUT 2 modifier: /4. Shape = Classic Random. Quantiser = D dorian. Cross Op = S&H, Cross Src = Out 1. Voice A pitch.",
+        "OUT 2 extended: Offset = 0% (keeps low register around C3).",
+        "OUT 3 modifier: /6. Shape = Gate, Width ~30%. Voice B trigger.",
+        "OUT 4 modifier: /6. Shape = Classic Random. Quantiser = D dorian. Cross Op = S&H, Cross Src = Out 3.",
+        "OUT 4 extended: Offset = 40% (shifts Voice B up about two octaves).",
+        "Patch OUT 1 → Env A trig, OUT 2 → VCO A 1V/oct.",
+        "Patch OUT 3 → Env B trig, OUT 4 → VCO B 1V/oct.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1 & OUT 3 — gates 0–5V; OUT 2 & OUT 4 — quantised pitch CV 0–5V, two voices in D dorian.",
+      "hear": "Two voices on 4 and 6 that converge on downbeats and diverge between them. Same scale = they always sound consonant even as the phrasing drifts.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /4\n* OUT 2: Random /4 + S&H Src OUT 1, Quantiser D dorian\n* OUT 3: Gate /6\n* OUT 4: Random /6 + S&H Src OUT 3, Quantiser D dorian, Offset +2 oct\n\n- Pamela's PRO Workout (OUT 1) g> Env A (Trig)\n- Pamela's PRO Workout (OUT 2) p> VCO A (V/oct)\n- Pamela's PRO Workout (OUT 3) g> Env B (Trig)\n- Pamela's PRO Workout (OUT 4) p> VCO B (V/oct) // 4-against-6 counterpoint"
     },
     {
-      "name": "EOR scene trigger chain",
-      "patch": "One output marks end-of-phrase and advances multiple modules at once · OUT 8: E(1,64) rotate=63 width 20ms · fires exactly one pulse at the end of every 64-step phrase · fan out to Marbles t-reset, envelope stages reset, and filter-bank scene advance · automatic phrase-synced scene progression for long-form generative pieces",
-      "diagram": "Pamela's PRO Workout:\n* OUT 8: Euclidean 64/1 Rotate=63, width 20ms\n\n- Pamela's PRO Workout (OUT 8) g> Marbles (t Reset)\n- Pamela's PRO Workout (OUT 8) g> Stages (Reset)\n- Pamela's PRO Workout (OUT 8) g> Filter Bank (Scene+) // end-of-phrase scene advance"
+      "name": "Phrase-end scene trigger",
+      "patch": "One rare pulse at the end of every 64-beat phrase fans out to reset multiple modules at once.",
+      "steps": [
+        "OUT 8 extended: Eucl Steps=64, Trigs=1, Shift=63 (one pulse on step 64 only).",
+        "OUT 8 extended: Shape = Gate, Width ~5% (short 20 ms pulse).",
+        "Patch OUT 8 → Marbles t-Reset.",
+        "Stack OUT 8 → Stages Reset.",
+        "Stack OUT 8 → Filter Bank Scene+ advance.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 8 — single short pulse, 0–5V, on beat 64 of every 64-beat phrase.",
+      "hear": "Silent for 63 beats, then every downstream module resets or advances in lockstep — a whole song moves to the next section on its own.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 8: Euclidean 64/1 Shift=63, Width=5%\n\n- Pamela's PRO Workout (OUT 8) g> Marbles (t Reset)\n- Pamela's PRO Workout (OUT 8) g> Stages (Reset)\n- Pamela's PRO Workout (OUT 8) g> Filter Bank (Scene+) // end-of-phrase scene advance"
     },
     {
-      "name": "Multi-envelope rhythm bed (hub-and-spoke)",
-      "patch": "Pam's as the clock brain for an entire drum voice bed · OUT 1 /4 → Env 1 → Kick VCA · OUT 2 /16 probability 60% → Env 2 → Hat VCA · OUT 3 euclidean 16/5 → Env 3 → Perc VCA · OUT 4 sine LFO /2 bars → mixer group level for breathing dynamics · one Pam's drives three separate envelope+VCA paths plus a slow level animator, giving a full rhythm section from a single clock source.",
-      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /4\n* OUT 2: Gate /16, p=60%\n* OUT 3: Euclidean 16/5\n* OUT 4: Sine LFO /2 bars\n\n- Pamela's PRO Workout (OUT 1) t> Env 1 (Trig)\n- Pamela's PRO Workout (OUT 2) t> Env 2 (Trig)\n- Pamela's PRO Workout (OUT 3) t> Env 3 (Trig)\n- Env 1 (Out) >> VCA Kick (CV)\n- Env 2 (Out) >> VCA Hat (CV)\n- Env 3 (Out) >> VCA Perc (CV)\n- Kick VCO (Out) -> VCA Kick (In) -> Mixer (In 1)\n- Hat Noise (Out) -> VCA Hat (In) -> Mixer (In 2)\n- Perc Src (Out) -> VCA Perc (In) -> Mixer (In 3)\n- Pamela's PRO Workout (OUT 4) >> Mixer (Level CV) // breathing dynamics"
+      "name": "Hub-and-spoke rhythm section",
+      "patch": "Three trigger outputs fire three envelopes on three VCAs while a slow sine animates the mix bus.",
+      "steps": [
+        "OUT 1 modifier: /4. Shape = Gate, Width ~25%. Kick trigger.",
+        "OUT 2 modifier: x4. Shape = Gate, Width ~15%. Probability = 60%. Hat trigger.",
+        "OUT 3 extended: Eucl Steps=16, Trigs=5. Shape = Gate, Width ~20%. Perc trigger.",
+        "OUT 4 modifier: /32 (2-bar cycle). Shape = Sine. Mixer group level animator.",
+        "Patch OUT 1 → Env 1 trig; Env 1 → VCA Kick CV; Kick VCO → VCA Kick → Mixer 1.",
+        "Patch OUT 2 → Env 2 trig; Env 2 → VCA Hat CV; Hat noise → VCA Hat → Mixer 2.",
+        "Patch OUT 3 → Env 3 trig; Env 3 → VCA Perc CV; Perc source → VCA Perc → Mixer 3.",
+        "Patch OUT 4 → Mixer group level CV.",
+        "Press Start / Stop."
+      ],
+      "signalOut": "OUT 1/2/3 — gates 0–5V per voice; OUT 4 — sine CV 0–5V for bus dynamics.",
+      "hear": "A full rhythm section with kick, sparse hat, euclidean perc, and a slow swell that breathes across every two bars. One module, one clock, full groove.",
+      "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate /4\n* OUT 2: Gate x4, p=60%\n* OUT 3: Euclidean 16/5\n* OUT 4: Sine LFO /32\n\n- Pamela's PRO Workout (OUT 1) t> Env 1 (Trig)\n- Pamela's PRO Workout (OUT 2) t> Env 2 (Trig)\n- Pamela's PRO Workout (OUT 3) t> Env 3 (Trig)\n- Env 1 (Out) >> VCA Kick (CV)\n- Env 2 (Out) >> VCA Hat (CV)\n- Env 3 (Out) >> VCA Perc (CV)\n- Kick VCO (Out) -> VCA Kick (In) -> Mixer (In 1)\n- Hat Noise (Out) -> VCA Hat (In) -> Mixer (In 2)\n- Perc Src (Out) -> VCA Perc (In) -> Mixer (In 3)\n- Pamela's PRO Workout (OUT 4) >> Mixer (Level CV) // breathing dynamics"
     }
   ]
 }

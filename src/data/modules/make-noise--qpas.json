@@ -144,53 +144,173 @@
   "patchIdeas": [
     {
       "name": "Stereo Radiate animation",
-      "patch": "Mono VCO → L Input · LP L → mixer L · LP R → mixer R · Q ~noon · FREQ sweepable · LFO → Radiate-L CV Input (normalled to R) · Radiate-L att CW · Radiate-R att CCW · one LFO spreads peaks in opposite directions each side — fast ping-pong stereo animation from a mono source.",
+      "patch": "Mono VCO through QPAS with opposing Radiate modulation — one LFO spreads the Left peaks outward while the Right peaks close inward, creating a ping-pong stereo image from a mono source.",
+      "steps": [
+        "Patch your VCO's saw out → QPAS L(Mono) Input. Leave R Input unpatched (it normals from L).",
+        "Turn Level combo pot full CW (unity gain) so the VCA is wide open.",
+        "Set FREQ to about noon and Q to noon — full, ringing peaks without pinging.",
+        "Set Radiate-L panel control to noon and Radiate-R panel control to noon (peaks start at FREQ).",
+        "Turn the Radiate-L CV attenuverter full CW (positive) and the Radiate-R CV attenuverter full CCW (inverted).",
+        "Patch a slow LFO (~0.5 Hz, ±5V triangle) → QPAS Radiate-L CV Input. The Radiate-R CV Input is normalled to it — one cable, both sides modulated.",
+        "Patch QPAS LP L → Mixer In L and QPAS LP R → Mixer In R."
+      ],
+      "signalOut": "QPAS LP L and LP R — stereo audio at modular level (±5V). Each side carries two resonant low-pass peaks moving in opposite directions.",
+      "hear": "A wide stereo filter-sweep that rocks left-right. As the LFO rises, Left peaks spread outward while Right peaks converge on FREQ — the timbre opens on one side while it tightens on the other. Push Q toward 1 o'clock for more obvious motion.",
       "diagram": "QPAS:\n* Q: ~noon\n* Radiate-L att: CW\n* Radiate-R att: CCW (inverted)\n\nVCO:\n\nLFO:\n\n- VCO (Saw) -> QPAS (L Input)\n- LFO (Out) >> QPAS (Radiate-L CV In) // normalled to R\n- QPAS (LP L) -> Mixer (L)\n- QPAS (LP R) -> Mixer (R)"
     },
     {
       "name": "Pinged melody",
-      "patch": "Trigger sequence → L Input · FREQ CV sequence → FREQ2 CV Input · Q ~1:00 · no audio input beyond the triggers · each trigger pings the filter at the currently-set FREQ · melodic kalimba/mbira via QPAS resonance alone. Add Radiate for chorus-spread plucks.",
-      "diagram": "QPAS:\n* Q: ~1:00\n* FREQ: musical range\n\nSequencer:\n\n- Sequencer (Gate) t> QPAS (L Input) // pings\n- Sequencer (Pitch) p> QPAS (FREQ2 CV In)\n- QPAS (LP L) -> Output (In)"
+      "patch": "No VCO needed — triggers into the audio input ping the filter's resonance at the currently-set FREQ, producing a kalimba-like melody purely from QPAS self-ringing.",
+      "steps": [
+        "Set Q to 11:00 or a touch higher — the manual's pinging threshold.",
+        "Set Level combo pot to about 2 o'clock so triggers arrive hot enough to excite the peaks.",
+        "Set FREQ to a comfortable musical range (~noon).",
+        "Turn Radiate-L and Radiate-R panel controls full CCW for a simpler single-pitch ping (manual recommendation).",
+        "Patch your sequencer's gate/trigger out → QPAS L(Mono) Input.",
+        "Patch the sequencer's pitch CV → QPAS FREQ2 CV Input (un-attenuated, tracks cleanly).",
+        "Patch QPAS LP L → your output or mixer.",
+        "Play the sequence — tune FREQ until the plucks sit on a musical octave."
+      ],
+      "signalOut": "QPAS LP L — percussive resonant pings at modular level, pitch following FREQ2 CV.",
+      "hear": "A dry, wooden kalimba/mbira pluck on each trigger, pitched by the sequence. Turning Q toward 1 o'clock lengthens the decay; nudging Radiate open adds a chorus-like detuned pluck pair.",
+      "diagram": "QPAS:\n* Q: ~11:00+\n* FREQ: musical range\n* Radiate-L/R: full CCW\n\nSequencer:\n\n- Sequencer (Gate) t> QPAS (L Input) // pings\n- Sequencer (Pitch) p> QPAS (FREQ2 CV In)\n- QPAS (LP L) -> Output (In)"
     },
     {
       "name": "Pre-filter VCA pluck",
-      "patch": "VCO → L Input · MATHS EOR envelope → Level CV In · Level combo pot ~noon · FREQ mid · Q ~11:00 · MATHS triggered from sequencer gate · exponential VCA response makes linear MATHS envelope snap percussively · plucky, filter-coloured voice without a separate VCA.",
-      "diagram": "QPAS:\n* Level: ~noon\n* FREQ: mid\n* Q: ~11:00\n\nVCO:\n\nMATHS:\n* CH 1: short decay\n\nSequencer:\n\n- VCO (Saw) -> QPAS (L Input)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) t> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> QPAS (Level CV In)\n- Sequencer (Pitch) p> QPAS (FREQ2 CV In)\n- QPAS (LP L) -> Output (In)"
+      "patch": "Use QPAS's built-in exponential VCA (the Level section) instead of a dedicated VCA. A linear MATHS envelope hitting the expo VCA snaps into a hyper-percussive pluck.",
+      "steps": [
+        "Patch your VCO's saw → QPAS L(Mono) Input.",
+        "Set Level combo pot to noon — it attenuates the Level CV to about half depth.",
+        "Set FREQ to noon and Q to about 11:00 for a slightly resonant character.",
+        "Patch the sequencer's pitch CV → VCO V/Oct.",
+        "Patch the sequencer's gate → MATHS CH 1 Trigger.",
+        "On MATHS, set CH 1 Rise near 0 and CH 1 Fall to ~9-10 o'clock (short decay), CH 1 attenuverter full CW.",
+        "Patch MATHS CH 1 Variable Out 1 → QPAS Level CV Input.",
+        "Patch the sequencer's pitch CV → QPAS FREQ2 CV Input so FREQ tracks the note.",
+        "Patch QPAS LP L → output."
+      ],
+      "signalOut": "QPAS LP L — plucky filtered VCO notes, no external VCA needed.",
+      "hear": "Each gate produces a snappy, exponentially-shaped pluck with filter colour baked in. Lower the Level combo pot for a squashier attack; raise Q toward 1 o'clock to add resonant bite.",
+      "diagram": "QPAS:\n* Level: ~noon\n* FREQ: ~noon\n* Q: ~11:00\n\nVCO:\n\nMATHS:\n* CH 1: short decay\n\nSequencer:\n\n- VCO (Saw) -> QPAS (L Input)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) t> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (Variable Out 1) >> QPAS (Level CV In)\n- Sequencer (Pitch) p> QPAS (FREQ2 CV In)\n- QPAS (LP L) -> Output (In)"
     },
     {
       "name": "Feedback distortion",
-      "patch": "VCO → L Input · LP L → monitor · BP R → FREQ1 CV Input (via attenuverter) · Q ~12:00 · Radiate-R controls character · attenuverter sweeps distortion from 'liquid metal' to 'decayed rust' · extremely rich aggressive filter tone from a single VCO.",
-      "diagram": "QPAS:\n* Q: ~12:00\n* FREQ1 att: start CCW, sweep\n\nVCO:\n\n- VCO (Saw) -> QPAS (L Input)\n- QPAS (BP R) >> QPAS (FREQ1 CV In) // feedback overdrive\n- QPAS (LP L) -> Output (In)"
+      "patch": "Patch QPAS's own BP output back into FREQ1 CV — the filter self-modulates its cutoff from its own resonance, producing a range of aggressive overdrive tones from a single VCO.",
+      "steps": [
+        "Patch your VCO's saw → QPAS L(Mono) Input.",
+        "Set Level combo pot full CW (unity) and Q to about noon.",
+        "Set the FREQ1 CV Input attenuverter to roughly 9 o'clock (small negative amount) to start — it's the distortion depth knob.",
+        "Patch QPAS BP R → QPAS FREQ1 CV Input (the feedback loop).",
+        "Since R outputs are normalled from L, unplugging/plugging BP R changes the stereo split as a side effect — leave it patched.",
+        "Patch QPAS LP L → output.",
+        "Slowly sweep the FREQ1 attenuverter from CCW through CW — character shifts from clean to liquid-metal to decayed-rust (manual's words).",
+        "Adjust Q and Radiate-R for additional overdrive character."
+      ],
+      "signalOut": "QPAS LP L — overdriven, self-modulating filtered VCO at modular level.",
+      "hear": "The clean VCO turns into a growling, howling filter voice. Small FREQ1 attenuator settings give buttery saturation; pushing further yields snarling, almost broken-sounding drive. Radiate-R changes the spectral flavour of the distortion.",
+      "diagram": "QPAS:\n* Q: ~noon\n* FREQ1 att: start ~9 o'clock, sweep\n\nVCO:\n\n- VCO (Saw) -> QPAS (L Input)\n- QPAS (BP R) >> QPAS (FREQ1 CV In) // feedback overdrive\n- QPAS (LP L) -> Output (In)"
     },
     {
       "name": "Smile Pass subtle processing",
-      "patch": "Full mix → L Input + R Input · SP L → monitor L · SP R → monitor R · Q ~10:00 · FREQ swept by slow LFO · constant-amplitude Smile-Pass shapes tone without ducking level · gentle stereo sweetener for a drum bus or pad.",
-      "diagram": "QPAS:\n* Q: ~10:00\n\nLFO:\n\nMixer:\n\n- Mixer (L) -> QPAS (L Input)\n- Mixer (R) -> QPAS (R Input)\n- LFO (Out) >> QPAS (FREQ1 CV In)\n- QPAS (SP L) -> Output (L)\n- QPAS (SP R) -> Output (R)"
+      "patch": "Send a stereo bus through QPAS's Smile Pass outputs for gentle tone-shaping that doesn't duck the mix — SP keeps amplitude roughly constant as FREQ sweeps, unlike LP or HP.",
+      "steps": [
+        "Patch Mixer Send L → QPAS L(Mono) Input and Mixer Send R → QPAS R Input (break the R normalization for true stereo).",
+        "Set Level combo pot full CW for unity gain.",
+        "Set Q to about 10 o'clock — light animation, not obvious resonance.",
+        "Set FREQ to noon.",
+        "Patch a slow LFO (~0.1 Hz) → QPAS FREQ1 CV Input.",
+        "Set the FREQ1 attenuverter to about 10 o'clock — shallow, slow cutoff drift.",
+        "Patch QPAS SP L → Output L and QPAS SP R → Output R (SP outputs are stereo-only and NOT normalled — use both, never one).",
+        "Listen to the return; the level stays stable while timbre breathes."
+      ],
+      "signalOut": "QPAS SP L and SP R — stereo filtered bus at approximately unity output level, regardless of FREQ position.",
+      "hear": "A gentle, breathing tonal sweep across a drum bus or pad without the usual \"kick disappears when cutoff drops\" problem. More texture than effect. Push Q up for more obvious coloration.",
+      "diagram": "QPAS:\n* Q: ~10:00\n* FREQ1 att: ~10 o'clock\n\nLFO:\n\nMixer:\n\n- Mixer (Send L) -> QPAS (L Input)\n- Mixer (Send R) -> QPAS (R Input)\n- LFO (Out) >> QPAS (FREQ1 CV In)\n- QPAS (SP L) -> Output (L)\n- QPAS (SP R) -> Output (R)"
     },
     {
-      "name": "Spectral crossfade",
-      "patch": "VCO A → L Input · VCO B → R Input · LP L → Mixer CH 1 · HP R → Mixer CH 2 · FREQ becomes a crossfader: CCW keeps VCO A (low content) loud and attenuates VCO B (high content), CW inverts. Two voices morph as FREQ sweeps — one module spectral crossfade.",
-      "diagram": "QPAS:\n* Q: low\n\nVCO A:\n\nVCO B:\n\nMixer:\n\n- VCO A (Out) -> QPAS (L Input)\n- VCO B (Out) -> QPAS (R Input)\n- QPAS (LP L) -> Mixer (CH 1)\n- QPAS (HP R) -> Mixer (CH 2)"
+      "name": "Spectral crossfader",
+      "patch": "Two voices, one FREQ knob: the Left cores LP one voice while the Right cores HP the other. Turning FREQ crossfades spectrally between them.",
+      "steps": [
+        "Patch VCO A → QPAS L(Mono) Input.",
+        "Patch VCO B → QPAS R Input (breaks the R-from-L normal so each side gets its own source).",
+        "Set Level combo pot full CW, Q low (~9-10 o'clock), Radiate-L and Radiate-R at noon.",
+        "Patch QPAS LP L → Mixer CH 1.",
+        "Patch QPAS HP R → Mixer CH 2.",
+        "Turn the FREQ knob fully CCW — LP keeps VCO A audible, HP attenuates VCO B.",
+        "Turn FREQ fully CW — the balance inverts: VCO A is now filtered out, VCO B passes.",
+        "Optional: patch a slow LFO → FREQ2 CV Input for automated crossfading."
+      ],
+      "signalOut": "Mixer output — morph between VCO A (LP-filtered on L side) and VCO B (HP-filtered on R side), driven by FREQ.",
+      "hear": "As FREQ sweeps low to high, the first voice fades out as the second fades in, with a spectral overlap zone around cutoff. Very different from a standard crossfader — it's frequency-dependent, not amplitude-only.",
+      "diagram": "QPAS:\n* Q: low (~9-10 o'clock)\n\nVCO A:\n\nVCO B:\n\nMixer:\n\n- VCO A (Out) -> QPAS (L Input)\n- VCO B (Out) -> QPAS (R Input)\n- QPAS (LP L) -> Mixer (CH 1)\n- QPAS (HP R) -> Mixer (CH 2)"
     },
     {
       "name": "!!¡¡ accent bursts",
-      "patch": "VCO → L Input · LP L → output · Q ~2:00 · sequencer gate mult: one to envelope, other to !!¡¡ Input · each gate simultaneously opens envelope AND kicks !!¡¡ which excites resonance peaks · rhythmic accent bursts on top of normal filtered notes · more expressive than gate-on-envelope alone.",
-      "diagram": "QPAS:\n* Q: ~2:00\n\nVCO:\n\nSequencer:\n\n- VCO (Saw) -> QPAS (L Input)\n- Sequencer (Gate) g> Mult (In)\n- Mult (Out 1) g> Envelope (Trig)\n- Mult (Out 2) t> QPAS (!!¡¡ In)\n- Envelope (Out) >> QPAS (Level CV In)\n- QPAS (LP L) -> Output (In)"
+      "patch": "Route the sequencer gate to both an envelope AND QPAS's !!¡¡ input — each note fires a percussive resonance kick on top of the normal filtered tone, a manual-documented use of the !!¡¡ excitation input.",
+      "steps": [
+        "Patch VCO saw → QPAS L(Mono) Input.",
+        "Set Q to about 2 o'clock (peaks emphasized, per the manual's \"pump up\" guidance).",
+        "Set FREQ to noon, Level combo pot to noon.",
+        "Patch the sequencer's gate → a passive multiple.",
+        "From the mult: one cable → Envelope (Trig), second cable → QPAS !!¡¡ Input (either of the two !!¡¡ jacks).",
+        "Patch the Envelope Out → QPAS Level CV Input — this opens the VCA per note.",
+        "Patch QPAS LP L → output.",
+        "Play the sequence — each gate plays the note AND flicks the !!¡¡ bus for an extra resonant accent."
+      ],
+      "signalOut": "QPAS LP L — envelope-gated filter notes with per-note resonance accents injected via !!¡¡.",
+      "hear": "Normal filtered VCO notes with an extra chirpy/resonant \"flick\" layered on the attack of each note. Swap the !!¡¡ trigger source for an audio-rate signal and the accents become clangorous cross-modulation.",
+      "diagram": "QPAS:\n* Q: ~2:00\n* FREQ: ~noon\n\nVCO:\n\nSequencer:\n\n- VCO (Saw) -> QPAS (L Input)\n- Sequencer (Gate) g> Mult (In)\n- Mult (Out 1) g> Envelope (Trig)\n- Mult (Out 2) t> QPAS (!!¡¡ In)\n- Envelope (Out) >> QPAS (Level CV In)\n- QPAS (LP L) -> Output (In)"
     },
     {
       "name": "Transient resonator (Morphagene)",
-      "patch": "Morphagene L/R → QPAS L/R · MG CV Out → Q CV Input · Q ~11:00 · Q CV attenuverter full CW · FREQ below noon · HP L → monitor · transient-rich tape playback gains resonant tails that swell with MG's CV output per transient — a morph between source and filter-rung echoes.",
-      "diagram": "QPAS:\n* Q: ~11:00\n* Q CV att: full CW\n* FREQ: below noon\n\nMorphagene:\n\n- Morphagene (L) -> QPAS (L Input)\n- Morphagene (R) -> QPAS (R Input)\n- Morphagene (CV Out) >> QPAS (Q CV In)\n- QPAS (HP L) -> Output (In) // resonant tails"
+      "patch": "Straight from the manual — feed Morphagene stereo out to QPAS stereo in, and patch Morphagene's CV Out to QPAS Q CV so each tape transient swells the resonance into a ringing tail.",
+      "steps": [
+        "Patch Morphagene Out L → QPAS L(Mono) Input and Morphagene Out R → QPAS R Input.",
+        "Set Level combo pot full CW, FREQ below noon (per the manual).",
+        "Set Q panel control to about 11:00.",
+        "Turn the Q CV Input attenuverter full CW (manual specification).",
+        "Patch Morphagene CV Out → QPAS Q CV Input.",
+        "Patch QPAS HP L → output (manual uses HP L, not LP — the resonant tails sit above the transient spectrum).",
+        "Play a transient-rich reel on Morphagene (clicks, drums, plosives).",
+        "Each dynamic spike in the audio raises Q momentarily, ringing the filter."
+      ],
+      "signalOut": "QPAS HP L — original high-passed tape audio with resonant tails that bloom on each transient.",
+      "hear": "Clicks and snares gain singing tonal tails; sustained material stays relatively dry. The resonance tracks the dynamics of the reel. Sweep FREQ to tune the tails to a musical pitch.",
+      "diagram": "QPAS:\n* Q: ~11:00\n* Q CV att: full CW\n* FREQ: below noon\n\nMorphagene:\n\n- Morphagene (Out L) -> QPAS (L Input)\n- Morphagene (Out R) -> QPAS (R Input)\n- Morphagene (CV Out) >> QPAS (Q CV In)\n- QPAS (HP L) -> Output (In) // resonant tails"
     },
     {
       "name": "Drone cluster",
-      "patch": "Sine VCO → L Input · Q ~2:00 · FREQ musical pitch · Radiate-L and Radiate-R both at moderate positions · LP L+R → monitor · four slightly-detuned filter peaks resonate at/near VCO pitch producing a rich additive-like drone · sweep FREQ for formant chords.",
-      "diagram": "QPAS:\n* Q: ~2:00\n* Radiate-L: noon+\n* Radiate-R: noon+\n* FREQ: musical note\n\nVCO:\n\n- VCO (Sine) -> QPAS (L Input)\n- QPAS (LP L) -> Output (L)\n- QPAS (LP R) -> Output (R)"
+      "patch": "A sine VCO into high-Q QPAS with Radiate opened — four slightly-offset filter peaks ring near the VCO pitch, producing a rich formant-cluster drone from a single oscillator.",
+      "steps": [
+        "Patch VCO sine → QPAS L(Mono) Input.",
+        "Set Level combo pot to 2 o'clock.",
+        "Set FREQ to a musical note you want the drone to centre on.",
+        "Set Q to about 2 o'clock (high, but QPAS does not self-oscillate — it still needs an input).",
+        "Set Radiate-L panel control to ~1 o'clock and Radiate-R to ~11 o'clock — the four peaks fan out around FREQ.",
+        "Patch QPAS LP L → Output L and QPAS LP R → Output R.",
+        "Optional: sweep FREQ slowly by hand, or patch a very slow LFO → FREQ1 CV Input with the attenuverter near 9 o'clock, for morphing formant chords."
+      ],
+      "signalOut": "QPAS LP L / LP R — stereo resonant drone, four detuned peaks clustered around FREQ.",
+      "hear": "A thick, vocal-like cluster drone with a stereo width that wasn't in the sine source. Sweeping FREQ walks the chord through different harmonic relationships. Adjust Radiate for tighter unison or wider formant intervals.",
+      "diagram": "QPAS:\n* Q: ~2:00\n* Radiate-L: ~1 o'clock\n* Radiate-R: ~11 o'clock\n* FREQ: musical note\n\nVCO:\n\n- VCO (Sine) -> QPAS (L Input)\n- QPAS (LP L) -> Output (L)\n- QPAS (LP R) -> Output (R)"
     },
     {
       "name": "Karplus-ish pluck",
-      "patch": "Noise source → L Input briefly via VCA gated by short trigger · Q ~2:00 · sequencer pitch → FREQ2 CV Input · each trigger bursts noise into high-Q filter producing plucked-string-like decay at the pitch · tune FREQ2 attenuation for 1V/Oct tracking · add Radiate for chorus plucks.",
-      "diagram": "QPAS:\n* Q: ~2:00\n\nNoise:\n\nVCA:\n\nSequencer:\n\n- Noise (Out) -> VCA (In)\n- Sequencer (Gate) g> VCA (CV)\n- VCA (Out) -> QPAS (L Input)\n- Sequencer (Pitch) p> QPAS (FREQ2 CV In)\n- QPAS (LP L) -> Output (In)"
+      "patch": "Short noise bursts into a high-Q QPAS tuned by pitch CV — the ringing filter acts like the delay line of a Karplus-Strong string, producing plucked tones from noise.",
+      "steps": [
+        "Patch your noise source → a VCA input.",
+        "Patch the sequencer's gate → VCA CV (use a short AD envelope if your VCA doesn't have a built-in gate response).",
+        "Patch VCA out → QPAS L(Mono) Input.",
+        "Set Level combo pot to noon.",
+        "Set Q to about 2 o'clock for a long plucked ring.",
+        "Set FREQ to match the pitch range you want (start around noon).",
+        "Patch the sequencer's pitch CV → QPAS FREQ2 CV Input (un-attenuated, ~1V/Oct cutoff).",
+        "Turn Radiate-L and Radiate-R full CCW for a single, focused pitch per note.",
+        "Patch QPAS LP L → output — optionally also LP R for chorused stereo plucks with Radiate opened."
+      ],
+      "signalOut": "QPAS LP L — short, pitched, plucked tones derived from noise rung through high-Q filter peaks.",
+      "hear": "Each trigger produces a nylon-string-ish pluck pitched by the sequencer. Short VCA gate = tight pluck; longer gate = more airy, string-like attack. Opening Radiate adds a subtle chorus of detuned pluck copies.",
+      "diagram": "QPAS:\n* Q: ~2:00\n* Radiate-L/R: full CCW\n\nNoise:\n\nVCA:\n\nSequencer:\n\n- Noise (Out) -> VCA (In)\n- Sequencer (Gate) g> VCA (CV)\n- VCA (Out) -> QPAS (L Input)\n- Sequencer (Pitch) p> QPAS (FREQ2 CV In)\n- QPAS (LP L) -> Output (In)"
     }
   ]
 }

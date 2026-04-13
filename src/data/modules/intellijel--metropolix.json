@@ -10,7 +10,7 @@
   "manufacturer": "Intellijel",
   "hp": 34,
   "tags": ["SEQUENCER", "CLOCK", "GATE", "TRIGGER"],
-  "description": "Multitrack, performance-oriented pitch, gate and mod sequencer. Two tracks with 8 stages, per-stage pulse count, gate type, slide, skip, ratchet, probability and accumulator. Three assignable MOD lanes.",
+  "description": "Multitrack, performance-oriented pitch, gate and mod sequencer. Two tracks with 8 stages, per-stage pulse count, gate type, slide, skip, ratchet, probability and accumulator. Eight assignable MOD lanes.",
   "controls": [
     {
       "name": "Pitch Sliders",
@@ -39,8 +39,8 @@
     {
       "name": "Encoder",
       "scope": "Screen",
-      "description": "Push-encoder for navigating and editing on-screen parameters.",
-      "detail": "Turn to scroll · press to select/confirm"
+      "description": "Push-encoder for navigating and editing on-screen parameters. Turning it on HOME scrolls through 4 HOME screens.",
+      "detail": "Turn to scroll · press to select/confirm · long-press for edit modes"
     },
     {
       "name": "RUN",
@@ -76,7 +76,7 @@
       "name": "SCALE",
       "scope": "Global Settings",
       "description": "Assigns quantization scale and root note to pitch sliders.",
-      "detail": "Many built-in scales + user scales + 14 chord shapes"
+      "detail": "35 traditional scales + 14 chord shapes + 100 user scales (10 banks of 10)"
     },
     {
       "name": "ORDER",
@@ -106,7 +106,7 @@
       "name": "SLIDE",
       "scope": "Track Settings",
       "description": "Sets portamento (slide) time for the track.",
-      "detail": "Track-level global slide time"
+      "detail": "Track-level global slide time · 0–100"
     },
     {
       "name": "GATE (Track)",
@@ -142,7 +142,7 @@
       "name": "RATCH",
       "scope": "Stage Buttons",
       "description": "Adds ratcheting (note repeats) within a stage's pulse count.",
-      "detail": "Per-stage · interacts with Gate Stretching"
+      "detail": "Per-stage · up to 8 · interacts with Gate Stretching"
     },
     {
       "name": "PROB",
@@ -172,13 +172,13 @@
       "name": "TRK 1 / TRK 2 / MOD",
       "scope": "Track Buttons",
       "description": "Selects which track or MOD lane is currently being edited.",
-      "detail": "TRK 1 and TRK 2 are pitch/gate tracks · MOD selects mod lanes"
+      "detail": "TRK 1 and TRK 2 are pitch/gate tracks · MOD selects one of 8 mod lanes"
     },
     {
       "name": "EXIT",
       "scope": "Screen",
       "description": "Exits current menu and returns to HOME screen.",
-      "detail": "Cycles through 4 HOME screen views when pressed repeatedly"
+      "detail": "At HOME, rotate encoder to cycle through 4 HOME screens"
     },
     {
       "name": "X / Y / Z Attenuverters",
@@ -212,7 +212,7 @@
     {
       "name": "MOD Lanes",
       "trigger": "MOD button",
-      "description": "Three CV/gate lanes with their own stage values, order, length, and clock div. Assignable to any output or internal parameter. The key to chord progressions and parameter automation."
+      "description": "Eight CV/gate lanes with their own stage values, order, length, and clock div. Assignable to any OUT jack or internal parameter. The key to chord progressions and parameter automation."
     },
     {
       "name": "Accumulator",
@@ -226,8 +226,8 @@
     },
     {
       "name": "Ratchet Modes",
-      "trigger": "per-stage RATCH button",
-      "description": "MULTIPLE: each ratchet fires its own gate (machine gun). SINGLE: one overall gate with tremolo subdivisions. GATED: ratchets stretch to fill gate time — rate proportional to gate length."
+      "trigger": "per-stage RATCH button (with Gate Stretching ON)",
+      "description": "MULTIPLY: ratchet count fits across the pulse count, so repeat rate tracks gate length. PULSE: all ratchets play within one clock pulse at a constant rate — classic ratchet. GATED: rate is fixed (one pulse per ratchet unit) but the total count stretches with gate length."
     },
     {
       "name": "Gate Types",
@@ -237,17 +237,17 @@
     {
       "name": "Brownian Order",
       "trigger": "ORDER menu",
-      "description": "50% chance forward, 25% back, 25% stay. Sequence wanders but trends forward. Combined with scale quantize and accumulator limits, produces melodies that feel improvised."
+      "description": "50% chance forward, 25% stay, 25% back. Sequence wanders but trends forward. Combined with scale quantize and accumulator limits, produces melodies that feel improvised."
     },
     {
       "name": "Track Output Swap",
-      "trigger": "Trk Out Swp via AUX or mod lane",
+      "trigger": "Trk Out Swap via AUX, MOD lane, or CTRL",
       "description": "Swaps Track 1 and Track 2 pitch/gate outputs instantly. Melody goes to bass voice, bass to melody. Assignable to AUX for a live crossfade surprise."
     },
     {
       "name": "Pitch Pre vs Pitch Post",
       "trigger": "mod lane or AUX assignment",
-      "description": "Pitch Pre: modulates before quantizer — pushes notes to different scale degrees (voice leading). Pitch Post: adds offset after quantizer — transposes all notes in-scale together."
+      "description": "Pitch Pre: modulates before the quantizer so output stays in the chosen scale (good for in-scale transposition). Pitch Post: adds 1V/oct chromatic offset after the quantizer, so pitches can land outside the scale."
     },
     {
       "name": "Preset Chaining",
@@ -258,102 +258,313 @@
   "patchIdeas": [
     {
       "name": "Boards of Canada chord progression",
-      "patch": "Mod Lane 1 → Pitch Post (Track 1+2) · clock /8 · length 4 · values: 0, +2, +5, +7 semitones · sequence auto-transposes through diatonic positions every 2 bars · sliders stay fixed, mod lane moves the root",
-      "diagram": "Metropolix:\n* MOD 1: DIV /8 · LEN 4 · values 0,+2,+5,+7 → Pitch Post\n* TRK 1: running · TRK 2: running\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // mod lane transposes both tracks in-scale"
+      "patch": "MOD Lane 1 assigned to Pitch Post of both tracks, /8 clock, LEN 4, stepped values transpose the whole sequence every couple of bars while sliders stay fixed.",
+      "steps": [
+        "Press MOD, turn encoder to MOD Lane 1.",
+        "In the Lane Menu set DIV=/8 and LEN=4.",
+        "Press CV (stage edit). Set stage 1=0st, 2=+2st, 3=+5st, 4=+7st with the encoder.",
+        "Hold ALT then A (or B) to open the output assignment. Assign MOD Lane 1 to Pitch Post, destination Track 1+2.",
+        "Patch Track 1 Pitch → VCO1 V/oct, Track 1 Gate → ENV1.",
+        "Patch Track 2 Pitch → VCO2 V/oct, Track 2 Gate → ENV2.",
+        "Program any 8-stage melody on the sliders, press RUN."
+      ],
+      "signalOut": "Track 1 Pitch and Track 2 Pitch — 1V/oct, transposed chromatically by MOD 1 every 2 bars.",
+      "hear": "The same sliders re-voiced over four moving roots — a slow I–ii–IV–V vibe. Change MOD stage values to remap the progression.",
+      "diagram": "Metropolix:\n* MOD 1: DIV /8 · LEN 4 · values 0,+2,+5,+7 → Pitch Post\n* TRK 1: running · TRK 2: running\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // mod lane transposes both tracks"
     },
     {
       "name": "Chord arpeggio within a single stage",
-      "patch": "Stage gate: SINGLE · Ratchets=3 · Stage accumulator: +4 semitones · limit +7 · each ratchet increments pitch: root → major third → fifth · sounds like a hammer-on triad",
-      "diagram": "Metropolix:\n* Stage: Gate=SINGLE · RATCH=3 · ACCUM +4st · LIM +7st\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> VCA (CV) // ratchets step pitch root→3rd→5th"
+      "patch": "One stage fires three ratchets and accumulates +4 semitones per ratchet, sounding a root–3rd–5th arpeggio in a single pulse.",
+      "steps": [
+        "Pick a stage (e.g. stage 3). Set its GATE TYPE switch to SINGLE and PULSE COUNT to 1.",
+        "Press RATCH, then press that stage's button and turn encoder to 3.",
+        "Press ACCUM, press the stage, set amount to +4 semitones.",
+        "Hold ALT + LIM, set the accumulator limit to +7 semitones and Reset=Stage.",
+        "Patch Track 1 Pitch → VCO V/oct, Track 1 Gate → ENV → VCA.",
+        "Press RUN."
+      ],
+      "signalOut": "Track 1 Pitch — 1V/oct stepped through root → +4st → +7st; Track 1 Gate — three ratchet pulses.",
+      "hear": "A fast root–major-3rd–5th arpeggio that resolves inside the beat. Swap +4/+7 to +3/+7 for a minor triad.",
+      "diagram": "Metropolix:\n* Stage: Gate=SINGLE · RATCH=3 · ACCUM +4st · LIM +7st\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // ratchets step pitch root→3rd→5th"
     },
     {
       "name": "Two-voice counterpoint from one sequence",
-      "patch": "Track 1: ORDER=FORWARD · DIV=/1 · Track 2: ORDER=REVERSE · DIV=/2 · same sliders play at two rates in opposite directions · instant melodic counterpoint",
-      "diagram": "Metropolix:\n* TRK 1: ORDER=FWD · DIV=/1\n* TRK 2: ORDER=REV · DIV=/2\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // same sliders, opposite directions"
+      "patch": "Track 1 forward, Track 2 reverse and half speed, same sliders — instant two-voice counterpoint.",
+      "steps": [
+        "Press TRK 1. Press ORDER and select Forward. Press DIV and set /1.",
+        "Press TRK 2. Press ORDER and select Forward, then press the encoder to flip DIRECTION to Reverse.",
+        "Press DIV on TRK 2 and set /2.",
+        "Program an 8-stage melody on the sliders.",
+        "Patch Track 1 Pitch/Gate → VCO1/ENV1.",
+        "Patch Track 2 Pitch/Gate → VCO2/ENV2.",
+        "Press RUN."
+      ],
+      "signalOut": "Track 1 Pitch and Track 2 Pitch — 1V/oct melody running forward at /1 and backward at /2.",
+      "hear": "Two voices crossing each other from opposite ends. Shift sliders and both voices move in contrary motion.",
+      "diagram": "Metropolix:\n* TRK 1: ORDER=FWD · DIV=/1\n* TRK 2: ORDER=FWD DIR=REV · DIV=/2\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // same sliders, opposite directions"
     },
     {
       "name": "Generative brownian walk",
-      "patch": "ORDER: BROWNIAN · 8 stages · user scale (pentatonic) · accumulator +1 semitone per loop · limit ±7 · direction via slow LFO on AUX X · melody trends forward but wanders and transposes",
-      "diagram": "Metropolix:\n* TRK 1: ORDER=BROWNIAN · LEN 8 · pentatonic\n* ACCUM: +1st/loop · LIM ±7 · AUX X → Accum Dir\n\n- LFO (Out) >> Metropolix (X In)\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // wanders but trends forward"
+      "patch": "Brownian order plus per-loop accumulator drift, with AUX controlling accumulator direction — a walking melody that keeps evolving.",
+      "steps": [
+        "Press SCALE, pick a Major Pentatonic scale and a root you like.",
+        "Press TRK 1 then ORDER, select Brownian.",
+        "Press LEN, set STAGES=8.",
+        "Press ACCUM and for each stage set amount=+1st, Reset Trigger=Loop.",
+        "Hold ALT + LIM, set accumulator LIMIT to ±7 semitones, Polarity bi-directional.",
+        "Press X button (AUX X) and assign destination Accum Dir.",
+        "Patch LFO (slow) → X In, Track 1 Pitch/Gate → voice. Press RUN."
+      ],
+      "signalOut": "Track 1 Pitch — pentatonic melody that wanders and transposes ±7st over time.",
+      "hear": "A drunken melody that mostly trends forward but occasionally backs up, slowly climbing then falling as the LFO flips accumulator direction.",
+      "diagram": "Metropolix:\n* TRK 1: ORDER=BROWNIAN · LEN 8 · pentatonic\n* ACCUM: +1st/loop · LIM ±7 · AUX X → Accum Dir\n\n- LFO (Out) >> Metropolix (X In)\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // wanders but drifts around root"
     },
     {
       "name": "Live loopy performance",
-      "patch": "Track 1: full 8-stage sequence running · Track 2: enter Loopy · press individual stage buttons to play single notes as a live keyboard over Track 1 · instant lead improv over rhythm",
+      "patch": "Track 1 plays the full 8-stage sequence; Track 2 is in Stage Player so you tap stage buttons as a keyboard for lead lines.",
+      "steps": [
+        "Program an 8-stage bass line on the sliders.",
+        "Press TRK 1 and make sure ORDER=Forward, LEN=8. This is the bass track.",
+        "Press TRK 2, press LOOPY (∞). Configure Loopy Target=Current and enable Stage Player.",
+        "Patch Track 1 Pitch/Gate → Bass VCO/ENV.",
+        "Patch Track 2 Pitch/Gate → Lead VCO/ENV.",
+        "Press RUN. Tap stage buttons to play lead notes in real time."
+      ],
+      "signalOut": "Track 1 outputs the running bass; Track 2 Pitch/Gate fire each time you press a stage button.",
+      "hear": "A steady bass with a one-shot keyboard lead on top — instant performance layer without a MIDI controller.",
       "diagram": "Metropolix:\n* TRK 1: 8-stage sequence running\n* TRK 2: LOOPY Stage Player mode\n\n- Metropolix (Track 1 Pitch) p> Bass VCO (V/oct)\n- Metropolix (Track 1 Gate) g> Bass ENV (Gate)\n- Metropolix (Track 2 Pitch) p> Lead VCO (V/oct)\n- Metropolix (Track 2 Gate) g> Lead ENV (Gate) // Track 2 played live as keyboard"
     },
     {
-      "name": "Hemiola (3/4 inside 4/4)",
-      "patch": "Track 1: 8 stages straight · Track 2: Stages 1-3 MULTI pulse 2 · Stage 4 REST · repeat pattern · Track 2 creates a 3+rest feel against Track 1's straight time",
-      "diagram": "Metropolix:\n* TRK 1: 8 stages straight\n* TRK 2: S1-3 MULTI p=2 · S4 REST\n\n- Metropolix (Track 1 Gate) g> Kick (Trig)\n- Metropolix (Track 2 Gate) g> Snare (Trig) // 3+rest against 4/4"
+      "name": "Hemiola (3 against 4)",
+      "patch": "Track 1 plays a straight 8. Track 2 uses PULSE COUNT=2 for three stages then rest to paint a 3+1 feel against it.",
+      "steps": [
+        "TRK 1: sliders for kick pattern, every stage GATE TYPE=MULTI, PULSE COUNT=1.",
+        "TRK 2: stages 1–3 GATE TYPE=MULTI PULSE COUNT=2; stage 4 GATE TYPE=REST PULSE COUNT=2; LEN=4.",
+        "Patch Track 1 Gate → Kick Trig.",
+        "Patch Track 2 Gate → Snare Trig.",
+        "Press RUN."
+      ],
+      "signalOut": "Track 1 Gate — straight kick. Track 2 Gate — three hits then a rest in a 3+1 pulse grouping.",
+      "hear": "Snare accents fall on a 3-pulse cycle against a 4-beat kick — a rolling hemiola rhythm.",
+      "diagram": "Metropolix:\n* TRK 1: 8 stages straight\n* TRK 2: S1-3 MULTI p=2 · S4 REST p=2 · LEN=4\n\n- Metropolix (Track 1 Gate) g> Kick (Trig)\n- Metropolix (Track 2 Gate) g> Snare (Trig) // 3+rest against 4/4"
     },
     {
       "name": "Stutter-drop fill",
-      "patch": "Most stages: Ratchet=1 · Stage 6: Ratchet=4 Gate=MULTI · Stage 7: REST · Stage 8: Ratchet=1 · creates burst → silence → resume pattern that sounds performed",
-      "diagram": "Metropolix:\n* TRK 1: S1-5 RATCH=1 · S6 RATCH=4 MULTI · S7 REST · S8 RATCH=1\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // burst → silence → resume"
+      "patch": "Stage 6 ratchets four times in MULTI, stage 7 rests, stage 8 resumes — a programmed stumble-and-recover every bar.",
+      "steps": [
+        "TRK 1: 8 stages programmed as your melody. All stages GATE TYPE=MULTI PULSE COUNT=1.",
+        "Press RATCH, press stage 6, set to 4.",
+        "Set stage 7 GATE TYPE switch to REST.",
+        "Leave stage 8 default.",
+        "Patch Track 1 Pitch → VCO, Track 1 Gate → ENV → VCA.",
+        "Press RUN."
+      ],
+      "signalOut": "Track 1 Gate — normal gates then a 4-ratchet burst on stage 6, silence on 7, single gate on 8.",
+      "hear": "A burst of machine-gun repeats, a dramatic drop-out, and a clean landing on stage 8 — an end-of-bar fill that feels performed.",
+      "diagram": "Metropolix:\n* TRK 1: S1-5 MULTI p=1 · S6 RATCH=4 MULTI · S7 REST · S8 default\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // burst → silence → resume"
     },
     {
-      "name": "100-scale harmonic memory",
-      "patch": "Store different scales in user slots (each tuned to a key/chord area) · Mod Lane → Scale Select · division /8 · lane cycles through scale slots · sequence auto-reharmonizes every few bars",
-      "diagram": "Metropolix:\n* MOD 1: DIV /8 · assigned to Scale Select\n* TRK 1: running · user scale slots loaded\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // scale changes every /8 loop"
+      "name": "User-scale reharmonization",
+      "patch": "Save several User Scales inside one bank, then use MOD Lane 1 assigned to Scale (User) to step through them — every few bars the chord center changes.",
+      "steps": [
+        "Press SCALE, select User Bank 1, Scale 1-1. Long-press encoder to edit notes, set it to a chord-tone scale. Exit.",
+        "Repeat for Scales 1-2, 1-3, 1-4 with different chord tones in the same key.",
+        "Press the encoder on one scale to Lock the bank (MOD LOCK icon).",
+        "Press MOD, pick MOD Lane 1. DIV=/8, LEN=4.",
+        "Assign MOD Lane 1 destination = Scale (User). Program stages 1–4 as −1V, 0V, +1V, +2V so the lane steps one scale per change.",
+        "Patch Track 1 Pitch/Gate → voice. Press RUN."
+      ],
+      "signalOut": "Track 1 Pitch — sliders are re-quantized into a different User Scale every /8 loop.",
+      "hear": "The melody recolors into new chord tones every few bars without you touching anything — instant reharmonization.",
+      "diagram": "Metropolix:\n* SCALE: User Bank 1 locked · 4 scales programmed\n* MOD 1: DIV /8 · LEN 4 · values -1V,0,+1V,+2V → Scale (User)\n* TRK 1: running\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // scale shifts every /8 loop"
     },
     {
       "name": "Swing offset between tracks",
-      "patch": "Track 1: SWING=0% (straight) · Track 2: SWING=60% (shuffled) · same melody at two different grooves · jazz-style rhythmic independence between voices",
+      "patch": "Track 1 straight, Track 2 swung — same sliders, two grooves at once.",
+      "steps": [
+        "Press TRK 1, press SWING, set 0%.",
+        "Press TRK 2, press SWING, set 60%.",
+        "Program your 8-stage melody on the sliders.",
+        "Patch Track 1 Pitch/Gate → VCO1/ENV1.",
+        "Patch Track 2 Pitch/Gate → VCO2/ENV2.",
+        "Press RUN."
+      ],
+      "signalOut": "Both track outputs carry the same notes with different micro-timing on Track 2 Gate.",
+      "hear": "Two voices locked to the same notes but one shuffles — a laid-back jazz-style rhythmic layering.",
       "diagram": "Metropolix:\n* TRK 1: SWING=0%\n* TRK 2: SWING=60%\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // two grooves, same notes"
     },
     {
       "name": "AUX as hidden panel controls",
-      "patch": "Assign AUX X to Accum Dir · AUX Y to Direction · AUX Z to Stage Length · no cables patched · attenuverters act as 3 extra knobs for live tweaking"
+      "patch": "No cables in AUX — still use X/Y/Z attenuverters as extra performance knobs by assigning each to a parameter.",
+      "steps": [
+        "Press X (AUX IN). Assign destination Accum Dir.",
+        "Press Y. Assign destination Play Order.",
+        "Press Z. Assign destination Pulses Len.",
+        "Leave the AUX jacks unpatched — the attenuverter alone provides the control voltage.",
+        "Program a sequence and press RUN.",
+        "Turn X, Y, Z attenuverters during play to re-shape the sequence live."
+      ],
+      "signalOut": "No external output — the three AUX knobs become three live performance controls.",
+      "hear": "Three extra physical knobs on the panel that morph the pattern's direction, length and accumulator without patching anything.",
+      "diagram": "Metropolix:\n* AUX X (attenuverter only) → Accum Dir\n* AUX Y (attenuverter only) → Play Order\n* AUX Z (attenuverter only) → Pulses Len\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // knobs re-shape the sequence without cables"
     },
     {
       "name": "Divergent dual-voice polymetric counterpoint",
-      "patch": "Track A: LEN=7 · Track B: LEN=5 · both forward at same clock div · phrases slip against each other and only re-align every 35 steps · pair with different scales via Scala for harmonic tension · evolving counterpoint from a single pattern",
-      "diagram": "Metropolix:\n* TRK 1: LEN=7 · scale minor\n* TRK 2: LEN=5 · scale minor pentatonic\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // 7 vs 5 realigns every 35 steps"
+      "patch": "Track 1 at length 7, Track 2 at length 5, same scale and clock div — phrases realign only every 35 steps.",
+      "steps": [
+        "Press SCALE, pick a natural minor scale with a root you like.",
+        "Press TRK 1, press LEN, set STAGES=7.",
+        "Press TRK 2, press LEN, set STAGES=5.",
+        "Leave DIV equal on both tracks.",
+        "Program sliders so the first 7 and first 5 each make a musical phrase.",
+        "Patch Track 1 and Track 2 Pitch/Gate to two voices.",
+        "Press RUN."
+      ],
+      "signalOut": "Track 1 — 7-step loop. Track 2 — 5-step loop. Both at the same clock.",
+      "hear": "Phrases drift in and out of phase with each other; a new alignment every 35 steps feels composed but isn't.",
+      "diagram": "Metropolix:\n* TRK 1: LEN=7 · scale minor\n* TRK 2: LEN=5 · same scale\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // 7 vs 5 realigns every 35 steps"
     },
     {
       "name": "MOD lane as filter envelope accent",
-      "patch": "Route MOD 1 to a mod output and send it to filter cutoff · program higher values on accent stages for per-step filter opening · enable slew on MOD for smooth sweeps between steps · no AUX input needed, accent pattern lives inside the sequencer",
-      "diagram": "Metropolix:\n* MOD 1: stepped values · slew ON → B Out\n* TRK 1: pitch/gate to voice\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate)\n- ENV (Out) >> VCA (CV)\n- Metropolix (B Out) >> VCF (Cutoff) // MOD 1 paints per-step accents"
+      "patch": "MOD Lane 1 programmed as a per-stage CV curve into B Out, routed to filter cutoff — paints accents on specific steps without an AUX input.",
+      "steps": [
+        "Press MOD, select MOD Lane 1. LEN=8.",
+        "Press CV, step through each stage and set voltages (e.g. +1V on accented stages, 0V elsewhere).",
+        "In the Lane Menu enable Slew (gives smooth motion between stages).",
+        "Hold ALT + B, assign MOD Lane 1 to B Out.",
+        "Patch Track 1 Pitch → VCO, Track 1 Gate → ENV → VCA.",
+        "Patch B Out → Filter Cutoff.",
+        "Press RUN."
+      ],
+      "signalOut": "B Out — per-stage CV curve driving cutoff. Track 1 Gate — normal rhythm gates.",
+      "hear": "Bright opening on the accented stages and darker in between, all locked to the sequence.",
+      "diagram": "Metropolix:\n* MOD 1: stepped CV per stage · slew ON → B Out\n* TRK 1: pitch/gate to voice\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate)\n- ENV (Out) >> VCA (CV)\n- Metropolix (B Out) >> VCF (Cutoff) // MOD 1 paints per-step accents"
     },
     {
-      "name": "AUX-gated ratchet noise bursts",
-      "patch": "MOD lane assigned as AUX/gate output fires only on ratcheted stages · route to noise VCA for snare-roll or hi-hat bursts that track the ratchet pattern · main voice plays PITCH A / GATE A normally · place ratchets on steps 4, 8, 16 for fills",
-      "diagram": "Metropolix:\n* TRK 1: pitch/gate normal · ratchets on S4,S8\n* MOD 1: fires on ratcheted steps → A Out\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (A Out) g> Noise VCA ENV (Gate)\n- Noise (Out) -> Noise VCA (In) // bursts only on ratchets"
+      "name": "Gate-toggle ratchet noise bursts",
+      "patch": "A MOD lane with CV TYPE = Gate Toggle fires only on chosen stages and drives a noise VCA — fills and hat rolls aligned to ratcheted steps of the main voice.",
+      "steps": [
+        "TRK 1: program a normal pitch/gate pattern. Put RATCH=4 on stages 4 and 8.",
+        "Press MOD, pick MOD Lane 1. Hold ALT + TYPE, set CV TYPE = Gate Toggle.",
+        "Press CV and toggle stages 4 and 8 high, others low.",
+        "Hold ALT + A, assign MOD Lane 1 to A Out.",
+        "Patch Track 1 Pitch/Gate → main voice. Patch A Out → Noise VCA gate input.",
+        "Patch Noise source → Noise VCA input. Press RUN."
+      ],
+      "signalOut": "A Out — gate pulses only on stages 4 and 8; Track 1 outputs the main voice normally.",
+      "hear": "Bursts of noise land exactly on the ratcheted beats, like snare-roll or hat fills locked to the melody.",
+      "diagram": "Metropolix:\n* TRK 1: pitch/gate · RATCH=4 on S4,S8\n* MOD 1: Gate Toggle high on S4,S8 → A Out\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (A Out) g> Noise VCA ENV (Gate)\n- Noise (Out) -> Noise VCA (In) // bursts only on ratchet stages"
     },
     {
       "name": "Self-modulating microtonal drift",
-      "patch": "Sum PITCH A with MOD 2 through a precision adder before the VCO · MOD 2 range set tiny (~50-100mV) and on a different length than Track A · pitches shift microtonally stage by stage, drifting in and out of tune without breaking the melody",
-      "diagram": "Metropolix:\n* TRK 1: LEN=8 · pitch melody\n* MOD 2: LEN=5 · small range ±100mV → B Out\n\n- Metropolix (Track 1 Pitch) p> Precision Adder (In1)\n- Metropolix (B Out) p> Precision Adder (In2)\n- Precision Adder (Out) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // microtonal drift, 8 vs 5"
+      "patch": "MOD Lane 2 with tiny CV values, different length than Track 1, sums into the pitch path via a precision adder — the melody drifts microtonally.",
+      "steps": [
+        "TRK 1: program your melody, LEN=8.",
+        "Press MOD, select MOD Lane 2. LEN=5.",
+        "Press CV on MOD 2, set stage values small (e.g. ±50 to ±100 mV).",
+        "Hold ALT + B, route MOD Lane 2 to B Out.",
+        "Patch Track 1 Pitch → Precision Adder In 1.",
+        "Patch B Out → Precision Adder In 2.",
+        "Patch Adder Out → VCO V/oct; Track 1 Gate → ENV. Press RUN."
+      ],
+      "signalOut": "Precision Adder Out — Track 1 pitch with a slowly-cycling microtonal offset from MOD 2.",
+      "hear": "The same notes but slightly detuned from one pass to the next; a shimmering, alive-sounding melody that never quite repeats.",
+      "diagram": "Metropolix:\n* TRK 1: LEN=8 · pitch melody\n* MOD 2: LEN=5 · small ±50-100mV stages → B Out\n\n- Metropolix (Track 1 Pitch) p> Precision Adder (In1)\n- Metropolix (B Out) p> Precision Adder (In2)\n- Precision Adder (Out) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // microtonal drift, 8 vs 5"
     },
     {
       "name": "Polyrhythmic kick and bass split",
-      "patch": "Track A drives bass voice at DIV /1 LEN 16 · Track B drives kick drum at DIV /1 LEN 6 · kick hits on a 6-step cycle against a 16-step bass line · polyrhythm resolves every 48 steps · GATE B goes straight to kick trigger input",
-      "diagram": "Metropolix:\n* TRK 1: DIV /1 · LEN 16 (bass)\n* TRK 2: DIV /1 · LEN 6 (kick)\n\n- Metropolix (Track 1 Pitch) p> Bass VCO (V/oct)\n- Metropolix (Track 1 Gate) g> Bass ENV (Gate)\n- Metropolix (Track 2 Gate) t> Kick (Trig) // 16 vs 6 → resolves at 48"
+      "patch": "Track 1 plays a 16-step bassline, Track 2 plays a 6-step kick pattern at the same clock div — resolves every 48 steps.",
+      "steps": [
+        "Press TRK 1, DIV=/1, LEN will naturally be 8; use MOD/AUX or long bass phrasing to stretch, or treat LEN=8 as a 16-pulse phrase by using MULTI stages with PULSE COUNT=2.",
+        "Press TRK 2, DIV=/1, set LEN/PULSES to deliver a 6-pulse loop (e.g. LEN=3 with PULSE COUNT=2, or LEN=6 with PULSE COUNT=1).",
+        "Slider values on TRK 1 = bass notes; slider values ignored on TRK 2 (we only use its gate).",
+        "Patch Track 1 Pitch → Bass VCO, Track 1 Gate → Bass ENV.",
+        "Patch Track 2 Gate → Kick Trig.",
+        "Press RUN."
+      ],
+      "signalOut": "Track 1 — bass pitch + gate. Track 2 Gate — kick trigger every 6 pulses.",
+      "hear": "The kick walks a 6-pulse cycle against a 16-pulse bassline; downbeats coincide only every 48 pulses.",
+      "diagram": "Metropolix:\n* TRK 1: DIV /1 · 16-pulse bass phrase\n* TRK 2: DIV /1 · 6-pulse kick phrase\n\n- Metropolix (Track 1 Pitch) p> Bass VCO (V/oct)\n- Metropolix (Track 1 Gate) g> Bass ENV (Gate)\n- Metropolix (Track 2 Gate) t> Kick (Trig) // 16 vs 6 → resolves at 48"
     },
     {
       "name": "Acid slide with MOD-driven resonance sweep",
-      "patch": "Enable per-stage SLIDE on Track A for a 303-style glide pattern · MOD 1 programmed as ramp/random over 16 steps drives filter resonance · MOD 2 provides per-step VCA accents · voice goes through a screaming resonant LPF for acid lead",
+      "patch": "Per-stage SLIDE for a 303 glide, MOD 1 drives filter resonance, MOD 2 drives VCA accents — all in-box programming for an acid lead.",
+      "steps": [
+        "TRK 1: program pitches. Press SLIDE and toggle it on for stages 2, 5 and 7.",
+        "Press SLIDE TIME, dial in around 40.",
+        "Press MOD, MOD Lane 1. Program a rising CV ramp across 16 pulses. Route MOD 1 → A Out.",
+        "MOD Lane 2: short CV pulses on every stage (accents). Route MOD 2 → B Out.",
+        "Patch Track 1 Pitch → VCO. VCO → Resonant LPF → VCA.",
+        "Track 1 Gate → ENV → VCA CV. A Out → LPF Resonance. B Out → VCA CV.",
+        "Press RUN."
+      ],
+      "signalOut": "Track 1 Pitch — gliding acid line. A Out — resonance ramp. B Out — per-step VCA accents.",
+      "hear": "A squelchy 303 lead where resonance opens across the phrase and each step punches with its own accent.",
       "diagram": "Metropolix:\n* TRK 1: slides on S2,S5,S7 · pitch pattern\n* MOD 1: resonance ramp → A Out\n* MOD 2: VCA accents → B Out\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- VCO (Out) -> LPF (In)\n- Metropolix (Track 1 Gate) g> ENV (Gate)\n- ENV (Out) >> VCA (CV)\n- Metropolix (A Out) >> LPF (Res)\n- Metropolix (B Out) >> VCA (CV) // acid squelch"
     },
     {
       "name": "Convergent chord stabs on two VCOs",
-      "patch": "Track A pitches VCO1 · Track B pitches VCO2 transposed +5 or +7 semitones via scale offset · both VCOs through the same filter/VCA · OR the gate outputs so either track fires the shared envelope · ratchets on stab stages create flams",
-      "diagram": "Metropolix:\n* TRK 1: melody · TRK 2: +7st transpose\n* ratchets on S3,S7 for flams\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 1 Gate) g> OR Logic (In1)\n- Metropolix (Track 2 Gate) g> OR Logic (In2)\n- OR Logic (Out) g> ENV (Gate)\n- VCO1 (Out) -> Mixer (In1)\n- VCO2 (Out) -> Mixer (In2)\n- Mixer (Out) -> VCF (In)\n- VCF (Out) -> VCA (In) // stacked stabs"
+      "patch": "Track 1 drives VCO1, Track 2 drives VCO2 transposed up a fifth via Pitch Post; OR their gates so either track fires a shared envelope.",
+      "steps": [
+        "Press TRK 1, program the melody.",
+        "Press TRK 2, program same or different sliders.",
+        "On TRK 2 press the Track Menu → Transpose, set +7 semitones (or use MOD/AUX Pitch Post +7).",
+        "Add RATCH=2 on a couple of stages on one track for flams.",
+        "Patch Track 1 Pitch → VCO1, Track 2 Pitch → VCO2.",
+        "Sum both Gate outputs with an OR/MAX logic module → single ENV → shared VCF/VCA.",
+        "Mix VCO1 + VCO2 into the VCF. Press RUN."
+      ],
+      "signalOut": "Track 1 Pitch and Track 2 Pitch — two-note stab. OR Out — one fused gate.",
+      "hear": "Stacked fifths playing as chord stabs; flams on ratchet stages add human feel.",
+      "diagram": "Metropolix:\n* TRK 1: melody · TRK 2: Transpose +7st\n* ratchets on S3,S7 for flams\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 1 Gate) g> OR Logic (In1)\n- Metropolix (Track 2 Gate) g> OR Logic (In2)\n- OR Logic (Out) g> ENV (Gate)\n- VCO1 (Out) -> Mixer (In1)\n- VCO2 (Out) -> Mixer (In2)\n- Mixer (Out) -> VCF (In)\n- VCF (Out) -> VCA (In) // stacked stabs"
     },
     {
       "name": "AUX as clocked Turing reset",
-      "patch": "MOD lane programmed to fire only on step 1 of the phrase · routed to Turing Machine reset input · Turing's random CV feeds a secondary VCO · randomness locks to the phrase boundary so the texture mutates in time with Track A",
-      "diagram": "Metropolix:\n* MOD 1: pulse on S1 only → A Out\n* TRK 1: main melody\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (A Out) t> Turing Machine (Clock/Reset)\n- Turing Machine (CV Out) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // phrase-locked randomness"
+      "patch": "MOD Lane 1 in Gate-Toggle mode fires only on stage 1 of a long phrase, resetting a Turing Machine so its randomness locks to the phrase boundary.",
+      "steps": [
+        "Press MOD, MOD Lane 1. Hold ALT + TYPE, CV TYPE = Gate Toggle.",
+        "Press CV, toggle stage 1 high, all others low. LEN=8.",
+        "Hold ALT + A, route MOD Lane 1 to A Out.",
+        "Patch Track 1 Pitch/Gate → main voice.",
+        "Patch A Out → Turing Machine Clock or Reset input.",
+        "Patch Turing CV Out → VCO2 V/oct, Track 2 Gate → ENV2.",
+        "Press RUN."
+      ],
+      "signalOut": "A Out — single gate on step 1 of every phrase. Turing CV — randomness that now resets in phase with Track 1.",
+      "hear": "A random texture that mutates but always comes back to the same moment of the phrase — unpredictable but in time.",
+      "diagram": "Metropolix:\n* MOD 1: Gate Toggle S1 only → A Out\n* TRK 1: main melody\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (A Out) t> Turing Machine (Clock/Reset)\n- Turing Machine (CV Out) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // phrase-locked randomness"
     },
     {
       "name": "MOD-driven wavefolder timbre evolution",
-      "patch": "Track A drives VCO through a wavefolder · MOD 1 programmed as its own melodic sequence (different length than Track A) feeds fold amount · timbre shifts independently from pitch, so identical notes sound different each time they recur",
-      "diagram": "Metropolix:\n* TRK 1: LEN=8 · pitch melody\n* MOD 1: LEN=5 · fold sequence → A Out\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- VCO (Out) -> Wavefolder (In)\n- Metropolix (A Out) >> Wavefolder (Fold)\n- Wavefolder (Out) -> VCA (In)\n- Metropolix (Track 1 Gate) g> ENV (Gate)\n- ENV (Out) >> VCA (CV) // timbre sequence decoupled from pitch"
+      "patch": "MOD Lane 1 runs its own 5-step sequence into a wavefolder while Track 1 plays an 8-step melody — timbre and pitch slide out of phase.",
+      "steps": [
+        "TRK 1: melodic pitch pattern, LEN=8.",
+        "Press MOD, MOD Lane 1. LEN=5.",
+        "Press CV, set each MOD 1 stage to a different voltage (0V … +5V).",
+        "Hold ALT + A, route MOD 1 to A Out.",
+        "Patch Track 1 Pitch → VCO → Wavefolder → VCA → output.",
+        "Patch A Out → Wavefolder Fold CV. Track 1 Gate → ENV → VCA.",
+        "Press RUN."
+      ],
+      "signalOut": "Track 1 Pitch — melody. A Out — a 5-step fold amount CV.",
+      "hear": "The same pitch returns with a different timbre each time, because the fold sequence is shorter than the pitch sequence.",
+      "diagram": "Metropolix:\n* TRK 1: LEN=8 · pitch melody\n* MOD 1: LEN=5 · fold sequence → A Out\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- VCO (Out) -> Wavefolder (In)\n- Metropolix (A Out) >> Wavefolder (Fold)\n- Wavefolder (Out) -> VCA (In)\n- Metropolix (Track 1 Gate) g> ENV (Gate)\n- ENV (Out) >> VCA (CV) // timbre decoupled from pitch"
     },
     {
       "name": "Buzz-roll fill with pitch dive",
-      "patch": "Program the last two stages with max ratchets (x8) and per-stage slide into a descending pitch · MOD 1 shortens envelope decay across those stages · creates an end-of-phrase snare-roll fill that dives pitch-wise before the pattern loops",
-      "diagram": "Metropolix:\n* TRK 1: S7-S8 RATCH=8 · slide ON · descending pitch\n* MOD 1: decay shortens on S7-S8 → B Out\n\n- Metropolix (Track 1 Pitch) p> Drum (Pitch CV)\n- Metropolix (Track 1 Gate) t> Drum (Trig)\n- Metropolix (B Out) >> ENV (Decay) // buzz-roll dive fill"
+      "patch": "Last two stages ratchet x8, slide, descend in pitch; MOD 1 shortens the decay on those stages — an end-of-phrase drum roll that pitches down.",
+      "steps": [
+        "TRK 1: program 8 pitches. Raise stages 7 and 8 sliders higher than the others and tilt them downward; enable SLIDE on both stages.",
+        "Press RATCH, press stage 7 and 8, set both to 8.",
+        "Press MOD, MOD 1. Set stages 7–8 to a low CV (for short decay), others to a high CV.",
+        "Hold ALT + B, route MOD 1 to B Out.",
+        "Patch Track 1 Pitch → Drum/VCO pitch CV. Track 1 Gate → Drum trigger.",
+        "Patch B Out → ENV Decay CV.",
+        "Press RUN."
+      ],
+      "signalOut": "Track 1 — main rhythm with rapid ratchets on the last two stages. B Out — decay CV that dips on the roll.",
+      "hear": "A buzz-roll that dives pitch-wise into the loop — a classic fill without programming a separate drum machine.",
+      "diagram": "Metropolix:\n* TRK 1: S7-S8 RATCH=8 · slide ON · descending pitch\n* MOD 1: short decay on S7-S8 → B Out\n\n- Metropolix (Track 1 Pitch) p> Drum (Pitch CV)\n- Metropolix (Track 1 Gate) t> Drum (Trig)\n- Metropolix (B Out) >> ENV (Decay) // buzz-roll dive fill"
     }
   ]
 }

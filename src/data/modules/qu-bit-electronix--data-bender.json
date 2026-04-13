@@ -148,42 +148,145 @@
   "patchIdeas": [
     {
       "name": "Clocked beat mangler",
-      "patch": "Macro Mode · external clock driving clock in · Time knob near x1 · Bend and Break both enabled at ~2 o'clock · Stereo Unique · feed drum bus in, get a re-timed, occasionally reversed, pop-strewn variant that stays on grid",
+      "patch": "Macro Mode with an external clock and both Bend and Break active: the drum bus comes out re-timed, occasionally reversed, with vinyl pops — but still locked to the grid.",
+      "steps": [
+        "Press the Clock button so its LED glows white (External Clock mode).",
+        "Press the Mode button so its LED glows blue (Macro).",
+        "Turn the Time knob to the 12 o'clock detent (Clock Matches Input — x1).",
+        "Set the Bend knob to 2 o'clock and the Break knob to 2 o'clock. Both their LEDs should be blue (enabled).",
+        "Set Repeats to ~11 o'clock, Mix fully wet (CW), Corrupt knob fully CCW (off).",
+        "Hold SHIFT and press Bend until its LED turns blue (Stereo Unique — per-channel independent glitches).",
+        "Patch Clock Source (Out) into Data Bender clock.",
+        "Patch Drum Bus (L) into Data Bender left, Drum Bus (R) into Data Bender right.",
+        "Patch Data Bender (Out left) and (Out right) into your main Mixer."
+      ],
+      "signalOut": "Data Bender Out left / Out right — stereo modular-level drum bus, ±5V, with on-grid reverses, pitch varispeed, and vinyl pops on every clock division.",
+      "hear": "The drum loop plays back in time, but every few beats a snare gets reversed, a hat slides up in pitch, and a vinyl pop lands on a downbeat — the groove stays intact.",
       "diagram": "Data Bender:\n* Mode: Macro\n* Time: x1 (match input clock)\n* Bend: ~2 o'clock (enabled)\n* Break: ~2 o'clock (enabled)\n* Stereo: Unique\n\nClock:\n\nDrums:\n\n- Clock (Out) c> Data Bender (clock)\n- Drums (L) -> Data Bender (In left)\n- Drums (R) -> Data Bender (In right)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
     },
     {
       "name": "Tape-stop freeze stab",
-      "patch": "Micro Mode · Bend knob CCW (reverse) · Freeze set to momentary (SHIFT + Freeze green) · Mix fully dry · gate into Freeze input on snare hits · each snare fires a frozen reversed stutter over the dry signal",
+      "patch": "Micro Mode with Bend below noon (reversed playback) and Freeze set to momentary: each snare trigger freezes the buffer briefly and spits a reversed stutter over the dry signal.",
+      "steps": [
+        "Press the Mode button so its LED glows green (Micro).",
+        "Turn the Bend knob fully CCW (reverse playback at 1x speed — the LED will be green).",
+        "Set Break to 9 o'clock (Traverse — picks an early buffer slice), Repeats to 1 o'clock.",
+        "Turn Mix fully CCW (dry). Engaging Freeze will force it fully wet automatically.",
+        "Hold SHIFT and press Freeze until its LED turns green (momentary — freeze only while the gate is high).",
+        "Patch Source (Out) into Data Bender left.",
+        "Patch Snare Trigger (Out) into Data Bender freeze input (needs >2V).",
+        "Patch Data Bender (Out left / right) into your main Mixer.",
+        "Each snare hit will briefly freeze the buffer and play it back reversed; release-time depends on the snare gate length."
+      ],
+      "signalOut": "Data Bender Out left / Out right — mostly dry signal, punctuated by short reversed stutter bursts on every snare trigger.",
+      "hear": "A normal source plays clean until a snare hits; on each hit you get a half-second backwards stutter that slams in, then the dry signal returns.",
       "diagram": "Data Bender:\n* Mode: Micro\n* Bend: CCW (reverse)\n* Mix: fully dry\n* Freeze: momentary (green)\n\nGate Source:\n\n- Source (L) -> Data Bender (In left)\n- Gate Source (Out) g> Data Bender (freeze)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
     },
     {
-      "name": "Krell destruction feedback",
-      "patch": "Random CV into time CV and repeats CV · Corrupt in Destroy at ~1 o'clock · LFO into corrupt cv · self-modulating glitch texture from a single sustained pad",
+      "name": "Self-modulating destroy pad",
+      "patch": "Random CV into Time and Repeats, a slow LFO into Corrupt CV, and Corrupt in Destroy: a sustained pad becomes a self-modulating wall of saturation and stutter without touching a knob.",
+      "steps": [
+        "Press Mode so its LED is blue (Macro) and Clock so its LED is blue (Internal).",
+        "Press the Corrupt button until the Corrupt LED indicates Destroy (third press from Decimate).",
+        "Set the Corrupt knob to 1 o'clock (first half of travel is soft saturation, past noon starts hard clipping — watch levels).",
+        "Set Time knob to 9 o'clock (slow, ~1–2s buffers), Repeats to noon, Mix fully wet (CW).",
+        "Turn Bend and Break fully CCW (off — we want Corrupt alone driving the texture).",
+        "Patch Pad (Out) into Data Bender left.",
+        "Patch Random CV (e.g. sample-and-hold, 0–5V) into Data Bender time CV and repeats CV.",
+        "Patch slow LFO (sine, 0.1–0.3 Hz, ±5V) into Data Bender corrupt cv.",
+        "Patch Data Bender (Out left / right) into Mixer — leave headroom: Destroy can swing up to 14Vpp."
+      ],
+      "signalOut": "Data Bender Out left / Out right — sustained pad with compounding bitcrush/clipping that breathes as the LFO sweeps and stutters as Time jumps.",
+      "hear": "A held chord turns into a breathing, saturated wall that slowly distorts harder as the LFO crests, then relaxes back — with occasional stutters as Time jumps to a new buffer size.",
       "diagram": "Data Bender:\n* Corrupt: Destroy · ~1 o'clock\n* Time: slow\n* Mix: fully wet\n\nPad:\n\nRandom:\n\nLFO:\n\n- Pad (Out) -> Data Bender (In left)\n- Random (Out) >> Data Bender (time)\n- Random (Out) >> Data Bender (repeats)\n- LFO (Out) >> Data Bender (corrupt cv)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
     },
     {
       "name": "DAW-locked buffer reset",
-      "patch": "External clock mode · SHIFT + Corrupt to enable Corrupt-as-Reset · send DAW bar clock to corrupt gate · Time at /4 · buffer rebuilds cleanly on every downbeat · drop glitch in without phase drift",
+      "patch": "External clock plus SHIFT+Corrupt repurposes the Corrupt Gate into a reset input: a DAW bar trigger resyncs the subdivision counter every downbeat so the glitch never drifts.",
+      "steps": [
+        "Press Clock so its LED is white (External).",
+        "Turn Time knob to the /4 detent (1 bar — divide by 4).",
+        "Press Mode until its LED is blue (Macro). Set Bend to 1 o'clock, Break to 1 o'clock.",
+        "Hold SHIFT and press the Corrupt button — the Corrupt LED turns green, which means the Corrupt Gate jack now acts as a Reset input.",
+        "Set Mix fully wet (CW), Repeats to noon, Corrupt knob CCW (off — the knob is independent from the reset function).",
+        "Patch DAW Clock (e.g. 16th-note trigger from Expert Sleepers / Pam's) into Data Bender clock.",
+        "Patch Bar Trigger (one pulse per bar from DAW) into Data Bender corrupt gate — this now resyncs the subdivision counter on each downbeat.",
+        "Patch Source (Out) into Data Bender left.",
+        "Patch Data Bender (Out left / right) into Output."
+      ],
+      "signalOut": "Data Bender Out left / Out right — stereo processed bus, rhythmically locked: subdivision counter resets to 1 on every bar trigger, eliminating drift.",
+      "hear": "The glitch pattern stays phase-locked with the DAW — you can stop and restart transport and the Data Bender snaps back onto the grid within one bar.",
       "diagram": "Data Bender:\n* Clock: External\n* Time: /4\n* Corrupt gate: Reset (SHIFT+Corrupt)\n\nDAW Clock:\n\nBar Trig:\n\nSource:\n\n- DAW Clock (Out) c> Data Bender (clock)\n- Bar Trig (Out) t> Data Bender (corrupt gate) // buffer/clock reset\n- Source (Out) -> Data Bender (In left)\n- Data Bender (Out left) -> Output (L)"
     },
     {
       "name": "Micro scrub instrument",
-      "patch": "Micro Mode · Freeze latched on · manual keyboard CV into bend cv for playable ±3 oct scrubbing · Break knob selects the buffer slice to scrub · Repeats medium for short loops · turn the buffer into a playable sampler",
+      "patch": "Micro Mode + Freeze latched + V/oct-style CV into bend CV: the Bend knob becomes a ±3 octave playback-speed control, turning a frozen buffer into a playable sampler.",
+      "steps": [
+        "Press Mode so its LED is green (Micro). In Micro, Bend is direct playback speed (±3 oct) and Break selects a buffer slice (Traverse).",
+        "Record audio into the buffer for a few seconds, then press Freeze — the LED should go solid blue (latched). If it's momentary, hold SHIFT + Freeze until blue.",
+        "Set the Bend knob to noon (1x forward — LED will be cyan at exact octave multiples).",
+        "Set Break to 9 o'clock (picks the first buffer slice to scrub). Repeats to noon for short loop segments.",
+        "Set Mix fully wet (CW — Freeze already forces it wet, but this stays wet after unfreezing).",
+        "Patch Source (Out) into Data Bender left, record your material, then engage Freeze.",
+        "Patch Keyboard CV (±5V) into Data Bender bend cv — this sums with the Bend knob for pitched scrubbing.",
+        "Patch Data Bender (Out left / right) into Output.",
+        "Optionally patch a slow CV or LFO into Data Bender break cv to scan through the slice list automatically."
+      ],
+      "signalOut": "Data Bender Out left / Out right — pitched, looped playback of the frozen buffer slice, tracked by keyboard CV across a 6-octave range.",
+      "hear": "The frozen phrase plays back as a short loop; pressing higher keys speeds it up and raises pitch, lower keys reverse it below noon — like a granular sampler with one grain.",
       "diagram": "Data Bender:\n* Mode: Micro\n* Freeze: latched ON\n* Repeats: ~noon\n* Break: Traverse\n\nKeyboard:\n\nSource:\n\n- Source (Out) -> Data Bender (In left)\n- Keyboard (CV) p> Data Bender (bend cv) // scrub pitch\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
     },
     {
       "name": "Skipping CD pad",
-      "patch": "Macro Mode · Bend OFF · Break ~3 o'clock · Corrupt in Dropout at ~11 o'clock · SHIFT+Time CW for fully windowed edges · gentle random slice skips and momentary dropouts over an ambient pad without clicks",
+      "patch": "Macro Mode with Break in Dropout territory and full glitch windowing: slice-skips and dropouts ride over an ambient pad without any clicks at the edges.",
+      "steps": [
+        "Press Mode so its LED is blue (Macro) and Clock so its LED is white (External) if you want tempo-locked skips, or blue (Internal) for free-running.",
+        "Turn Bend fully CCW (off — LED dark). Set Break to 3 o'clock (aggressive slice jumps and added repeats).",
+        "Press the Corrupt button until the LED indicates Dropout (second press), then set the Corrupt knob to 11 o'clock (few, long dropouts — left side of the knob).",
+        "Hold SHIFT and turn the Time knob fully CW — the SHIFT LED will go bright white (maximum glitch windowing, fully faded edges).",
+        "Set Time knob to noon, Mix fully wet, Repeats to 1 o'clock.",
+        "Patch Clock Source (Out) into Data Bender clock.",
+        "Patch Pad (Out) into Data Bender left (normalizes to right).",
+        "Patch Data Bender (Out left / right) into your main Mixer."
+      ],
+      "signalOut": "Data Bender Out left / Out right — ambient pad with rhythmic slice skips and occasional long dropouts, all crossfaded (no clicks).",
+      "hear": "An ambient pad drifts along — every couple of bars a slice jumps to a different part of the buffer or briefly drops to silence, but every transition fades in and out smoothly.",
       "diagram": "Data Bender:\n* Mode: Macro\n* Bend: OFF\n* Break: ~3 o'clock\n* Corrupt: Dropout · ~11 o'clock\n* Windowing: max (SHIFT+Time CW)\n\nClock:\n\nPad:\n\n- Pad (Out) -> Data Bender (In left)\n- Clock (Out) c> Data Bender (clock)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
     },
     {
-      "name": "Wide stereo decorrelator",
-      "patch": "Mono source into left input · right input unpatched (normalized from left) · Stereo Unique mode (SHIFT+Bend blue) · Macro Bend and Break low · clock at x4 · tiny independent per-channel glitches widen a mono signal into a decorrelated stereo field",
+      "name": "Mono-to-stereo decorrelator",
+      "patch": "Mono source into left (normalized to right) plus Stereo Unique mode: tiny per-channel Bend/Break decisions widen the mono image into a decorrelated stereo field.",
+      "steps": [
+        "Press Mode so its LED is blue (Macro).",
+        "Hold SHIFT and press Bend until the Bend LED is blue (Stereo Unique — per-channel independent decisions).",
+        "Press Clock so its LED is white (External) — the fast subdivision keeps the decorrelation lively.",
+        "Turn the Time knob clockwise to the x4 detent (16th notes — LED will briefly flash gold on entering the subdivision).",
+        "Set Bend to 9 o'clock and Break to 9 o'clock (low probability — one subtle glitch every few seconds).",
+        "Set Mix fully wet (CW), Repeats to 1 o'clock, Corrupt knob CCW (off).",
+        "Patch Clock Source into Data Bender clock.",
+        "Patch Mono Source into Data Bender left only (leave right unpatched — it normals to left internally, but the Unique mode randomizes each channel independently downstream).",
+        "Patch Data Bender (Out left / right) into Mixer L/R."
+      ],
+      "signalOut": "Data Bender Out left / Out right — two slightly different processed copies of the same mono input, widening the stereo image.",
+      "hear": "The mono source suddenly has width: micro-stutters and pitch blips appear only in the left ear, or only in the right, giving a wide, lively image without a chorus.",
       "diagram": "Data Bender:\n* Mode: Macro\n* Stereo: Unique (SHIFT+Bend blue)\n* Bend: ~9 o'clock\n* Break: ~9 o'clock\n* Time: x4\n\nClock:\n\nMono Source:\n\n- Mono Source (Out) -> Data Bender (In left) // normalizes to right\n- Clock (Out) c> Data Bender (clock)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
     },
     {
-      "name": "Sidechain dropout gate",
-      "patch": "Corrupt in Dropout at ~2 o'clock · gate into corrupt gate from kick envelope follower · Corrupt Gate set to momentary · dropouts punch holes on every kick, leaving the signal clean between beats",
+      "name": "Kick-ducked dropout gate",
+      "patch": "Corrupt in Dropout with the Corrupt Gate set to momentary: each kick transient punches a brief silent hole in the processed signal, like a hard sidechain gate.",
+      "steps": [
+        "Press the Corrupt button until the LED indicates Dropout.",
+        "Set the Corrupt knob to 2 o'clock (more frequent, shorter dropouts — right side of the knob).",
+        "Hold SHIFT and press the Clock button until the Clock LED turns green — this sets all effect gates (bend/break/corrupt) to momentary.",
+        "Press Mode (blue — Macro), turn Bend fully CCW (off), Break fully CCW (off). Only Corrupt should be active.",
+        "Set Mix fully wet (CW), Repeats to 1 o'clock, Time to noon.",
+        "Patch Synth / Pad Source into Data Bender left.",
+        "Patch Kick Envelope Follower (or kick gate, >2V) into Data Bender corrupt gate.",
+        "Patch Data Bender (Out left / right) into Mixer L/R.",
+        "Adjust kick gate length to taste — short gates punch tight holes, longer gates leave the dropout texture on longer."
+      ],
+      "signalOut": "Data Bender Out left / Out right — wet processed signal that briefly dropouts (goes silent/stuttered) every time the kick fires.",
+      "hear": "A pad plays cleanly between kicks; every time the kick hits, the pad briefly chokes with a ragged silence, then returns — a harder, more digital sidechain duck.",
       "diagram": "Data Bender:\n* Corrupt: Dropout · ~2 o'clock\n* Gate behavior: momentary (SHIFT+Clock green)\n* Mix: fully wet\n\nKick Envelope:\n\nSynth:\n\n- Synth (Out) -> Data Bender (In left)\n- Kick Envelope (Out) g> Data Bender (corrupt gate) // hole on each kick\n- Data Bender (Out left) -> Output (L)"
     }
   ]

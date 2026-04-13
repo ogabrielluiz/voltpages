@@ -94,16 +94,45 @@
     {
       "name": "Clocked reset",
       "patch": "Clock → Rst · LFO rate slower than clock for rhythmic waveshaping",
+      "steps": [
+        "Leave Pip LFO in LFO mode (VCO LED off).",
+        "Set Freq knob slower than your clock — e.g. knob around 8–9 o'clock for a multi-beat cycle.",
+        "Patch Clock Out → Pip LFO Rst input.",
+        "Patch Pip LFO Triangle (bipolar) → VCF Cutoff CV.",
+        "Send audio through the VCF so you can hear the sweep being retriggered on each clock edge."
+      ],
+      "signalOut": "Pip LFO Triangle (bipolar) — ±5V triangle, but restarted from zero on every clock pulse so the waveform becomes rhythmic chunks instead of a free ramp.",
+      "hear": "The filter sweep locks to the clock. Instead of a smooth drift, each beat kicks the triangle back to the start, producing a stuttering, rhythmic waveshape — tempo-synced modulation from a free-running LFO.",
       "diagram": "PIP LFO:\n* Mode: LFO\n* Freq: slower than clock\n- Clock (Out) t> Pip LFO (Rst) // resets cycle rhythmically\n- Pip LFO (Triangle bipolar) >> VCF (Cutoff CV)"
     },
     {
       "name": "VCO with multiple waveforms",
       "patch": "V/Oct → Freq · bipolar saw → VCF · unipolar tri → VCA CV",
+      "steps": [
+        "Press the VCO button so the LED lights (audio-rate mode, 1V/oct tracking over ~5 octaves).",
+        "Patch Sequencer V/Oct Out → Pip LFO Freq (CV) input.",
+        "Patch Pip LFO Saw (bipolar) → VCF Audio In (this is now your oscillator tone).",
+        "Patch Pip LFO Triangle (unipolar) → VCA CV — the triangle doubles as a pitched envelope-like mod source.",
+        "Route VCF → VCA → Mixer.",
+        "Optional: send a trigger into Rst for hard-sync accents on each note.",
+        "If tracking drifts across octaves, calibrate the rear V/OCT TRIM screw (1V and 3V, tune to same note two octaves apart)."
+      ],
+      "signalOut": "Pip LFO Saw (bipolar) — ±5V audio-rate sawtooth at the sequencer's pitch. Pip LFO Triangle (unipolar) — 0–5V triangle at the same audio rate, used as a pitched VCA CV.",
+      "hear": "A raw analog sawtooth voice tracking the sequencer. The VCA gain warbles at the same audio rate as the pitch (the unipolar triangle), giving the tone a buzzing, ring-mod-flavoured amplitude character that follows pitch.",
       "diagram": "PIP LFO:\n* Mode: VCO\n- Sequencer (CV) p> Pip LFO (Freq CV) // 1V/oct tracking\n- Pip LFO (Saw bipolar) -> VCF (In)\n- Pip LFO (Triangle unipolar) >> VCA (CV)"
     },
     {
       "name": "Unipolar modulation",
       "patch": "0–5V sine → filter cutoff for upward-only modulation sweep",
+      "steps": [
+        "Leave Pip LFO in LFO mode.",
+        "Set Freq knob to taste — around 9 o'clock for a slow filter breath.",
+        "Patch Pip LFO Sine (unipolar) → VCF Cutoff CV.",
+        "Set the VCF cutoff manually to where you want the lowest point of the sweep (the sine rests at 0V).",
+        "Send audio through the VCF."
+      ],
+      "signalOut": "Pip LFO Sine (unipolar) — 0–5V sine that only rises above the resting cutoff, never below.",
+      "hear": "A one-sided filter sweep: the cutoff opens upward on each cycle and returns to your set point, instead of dipping below it. Useful when you want modulation to add brightness without ever darkening the sound.",
       "diagram": "PIP LFO:\n* Mode: LFO\n- Pip LFO (Sine unipolar) >> VCF (Cutoff CV) // 0-5V sweep opens filter only upward"
     }
   ]

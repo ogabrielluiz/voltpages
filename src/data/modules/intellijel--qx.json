@@ -3,7 +3,7 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "expanderOf": "intellijel--midi-1u"
+    "expanderOf": "intellijel--quadrax"
   },
   "slug": "intellijel--qx",
   "name": "Qx",
@@ -14,63 +14,147 @@
     "LFO",
     "UTILITY"
   ],
-  "description": "4HP expander for Quadrax. Adds one CV output per Quadrax channel and enables cascade/linking between channels. Output function is set per channel in Quadrax menus.",
+  "description": "4HP expander for Quadrax (also works with Gx). Adds one End-of-Rise and one End-of-Fall gate output per Quadrax channel — 8 gate outs total. Behavior follows each channel's current Quadrax mode (AD/AHR/CYCLE/BURST/LFO).",
   "controls": [],
   "inputs": [],
   "outputs": [
     {
-      "name": "CH 1 CV Out",
-      "description": "Auxiliary CV output for Quadrax channel 1. End-of-cycle gate, end-of-rise gate, or linked CV depending on Quadrax channel mode.",
-      "voltage": "0–5V or ±5V"
+      "name": "EOR 1",
+      "description": "End-of-Rise gate for Quadrax CH 1. Fires when the rise stage completes. Exact behavior depends on CH 1's mode (see behaviors).",
+      "voltage": "0–5V gate"
     },
     {
-      "name": "CH 2 CV Out",
-      "description": "Auxiliary CV output for Quadrax channel 2. End-of-cycle gate, end-of-rise gate, or linked CV depending on Quadrax channel mode.",
-      "voltage": "0–5V or ±5V"
+      "name": "EOF 1",
+      "description": "End-of-Fall gate for Quadrax CH 1. Fires when the fall/release stage completes. Exact behavior depends on CH 1's mode.",
+      "voltage": "0–5V gate"
     },
     {
-      "name": "CH 3 CV Out",
-      "description": "Auxiliary CV output for Quadrax channel 3. End-of-cycle gate, end-of-rise gate, or linked CV depending on Quadrax channel mode.",
-      "voltage": "0–5V or ±5V"
+      "name": "EOR 2",
+      "description": "End-of-Rise gate for Quadrax CH 2.",
+      "voltage": "0–5V gate"
     },
     {
-      "name": "CH 4 CV Out",
-      "description": "Auxiliary CV output for Quadrax channel 4. End-of-cycle gate, end-of-rise gate, or linked CV depending on Quadrax channel mode.",
-      "voltage": "0–5V or ±5V"
+      "name": "EOF 2",
+      "description": "End-of-Fall gate for Quadrax CH 2.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "EOR 3",
+      "description": "End-of-Rise gate for Quadrax CH 3.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "EOF 3",
+      "description": "End-of-Fall gate for Quadrax CH 3.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "EOR 4",
+      "description": "End-of-Rise gate for Quadrax CH 4.",
+      "voltage": "0–5V gate"
+    },
+    {
+      "name": "EOF 4",
+      "description": "End-of-Fall gate for Quadrax CH 4.",
+      "voltage": "0–5V gate"
     }
   ],
   "behaviors": [
     {
-      "name": "End-of-Cycle Gate",
-      "trigger": "Quadrax channel completes cycle",
-      "description": "When configured in Quadrax, the Qx output fires a short gate at the end of each envelope or LFO cycle — useful for chaining or clocking other modules."
+      "name": "AD mode gates",
+      "trigger": "Quadrax channel set to AD",
+      "description": "EOR goes high at the peak of the attack and stays high for the entire decay. EOF is low during rise+fall, then goes high at the end of the decay (inverse of EOR)."
     },
     {
-      "name": "End-of-Rise Gate",
-      "trigger": "Quadrax channel reaches peak",
-      "description": "Fires a gate at the peak of the envelope or function, allowing rhythmic or melodic events to be triggered mid-envelope."
+      "name": "AHR mode gates",
+      "trigger": "Quadrax channel set to AHR",
+      "description": "EOR goes high at the end of attack and stays high through hold and release. EOF goes low at the start of the release phase and high at the end of release."
     },
     {
-      "name": "Channel Cascade / Linking",
-      "trigger": "cascade mode in Quadrax",
-      "description": "Enables daisy-chaining Quadrax channels so the end of one channel triggers the next, creating longer envelope sequences or complex LFO chains."
+      "name": "CYCLE mode gates",
+      "trigger": "Quadrax channel set to CYCLE",
+      "description": "EOR is high during the decay half of each cycle, low during rise. EOF is the inverse. Effectively a square wave at the LFO rate — useful as a clock or 90°-offset gate."
+    },
+    {
+      "name": "BURST mode gates",
+      "trigger": "Quadrax channel set to BURST",
+      "description": "EOR pulses high at the start of every individual pulse inside the burst (per-pulse clock). EOF goes high once at the very end of the whole burst (burst-complete flag)."
+    },
+    {
+      "name": "LFO mode gates (STANDARD)",
+      "trigger": "Quadrax channel set to LFO (standard)",
+      "description": "EOR goes high at the LFO midpoint and drops when the cycle resets — a square at LFO rate, 90° shifted from EOF. EOF is high for the first half of the cycle, low for the second."
+    },
+    {
+      "name": "LFO mode gates (ALTERNATE)",
+      "trigger": "Quadrax channel set to LFO (alternate / LFV)",
+      "description": "EOR is high whenever the LFO voltage is moving negative; EOF is high whenever it's moving positive. Complementary direction flags from the chaotic vacillator."
+    },
+    {
+      "name": "Works with Gx",
+      "trigger": "Gx used in place of Qx",
+      "description": "Identical circuit with generic labels 1–8 instead of EOR/EOF pairs. Connects to Quadrax via I2C the same way."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Envelope cascade sequence",
-      "patch": "Qx CH 1 EOC → Quadrax CH 2 trigger · CH 2 EOC → CH 3 trigger · cascading 4-stage envelope",
-      "diagram": "QX:\n* CH 1-3: End-of-Cycle mode\n- Qx (CH 1 CV Out) t> Quadrax (CH 2 Trig)\n- Qx (CH 2 CV Out) t> Quadrax (CH 3 Trig)\n- Qx (CH 3 CV Out) t> Quadrax (CH 4 Trig) // 4-stage cascaded envelope"
+      "name": "Cascaded 4-stage envelope",
+      "patch": "Use EOF gates to chain each Quadrax AD envelope into the next.",
+      "steps": [
+        "Set Quadrax CH 1–4 all to AD mode (MODE button unlit).",
+        "Dial Rise and Fall on each channel to taste — CH 1 short, CH 2 medium, CH 3 long, CH 4 long release.",
+        "Patch your trigger source → Quadrax CH 1 TRIG.",
+        "Patch Qx EOF 1 → Quadrax CH 2 TRIG.",
+        "Patch Qx EOF 2 → Quadrax CH 3 TRIG.",
+        "Patch Qx EOF 3 → Quadrax CH 4 TRIG.",
+        "Patch Quadrax OUT 4 → VCA CV to hear the final stage (or mix OUT 1–4 for a running envelope)."
+      ],
+      "signalOut": "Quadrax OUT 4 — the final envelope stage, 0–5V or 0–10V depending on System Mode.",
+      "hear": "One incoming trigger unrolls a four-part envelope: stage 1 fires, stage 2 waits for 1 to finish and then rises, and so on. Great for long evolving pads or multi-stage percussion hits.",
+      "diagram": "QX + QUADRAX:\n* CH 1–4: AD mode\n\n- Trigger Source (Trig) t> Quadrax (CH 1 TRIG)\n- Qx (EOF 1) t> Quadrax (CH 2 TRIG)\n- Qx (EOF 2) t> Quadrax (CH 3 TRIG)\n- Qx (EOF 3) t> Quadrax (CH 4 TRIG)\n- Quadrax (OUT 4) >> VCA (CV)"
     },
     {
-      "name": "Synchronized secondary triggers",
-      "patch": "Qx EOC outputs → trigger inputs on drum voices · percussion synced to envelope timing",
-      "diagram": "QX:\n* All channels: End-of-Cycle mode\n- Qx (CH 1 CV Out) t> Kick (Trig)\n- Qx (CH 2 CV Out) t> Snare (Trig)\n- Qx (CH 3 CV Out) t> Hat (Trig)\n- Qx (CH 4 CV Out) t> Perc (Trig) // percussion follows envelope endings"
+      "name": "Per-pulse drum fills from BURST",
+      "patch": "BURST mode + EOR gives one trigger per pulse inside the burst — EOF flags the end.",
+      "steps": [
+        "Set Quadrax CH 1 to BURST mode (MODE button yellow).",
+        "Set CH 1 Rise for pulse rate (noon ≈ musical 16th-note range).",
+        "Set CH 1 Fall for the overall burst length (how many pulses).",
+        "Patch your clock → Quadrax CH 1 TRIG to fire a burst per beat.",
+        "Patch Qx EOR 1 → drum-voice TRIG — one hit per pulse inside the burst.",
+        "Patch Qx EOF 1 → a second voice's TRIG (e.g. crash) — fires once when the burst ends."
+      ],
+      "signalOut": "Qx EOR 1 — 0–5V gate per pulse. Qx EOF 1 — 0–5V gate at burst end.",
+      "hear": "A rolling drum fill on EOR that ends with an accent on EOF. Change CH 1 Rise to speed up or slow down the roll; change Fall to make the fill longer or shorter.",
+      "diagram": "QX + QUADRAX:\n* CH 1: BURST mode\n\n- Clock (Clk) c> Quadrax (CH 1 TRIG)\n- Qx (EOR 1) t> Drum Voice (Trig) // per-pulse hits\n- Qx (EOF 1) t> Crash (Trig) // end-of-burst accent"
     },
     {
-      "name": "LFO reset chain",
-      "patch": "Qx CH 1 EOC → Quadrax CH 2 reset · phase-locked polyrhythmic LFOs",
-      "diagram": "QX:\n* CH 1: LFO with EOC\n- Qx (CH 1 CV Out) t> Quadrax (CH 2 Reset) // phase-locks CH 2 LFO to CH 1\n- Quadrax (CH 2 Out) >> VCA (CV)"
+      "name": "Quadrature clocks from one LFO",
+      "patch": "A single CYCLE channel gives you two square clocks 180° apart on EOR and EOF.",
+      "steps": [
+        "Set Quadrax CH 1 to CYCLE mode (MODE button green).",
+        "Set CH 1 Rise and Fall to match — this sets the LFO period.",
+        "Patch Qx EOR 1 → Sequencer A clock input.",
+        "Patch Qx EOF 1 → Sequencer B clock input.",
+        "Patch Quadrax OUT 1 → Filter Cutoff for the triangle LFO itself."
+      ],
+      "signalOut": "EOR 1 and EOF 1 — two 0–5V square clocks, phase-offset. OUT 1 — the triangle LFO itself.",
+      "hear": "Two sequencers step in alternation off the same LFO, while the filter breathes with the underlying triangle. Instant polyrhythm from one channel.",
+      "diagram": "QX + QUADRAX:\n* CH 1: CYCLE mode, Rise = Fall\n\n- Qx (EOR 1) c> Sequencer A (Clock)\n- Qx (EOF 1) c> Sequencer B (Clock)\n- Quadrax (OUT 1) >> Filter (Cutoff)"
+    },
+    {
+      "name": "AHR release-detect trigger",
+      "patch": "EOF goes high the moment a note's release ends — perfect for chaining a second event.",
+      "steps": [
+        "Set Quadrax CH 1 to AHR mode (MODE button red).",
+        "Set Rise for attack, Fall for release.",
+        "Patch your gate source → Quadrax CH 1 TRIG.",
+        "Patch Quadrax OUT 1 → VCA CV (main voice).",
+        "Patch Qx EOF 1 → a second envelope / sample trigger (fires after the note fully dies)."
+      ],
+      "signalOut": "Qx EOF 1 — 0–5V gate at the moment release completes.",
+      "hear": "Every time the main note finishes fading out, a second event fires — echo-tail, reverb swell, ghost note, or a sampled 'breath' after the word. EOR instead fires at the peak, if you want the second event on the way in.",
+      "diagram": "QX + QUADRAX:\n* CH 1: AHR mode\n\n- Gate Source (Gate) g> Quadrax (CH 1 TRIG)\n- Quadrax (OUT 1) >> VCA (CV)\n- Qx (EOF 1) t> Tail Voice (Trig) // fires when release ends"
     }
   ]
 }

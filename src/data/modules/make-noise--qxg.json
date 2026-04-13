@@ -78,17 +78,54 @@
   "patchIdeas": [
     {
       "name": "8-voice N.U.S.S. stereo system",
-      "patch": "Two QXGs + PoliMATHS + MultiWAVE connected via headers · PoliMATHS outputs → QXG control inputs · MultiWAVE → QXG signal inputs",
+      "patch": "Two QXGs plus PoliMATHS and MultiWAVE connected via rear headers make a pre-patched 8-voice stereo system — PoliMATHS drives the gates, MultiWAVE feeds the signal inputs, XPREAD pans all eight voices.",
+      "steps": [
+        "Power off. Connect the rear N.U.S.S. headers: MultiWAVE signal header → QXG #1 signal header (voices 1–4), then daisy-chain to QXG #2 signal header (voices 5–8).",
+        "Connect PoliMATHS control header → QXG #1 control header → QXG #2 control header (per manual's N.U.S.S. diagram).",
+        "Power on. Leave all Signal Inputs 1–4 and Control Inputs 1–4 on both QXGs unpatched so the headers stay live.",
+        "On both QXGs, press the Vactrol Button ON for vactrol-style decay (good starting point).",
+        "Set all eight Control Combo Pots to noon — envelopes from PoliMATHS now open each LPG directly.",
+        "Set XPREAD on both QXGs to noon (everything centered) for now.",
+        "Patch QXG #1 Left Mix Output → Output L and QXG #1 Right Mix Output → Output R.",
+        "Patch QXG #2 Left Mix Output → QXG #1 Left (Mono) Aux Input, and QXG #2 Right Aux Input → QXG #1 Right Aux Input — this folds the second QXG's stereo mix into the first.",
+        "Trigger PoliMATHS channels to hear all eight voices summed and panned through QXG #1's Mix outputs.",
+        "Turn each QXG's XPREAD slowly CW to spread its four voices left→right across the stereo field."
+      ],
+      "signalOut": "QXG #1 Left Mix + Right Mix Output — full 8-voice stereo sum at modular audio level (~±5V).",
+      "hear": "A wide 8-voice chord where each PoliMATHS envelope plucks or swells a MultiWAVE voice. Rotate XPREAD for the classic N.U.S.S. stereo fan — voices walk across the stereo field as the envelopes fire.",
       "diagram": "QXG:\n* Vactrol: ON\n* XPREAD: noon\n- MultiWAVE (Channel 1–8 Outputs) -> QXG (Signal Inputs 1–4) // via header (voices 1-4)\n- PoliMATHS (Channel Outputs 1–8) >> QXG (Control Inputs 1–4) // via header\n- QXG (Left Mix Output) -> Output (L)\n- QXG (Right Mix Output) -> Output (R)"
     },
     {
       "name": "Mono channel in stereo spread",
-      "patch": "Patch a channel output → Left Aux input to hear it in mono while other channels spread",
+      "patch": "Straight from the manual's tips: patch one channel's individual output into the Left (Mono) Aux input so that voice stays dead-centre while the other three voices fan across the stereo field.",
+      "steps": [
+        "Patch VCO 1 Out → QXG Signal Input 1. Leave Signal Inputs 2–4 on the N.U.S.S. header (or patch three more voices in).",
+        "Patch an envelope or LFO → QXG Control Input 1 so Channel 1's LPG opens.",
+        "Do the same for Control Inputs 2–4 so all four channels play.",
+        "Set XPREAD panel control to full CW — channels 1–4 now fan from Left to Right.",
+        "Patch QXG Channel 1 Output → QXG Left (Mono) Aux Input. This pulls Channel 1 out of the stereo spread and re-enters it equally on both Mix outputs.",
+        "Patch QXG Left Mix Output → Output L and QXG Right Mix Output → Output R.",
+        "Play the patch: Channel 1 sits in the centre while Channels 2, 3, 4 still spread L→R via XPREAD."
+      ],
+      "signalOut": "QXG Left Mix + Right Mix Output — stereo mix where Channel 1 is mono-centred (via Left Aux) and Channels 2–4 are panned by XPREAD. Modular audio level.",
+      "hear": "One anchored mono voice (e.g. a bass or lead) with three other voices arcing around it in stereo. Very effective for keeping kick/lead in the middle of a moving multi-voice texture.",
       "diagram": "QXG:\n* XPREAD: CW\n- VCO (Out) -> QXG (Signal Inputs 1–4) // channel 1\n- QXG (Channel Outputs 1–4) -> QXG (Left (Mono) Aux Input) // ch1 re-entered as mono centre\n- QXG (Left Mix Output) -> Output (L)\n- QXG (Right Mix Output) -> Output (R)"
     },
     {
       "name": "CV-controlled stereo panning",
-      "patch": "LFO → XPREAD CV · XPREAD attenuverter to taste · all channels to mix outputs",
+      "patch": "An LFO into XPREAD CV auto-pans the whole four-channel cluster back and forth across the stereo field — hands-free stereo motion for a drone or sequenced voicing.",
+      "steps": [
+        "Patch four audio sources → QXG Signal Inputs 1–4 (or leave them on the N.U.S.S. header).",
+        "Patch gates/envelopes → QXG Control Inputs 1–4 so all four LPGs are open (or turn the four Combo Pots CW for always-open).",
+        "Set XPREAD panel control to noon — all channels start centred.",
+        "Set the XPREAD CV attenuverter to about 2 o'clock (moderate positive depth).",
+        "Patch a slow LFO (±5V triangle, ~0.2 Hz) → QXG XPREAD CV input.",
+        "Patch QXG Left Mix Output → Output L and QXG Right Mix Output → Output R.",
+        "Listen: the XPREAD value now swings from CCW through noon to CW over the LFO's cycle — channels fan out, collapse to mono, then fan out reversed.",
+        "Turn the attenuverter CCW past noon to invert the pan direction."
+      ],
+      "signalOut": "QXG Left Mix + Right Mix Output — stereo mix whose XPREAD is swept by the LFO. Modular audio level.",
+      "hear": "A four-voice bed that breathes wide-to-centre-to-wide (and reverses) in time with the LFO. Great for pads; with a faster LFO (~2 Hz) it becomes an auto-panner.",
       "diagram": "QXG:\n* XPREAD: noon\n- LFO (Out) >> QXG (XPREAD CV) // animate stereo field\n- VCOs (Out) -> QXG (Signal Inputs 1–4)\n- QXG (Left Mix Output) -> Output (L)\n- QXG (Right Mix Output) -> Output (R)"
     }
   ]

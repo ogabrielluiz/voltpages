@@ -130,42 +130,127 @@
   "patchIdeas": [
     {
       "name": "Karplus pluck sequencer",
-      "patch": "Sympathetic mode (green) · polyphony 1 · DAMPING ~2 o'clock · sequencer CV → V/OCT · gate → STRUM · BRIGHTNESS attenuverter modulated by envelope for evolving timbre · ODD/EVEN panned for stereo",
+      "patch": "Sympathetic-strings mode plucks a mono sequence on every gate, with an envelope shaping the timbre.",
+      "steps": [
+        "Press the Resonator button until the LED is green (sympathetic strings).",
+        "Long-press the Resonator button and release when LED shows 1 voice (mono polyphony).",
+        "Set DAMPING to ~2 o'clock for medium decay. BRIGHTNESS to noon. STRUCTURE to noon.",
+        "Patch sequencer pitch → V/OCT.",
+        "Patch sequencer gate → STRUM. (IN stays unpatched so the internal mallet exciter fires.)",
+        "Patch an envelope → BRIGHTNESS CV. Set the BRIGHTNESS attenuverter to ~2 o'clock.",
+        "Patch ODD → mixer L, EVEN → mixer R for natural stereo."
+      ],
+      "signalOut": "ODD (L) and EVEN (R) — plucked string audio, ±8V, complementary partial content.",
+      "hear": "Harp- or koto-like plucks on every gate, each with a brightness sweep. ODD/EVEN creates a wide stereo image without a chorus.",
       "diagram": "Rings:\n* Resonator: Sympathetic (green)\n* Polyphony: 1\n* Damping: ~2 o'clock\n\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Sequencer (Gate) t> Rings (STRUM)\n- Envelope (Out) >> Rings (BRIGHTNESS CV)\n- Rings (ODD) -> Mixer (L)\n- Rings (EVEN) -> Mixer (R)"
     },
     {
       "name": "Bell model drone",
-      "patch": "Modal mode (orange) · DAMPING full CW (self-oscillation) · STRUCTURE swept slowly by LFO for inharmonicity · no STRUM patched · POSITION modulated by second LFO for shifting partials · ODD into reverb for infinite bell drones",
+      "patch": "Modal mode with DAMPING full CW makes Rings self-oscillate — two LFOs sculpt the partials into infinite bells.",
+      "steps": [
+        "Press the Resonator button until the LED is orange (modal).",
+        "Turn DAMPING full CW — Rings will start singing on its own even with nothing patched.",
+        "BRIGHTNESS ~2 o'clock, STRUCTURE ~noon, POSITION ~noon as a starting point.",
+        "Leave STRUM and IN unpatched — no external excitation needed.",
+        "Patch a slow LFO (cycle ~30s) → STRUCTURE CV, attenuverter at ~2 o'clock.",
+        "Patch a second slow LFO → POSITION CV, attenuverter at ~2 o'clock.",
+        "Patch ODD → reverb → output for infinite shimmer."
+      ],
+      "signalOut": "ODD — self-oscillating bell drone, ±8V, partials slowly shifting.",
+      "hear": "An infinite metallic bell drone whose inharmonicity and strike position drift forever. No triggers, no envelopes.",
       "diagram": "Rings:\n* Resonator: Modal (orange)\n* Damping: full CW // self-oscillation\n\n- LFO 1 (Out) >> Rings (STRUCTURE CV)\n- LFO 2 (Out) >> Rings (POSITION CV)\n- Rings (ODD) -> Reverb (In) -> Output (In)"
     },
     {
       "name": "Drum resonator body",
-      "patch": "Any model · external drum loop into IN · breaks internal exciter normalling · V/OCT sequenced to pitch the resonance per beat · DAMPING short (0.5–1s) so the drum body doesn't smear · Rings sings the loop back as tuned resonant percussion",
-      "diagram": "Rings:\n* Resonator: Modal or Inharmonic\n* Damping: short\n\n- Drum Loop (Out) -> Rings (IN)\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Rings (ODD) -> Mixer (In 1)\n- Rings (EVEN) -> Mixer (In 2)"
+      "patch": "External drum loop into IN breaks the internal exciter — Rings becomes a tuned resonant body for the drums.",
+      "steps": [
+        "Press the Resonator button until the LED is orange (modal) — tuned metal bar character.",
+        "Set DAMPING to ~10 o'clock (short decay so the resonance doesn't smear the groove).",
+        "Set BRIGHTNESS to ~1 o'clock, STRUCTURE to ~11 o'clock.",
+        "Patch a drum loop → IN. This disables the internal mallet — STRUM is no longer needed.",
+        "Patch a sequencer pitch CV → V/OCT so each hit resonates on a different note.",
+        "Patch ODD and EVEN → mixer channels 1 and 2 (or pan hard L/R)."
+      ],
+      "signalOut": "ODD / EVEN — resonated drum audio ±8V, pitched by V/OCT.",
+      "hear": "The drum loop's transients excite tuned metallic ringing — drums become pitched tom/bell hybrids that follow your melody.",
+      "diagram": "Rings:\n* Resonator: Modal\n* Damping: ~10 o'clock\n\n- Drum Loop (Out) -> Rings (IN)\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Rings (ODD) -> Mixer (In 1)\n- Rings (EVEN) -> Mixer (In 2)"
     },
     {
-      "name": "No-strum pitch-triggered lead",
-      "patch": "Sympathetic mode · STRUM unpatched · Rings auto-triggers on V/OCT jumps · sequencer with legato rests keeps some notes tied without re-plucking · produces guitar-like hammer-on phrasing",
+      "name": "Hammer-on lead (no gate cable)",
+      "patch": "Leave STRUM unpatched — Rings auto-triggers on V/OCT jumps, so held notes stay sustained.",
+      "steps": [
+        "Press the Resonator button until the LED is green (sympathetic).",
+        "Polyphony: long-press Resonator until 1 voice.",
+        "DAMPING ~1 o'clock (long sustain), BRIGHTNESS ~2 o'clock.",
+        "Leave STRUM unpatched — internal pitch-jump detector will fire the exciter.",
+        "Patch sequencer pitch → V/OCT.",
+        "Patch ODD → delay → output."
+      ],
+      "signalOut": "ODD — plucked sympathetic-string audio ±8V, only re-struck when V/OCT changes.",
+      "hear": "Legato melodies where repeated identical notes don't re-pluck. Feels like a guitarist using hammer-ons and pull-offs — smooth phrasing without programming gate rests.",
       "diagram": "Rings:\n* Resonator: Sympathetic\n* STRUM: unpatched // auto-trigger on V/OCT change\n\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Rings (ODD) -> Delay (In) -> Output (In)"
     },
     {
       "name": "Inharmonic FM string",
-      "patch": "Inharmonic mode (red) · STRUCTURE ~3 o'clock (high stiffness) · DAMPING ~1 o'clock · envelope into BRIGHTNESS for plucky attack · LFO into POSITION for bell-like shimmer · single-voice polyphony for longest decay",
+      "patch": "High-stiffness inharmonic mode with envelope on BRIGHTNESS produces bell-like FM pluck sequences.",
+      "steps": [
+        "Press the Resonator button until the LED is red (inharmonic string).",
+        "Polyphony: 1 voice (long-press Resonator) for maximum decay.",
+        "STRUCTURE to ~3 o'clock (high stiffness — bell-like partials).",
+        "DAMPING to ~1 o'clock, BRIGHTNESS to noon.",
+        "Patch sequencer pitch → V/OCT; gate → STRUM.",
+        "Patch a short envelope → BRIGHTNESS CV, attenuverter ~1 o'clock, for plucky attack.",
+        "Patch a slow LFO → POSITION CV, attenuverter ~11 o'clock, for shimmer.",
+        "Patch ODD → L, EVEN → R."
+      ],
+      "signalOut": "ODD / EVEN — stiff FM-string audio ±8V, with per-note brightness envelope.",
+      "hear": "FM-like bell tones that pluck sharply then ring out. The POSITION LFO adds a slow shimmer between partials.",
       "diagram": "Rings:\n* Resonator: Inharmonic (red)\n* Structure: ~3 o'clock\n* Polyphony: 1\n\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Sequencer (Gate) t> Rings (STRUM)\n- Envelope (Out) >> Rings (BRIGHTNESS CV)\n- LFO (Out) >> Rings (POSITION CV)\n- Rings (ODD) -> Mixer (L)\n- Rings (EVEN) -> Mixer (R)"
     },
     {
       "name": "Polyphonic piano chords",
-      "patch": "Sympathetic mode · polyphony 4 · sequencer outputs arpeggiated V/OCT · gate on every step strums each note into its own voice · DAMPING ~2 o'clock for piano decay · ODD/EVEN into chorus for piano body",
+      "patch": "Polyphony 4 + sympathetic mode + an arp source = a tempo-synced plucked-piano chord machine.",
+      "steps": [
+        "Press the Resonator button until the LED is green (sympathetic).",
+        "Long-press Resonator until 4 voices are shown (polyphonic).",
+        "DAMPING ~2 o'clock, BRIGHTNESS ~2 o'clock, STRUCTURE ~1 o'clock.",
+        "Patch an arpeggiator's pitch CV → V/OCT.",
+        "Patch a clock trigger (e.g. 16th notes) → STRUM. Each trigger allocates the oldest voice.",
+        "Patch ODD → chorus L, EVEN → chorus R, chorus out → main mix."
+      ],
+      "signalOut": "ODD / EVEN — up to 4 overlapping string voices ±8V. Decay shortens as voices stack.",
+      "hear": "A sparkling plucked-piano or harp-like arpeggio with voices overlapping naturally. Slow the arp for ballad, speed it for cascades.",
       "diagram": "Rings:\n* Resonator: Sympathetic\n* Polyphony: 4\n* Damping: ~2 o'clock\n\n- Sequencer (Arp CV) p> Rings (V/OCT)\n- Clock (Out) t> Rings (STRUM)\n- Rings (ODD) -> Chorus (L)\n- Rings (EVEN) -> Chorus (R)\n- Chorus (Out L/R) -> Output (L/R)"
     },
     {
       "name": "External feedback shimmer",
-      "patch": "Modal mode · Rings ODD → reverb → back into IN via attenuator (set at ~10 o'clock to avoid runaway) · STRUM from slow clock · infinite recursive bell shimmer that tracks V/OCT",
+      "patch": "A reverb tail fed back into IN keeps the resonator self-exciting — infinite bell shimmer tracking V/OCT.",
+      "steps": [
+        "Press the Resonator button until the LED is orange (modal).",
+        "DAMPING ~1 o'clock, BRIGHTNESS ~2 o'clock.",
+        "Patch a slow clock → STRUM to seed the first hits.",
+        "Patch sequencer pitch → V/OCT.",
+        "Patch ODD → reverb input.",
+        "Patch reverb output → attenuator → IN. Start the attenuator fully CCW and raise slowly — too loud and it runs away.",
+        "Patch EVEN → main output."
+      ],
+      "signalOut": "EVEN — shimmering bell tail ±8V, fed by the reverb/IN feedback loop.",
+      "hear": "Plucks that never fully decay — the reverb keeps re-exciting the resonator, producing a recursive bell cloud. Drop the feedback attenuator to control runaway.",
       "diagram": "Rings:\n* Resonator: Modal\n\n- Clock (Out) t> Rings (STRUM)\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Rings (ODD) -> Reverb (In)\n- Reverb (Out) -> Attenuator (In) // ~10 o'clock, avoid runaway\n- Attenuator (Out) -> Rings (IN) // feedback excitation\n- Rings (EVEN) -> Output (In)"
     },
     {
-      "name": "Rings as stereo reverb",
-      "patch": "Modal mode · DAMPING near max (long tail) · BRIGHTNESS ~2 o'clock · external audio into IN · V/OCT fixed at 0V · Rings acts as a tuneable resonant reverb with ODD/EVEN as stereo outputs",
+      "name": "Tuneable resonant reverb",
+      "patch": "With audio into IN and DAMPING near max, Rings works as a tuned stereo resonator reverb.",
+      "steps": [
+        "Press the Resonator button until the LED is orange (modal).",
+        "DAMPING ~3 o'clock (near max for long tail).",
+        "BRIGHTNESS ~2 o'clock, STRUCTURE to taste for the resonance character.",
+        "Hold the FREQUENCY knob at a fixed position — set V/OCT with a manual offset if desired (no pitch CV).",
+        "Patch your source audio → IN. STRUM stays unpatched — external audio drives the modes continuously.",
+        "Patch ODD → mixer L, EVEN → mixer R."
+      ],
+      "signalOut": "ODD / EVEN — resonated stereo tail ±8V at the pitch set by FREQUENCY.",
+      "hear": "Vocals, drums, or any audio smeared into a tuned metallic reverb. Change FREQUENCY to retune the entire space; STRUCTURE shifts the partial spread.",
       "diagram": "Rings:\n* Resonator: Modal\n* Damping: near max\n* V/OCT: 0V fixed\n\n- External Audio (Out) -> Rings (IN)\n- Rings (ODD) -> Mixer (L)\n- Rings (EVEN) -> Mixer (R)"
     }
   ]

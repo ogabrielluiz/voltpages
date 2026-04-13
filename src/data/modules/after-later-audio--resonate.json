@@ -103,32 +103,96 @@
   "patchIdeas": [
     {
       "name": "Self-contained melodic resonator",
-      "patch": "Sequencer → V/OCT only · no other patches · module generates excitation and strums internally",
+      "patch": "Sequencer into V/OCT only — Resonate generates its own exciter on each note change.",
+      "steps": [
+        "Set Resonator Type to Modal.",
+        "Set Polyphony to 1 voice.",
+        "DAMPING ~1 o'clock, BRIGHTNESS ~noon, STRUCTURE ~noon, POSITION ~noon.",
+        "Leave STRUM and IN unpatched — the internal exciter fires on V/OCT step changes.",
+        "Patch sequencer pitch CV → V/OCT.",
+        "Patch ODD → mixer input."
+      ],
+      "signalOut": "ODD — mono modal-resonator audio (±5V range) with internal mallet exciter.",
+      "hear": "A plucked metallic/wooden bar that retriggers on every new note from the sequencer. No gate cable needed.",
       "diagram": "RESONATE:\n* Resonator Type: Modal\n* Polyphony: 1 voice\n- Sequencer (CV) p> Resonate (V/OCT) // step changes trigger internal excitation\n- Resonate (ODD) -> Mixer (In)"
     },
     {
       "name": "Drum hits as exciter",
-      "patch": "Snare or click → IN · sequencer → V/OCT · STRUM unpatched · modal resonator",
+      "patch": "Drum transients feed IN so Resonate becomes a pitched resonant body tuned by V/OCT.",
+      "steps": [
+        "Set Resonator Type to Modal.",
+        "DAMPING ~10 o'clock (short decay so resonance tails don't smear the groove).",
+        "BRIGHTNESS ~1 o'clock, STRUCTURE ~11 o'clock.",
+        "Patch a drum / click source → IN. (Patching IN disables the internal exciter.)",
+        "Patch sequencer pitch CV → V/OCT — each hit rings at the sequenced note.",
+        "Leave STRUM unpatched — IN transients auto-trigger new voices.",
+        "Patch ODD → mixer L, EVEN → mixer R for stereo."
+      ],
+      "signalOut": "ODD / EVEN — resonated drum audio, pitched by V/OCT, stereo-complementary.",
+      "hear": "Drums turn into tuned tom/bell hybrids that follow your melody. Each transient excites the modal bank at the current pitch.",
       "diagram": "RESONATE:\n* Resonator Type: Modal\n- Drum (Out) -> Resonate (IN) // percussive exciter\n- Sequencer (CV) p> Resonate (V/OCT)\n- Resonate (ODD) -> Mixer (In)\n- Resonate (EVEN) -> Mixer (In)"
     },
     {
       "name": "Polyphonic chords",
-      "patch": "4-voice polyphony · sequencer → V/OCT rapidly · ODD + EVEN to mixer for full chord",
+      "patch": "4-voice polyphony with a fast pitch sequence strums chords from the internal exciter.",
+      "steps": [
+        "Set Resonator Type to Sympathetic strings (for piano/harp character) or Modal.",
+        "Set Polyphony to 4 voices.",
+        "DAMPING ~2 o'clock, BRIGHTNESS ~2 o'clock, STRUCTURE ~1 o'clock.",
+        "Patch an arpeggiator / rapid pitch sequencer → V/OCT. Each step freezes the previous voice and fires a new one.",
+        "Leave STRUM unpatched (V/OCT step detector does the strumming). IN unpatched so internal exciter fires.",
+        "Patch ODD → mixer L, EVEN → mixer R for stereo chord spread."
+      ],
+      "signalOut": "ODD / EVEN — up to 4 overlapping voices split into odd/even strings. Decay shortens as voices stack.",
+      "hear": "Plucked chords bloom as each sequencer step adds a new voice on top of the decaying previous one.",
       "diagram": "RESONATE:\n* Polyphony: 4 voices\n- Sequencer (CV) p> Resonate (V/OCT) // rapid notes strum chord\n- Resonate (ODD) -> Mixer (In)\n- Resonate (EVEN) -> Mixer (In)"
     },
     {
       "name": "Granular exciter chamber",
-      "patch": "Resonator type: sympathetic strings · STRUCTURE past noon · uBurst (granular, small grain size, LFO on Position) feeds continuous bowing-like texture into IN · quantized sequencer drives V/OCT · uBurst replaces percussive exciter with evolving granular cloud · Damping high for long sing",
+      "patch": "uBurst granular cloud drives IN as a continuous bowing-like exciter for sympathetic strings.",
+      "steps": [
+        "Set Resonator Type to Sympathetic strings.",
+        "STRUCTURE past noon (wider detuning between strings), DAMPING high (long sustain).",
+        "BRIGHTNESS ~1 o'clock, POSITION ~noon.",
+        "Patch uBurst (Left Out) → Resonate IN — the grain cloud replaces the internal mallet.",
+        "Patch a slow LFO → uBurst Position CV for small grain motion.",
+        "Patch a quantized sequencer → Resonate V/OCT.",
+        "Patch ODD → mixer L, EVEN → mixer R."
+      ],
+      "signalOut": "ODD / EVEN — sympathetic strings continuously excited by granular cloud, stereo.",
+      "hear": "A bowed sitar-like sustain where grains keep exciting the string bank. Evolving overtones as STRUCTURE detunes.",
       "diagram": "RESONATE:\n* Resonator Type: Sympathetic strings\n* Structure: past noon · Damping: high\n- uBurst (Left Out) -> Resonate (IN) // granular cloud as continuous exciter\n- LFO (Out) >> uBurst (Position CV) // small grain motion\n- Quantizer (CV) p> Resonate (V/OCT)\n- Resonate (ODD) -> Mixer (In L)\n- Resonate (EVEN) -> Mixer (In R)"
     },
     {
       "name": "DV tail as sympathetic resonance",
-      "patch": "Resonator type: sympathetic strings · STRUCTURE ~10 o'clock · Damping high · Desmodus Versio wet tail drives IN · uBurst density envelope modulates POSITION via Damping CV · slow quantized sequencer on V/OCT · DV reverb becomes pitched sympathetic string excitation",
+      "patch": "Desmodus Versio reverb tail excites IN while density CV shapes Damping — reverb becomes pitched string resonance.",
+      "steps": [
+        "Set Resonator Type to Sympathetic strings.",
+        "STRUCTURE ~10 o'clock, DAMPING high as a starting point, BRIGHTNESS ~noon.",
+        "Patch Desmodus Versio (Out L) → Resonate IN — the wet tail drives the strings.",
+        "Patch a density-envelope CV from uBurst → Resonate Damping CV; set the attenuverter to taste.",
+        "Patch a slow quantized sequencer → Resonate V/OCT.",
+        "Leave STRUM unpatched.",
+        "Patch ODD → mixer L, EVEN → mixer R."
+      ],
+      "signalOut": "ODD / EVEN — reverb tail re-pitched as sympathetic strings, Damping CV'd in real time.",
+      "hear": "A lush reverb that slowly blooms into pitched sitar-like harmonics, the decay breathing with the density envelope.",
       "diagram": "RESONATE:\n* Resonator Type: Sympathetic strings\n* Structure: ~10 o'clock · Damping: high\n- Desmodus Versio (Out L) -> Resonate (IN) // wet reverb tail as exciter\n- uBurst (Density Env) >> Resonate (Damping CV) // density shapes decay\n- Slow Quant Seq (CV) p> Resonate (V/OCT)\n- Resonate (ODD) -> Mixer (In L)\n- Resonate (EVEN) -> Mixer (In R)"
     },
     {
       "name": "Resonate + uBurst infinite drone loop",
-      "patch": "Closed-loop audio feedback between Resonate and uBurst (Clouds stand-in). Resonate ODD → uBurst IN L · uBurst Out L → envelope follower → Resonate STRUM (self-plucking when cloud peaks) · uBurst Out R → attenuated back to uBurst Freeze CV for self-latching texture · slow sequencer on V/OCT · the loop sustains itself indefinitely, each grain peak re-exciting the resonator.",
+      "patch": "Closed feedback between Resonate and uBurst — envelope-follower self-plucks on cloud peaks for an infinite drone.",
+      "steps": [
+        "Set Resonator Type to Modal, DAMPING high, BRIGHTNESS ~2 o'clock.",
+        "Patch a slow sequencer → Resonate V/OCT.",
+        "Patch Resonate ODD → uBurst IN L.",
+        "Patch uBurst Out L → envelope follower → Resonate STRUM (peaks re-pluck Resonate).",
+        "Patch uBurst Out R → attenuator (start fully CCW) → uBurst Freeze CV for self-latching texture.",
+        "Raise the feedback attenuator slowly — too loud and the loop runs away.",
+        "Patch uBurst Out R → main output."
+      ],
+      "signalOut": "uBurst Out R — evolving drone cloud continuously re-excited by Resonate peaks.",
+      "hear": "An eternal metallic cloud that feeds itself: each grain peak re-strikes Resonate, whose output re-feeds uBurst. Sequencer pitch nudges the drone's center.",
       "diagram": "RESONATE:\n* Resonator Type: Modal · Damping: high\n- Sequencer (CV) p> Resonate (V/OCT)\n- Resonate (ODD) -> uBurst (IN L)\n- uBurst (Out L) -> Env Follower (In)\n- Env Follower (Out) t> Resonate (STRUM) // self-plucking on cloud peaks\n- uBurst (Out R) -> Attenuator (In)\n- Attenuator (Out) >> uBurst (Freeze CV) // self-latching freeze\n- uBurst (Out R) -> Output (In)"
     }
   ]

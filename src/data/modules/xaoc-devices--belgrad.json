@@ -171,42 +171,141 @@
   "patchIdeas": [
     {
       "name": "Vocal formant sweep",
-      "patch": "MODE=BB · RESO 6–7 · SPAN 2–4 · slow LFO → FREQ FM for vowel scan · audio source into INPUT · BALANCE CV from envelope opens/closes consonant",
+      "patch": "BB mode with two peaks tuned to formant ratios; a slow LFO scans FREQ for a vowel sweep, BALANCE CV opens consonant emphasis.",
+      "steps": [
+        "Patch your VCO (saw or pulse — harmonic-rich) → Belgrad INPUT.",
+        "Set Belgrad MODE rotary to BB (the manual's vocal mode).",
+        "Set LEVEL to ~6 (clean), RESO to 7 (just below self-osc), SPAN knob to 3.",
+        "Set BALANCE knob to noon (symmetric peaks).",
+        "Push the FM slider up to about 4 (modest depth).",
+        "Patch a slow LFO (~0.2 Hz triangle, ±5V) → Belgrad FM input.",
+        "Patch an envelope (~0.5 s decay) → Belgrad BALANCE input.",
+        "Trigger the envelope on each note — peaks tilt for consonant attack.",
+        "Patch Belgrad OUTPUT → Mixer In."
+      ],
+      "signalOut": "Belgrad OUTPUT — formant-filtered audio at modular level (≈±5V), level varies with MODE.",
+      "hear": "A vocal vowel sweep (oo → ah → ee) on each LFO cycle. The envelope on BALANCE adds a subtle consonant accent at note onset. Push SPAN higher for wider vowels.",
       "diagram": "Belgrad:\n* MODE: BB\n* RESO: 7\n* SPAN: 3\n\n- VCO (Out) -> Belgrad (INPUT)\n- LFO (Out) >> Belgrad (FM) // vowel scan\n- Envelope (Out) >> Belgrad (BALANCE) // consonant morph\n- Belgrad (OUTPUT) -> Mixer (In)"
     },
     {
       "name": "Dual sine VCO from self-oscillation",
-      "patch": "No INPUT · RESO ~8.5 to self-oscillate · MODE=BB · SPAN knob sets interval between the two sines · V/OCT from sequencer tracks both · BALANCE crossfades upper/lower sine",
+      "patch": "No INPUT. RESO past self-osc gives two sine VCOs; SPAN sets the interval, BALANCE crossfades between them, V/OCT tracks pitch.",
+      "steps": [
+        "Leave Belgrad INPUT unpatched (no audio source).",
+        "Set MODE to BB and TITO switch to center (OFF).",
+        "Set RESO to 8.5 — both cores self-oscillate as clean sines.",
+        "Set FREQ to noon, SPAN knob to 4 (≈ a few octaves between the two sines).",
+        "Set BALANCE to noon and the SPAN slider to 5.",
+        "Patch your sequencer's pitch CV → Belgrad V/OCT (tunes both sines, ~5 oct tracking).",
+        "Patch a slow LFO (~0.3 Hz, ±5V) → Belgrad BALANCE input.",
+        "Patch a static offset (~+3V) → Belgrad SPAN input to nudge the interval over time.",
+        "Patch Belgrad OUTPUT → VCA In, then to your mixer."
+      ],
+      "signalOut": "Belgrad OUTPUT — two clean sine VCOs summed, modular level (≈±5V).",
+      "hear": "A dual-sine drone tracking the sequence. BALANCE LFO crossfades emphasis from the lower sine to the upper, like a slow tremolo between two pitches. Adjust SPAN to set the interval (unison to ~8 oct).",
       "diagram": "Belgrad:\n* MODE: BB\n* RESO: 8.5 (self-osc)\n* TITO: OFF\n\n- Sequencer (Pitch) p> Belgrad (V/OCT)\n- LFO (Out) >> Belgrad (BALANCE) // sine crossfade\n- Static CV (Out) >> Belgrad (SPAN) // interval control\n- Belgrad (OUTPUT) -> VCA (In)"
     },
     {
       "name": "XM chaotic lead",
-      "patch": "MODE=BH or HH · TITO=XM · RESO at self-osc · SPAN moderate · V/OCT from keyboard · cross-mod produces chirpy sideband chaos tracking pitch · second CV into SPAN opens the timbre",
+      "patch": "HH mode with TITO=XM at self-osc and moderate SPAN — the manual's recipe for chaotic cross-modulated timbres.",
+      "steps": [
+        "Leave Belgrad INPUT unpatched.",
+        "Set MODE to HH and flip the TITO switch DOWN (XM cross-modulation).",
+        "Set RESO to 8.5 (self-osc) and SPAN knob to 3 (moderate, per manual).",
+        "Set BALANCE to noon, LEVEL to 0.",
+        "Patch your keyboard CV → Belgrad V/OCT for pitch.",
+        "Patch an envelope (~0.4 s) → Belgrad SPAN input — opens timbre per note.",
+        "Patch a slow LFO → Belgrad BALANCE input for slow timbral drift.",
+        "Patch Belgrad OUTPUT → VCA In, gated by the same envelope."
+      ],
+      "signalOut": "Belgrad OUTPUT — chaotic cross-modulated lead, modular level (loud, watch your VCA gain).",
+      "hear": "A warbly, chirpy lead full of FM-like sidebands. Each note opens with an evolving inharmonic burst as the envelope sweeps SPAN; BALANCE drift keeps the timbre moving. Tame SPAN if it gets too unpredictable.",
       "diagram": "Belgrad:\n* MODE: HH\n* TITO: XM\n* RESO: 8.5\n* SPAN: ~3 (moderate)\n\n- Keyboard (CV) p> Belgrad (V/OCT)\n- Envelope (Out) >> Belgrad (SPAN) // timbre opens\n- LFO (Out) >> Belgrad (BALANCE)\n- Belgrad (OUTPUT) -> VCA (In)"
     },
     {
       "name": "Pingable highpass kick",
-      "patch": "MODE=HH · TITO=OFF · RESO just below self-osc · no INPUT · trigger into FM input pings the highpass peak producing a zappy drum tone · V/OCT sets pitch · LEVEL unused",
+      "patch": "HH mode just below self-osc — triggers into FM ping the highpass peak, V/OCT sets the pitch of the zap.",
+      "steps": [
+        "Leave Belgrad INPUT unpatched.",
+        "Set MODE to HH, TITO to center (OFF).",
+        "Set RESO to ~7.8 (just below self-osc — needs to ring, not sustain).",
+        "Set FREQ to noon, SPAN knob to 0 (single peak for a tight ping).",
+        "Push the FM slider up to ~7 (deep enough to excite the peak).",
+        "Patch your clock or trigger source → Belgrad FM input — each pulse pings the peak.",
+        "Patch a pitch CV (or static offset) → Belgrad V/OCT to set the ping pitch.",
+        "Patch Belgrad OUTPUT → VCA In.",
+        "Patch a short envelope (~0.2 s decay) → VCA CV to shape the kick body."
+      ],
+      "signalOut": "Belgrad OUTPUT — short percussive pinged sine at the FREQ pitch, modular level.",
+      "hear": "A zappy, electronic-kick-like thump with a high-end snap. Pitch tracks V/OCT; lower FREQ for a rounder kick, raise it for a chirpy zap. Nudge RESO closer to 8 for a longer ringing tail.",
       "diagram": "Belgrad:\n* MODE: HH\n* TITO: OFF\n* RESO: ~7.8\n\n- Clock (Out) t> Belgrad (FM) // ping\n- Pitch CV (Out) p> Belgrad (V/OCT)\n- Belgrad (OUTPUT) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
     },
     {
       "name": "Short phaser (double notch)",
-      "patch": "MODE=NN · RESO near 0 (deepest notches) · SPAN modulated by slow LFO for comb-like movement · dry signal through INPUT · BALANCE offsets one notch for asymmetric sweep",
+      "patch": "NN mode with RESO low (deepest notches per manual); a slow LFO on SPAN moves the two notches like a phaser.",
+      "steps": [
+        "Patch a pad VCO or any harmonic-rich source → Belgrad INPUT.",
+        "Set MODE to NN (double notch).",
+        "Set RESO knob to 1 — manual: notches are deepest at LOW reso.",
+        "Set FREQ to noon, SPAN knob to 4, BALANCE to noon.",
+        "Push the SPAN slider up to ~6 (depth of LFO motion).",
+        "Patch a slow LFO (~0.2 Hz triangle, ±5V) → Belgrad SPAN input — notch spacing breathes.",
+        "Patch a small offset (~+1V) → Belgrad BALANCE input for asymmetric sweep (one notch deeper).",
+        "Patch Belgrad OUTPUT → Reverb In, then to mixer."
+      ],
+      "signalOut": "Belgrad OUTPUT — the dry pad with two moving notches carved out, modular level.",
+      "hear": "A short phaser-like swoosh as the two notches glide apart and back together. BALANCE asymmetry makes one notch dominant for an off-center sweep. Stays subtle — push RESO past ~3 and the notches tighten and disappear.",
       "diagram": "Belgrad:\n* MODE: NN\n* RESO: 1\n\n- Pad VCO (Out) -> Belgrad (INPUT)\n- Slow LFO (Out) >> Belgrad (SPAN) // notch spacing\n- Offset (Out) >> Belgrad (BALANCE) // asymmetry\n- Belgrad (OUTPUT) -> Reverb (In)"
     },
     {
       "name": "SM resonance grain on drums",
-      "patch": "MODE=LB · TITO=SM · RESO 8 · feed drum bus into INPUT with LEVEL at 7 for overdrive · envelope follower → FM for dynamic growl · SPAN CV from S&H for stepped formants",
+      "patch": "LB mode with TITO=SM and overdriven LEVEL — drums get a textured, growling resonant flavour with stepped formants from S&H.",
+      "steps": [
+        "Patch your drum bus → Belgrad INPUT.",
+        "Set MODE to LB, flip TITO switch UP (SM self-modulation).",
+        "Set LEVEL to 7 (into overdrive per manual), RESO to 8.",
+        "Set FREQ to noon, SPAN knob to 4, BALANCE to noon.",
+        "Push the FM slider to ~5 and SPAN slider to ~6.",
+        "Patch an envelope follower from the drum bus → Belgrad FM input — louder hits modulate cutoff.",
+        "Patch a clocked S&H (clock from the drum sequencer, noise into S&H input) → Belgrad SPAN input.",
+        "Patch Belgrad OUTPUT → Mixer (parallel-blend with the dry drums for control)."
+      ],
+      "signalOut": "Belgrad OUTPUT — overdriven, resonance-textured drum bus at modular level (loud — attenuate at the mixer).",
+      "hear": "Drums gain a gritty, vocal-like growl. Each hit ducks and warps the resonance via SM; the S&H steps the formant peaks per beat for a stuttering, rhythmic timbral shift. Blend with the dry bus to keep transients.",
       "diagram": "Belgrad:\n* MODE: LB\n* TITO: SM\n* RESO: 8\n* LEVEL: 7\n\n- Drum Bus (Out) -> Belgrad (INPUT)\n- Env Follower (Out) >> Belgrad (FM)\n- S&H (Out) >> Belgrad (SPAN) // stepped formants\n- Belgrad (OUTPUT) -> Mixer (In)"
     },
     {
       "name": "Stereo-like dual-peak spread",
-      "patch": "MODE=LH · RESO 6 · large SPAN for wide band-reject · BALANCE swept by two out-of-phase LFOs panning the two peaks to L/R on an external mixer · creates pseudo-stereo from mono source",
+      "patch": "LH mode with wide SPAN — two opposing LFOs pan the lower and upper peaks across an external stereo mixer for pseudo-stereo from a mono source.",
+      "steps": [
+        "Patch a pad VCO → Belgrad INPUT.",
+        "Set MODE to LH (lowpass + highpass band-reject).",
+        "Set RESO to 6, SPAN knob to 8 (wide stopband, peaks far apart).",
+        "Set BALANCE to noon, LEVEL to ~6.",
+        "Patch a slow LFO A (~0.1 Hz triangle, ±5V) → Belgrad BALANCE input — tilts emphasis L↔R.",
+        "Patch the inverted output of LFO A (LFO B) → your stereo mixer's pan CV input.",
+        "Patch Belgrad OUTPUT → Mixer In (the channel whose pan is being modulated).",
+        "Pan modulation + BALANCE tilt creates the illusion of two peaks moving across the stereo field."
+      ],
+      "signalOut": "Belgrad OUTPUT (mono) → modulated mixer pan = pseudo-stereo image at line/modular level.",
+      "hear": "A wide, drifting filtered pad that feels stereo despite the mono source. The lower peak appears to swing left while the upper swings right (and vice versa) as BALANCE tilts and the mixer pan sweeps in opposition.",
       "diagram": "Belgrad:\n* MODE: LH\n* RESO: 6\n* SPAN: 8\n\n- Pad VCO (Out) -> Belgrad (INPUT)\n- LFO A (Out) >> Belgrad (BALANCE) // peak tilt L\n- LFO B (inv) >> Mixer.Pan (CV) // peak tilt R\n- Belgrad (OUTPUT) -> Mixer (In)"
     },
     {
       "name": "Formant arp via BALANCE CV",
-      "patch": "MODE=BB · RESO 7 · SPAN 3 · clocked S&H into BALANCE steps between lower/upper peak emphasis per step · V/OCT holds root · simulates two-formant arpeggio from a static tone",
+      "patch": "BB mode held at one root pitch; clocked S&H steps BALANCE for a two-formant arpeggio from a static drone.",
+      "steps": [
+        "Patch a drone VCO (saw or square) → Belgrad INPUT.",
+        "Set MODE to BB, RESO to 7, SPAN knob to 3 (vocal sweet spot).",
+        "Set FREQ to a musical root note, BALANCE to noon, LEVEL to ~6.",
+        "Patch a static root-pitch CV → Belgrad V/OCT (holds the root steady).",
+        "Patch your clock → S&H trigger input.",
+        "Patch noise → S&H signal input.",
+        "Patch S&H output → Belgrad BALANCE input — each clock step jumps to a new peak emphasis.",
+        "Patch Belgrad OUTPUT → Mixer In."
+      ],
+      "signalOut": "Belgrad OUTPUT — drone with stepped two-formant emphasis, modular level.",
+      "hear": "A static drone that arpeggiates between vowel-like timbres. Each clock pulse the random S&H value picks a new BALANCE position, jumping between lower-peak and upper-peak emphasis — like an arpeggiator but on formant emphasis instead of pitch.",
       "diagram": "Belgrad:\n* MODE: BB\n* RESO: 7\n* SPAN: 3\n\n- Drone VCO (Out) -> Belgrad (INPUT)\n- Root CV (Out) p> Belgrad (V/OCT)\n- Clock (Out) c> S&H (Trig)\n- Noise (Out) >> S&H (In)\n- S&H (Out) >> Belgrad (BALANCE) // formant step\n- Belgrad (OUTPUT) -> Mixer (In)"
     }
   ]

@@ -3,7 +3,11 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "4.28"
+    "firmwareVersion": "4.28",
+    "sources": [
+      "https://www.expert-sleepers.co.uk/disting.html",
+      "https://www.expert-sleepers.co.uk/downloads/manuals/disting_user_manual_4.28.pdf"
+    ]
   },
   "slug": "expert-sleepers--disting-mk4",
   "name": "disting mk4",
@@ -69,7 +73,7 @@
     {
       "name": "Dual & Utility (H group)",
       "trigger": "select H1–H8",
-      "description": "H1 Crossfade/Pan, H2 Dual Sample & Hold, H3–H4 Dual Quantizer, H5 Euclidean Patterns, H6 Dual Delayed Pulse Generator, H7 Noise, H8 Quantizer 2."
+      "description": "H1 Crossfade/Pan, H2 Dual Sample & Hold, H3–H4 Dual Quantizer, H5 Dual Euclidean Patterns, H6 Dual Delayed Pulse Generator, H7 Noise, H8 Quantizer 2."
     },
     {
       "name": "Audio Playback & Sampling (I–J groups)",
@@ -105,23 +109,69 @@
   "patchIdeas": [
     {
       "name": "Quantized random melody",
-      "patch": "Noise → X · A6 Quantizer · scale via parameter · B output = quantized pitch",
-      "diagram": "DISTING:\n* Algorithm: A6 Quantizer\n- Noise (OUT) >> DISTING (X)\n- DISTING (B) p> VCO (1V/Oct) // quantized pitch"
+      "patch": "A6 Quantizer forces a random CV onto a musical scale so a VCO plays in key.",
+      "steps": [
+        "Press the S encoder to open the menu, twist to Algorithm, press S to confirm.",
+        "Twist S to A-6 Quantizer, press S to load.",
+        "Patch a noise or sample-and-hold CV source OUT into the disting X input.",
+        "Patch the disting A output into your VCO 1V/oct input.",
+        "Turn the Z knob fully clockwise until the display briefly shows the scale name 'Triad' or 'Pent' (Z positive = scale select).",
+        "Patch the disting B output into your envelope trigger input (B fires a 10ms pulse whenever the quantized note changes).",
+        "Play a clock or LFO into the X source so the voltage drifts, and listen."
+      ],
+      "signalOut": "A output — quantized 1V/oct pitch CV; B output — 5V trigger pulse on every note change.",
+      "hear": "A VCO stepping through the notes of the selected scale. Rotate Z through scales while it plays to morph from Chromatic to Major to Pentatonic — the melody stays in key as you change.",
+      "diagram": "disting mk4:\n* Algorithm: A-6 Quantizer\n* Z knob: scale select (positive = scale, negative = trigger mode)\n\n- Noise/S&H (OUT) >> disting mk4 (X) // raw pitch CV\n- disting mk4 (A) p> VCO (1V/oct) // quantized pitch\n- disting mk4 (B) t> Envelope (Trig) // trigger on note change"
     },
     {
-      "name": "Voltage-controlled echo",
-      "patch": "Audio → X · CV → Y (delay time) · B4 Clockable Delay · Z = feedback",
-      "diagram": "DISTING:\n* Algorithm: B4 Clockable Delay\n- Source (OUT) -> DISTING (X)\n- LFO (OUT) >> DISTING (Y) // delay time CV\n- DISTING (A) -> Mixer (IN)"
+      "name": "Tap-tempo delay/echo",
+      "patch": "B4 Clockable Delay/Echo locks delay time to a clock on Y, with Z setting feedback.",
+      "steps": [
+        "Press S, twist to Algorithm, press S, twist to B-4 Clockable Delay/Echo, press S to load.",
+        "Patch your audio source (voice, drum, synth) OUT into the disting X input.",
+        "Patch a clock or gate output (any rising edge over 1V) into the disting Y input — the time between pulses sets the delay time.",
+        "Turn the Z knob to about 2 o'clock for roughly 60–70% feedback.",
+        "Patch the disting A output into your mixer or next effect — at default parameter 1 = 0, A carries the wet/dry mix and B carries delay only.",
+        "Press and release the Z knob twice in rhythm to tap a tempo if you do not have a clock source.",
+        "Adjust Z live to dial feedback from short slap to self-oscillating runaway."
+      ],
+      "signalOut": "A output — mix of dry signal and delay at audio level; B output — delay-only (wet) tap for parallel routing.",
+      "hear": "Rhythmic echoes locked to your clock. Tap Z twice and the delay time jumps to match — push Z past 3 o'clock and the repeats build into a feedback drone.",
+      "diagram": "disting mk4:\n* Algorithm: B-4 Clockable Delay/Echo\n* Z knob: feedback (press Z = tap tempo)\n* Param 1 = 0: A = mix, B = delay only\n\n- Source (OUT) -> disting mk4 (X) // audio in\n- Clock (OUT) c> disting mk4 (Y) // sets delay time\n- disting mk4 (A) -> Mixer (IN) // wet/dry mix"
     },
     {
-      "name": "Wavetable LFO modulator",
-      "patch": "K2 Wavetable LFO · WAV file on SD card · A out → filter cutoff · Z = rate",
-      "diagram": "DISTING:\n* Algorithm: K2 Wavetable LFO\n- DISTING (A) >> Filter (Cutoff)\n- DISTING (B) >> VCA (CV) // second wavetable phase"
+      "name": "Clocked wavetable LFO sweep",
+      "patch": "K2 Clockable Wavetable LFO scans a wavetable from the SD card, locked to a master clock, to modulate filter cutoff.",
+      "steps": [
+        "Make sure a MicroSD card with wavetables is inserted in the front slot.",
+        "Press S, twist to Algorithm, twist to K-2 Clockable Wavetable LFO, press S to load.",
+        "Press S again, twist to Parameter, and with Hold-S pick parameter 0 (Chooses the wavetable) — twist to a wavetable number you like.",
+        "Patch a clock output (any pulse over 1V) into the disting X input — the cycle time of the LFO follows the clock.",
+        "Patch the disting A output into your filter cutoff CV input.",
+        "Leave the Y input unpatched for now (Y sweeps through wavetable waveforms; try plugging a slow LFO into Y later).",
+        "Turn the Z knob to display '1' (no division), then twist to '-2' to run the LFO at half the clock rate, or '+2' for double."
+      ],
+      "signalOut": "A output — wavetable LFO CV with attenuverter (param 2); B output — second attenuverted copy (param 3) for a second modulation destination.",
+      "hear": "The filter opens and closes on a complex wavetable shape, locked rhythmically to your clock. Turning Z divides or multiplies the rate in whole steps; plug Y into a slow LFO to hear the waveform itself morph.",
+      "diagram": "disting mk4:\n* Algorithm: K-2 Clockable Wavetable LFO\n* Z knob: integer multiplier/divider of clock\n* Param 0: wavetable number\n\n- Clock (OUT) c> disting mk4 (X) // sets LFO cycle time\n- disting mk4 (A) >> Filter (Cutoff)\n- disting mk4 (B) >> VCA (CV) // second attenuverted copy"
     },
     {
-      "name": "Euclidean gate generator",
-      "patch": "H5 Euclidean Patterns · X = clock in · A/B = two rhythmic gate streams · Z = density",
-      "diagram": "DISTING:\n* Algorithm: H5 Euclidean Patterns\n- Clock (OUT) c> DISTING (X)\n- DISTING (A) g> Envelope 1 (Trig)\n- DISTING (B) g> Envelope 2 (Trig)"
+      "name": "Dual Euclidean drum patterns",
+      "patch": "H5 Dual Euclidean Patterns turns one clock into two related Euclidean gate trains, with Z setting the second pattern's pulse count.",
+      "steps": [
+        "Press S, twist to Algorithm, twist to H-5 Dual Euclidean Patterns, press S to load.",
+        "Patch your master clock output into the disting X input (each rising edge over 1V advances one step).",
+        "Hold S and twist to Parameter 0 (Steps), set to 16.",
+        "Release, then Hold S and twist to Parameter 1 (Pulses pattern 1), set to 5 — this is output A's density.",
+        "Turn the Z knob to set pattern 2's pulse count live (1–16 pulses over 16 steps) — watch the display.",
+        "Patch disting A output into your kick drum trigger input.",
+        "Patch disting B output into your snare or hat trigger input.",
+        "Optional: patch a reset pulse into the Y input to re-sync the pattern to bar 1.",
+        "Start the clock and listen."
+      ],
+      "signalOut": "A output — Euclidean gate train 1 (pulses set by parameter 1); B output — Euclidean gate train 2 (pulses set live by Z).",
+      "hear": "Two interlocking rhythmic pulse patterns from one clock. Rotate Z while it plays to shift the second pattern from sparse (1) to dense (16) hits without stopping the groove.",
+      "diagram": "disting mk4:\n* Algorithm: H-5 Dual Euclidean Patterns\n* Z knob: pulses for pattern 2 (B)\n* Param 0 = 16 (steps), Param 1 = 5 (pulses pattern 1)\n\n- Clock (OUT) c> disting mk4 (X) // advances pattern\n- Reset (OUT) t> disting mk4 (Y) // optional reset\n- disting mk4 (A) t> Kick (Trig) // pattern 1\n- disting mk4 (B) t> Snare (Trig) // pattern 2"
     }
   ]
 }

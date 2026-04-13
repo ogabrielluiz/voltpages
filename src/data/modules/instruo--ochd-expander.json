@@ -9,58 +9,166 @@
   "name": "ochd expander",
   "manufacturer": "Instruo",
   "hp": 4,
-  "tags": [
-    "LFO",
-    "UTILITY"
-  ],
-  "description": "4HP expander for ochd. Adds CV control over ochd's master rate and provides inverted outputs for all 8 LFO channels, doubling available modulation waveforms.",
+  "tags": ["LFO", "UTILITY", "LOGIC", "RANDOM", "TRIGGER"],
+  "description": "4HP expander for ochd ([ø]4^2). Adds 16 outputs in four groups derived from ochd's 8 LFOs: full-wave-rectified unipolar LFOs, analog AND/OR diode logic pairs, cascading stochastic triggers, and R-2R 4-bit slow-noise DACs. Connects via two 2x4 IDC expander cables.",
   "controls": [],
-  "inputs": [
-    {
-      "name": "Speed CV",
-      "description": "CV input for controlling ochd's master rate. Positive CV increases speed; negative CV slows or stalls LFOs.",
-      "voltage": "bipolar"
-    }
-  ],
+  "inputs": [],
   "outputs": [
     {
-      "name": "Inv LFO 1–8",
-      "description": "Eight inverted triangle LFO outputs, one per ochd channel. Each is the phase-opposite of the corresponding ochd output.",
-      "voltage": "10Vpp (±5V)"
+      "name": "f.2 (LFO 1 rectified)",
+      "description": "Full-wave-rectified LFO 1. Negative half of the triangle is flipped positive — unipolar triangle at 2× the original rate. Top-left jack of the f.2 group.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "f.2 (LFO 3 rectified)",
+      "description": "Full-wave-rectified LFO 3. Top-right jack of the f.2 group.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "f.2 (LFO 5 rectified)",
+      "description": "Full-wave-rectified LFO 5. Bottom-left jack of the f.2 group.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "f.2 (LFO 7 rectified)",
+      "description": "Full-wave-rectified LFO 7. Bottom-right jack of the f.2 group.",
+      "voltage": "0–5V"
+    },
+    {
+      "name": "+ (LFO 2 OR LFO 3)",
+      "description": "Analog diode OR (max voltage) of LFO 2 and LFO 3. Top-left jack of the +/- group.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "− (LFO 2 AND LFO 3)",
+      "description": "Analog diode AND (min voltage) of LFO 2 and LFO 3. Bottom-left jack of the +/- group.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "+ (LFO 6 OR LFO 7)",
+      "description": "Analog diode OR (max voltage) of LFO 6 and LFO 7. Top-right jack of the +/- group.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "− (LFO 6 AND LFO 7)",
+      "description": "Analog diode AND (min voltage) of LFO 6 and LFO 7. Bottom-right jack of the +/- group.",
+      "voltage": "±5V"
+    },
+    {
+      "name": "Trig (LFO 2)",
+      "description": "~8ms trigger at the start of each LFO 2 rising edge. Top-left jack of the Trig group. Normalled clockwise into the next Trig jack — leave unpatched to layer into the LFO 4 trigger output.",
+      "voltage": "0–5V trigger (~8ms)"
+    },
+    {
+      "name": "Trig (LFO 4 / +LFO 2)",
+      "description": "Top-right Trig jack. With top-left Trig unpatched, sums LFO 2 + LFO 4 triggers; with top-left patched, fires on LFO 4 only.",
+      "voltage": "0–5V trigger (~8ms)"
+    },
+    {
+      "name": "Trig (LFO 6 / +prior)",
+      "description": "Bottom-right Trig jack. Layers LFO 2 + LFO 4 + LFO 6 triggers when the two top Trig jacks are unpatched; collapses to LFO 6 only when prior jacks are patched.",
+      "voltage": "0–5V trigger (~8ms)"
+    },
+    {
+      "name": "Trig (LFO 8 / +prior)",
+      "description": "Bottom-left Trig jack — final stage of the cascade. Layers LFO 2 + LFO 4 + LFO 6 + LFO 8 triggers when all prior Trig jacks are unpatched; collapses to LFO 8 only when all three prior jacks are patched.",
+      "voltage": "0–5V trigger (~8ms)"
+    },
+    {
+      "name": "R²R (LFOs 1–4 DAC)",
+      "description": "R-2R 4-bit DAC fed by LFOs 1, 2, 3, 4 (LFO 1 = MSB, LFO 4 = LSB). Stepped slow-noise voltage. Top-left jack of the R²R group.",
+      "voltage": "stepped CV"
+    },
+    {
+      "name": "R²R (LFOs 5–8 DAC)",
+      "description": "R-2R 4-bit DAC fed by LFOs 5, 6, 7, 8 (LFO 5 = MSB, LFO 8 = LSB). Slower slow-noise variant. Top-right jack of the R²R group.",
+      "voltage": "stepped CV"
+    },
+    {
+      "name": "R²R (odd LFOs 1,3,5,7 DAC)",
+      "description": "R-2R 4-bit DAC fed by odd LFOs (LFO 1 MSB → LFO 7 LSB). Bottom-left jack of the R²R group.",
+      "voltage": "stepped CV"
+    },
+    {
+      "name": "R²R (even LFOs 2,4,6,8 DAC)",
+      "description": "R-2R 4-bit DAC fed by even LFOs (LFO 2 MSB → LFO 8 LSB). Bottom-right jack of the R²R group.",
+      "voltage": "stepped CV"
     }
   ],
   "behaviors": [
     {
-      "name": "Rate CV Control",
-      "trigger": "CV → Speed CV input",
-      "description": "The Speed CV input directly modulates ochd's master Rate, enabling voltage-controlled tempo. Works in addition to ochd's Rate knob and its own attenuverter."
+      "name": "Full-wave rectification (f.2)",
+      "trigger": "automatic — f.2 group",
+      "description": "The four f.2 outputs flip the negative half of LFOs 1, 3, 5, 7 positive. Result: unipolar (0–5V) triangles at twice the original rate — useful for envelopes, attack-only modulation, or drum decays."
     },
     {
-      "name": "Inverted LFO Outputs",
-      "trigger": "automatic",
-      "description": "All 8 inverted outputs are always active and track the ochd LFOs in real-time. When ochd LFO rises, the corresponding inverted output falls."
+      "name": "Analog AND / OR diode logic",
+      "trigger": "automatic — +/- group",
+      "description": "Each + jack outputs the higher of its two LFO inputs (OR / max); each − jack outputs the lower (AND / min). Output is bipolar ±5V. Acts as a max/min mixer that creates new compound shapes from LFO pairs (2&3, 6&7)."
     },
     {
-      "name": "Phase Diversity",
-      "trigger": "patching inverted outputs",
-      "description": "Combining an ochd output with its corresponding inverted output creates bipolar modulation pairs. Running both to different destinations doubles modulation complexity."
+      "name": "Cascading trigger normalling",
+      "trigger": "leave Trig jacks unpatched to layer",
+      "description": "The four Trig outputs are normalled clockwise (top-left → top-right → bottom-right → bottom-left). Each jack sums its own LFO trigger with the previous unpatched jacks' triggers. Tap the bottom-left Trig with all others unpatched to get a four-LFO stochastic trigger stream; patch a Trig jack to break the cascade at that point."
+    },
+    {
+      "name": "R-2R 4-bit slow noise",
+      "trigger": "automatic — R²R group",
+      "description": "Four R-2R ladder DACs treat groups of four LFOs as 4-bit binary words. Output is a 16-step stepped CV. Step rate and shape depend on the bit-ordering: LFOs 1–4 is fastest, 5–8 slowest, odd and even groups give two different chaotic flavours."
+    },
+    {
+      "name": "All outputs follow ochd's Rate",
+      "trigger": "ochd Rate knob / Rate CV",
+      "description": "There are no controls on the expander itself. Every output speeds up or slows down with ochd's master Rate knob and Rate CV input — including the R²R noise step rate and the trigger density."
     }
   ],
   "patchIdeas": [
     {
       "name": "Push-pull modulation",
-      "patch": "LFO 3 out → VCF cutoff · Inv LFO 3 → VCA CV · filter opens as VCA closes",
-      "diagram": "ochd expander:\n- ochd (LFO 3) >> VCF (Cutoff)\n- ochd expander (Inv LFO 3) >> VCA (CV) // mirrors LFO 3 for push-pull"
+      "patch": "f.2 LFO 3 (unipolar 2× rate) → VCF cutoff · ochd LFO 3 → VCA CV. Filter pumps at double rate against the original LFO on the VCA.",
+      "steps": [
+        "Patch ochd LFO 3 → VCA CV.",
+        "Patch ochd expander f.2 (LFO 3 rectified) → VCF cutoff input.",
+        "Set ochd Rate knob to noon so LFO 3 cycles roughly once every few seconds.",
+        "Send a VCO through the VCF then the VCA; monitor the VCA output.",
+        "Listen: each LFO 3 swell on the VCA is crossed by two filter sweeps from the rectified output (it runs at 2× rate).",
+        "Turn ochd Rate slowly CW to speed both up together — the 1:2 ratio stays locked."
+      ],
+      "signalOut": "VCA out — audio whose amplitude follows ochd LFO 3 (±5V) while the filter sweeps at 2× rate (0–5V from f.2).",
+      "hear": "A pulsing tone where every amplitude swell contains two distinct filter wah-wahs. Pure ochd alone would give one filter sweep per swell — the rectifier doubles it.",
+      "diagram": "ochd expander:\n- ochd (LFO 3) >> VCA (CV)\n- ochd expander (f.2 LFO 3) >> VCF (Cutoff)\n- VCO (Out) -> VCF (In)\n- VCF (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
     },
     {
-      "name": "Voltage-controlled LFO speed",
-      "patch": "Sequencer CV → Speed CV · LFO rate follows sequence for rhythmically evolving modulation",
-      "diagram": "ochd expander:\n- Sequencer (CV) >> ochd expander (Speed CV)\n- ochd (LFO 1) >> VCF (Cutoff)\n- ochd expander (Inv LFO 1) >> VCA (CV) // rate steps with sequence"
+      "name": "Stochastic drum triggers from one Trig jack",
+      "patch": "Tap the bottom-left Trig jack with all other Trig jacks unpatched — get LFO 2 + 4 + 6 + 8 triggers layered into one cascading rhythm into a drum module.",
+      "steps": [
+        "Leave the top-left, top-right, and bottom-right Trig jacks unpatched (this lets the cascade normalise through).",
+        "Patch ochd expander Trig (LFO 8 / +prior, the bottom-left jack) → drum module trigger input.",
+        "Set ochd Rate knob to noon.",
+        "Listen: triggers from LFOs 2, 4, 6, and 8 all layer into the drum — fast hits from LFO 2, slower hits from LFO 8.",
+        "Now patch the top-left Trig (LFO 2) → a hi-hat trigger input. The bottom-left jack instantly drops LFO 2's contribution and only LFOs 4, 6, 8 remain there.",
+        "Patch the top-right Trig too → a clap trigger. Bottom-left now only fires on LFO 6 + LFO 8.",
+        "Sweep ochd Rate knob to thicken or thin the rhythm globally."
+      ],
+      "signalOut": "ochd expander Trig (LFO 8) bottom-left jack — ~8ms 5V triggers, layered count depends on how many prior Trig jacks are unpatched.",
+      "hear": "An evolving stochastic kick/hat pattern. Patching/unpatching the upper Trig jacks subtracts or adds layers in real time — a hands-on way to thin out a busy rhythm.",
+      "diagram": "ochd expander:\n- ochd expander (Trig LFO 8) g> Drum (Trig) // cascade sums LFO 2+4+6+8 when prior jacks unpatched\n- ochd expander (Trig LFO 2) g> HiHat (Trig) // breaks LFO 2 out of the cascade\n- ochd expander (Trig LFO 4) g> Clap (Trig) // breaks LFO 4 out"
     },
     {
-      "name": "Double the modulation sources",
-      "patch": "Use all 8 ochd outs + all 8 inverted outs for 16 distinct triangle waves from a single 4+4HP pair",
-      "diagram": "ochd expander:\n- ochd (LFO 2) >> VCO (FM)\n- ochd expander (Inv LFO 2) >> Filter (Res)\n- ochd (LFO 5) >> Pan (CV)\n- ochd expander (Inv LFO 5) >> Delay (Time) // 16 waves total from the pair"
+      "name": "Stepped slow-noise pitch sequence",
+      "patch": "R²R (LFOs 1–4) → quantizer → VCO 1V/Oct. Sixteen-step random pitch melody whose step rate follows ochd's Rate knob.",
+      "steps": [
+        "Patch ochd expander R²R (LFOs 1–4 DAC) → quantizer CV input.",
+        "Patch quantizer CV out → VCO 1V/Oct input.",
+        "Choose a scale on the quantizer (e.g. minor pentatonic).",
+        "Set ochd Rate knob to noon — you'll hear a slowly evolving 16-step pitch sequence.",
+        "Patch one of the Trig outputs (e.g. Trig LFO 4) → quantizer trigger / clock-in so notes lock to the trigger grid.",
+        "Send the VCO through a VCA gated by the same Trig output for plucks.",
+        "Try R²R (LFOs 5–8) for slower pitch drift, or R²R (odd) / R²R (even) for different flavours of chaos."
+      ],
+      "signalOut": "Quantizer out — stepped pitch CV from the R-2R DAC, retriggered by an expander Trig output.",
+      "hear": "A generative 16-step melody that never quite repeats. Switching to the LFOs 5–8 R²R output makes the melody slow to a near-drone; the odd/even DAC outputs give pricklier, more chaotic sequences.",
+      "diagram": "ochd expander:\n- ochd expander (R²R LFOs 1–4) >> Quantizer (CV In)\n- Quantizer (CV Out) >> VCO (1V/Oct)\n- ochd expander (Trig LFO 4) g> Quantizer (Clock)\n- ochd expander (Trig LFO 4) g> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
     }
   ]
 }

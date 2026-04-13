@@ -1,0 +1,212 @@
+{
+  "$schema": "../../modules.schema.json",
+  "_meta": {
+    "schemaVersion": 1,
+    "verified": true,
+    "sources": [
+      "https://www.ericasynths.lv/shop/eurorack-modules/by-series/black-series/black-3109-vcfvca/",
+      "https://www.ericasynths.lv/service/file/download/product_id/206/file_id/442/",
+      "https://modulargrid.net/e/erica-synths-black-3109-vcf-vca",
+      "https://www.thomannmusic.com/erica_synths_black_3109_vcf_vca.htm",
+      "https://synthanatomy.com/2022/05/erica-synths-black-3109-new-vcf-vca-module-with-vintage-roland-spirit.html",
+      "https://www.gearnews.com/erica-synths-black-3109-vintage-roland-style-vcf-vca/"
+    ]
+  },
+  "slug": "erica-synths--black-3109",
+  "name": "Black 3109 VCF/VCA",
+  "manufacturer": "Erica Synths",
+  "hp": 10,
+  "tags": ["VCF", "FILTER", "VCA", "OSCILLATOR"],
+  "description": "24dB/oct lowpass VCF plus built-in VCA, built around the AS3109 chip (contemporary IR3109 — Roland Jupiter/Juno/SH-101 lineage). 1V/oct-tuned cutoff self-oscillates as a playable sine VCO. Switchable resonance volume-drop compensation (VOL COMP).",
+  "controls": [
+    {
+      "name": "CUTOFF",
+      "scope": "VCF",
+      "description": "Manual filter cutoff frequency. External CV from VCF CV IN and CV2 is added to the knob position.",
+      "detail": "full audio range · 1V/oct-tuned"
+    },
+    {
+      "name": "VCF CV1 LVL",
+      "scope": "VCF",
+      "description": "Cutoff CV attenuverter for the VCF CV IN input. 12:00 = no CV, CW = positive amount, CCW = inverted.",
+      "detail": "bipolar attenuverter · noon = zero"
+    },
+    {
+      "name": "RESONANCE",
+      "scope": "VCF",
+      "description": "Resonance / Q. Self-oscillates as a sine near maximum — combine with 1V/OCT CV on CV2 to play it as a VCO. In classic mode (VOL COMP OFF) the through-signal thins as Q rises.",
+      "detail": "0 – full self-oscillation"
+    },
+    {
+      "name": "VOL COMP",
+      "scope": "VCF",
+      "description": "Volume-drop compensation switch. ON = volume does not drop as RESONANCE increases. OFF = classic IR3109 response (signal drops as Q rises).",
+      "detail": "2-position · ON: modern · OFF: vintage-accurate"
+    },
+    {
+      "name": "AUDIO LVL",
+      "scope": "VCF input",
+      "description": "Audio signal level attenuator for the INPUT jack.",
+      "detail": "0 – unity · input attenuator"
+    },
+    {
+      "name": "VCA CV LVL",
+      "scope": "VCA",
+      "description": "VCA CV attenuator. With nothing patched into VCA CV IN it acts as VCA bias — must be fully CW to open the VCA (input is normalled to +10V).",
+      "detail": "unipolar · full CW = VCA open when VCA CV unpatched"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "INPUT",
+      "description": "Audio input into the filter core. Scaled by AUDIO LVL.",
+      "voltage": "10Vptp audio"
+    },
+    {
+      "name": "VCF CV IN",
+      "description": "Cutoff CV input, scaled and polarity-flipped by the VCF CV1 LVL attenuverter.",
+      "voltage": "−5V to +5V full span"
+    },
+    {
+      "name": "CV2",
+      "description": "Second cutoff CV input. Applied without attenuation — use for 1V/oct tracking (keyboard-tracked filter or sine VCO when self-oscillating).",
+      "voltage": "1V/oct · direct / no attenuation"
+    },
+    {
+      "name": "VCA CV IN",
+      "description": "VCA control voltage. Scaled by the VCA CV LVL knob. Expects a 0 – +10V envelope to fully open the VCA.",
+      "voltage": "0 – +10V",
+      "normalizedTo": "+10V (needs VCA CV LVL fully CW to open VCA) when unpatched"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "OUTPUT",
+      "description": "Post-VCA audio output. Lowpass-filtered signal scaled by the VCA.",
+      "voltage": "10Vptp audio"
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "Sine VCO via self-oscillation",
+      "trigger": "RESONANCE near maximum, no input, CV2 receiving 1V/oct",
+      "description": "At high resonance the filter self-oscillates as a sine tone. Because cutoff is 1V/oct-tuned, feeding pitch CV into CV2 turns the module into a playable VCO. The manual specifically calls out bass-drum synthesis when punchy envelopes are applied to the cutoff CV."
+    },
+    {
+      "name": "Volume-drop compensation",
+      "trigger": "VOL COMP switch",
+      "description": "Classic IR3109-style filters lose signal level as resonance rises. VOL COMP ON keeps output level constant as RESONANCE increases. VOL COMP OFF preserves the classic vintage Roland behaviour where the volume drops slightly at high Q."
+    },
+    {
+      "name": "VCA CV normalled to +10V",
+      "trigger": "nothing patched into VCA CV IN",
+      "description": "VCA CV IN is normalled to +10V internally. With nothing patched in, the VCA CV LVL knob acts as VCA bias — you need it fully clockwise to fully open the VCA. Patching any source into VCA CV IN breaks the normal and the knob becomes a depth attenuator for that CV."
+    },
+    {
+      "name": "Two cutoff CV paths",
+      "trigger": "patching VCF CV IN vs CV2",
+      "description": "VCF CV IN runs through the VCF CV1 LVL bipolar attenuverter — scaled, invertible modulation. CV2 is direct and unscaled, dedicated for 1V/oct pitch tracking. Both sum with the CUTOFF knob."
+    },
+    {
+      "name": "Audio level / input attenuation",
+      "trigger": "AUDIO LVL knob",
+      "description": "AUDIO LVL sets the audio signal level fed into the filter core. Useful for matching hot sources into the filter and taming modulator levels."
+    },
+    {
+      "name": "Black Filter Coupler compatibility (hidden jumper)",
+      "trigger": "paired with Erica Synths Black Filter Coupler",
+      "description": "The module has an internal jumper that can be removed to connect to the Erica Synths Black Filter Coupler via a 2x5-pin ribbon cable. The Coupler turns the Black High Pass and Black Low Pass VCFs (and now the Black 3109) into bandpass / band-reject filters with adjustable, CV-controllable bandwidth and centre frequency. Requires both the Black HP and Black LP VCFs plus the Coupler."
+    }
+  ],
+  "patchIdeas": [
+    {
+      "name": "Classic Roland lowpass lead",
+      "patch": "Straight 24dB lowpass voice with envelope-swept cutoff and amp — the Juno/SH-101 recipe.",
+      "steps": [
+        "Set CUTOFF around 9 o'clock, RESONANCE around 10-11 o'clock, VOL COMP ON, AUDIO LVL near unity.",
+        "Patch a saw VCO → Black 3109 INPUT.",
+        "Patch sequencer V/oct → VCO V/oct, and the same sequencer's gate → your envelope TRIG.",
+        "Patch envelope → Black 3109 VCF CV IN, set VCF CV1 LVL to about 2 o'clock.",
+        "Patch the same envelope (via a stackable) → Black 3109 VCA CV IN, VCA CV LVL to taste.",
+        "Patch Black 3109 OUTPUT → your output / mixer."
+      ],
+      "signalOut": "OUTPUT — lowpass-filtered, amped lead voice at audio level (~10Vptp at peak).",
+      "hear": "Percussive pluck with the classic Juno/SH-101 filter sweep: brightness opens at note-on, decays with the envelope, body stays centered thanks to VOL COMP ON.",
+      "diagram": "Black 3109:\n* CUTOFF: ~9 o'clock\n* RESONANCE: ~10 o'clock\n* VOL COMP: ON\n* AUDIO LVL: unity\n* VCF CV1 LVL: ~2 o'clock\n\nVCO:\n\nSequencer:\n\nEnvelope:\n\nMult:\n\n- VCO (Saw) -> Black 3109 (INPUT)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Mult (In)\n- Mult (Out 1) >> Black 3109 (VCF CV IN)\n- Mult (Out 2) >> Black 3109 (VCA CV IN)\n- Black 3109 (OUTPUT) -> Output (In)"
+    },
+    {
+      "name": "Sine VCO from self-oscillation",
+      "patch": "Drive RESONANCE to self-oscillation and play the filter as a pitched sine oscillator via the CV2 input.",
+      "steps": [
+        "Unpatch INPUT. Turn AUDIO LVL fully CCW.",
+        "Set RESONANCE fully CW — the filter should sing a sine tone.",
+        "Set CUTOFF to tune the starting pitch (listen at OUTPUT).",
+        "Patch sequencer V/oct → Black 3109 CV2.",
+        "Patch an envelope → VCA CV IN so notes are articulated; set VCA CV LVL to taste.",
+        "Patch Black 3109 OUTPUT → your mixer. Fine-tune CUTOFF until the scale tracks correctly across the keyboard."
+      ],
+      "signalOut": "OUTPUT — sine tone, pitched by CV2 (1V/oct), gated by the VCA (~10Vptp at full VCA).",
+      "hear": "A sine melody that tracks 1V/oct. Thicker and slightly warmer than a digital sine — the analog core colors it subtly. Detune from a real VCO to get beating sub tones.",
+      "diagram": "Black 3109:\n* AUDIO LVL: 0\n* RESONANCE: full CW (self-osc)\n* CUTOFF: tune to root\n\nSequencer:\n\nEnvelope:\n\n- Sequencer (Pitch) p> Black 3109 (CV2)\n- Envelope (Out) >> Black 3109 (VCA CV IN)\n- Black 3109 (OUTPUT) -> Output (In)"
+    },
+    {
+      "name": "Vintage vs modern A/B",
+      "patch": "Use the VOL COMP switch to toggle between IR3109-accurate Roland response and the compensated modern curve on a single drone.",
+      "steps": [
+        "Patch a saw or square VCO → Black 3109 INPUT. Set AUDIO LVL near unity.",
+        "Set CUTOFF mid-range, RESONANCE around 3 o'clock.",
+        "Leave VCA CV IN unpatched and turn VCA CV LVL fully CW — the internal +10V normal will open the VCA so the drone is audible.",
+        "Patch Black 3109 OUTPUT → mixer.",
+        "Toggle VOL COMP ON then OFF while the drone plays — note the level and body difference."
+      ],
+      "signalOut": "OUTPUT — steady filtered drone, level shifts with VOL COMP position.",
+      "hear": "VOL COMP ON: consistent body at high Q, harmonics pushed but fundamental stays. VOL COMP OFF: the volume drops and the resonant peak dominates — that scooped-out, whistle-edge vintage Roland character.",
+      "diagram": "Black 3109:\n* CUTOFF: noon\n* RESONANCE: ~3 o'clock\n* VOL COMP: toggle\n* AUDIO LVL: unity\n* VCA CV LVL: full CW\n\nVCO:\n\n- VCO (Saw) -> Black 3109 (INPUT)\n- Black 3109 (OUTPUT) -> Output (In)"
+    },
+    {
+      "name": "Keyboard-tracked filter",
+      "patch": "Track the filter cutoff with pitch CV so timbral character stays constant across the keyboard while the envelope still sweeps musically.",
+      "steps": [
+        "Patch sequencer V/oct → Black 3109 CV2 and also → VCO V/oct (use a stackable or mult).",
+        "Patch VCO saw → Black 3109 INPUT.",
+        "Set CUTOFF to a moderate open position, RESONANCE around noon, VOL COMP ON.",
+        "Patch envelope → Black 3109 VCF CV IN, set VCF CV1 LVL around 1-2 o'clock for mild sweep.",
+        "Patch the envelope (via stackable) → Black 3109 VCA CV IN, set VCA CV LVL to taste.",
+        "Play a melody — brightness now follows pitch instead of fading in the high register."
+      ],
+      "signalOut": "OUTPUT — filtered lead, timbre constant across pitch.",
+      "hear": "Unlike a fixed-cutoff filter, high notes retain the same harmonic content as low ones — no dullness in the top octave. The envelope sweep adds the same relative color to every note.",
+      "diagram": "Black 3109:\n* CUTOFF: noon\n* RESONANCE: noon\n* VOL COMP: ON\n* VCF CV1 LVL: ~1 o'clock\n\nVCO:\n\nSequencer:\n\nEnvelope:\n\nMult:\n\n- Sequencer (Pitch) p> Mult (In)\n- Mult (Out 1) p> VCO (V/Oct)\n- Mult (Out 2) p> Black 3109 (CV2)\n- VCO (Saw) -> Black 3109 (INPUT)\n- Envelope (Out) >> Mult (In)\n- Mult (Out 3) >> Black 3109 (VCF CV IN)\n- Mult (Out 4) >> Black 3109 (VCA CV IN)\n- Black 3109 (OUTPUT) -> Output (In)"
+    },
+    {
+      "name": "Resonant kick drum",
+      "patch": "Trigger the self-oscillating sine with a short envelope on both pitch and amp to make a 909/Moog-ish kick.",
+      "steps": [
+        "Turn AUDIO LVL to 0 and RESONANCE fully CW so the filter self-oscillates.",
+        "Set CUTOFF low — around 9 o'clock — for bass pitch range.",
+        "Patch a short decay envelope → Black 3109 VCF CV IN, VCF CV1 LVL CW to about 2-3 o'clock for a strong pitch drop.",
+        "Patch the same envelope (via stackable) → Black 3109 VCA CV IN, set VCA CV LVL to taste.",
+        "Trigger the envelope from a clock or sequencer.",
+        "Patch Black 3109 OUTPUT → mixer. Tune CUTOFF and envelope decay for body/snap."
+      ],
+      "signalOut": "OUTPUT — kick-drum-like transient: pitch-sweep sine, amp-shaped by the same envelope.",
+      "hear": "A punchy sine kick: fast downward pitch sweep from the envelope hitting VCF CV IN, amp decay shaping tail. Shorter envelope = click. Longer envelope = 909-style boom. (The manual explicitly highlights this as a bass-drum use case.)",
+      "diagram": "Black 3109:\n* AUDIO LVL: 0\n* RESONANCE: full CW\n* CUTOFF: ~9 o'clock\n* VCF CV1 LVL: ~2-3 o'clock\n\nEnvelope:\n\nClock:\n\nMult:\n\n- Clock (Out) t> Envelope (Trig)\n- Envelope (Out) >> Mult (In)\n- Mult (Out 1) >> Black 3109 (VCF CV IN)\n- Mult (Out 2) >> Black 3109 (VCA CV IN)\n- Black 3109 (OUTPUT) -> Output (In)"
+    },
+    {
+      "name": "Audio-rate FM screech",
+      "patch": "Feed an audio-rate VCO into VCF CV IN for nonlinear FM-style timbres on top of an input drone.",
+      "steps": [
+        "Patch a sustained saw from VCO A → Black 3109 INPUT. AUDIO LVL near unity.",
+        "Set CUTOFF around noon, RESONANCE around 2 o'clock, VOL COMP ON.",
+        "Patch a sine or triangle from VCO B (audio rate) → Black 3109 VCF CV IN.",
+        "Set VCF CV1 LVL low — around 10-11 o'clock — then ride it up for more mayhem.",
+        "Leave VCA CV IN unpatched; turn VCA CV LVL fully CW so the +10V normal opens the VCA.",
+        "Patch Black 3109 OUTPUT → mixer. Sweep VCO B pitch to find sweet spots."
+      ],
+      "signalOut": "OUTPUT — filtered audio with ring-mod-like sidebands from cutoff FM.",
+      "hear": "Inharmonic metallic sidebands added to the filtered tone. Low modulator pitch = growl and beating. Audio-rate modulator = bell-like or gritty FM timbres depending on attenuverter depth.",
+      "diagram": "Black 3109:\n* CUTOFF: noon\n* RESONANCE: ~2 o'clock\n* VOL COMP: ON\n* AUDIO LVL: unity\n* VCF CV1 LVL: ~10 o'clock\n* VCA CV LVL: full CW\n\nVCO A:\n\nVCO B:\n\n- VCO A (Saw) -> Black 3109 (INPUT)\n- VCO B (Sine) >> Black 3109 (VCF CV IN)\n- Black 3109 (OUTPUT) -> Output (In)"
+    }
+  ]
+}

@@ -163,43 +163,147 @@
   "patchIdeas": [
     {
       "name": "Locked generative melody",
-      "patch": "Learn a major scale into slot 2 · X1 → VCO V/OCT · T1 → envelope trigger · Deja Vu full CW, Length 8 · Steps ~2 o'clock · repeatable 8-note melody that can be broken by easing Deja Vu CCW",
+      "patch": "Deja Vu full CW over an 8-step loop turns X1 into a repeatable in-key melody that can be unlocked by easing Deja Vu back.",
+      "steps": [
+        "Hold the X SCALE button and play a major scale on an external keyboard/sequencer into the t input jack to teach user scale slot 2. Release the button.",
+        "Press X SCALE until the LED above slot 2 lights.",
+        "Turn the DEJA VU knob fully clockwise.",
+        "Press the LENGTH button and turn the LENGTH knob until 8 LEDs are lit.",
+        "Set STEPS (x) to ~2 o'clock so the output is fully quantized.",
+        "Set RATE (t) to noon (~2 Hz internal clock).",
+        "Patch Marbles X1 → VCO V/OCT.",
+        "Patch Marbles T1 → envelope TRIG, then envelope → VCA CV.",
+        "Patch VCO → VCA → output. Ease DEJA VU back to ~3 o'clock any time to mutate one note per cycle."
+      ],
+      "signalOut": "X1 — quantized pitch CV, 0–5V, stepping through the same 8-note phrase until DEJA VU is eased.",
+      "hear": "A repeating 8-note in-key melody that locks tight on full CW, then starts swapping one note per cycle as you roll DEJA VU back.",
       "diagram": "Marbles:\n* Scale: user slot 2 (major)\n* Deja Vu: full CW\n* Length: 8\n\n- Marbles (X1) p> VCO (V/Oct)\n- Marbles (T1) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
     },
     {
       "name": "Bernoulli drum split",
-      "patch": "t Mode Bernoulli · Bias at noon (50/50) · T1 → kick trigger · T3 → snare trigger · T2 → hat trigger · Jitter CV from slow LFO for feel · Deja Vu off for endless mutation or CW for locked pattern",
-      "diagram": "Marbles:\n* t Mode: Bernoulli\n* t Bias: noon\n\n- LFO (Slow) >> Marbles (T JITTER CV)\n- Marbles (T1) t> Kick (Trig)\n- Marbles (T2) t> Hat (Trig)\n- Marbles (T3) t> Snare (Trig)"
+      "patch": "Bernoulli t-mode with bias at noon splits kick/snare as coin flips while T2 keeps a steady hat.",
+      "steps": [
+        "Press the t MODE button until the green LED is lit (Bernoulli).",
+        "Set BIAS (t) to noon (50/50 kick vs snare).",
+        "Set RATE (t) to ~1 o'clock (roughly 120 BPM-ish feel).",
+        "Set JITTER (t) fully CCW for a tight grid.",
+        "Patch a slow LFO (cycle ~20 s) → T JITTER CV, attenuverter at ~10 o'clock for subtle human feel.",
+        "Patch Marbles T1 → kick module TRIG.",
+        "Patch Marbles T3 → snare module TRIG.",
+        "Patch Marbles T2 → hi-hat TRIG (fires every clock tick).",
+        "Leave DEJA VU fully CCW for endless fresh patterns, or turn CW with LENGTH 8 to lock a groove."
+      ],
+      "signalOut": "T1, T2, T3 — three 0/+5 V gates. T1+T3 are the coin-flip split, T2 is steady.",
+      "hear": "Classic probabilistic drum pattern: hats on every beat, kick and snare trading hits like a rolled die, with a breathing feel from the LFO on jitter.",
+      "diagram": "Marbles:\n* t Mode: Bernoulli (green)\n* t Bias: noon\n* t Jitter: CCW\n\n- LFO (Slow) >> Marbles (T JITTER CV)\n- Marbles (T1) t> Kick (Trig)\n- Marbles (T2) t> Hat (Trig)\n- Marbles (T3) t> Snare (Trig)"
     },
     {
       "name": "Shift-register harmonized voices",
-      "patch": "x Mode shift-register · learn minor scale · X1 → lead VCO · X2 → harmony VCO (echoes lead with 1-step delay) · X3 → bass VCO (2-step delay) · T2 triggers all three envelopes for simultaneous chord voicing",
-      "diagram": "Marbles:\n* x Mode: Shift Register\n* Scale: minor\n\n- Marbles (X1) p> Lead VCO (V/Oct)\n- Marbles (X2) p> Harmony VCO (V/Oct)\n- Marbles (X3) p> Bass VCO (V/Oct)\n- Marbles (T2) t> Envelope (Trig)\n- Envelope (Out) >> Mixer VCA (CV)"
+      "patch": "X shift-register mode makes X2 and X3 delayed echoes of X1 — three VCOs voice moving close-harmony chords.",
+      "steps": [
+        "Hold X SCALE and play a minor scale into the module to learn user slot 3; release to save.",
+        "Press X SCALE until slot 3 LED lights.",
+        "Press the x MODE button until the red LED is lit (shift register).",
+        "Set STEPS (x) fully CW for full quantization, SPREAD (x) to ~1 o'clock, BIAS (x) to noon.",
+        "Set RATE (x) to noon so x advances on every t tick (X CLOCK unpatched).",
+        "Patch Marbles X1 → lead VCO V/OCT.",
+        "Patch Marbles X2 → harmony VCO V/OCT (this is last tick's X1).",
+        "Patch Marbles X3 → bass VCO V/OCT, optionally through a −1 octave offset (this is two ticks ago).",
+        "Patch Marbles T2 → envelope TRIG; envelope → a mixer VCA receiving all three VCOs.",
+        "Turn DEJA VU to ~2 o'clock with LENGTH 4 for a short evolving chord progression."
+      ],
+      "signalOut": "X1/X2/X3 — three quantized pitch CVs, 0–5V, each one step behind the previous.",
+      "hear": "A three-voice rolling canon in minor: the bass plays what the harmony played a moment ago, which played what the lead just played. Moves like a constantly shifting chord.",
+      "diagram": "Marbles:\n* x Mode: Shift Register (red)\n* Scale: minor (slot 3)\n* Deja Vu: ~2 o'clock\n* Length: 4\n\n- Marbles (X1) p> Lead VCO (V/Oct)\n- Marbles (X2) p> Harmony VCO (V/Oct)\n- Marbles (X3) p> Bass VCO (V/Oct)\n- Marbles (T2) t> Envelope (Trig)\n- Envelope (Out) >> Mixer VCA (CV)"
     },
     {
       "name": "Slow Y transposition",
-      "patch": "X1 → main melody VCO · Y → precision adder to add transposition CV over X1 · Y updates slowly (16× slower) · same scale quantization ensures in-key transposition · macro-level key changes every 16 notes",
-      "diagram": "Marbles:\n- Marbles (X1) p> Adder (In 1)\n- Marbles (Y) p> Adder (In 2) // slow transposition\n- Adder (Out) p> VCO (V/Oct)\n- Marbles (T1) t> Envelope (Trig)"
+      "patch": "X1 plays the melody while Y — updating 16× slower and sharing the scale — walks the whole phrase to new keys.",
+      "steps": [
+        "Press X SCALE until a user scale slot (e.g. slot 2 major) is selected.",
+        "Set STEPS (x) fully CW (fully quantized).",
+        "Set SPREAD (x) to ~1 o'clock and BIAS (x) to noon for mid-register melody.",
+        "Set RATE (t) to noon (~2 Hz); leave T CLOCK and X CLOCK unpatched.",
+        "Patch Marbles X1 → precision adder IN 1.",
+        "Patch Marbles Y → precision adder IN 2. Y updates ~16× slower than X1.",
+        "Patch adder OUT → melody VCO V/OCT.",
+        "Patch Marbles T1 → envelope TRIG; envelope → VCA CV; VCO → VCA → output.",
+        "Optional: turn DEJA VU CW with LENGTH 8 so the local melody repeats while Y keeps drifting the key."
+      ],
+      "signalOut": "Adder OUT — summed pitch CV (X1 melody + Y transposition), 0–~10 V, feeding one V/OCT jack.",
+      "hear": "A fast quantized melody that stays the same shape but every 16 notes or so slides up or down into a new key — like a modulating music-box.",
+      "diagram": "Marbles:\n* Scale: user slot 2\n* Steps (x): full CW\n\n- Marbles (X1) p> Adder (In 1)\n- Marbles (Y) p> Adder (In 2) // slow transposition\n- Adder (Out) p> VCO (V/Oct)\n- Marbles (T1) t> Envelope (Trig)"
     },
     {
       "name": "Clusters mode for Berlin rhythm",
-      "patch": "t Mode Clusters · Bias ~2 o'clock (denser bursts) · T1 → kick, T3 → tom fills, T2 → clock to sequencer · produces flurried bursts of notes separated by rests · Jitter low for tight feel",
-      "diagram": "Marbles:\n* t Mode: Clusters\n* t Bias: ~2 o'clock\n* t Jitter: low\n\n- Marbles (T1) t> Kick (Trig)\n- Marbles (T2) c> Sequencer (Clock)\n- Marbles (T3) t> Tom (Trig)"
+      "patch": "Clusters t-mode bursts gates in dense flurries separated by silence — a Berlin-school rhythm engine.",
+      "steps": [
+        "Press the t MODE button until the orange LED is lit (clusters).",
+        "Set BIAS (t) to ~2 o'clock for denser bursts.",
+        "Set JITTER (t) fully CCW for tight cluster timing.",
+        "Set RATE (t) to ~1 o'clock.",
+        "Patch Marbles T1 → kick TRIG.",
+        "Patch Marbles T3 → tom TRIG (fills).",
+        "Patch Marbles T2 → external sequencer CLOCK IN (sequencer advances one step per cluster tick).",
+        "Optional: DEJA VU ~3 o'clock + LENGTH 8 to loop a favorite flurry."
+      ],
+      "signalOut": "T1, T2, T3 — three 0/+5 V gate streams that fire in correlated bursts instead of evenly.",
+      "hear": "Rhythmic flurries: three or four fast hits, a breath of silence, then another burst — the classic gurgling Berlin-school cluster groove.",
+      "diagram": "Marbles:\n* t Mode: Clusters (orange)\n* t Bias: ~2 o'clock\n* t Jitter: CCW\n\n- Marbles (T1) t> Kick (Trig)\n- Marbles (T2) c> Sequencer (Clock)\n- Marbles (T3) t> Tom (Trig)"
     },
     {
       "name": "Quantized random bass + lead",
-      "patch": "Learn scale · x Mode independent · X1 → bass VCO (set Bias CCW for low range) · X3 → lead VCO (Bias CW for high range) · T1 → bass env, T3 → lead env · Deja Vu at 75% for slowly-mutating ostinato",
-      "diagram": "Marbles:\n* Scale: user slot\n* x Mode: Independent\n* Deja Vu: 75%\n\n- Marbles (X1) p> Bass VCO (V/Oct)\n- Marbles (X3) p> Lead VCO (V/Oct)\n- Marbles (T1) t> Bass Env (Trig)\n- Marbles (T3) t> Lead Env (Trig)"
+      "patch": "X1 as a low-register bass and X3 as a high-register lead, each with its own gate, for an independent two-voice ostinato.",
+      "steps": [
+        "Hold X SCALE and teach Marbles a pentatonic scale into slot 4; release.",
+        "Press X SCALE until slot 4 LED lights.",
+        "Press x MODE until the green LED is lit (independent — three separate random streams).",
+        "Set STEPS (x) fully CW (fully quantized).",
+        "Set BIAS (x) CCW (~9 o'clock) to shift the distribution low, SPREAD (x) ~1 o'clock.",
+        "Set DEJA VU to ~3 o'clock with LENGTH 8 for a mutating ostinato.",
+        "Patch Marbles X1 → bass VCO V/OCT (its low BIAS centre = bass range).",
+        "Patch Marbles X3 → lead VCO V/OCT through a +2 oct offset (for clearer lead register).",
+        "Patch Marbles T1 → bass envelope TRIG; T3 → lead envelope TRIG.",
+        "Feed each VCO through its own VCA into the mixer."
+      ],
+      "signalOut": "X1 → bass pitch CV (0–5 V, low bias); X3 → lead pitch CV (0–5 V, shifted up externally). T1/T3 are the matching 0/+5 V gates.",
+      "hear": "A slowly-mutating two-part ostinato — pentatonic bass notes below, sparser lead on top — where each voice keeps its own rhythm thanks to T1 and T3 being uncorrelated.",
+      "diagram": "Marbles:\n* Scale: user slot 4 (pentatonic)\n* x Mode: Independent (green)\n* Deja Vu: ~3 o'clock\n* Length: 8\n\n- Marbles (X1) p> Bass VCO (V/Oct)\n- Marbles (X3) p> +2oct Offset p> Lead VCO (V/Oct)\n- Marbles (T1) t> Bass Env (Trig)\n- Marbles (T3) t> Lead Env (Trig)"
     },
     {
       "name": "Divider-mode polyrhythm clock",
-      "patch": "t Mode Divider · master clock into T CLOCK · T1/T2/T3 output different ratios selectable by Bias · feeds three independent sequencers running polyrhythmically in lock · Jitter at zero for pristine timing",
-      "diagram": "Marbles:\n* t Mode: Divider\n* t Jitter: 0\n\n- Master Clock (Out) c> Marbles (T CLOCK)\n- Marbles (T1) c> Sequencer 1 (Clock)\n- Marbles (T2) c> Sequencer 2 (Clock)\n- Marbles (T3) c> Sequencer 3 (Clock)"
+      "patch": "Divider t-mode turns T1/T2/T3 into three related clock divisions of an external master — a bias-sweepable polyrhythm engine.",
+      "steps": [
+        "Press the t MODE button until the red LED is lit (divider).",
+        "Set JITTER (t) fully CCW (zero) for pristine timing.",
+        "Patch your master clock → Marbles T CLOCK. The internal oscillator is now overridden.",
+        "Set BIAS (t) to noon to start; turn it to pick different ratio sets (e.g. 3:4:6 vs 4:5:7).",
+        "Patch Marbles T1 → Sequencer 1 CLOCK IN.",
+        "Patch Marbles T2 → Sequencer 2 CLOCK IN.",
+        "Patch Marbles T3 → Sequencer 3 CLOCK IN.",
+        "Optional: patch a slow LFO → T BIAS CV (attenuverter ~10 o'clock) to morph ratios over time."
+      ],
+      "signalOut": "T1/T2/T3 — three phase-locked 0/+5 V clock streams at different harmonic divisions of T CLOCK. Mult each with a stackable if you need more destinations.",
+      "hear": "Three sequencers stepping at related but different speeds — the classic interlocking polyrhythm feel where phrases line up every few bars.",
+      "diagram": "Marbles:\n* t Mode: Divider (red)\n* t Jitter: 0\n\n- Master Clock (Out) c> Marbles (T CLOCK)\n- Marbles (T1) c> Sequencer 1 (Clock)\n- Marbles (T2) c> Sequencer 2 (Clock)\n- Marbles (T3) c> Sequencer 3 (Clock)"
     },
     {
       "name": "External clock, independent x rate",
-      "patch": "Modular master clock → T CLOCK · separate fast clock → X CLOCK (say, 8× faster) · x draws new values 8× per beat, feeding a quantized VCO for rapid arpeggios over a slow t-section rhythm",
-      "diagram": "Marbles:\n- Master Clock (Out) c> Marbles (T CLOCK)\n- Fast Clock (Out) c> Marbles (X CLOCK)\n- Marbles (T1) t> Envelope (Trig)\n- Marbles (X1) p> VCO (V/Oct)"
+      "patch": "Feeding separate clocks to T CLOCK and X CLOCK lets you run fast arpeggios over a slow drum rhythm.",
+      "steps": [
+        "Patch your main modular clock → Marbles T CLOCK.",
+        "Patch a fast clock (e.g. 8× the main rate, from a clock divider's ×8 output) → Marbles X CLOCK. This breaks the X-from-T normalization.",
+        "Press X SCALE until a user scale is lit, and set STEPS (x) fully CW for full quantization.",
+        "Set SPREAD (x) to ~1 o'clock and BIAS (x) to noon for mid-register.",
+        "Press t MODE until green (Bernoulli); BIAS (t) at noon.",
+        "Patch Marbles T1 → kick TRIG and T3 → snare TRIG for a slow beat.",
+        "Patch Marbles X1 → arp VCO V/OCT.",
+        "Patch Marbles T2 would re-fire on the slow grid — instead, mult the fast X CLOCK into the arp VCA envelope TRIG so each arp note gets an envelope.",
+        "DEJA VU ~3 o'clock, LENGTH 16 to loop the arp while the drums stay free."
+      ],
+      "signalOut": "X1 — fast quantized pitch CV at 8× the t rate, 0–5 V. T1/T3 are the slow 0/+5 V drum gates.",
+      "hear": "A slow Bernoulli kick/snare groove underneath a rapid 8-notes-per-beat in-key arpeggio — the two layers are clock-locked but sit at completely different densities.",
+      "diagram": "Marbles:\n* x Mode: Independent\n* Steps (x): full CW\n\n- Master Clock (Out) c> Marbles (T CLOCK)\n- Fast Clock (Out) c> Marbles (X CLOCK)\n- Marbles (T1) t> Kick (Trig)\n- Marbles (T3) t> Snare (Trig)\n- Fast Clock (Out) c> Arp Env (Trig) // stackable/mult\n- Marbles (X1) p> Arp VCO (V/Oct)"
     }
   ]
 }

@@ -81,17 +81,66 @@
     {
       "name": "Portamento generator",
       "patch": "MIDI-CV → Upper SL In · Out → VCO 1V/oct · Time knob sets glide",
-      "diagram": "A-170:\n* Time (Upper SL): to taste\n- MIDI-CV (CV) p> A-170 (In Upper SL)\n- A-170 (Out Upper SL) p> VCO (1V/oct) // glide amount set by Time"
+      "diagram": "A-170:\n* Time (Upper SL): to taste\n- MIDI-CV (CV) p> A-170 (In Upper SL)\n- A-170 (Out Upper SL) p> VCO (1V/oct) // glide amount set by Time",
+      "steps": [
+        "Patch your MIDI-CV or keyboard pitch CV into the Upper SL In jack.",
+        "Patch Upper SL Out into your VCO's 1V/oct input.",
+        "Start with the Time knob fully counter-clockwise (0 = no glide).",
+        "Play two notes far apart, then slowly turn Time clockwise until the pitch glides noticeably between them.",
+        "Use the Upper SL (not the lower one) for precision pitch — the lower SL has a ~0.5V diode offset that breaks 1V/oct tracking."
+      ],
+      "signalOut": "Out (Upper SL) — smoothed pitch CV that lags behind the incoming notes by the Time setting.",
+      "hear": "Each note slides into the next instead of jumping. Short Time settings feel like a subtle legato; longer settings give a cartoonish glide."
     },
     {
       "name": "AR envelope for bass",
       "patch": "Gate → Lower SL In · Rise/Fall set individually · Out → VCA CV",
-      "diagram": "A-170:\n* Time Range (Lower SL): M\n- Gate Source (Gate) g> A-170 (In Lower SL)\n- A-170 (Out Lower SL) >> VCA (CV) // AR shape from Rise/Fall knobs"
+      "diagram": "A-170:\n* Time Range (Lower SL): M\n- Gate Source (Gate) g> A-170 (In Lower SL)\n- A-170 (Out Lower SL) >> VCA (CV) // AR shape from Rise/Fall knobs",
+      "steps": [
+        "Flip the Time Range switch to M (medium, 0–10s).",
+        "Patch a gate from a sequencer or keyboard into the Lower SL In jack.",
+        "Patch Lower SL Out into your VCA's CV input.",
+        "Set the Rise (up arrow) knob low for a snappy attack.",
+        "Set the Fall (down arrow) knob around 9 o'clock for a short tail.",
+        "Play notes and tweak Rise/Fall until the envelope shape feels musical.",
+        "If the envelope is too slow or too fast overall, switch Time Range to L (faster) or H (slower)."
+      ],
+      "signalOut": "Out (Lower SL) — unipolar AR envelope following each incoming gate (starts from ~0.5V offset, not true 0V).",
+      "hear": "A classic attack-release bass shape. Short Rise gives a punchy pluck; longer Rise turns it into a swell. The Fall controls how long the note rings out."
     },
     {
       "name": "Glissando AM",
       "patch": "Pitch CV → VCO1 direct & via Upper SL → VCO2 (modulator) · produces timbral sweep",
-      "diagram": "A-170:\n- Pitch CV (CV) p> VCO1 (1V/oct)\n- Pitch CV (CV) p> A-170 (In Upper SL)\n- A-170 (Out Upper SL) p> VCO2 (1V/oct) // lagged pitch for AM sweep\n- VCO2 (Out) >> VCO1 (FM/Lin)"
+      "diagram": "A-170:\n- Pitch CV (CV) p> VCO1 (1V/oct)\n- Pitch CV (CV) p> A-170 (In Upper SL)\n- A-170 (Out Upper SL) p> VCO2 (1V/oct) // lagged pitch for AM sweep\n- VCO2 (Out) >> VCA1 (CV) // modulator controls VCA1",
+      "steps": [
+        "Multiple your keyboard or sequencer pitch CV into two destinations.",
+        "Patch one copy straight to VCO1's 1V/oct input (this is the carrier).",
+        "Patch the other copy into the Upper SL In jack.",
+        "Patch Upper SL Out to VCO2's 1V/oct input (this is the modulator).",
+        "Tune VCO1 and VCO2 to a harmonically related interval (octave, fifth).",
+        "Patch VCO2's output into a VCA CV input; feed VCO1 through that VCA.",
+        "Set the Upper SL Time knob so the glide is shorter than your shortest note.",
+        "Play notes: VCO1 jumps instantly, VCO2 glides, producing a timbral sweep on each note."
+      ],
+      "signalOut": "Out (Upper SL) — pitch CV that lags the played note, sent to VCO2 so the modulator catches up to the carrier during each note.",
+      "hear": "Every new note starts with a bright AM-style warble that settles into a clean tone as VCO2 arrives at pitch. Shorter Time = quick chirp; longer Time = longer sweep."
+    },
+    {
+      "name": "Complex envelope from clock sequencer",
+      "patch": "A-161 outputs trigger Upper SL and Lower SL on one or more A-170s · envelopes mixed in A-138a · complex evolving shape",
+      "diagram": "A-170:\n* Time (Upper SL): slow\n* Time Range (Lower SL): M\n\nA-161:\n\nA-138a:\n\n- A-161 (Out 1) g> A-170 (In Upper SL)\n- A-161 (Out 8) g> A-170 (In Lower SL)\n- A-170 (Out Upper SL) >> A-138a (In 1)\n- A-170 (Out Lower SL) >> A-138a (In 4)\n- A-138a (Out) >> VCF (Cutoff)",
+      "steps": [
+        "Feed an LFO or MIDI clock into the A-160 clock divider, which drives the A-161 sequencer.",
+        "Patch A-161 output 1 (gate) into the Upper SL In jack.",
+        "Patch A-161 output 8 (or any other) into the Lower SL In jack.",
+        "Set the Upper SL Time knob for a long, slow ramp.",
+        "Set Lower SL Time Range to M and dial in contrasting Rise/Fall times.",
+        "Patch both A-170 outputs into separate inputs of a linear mixer like the A-138a.",
+        "Patch the mixer output to a VCF cutoff or VCA CV.",
+        "Add more A-170s on other A-161 outputs to build richer stacked envelopes."
+      ],
+      "signalOut": "A-138a Out — summed stack of staggered AR/slew envelopes, one per A-161 output you used.",
+      "hear": "A continuously evolving CV landscape. Each sequencer step fires a different envelope, and overlapping tails at the mixer create shapes you cannot draw with a single envelope generator."
     }
   ]
 }

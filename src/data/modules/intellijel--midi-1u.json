@@ -98,22 +98,66 @@
   "patchIdeas": [
     {
       "name": "Basic mono synth",
-      "patch": "PITCH → VCO 1V/oct · GATE → envelope trigger · VEL → VCA CV for velocity-sensitive dynamics",
+      "patch": "PITCH → VCO, GATE → envelope, VEL → VCA for velocity dynamics.",
+      "steps": [
+        "Make sure MIDI is reaching the case (USB or DIN into the MIDI IN Jacks / 7U / Palette).",
+        "Press LEARN once — the button glows solid blue.",
+        "On your MIDI controller, play a note on the channel you want (e.g. Ch 1). LEARN turns off; Synth 1 is locked to that channel.",
+        "Patch MIDI 1U PITCH → VCO 1V/oct input.",
+        "Patch MIDI 1U GATE → envelope Trig/Gate in.",
+        "Patch the envelope Out → VCA CV in.",
+        "Patch MIDI 1U VEL → a second VCA CV in (or the same VCA's second CV) so loud notes get louder.",
+        "Play the keyboard — each note should track pitch and open the envelope."
+      ],
+      "signalOut": "PITCH: ±5V 1V/oct · GATE: 0–5V while note held · VEL: 0–5V proportional to velocity.",
+      "hear": "A standard monosynth that tracks your keyboard and gets louder the harder you play.",
       "diagram": "MIDI 1U:\n- MIDI 1U (PITCH) p> VCO (1V/oct)\n- MIDI 1U (GATE) g> Envelope (Trig)\n- MIDI 1U (VEL) >> VCA (CV)\n- Envelope (Out) >> VCA (CV) // velocity-sensitive dynamics"
     },
     {
       "name": "Dual synth layering",
-      "patch": "Dual Mode · Synth 1 PITCH/GATE → VCO 1 · Synth 2 PITCH (MOD jack)/GATE (TRIG jack) → VCO 2",
+      "patch": "Dual Mode repurposes MOD/CC/TRIG as PITCH/VEL/GATE for Synth 2.",
+      "steps": [
+        "Long-press LEARN (>2 sec) — LEARN glows yellow, module is now in Dual Mode.",
+        "Press LEARN once (it turns red), then play a note on your Synth 1 channel (e.g. Ch 1). LEARN returns to yellow.",
+        "Double-press LEARN (it flashes red), then play a note on your Synth 2 channel (e.g. Ch 2). LEARN returns to yellow.",
+        "Patch PITCH → VCO 1 (1V/oct) and GATE → Env 1 Trig for Synth 1.",
+        "Patch MOD → VCO 2 (1V/oct) — this is now Synth 2's pitch.",
+        "Patch TRIG → Env 2 Trig — this is now Synth 2's gate.",
+        "Optionally patch VEL → VCA 1 CV and CC → VCA 2 CV (CC is Synth 2 velocity in Dual Mode).",
+        "Play both channels from your DAW/controller — two independent mono voices."
+      ],
+      "signalOut": "PITCH & MOD: ±5V 1V/oct (Synth 1 & 2 pitch) · GATE & TRIG: 0–5V (Synth 1 & 2 gates).",
+      "hear": "Two separate monosynths respond to two MIDI channels — great for bass + lead, or layered unison with detuned VCOs.",
       "diagram": "MIDI 1U:\n* Mode: Dual (long-press LEARN)\n- MIDI 1U (PITCH) p> VCO 1 (1V/oct)\n- MIDI 1U (GATE) g> Env 1 (Trig)\n- MIDI 1U (MOD) p> VCO 2 (1V/oct) // Synth 2 pitch in Dual Mode\n- MIDI 1U (TRIG) g> Env 2 (Trig) // Synth 2 gate in Dual Mode"
     },
     {
-      "name": "MIDI clock sync",
-      "patch": "CLK (div=/24 = quarter notes) → sequencer clock in · RST → sequencer reset",
+      "name": "MIDI clock to sequencer",
+      "patch": "CLK at /24 = quarter notes; RST resets the sequencer on MIDI Start/Reset.",
+      "steps": [
+        "Start MIDI clock from your DAW or hardware sequencer into the case's MIDI IN.",
+        "Press CLK+ repeatedly until the LED blinks at quarter-note speed — this is the /24 setting.",
+        "Patch MIDI 1U CLK → your sequencer's Clock In.",
+        "Patch MIDI 1U RST → your sequencer's Reset input (RST outputs a trigger on MIDI Start/Reset by default).",
+        "Press Play in your DAW — the sequencer should snap to beat 1 and advance one step per quarter note.",
+        "If you want half notes or 16ths, press CLK+ again to cycle (/48 = half, /6 = 16th, /12 = 8th, etc.)."
+      ],
+      "signalOut": "CLK: 0–5V gate pulses at the selected division · RST: 0–5V trigger on MIDI Start/Reset.",
+      "hear": "External sequencers lock to your DAW's tempo and restart cleanly on every play.",
       "diagram": "MIDI 1U:\n* CLK+: /24 (quarter notes)\n- MIDI 1U (CLK) c> Sequencer (Clock In)\n- MIDI 1U (RST) t> Sequencer (Reset)"
     },
     {
       "name": "Mod wheel filter sweep",
-      "patch": "LEARN MOD+CH · move mod wheel · MOD jack → filter cutoff CV",
+      "patch": "Assign MOD jack to mod wheel (CC 1) and send it to filter cutoff.",
+      "steps": [
+        "Set up a basic mono patch first: PITCH → VCO, GATE → envelope → VCA.",
+        "Press LEARN twice — the button flashes blue (LEARN MOD+CH mode).",
+        "On your controller, move the mod wheel on the channel you want (e.g. Ch 1). LEARN turns off; MOD jack is now assigned to CC 1.",
+        "Patch MIDI 1U MOD → filter cutoff CV input.",
+        "Set the filter cutoff manually to a fairly closed position so there's room to open up.",
+        "Play and push the mod wheel up — cutoff opens. Pull it down — cutoff closes."
+      ],
+      "signalOut": "MOD: 0–5V unipolar (default) proportional to mod wheel position.",
+      "hear": "Hands-on filter sweep from the mod wheel while you play — classic expressive mono-synth performance.",
       "diagram": "MIDI 1U:\n* LEARN: MOD+CH (flashing blue, move mod wheel)\n- MIDI 1U (PITCH) p> VCO (1V/oct)\n- MIDI 1U (GATE) g> Envelope (Trig)\n- MIDI 1U (MOD) >> Filter (Cutoff) // mod wheel sweeps filter"
     }
   ]

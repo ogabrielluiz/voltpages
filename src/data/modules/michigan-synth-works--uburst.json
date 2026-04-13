@@ -3,134 +3,247 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "Parasites"
+    "firmwareVersion": "Parasites",
+    "sources": [
+      "https://michigansynthworks.com/uburst/",
+      "https://mqtthiqs.github.io/parasites/clouds.html",
+      "https://mutable-instruments.net/modules/clouds/manual/"
+    ]
   },
   "slug": "michigan-synth-works--uburst",
   "name": "uBurst",
   "manufacturer": "Michigan Synth Works",
   "hp": 8,
   "tags": ["GRANULAR", "EFFECTS", "DELAY", "REVERB"],
-  "description": "8HP micro clone of Mutable Instruments Clouds running Parasites firmware. Four modes: Granular, Pitch Shifter/Reverb, Looping Delay, and Spectral processing.",
+  "description": "8HP micro-clone of Mutable Instruments Clouds running Parasites firmware. Same DSP as Clouds (stereo granular texture synth with a rolling buffer) plus five alternate engines: Pitch-shifter/Time-stretcher, Looping Delay, Spectral Madness, Oliverb (shimmer reverb), and Resonestor (Karplus-Strong string/chord resonator).",
   "controls": [
     {
       "name": "Position",
       "scope": "global",
-      "description": "Selects playback position within the buffer. CV controllable.",
-      "detail": "CCW: buffer start · CW: buffer end · CV input for modulation"
+      "description": "Grain playhead location within the rolling buffer. CW travels back in time. Function changes per mode (Pre-delay in delay modes, Timbre & Duration in Resonestor).",
+      "detail": "0-100% of buffer · CV ±5V"
     },
     {
       "name": "Size",
       "scope": "global",
-      "description": "Grain or window size. Larger values produce longer, smoother grains.",
-      "detail": "CCW: short grains · CW: long grains · CV controllable"
+      "description": "Grain duration. CCW very short spikes; CW longer grains. Tonal at audio-rate modulation.",
+      "detail": "~1ms to ~1s · CV ±5V · audio-rate accepted"
     },
     {
       "name": "Pitch",
       "scope": "global",
-      "description": "Grain transposition. Center = unity pitch. V/Oct tracking via V/Oct input.",
-      "detail": "Center: no pitch shift · CV via V/Oct input"
+      "description": "Grain transposition ±2 octaves. Noon = original pitch. V/Oct tracked via V/Oct input.",
+      "detail": "-24 to +24 semitones · 1V/Oct CV"
     },
     {
       "name": "Density",
       "scope": "global",
-      "description": "Grain density and triggering rate. Controls how many grains are generated per second.",
-      "detail": "CCW: sparse · CW: dense · negative values: reverse grains"
+      "description": "Grain rate in Granular mode. Noon = no grains generated. CW = regular (constant) rate, CCW = Poisson/random rate. Function remaps per alternate mode (Diffusion, Temporal Quantisation, Decay, etc.).",
+      "detail": "CCW: random · noon: silent · CW: regular · CV ±5V"
     },
     {
       "name": "Texture",
       "scope": "global",
-      "description": "Grain window shape and overlap. Shapes spectral texture from smooth to grainy.",
-      "detail": "CCW: smooth/sine window · CW: harsh/square window · CV controllable"
+      "description": "Grain envelope shape. Morphs between square, ramp-up, ramp-down, triangle, and triangle-with-diffuser windows. CCW is sharper (more glitch); CW is smoother.",
+      "detail": "CV ±5V · function changes per mode (Filter, Spectral Quant., Diffusion, Dampening)"
     },
     {
       "name": "Blend",
       "scope": "global",
-      "description": "Wet/dry mix between dry input signal and processed granular output.",
-      "detail": "CCW: fully dry · CW: fully wet"
+      "description": "Multi-function knob selected by short-pressing the Quality/Blend button. Cycles through Dry/Wet, Stereo Spread, Feedback, and Reverb amount. The LED color under the knob indicates the current slot.",
+      "detail": "4 slots cycled by short-press · CV ±5V follows selected slot"
     },
     {
       "name": "Freeze",
       "scope": "global",
-      "description": "Button that freezes the audio buffer, looping captured audio indefinitely.",
-      "detail": "Press: freeze · Release: resume recording · also triggerable via gate input"
+      "description": "Latching button. Press once to stop buffer recording (LED lit); press again to release. Grains keep scrubbing the frozen audio. Gate input mirrors the button.",
+      "detail": "Latching · also gated via FREEZE input"
+    },
+    {
+      "name": "Quality / Blend-select button",
+      "scope": "global",
+      "description": "Small button right of the Blend knob. Short-press: cycles Blend slot. 1s hold then press: cycles audio quality (stereo 1s / mono 2s / lo-fi stereo 4s / lo-fi mono 8s). 5s hold then press: cycles the six alternate engines.",
+      "detail": "Short press: Blend slot · 1s hold: quality · 5s hold: mode"
     }
   ],
   "inputs": [
-    { "name": "Left In", "description": "Left (mono) audio input. Normalled to Right input when Right is unpatched.", "voltage": "±5V" },
-    { "name": "Right In", "description": "Right audio input for stereo operation.", "voltage": "±5V" },
-    { "name": "Trigger", "description": "Triggers a single grain burst or freeze toggle depending on mode.", "voltage": ">2V trigger" },
-    { "name": "V/Oct", "description": "1V/oct pitch input for transposition of grains relative to Pitch knob.", "voltage": "±5V" },
-    { "name": "Position CV", "description": "CV modulates playback Position in the buffer.", "voltage": "±5V" },
-    { "name": "Size CV", "description": "CV modulates grain Size.", "voltage": "±5V" },
-    { "name": "Density CV", "description": "CV modulates grain Density.", "voltage": "±5V" },
-    { "name": "Texture CV", "description": "CV modulates grain Texture.", "voltage": "±5V" }
+    { "name": "In L", "description": "Left audio input. Normalled to Right input when Right is unpatched (mono operation).", "voltage": "±8V audio", "normalizedTo": "In L feeds In R when unpatched" },
+    { "name": "In R", "description": "Right audio input for stereo operation.", "voltage": "±8V audio" },
+    { "name": "Freeze", "description": "Gate input. High = buffer frozen, low = recording. Mirrors the Freeze button.", "voltage": ">1V gate" },
+    { "name": "Trigger", "description": "Trigger/Clock input. In Granular mode fires a single grain (with Density at noon). In delay/pitch-shifter modes acts as clock for delay-time sync. In Spectral Madness picks a random glitch algorithm. In Resonestor switches the active voice and fires a burst.", "voltage": ">1V trigger" },
+    { "name": "V/Oct", "description": "1V/oct pitch input transposing grain playback (added to Pitch knob).", "voltage": "-2V to +2V" },
+    { "name": "Position CV", "description": "CV for buffer Position (or Pre-delay / Timbre & Duration depending on mode).", "voltage": "±5V" },
+    { "name": "Size CV", "description": "CV for grain Size (or Spectral Warp / Reverb Size / Chord depending on mode). Accepts audio-rate.", "voltage": "±5V" },
+    { "name": "Density CV", "description": "CV for grain Density (or Diffusion / Temporal Quant. / Decay depending on mode).", "voltage": "±5V" },
+    { "name": "Texture CV", "description": "CV for Texture (or LP/HP Filter / Spectral Quant. / Dampening depending on mode).", "voltage": "±5V" },
+    { "name": "Blend CV", "description": "CV for the currently selected Blend slot (Dry/Wet, Spread, Feedback, or Reverb).", "voltage": "±5V" }
   ],
   "outputs": [
-    { "name": "Left Out", "description": "Left channel processed audio output.", "voltage": "±5V" },
-    { "name": "Right Out", "description": "Right channel processed audio output.", "voltage": "±5V" }
+    { "name": "Out L", "description": "Left channel processed audio output.", "voltage": "±8V" },
+    { "name": "Out R", "description": "Right channel processed audio output.", "voltage": "±8V" }
   ],
   "behaviors": [
     {
-      "name": "Granular Mode",
-      "trigger": "audio in + knobs",
-      "description": "Default mode. Records incoming audio into a buffer and reads it back as overlapping grains. Position, Size, Density, and Texture all affect granular playback."
+      "name": "Granular Processing (default)",
+      "trigger": "default on power-up",
+      "description": "Stereo grain cloud reading from the rolling buffer. Position scans, Size sets grain length, Density sets rate (noon = no grains, CCW = random/Poisson, CW = constant), Texture morphs the grain window."
     },
     {
-      "name": "Pitch Shifter / Reverb Mode (Parasites)",
-      "trigger": "mode button",
-      "description": "Uses grain engine for pitch shifting and reverb-like diffusion. Pitch knob shifts without affecting speed. Long Size and high Density creates lush reverb tails."
+      "name": "Pitch-shifter / Time-stretcher mode",
+      "trigger": "hold Quality button 5s until yellow, then press once",
+      "description": "Two overlapping grain windows spliced to the input's dominant period. Size controls window length, Pitch transposes independently of time, Density becomes Diffusion, Texture becomes LP/HP Filter. Position becomes a clock divider/multiplier for pre-delay when a clock is patched to Trigger."
     },
     {
-      "name": "Looping Delay Mode (Parasites)",
-      "trigger": "mode button",
-      "description": "Transforms module into a looping delay with granular characteristics. Position sets delay tap, Density controls feedback."
+      "name": "Looping Delay mode",
+      "trigger": "5s hold Quality, then press twice",
+      "description": "Pitch-shifting looping delay. Position is pre-delay, Size is delay-time window, Pitch transposes repeats (pitch at 0 bypasses the pitch-shifter for clean delay), Density is Diffusion, Texture is LP/HP Filter. Trigger syncs delay time to external clock."
     },
     {
-      "name": "Spectral Mode (Parasites)",
-      "trigger": "mode button",
-      "description": "FFT-based spectral processing. Freezes and manipulates frequency content. Position scrubs spectral frames; Texture blurs frequency bins."
+      "name": "Spectral Madness mode",
+      "trigger": "5s hold Quality, then press three times",
+      "description": "FFT phase vocoder. Position scans spectral frames, Spectral Warp (Size) shifts/wraps bins, Temporal Quantisation (Density) controls FFT refresh rate (past noon adds phase randomization), Spectral Quantisation (Texture) sets bin resolution. Trigger fires a random glitch algorithm (spectral hold, shift-and-alias, kill largest harmonic, or nasty high-pass)."
     },
     {
-      "name": "Freeze",
-      "trigger": "Freeze button or gate",
-      "description": "Halts buffer recording, looping the captured audio. All grain parameters continue to modulate playback of the frozen buffer."
+      "name": "Oliverb mode",
+      "trigger": "5s hold Quality, then press four times",
+      "description": "Shimmer reverb. Pre-delay (Position), Reverb Size (Size), Pitch Shift fed back into the reverb loop (±1 oct, CW = classic shimmer), Decay (Density, past 3 o'clock self-oscillates), Diffusion (Texture). Blend slots remap to Dry/Wet, Dampening, LFO Speed, LFO Amount."
+    },
+    {
+      "name": "Resonestor mode",
+      "trigger": "5s hold Quality, then press five times",
+      "description": "Karplus-Strong resonator. Timbre & Duration (Position) shapes the noise burst, Chord (Size) selects 16 chord types, Pitch sets base frequency (noon = A3/220Hz), Decay (Density), Dampening (Texture). Burst input (Trigger) switches between two voices (duophony). Blend slots remap to Dry/Wet, Stereo split, Scatter, Harmonics."
+    },
+    {
+      "name": "Freeze captures the buffer",
+      "trigger": "Freeze button or Freeze gate",
+      "description": "Stops buffer recording. Grains keep reading the last-captured audio. Combine with slow Position scrub for infinite-hold ambient effects."
+    },
+    {
+      "name": "Audio-rate Size modulation",
+      "trigger": "VCO into Size CV",
+      "description": "Modulating grain Size at audio rate produces FM-like sidebands and glitch artifacts — classic Clouds/uBurst sound."
+    },
+    {
+      "name": "Audio quality / lo-fi buffer",
+      "trigger": "1s hold Quality, then press to cycle",
+      "description": "Four settings trade sample rate and bit depth for buffer length: 32kHz 16-bit stereo 1s · 32kHz 16-bit mono 2s · 16kHz 8-bit stereo 4s · 16kHz 8-bit mono 8s. Lower settings add lo-fi crunch and a longer capture window."
     }
   ],
   "patchIdeas": [
     {
       "name": "Spectral freeze drone",
-      "patch": "Audio in · Freeze button held · Position + Size sweep frozen buffer · Blend full wet · infinite evolving drone",
-      "diagram": "uBurst:\n* Mode: Spectral\n* Blend: full wet\n* Freeze: held\n- Source (Out) -> uBurst (Left In)\n- LFO (Out) >> uBurst (Position CV) // slow sweep\n- LFO (Out) >> uBurst (Size CV)\n- uBurst (Left Out) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
+      "patch": "Spectral Madness mode with Freeze held and slow LFOs on Position and Size — infinite evolving harmonic drone.",
+      "steps": [
+        "Hold the small Quality/Blend-select button (right of the Blend knob) for 5 seconds until the Blend LED turns yellow, then short-press Quality three times to land on Spectral Madness (LED indicates the mode).",
+        "Short-press Quality until the Blend LED is green (Dry/Wet slot), turn the Blend knob fully CW (all wet).",
+        "Starting positions: Position noon, Spectral Warp (Size) at noon, Pitch at noon, Temporal Quantisation (Density) at noon, Spectral Quantisation (Texture) at noon.",
+        "Patch your source (pad, guitar, field rec) -> uBurst In L. In R is normalled from In L for mono.",
+        "Play a few seconds of source, then press Freeze. The LED lights and the buffer stops recording.",
+        "Patch a slow LFO (cycle ~30s) -> uBurst Position CV — sweeps through spectral frames.",
+        "Patch a second slow LFO (cycle ~15s) -> uBurst Size CV — animates the warp.",
+        "Patch uBurst Out L -> Mixer L and Out R -> Mixer R."
+      ],
+      "signalOut": "Out L / Out R — stereo phase-vocoder drone, ±8V, stays frozen until you release Freeze.",
+      "hear": "A continuous harmonic wash where partials drift in and out as the Warp LFO moves. The frame-scan LFO keeps it from locking into one tone — you hear the source's harmonics smeared across pitch.",
+      "diagram": "uBurst:\n* Mode: Spectral Madness (5s hold Quality + 3 presses)\n* Freeze: ON\n* Blend slot: Dry/Wet, full CW\n- Source (Out) -> uBurst (In L)\n- LFO 1 (Slow) >> uBurst (Position CV)\n- LFO 2 (Slower) >> uBurst (Size CV)\n- uBurst (Out L) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
     },
     {
       "name": "Pitched reverb",
-      "patch": "Mode: Pitch Shifter/Reverb · Density low · Size medium · Blend 70% wet · shimmer wash",
-      "diagram": "uBurst:\n* Mode: Pitch Shifter/Reverb\n* Density: low\n* Size: medium\n* Blend: 70% wet\n- VCO (Out) -> uBurst (Left In)\n- Quantizer (Out) p> uBurst (V/Oct) // pitched shimmer\n- uBurst (Left Out) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
+      "patch": "Pitch-shifter/Time-stretcher mode with a quantized melody on V/Oct and heavy reverb in the Blend slot.",
+      "steps": [
+        "Hold Quality 5s until yellow LED, then short-press Quality once to select Pitch-shifter/Time-stretcher mode.",
+        "Short-press Quality until the Blend LED is yellow (Reverb slot), set the Blend knob to ~3 o'clock for a wet tail.",
+        "Size at ~1 o'clock (medium window), Diffusion (Density) at ~1 o'clock, LP/HP Filter (Texture) at noon.",
+        "Pitch knob at noon — V/Oct will set the transposition.",
+        "Patch a VCO or sampled voice -> uBurst In L.",
+        "Patch a quantizer or sequencer pitch CV -> uBurst V/Oct — each step re-pitches the grain engine.",
+        "Patch uBurst Out L -> Mixer L and Out R -> Mixer R."
+      ],
+      "signalOut": "Out L / Out R — transposed source with long reverb tail, ±8V stereo.",
+      "hear": "Each V/Oct step transposes the whole wet signal by that interval — the reverb tail climbs and falls with the sequence like a haunted choir.",
+      "diagram": "uBurst:\n* Mode: Pitch-shifter/Time-stretcher (5s hold + 1 press)\n* Blend slot: Reverb (yellow), ~3 o'clock\n* Size: ~1 o'clock\n- VCO (Out) -> uBurst (In L)\n- Quantizer (Out) p> uBurst (V/Oct)\n- uBurst (Out L) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
     },
     {
       "name": "Granular stutter",
-      "patch": "Mode: Granular · Density high · Size very small · Trigger input from clock · rhythmic micro-slice effect",
-      "diagram": "uBurst:\n* Mode: Granular\n* Density: high\n* Size: very small\n- Source (Out) -> uBurst (Left In)\n- Clock (Out) c> uBurst (Trigger) // rhythmic slices\n- uBurst (Left Out) -> Output (In L)\n- uBurst (Right Out) -> Output (In R)"
+      "patch": "One grain per clock pulse with Density at noon — rhythmic micro-slicing of incoming audio.",
+      "steps": [
+        "Confirm Granular mode (default on power-up, Blend LED green). If unsure, hold Quality 5s and short-press to cycle back to Granular.",
+        "Short-press Quality until Blend LED is green (Dry/Wet slot), turn Blend fully CW (all wet so only grains are heard).",
+        "Set Density to exactly noon — at this setting no grains spawn automatically; only external triggers fire grains.",
+        "Size at ~10 o'clock (very short grains), Texture CCW for sharp/glitchy windows, Pitch at noon.",
+        "Patch your source (drum loop, vocal) -> uBurst In L.",
+        "Patch a clock or rhythmic gate (16th notes work well) -> uBurst Trigger — each pulse fires one grain.",
+        "Patch uBurst Out L -> Output L and Out R -> Output R."
+      ],
+      "signalOut": "Out L / Out R — one grain per clock pulse, ±8V, rhythmically stuttered source.",
+      "hear": "Your source chopped into tiny slices on every clock step — a glitchy rhythmic stutter. Shorter Size = clickier slices; wider Texture = smoother micro-slices.",
+      "diagram": "uBurst:\n* Mode: Granular\n* Density: noon (1 grain per TRIG)\n* Size: very short\n* Blend slot: Dry/Wet, full CW\n- Source (Out) -> uBurst (In L)\n- Clock (Out) c> uBurst (Trigger)\n- uBurst (Left Out) -> Output (In L)\n- uBurst (Right Out) -> Output (In R)"
     },
     {
       "name": "Looping delay with degradation",
-      "patch": "Mode: Looping Delay · Density = feedback · Texture = filter · Size = delay time · self-degrading loops",
-      "diagram": "uBurst:\n* Mode: Looping Delay\n- Source (Out) -> uBurst (Left In)\n- LFO (Out) >> uBurst (Texture CV) // filter motion\n- Envelope (Out) >> uBurst (Density CV) // feedback swells\n- uBurst (Left Out) -> Output (In L)\n- uBurst (Right Out) -> Output (In R)"
+      "patch": "Looping Delay mode with LFO on the filter and envelope-swept feedback — decaying dub delays.",
+      "steps": [
+        "Hold Quality 5s, then short-press twice to enter Looping Delay mode.",
+        "Short-press Quality until Blend LED is orange (Feedback slot), Blend knob at ~2 o'clock for 3-4 audible repeats.",
+        "Position (Pre-delay) at noon, Size at noon (~medium delay time), Pitch at 0 to bypass the pitch-shifter for clean delays.",
+        "Diffusion (Density) at ~1 o'clock, LP/HP Filter (Texture) at noon as a starting point.",
+        "Patch your source -> uBurst In L.",
+        "Patch a slow LFO -> uBurst Texture CV for filter motion that sweeps each repeat.",
+        "Patch an envelope (triggered by your rhythm) -> uBurst Density CV for diffusion swells.",
+        "Patch uBurst Out L -> Output L and Out R -> Output R."
+      ],
+      "signalOut": "Out L / Out R — dry + delayed source with moving filter and diffusion, ±8V.",
+      "hear": "A dub delay that slowly filters down and smears each repeat. The LFO darkens/brightens the tail; the envelope makes each hit bloom into a diffused cloud.",
+      "diagram": "uBurst:\n* Mode: Looping Delay (5s hold + 2 presses)\n* Blend slot: Feedback (orange), ~2 o'clock\n* Pitch: 0 (bypass)\n- Source (Out) -> uBurst (In L)\n- LFO (Out) >> uBurst (Texture CV)\n- Envelope (Out) >> uBurst (Density CV)\n- uBurst (Left Out) -> Output (In L)\n- uBurst (Right Out) -> Output (In R)"
     },
     {
       "name": "Freeze-chopped reverb tail",
-      "patch": "Mode: Granular · Desmodus Versio reverb feeds Left In · euclidean gate pattern drives Trigger (freeze toggle) · LFO modulates Position for drift inside each freeze window · Blend full wet · stuttered rhythmic reverb gating with evolving spectral drift between chops",
-      "diagram": "uBurst:\n* Mode: Granular\n* Blend: full wet\n- Desmodus Versio (Out L) -> uBurst (Left In) // reverb tail source\n- Euclidean Gate (Out) t> uBurst (Trigger) // freeze toggle chops tail\n- LFO (Out) >> uBurst (Position CV) // drift inside freeze windows\n- uBurst (Left Out) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
+      "patch": "Reverb feeds uBurst in Granular mode, euclidean gates toggle Freeze, LFO drifts Position inside each freeze.",
+      "steps": [
+        "Confirm Granular mode (Blend LED green).",
+        "Short-press Quality until Blend LED is green (Dry/Wet), Blend knob full CW (all wet).",
+        "Position at noon, Size at ~1 o'clock, Density at ~2 o'clock (thick cloud), Texture at noon.",
+        "Patch an external reverb (e.g. Desmodus Versio) Left Out -> uBurst In L.",
+        "Patch a euclidean gate sequencer -> uBurst Freeze input — each pulse latches Freeze on/off, chopping the tail.",
+        "Patch a slow LFO (cycle ~4s) -> uBurst Position CV — drifts the playhead during each frozen window.",
+        "Patch uBurst Out L -> Mixer L and Out R -> Mixer R."
+      ],
+      "signalOut": "Out L / Out R — gated granular reverb tail, ±8V, drifts while each freeze window holds.",
+      "hear": "The reverb tail gets chopped into rhythmic blooms. During each frozen chunk the LFO scrubs Position so the tail still mutates slightly — rhythmic stutters with living content underneath.",
+      "diagram": "uBurst:\n* Mode: Granular\n* Blend slot: Dry/Wet, full CW\n- Desmodus Versio (Out L) -> uBurst (In L)\n- Euclidean Gate (Out) t> uBurst (Freeze)\n- LFO (Out) >> uBurst (Position CV)\n- uBurst (Left Out) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
     },
     {
       "name": "Parasites looping delay disintegration",
-      "patch": "Mode: Looping Delay (Parasites) · Density at ~2 o'clock (critical survival feedback) · slow LFO on Position for warble that decays over time · Texture CW for lo-fi grit · Size medium · loop slowly falls apart through pitch warble and digital erosion",
-      "diagram": "uBurst:\n* Mode: Looping Delay (Parasites)\n* Density: ~2 o'clock · Size: medium · Texture: CW (lo-fi)\n- Source (Out) -> uBurst (Left In)\n- Slow LFO (Out) >> uBurst (Position CV) // warble decays over time\n- uBurst (Left Out) -> Output (In L)\n- uBurst (Right Out) -> Output (In R) // loop disintegrates"
+      "patch": "Looping Delay with feedback near runaway, slow Position warble, and lo-fi buffer — the loop falls apart.",
+      "steps": [
+        "Hold Quality 5s then press twice for Looping Delay mode.",
+        "Hold Quality 1s then short-press until the 3rd quality LED (16kHz 8-bit stereo, 4s buffer) lights red — lo-fi crunch plus a longer buffer.",
+        "Short-press Quality until Blend LED is orange (Feedback slot), Blend knob at ~2 o'clock (just shy of runaway).",
+        "Position (Pre-delay) at noon, Size at ~1 o'clock, Pitch at 0 to bypass the pitch-shifter, Diffusion (Density) at ~1 o'clock, LP/HP Filter (Texture) fully CW (bright/HP).",
+        "Patch your source -> uBurst In L. Play a few seconds, then press Freeze to lock the loop.",
+        "Patch a very slow LFO (cycle ~20s) -> uBurst Position CV — warble detunes repeats slowly.",
+        "Patch uBurst Out L -> Output L and Out R -> Output R.",
+        "Nudge Feedback CCW if it screams; CW to revive."
+      ],
+      "signalOut": "Out L / Out R — self-feeding, warbling, bit-crushed loop, ±8V.",
+      "hear": "The loop starts recognizable, then bit-crush grit and slow pitch warble eat it from the inside — each repeat slightly more damaged until it collapses into abstract texture.",
+      "diagram": "uBurst:\n* Mode: Looping Delay\n* Quality: 16kHz 8-bit stereo (4s)\n* Blend slot: Feedback (orange), ~2 o'clock\n* Freeze: ON (after capture)\n- Source (Out) -> uBurst (In L)\n- Slow LFO (Out) >> uBurst (Position CV)\n- uBurst (Left Out) -> Output (In L)\n- uBurst (Right Out) -> Output (In R)"
     },
     {
       "name": "Clouds-frozen Rings excitation",
-      "patch": "Mode: Granular · Freeze held after capturing 1s drum loop · VCO at audio rate modulates Position CV for FM-style spectral morphing of frozen buffer · uBurst output feeds Resonate IN as continuous texture exciter · frozen grains become living exciter for sympathetic strings",
-      "diagram": "uBurst:\n* Mode: Granular\n* Freeze: held (1s drum loop captured)\n- Drums (Out) -> uBurst (Left In)\n- VCO (Out) >> uBurst (Position CV) // audio-rate spectral morph\n- uBurst (Left Out) -> Resonate (IN) // frozen grains excite strings\n- Resonate (ODD) -> Mixer (In L)\n- Resonate (EVEN) -> Mixer (In R)"
+      "patch": "Capture a drum loop, freeze it, modulate Position at audio rate, use the grains to excite Rings.",
+      "steps": [
+        "Confirm Granular mode (Blend LED green).",
+        "Short-press Quality until Blend LED is green (Dry/Wet), Blend knob full CW (all wet grains, no dry).",
+        "Position at noon, Size at ~11 o'clock (small grains), Density at ~2 o'clock (dense cloud), Texture at noon.",
+        "Patch a 1-bar drum loop -> uBurst In L. Let one bar record, then press Freeze.",
+        "Patch a VCO square wave (100-500Hz) -> uBurst Position CV — audio-rate scrubbing creates FM-metallic spectral morphing.",
+        "Patch uBurst Out L -> Rings IN (excitation input).",
+        "Patch Rings ODD -> Mixer L and EVEN -> Mixer R."
+      ],
+      "signalOut": "Rings ODD/EVEN — sympathetic string resonance excited by the frozen, audio-rate-scrubbed grains, ±8V stereo.",
+      "hear": "Rings rings like struck strings, but the 'mallet' is a frozen drum loop being scrubbed at audio rate — a continuous metallic hum whose pitch tracks the VCO, harmonics tracking the drums underneath.",
+      "diagram": "uBurst:\n* Mode: Granular\n* Freeze: ON (1-bar drum capture)\n* Blend slot: Dry/Wet, full CW\n- Drums (Out) -> uBurst (In L)\n- VCO (Square) >> uBurst (Position CV)\n- uBurst (Left Out) -> Rings (IN)\n- Rings (ODD) -> Mixer (In L)\n- Rings (EVEN) -> Mixer (In R)"
     }
   ]
 }

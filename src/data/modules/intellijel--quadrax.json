@@ -8,7 +8,7 @@
   "slug": "intellijel--quadrax",
   "name": "Quadrax",
   "manufacturer": "Intellijel",
-  "hp": 18,
+  "hp": 14,
   "tags": ["ENVELOPE", "LFO", "FUNCTION", "RANDOM", "TRIGGER"],
   "description": "4-channel CV-controllable function generator. Each channel independently operates as AD/AHR envelope, cycling LFO, pulse burst generator, or morphing bipolar LFO. Channels chainable via flexible link options.",
   "controls": [
@@ -39,19 +39,19 @@
     {
       "name": "LINK/CV Button",
       "scope": "CH 1–4",
-      "description": "Short press: cycles channel link mode (No Link, Trigger, EOR, EOF, Multiple). Long press: enters CV Assignment mode.",
+      "description": "Short press cycles link mode (No Link, Trigger, EOR, EOF). Long press enters CV Assignment mode. If own TRIG is also patched, link source + TRIG are OR'd (Multiple Triggers).",
       "detail": "CH2 triggered by CH1 · CH3 by CH2 · CH4 by CH3 · CH1 by CH4"
     },
     {
       "name": "MODE/DESTINATION Button",
       "scope": "CH 1–4",
       "description": "Short press cycles mode: AD (unlit) → AHR (red) → CYCLE (green) → BURST (yellow) → LFO (magenta). Long press toggles STANDARD/ALTERNATE operation.",
-      "detail": "In CV assign mode: sets destination and attenuversion amount"
+      "detail": "In CV assign mode: sets destination (Rise/Fall/Shape/Level) and attenuversion amount"
     }
   ],
   "inputs": [
     { "name": "TRIG 1–4", "description": "Trigger/gate input per channel. Fires envelope, resets CYCLE/LFO, clocks BURST. LFO uses as clock for beat-sync.", "voltage": ">2V gate" },
-    { "name": "CV A–D", "description": "Four freely-assignable CV inputs. Each can modulate any/all parameters via internal CV matrix with per-assignment attenuversion.", "voltage": "±5V (clips at ±5V; accepts ±10V)" }
+    { "name": "CV A–D", "description": "Four freely-assignable CV inputs. Each can modulate Rise, Fall, Shape, or Level on any channel via internal CV matrix with per-assignment attenuversion.", "voltage": "±5V (clips at ±5V; accepts ±10V)" }
   ],
   "outputs": [
     { "name": "OUT 1–4", "description": "Main output per channel. AD/AHR/CYCLE/BURST: unipolar 0–5V or 0–10V (user selectable). LFO: bipolar ±5V.", "voltage": "0–10V (unipolar) or ±5V (LFO)" }
@@ -90,39 +90,102 @@
     {
       "name": "Channel Linking",
       "trigger": "link button per channel",
-      "description": "Three modes: Trigger Link (simultaneous fire), EOR Link (fire at attack peak), EOF Link (fire at decay end). Enables multi-stage envelope chains."
+      "description": "Three link modes: Trigger (simultaneous fire), EOR (fire at attack peak), EOF (fire at decay end). Enables multi-stage envelope chains. Combining link with own TRIG OR's the two sources."
     }
   ],
   "patchIdeas": [
     {
       "name": "Four-stage ADSR chain",
-      "patch": "CH1 AD · EOR link → CH2 · EOF link → CH3 · EOF link → CH4 · one trigger cascades through all",
-      "diagram": "QUADRAX:\n* CH 1: AD, EOR link\n* CH 2-4: AD, EOF link\n- Gate Source (OUT) t> QUADRAX (TRIG 1)\n- QUADRAX (OUT 1) >> VCA 1 (CV)\n- QUADRAX (OUT 2) >> VCA 2 (CV)\n- QUADRAX (OUT 3) >> Filter (Cutoff)\n- QUADRAX (OUT 4) >> VCA Final (CV)"
+      "patch": "CH1 AD · CH2–4 AD · CH2 EOR-linked to CH1, CH3 EOF-linked to CH2, CH4 EOF-linked to CH3 · one trigger cascades through all four.",
+      "diagram": "QUADRAX:\n* CH 1: AD, EOR link\n* CH 2-4: AD, EOF link\n- Gate Source (OUT) t> QUADRAX (TRIG 1)\n- QUADRAX (OUT 1) >> VCA 1 (CV)\n- QUADRAX (OUT 2) >> VCA 2 (CV)\n- QUADRAX (OUT 3) >> Filter (Cutoff)\n- QUADRAX (OUT 4) >> VCA Final (CV)",
+      "steps": [
+        "Patch a gate source into CH1 TRIG.",
+        "Short-press CH1 MODE until it is unlit (AD mode).",
+        "Short-press CH2 MODE until unlit, then short-press CH2 LINK until it turns green (EOR link to CH1).",
+        "Repeat for CH3 and CH4 but cycle LINK until yellow (EOF link).",
+        "Set CH1 RISE fast, FALL medium; CH2 RISE/FALL medium; CH3 slower; CH4 longest.",
+        "Patch OUT 1 → VCA, OUT 2 → second VCA, OUT 3 → filter cutoff, OUT 4 → final VCA or reverb send.",
+        "Fire a trigger and watch the envelopes cascade one after another."
+      ],
+      "signalOut": "Four staggered envelopes on OUT 1–4 · unipolar 0–10V (or 0–5V in System Mode).",
+      "hear": "A single gate produces a multi-stage swell: fast attack, layered decays, and a long evolving tail as each channel takes over from the last."
     },
     {
       "name": "Polyrhythmic envelope farm",
-      "patch": "CH1 slow Cycle LFO · CH2 EOR link · CH3 EOF link · envelopes at different LFO phases",
-      "diagram": "QUADRAX:\n* CH 1: CYCLE (slow)\n* CH 2: AD, EOR link\n* CH 3: AD, EOF link\n- QUADRAX (OUT 1) >> Filter (Cutoff)\n- QUADRAX (OUT 2) >> VCA A (CV)\n- QUADRAX (OUT 3) >> VCA B (CV)"
+      "patch": "CH1 slow CYCLE LFO seeds the rhythm · CH2 EOR-linked fires at each cycle peak · CH3 EOF-linked fires at each cycle bottom.",
+      "diagram": "QUADRAX:\n* CH 1: CYCLE (slow)\n* CH 2: AD, EOR link\n* CH 3: AD, EOF link\n- QUADRAX (OUT 1) >> Filter (Cutoff)\n- QUADRAX (OUT 2) >> VCA A (CV)\n- QUADRAX (OUT 3) >> VCA B (CV)",
+      "steps": [
+        "Short-press CH1 MODE until green (CYCLE); set RISE and FALL fairly slow for a slow wave.",
+        "Short-press CH2 MODE until unlit (AD); short-press CH2 LINK until green (EOR).",
+        "Short-press CH3 MODE until unlit (AD); short-press CH3 LINK until yellow (EOF).",
+        "Set CH2 and CH3 RISE/FALL short so they make percussive envelopes.",
+        "Patch OUT 1 → filter cutoff, OUT 2 → one VCA, OUT 3 → another VCA.",
+        "Listen: CH1 slowly sweeps the filter while CH2 and CH3 punch at different phases of that sweep."
+      ],
+      "signalOut": "OUT 1 slow unipolar LFO · OUT 2/3 short AD envelopes firing on opposite halves of the cycle.",
+      "hear": "A slow breathing filter sweep with two percussive hits per cycle, phased so they feel like a rolling polyrhythm rather than a steady beat."
     },
     {
       "name": "Internal PWM",
-      "patch": "CH in LFO mode · Shape = square · modulate Fall (morph) via CV matrix · dynamic pulse width",
-      "diagram": "QUADRAX:\n* CH 1: LFO, Shape=square\n* CH 2: CYCLE slow, CV assigned to CH1 Fall\n- QUADRAX (OUT 1) -> Mixer (IN) // square with dynamic PWM\n- QUADRAX (OUT 2) >> QUADRAX (CV A) // internal morph modulation"
+      "patch": "CH1 LFO with SHAPE near square · CH2 slow CYCLE routed via CV A → CH1 FALL (morph), modulating the pulse width dynamically.",
+      "diagram": "QUADRAX:\n* CH 1: LFO, Shape=square\n* CH 2: CYCLE slow, CV assigned to CH1 Fall\n- QUADRAX (OUT 1) -> Mixer (IN) // square with dynamic PWM\n- QUADRAX (OUT 2) >> QUADRAX (CV A) // internal morph modulation",
+      "steps": [
+        "Short-press CH1 MODE until magenta (LFO); turn RISE clockwise for audio-rate or medium for sub-LFO.",
+        "Adjust SHAPE until the waveform is a square (see LFO shape chart).",
+        "Short-press CH2 MODE until green (CYCLE); set CH2 slow.",
+        "Patch OUT 2 → CV A input on Quadrax.",
+        "Long-press CH1 LINK/CV to enter CV assign mode; press CV A, then press the FALL destination until green (positive attenuversion).",
+        "Long-press CH1 LINK/CV to exit CV assign mode.",
+        "Patch OUT 1 → mixer or VCA input.",
+        "Hear the square pulse width breathe in time with CH2."
+      ],
+      "signalOut": "OUT 1 — bipolar ±5V square/pulse with morphing width.",
+      "hear": "A classic PWM pad or bass tone whose pulse width drifts slowly on its own, no external LFO required."
     },
     {
       "name": "LFV random CV",
-      "patch": "Alt mode on LFO channel · Rise/Fall control random range and slew · tempo-syncable via clock input",
-      "diagram": "QUADRAX:\n* CH 1: LFO Alternate (LFV)\n- Clock (OUT) c> QUADRAX (TRIG 1) // tempo sync\n- QUADRAX (OUT 1) >> VCO (FM) // chaotic modulation"
+      "patch": "One channel in ALTERNATE LFO (LFV) · RISE sets vacillation rate · FALL sets variance · SHAPE smooths · optional clock into TRIG for tempo-sync.",
+      "diagram": "QUADRAX:\n* CH 1: LFO Alternate (LFV)\n- Clock (OUT) c> QUADRAX (TRIG 1) // tempo sync\n- QUADRAX (OUT 1) >> VCO (FM) // chaotic modulation",
+      "steps": [
+        "Short-press CH1 MODE until magenta (LFO).",
+        "Long-press CH1 MODE until it pulses (ALTERNATE / LFV).",
+        "Optional: patch a clock into TRIG 1 so vacillations lock to tempo.",
+        "Set RISE for rate, FALL for how wildly values jump, SHAPE CW to slew corners smooth.",
+        "Patch OUT 1 → a destination like VCO FM, filter cutoff, or wavefolder."
+      ],
+      "signalOut": "OUT 1 — bipolar ±5V non-repeating chaotic CV.",
+      "hear": "Organic, wandering modulation that never repeats. Low variance is a drunken walk; high variance is wide random jumps."
     },
     {
       "name": "Sidechain duck envelope",
-      "patch": "CH 1 AD fires kick envelope on kick trigger · CH 2 AD fires a longer envelope on the same trigger and is routed through an inverter (or Quadrax LFO channel set to negative polarity via CV matrix) · inverted envelope → bass VCA CV so the bass ducks every kick hit · kick signal mixed back in parallel · clean sidechain compression feel without a dedicated compressor.",
-      "diagram": "QUADRAX:\n* CH 1: AD (kick env)\n* CH 2: AD long (duck env)\n- Kick Trig (Out) t> QUADRAX (TRIG 1)\n- Kick Trig (Out) t> QUADRAX (TRIG 2)\n- QUADRAX (OUT 1) >> Kick VCA (CV)\n- QUADRAX (OUT 2) >> Inverter (In)\n- Inverter (Out) >> Bass VCA (CV) // bass ducks on each kick\n- Kick VCO (Out) -> Kick VCA (In) -> Mixer (In 1)\n- Bass VCO (Out) -> Bass VCA (In) -> Mixer (In 2)"
+      "patch": "CH1 AD on kick trigger for kick VCA · CH2 AD longer on same trigger · CH2 OUT through inverter → bass VCA so bass ducks each kick hit.",
+      "diagram": "QUADRAX:\n* CH 1: AD (kick env)\n* CH 2: AD long (duck env)\n- Kick Trig (Out) t> QUADRAX (TRIG 1)\n- Kick Trig (Out) t> QUADRAX (TRIG 2)\n- QUADRAX (OUT 1) >> Kick VCA (CV)\n- QUADRAX (OUT 2) >> Inverter (In)\n- Inverter (Out) >> Bass VCA (CV) // bass ducks on each kick\n- Kick VCO (Out) -> Kick VCA (In) -> Mixer (In 1)\n- Bass VCO (Out) -> Bass VCA (In) -> Mixer (In 2)",
+      "steps": [
+        "Set CH1 and CH2 to AD mode (MODE unlit).",
+        "Multiple the kick trigger into TRIG 1 and TRIG 2.",
+        "Set CH1 RISE fast, FALL short — the kick VCA envelope.",
+        "Set CH2 RISE fast, FALL longer — the duck envelope.",
+        "Patch OUT 1 → kick VCA CV, OUT 2 → inverter → bass VCA CV.",
+        "Raise the bass VCA's bias/offset so bass is normally open; each kick envelope now subtracts from it."
+      ],
+      "signalOut": "OUT 1 — kick envelope (0–10V); OUT 2 — duck envelope (0–10V, inverted downstream).",
+      "hear": "Bass dips every time the kick hits, no compressor needed. Adjust CH2 FALL for pump length."
     },
     {
       "name": "Envelope ↔ LFO mutual modulation",
-      "patch": "Three-node tight feedback loop using two Quadrax channels. CH 1 in CYCLE mode (self-retriggers via its own EOF link back to its trigger) acts as a self-cycling envelope · CH 2 in LFO mode · CH 1 OUT → CV A assigned to CH 2 rate · CH 2 OUT → CV B assigned to CH 1 Attack · each node's motion deforms the other, producing an evolving, never-repeating modulator · CH 1 OUT → VCA for audible result.",
-      "diagram": "QUADRAX:\n* CH 1: CYCLE (self-cycling env)\n* CH 2: LFO\n* CV A → CH 2 rate · CV B → CH 1 Attack\n- QUADRAX (OUT 1) >> QUADRAX (CV A) // env modulates LFO rate\n- QUADRAX (OUT 2) >> QUADRAX (CV B) // LFO modulates env attack\n- QUADRAX (OUT 1) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+      "patch": "CH1 CYCLE (self-cycling) and CH2 LFO cross-modulate each other through the CV matrix: OUT 1 → CV A → CH2 rate, OUT 2 → CV B → CH1 rise.",
+      "diagram": "QUADRAX:\n* CH 1: CYCLE\n* CH 2: LFO\n* CV A → CH 2 Rise · CV B → CH 1 Rise\n- QUADRAX (OUT 1) >> QUADRAX (CV A) // env modulates LFO rate\n- QUADRAX (OUT 2) >> QUADRAX (CV B) // LFO modulates env rate\n- QUADRAX (OUT 1) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)",
+      "steps": [
+        "Set CH1 MODE to green (CYCLE) for a self-running envelope.",
+        "Set CH2 MODE to magenta (LFO), free-running (TRIG 2 empty).",
+        "Patch OUT 1 → CV A, OUT 2 → CV B.",
+        "Long-press CH2 LINK/CV; press CV A; press RISE destination to assign CV A → CH2 Rise.",
+        "Long-press CH1 LINK/CV; press CV B; press RISE destination to assign CV B → CH1 Rise.",
+        "Long-press whichever LINK/CV is flashing magenta to exit CV assign mode.",
+        "Patch OUT 1 → a VCA CV input for something audible."
+      ],
+      "signalOut": "OUT 1 — unipolar cycling envelope used as audible modulator; OUT 2 — bipolar LFO feeding back internally.",
+      "hear": "A slowly evolving, never-quite-repeating modulator. Each channel's motion bends the other, giving life to static patches."
     }
   ]
 }

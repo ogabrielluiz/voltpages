@@ -68,23 +68,74 @@
   "patchIdeas": [
     {
       "name": "Feedback waveshaping",
-      "patch": "Any output → Rate CV · attenuverter sets depth · creates exponential curves and pseudo-square waves from triangles",
-      "diagram": "OCHD:\n* Rate Attenuverter: sets feedback depth\n- OCHD (LFO 4) >> OCHD (Rate CV) // self-patch warps all 8 shapes\n- OCHD (LFO 1) >> VCO (FM)\n- OCHD (LFO 8) >> FILTER (Cutoff)"
+      "patch": "Patch any LFO back into Rate CV. The attenuverter sets feedback depth; triangles bend into exponential curves, pseudo-squares, or chaotic shapes — and every other LFO inherits the warp.",
+      "steps": [
+        "Set ochd Rate knob to noon (LFO 1 around 3–7Hz).",
+        "Set ochd Rate Attenuverter to fully CCW (zero feedback to start).",
+        "Patch ochd LFO 4 OUT → ochd Rate CV input.",
+        "Patch ochd LFO 1 OUT → VCO FM input (or any modulation destination).",
+        "Patch ochd LFO 8 OUT → Filter Cutoff CV.",
+        "Slowly turn the Rate Attenuverter CW past noon — the LFOs visibly skew from triangle toward asymmetric ramps.",
+        "Continue past 3 o'clock for fold-over, pseudo-square, and stepped shapes on all 8 outputs.",
+        "Try other LFOs (1, 2, 8) into Rate CV for different feedback rates and warp characters."
+      ],
+      "signalOut": "ochd LFO 1–8 OUTs — eight bipolar triangle CVs (10Vpp), now waveshaped by feedback. LFO 1 drives VCO FM, LFO 8 drives the filter.",
+      "hear": "All 8 modulations stop being smooth triangles. The faster LFOs gain stepped, jagged edges; the slow LFOs warp into long exponential sweeps. Past 3 o'clock the system tips into chaotic, glitchy folding — the same depth knob morphs the entire patch.",
+      "diagram": "ochd:\n* Rate: noon\n* Rate Attenuverter: starts CCW, sweep CW for depth\n- ochd (LFO 4) >> ochd (Rate CV) // self-patch warps all 8 outputs\n- ochd (LFO 1) >> VCO (FM In)\n- ochd (LFO 8) >> Filter (Cutoff)"
     },
     {
       "name": "8-parameter granular drifter",
-      "patch": "8 outputs → 8 CV inputs on granular module · each parameter evolves at independent rate · never repeats",
-      "diagram": "OCHD:\n* Rate: noon\n- OCHD (LFO 1) >> GRANULAR (START)\n- OCHD (LFO 2) >> GRANULAR (WRAP)\n- OCHD (LFO 3) >> GRANULAR (SIZE)\n- OCHD (LFO 4) >> GRANULAR (PITCH)\n- OCHD (LFO 5) >> GRANULAR (TONE)\n- OCHD (LFO 6) >> GRANULAR (BLUR)\n- OCHD (LFO 7) >> GRANULAR (SHAPE)\n- OCHD (LFO 8) >> GRANULAR (SCAN) // 8 independently drifting params"
+      "patch": "Send all 8 LFOs into 8 CV inputs on a granular module (e.g. Instruō arbhar — the manual's own example). Each parameter evolves at a different rate; nothing ever lines up.",
+      "steps": [
+        "Set ochd Rate knob to noon for a wide spread (LFO 1 ≈ vibrato, LFO 8 ≈ minutes per cycle).",
+        "Patch an audio source → granular module audio IN.",
+        "Patch ochd LFO 1 OUT → granular SPRAY (or START) CV in.",
+        "Patch ochd LFO 2 OUT → granular LAYER (or WRAP) CV in.",
+        "Patch ochd LFO 3 OUT → granular SIZE CV in.",
+        "Patch ochd LFO 4 OUT → granular PITCH CV in.",
+        "Patch ochd LFO 5 OUT → granular TONE / DENSITY CV in.",
+        "Patch ochd LFO 6 OUT → granular DUB / FEEDBACK CV in.",
+        "Patch ochd LFO 7 OUT → granular MOD / SHAPE CV in.",
+        "Patch ochd LFO 8 OUT → granular DRY/WET (or SCAN) CV in.",
+        "Take granular OUT → mixer / monitor."
+      ],
+      "signalOut": "ochd LFO 1–8 OUTs — eight independent ±5V triangles fanned out across the granular module's CV inputs. Audible result is the granular module's own audio output.",
+      "hear": "A granular cloud where every parameter breathes on its own clock. Pitch wobbles a few times a second; size and tone drift over many seconds; dry/wet shifts over minutes. The texture never repeats — exactly the use case the ochd manual demonstrates with arbhar.",
+      "diagram": "ochd:\n* Rate: noon\n- ochd (LFO 1) >> Granular (SPRAY)\n- ochd (LFO 2) >> Granular (LAYER)\n- ochd (LFO 3) >> Granular (SIZE)\n- ochd (LFO 4) >> Granular (PITCH)\n- ochd (LFO 5) >> Granular (TONE)\n- ochd (LFO 6) >> Granular (DUB)\n- ochd (LFO 7) >> Granular (MOD)\n- ochd (LFO 8) >> Granular (D/W)"
     },
     {
-      "name": "Audio-rate FM",
-      "patch": "LFO 1 at max Rate (160Hz+) → VCO FM input · organic triangle-wave FM with free-running drift",
-      "diagram": "OCHD:\n* Rate: fully CW (LFO 1 at 160Hz+)\n- OCHD (LFO 1) -> VCO (FM In)\n- VCO (Out) -> MIXER (In) // triangle FM with free-running drift"
+      "name": "Audio-rate FM with organic drift",
+      "patch": "Crank Rate fully CW and use LFO 1 as an audio-rate triangle source for VCO FM. Because all 8 cores drift independently, the FM character keeps moving even with no other modulation.",
+      "steps": [
+        "Set ochd Rate knob fully CW (LFO 1 climbs into audio range, up to ~160Hz).",
+        "Set ochd Rate Attenuverter to noon (no Rate CV influence yet).",
+        "Patch ochd LFO 1 OUT → VCO FM (linear) input.",
+        "Patch your VCO Out → Mixer / Monitor.",
+        "Tune the VCO to a low note so the FM sidebands are clearly audible.",
+        "Optional: patch ochd LFO 6 OUT → VCO FM attenuator CV (or VCA in line with LFO 1) so the FM depth itself wobbles slowly.",
+        "Optional: patch a slow CV → ochd Rate CV (attenuverter CW) to sweep the whole FM character."
+      ],
+      "signalOut": "ochd LFO 1 OUT — bipolar triangle at audio rate (up to ~160Hz, 10Vpp), driving VCO FM. The audible signal is the VCO output.",
+      "hear": "A buzzing, vocal triangle-FM tone. Because LFO 1 is analog and free-running, the timbre constantly drifts — there is no perfect sync, so sidebands shimmer and never sit still. With LFO 6 modulating depth, the FM amount visibly ebbs and flows.",
+      "diagram": "ochd:\n* Rate: fully CW (LFO 1 ≈ 160Hz)\n* Rate Attenuverter: noon\n- ochd (LFO 1) -> VCO (FM In) // audio-rate triangle FM\n- VCO (Out) -> Mixer (In)\n- ochd (LFO 6) >> VCA (CV) // optional FM-depth wobble"
     },
     {
-      "name": "Rhythmic CV freeze",
-      "patch": "Clock gate → Rate CV · attenuverter fully CCW · all LFOs freeze on gate high · resume on low",
-      "diagram": "OCHD:\n* Rate Attenuverter: fully CCW (invert)\n- CLOCK (Out) g> OCHD (Rate CV) // negative CV stalls all 8 LFOs\n- OCHD (LFO 1) >> VCA (CV)\n- OCHD (LFO 5) >> FILTER (Cutoff)"
+      "name": "Rhythmic CV freeze (track & hold)",
+      "patch": "Send a clock or gate into Rate CV with the attenuverter fully CCW. The signal is inverted to negative voltage, which stalls every LFO at its current value — instant 8-channel sample-and-hold on every gate.",
+      "steps": [
+        "Set ochd Rate knob to noon (so LFOs are clearly moving when not held).",
+        "Set ochd Rate Attenuverter to fully CCW (this inverts incoming CV to negative).",
+        "Patch a clock or gate source → ochd Rate CV input.",
+        "Patch ochd LFO 1 OUT → VCA CV (or any fast modulation destination).",
+        "Patch ochd LFO 5 OUT → Filter Cutoff CV.",
+        "Patch ochd LFO 8 OUT → a slow destination such as panner CV.",
+        "Trigger the clock — every gate-high freezes all 8 LFOs at their current voltage.",
+        "When the gate goes low the LFOs resume from where they froze (no reset).",
+        "Tighten the attenuverter slightly off full-CCW to let some motion bleed through during gates."
+      ],
+      "signalOut": "ochd LFO 1, 5, 8 OUTs — bipolar CVs that hold their last voltage while the gate is high and resume motion when it falls. Eight simultaneous track-and-hold values from one cable.",
+      "hear": "Rhythmic stutter across every modulation: filter cutoff, VCA level, panning all freeze on the beat, then crawl again between hits. With slow LFOs feeding pitch CV you get a rhythmic stepped sequence; with the fastest LFOs into VCA you get gated tremolo.",
+      "diagram": "ochd:\n* Rate: noon\n* Rate Attenuverter: fully CCW (inverts gate to negative CV)\n- Clock (Out) g> ochd (Rate CV) // negative CV stalls all 8 LFOs\n- ochd (LFO 1) >> VCA (CV)\n- ochd (LFO 5) >> Filter (Cutoff)\n- ochd (LFO 8) >> Panner (CV)"
     }
   ]
 }

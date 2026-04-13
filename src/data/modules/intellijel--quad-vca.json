@@ -97,17 +97,51 @@
   "patchIdeas": [
     {
       "name": "Envelope-controlled VCA with bias",
-      "patch": "Osc → IN 1 · Env → CV 1 · LEVEL at noon for minimal bleed · linear response",
+      "patch": "Use channel 1 as a standard voice VCA with an envelope shaping the amplitude.",
+      "steps": [
+        "Set LEVEL 1 fully counterclockwise so no signal leaks through when the envelope is at rest.",
+        "Set the Linear / Exponential Response knob for channel 1 fully clockwise (Linear) if you're doing clean CV work, or fully CCW (Exponential) for natural-sounding note dynamics.",
+        "Set BOOST 1 to the left (off) for unity max gain.",
+        "Patch VCO output → Quad VCA IN 1.",
+        "Patch envelope generator output → Quad VCA CV 1.",
+        "Turn the CV 1 Attenuator fully clockwise so the envelope reaches unity (watch the CV LED go full green at the peak).",
+        "Patch Quad VCA OUT 1 → your mixer or output."
+      ],
+      "signalOut": "OUT 1 — VCO audio shaped by the envelope, peaking near the input level (or doubled if BOOST is on).",
+      "hear": "A clean note that rises and falls with the envelope. Linear response tracks the envelope shape literally; Exponential response gives a more musical, percussive feel. Nudge LEVEL 1 clockwise only if you want some signal bleed under the envelope (useful for drones with accents).",
       "diagram": "Quad VCA:\n* Level 1: noon\n* Linear / Exponential Response: Linear (CW)\n- VCO (Out) -> Quad VCA (IN 1)\n- Envelope (Out) >> Quad VCA (CV 1)\n- Quad VCA (OUT 1) -> Output (In)"
     },
     {
-      "name": "Submix + independent voice",
-      "patch": "3 voices → IN 1–3 · OUT 3 → destination (submix) · IN 4 independent → OUT 4 for fourth voice",
+      "name": "Three-voice submix + independent fourth voice",
+      "patch": "Use channels 1–3 as a submix out of OUT 3, and channel 4 as a fully separate VCA out of OUT 4/MIX.",
+      "steps": [
+        "Patch three sound sources → IN 1, IN 2, IN 3.",
+        "Leave OUT 1 and OUT 2 unpatched so channels 1 and 2 cascade into OUT 3.",
+        "Patch OUT 3 → mixer input A — this is your three-voice submix.",
+        "Use LEVEL 1, LEVEL 2, LEVEL 3 as manual faders for that submix (CV inputs optional).",
+        "Patch a fourth sound source → IN 4.",
+        "Patch OUT 4/MIX → mixer input B — because OUT 3 is patched, OUT 4/MIX now only carries channel 4.",
+        "Set LEVEL 4 to taste for the independent voice level."
+      ],
+      "signalOut": "OUT 3 — summed mix of channels 1–3. OUT 4/MIX — channel 4 alone (the mix chain was broken by patching OUT 3).",
+      "hear": "Three voices glued together on one fader-set plus a fourth voice you can send somewhere else (effect send, stereo pan, separate level). Patching any OUT jack breaks the cascade above it, which is exactly how you isolate channel 4 here.",
       "diagram": "Quad VCA:\n- Voice 1 (Out) -> Quad VCA (IN 1)\n- Voice 2 (Out) -> Quad VCA (IN 2)\n- Voice 3 (Out) -> Quad VCA (IN 3)\n- Quad VCA (OUT 3) -> Mixer (In A) // 3-voice submix\n- Voice 4 (Out) -> Quad VCA (IN 4)\n- Quad VCA (OUT 4 / MIX) -> Mixer (In B) // independent voice"
     },
     {
-      "name": "FM index control",
-      "patch": "Modulator osc → IN 1 · OUT 1 → FM input · LEVEL sets base index · Env → CV 1 for dynamic FM",
+      "name": "Dynamic FM index",
+      "patch": "Use channel 1 as a variable attenuator on a modulator oscillator so an envelope can sweep FM depth per note.",
+      "steps": [
+        "Patch modulator VCO (usually a sine) → Quad VCA IN 1.",
+        "Set the Linear / Exponential Response knob for channel 1 fully clockwise (Linear) — you want predictable CV scaling of the modulator level.",
+        "Set LEVEL 1 around 9 o'clock to set a small baseline FM index (quiet, almost no modulation at rest).",
+        "Patch envelope → Quad VCA CV 1.",
+        "Set the CV 1 Attenuator around noon to start — this controls how much the envelope opens the FM depth.",
+        "Patch Quad VCA OUT 1 → linear FM input of the carrier VCO.",
+        "Trigger notes: tweak LEVEL 1 for resting timbre, CV 1 Attenuator for how bright the attack sweep becomes.",
+        "Flip BOOST 1 on if you need more modulation range (aggressive FM)."
+      ],
+      "signalOut": "OUT 1 — the modulator oscillator, scaled by (LEVEL 1 + envelope). Patch into the carrier's FM input.",
+      "hear": "A timbre that starts dark and opens brighter on each note attack, then closes back down as the envelope decays — the classic evolving FM bell/brass behavior. Turn the CV 1 Attenuator clockwise for more dramatic sweeps, counterclockwise for subtle motion.",
       "diagram": "Quad VCA:\n* Level 1: base FM index\n- Modulator VCO (Out) -> Quad VCA (IN 1)\n- Envelope (Out) >> Quad VCA (CV 1) // dynamic index\n- Quad VCA (OUT 1) >> Carrier VCO (FM In)"
     }
   ]

@@ -164,42 +164,149 @@
   "patchIdeas": [
     {
       "name": "Karplus-Strong string",
-      "patch": "Zone 0 · Repeats ~1:00 · Halo CCW · Mix 1:00 · Color 12:00 · trigger a MATHS pluck (Rise CCW, Fall 10–12, Response 2:00) into L input · pitch CV → µRate for 1V/oct · plays a plucked-string voice",
+      "patch": "Zone 0 self-oscillates as a plucked string. Short MATHS bursts excite it; pitch CV into microRate tracks 1V/oct in Zone 0.",
+      "steps": [
+        "Zone selector to 0 (Zone Window green). Zone CV Attenuverter full CCW.",
+        "Repeats to 1:00 (high feedback = long decay).",
+        "Halo full CCW (pure string, no smear).",
+        "Color to 12:00 (noon — neutral timbre).",
+        "Mix to 1:00 (mostly wet — you want the string, not the click).",
+        "On MATHS: CH1 Rise full CCW, Fall ~10:00, Response 2:00. Patch CH1 Out to Mimeophon L (Mono) Input.",
+        "Patch pitch CV (keyboard / sequencer) to Mimeophon microRate Input (1V/oct in Zone 0, unattenuated).",
+        "Patch Mimeophon L Output and R Output to your mixer L/R.",
+        "Trigger MATHS CH1 to pluck. Lower Color for mellow strings, raise for brighter plucks."
+      ],
+      "signalOut": "L/R Outputs — pitched plucked-string tone at ~10Vpp, decay length set by Repeats.",
+      "hear": "A Karplus-Strong plucked string that tracks your keyboard. Fall time shapes the attack, Color shapes the tone, Repeats sets how long the string rings.",
       "diagram": "MIMEOPHON:\n* Zone: 0\n* Repeats: 1:00\n* Halo: full CCW\n* Color: 12:00\n* Mix: 1:00\n\n- MATHS (CH1 Out) -> Mimeophon (L In) // short burst excites string\n- Keys (Pitch) p> Mimeophon (microRate) // 1V/oct in Zone 0\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
     },
     {
       "name": "Tempo-synced dub delay",
-      "patch": "Zone 4–5 · Color 3:00 · Mix 11:00 · Repeats 12:00 · Halo to taste · system clock → TEMPO · engage Skew for stereo polyrhythmic echoes",
+      "patch": "External clock at TEMPO locks Rate to musical divisions. Skew produces stereo polyrhythmic echoes.",
+      "steps": [
+        "Zone selector to 4 (orange — 326ms to 1.3s range).",
+        "Color to 3:00 (near-unity, uncolored repeats).",
+        "Mix to 11:00 (mostly dry with audible tail).",
+        "Repeats to 12:00 (several audible echoes).",
+        "Rate to 12:30 — that's the '1/1' point when clocked.",
+        "Halo to taste (9:00 for tight, 2:00 for wide).",
+        "Patch your system clock (≥2.5V, 0.25Hz–50Hz) to Mimeophon TEMPO Input.",
+        "Patch source audio to L (Mono) Input. R is normalled to L — stereo output still works.",
+        "Press SKEW button (LED lights). Rate now splits L/R rates in opposite directions.",
+        "Patch L Output and R Output to mixer."
+      ],
+      "signalOut": "L/R Outputs — dry signal plus tempo-locked stereo echoes at ~10Vpp. Slew-less crossfade on Rate changes means no doppler pitch-shift.",
+      "hear": "Beat-synced dub delays that land on musical divisions. Skew creates interlocking L/R echo patterns that drift against each other rhythmically.",
       "diagram": "MIMEOPHON:\n* Zone: 4\n* Color: 3:00\n* Mix: 11:00\n* Repeats: 12:00\n* SKEW: ON\n\n- Source (Out) -> Mimeophon (L In)\n- Clock (Out) c> Mimeophon (TEMPO In)\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
     },
     {
       "name": "Stereo chorus",
-      "patch": "Color 3:00 · Repeats ~12:00 · Mix 1:00 · slow ±LFO (≤10Hz) attenuated → µRate · SKEW on · Zone 1 for flange, Zone 0–1 for shimmer",
+      "patch": "Slow LFO into microRate modulates delay time for chorus/flange. Skew inverts the right channel response for stereo width.",
+      "steps": [
+        "Zone selector to 1 (green — 20–82ms, flange/chorus range). Zone 0 for shimmer, Zone 2 for slapback.",
+        "Color to 3:00 (uncolored).",
+        "Repeats to ~12:00 (some resonance for body).",
+        "Mix to 1:00 (mostly wet).",
+        "Halo to 9:00 to start.",
+        "Press SKEW button (LED lights). In Zones 1–7, Skew inverts microRate on the right channel.",
+        "Patch a bipolar tri/sine LFO at ≤10Hz through an attenuator (set low amplitude) to Mimeophon microRate Input.",
+        "Patch source audio to L (Mono) Input.",
+        "Patch L Output and R Output to mixer L/R."
+      ],
+      "signalOut": "L/R Outputs — chorused stereo image at ~10Vpp with L and R modulated in opposite directions.",
+      "hear": "Wide stereo chorus — detune shimmers between the channels. Switch to Zone 0 and raise Repeats for a metallic flange; Zone 2 for deeper pitch-wobble.",
       "diagram": "MIMEOPHON:\n* Zone: 0 (or 1 for flange)\n* Color: 3:00\n* Mix: 1:00\n* SKEW: ON\n\n- Source (Out) -> Mimeophon (L In)\n- LFO (Tri, ≤10Hz) >> Mimeophon (microRate) // attenuated\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
     },
     {
       "name": "Back and forth to the future",
-      "patch": "Rate Out → FLIP In · Zone 3–5 · Mix 12:00 · Repeats ~9:00 · HOLD off · repeats alternate forward/backward automatically · patch clock to TEMPO for stricter rhythm",
+      "patch": "Self-patch RATE Output into FLIP Input — each repeat automatically alternates forward/reverse.",
+      "steps": [
+        "Zone selector to 4 (orange — 326ms to 1.3s, clean reverse range).",
+        "Mix to 12:00 (equal dry/wet).",
+        "Repeats to 9:00 (a few echoes so reversals are audible).",
+        "Color and Halo to taste.",
+        "HOLD off (button unlit), SKEW off.",
+        "Patch source audio to L (Mono) Input.",
+        "Self-patch: Mimeophon RATE Output to Mimeophon FLIP Input. Each rate pulse toggles FLIP.",
+        "Patch L Output and R Output to mixer.",
+        "Optional: patch a musical clock to TEMPO Input for strict rhythmic flipping."
+      ],
+      "signalOut": "L/R Outputs — alternating forward and reversed echoes at ~10Vpp.",
+      "hear": "Repeats that swap between forward and backward playback automatically, producing a hypnotic back-and-forth smear of the source. Works cleanly in Zones 2–7; Zones 0–1 give 'Total Protonic Reversal' distortion instead.",
       "diagram": "MIMEOPHON:\n* Zone: 4\n* Mix: 12:00\n* Repeats: 9:00\n\n- Source (Out) -> Mimeophon (L In)\n- Mimeophon (RATE Out) g> Mimeophon (FLIP In) // auto forward/reverse\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
     },
     {
       "name": "Zone-sequenced rhythmic lattice",
-      "patch": "Sequence Zone at same rate as a melody in Zone 0 · smaller-Zone repeats get preserved in larger Zones · Repeats up builds a rhythmic echo lattice of different repeat styles per note",
+      "patch": "A sequencer drives Zone CV so each note sits in a different Zone. Smaller-Zone repeats carry through into larger Zones as a layered rhythmic lattice.",
+      "steps": [
+        "Zone CV Attenuverter to 12:00 (full positive sweep from the 0–5V CV).",
+        "Repeats to 2:00 (strong feedback — repeats carry between Zones).",
+        "Mix to 12:00.",
+        "Color and Halo to taste.",
+        "Patch a VCO to Mimeophon L (Mono) Input.",
+        "Patch a sequencer CV Out (0–5V) to Mimeophon Zone CV Input — each step selects a different Zone.",
+        "Patch a clock to the sequencer's Clock Input so Zone changes stay in time with the melody.",
+        "Patch L Output and R Output to mixer L/R."
+      ],
+      "signalOut": "L/R Outputs — the note plus nested echoes at different time scales, ~10Vpp.",
+      "hear": "Each sequencer step puts the note through a different echo character (flange, slapback, loop). Because Zones are nested, a Zone 0 repeat is preserved when you jump to Zone 4 — a rhythmic lattice of past notes builds under the sequence.",
       "diagram": "MIMEOPHON:\n* Repeats: 2:00\n* Mix: 12:00\n\n- VCO (Out) -> Mimeophon (L In)\n- Sequencer (CV) >> Mimeophon (Zone CV) // per-step zone\n- Clock (Out) c> Sequencer (Clock)\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
     },
     {
       "name": "Held drone scrubber",
-      "patch": "Record a phrase · HOLD gate high · modulate Repeats (start-point), Color, Halo, Zone · infinite non-destructive scrubbing through a frozen moment",
+      "patch": "Capture a phrase with HOLD, then modulate Repeats (start-point), Color, and Halo for infinite non-destructive scrubbing.",
+      "steps": [
+        "Zone selector to 5 (purple — 653ms to 2.6s, phrase length).",
+        "Mix to 1:00 (mostly wet).",
+        "Repeats to 1:00 (fills the buffer with source).",
+        "Color and Halo to 12:00 to start.",
+        "Patch source audio to L (Mono) Input. Play or stream a phrase in.",
+        "Patch a gate source to Mimeophon HOLD Input (≥2.5V). When HIGH, the buffer freezes — no new audio in or out of the feedback path.",
+        "With HOLD engaged, Repeats knob now sets the start point of the held repeat within the current Zone.",
+        "Patch LFO1 to Mimeophon Repeats CV Input (scan the start point).",
+        "Patch LFO2 to Mimeophon Color CV Input (evolve timbre over the frozen phrase).",
+        "Patch L Output and R Output to mixer."
+      ],
+      "signalOut": "L/R Outputs — a frozen moment of the source looping at the Zone length, ~10Vpp. Non-destructive — releasing HOLD resumes normal feedback.",
+      "hear": "A stuck-in-time smear you can scrub through. The phrase loops forever; the LFOs scan different moments and timbres of it. Add FLIP for reverse scrubbing, switch Zones to reveal older material.",
       "diagram": "MIMEOPHON:\n* HOLD: engaged\n\n- Source (Out) -> Mimeophon (L In)\n- Gate (Out) g> Mimeophon (HOLD In) // freeze buffer\n- LFO1 (Out) >> Mimeophon (Repeats CV) // scan start-point\n- LFO2 (Out) >> Mimeophon (Color CV)\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
     },
     {
       "name": "Filter-verb",
-      "patch": "Mix full CW · Repeats + Rate full CCW · Zone 0 · access Color and Halo with no audible repeats · FLIP for protonic reversal harmonics · Repeats up to taste for trails",
+      "patch": "Mix full CW, Repeats and Rate full CCW, Zone 0 — access Color and Halo as a tone/air filter with no audible repeats. FLIP adds protonic-reversal harmonics.",
+      "steps": [
+        "Zone selector to 0 (green — 1.3 to 20.4ms).",
+        "Mix full CW (100% wet — dry is cut).",
+        "Repeats full CCW (no audible echo tail).",
+        "Rate full CCW (slowest Rate in Zone 0).",
+        "Color to 12:00 (neutral — sweep later for tone shaping).",
+        "Halo to 9:00 (a little air). Increase for more ambient wash.",
+        "Patch source audio to L (Mono) Input.",
+        "Patch L Output and R Output to mixer.",
+        "Press FLIP button to add harmonic/subharmonic 'Total Protonic Reversal' distortion derived from the source spectrum.",
+        "Optional: raise Repeats from full CCW to bring in a short resonant tail."
+      ],
+      "signalOut": "L/R Outputs — processed source with Color as tone filter and Halo as ambience, ~10Vpp.",
+      "hear": "Mimeophon as a character-filter / short ambience box. Color sweeps from dark oil-can to crispy digital; Halo adds a stereo bloom. FLIP injects sub/harmonic grit.",
       "diagram": "MIMEOPHON:\n* Zone: 0\n* Mix: full CW\n* Repeats: full CCW\n* Rate: full CCW\n\n- Source (Out) -> Mimeophon (L In)\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
     },
     {
       "name": "Self-oscillation drone",
-      "patch": "Nothing in inputs · Mix full CW · Zone 0 · Repeats full CW · slowly modulate Color (Wogglebug) and Zone (stepped random) · Rate Out → TEMPO In to cancel doppler on rate changes",
+      "patch": "No input — Mimeophon self-oscillates. Modulate Color and Zone for an evolving drone. Self-patch RATE into TEMPO to cancel doppler on Zone/Rate changes.",
+      "steps": [
+        "Nothing patched to L (Mono) Input or R Input.",
+        "Zone selector to 0 (start here — Karplus-Strong tone).",
+        "Mix full CW (100% wet).",
+        "Repeats full CW (self-oscillation — extreme CW is runaway feedback).",
+        "Halo full CCW to start (keeps it focused).",
+        "Color to 12:00.",
+        "Patch Wogglebug (Woggle CV or Smooth Out) to Mimeophon Color CV Input for slow timbral drift.",
+        "Patch a stepped-random source to Mimeophon Zone CV Input (0–5V) for unpredictable Zone jumps.",
+        "Self-patch: Mimeophon RATE Output to Mimeophon TEMPO Input — this cancels doppler pitch-shifts when Rate changes.",
+        "Patch L Output and R Output to mixer L/R."
+      ],
+      "signalOut": "L/R Outputs — a self-oscillating feedback drone at ~10Vpp, timbre and size modulated by CV.",
+      "hear": "An evolving drone that never quite repeats. Color sweeps shift it between string, BBD, and crispy digital voices; Zone jumps instantly teleport between length scales without pitch-warble thanks to the TEMPO self-patch.",
       "diagram": "MIMEOPHON:\n* Zone: 0\n* Mix: full CW\n* Repeats: full CW\n* Halo: CCW\n\n- Wogglebug (Woggle CV) >> Mimeophon (Color CV)\n- Random (Stepped) >> Mimeophon (Zone CV)\n- Mimeophon (RATE Out) c> Mimeophon (TEMPO In) // cancel doppler\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
     }
   ]

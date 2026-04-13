@@ -150,52 +150,177 @@
   "patchIdeas": [
     {
       "name": "One-cable polyrhythm",
-      "patch": "MODE cycle · RANGE shape · INTONE CW · single clock → TRIGGER 6N (no other trigger patches) · all six channels fire with 1:2:3:4:5:6 phase resets · take OUT 1N–6N to six destinations for instant polyrhythmic modulation from a single gate",
+      "patch": "One clock into TRIGGER 6N fires all six channels at related rates — instant polyrhythmic modulation from a single gate.",
+      "steps": [
+        "Set MODE switch to CYCLE.",
+        "Set RANGE switch to SHAPE.",
+        "Set INTONE knob past noon CW so 2N–6N run faster than IDENTITY.",
+        "Leave RUN unpatched.",
+        "Patch your clock → Just Friends TRIGGER 6N (no other TRIGGER jacks patched). Reverse-normalling fans the clock out to all six channels.",
+        "Patch Just Friends OUT 1N → Filter Cutoff (slowest lane).",
+        "Patch Just Friends OUT 2N → VCA CV.",
+        "Patch Just Friends OUT 3N → VCO FM.",
+        "Patch Just Friends OUT 4N → FX Time (fastest lane used)."
+      ],
+      "signalOut": "Just Friends OUT 1N–6N — six 0–8V shape-rate LFOs/envelopes locked to the single clock at 1:2:3:4:5:6 ratios.",
+      "hear": "A single clock drives six interlocking modulation lanes at related speeds. Sweep INTONE CCW to collapse toward unison, CW to spread further apart — the whole patch polyrhythms or locks in place from one knob.",
       "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: shape\n* INTONE: CW\n\n- Clock (Out) c> Just Friends (TRIGGER 6N) // cascades to all 6\n- Just Friends (OUT 1N) >> Filter (Cutoff)\n- Just Friends (OUT 2N) >> VCA (CV)\n- Just Friends (OUT 3N) >> VCO (FM)\n- Just Friends (OUT 4N) >> FX (Time)"
     },
     {
       "name": "PLUME six-voice polysynth",
-      "patch": "MODE sustain · RANGE sound · RUN patched (+1V) · v/oct → TIME · INTONE sets chord voicing · individual gates → TRIGGER 1N–6N act as keys · MIX = full six-voice poly output with internal LPGs and VCAs",
+      "patch": "RUN firmware in SUSTAIN + SOUND turns Just Friends into a six-voice polysynth with built-in LPGs — gates play each channel like a key.",
+      "steps": [
+        "Set MODE switch to SUSTAIN.",
+        "Set RANGE switch to SOUND (PLUME firmware mode).",
+        "Patch an offset of about +1V → Just Friends RUN (shapes the internal LPG character).",
+        "Patch your 1V/oct pitch source → Just Friends TIME (v/8) for tuning all six voices.",
+        "Set INTONE knob to choose the chord voicing: noon = unison, CW for overtone stack, CCW for undertone stack.",
+        "Patch voice 1 gate → Just Friends TRIGGER 1N.",
+        "Patch voice 2 gate → Just Friends TRIGGER 2N.",
+        "Patch voice 3 gate → Just Friends TRIGGER 3N (add more as needed up to TRIGGER 6N).",
+        "Patch Just Friends MIX → Output."
+      ],
+      "signalOut": "Just Friends MIX — tanh-limited six-voice polysynth mix (~15Vpp) with internal LPG envelopes and VCAs per channel.",
+      "hear": "Short gates pluck each channel like a Rhodes tine; held gates sustain. No external EG/VCA/LPG needed — the whole voice is inside one module. Tweak RUN live to reshape every LPG response at once.",
       "diagram": "Just Friends:\n* MODE: sustain\n* RANGE: sound\n* RUN: patched\n\n- Sequencer (Pitch) p> Just Friends (TIME)\n- Offset (+1V) >> Just Friends (RUN)\n- Gate 1 (Out) g> Just Friends (TRIGGER 1N)\n- Gate 2 (Out) g> Just Friends (TRIGGER 2N)\n- Gate 3 (Out) g> Just Friends (TRIGGER 3N)\n- Just Friends (MIX) -> Output (In)"
     },
     {
       "name": "FLOOM FM chord",
-      "patch": "MODE cycle · RANGE sound · RUN patched · FM knob CW · audio-rate source → FM INPUT · INTONE CW for harmonic stack · each channel becomes a 2-op FM voice at its N ratio · MIX = saturated FM chord · modulate RUN for timbre shifts",
+      "patch": "CYCLE + SOUND + RUN patched gives FLOOM — each channel is a 2-operator FM voice, stacked into a harmonic FM chord at MIX.",
+      "steps": [
+        "Set MODE switch to CYCLE.",
+        "Set RANGE switch to SOUND.",
+        "Patch any cable into RUN to enter FLOOM firmware mode (start with a fixed offset so you can sweep it).",
+        "Turn the FM knob full CW so FM INPUT routes to TIME (FM depth control in FLOOM).",
+        "Set INTONE full CW for an overtone chord across 2N–6N.",
+        "Patch your 1V/oct pitch source → Just Friends TIME (v/8).",
+        "Patch an audio-rate VCO → Just Friends FM INPUT (this is the FM source).",
+        "Patch a slow LFO → Just Friends RUN to morph modulator:carrier ratio.",
+        "Patch Just Friends MIX → Output."
+      ],
+      "signalOut": "Just Friends MIX — saturated FM chord summing six 2-op FM voices at the INTONE ratios (~15Vpp).",
+      "hear": "A full FM chord from one module. Sweep RUN to slide through ratios — integer values sound musical, in-between values go inharmonic and bell-like. FM knob sets depth; INTONE reshapes the chord voicing.",
       "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: sound\n* RUN: patched · FM knob CW\n* INTONE: CW (overtones)\n\nVCO:\nLFO:\n\n- Sequencer (Pitch) p> Just Friends (TIME)\n- VCO (Out) -> Just Friends (FM INPUT)\n- LFO (Out) >> Just Friends (RUN) // timbre morph\n- Just Friends (MIX) -> Output (In)"
     },
     {
       "name": "VOLLEY burst ratchets",
-      "patch": "MODE cycle · RANGE shape · RUN patched with +2V (a few cycles per burst) · clock → TRIGGER 6N · every clock triggers a controlled burst on each channel · OUT 6N = fastest ratchet · great for drum fills and euclidean flams",
+      "patch": "CYCLE + SHAPE + RUN patched = VOLLEY — each trigger fires a CV-determined burst of cycles per channel.",
+      "steps": [
+        "Set MODE switch to CYCLE.",
+        "Set RANGE switch to SHAPE.",
+        "Patch an offset of about +2V → Just Friends RUN (−4V = 1 cycle per burst, 0V = 6, +5V = 36).",
+        "Set TIME knob for the burst cycle length (short for ratchets, longer for flams).",
+        "Patch your clock → Just Friends TRIGGER 6N (reverse-normals to all six channels).",
+        "Patch Just Friends OUT 6N → Drum 1 Trig for the fastest ratchet lane.",
+        "Patch Just Friends OUT 1N → Drum 2 Trig for a slower flam lane."
+      ],
+      "signalOut": "Just Friends OUT 1N–6N — triggered bursts of shape cycles per clock hit, each channel running at its N ratio.",
+      "hear": "Every clock pulse triggers a controlled ratchet on each output: OUT 6N fires fastest, OUT 1N slowest. Great for drum fills, euclidean flams, and burst-generator duty. Modulate RUN to vary burst counts live.",
       "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: shape\n* RUN: ~+2V\n\n- Clock (Out) t> Just Friends (TRIGGER 6N)\n- Offset (+2V) >> Just Friends (RUN) // burst count\n- Just Friends (OUT 6N) t> Drum (Trig) // ratcheted hits\n- Just Friends (OUT 1N) t> Drum 2 (Trig)"
     },
     {
       "name": "Six related LFOs for animation",
-      "patch": "MODE cycle · RANGE shape · INTONE noon+slight CCW for gently diverging rates · RUN unpatched · OUT 1N–6N → six different modulation destinations (filter, FM, wavefolder, pan, reverb time, VCA) · one module animates a whole voice",
+      "patch": "CYCLE + SHAPE with INTONE just off noon produces six gently diverging LFOs — one module animates a whole voice.",
+      "steps": [
+        "Set MODE switch to CYCLE.",
+        "Set RANGE switch to SHAPE.",
+        "Set INTONE knob just CCW of noon so 2N–6N drift slower than IDENTITY (gently diverging rates).",
+        "Set TIME knob for the base LFO period (seconds to tens of seconds).",
+        "Set CURVE at noon for rounded shapes; sweep CCW for steeper edges.",
+        "Leave RUN unpatched, no TRIGGER cables — channels free-run.",
+        "Patch Just Friends OUT 1N → Filter Cutoff.",
+        "Patch Just Friends OUT 2N → VCO FM.",
+        "Patch Just Friends OUT 3N → Wavefolder Amount.",
+        "Patch Just Friends OUT 4N → Pan CV.",
+        "Patch Just Friends OUT 5N → Reverb Time."
+      ],
+      "signalOut": "Just Friends OUT 1N–6N — six free-running 0–8V LFOs at related-but-drifting rates.",
+      "hear": "A whole voice that breathes in six places at once, never landing in the same state twice. Nudge INTONE to collapse toward unison (everything syncs) or expand CW for obvious polyrhythmic motion.",
       "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: shape\n* INTONE: just CCW of noon\n\n- Just Friends (OUT 1N) >> Filter (Cutoff)\n- Just Friends (OUT 2N) >> VCO (FM)\n- Just Friends (OUT 3N) >> Wavefolder (Amount)\n- Just Friends (OUT 4N) >> Pan (CV)\n- Just Friends (OUT 5N) >> Reverb (Time)\n- Just Friends (OUT 6N) >> VCA (CV)"
     },
     {
       "name": "Harmonic chord oscillator",
-      "patch": "MODE cycle · RANGE sound · INTONE full CW · TIME v/oct from sequencer · IDENTITY = fundamental, 2N = octave, 3N = octave+5th, 4N = 2 octaves, 5N = 2 oct+major 3rd, 6N = 2 oct+5th · mix selected outs for chord voicing",
+      "patch": "CYCLE + SOUND + INTONE full CW stacks IDENTITY + overtones into a just-intoned chord oscillator — mix chosen OUTs for the voicing.",
+      "steps": [
+        "Set MODE switch to CYCLE.",
+        "Set RANGE switch to SOUND.",
+        "Set INTONE knob full CW (maximum overtone stack: 2N=octave, 3N=oct+5th, 4N=2 oct, 5N=2 oct+maj 3rd, 6N=2 oct+5th).",
+        "Patch your 1V/oct pitch source → Just Friends TIME (v/8). IDENTITY tracks the keyboard and all other channels follow.",
+        "Patch Just Friends OUT 1N → Mixer (root).",
+        "Patch Just Friends OUT 3N → Mixer (5th above the octave).",
+        "Patch Just Friends OUT 5N → Mixer (major 3rd, two octaves up).",
+        "Patch Mixer Out → Output."
+      ],
+      "signalOut": "Mixer Out — selected 1N/3N/5N channels blended into a just-intoned triad, each channel a ±5V sound-rate slope.",
+      "hear": "A clean organ-like chord that tracks the keyboard as one voice. Swap which OUTs you mix for different voicings: 1N+2N+3N = power chord, 1N+5N = major-3rd dyad, 1N+6N = open-5th. Turn INTONE CCW to drop into undertone voicings instead.",
       "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: sound\n* INTONE: full CW\n\nMixer:\n\n- Sequencer (Pitch) p> Just Friends (TIME)\n- Just Friends (OUT 1N) -> Mixer (In) // root\n- Just Friends (OUT 3N) -> Mixer (In) // 5th\n- Just Friends (OUT 5N) -> Mixer (In) // major 3rd\n- Mixer (Out) -> Output (In)"
     },
     {
-      "name": "ASR envelope + trapezoid VCO pair",
-      "patch": "MODE sustain · RANGE shape on TRIGGER 1N for gated ASR → VCA CV · second cable: RANGE sound via a switched mult is not possible, so stay in shape and use OUT 2N for a related slower ASR envelope to the filter · single gate drives filter + VCA together",
+      "name": "ASR envelope + related slow envelope",
+      "patch": "SUSTAIN + SHAPE turns IDENTITY into a gated ASR; OUT 2N gives a ratio-related slower ASR — one gate opens filter and VCA together.",
+      "steps": [
+        "Set MODE switch to SUSTAIN.",
+        "Set RANGE switch to SHAPE.",
+        "Set INTONE knob just CCW of noon so 2N runs a little slower than IDENTITY.",
+        "Set TIME for the IDENTITY attack/release speed; RAMP sets the A/R balance.",
+        "Patch your gate → Just Friends TRIGGER 1N.",
+        "Patch Just Friends OUT 1N → VCA CV (fast ASR for amplitude).",
+        "Patch Just Friends OUT 2N → Filter Cutoff (related slower ASR for tone)."
+      ],
+      "signalOut": "Just Friends OUT 1N = 0–8V gated ASR (amplitude), OUT 2N = 0–8V related slower ASR (tone).",
+      "hear": "One gate opens the VCA with a snappy envelope and sweeps the filter with a slower related one. INTONE changes how much slower 2N runs — CCW for a long filter tail behind the note, noon to lock them together.",
       "diagram": "Just Friends:\n* MODE: sustain\n* RANGE: shape\n\n- Gate (Out) g> Just Friends (TRIGGER 1N)\n- Just Friends (OUT 1N) >> VCA (CV)\n- Just Friends (OUT 2N) >> Filter (Cutoff) // slower related ASR"
     },
     {
       "name": "SHIFT analog clock divider",
-      "patch": "MODE transient · RANGE shape · RUN patched near +5V (end-of-cycle retrigger only) · fast clock → TRIGGER 6N · OUT 1N–6N each divide the clock by 1,2,3,4,5,6 as slope channels · also get shaped envelopes while dividing",
+      "patch": "TRANSIENT + SHAPE + RUN near +5V puts SHIFT into end-of-cycle retrigger-only mode — OUT 1N–6N become clock-divided envelope lanes.",
+      "steps": [
+        "Set MODE switch to TRANSIENT.",
+        "Set RANGE switch to SHAPE.",
+        "Patch an offset of about +5V → Just Friends RUN (SHIFT: only retrigger at end-of-cycle = clean division).",
+        "Set TIME longer than one clock period so each channel spans multiple clocks.",
+        "Set INTONE CW so 2N–6N run at integer ratios of IDENTITY.",
+        "Patch your fast clock → Just Friends TRIGGER 6N (cascades to all six).",
+        "Patch Just Friends OUT 2N → Drum 1 Trig as a /2 clock.",
+        "Patch Just Friends OUT 3N → Drum 2 Trig as a /3 clock.",
+        "Tap OUT 4N, 5N, 6N for /4, /5, /6 lanes as needed."
+      ],
+      "signalOut": "Just Friends OUT 1N–6N — shaped 0–8V envelopes that also act as divided clock lanes (÷1 through ÷6 at INTONE full CW).",
+      "hear": "One fast clock becomes six slower ones, each shaped like an envelope rather than a raw pulse. Sweep RUN CCW to allow earlier retriggers — the division softens into a MATHS-style retrigger behavior.",
       "diagram": "Just Friends:\n* MODE: transient\n* RANGE: shape\n* RUN: ~+5V (retrigger at EOC only)\n\n- Clock (Out) c> Just Friends (TRIGGER 6N)\n- Offset (+5V) >> Just Friends (RUN)\n- Just Friends (OUT 2N) t> Drum (Trig) // /2\n- Just Friends (OUT 3N) t> Drum (Trig) // /3"
     },
     {
-      "name": "Through-zero ratio FM",
-      "patch": "MODE cycle · RANGE sound · FM knob full CCW (sends FM INPUT to INTONE) · audio-rate VCO → FM INPUT · modulating INTONE at audio rate re-voices the manifold each cycle · discordant shifting chord drone via MIX",
+      "name": "Audio-rate ratio FM",
+      "patch": "FM knob full CCW routes FM INPUT to INTONE — audio-rate modulation re-voices the manifold every cycle for a shifting chord drone.",
+      "steps": [
+        "Set MODE switch to CYCLE.",
+        "Set RANGE switch to SOUND.",
+        "Turn the FM knob full CCW so FM INPUT sends to INTONE (ratio FM, not pitch FM).",
+        "Set INTONE knob at noon (unison starting point — modulation will sweep around this).",
+        "Patch an audio-rate VCO → Just Friends FM INPUT. (In SOUND range this jack is AC-coupled for through-zero behavior.)",
+        "Patch your 1V/oct pitch source → Just Friends TIME (v/8).",
+        "Patch Just Friends MIX → Output."
+      ],
+      "signalOut": "Just Friends MIX — tanh-limited ~15Vpp sum of all six channels being audio-rate ratio-modulated.",
+      "hear": "A shimmering discordant drone that keeps re-voicing itself — the chord structure dissolves and reforms at the modulator rate. Turn the FM knob back toward noon to tame it, or nudge CW to blend in TIME FM for extra wobble.",
       "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: sound\n* FM knob: full CCW (→ INTONE)\n\nVCO:\n\n- VCO (Out) -> Just Friends (FM INPUT)\n- Sequencer (Pitch) p> Just Friends (TIME)\n- Just Friends (MIX) -> Output (In)"
     },
     {
       "name": "STRATA six-channel slew",
-      "patch": "MODE sustain · RANGE shape · RUN patched (sets sustain level) · stepped CV sources → TRIGGER inputs as gates · each OUT 1N–6N is a slew-limited version with per-channel ratio · use to smooth six sequencer lanes into flowing CV",
+      "patch": "SUSTAIN + SHAPE + RUN patched (STRATA) turns the manifold into six slew limiters — one per channel, each at a different ratio.",
+      "steps": [
+        "Set MODE switch to SUSTAIN.",
+        "Set RANGE switch to SHAPE.",
+        "Patch an offset of about +4V → Just Friends RUN (STRATA: RUN voltage sets the sustain/slew character).",
+        "Set TIME for the base slew time (short = snappy, long = molasses).",
+        "Set INTONE knob CW so 2N–6N slew faster than IDENTITY.",
+        "Patch stepped CV lane 1 → Just Friends TRIGGER 1N (acts as the CV input to that slew channel).",
+        "Patch stepped CV lane 2 → Just Friends TRIGGER 2N.",
+        "Patch Just Friends OUT 1N → VCO 1 FM (slewed version of lane 1).",
+        "Patch Just Friends OUT 2N → VCO 2 FM (slewed version of lane 2, different slew rate)."
+      ],
+      "signalOut": "Just Friends OUT 1N–6N — each a slew-limited version of the corresponding TRIGGER input, with per-channel lag set by INTONE.",
+      "hear": "Stepped sequencer lanes turn into flowing CV — each channel glides at its own speed. Sweep RUN to change the slew character live; INTONE globally rebalances how fast the later channels catch up.",
       "diagram": "Just Friends:\n* MODE: sustain\n* RANGE: shape\n* RUN: patched (sustain level)\n\n- CV 1 (Out) >> Just Friends (TRIGGER 1N)\n- CV 2 (Out) >> Just Friends (TRIGGER 2N)\n- Offset (+4V) >> Just Friends (RUN)\n- Just Friends (OUT 1N) >> VCO 1 (FM) // slewed\n- Just Friends (OUT 2N) >> VCO 2 (FM)"
     }
   ]

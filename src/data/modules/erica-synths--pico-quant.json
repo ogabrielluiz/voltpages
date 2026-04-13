@@ -74,18 +74,51 @@
   "patchIdeas": [
     {
       "name": "Melodic S&H",
-      "patch": "Noise/random CV → CV IN · Clock → CLK IN · CV OUT → VCO 1V/oct",
+      "patch": "Noise → CV IN, clock → CLK IN, CV OUT → VCO, CLK OUT fires envelope.",
+      "steps": [
+        "Press the SCALE button repeatedly until the LED turns dark blue (Pentatonic) — hard to play a wrong note.",
+        "Patch a noise source or random/slow-chaos CV → CV IN (keep it roaming between 0 and +8V; negatives are ignored).",
+        "Patch a steady clock (e.g. 1/8 notes) → CLK IN — the quantizer now samples CV IN on each rising edge instead of free-running.",
+        "Patch CV OUT → VCO V/Oct.",
+        "Patch CLK OUT → envelope trigger so the VCO is articulated every time the pitch actually changes.",
+        "Set Tolerance around 12 o'clock and Glide fully CCW (0s) for crisp stepping.",
+        "Start the clock — you get a random pentatonic melody in sync with the clock, never hitting a wrong note."
+      ],
+      "signalOut": "CV OUT — quantized V/Oct snapped to the Pentatonic scale (0 to +8V), updating on each CLK IN edge. CLK OUT — trigger on every CV change.",
+      "hear": "A musical random-pentatonic sequence that always sounds 'right': notes land on scale degrees, the envelope re-plucks each new pitch, and nothing plays when the noise stays inside one note's tolerance band.",
       "diagram": "PICO QUANT:\n* Scale: Pentatonic\n- Noise (Out) >> Pico Quant (CV IN)\n- Clock (Out) c> Pico Quant (CLK IN) // samples on clock\n- Pico Quant (CV OUT) p> VCO (V/Oct)\n- Pico Quant (CLK OUT) t> Envelope (Trig)"
     },
     {
       "name": "Microtonal melody",
-      "patch": "Upload quarter-tone scale via web · sequencer → CV IN · CV OUT → VCO",
-      "diagram": "PICO QUANT:\n* Scale: Custom quarter-tone (uploaded)\n- Sequencer (CV) >> Pico Quant (CV IN)\n- Pico Quant (CV OUT) p> VCO (V/Oct) // microtonal pitches"
+      "patch": "Upload a quarter-tone scale via the web interface, then quantize a sequencer through Pico Quant.",
+      "steps": [
+        "On a laptop or phone, open www.ericasynths.lv/quant and click SEMI/QUARTER to switch the keyboard into quarter-tone mode.",
+        "Either pick a preset from the SCALES dropdown or dot in your own quarter-tone notes on the keyboard.",
+        "On the module, press and hold the SCALE button for ~2 seconds — the LED starts blinking red (upload mode).",
+        "Patch the laptop/phone's headphone output → CLK IN, pick a slot from the UPLOAD dropdown (matching an LED color), and hit UPLOAD on the page. The LED blinks green once when the transfer succeeds.",
+        "Unpatch the headphones from CLK IN; short-press SCALE to cycle to the slot you just filled.",
+        "Patch a sequencer CV → CV IN and CV OUT → VCO V/Oct.",
+        "Leave CLK IN unpatched so the module free-runs; nudge Glide up slightly so microtonal steps aren't jarring."
+      ],
+      "signalOut": "CV OUT — quantized V/Oct using ¼-semitone intervals (0 to +8V). CLK OUT — trigger each time the quarter-tone step changes.",
+      "hear": "Non-Western, 'between-the-frets' melodies: the VCO lands on pitches that don't exist on a 12-TET keyboard, giving maqam-like or xenharmonic colors while still following the sequencer's contour.",
+      "diagram": "PICO QUANT:\n* Scale: Custom quarter-tone (uploaded)\n- Sequencer (CV) >> Pico Quant (CV IN)\n- Pico Quant (CV OUT) p> VCO (V/Oct) // microtonal pitches\n- Pico Quant (CLK OUT) t> Envelope (Trig)"
     },
     {
       "name": "Tolerance experiment",
-      "patch": "LFO → CV IN · Tolerance CW (tight) for precise snapping vs CCW for smooth stepping",
-      "diagram": "PICO QUANT:\n* Tolerance: CW (tight)\n* Glide: low\n- LFO (Out) >> Pico Quant (CV IN)\n- Pico Quant (CV OUT) p> VCO (V/Oct) // stepped melody from smooth LFO\n- Pico Quant (CLK OUT) t> Envelope (Trig)"
+      "patch": "LFO → CV IN, free-running; sweep Tolerance to change how the smooth LFO breaks into steps.",
+      "steps": [
+        "Press SCALE until you land on Diatonic or Chromatic (lots of notes = more steps to hear).",
+        "Patch a slow triangle LFO (~0.2 Hz, 0 to +5V) → CV IN. Leave CLK IN unpatched so the quantizer runs freely.",
+        "Patch CV OUT → VCO V/Oct and CLK OUT → envelope trigger.",
+        "Start with Tolerance fully CCW (50% — wide bands): the LFO's slope is split evenly and you hear a smooth staircase climb/descend.",
+        "Turn Tolerance fully CW (10% — narrow bands): notes only advance when CV IN gets very close to the next scale voltage, so the output lingers longer on each step and 'jumps' late.",
+        "Turn Glide from 0 up toward max: at short glide times it acts wet/dry; at long times you get portamento between notes.",
+        "Compare Chromatic vs Pentatonic with the same LFO to hear tolerance shape more/fewer steps."
+      ],
+      "signalOut": "CV OUT — quantized staircase from the LFO (0 to +8V) whose step timing depends on Tolerance. CLK OUT — trigger every time the staircase advances.",
+      "hear": "The same LFO becomes either an even rising scale (CCW, wide tolerance) or a pitched 'hiccup' that hangs on notes and jumps abruptly (CW, tight tolerance). Glide turns the staircase into a portamento slide.",
+      "diagram": "PICO QUANT:\n* Tolerance: sweep CCW↔CW\n* Glide: low\n- LFO (Out) >> Pico Quant (CV IN)\n- Pico Quant (CV OUT) p> VCO (V/Oct) // stepped melody from smooth LFO\n- Pico Quant (CLK OUT) t> Envelope (Trig)"
     }
   ]
 }

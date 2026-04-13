@@ -2,65 +2,108 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://modulargrid.net/e/transient-modules-u2x",
+      "https://www.signalsounds.com/transient-modules-u2x-eurorack-1u-dual-buff-mult-module",
+      "https://www.elevatorsound.com/product/transient-modules-u2x-1u-eurorack-buffered-multiple-module/"
+    ]
   },
   "slug": "transient-modules--u2x",
   "name": "u2X",
   "manufacturer": "Transient Modules",
   "hp": 12,
-  "tags": ["UTILITY", "MIXER"],
-  "description": "1U dual 2-channel unity mixer. Two independent sections each combine two signals into one output. Mute switch per section silences the output without disconnecting.",
+  "tags": ["UTILITY", "MULT", "BUFFER"],
+  "description": "1U Intellijel dual buffered multiple. Each section copies one input to three active outputs. IN 1 is normalled to section 2, giving up to 6 copies of a single signal. Bicolor LED per section shows polarity.",
   "controls": [
     {
-      "name": "Mute A",
-      "scope": "Section A",
-      "description": "Toggle switch that mutes the mixed output of section A.",
-      "detail": "up: active · down: muted"
+      "name": "IN 1 LED",
+      "scope": "Section 1",
+      "description": "Bicolor LED showing polarity and level of the signal at IN 1.",
+      "detail": "green = positive · red = negative · brightness tracks amplitude"
     },
     {
-      "name": "Mute B",
-      "scope": "Section B",
-      "description": "Toggle switch that mutes the mixed output of section B.",
-      "detail": "up: active · down: muted"
+      "name": "IN 2 LED",
+      "scope": "Section 2",
+      "description": "Bicolor LED showing polarity and level of the signal at IN 2 (or IN 1 when IN 2 is unpatched).",
+      "detail": "green = positive · red = negative · brightness tracks amplitude"
     }
   ],
   "inputs": [
-    { "name": "A In 1", "description": "First input to section A unity mixer.", "voltage": "±10V" },
-    { "name": "A In 2", "description": "Second input to section A unity mixer.", "voltage": "±10V" },
-    { "name": "B In 1", "description": "First input to section B unity mixer.", "voltage": "±10V" },
-    { "name": "B In 2", "description": "Second input to section B unity mixer.", "voltage": "±10V" }
+    { "name": "IN 1", "description": "Input to section 1. Buffered and copied to outputs 1x1, 1x2, 1x3. Also normalled down to section 2's input when IN 2 is unpatched.", "voltage": "±10V (audio or CV)" },
+    { "name": "IN 2", "description": "Input to section 2. Buffered and copied to outputs 2x1, 2x2, 2x3. Normalled to IN 1 when unpatched.", "voltage": "±10V (audio or CV)", "normalizedTo": "IN 1" }
   ],
   "outputs": [
-    { "name": "A Out", "description": "Unity mix of A In 1 and A In 2. Silenced when Mute A is engaged.", "voltage": "±10V" },
-    { "name": "B Out", "description": "Unity mix of B In 1 and B In 2. Silenced when Mute B is engaged.", "voltage": "±10V" }
+    { "name": "1x1", "description": "Buffered copy of IN 1.", "voltage": "matches input" },
+    { "name": "1x2", "description": "Buffered copy of IN 1.", "voltage": "matches input" },
+    { "name": "1x3", "description": "Buffered copy of IN 1.", "voltage": "matches input" },
+    { "name": "2x1", "description": "Buffered copy of IN 2 (or IN 1 when IN 2 is unpatched).", "voltage": "matches input" },
+    { "name": "2x2", "description": "Buffered copy of IN 2 (or IN 1 when IN 2 is unpatched).", "voltage": "matches input" },
+    { "name": "2x3", "description": "Buffered copy of IN 2 (or IN 1 when IN 2 is unpatched).", "voltage": "matches input" }
   ],
   "behaviors": [
     {
-      "name": "Unity Mixing",
-      "trigger": "signals patched",
-      "description": "Each section sums its two inputs at unity gain. No attenuation or amplification — output equals the sum of both inputs."
+      "name": "Buffered Copy",
+      "trigger": "signal → IN 1 or IN 2",
+      "description": "Active op-amp buffer drives three identical outputs per section. Unlike a passive mult, the buffer prevents V/Oct sag and impedance loading when copies feed multiple oscillators or high-impedance destinations."
     },
     {
-      "name": "Mute",
-      "trigger": "mute switch",
-      "description": "Toggling the mute switch cuts the output of that section without affecting the input signals or the other section."
+      "name": "1-to-6 Mult",
+      "trigger": "signal → IN 1, IN 2 unpatched",
+      "description": "IN 1 is normalled to IN 2, so one input produces six identical buffered copies across all outputs (1x1, 1x2, 1x3, 2x1, 2x2, 2x3)."
+    },
+    {
+      "name": "Two Independent Mults",
+      "trigger": "signals → IN 1 and IN 2",
+      "description": "Patching IN 2 breaks the normal. You then have two independent 1-to-3 buffered mults in 12HP / 1U."
+    },
+    {
+      "name": "Polarity Monitor",
+      "trigger": "any signal present",
+      "description": "Bicolor LED lights green on positive voltage, red on negative. Useful for confirming CV is arriving and for distinguishing unipolar envelopes from bipolar LFOs at a glance."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Merge two LFOs",
-      "patch": "LFO 1 → A In 1 · LFO 2 → A In 2 · A Out → VCF CV",
-      "diagram": "U2X:\n- LFO 1 (CV) >> u2X (A In 1)\n- LFO 2 (CV) >> u2X (A In 2)\n- u2X (A Out) >> VCF (Cutoff CV) // summed modulation"
+      "name": "Precision V/Oct fan-out to three oscillators",
+      "patch": "Keyboard V/Oct → IN 1 · outputs 1x1, 1x2, 1x3 → three VCO V/Oct inputs.",
+      "steps": [
+        "Patch your pitch source (keyboard, sequencer, quantizer) into u2X IN 1.",
+        "Patch 1x1 → VCO A V/Oct.",
+        "Patch 1x2 → VCO B V/Oct.",
+        "Patch 1x3 → VCO C V/Oct.",
+        "Tune each VCO by ear or use its own fine-tune knob — the buffered outputs will track cleanly across octaves without the pitch droop a passive mult can cause."
+      ],
+      "signalOut": "1x1, 1x2, 1x3 — three identical buffered copies of the V/Oct pitch CV, each stable enough to drive a VCO without tuning sag.",
+      "hear": "All three oscillators hold tuning together even when you play several octaves. If you swap this for a passive stackcable, the oscillators will drift flat by tens of cents as more loads are added — that's exactly what the buffer is preventing.",
+      "diagram": "u2X:\n- Keyboard (Pitch) p> u2X (IN 1)\n- u2X (1x1) p> VCO A (V/Oct)\n- u2X (1x2) p> VCO B (V/Oct)\n- u2X (1x3) p> VCO C (V/Oct)"
     },
     {
-      "name": "CV + envelope sum",
-      "patch": "V/Oct → B In 1 · Envelope → B In 2 · B Out → VCO V/Oct for pitch + expression",
-      "diagram": "U2X:\n- Keyboard (Pitch) p> u2X (B In 1)\n- Envelope (CV) >> u2X (B In 2) // adds pitch expression\n- u2X (B Out) p> VCO (V/Oct)"
+      "name": "One clock, six destinations",
+      "patch": "Clock → IN 1 · leave IN 2 unpatched so all six outputs carry the same clock.",
+      "steps": [
+        "Patch master clock (or a square LFO) into u2X IN 1.",
+        "Leave IN 2 unpatched — IN 1 is normalled down to section 2, so 2x1/2x2/2x3 also carry the clock.",
+        "Fan out: 1x1 → sequencer clock, 1x2 → drum trig, 1x3 → sample-and-hold trig, 2x1 → envelope gate, 2x2 → clocked delay, 2x3 → visual trigger / tap.",
+        "Confirm the LED on section 1 is blinking green in time — section 2's LED will blink in sync because it's receiving the same normalled signal."
+      ],
+      "signalOut": "1x1, 1x2, 1x3, 2x1, 2x2, 2x3 — six buffered copies of the same clock/trig, ready to drive anything that needs a tick.",
+      "hear": "Everything downstream stays locked to the same master tick. Because each output is actively buffered, fast triggers stay sharp even when feeding many modules — no slew rounding or missed gates from loading.",
+      "diagram": "u2X:\n- Clock (Out) t> u2X (IN 1)\n// IN 2 unpatched — IN 1 normalled to section 2\n- u2X (1x1) t> Sequencer (Clock)\n- u2X (1x2) t> Drum (Trig)\n- u2X (1x3) t> S&H (Trig)\n- u2X (2x1) t> Envelope (Gate)\n- u2X (2x2) t> Delay (Clock)\n- u2X (2x3) t> Scope (Trig)"
     },
     {
-      "name": "Live mute performance",
-      "patch": "Two audio sources into section A · mute switch for instant drop-outs",
-      "diagram": "U2X:\n- Drum Loop (OUT) -> u2X (A In 1)\n- Synth (OUT) -> u2X (A In 2)\n- u2X (A Out) -> Mixer (CH) // Mute A for drop-outs"
+      "name": "Two mod buses in parallel",
+      "patch": "LFO → IN 1 for slow bus · envelope → IN 2 for fast bus · route copies to different destinations.",
+      "steps": [
+        "Patch a slow LFO into IN 1 — this becomes your slow modulation bus.",
+        "Patch an envelope into IN 2 — this breaks the normal and becomes your fast modulation bus.",
+        "From section 1: 1x1 → filter cutoff, 1x2 → VCA bias, 1x3 → panner — all wobble with the LFO.",
+        "From section 2: 2x1 → filter resonance, 2x2 → FM index VCA, 2x3 → wavefolder — all punch with the envelope.",
+        "Watch the LEDs: section 1 should slowly fade green/red with the LFO; section 2 flashes green on each note."
+      ],
+      "signalOut": "Section 1 outputs carry the LFO (bipolar, slow). Section 2 outputs carry the envelope (unipolar, fast). Two independent modulation buses, three taps each.",
+      "hear": "A patch where slow, wide motion (LFO on filter/VCA/pan) coexists with sharp per-note accents (envelope on resonance/FM/fold). The two buses never cross-talk because the sections are fully independent once IN 2 is patched.",
+      "diagram": "u2X:\n- LFO (Out) >> u2X (IN 1)\n- Envelope (Out) >> u2X (IN 2)\n- u2X (1x1) >> VCF (Cutoff)\n- u2X (1x2) >> VCA (Bias)\n- u2X (1x3) >> Panner (CV)\n- u2X (2x1) >> VCF (Resonance)\n- u2X (2x2) >> FM VCA (CV)\n- u2X (2x3) >> Wavefolder (CV)"
     }
   ]
 }
