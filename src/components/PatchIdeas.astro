@@ -92,6 +92,18 @@ for (const idea of patchIdeas) {
     const body = document.getElementById('diagram-lightbox-body');
     if (!dialog || !body) return;
 
+    function applyDiagramSizing(root) {
+      root.querySelectorAll('.diagram-svg > svg').forEach((svg) => {
+        const minWidth = Number(svg.getAttribute('data-pf-min-width') || 0);
+        if (!minWidth) return;
+        svg.style.width = `${minWidth}px`;
+        svg.style.minWidth = `${minWidth}px`;
+        svg.style.maxWidth = 'none';
+        svg.style.height = 'auto';
+        svg.style.display = 'block';
+      });
+    }
+
     const MARK_HTML = `
       <div class="diagram-mark diagram-mark--lightbox" aria-hidden="true">
         <svg viewBox="0 0 48 48" width="16" height="16">
@@ -115,6 +127,7 @@ for (const idea of patchIdeas) {
         const svg = container && container.querySelector('.diagram-svg');
         if (!svg) return;
         body.innerHTML = svg.innerHTML + MARK_HTML;
+        applyDiagramSizing(body);
         if (typeof dialog.showModal === 'function') {
           dialog.showModal();
         } else {
@@ -154,5 +167,7 @@ for (const idea of patchIdeas) {
       if (mql.addEventListener) mql.addEventListener('change', onChange);
       else if (mql.addListener) mql.addListener(onChange);
     }
+
+    applyDiagramSizing(document);
   })();
 </script>
