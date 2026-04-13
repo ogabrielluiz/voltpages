@@ -3,7 +3,12 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.6.0"
+    "firmwareVersion": "1.6.0",
+    "sources": [
+      "https://www.makenoisemusic.com/modules/polimaths",
+      "https://www.makenoisemusic.com/content/manuals/PoliMATHSManual.pdf",
+      "https://modulargrid.net/e/make-noise-polimaths"
+    ]
   },
   "slug": "make-noise--polimaths",
   "name": "PoliMATHS",

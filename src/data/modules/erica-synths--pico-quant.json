@@ -2,7 +2,13 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://www.ericasynths.lv/shop/eurorack-modules/pico-system/pico-quant/",
+      "https://www.ericasynths.lv/media/PICO_QUANT_MANUAL_V02.pdf",
+      "https://www.ericasynths.lv/quant",
+      "https://www.modulargrid.net/e/erica-synths-pico-quant"
+    ]
   },
   "slug": "erica-synths--pico-quant",
   "name": "Pico Quant",
@@ -27,7 +33,7 @@
       "name": "Scale Button",
       "scope": "global",
       "description": "Press to cycle through 8 scale slots. Hold 2s to enter scale upload mode (LED blinks red).",
-      "detail": "8 scales: Diatonic, Arabian, Harmonic Minor, Blues, Diminish, Pentatonic, Whole-tone, Chromatic"
+      "detail": "8 scales: Diatonic, Double Harmonic Major (Arabian), Harmonic Minor, Blues, Diminish, Pentatonic, Whole-tone, Chromatic"
     }
   ],
   "inputs": [

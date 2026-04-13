@@ -3,7 +3,12 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.2"
+    "firmwareVersion": "1.2",
+    "sources": [
+      "https://intellijel.com/shop/eurorack/midi-1u/",
+      "https://intellijel.com/support/manuals/",
+      "https://intellijel.com/wp-content/uploads/2021/04/Midi_1U_manual.pdf"
+    ]
   },
   "slug": "intellijel--midi-1u",
   "name": "MIDI 1U",

@@ -3,7 +3,19 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.0"
+    "firmwareVersion": "1.0",
+    "sources": [
+      {
+        "type": "manual",
+        "title": "Intellijel Quad VCA — User Manual",
+        "path": "manuals/Intellijel/Quad_VCA.pdf"
+      },
+      {
+        "type": "product-page",
+        "title": "Intellijel — Quad VCA",
+        "url": "https://intellijel.com/shop/eurorack/quad-vca/"
+      }
+    ]
   },
   "slug": "intellijel--quad-vca",
   "name": "Quad VCA",

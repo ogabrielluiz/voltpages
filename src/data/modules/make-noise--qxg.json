@@ -2,7 +2,12 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://www.makenoisemusic.com/modules/qxg",
+      "https://www.makenoisemusic.com/content/manuals/QXG-manual.pdf",
+      "https://www.modulargrid.net/e/make-noise-qxg"
+    ]
   },
   "slug": "make-noise--qxg",
   "name": "QXG",

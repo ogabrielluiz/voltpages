@@ -2,7 +2,12 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://doepfer.de/a170.htm",
+      "https://doepfer.de/A100_man/A170_man.pdf",
+      "https://www.modulargrid.net/e/doepfer-a-170"
+    ]
   },
   "slug": "doepfer--a-170",
   "name": "A-170",

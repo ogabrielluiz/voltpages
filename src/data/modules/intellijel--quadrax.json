@@ -3,7 +3,19 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.2.1"
+    "firmwareVersion": "1.2.1",
+    "sources": [
+      {
+        "title": "Intellijel Quadrax Manual (Firmware 1.2.1, Rev 2021.03.09)",
+        "url": "https://intellijel.com/wp-content/uploads/2021/03/quadrax_manual.pdf",
+        "accessed": "2026-04-13"
+      },
+      {
+        "title": "Intellijel Quadrax product page",
+        "url": "https://intellijel.com/shop/eurorack/quadrax/",
+        "accessed": "2026-04-13"
+      }
+    ]
   },
   "slug": "intellijel--quadrax",
   "name": "Quadrax",

@@ -3,7 +3,19 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "expanderOf": "intellijel--quadrax"
+    "expanderOf": "intellijel--quadrax",
+    "sources": [
+      {
+        "type": "manual",
+        "title": "Quadrax (+ Optional Qx Expander) Manual — Firmware 1.2.1",
+        "path": "manuals/Intellijel/Qx.pdf"
+      },
+      {
+        "type": "manufacturer",
+        "title": "Intellijel Qx product page",
+        "url": "https://intellijel.com/shop/eurorack/qx/"
+      }
+    ]
   },
   "slug": "intellijel--qx",
   "name": "Qx",

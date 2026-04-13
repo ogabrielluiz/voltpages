@@ -3,7 +3,15 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "expanderOf": "intellijel--midi-1u"
+    "expanderOf": "intellijel--midi-1u",
+    "sources": [
+      {
+        "type": "manual",
+        "title": "Intellijel MIDI 1U System Manual (covers CVx 1U) — Firmware 1.2, Rev 2026.01.06",
+        "url": "https://intellijel.com/support/manuals/",
+        "localPath": "manuals/Intellijel/CVx.pdf"
+      }
+    ]
   },
   "slug": "intellijel--cvx",
   "name": "CVx",

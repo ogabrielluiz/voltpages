@@ -3,7 +3,29 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "expanderOf": "instruo--ochd"
+    "expanderOf": "instruo--ochd",
+    "sources": [
+      {
+        "title": "ochd expander User Manual (Instruo)",
+        "url": "https://www.instruomodular.com/wp-content/uploads/2023/06/ochd_expander_Manual.pdf",
+        "type": "manual"
+      },
+      {
+        "title": "ochd expander — Instruo product page",
+        "url": "https://www.instruomodular.com/product/ochd-expander/",
+        "type": "manufacturer"
+      },
+      {
+        "title": "Instruo [ø]4^2 (ochd expander) — ModularGrid",
+        "url": "https://www.modulargrid.net/e/instruo-4-2-ochd-expander",
+        "type": "database"
+      },
+      {
+        "title": "Instruo ochd expander Walkthrough — DivKid (YouTube)",
+        "url": "https://www.youtube.com/watch?v=S8UpKXE7tWg",
+        "type": "video"
+      }
+    ]
   },
   "slug": "instruo--ochd-expander",
   "name": "ochd expander",

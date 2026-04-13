@@ -2,7 +2,12 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://www.instruomodular.com/product/ochd/",
+      "https://www.instruomodular.com/wp-content/uploads/2020/09/ochd-User-Manual.pdf",
+      "https://www.modulargrid.net/e/instru-modular-ochd"
+    ]
   },
   "slug": "instruo--ochd",
   "name": "ochd",

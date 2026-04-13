@@ -2,7 +2,12 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/shop/eurorack/noise-tools-1u/",
+      "https://intellijel.com/wp-content/uploads/2019/11/noise_tools_1u_manual.pdf",
+      "https://www.modulargrid.net/e/intellijel-noise-tools-1u"
+    ]
   },
   "slug": "intellijel--noise-tools-1u",
   "name": "Noise Tools 1U",

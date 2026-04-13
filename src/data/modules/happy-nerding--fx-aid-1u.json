@@ -3,7 +3,22 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.0"
+    "firmwareVersion": "1.0",
+    "sources": [
+      {
+        "title": "FX AID / FX AID XL / FX AID 1U Illustrated Manual (Bob Borries)",
+        "url": "http://www.vo1t.com/Vo1tIllustrated.html",
+        "path": "manuals/Happy_Nerding/FX_AID_1U.pdf"
+      },
+      {
+        "title": "FX AID Program Editor & Firmware",
+        "url": "https://fxaid.app"
+      },
+      {
+        "title": "Happy Nerding FX AID 1U product page",
+        "url": "https://happynerding.com/fx-aid-1u/"
+      }
+    ]
   },
   "slug": "happy-nerding--fx-aid-1u",
   "name": "FX AID 1U",

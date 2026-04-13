@@ -3,7 +3,14 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.2"
+    "firmwareVersion": "1.2",
+    "sources": [
+      "https://mutable-instruments.net/modules/plaits/manual/",
+      "https://mutable-instruments.net/modules/plaits/",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/plaits/manual/",
+      "https://www.modulargrid.net/e/mutable-instruments-plaits",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=198076"
+    ]
   },
   "slug": "mutable-instruments--plaits",
   "name": "Plaits",

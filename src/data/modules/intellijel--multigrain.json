@@ -3,7 +3,19 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.3"
+    "firmwareVersion": "1.3",
+    "sources": [
+      {
+        "type": "manual",
+        "title": "Intellijel Multigrain Manual v1.3 (2025.10.03)",
+        "path": "manuals/Intellijel/Multigrain.pdf"
+      },
+      {
+        "type": "product-page",
+        "title": "Intellijel Multigrain",
+        "url": "https://intellijel.com/shop/eurorack/multigrain/"
+      }
+    ]
   },
   "slug": "intellijel--multigrain",
   "name": "Multigrain",
@@ -92,8 +104,8 @@
     { "name": "X", "description": "Assignable modulation CV input 1. Assign to any granular parameter per Scene.", "voltage": "±10V" },
     { "name": "Y", "description": "Assignable modulation CV input 2. Assign to any granular parameter per Scene.", "voltage": "±10V" },
     { "name": "Z", "description": "Assignable modulation CV input 3. Assign to any granular parameter per Scene.", "voltage": "±10V" },
-    { "name": "SELECT", "description": "CV selects active Sound (0–5V maps to Sounds 1–8). Negative voltage mirrored.", "voltage": "±5V" },
-    { "name": "MORPH CV", "description": "CV input for MORPH fader position. Scaled by MORPH ATT attenuverter.", "voltage": "±5V" },
+    { "name": "SELECT", "description": "CV selects active Sound (0–5V maps to Sounds 1–8). Negative voltage mirrored.", "voltage": "±10V" },
+    { "name": "MORPH CV", "description": "CV input for MORPH fader position. Scaled by MORPH ATT attenuverter.", "voltage": "±10V" },
     { "name": "SYNC", "description": "Clock/trigger input for synchronizing grain rate to external clock.", "voltage": ">2V" }
   ],
   "outputs": [

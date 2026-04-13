@@ -2,7 +2,12 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://busycircuits.com/alm048",
+      "https://busycircuits.com/files/alm048-manual.pdf",
+      "https://www.modulargrid.net/e/alm-busy-circuits-pip-lfo"
+    ]
   },
   "slug": "alm-busy-circuits--pip-lfo",
   "name": "Pip LFO",

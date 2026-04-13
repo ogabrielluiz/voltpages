@@ -2,7 +2,14 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "manuals/Noise_Engineering/Desmodus_Versio.pdf",
+      "https://noiseengineering.us/products/desmodus-versio",
+      "https://www.modulargrid.net/e/noise-engineering-desmodus-versio",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=242016",
+      "https://www.perfectcircuit.com/signal/desmodus-versio-review"
+    ]
   },
   "slug": "noise-engineering--desmodus-versio",
   "name": "Desmodus Versio",

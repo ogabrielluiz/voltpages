@@ -2,7 +2,12 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://www.shakmat.com/product/dual-dagger",
+      "https://www.shakmat.com/wp-content/uploads/2023/10/Dual-Dagger-Manual.pdf",
+      "https://www.modulargrid.net/e/shakmat-modular-dual-dagger"
+    ]
   },
   "slug": "shakmat-modular--dual-dagger",
   "name": "Dual Dagger",

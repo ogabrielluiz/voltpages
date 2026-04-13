@@ -2,7 +2,11 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://twohp.com/modules/buff",
+      "https://modulargrid.net/e/2hp-buff"
+    ]
   },
   "slug": "2hp--buff-mult",
   "name": "Buff Mult",

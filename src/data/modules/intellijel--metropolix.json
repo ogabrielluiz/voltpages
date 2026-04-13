@@ -3,7 +3,13 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.6"
+    "firmwareVersion": "1.6",
+    "sources": [
+      "https://intellijel.com/downloads/manuals/metropolix_manual_v1.6_2025.09.24.pdf",
+      "https://intellijel.com/shop/eurorack/metropolix/",
+      "https://modulargrid.net/e/intellijel-metropolix",
+      "https://modwiggler.com/forum/viewtopic.php?t=244729"
+    ]
   },
   "slug": "intellijel--metropolix",
   "name": "Metropolix",
@@ -100,7 +106,7 @@
       "name": "SWING",
       "scope": "Track Settings",
       "description": "Adds swing/shuffle timing to the track.",
-      "detail": "0–99%"
+      "detail": "50% = straight · 50–78% swing range"
     },
     {
       "name": "SLIDE",
@@ -382,8 +388,8 @@
       "name": "Swing offset between tracks",
       "patch": "Track 1 straight, Track 2 swung — same sliders, two grooves at once.",
       "steps": [
-        "Press TRK 1, press SWING, set 0%.",
-        "Press TRK 2, press SWING, set 60%.",
+        "Press TRK 1, press SWING, set 50% (straight).",
+        "Press TRK 2, press SWING, set 65%.",
         "Program your 8-stage melody on the sliders.",
         "Patch Track 1 Pitch/Gate → VCO1/ENV1.",
         "Patch Track 2 Pitch/Gate → VCO2/ENV2.",
@@ -391,7 +397,7 @@
       ],
       "signalOut": "Both track outputs carry the same notes with different micro-timing on Track 2 Gate.",
       "hear": "Two voices locked to the same notes but one shuffles — a laid-back jazz-style rhythmic layering.",
-      "diagram": "Metropolix:\n* TRK 1: SWING=0%\n* TRK 2: SWING=60%\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // two grooves, same notes"
+      "diagram": "Metropolix:\n* TRK 1: SWING=50% (straight)\n* TRK 2: SWING=65%\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // two grooves, same notes"
     },
     {
       "name": "AUX as hidden panel controls",

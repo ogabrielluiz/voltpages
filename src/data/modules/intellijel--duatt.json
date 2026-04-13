@@ -2,7 +2,12 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/shop/eurorack/duatt-1u/",
+      "https://intellijel.com/wp-content/uploads/2020/08/duatt_1u_manual.pdf",
+      "https://www.modulargrid.net/e/intellijel-duatt-1u"
+    ]
   },
   "slug": "intellijel--duatt",
   "name": "Duatt",

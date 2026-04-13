@@ -3,7 +3,12 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "4.1.6"
+    "firmwareVersion": "4.1.6",
+    "sources": [
+      "https://www.makenoisemusic.com/modules/multiwave",
+      "https://www.makenoisemusic.com/content/manuals/MultiWAVEManual.pdf",
+      "https://modulargrid.net/e/make-noise-multiwave"
+    ]
   },
   "slug": "make-noise--multiwave",
   "name": "MultiWAVE",

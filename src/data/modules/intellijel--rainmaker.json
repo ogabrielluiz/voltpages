@@ -91,7 +91,7 @@
       "detail": "Push-encoder · context-dependent"
     },
     {
-      "name": "Global param buttons (RAND / TAP GRID / PILES / CLK TIME / CLK DIV / TIME MOD WAVE/LEVEL/RATE)",
+      "name": "Global param buttons (RAND / TAP GRID / STACK / CLK TIME / CLK DIV / TIME MOD WAVE/LEVEL/RATE)",
       "scope": "EDIT mode",
       "description": "Select global rhythm delay parameters for editing with the encoder. Includes randomization destination, tap grid/stacks, clock time/div, and time modulation LFO (wave, depth, rate).",
       "detail": "Upper blue button row"
@@ -165,8 +165,8 @@
       "description": "Straight, Swing, Hard Swing, Reverse Swing, Alternate Swing, Accelerando, Ritardando, Waltz, Half Swing, Roller Coaster, Quintuple, 3× Uniform Random, Early/Late Reflection. GROOVE AMT blends between Straight and selected — 0=even, 100=full groove."
     },
     {
-      "name": "Per-tap pitch piles",
-      "trigger": "TAP PILES parameter (STACK)",
+      "name": "Per-tap pitch stacks",
+      "trigger": "TAP STACK parameter (panel silkscreen reads PILES; renamed to STACK in firmware v1.05+)",
       "description": "Each tap can become a chord of multiple pitched copies at one time slot. Create four-note harmonized echoes or simulate a chord on every delay tap. Combine with pitch ramp for arpeggiated stacks."
     },
     {
@@ -376,7 +376,7 @@
       ],
       "signalOut": "OUT L / OUT R — single mono note sprays a maj7 chord at every delay tap, at -5V to +5V.",
       "hear": "Play one note, hear a glossy major-7 chord cascade away from you, tap after tap. Swap the stack pitches to 0 / +3 / +7 / +10 for a minor-7 voicing, or 0 / +5 / +7 for parallel fifths.",
-      "diagram": "Rainmaker:\n* PILES: 4 · per-pile pitch: 0,+4,+7,+12\n* GROOVE: Straight\n\n- VCO (Out) -> Rainmaker (IN L)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
+      "diagram": "Rainmaker:\n* STACK: 4 · per-stack pitch: 0,+4,+7,+12\n* GROOVE: Straight\n\n- VCO (Out) -> Rainmaker (IN L)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
       "name": "Tempo-locked modulated resonator",

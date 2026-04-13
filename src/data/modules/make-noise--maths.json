@@ -3,7 +3,14 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.0"
+    "firmwareVersion": "1.0",
+    "sources": [
+      "https://www.makenoisemusic.com/modules/maths",
+      "https://www.makenoisemusic.com/content/manuals/MATHSmanual2014.pdf",
+      "https://www.modulargrid.net/e/make-noise-maths",
+      "https://learningmodular.com/an-introduction-to-make-noises-maths-eurorack-module/",
+      "https://www.youtube.com/watch?v=BtV12OmHT2E"
+    ]
   },
   "slug": "make-noise--maths",
   "name": "MATHS",
@@ -38,26 +45,30 @@
     }
   ],
   "inputs": [
-    { "name": "CH 1 Trigger", "description": "Gate/trigger fires CH 1 envelope", "voltage": "2V+ gate" },
-    { "name": "CH 1 Signal In", "description": "CV/audio processed by CH 1 rise/fall", "voltage": "±5V" },
-    { "name": "CH 1 Rise CV", "description": "Voltage control of CH 1 rise time", "voltage": "±5V" },
-    { "name": "CH 1 Fall CV", "description": "Voltage control of CH 1 fall time", "voltage": "±5V" },
-    { "name": "CH 2 Signal In", "description": "Input to CH 2 attenuverter", "voltage": "±5V", "normalizedTo": "+/-10V reference when unpatched" },
-    { "name": "CH 3 Signal In", "description": "Input to CH 3 attenuverter", "voltage": "±5V", "normalizedTo": "+5V DC when unpatched" },
-    { "name": "CH 4 Trigger", "description": "Gate/trigger fires CH 4 envelope", "voltage": "2V+ gate" },
-    { "name": "CH 4 Signal In", "description": "CV/audio processed by CH 4 rise/fall", "voltage": "±5V" },
-    { "name": "CH 4 Rise CV", "description": "Voltage control of CH 4 rise time", "voltage": "±5V" },
-    { "name": "CH 4 Fall CV", "description": "Voltage control of CH 4 fall time", "voltage": "±5V" }
+    { "name": "CH 1 Trigger", "description": "Gate/trigger fires CH 1 envelope", "voltage": "+2.5V min for HIGH" },
+    { "name": "CH 1 Signal In", "description": "CV/audio processed by CH 1 rise/fall", "voltage": "±10V" },
+    { "name": "CH 1 Rise CV", "description": "Linear CV of CH 1 rise time. +V lengthens rise, −V shortens.", "voltage": "±8V" },
+    { "name": "CH 1 Fall CV", "description": "Linear CV of CH 1 fall time. +V lengthens fall, −V shortens.", "voltage": "±8V" },
+    { "name": "CH 1 Both CV", "description": "Bi-polar exponential CV over the entire CH 1 function. +V shortens total time, −V lengthens.", "voltage": "±8V" },
+    { "name": "CH 1 Cycle In", "description": "Gate HIGH cycles CH 1, gate LOW stops cycling (unless Cycle button engaged).", "voltage": "+2.5V min for HIGH" },
+    { "name": "CH 2 Signal In", "description": "Input to CH 2 attenuverter", "voltage": "±10Vpp", "normalizedTo": "+10V reference when unpatched" },
+    { "name": "CH 3 Signal In", "description": "Input to CH 3 attenuverter", "voltage": "±10Vpp", "normalizedTo": "+5V reference when unpatched" },
+    { "name": "CH 4 Trigger", "description": "Gate/trigger fires CH 4 envelope", "voltage": "+2.5V min for HIGH" },
+    { "name": "CH 4 Signal In", "description": "CV/audio processed by CH 4 rise/fall", "voltage": "±10V" },
+    { "name": "CH 4 Rise CV", "description": "Linear CV of CH 4 rise time. +V lengthens rise, −V shortens.", "voltage": "±8V" },
+    { "name": "CH 4 Fall CV", "description": "Linear CV of CH 4 fall time. +V lengthens fall, −V shortens.", "voltage": "±8V" },
+    { "name": "CH 4 Both CV", "description": "Bi-polar exponential CV over the entire CH 4 function. +V shortens total time, −V lengthens.", "voltage": "±8V" },
+    { "name": "CH 4 Cycle In", "description": "Gate HIGH cycles CH 4, gate LOW stops cycling (unless Cycle button engaged).", "voltage": "+2.5V min for HIGH" }
   ],
   "outputs": [
     { "name": "CH 1 Unity Out", "description": "CH 1 function/envelope tapped before the attenuverter. Patching here does NOT remove CH 1 from the SUM/OR bus.", "voltage": "0–8V" },
-    { "name": "CH 1 EOR", "description": "End-of-rise gate from CH 1 only. Goes high at peak of CH 1 envelope.", "voltage": "0–5V gate" },
+    { "name": "CH 1 EOR", "description": "End-of-rise gate from CH 1 only. Goes high at peak of CH 1 envelope.", "voltage": "0V or 10V gate" },
     { "name": "Variable Out 1", "description": "CH 1 after its attenuverter. Normalled to the SUM/OR bus — patching removes CH 1 from SUM/OR.", "voltage": "±10V" },
     { "name": "Variable Out 2 (CH 2 Out)", "description": "CH 2 attenuverter output. Normalled to the SUM/OR bus.", "voltage": "±10V" },
     { "name": "Variable Out 3 (CH 3 Out)", "description": "CH 3 attenuverter output. Normalled to the SUM/OR bus.", "voltage": "±10V" },
     { "name": "Variable Out 4", "description": "CH 4 after its attenuverter. Normalled to the SUM/OR bus — patching removes CH 4 from SUM/OR.", "voltage": "±10V" },
     { "name": "CH 4 Unity Out", "description": "CH 4 function/envelope tapped before the attenuverter. Patching here does NOT remove CH 4 from the SUM/OR bus.", "voltage": "0–8V" },
-    { "name": "CH 4 EOC", "description": "End-of-cycle gate from CH 4 only. Goes high at end of CH 4 fall stage.", "voltage": "0–5V gate" },
+    { "name": "CH 4 EOC", "description": "End-of-cycle gate from CH 4 only. Goes high at end of CH 4 fall stage.", "voltage": "0V or 10V gate" },
     { "name": "SUM", "description": "Analog sum of the four Variable Outs (post-attenuverter).", "voltage": "±10V" },
     { "name": "INV", "description": "Inverted SUM — same shape as SUM, flipped. Useful for reversed modulation when the destination has no invert input.", "voltage": "±10V" },
     { "name": "OR", "description": "Analog OR — highest instantaneous voltage across the four Variable Outs. Positive-only; ignores negative voltages.", "voltage": "0–10V" }
@@ -215,7 +226,7 @@
         "Patch CH 1 Unity Out → CH 4 Trigger.",
         "Patch CH 4 EOC → destination as a /4 clock."
       ],
-      "signalOut": "CH 1 EOR (/2 clock) and CH 4 EOC (/4 clock). Both are 0–5V gates.",
+      "signalOut": "CH 1 EOR (/2 clock) and CH 4 EOC (/4 clock). Both are 0V/10V gates.",
       "hear": "Two clock lanes derived from one master, each slower than the previous. Change the Rise lengths on the fly to shift the divisions live.",
       "diagram": "MATHS:\n* CH 1: Rise longer than clock period\n* CH 4: Rise longer than CH 1 envelope period\n\n- Clock Source (Clk) c> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (EOR) g> Destination (/2 Clock)\n- MATHS.CH 1 (Unity Out) g> MATHS.CH 4 (Trig)\n- MATHS.CH 4 (EOC) g> Destination (/4 Clock)"
     },
@@ -257,7 +268,7 @@
         "Patch CH 2 Out → CH 1 Signal In. (Using CH 2 Out means you can trim the signal level; patch directly to CH 1 Signal In if you don't need scaling.)",
         "Patch CH 1 EOR → wherever you want the threshold-crossing gate."
       ],
-      "signalOut": "CH 1 EOR — 0–5V gate that fires whenever the scaled input crosses above CH 1's internal threshold.",
+      "signalOut": "CH 1 EOR — 0V/10V gate that fires whenever the scaled input crosses above CH 1's internal threshold.",
       "hear": "A gate every time the source rises past a certain voltage. Useful for extracting rhythmic events from an audio envelope or CV shape.",
       "diagram": "MATHS:\n* CH 2 Atten: full CW\n* CH 1: Rise + Fall full CCW (instant)\n\n- CV Source (Out) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Signal In)\n- MATHS.CH 1 (EOR) g> Destination (Trig) // gate on threshold crossing"
     },
@@ -329,7 +340,7 @@
         "Patch CH 1 EOR → destination that expects a gate. EOR goes high at end of Rise and stays high through Fall.",
         "Optional: patch a CV → CH 1 Rise CV for voltage-controlled delay, or CH 1 Fall CV for voltage-controlled pulse width."
       ],
-      "signalOut": "CH 1 EOR — 0–5V gate, delayed by Rise, width = Fall.",
+      "signalOut": "CH 1 EOR — 0V/10V gate, delayed by Rise, width = Fall.",
       "hear": "Take any click or trigger, come out with a properly-shaped, timed gate. Useful for swing, retriggering envelope tails, sample-playback windows.",
       "diagram": "MATHS:\n* CH 1: Rise = delay, Fall = gate width\n\n- Trigger Source (Trig) t> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (EOR) g> Destination (Gate) // delayed gate of Fall width"
     },

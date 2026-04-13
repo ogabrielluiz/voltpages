@@ -2,7 +2,12 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://intellijel.com/shop/eurorack/dual-vca-1u/",
+      "https://intellijel.com/wp-content/uploads/2019/03/dual_vca_1u_manual.pdf",
+      "https://www.modulargrid.net/e/intellijel-dual-vca-1u"
+    ]
   },
   "slug": "intellijel--dual-vca-1u",
   "name": "Dual VCA 1U",

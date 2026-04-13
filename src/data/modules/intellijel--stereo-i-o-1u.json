@@ -3,7 +3,12 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.0"
+    "firmwareVersion": "1.0",
+    "sources": [
+      "https://intellijel.com/shop/eurorack/stereo-i-o-1u/",
+      "https://intellijel.com/support/manuals/",
+      "https://www.modulargrid.net/e/intellijel-stereo-i-o-1u"
+    ]
   },
   "slug": "intellijel--stereo-i-o-1u",
   "name": "Stereo I/O 1U",
@@ -16,7 +21,7 @@
       "name": "Input Gain Switch",
       "scope": "EXT Input",
       "description": "Sets gain for the EXT OUT patch points from rear-panel line input.",
-      "detail": "Down = 0dB · Mid = +6dB · Up = +20dB"
+      "detail": "Down = 0dB · Up = +6dB · Mid = +20dB"
     },
     {
       "name": "HP Monitor Switch",

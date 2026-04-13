@@ -3,7 +3,14 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "firmwareVersion": "1.1"
+    "firmwareVersion": "1.1",
+    "sources": [
+      "https://www.shakmat.com/wp-content/uploads/2023/01/Bard_Quartet.pdf",
+      "https://www.shakmat.com/product/bard-quartet/",
+      "https://www.modulargrid.net/e/shakmat-modular-bard-quartet",
+      "https://www.shakmat.com/product/bard-quartet-expander/",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=260687"
+    ]
   },
   "slug": "shakmat-modular--bard-quartet",
   "name": "Bard Quartet",

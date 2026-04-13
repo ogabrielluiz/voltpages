@@ -2,7 +2,12 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://joranalogue.com/products/contour-1",
+      "https://joranalogue.com/cdn/shop/files/Contour_1_Manual.pdf",
+      "https://www.modulargrid.net/e/joranalogue-audio-design-contour-1"
+    ]
   },
   "slug": "joranalogue--contour-1",
   "name": "Contour 1",
