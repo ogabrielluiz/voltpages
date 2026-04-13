@@ -2,10 +2,11 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
       "https://pichenettes.github.io/mutable-instruments-documentation/modules/blades/manual/",
-      "https://www.perfectcircuit.com/mutable-blades.html"
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/blades/",
+      "https://mutable-instruments.net/modules/blades/"
     ]
   },
   "slug": "mutable-instruments--blades",
@@ -13,174 +14,189 @@
   "manufacturer": "Mutable Instruments",
   "hp": 18,
   "tags": ["VCF", "FILTER", "DISTORTION", "WAVESHAPER", "OSCILLATOR"],
-  "description": "Dual multimode filter with variable routing, self-oscillation, cutoff coupling, and a drive stage that morphs from soft clipping to wavefolding. Each side can behave as a clean filter, a distortion box, or a sine VCO.",
+  "description": "Dual analog 2-pole (12dB/oct) state-variable filter with CV-morphed LP/BP/HP response, continuously variable single/parallel/series routing, clean self-oscillation as sine VCO, and a per-channel overdrive stage morphing from soft clip to two-stage wavefolder. DC-coupled.",
   "controls": [
     {
-      "name": "Cutoff",
-      "scope": "Filter 1 and 2",
-      "description": "Sets the cutoff frequency of both filters.",
+      "name": "Frequency",
+      "scope": "per filter",
+      "description": "Sets each filter's cutoff frequency.",
       "detail": "8 Hz to 18 kHz"
     },
     {
       "name": "Resonance",
-      "scope": "Filter 1 and 2",
-      "description": "Sets resonance up to self-oscillation.",
-      "detail": "self-oscillates at high settings"
+      "scope": "per filter",
+      "description": "Emphasis around cutoff. Reaches clean self-oscillation with constant amplitude.",
+      "detail": "self-oscillates cleanly"
     },
     {
       "name": "Drive",
-      "scope": "Filter 1 and 2",
-      "description": "Sets gain, saturation, and wavefolding depth before each filter.",
-      "detail": "0 dB at about 11 o'clock"
+      "scope": "per filter",
+      "description": "Gain and distortion amount feeding the filter core. Also acts as the offset for the DRIVE CV input.",
+      "detail": "0 dB at 11 o'clock"
     },
     {
       "name": "Drive Shape",
-      "scope": "Filter 1 and 2",
-      "description": "Morphs the drive circuit between soft clipping and two-stage wavefolding.",
-      "detail": "continuous response morph"
+      "scope": "per filter",
+      "description": "Morphs the drive circuit from round soft-clipping to a two-stage wavefolder.",
+      "detail": "continuous soft-clip to fold"
     },
     {
       "name": "Response",
-      "scope": "Filter 1 and 2",
-      "description": "Continuously morphs between low-pass, band-pass, and high-pass.",
-      "detail": "also shifts phase when self-oscillating"
+      "scope": "per filter",
+      "description": "Continuously morphs between low-pass, band-pass, and high-pass. Intermediate settings have a shelving shape useful for EQ.",
+      "detail": "when self-oscillating, adjusts the phase of the sine output"
     },
     {
       "name": "Routing",
-      "scope": "Global",
-      "description": "Sets the signal flow between the two filters.",
-      "detail": "single, parallel, or series"
+      "scope": "global",
+      "description": "Dual crossfader from single (filter 1 only) through parallel (mix of both) to series (filter 1 into filter 2).",
+      "detail": "CCW single · 12 o'clock parallel · CW series"
     },
     {
       "name": "CV Attenuverters",
-      "scope": "Global",
-      "description": "Set depth and polarity for the filter CV inputs and routing CV.",
-      "detail": "bipolar attenuverters"
+      "scope": "global",
+      "description": "Bipolar attenuverters for filter 1 and 2 frequency and resonance CV inputs, plus the routing CV input.",
+      "detail": "bipolar"
     },
     {
       "name": "Cutoff Coupling",
-      "scope": "Global",
-      "description": "Locks filter 2 cutoff relative to filter 1.",
-      "detail": "button on = relative tuning"
+      "scope": "global",
+      "description": "Button/LED. When on, filter 2's frequency knob sets an offset relative to filter 1's cutoff; at 12 o'clock both filters share the same cutoff.",
+      "detail": "relative tuning mode"
     }
   ],
   "inputs": [
     {
       "name": "Mode CV",
-      "description": "CV over filter response.",
-      "voltage": "bipolar CV"
+      "description": "CV over filter response (LP/BP/HP morph). When a filter self-oscillates this acts as phase modulation of the sine output.",
+      "voltage": "bipolar CV, audio-rate capable"
     },
     {
       "name": "Cutoff CV",
-      "description": "CV over cutoff frequency.",
-      "voltage": "bipolar CV"
+      "description": "Attenuverted CV over cutoff frequency, per filter.",
+      "voltage": "bipolar CV, audio-rate capable"
     },
     {
       "name": "Resonance CV",
-      "description": "CV over resonance.",
-      "voltage": "bipolar CV"
+      "description": "Attenuverted CV over resonance, per filter.",
+      "voltage": "bipolar CV, audio-rate capable"
     },
     {
       "name": "Routing CV",
-      "description": "CV over the signal routing between the two filters.",
-      "voltage": "bipolar CV"
+      "description": "Attenuverted CV over the single / parallel / series routing between the two filters.",
+      "voltage": "bipolar CV, audio-rate capable"
     },
     {
       "name": "V/OCT",
-      "description": "Unattenuated frequency CV, calibrated for 1V/oct tracking.",
+      "description": "Unattenuated frequency CV, calibrated for 1V/octave tracking of cutoff (and of the self-oscillation pitch).",
       "voltage": "1V/oct"
     },
     {
       "name": "Drive CV",
-      "description": "CV over drive amount. Unpatched, the input normalizes to a 2V offset.",
+      "description": "CV over drive amount. Normalized to +2 V when unpatched, which is why a moderate gain is obtained with DRIVE fully CCW.",
       "voltage": "bipolar CV",
-      "normalizedTo": "2V internal offset"
+      "normalizedTo": "+2 V internal offset"
     },
     {
-      "name": "IN",
-      "description": "DC-coupled audio input.",
-      "voltage": "audio / CV"
+      "name": "Filter 1 IN",
+      "description": "DC-coupled signal input to filter 1. Accepts audio or CV (the path is DC-coupled so portamento/slew on CV is possible).",
+      "voltage": "audio / CV, 30k impedance"
+    },
+    {
+      "name": "Filter 2 IN",
+      "description": "DC-coupled signal input to filter 2. When left unpatched, filter 2 receives a blend of filter 1's input and output set by the ROUTING control (this is what creates the single/parallel/series morph). Patching a signal here breaks the internal routing and turns ROUTING into a crossfader between the two filters.",
+      "voltage": "audio / CV, 30k impedance"
     }
   ],
   "outputs": [
     {
       "name": "Filter 1 Output",
-      "description": "Individual output for filter 1.",
-      "voltage": "audio"
+      "description": "Individual output tap for filter 1.",
+      "voltage": "audio / DC"
     },
     {
       "name": "Filter 2 Output",
-      "description": "Individual output for filter 2.",
-      "voltage": "audio"
+      "description": "Individual output tap for filter 2.",
+      "voltage": "audio / DC"
     },
     {
       "name": "Main Output",
-      "description": "Blend of both filters determined by routing.",
-      "voltage": "audio"
+      "description": "Mix of filter 1 and filter 2, balanced by the ROUTING control and CV: only filter 1 at CCW, 50/50 at noon, only filter 2 at CW.",
+      "voltage": "audio / DC"
     }
   ],
   "behaviors": [
     {
-      "name": "Single, parallel, series",
-      "trigger": "Routing knob",
-      "description": "The routing control morphs from one filter alone to both in parallel, then into a series cascade. The main output follows the crossfade while the second filter can still be used as a separate tap."
+      "name": "Single / parallel / series routing",
+      "trigger": "Routing knob and CV",
+      "description": "ROUTING is a dual crossfader. It sets how much of filter 1 vs filter 2 reaches MAIN out, and also how much of filter 1's input vs filter 1's output feeds filter 2 (when Filter 2 IN is unpatched). CCW = filter 1 alone, noon = both in parallel on the same signal, CW = filter 1 feeding filter 2 in series."
+    },
+    {
+      "name": "Patch filter 2 for crossfader",
+      "trigger": "patch a signal into Filter 2 IN",
+      "description": "Patching Filter 2 IN overrides the internal routing. ROUTING then behaves as a simple crossfader between the two independent filters at the MAIN output."
     },
     {
       "name": "Cutoff coupling",
       "trigger": "Cutoff Coupling button",
-      "description": "With coupling on, filter 2 follows filter 1 by the offset set by its cutoff knob. It is the fast way to keep two filters moving together while preserving a spread."
+      "description": "When engaged, filter 2's FREQUENCY knob sets a relative offset to filter 1's cutoff. Noon = same cutoff; past/before noon transposes filter 2 up/down while filter 1 drives the pair."
     },
     {
-      "name": "Self-oscillating sine pair",
-      "trigger": "high resonance",
-      "description": "Both filters self-oscillate cleanly and track 1V/oct. In oscillator mode the response control changes the phase of the sine-like output, which makes the module useful as a dual VCO."
+      "name": "Clean self-oscillation / sine VCO",
+      "trigger": "high Resonance with no input",
+      "description": "Both filters self-oscillate cleanly with constant amplitude across the audio range and track 1V/oct via V/OCT. Each filter becomes a usable sine oscillator."
     },
     {
-      "name": "Drive into wavefolding",
-      "trigger": "Drive knob clockwise",
-      "description": "The input stage moves from soft clipping into two-stage wavefolding. Hot signals become saturated before the filter, so the module can add aggression before any cutoff motion."
+      "name": "Response as phase on oscillation",
+      "trigger": "modulate Mode CV while self-oscillating",
+      "description": "When a filter is self-oscillating, modulating its Response (via knob or Mode CV) shifts the phase of the sine output. Audio-rate Mode CV gives FM-like metallic tones; a VCA on Mode CV gives CV-controlled PM depth."
     },
     {
-      "name": "Filter-mode morph",
-      "trigger": "Response knob",
-      "description": "The response control morphs continuously across low-pass, band-pass, and high-pass. On self-oscillation it behaves more like phase control than simple timbre shaping."
+      "name": "Drive morphs clip to fold",
+      "trigger": "Drive Shape clockwise",
+      "description": "The pre-filter drive stage morphs continuously from soft clipping to a two-stage wavefolder. Combined with DRIVE level and Drive CV it becomes a CV-controlled overdrive/folder ahead of each filter."
     },
     {
-      "name": "Input mix and clipping",
-      "trigger": "hot input level",
-      "description": "The input is DC-coupled and the core can clip musically. Drive and resonance together create a filter that can behave like a dirty waveshaper before the actual filtering takes place."
+      "name": "Filter-response shelving",
+      "trigger": "Response knob between LP/BP or BP/HP",
+      "description": "Intermediate Response positions produce shelving shapes rather than pure LP/BP/HP, which makes Blades effective as a spectral shaper or tone control."
     },
     {
-      "name": "Two independent taps",
-      "trigger": "use Filter 1 and Filter 2 outputs separately",
-      "description": "Each filter can be taken from its own output, even when the main output is used as a mix bus. That makes split-band and stereo-like patches easy to build from one module."
+      "name": "DC-coupled CV processing",
+      "trigger": "feed CV into a filter input",
+      "description": "Because the signal path is DC-coupled, Blades can process CV: FREQUENCY as portamento, RESONANCE to add overshoot, DRIVE to scale or shape control voltages."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Series bass growl",
-      "patch": "Routing in series · Drive around 11 o'clock · Resonance medium-high · a saw VCO into IN and the main output into a VCA makes a thick bass line that gains bite before the filter pair closes down.",
-      "diagram": "Blades:\n* Routing: series\n* Drive: 11 o'clock\n* Response: low-pass\n* Resonance: medium-high\n\nVCO:\nEnvelope:\nVCA:\nOutput:\n\n- VCO (Saw) -> Blades (IN)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Envelope (Out) >> Blades (Drive CV)\n- Blades (Main Output) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+      "name": "Series drive into low-pass",
+      "patch": "Patch a saw VCO into Filter 1 IN. Set ROUTING fully clockwise for series. Both filters on low-pass, filter 1 with moderate DRIVE around 11 o'clock, filter 2 clean and resonant. MAIN out to a VCA. You get grit shaped into filter 2's sweep.",
+      "diagram": "Blades:\n* Routing: series (CW)\n* Filter 1: LP, Drive 11 o'clock, Resonance low\n* Filter 2: LP, Resonance medium-high\n\nVCO:\nEnvelope:\nVCA:\nOutput:\n\n- VCO (Saw) -> Blades (Filter 1 IN)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Envelope (Out) >> Blades (Cutoff CV)\n- Blades (Main Output) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
-      "name": "Parallel stereo split",
-      "patch": "Routing set to parallel · Cutoff Coupling off · filter 1 and 2 sweep against each other with different cutoff CVs · the two outputs act like a stereo pair or a split-band processor with shared drive.",
-      "diagram": "Blades:\n* Routing: parallel\n* Cutoff Coupling: off\n* Drive: low\n* Response: low-pass\n\nVCO:\nEnvelope:\nLFO:\nMixer:\nOutput:\n\n- VCO (Saw) -> Blades (IN)\n- LFO (Out) >> Blades (Cutoff CV)\n- Envelope (Out) >> Blades (Resonance CV)\n- Blades (Filter 1 Output) -> Mixer (L)\n- Blades (Filter 2 Output) -> Mixer (R)\n- Mixer (Out) -> Output (In)"
+      "name": "Parallel split-band or stereo",
+      "patch": "ROUTING at 12 o'clock for parallel. Cutoff Coupling off. Filter 1 set to LP, filter 2 set to HP, both with the same source at Filter 1 IN. Take Filter 1 Out and Filter 2 Out to L/R for a wide split-band processor.",
+      "diagram": "Blades:\n* Routing: parallel (noon)\n* Cutoff Coupling: off\n* Filter 1: LP, Cutoff low-mid\n* Filter 2: HP, Cutoff mid-high\n\nVCO:\nLFO:\nOutput:\n\n- VCO (Saw) -> Blades (Filter 1 IN)\n- LFO (Out) >> Blades (Cutoff CV, filter 1)\n- Blades (Filter 1 Output) -> Output (L)\n- Blades (Filter 2 Output) -> Output (R)"
     },
     {
-      "name": "Dual self-oscillator",
-      "patch": "Resonance pushed into self-oscillation · both filters tuned to a fifth apart using cutoff coupling · V/OCT tracks the pair as a two-voice sine source that can be mixed or processed separately.",
-      "diagram": "Blades:\n* Routing: single\n* Cutoff Coupling: on\n* Resonance: max\n* Response: band-pass\n\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Blades (V/OCT)\n- Blades (Filter 1 Output) -> Output (L)\n- Blades (Filter 2 Output) -> Output (R)"
+      "name": "Dual sine VCO with coupling",
+      "patch": "Both Resonance knobs at max for self-oscillation. Cutoff Coupling on. Set filter 2 FREQUENCY above noon for a fifth offset. V/OCT tracks the pair. Use Filter 1 Out and Filter 2 Out as two sine voices.",
+      "diagram": "Blades:\n* No input patched\n* Resonance 1 and 2: max (self-osc)\n* Cutoff Coupling: on\n* Filter 2 Frequency: ~3 o'clock (fifth up)\n\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Blades (V/OCT)\n- Blades (Filter 1 Output) -> Output (L)\n- Blades (Filter 2 Output) -> Output (R)"
     },
     {
-      "name": "Wavefolded percussion",
-      "patch": "Short envelope into Drive CV · response around band-pass · high resonance and a clicky gate make each hit a pitched metallic thunk instead of a plain filtered drum.",
-      "diagram": "Blades:\n* Routing: single\n* Drive Shape: fold\n* Resonance: high\n* Response: band-pass\n\nClock:\nDrum Source:\nOutput:\n\n- Drum Source (Out) -> Blades (IN)\n- Clock (Out) t> Envelope (Trig)\n- Envelope (Out) >> Blades (Drive CV)\n- Blades (Main Output) -> Output (In)"
+      "name": "Phase-modulated metallic voice",
+      "patch": "Filter 1 self-oscillating (Res max, no audio in). V/OCT tracks pitch. A second VCO (or LFO at audio rate) through a VCA into Mode CV 1 gives CV-controlled phase modulation, FM-like metallic timbres from Filter 1 Out.",
+      "diagram": "Blades:\n* Filter 1: Resonance max, Response knob noon\n* No signal at Filter 1 IN\n\nVCO Carrier Pitch:\nVCO Modulator:\nVCA:\nEnvelope:\nOutput:\n\n- Sequencer (Pitch) p> Blades (V/OCT)\n- VCO Modulator (Sine) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) >> Blades (Mode CV filter 1)\n- Blades (Filter 1 Output) -> Output (In)"
     },
     {
-      "name": "Cutoff-coupled drone",
-      "patch": "Cutoff Coupling on · filter 2 offset slightly above filter 1 · slow LFO into Cutoff CV and another into Routing CV · the two filters move together while staying offset, producing a wide animated drone.",
-      "diagram": "Blades:\n* Routing: series\n* Cutoff Coupling: on\n* Drive: low\n* Resonance: medium\n\nLFO:\nVCO:\nOutput:\n\n- VCO (Out) -> Blades (IN)\n- LFO (Out) >> Blades (Cutoff CV)\n- Slow LFO (Out) >> Blades (Routing CV)\n- Blades (Main Output) -> Output (In)"
+      "name": "CV-controlled wavefolder",
+      "patch": "Use Blades as a folder ahead of an external filter: feed VCO into Filter 1 IN, set Drive Shape fully CW (fold), Resonance low, Response low-pass, modulate Drive CV with an envelope. Take Filter 1 Out post-fold-and-LP.",
+      "diagram": "Blades:\n* Filter 1: LP, Resonance low, Drive Shape = fold\n* Routing: single (CCW)\n\nVCO:\nEnvelope:\nOutput:\n\n- VCO (Sine) -> Blades (Filter 1 IN)\n- Envelope (Out) >> Blades (Drive CV)\n- Blades (Filter 1 Output) -> Output (In)"
+    },
+    {
+      "name": "Cross-patched chaos",
+      "patch": "Patch Filter 2 Out to Filter 1 Cutoff CV and Filter 1 Out to Filter 2 Cutoff CV with moderate attenuverter settings. Feed a sustained tone into Filter 1 IN, ROUTING at noon, and drive up Resonance on both. Expect chaotic timbres.",
+      "diagram": "Blades:\n* Routing: parallel (noon)\n* Resonance 1 and 2: medium-high\n\nVCO:\nOutput:\n\n- VCO (Saw) -> Blades (Filter 1 IN)\n- Blades (Filter 2 Output) >> Blades (Cutoff CV filter 1)\n- Blades (Filter 1 Output) >> Blades (Cutoff CV filter 2)\n- Blades (Main Output) -> Output (In)"
     }
   ]
 }

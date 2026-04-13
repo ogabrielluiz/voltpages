@@ -2,70 +2,74 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
-    "firmwareVersion": "2.x (2018)",
+    "verified": true,
+    "firmwareVersion": "1.0 (Tides 2018 factory)",
     "sources": [
-      "https://pichenettes.github.io/mutable-instruments-documentation/modules/tides/manual/",
-      "https://pichenettes.github.io/mutable-instruments-documentation/modules/tides/",
-      "https://mutable-instruments.net/modules/tides/",
-      "https://forum.mutable-instruments.net/t/tides-2-manual/",
-      "https://www.modwiggler.com/forum/viewtopic.php?t=217688",
-      "https://www.modulargrid.net/e/mutable-instruments-tides-2018"
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/tides_2018/manual/",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/tides_2018/",
+      "https://www.gear4music.com/us/en/Recording-and-Computers/Mutable-Instruments-Tides-2018-Version-14HP/2P5B",
+      "https://www.perfectcircuit.com/mutable-instruments-tides.html"
     ]
   },
   "slug": "mutable-instruments--tides",
-  "name": "Tides",
+  "name": "Tides (2018)",
   "manufacturer": "Mutable Instruments",
   "hp": 14,
   "tags": ["OSCILLATOR", "LFO", "FUNCTION", "ENVELOPE", "VCO", "WAVESHAPER"],
-  "description": "Tidal modulator producing four phase-shifted slope segments. Operates as VCO, LFO, complex envelope, or tap-tempo LFO. Four simultaneous outputs at quadrature offsets.",
+  "description": "Tidal modulator (2018 redesign). Digital function generator: AD envelope, cyclic VC-LFO/VCO, or AR envelope across three ranges (1/8 Hz, 2 Hz, 130.8 Hz). Shape/slope/smoothness/shift are CV. Four outputs re-interpreted by output mode. CLOCK input for PLL sync.",
   "controls": [
     {
       "name": "Frequency",
       "scope": "Global",
-      "description": "Coarse frequency control. Range shifts by octaves across the three range modes.",
-      "detail": "VCO: ~C0–C7 · LFO: ~32s–100Hz · AD/AR: full envelope window"
+      "description": "Coarse frequency, spanning ±4 octaves around the centre value of the selected range. When CLOCK is patched, sets the integer multiplier/divider against the clock.",
+      "detail": "Slow: ~1/8 Hz centre · Mid: 2 Hz centre · Fast: 130.8 Hz (audio) centre"
     },
     {
       "name": "Shape",
       "scope": "Global",
-      "description": "Morphs slope shape from exponential through linear to logarithmic.",
-      "detail": "CCW: expo (percussive) · noon: linear · CW: log (plucked) · bipolar CV via attenuverter"
+      "description": "Morphs the waveshape of the ascending and descending segments from exponential through linear to logarithmic.",
+      "detail": "CCW: expo · noon: linear · CW: log · bipolar CV via SHAPE attenuverter"
     },
     {
       "name": "Slope",
       "scope": "Global",
-      "description": "Asymmetry between rising and falling segments.",
+      "description": "Asymmetry / attack-vs-decay ratio between the rising and falling segments of each cycle.",
       "detail": "CCW: fast attack / slow decay · noon: symmetric · CW: slow attack / fast decay"
     },
     {
       "name": "Smoothness",
       "scope": "Global",
-      "description": "CCW applies wavefolding; CW applies low-pass smoothing. Drastically reshapes spectrum.",
-      "detail": "CCW: wavefolded harmonics · noon: raw · CW: LPF smoothing down to sine"
+      "description": "CCW applies low-pass filtering (smooths toward sine); CW applies wavefolder distortion. Drastically reshapes spectrum.",
+      "detail": "CCW: LPF smoothing · noon: raw segments · CW: wavefolded harmonics"
+    },
+    {
+      "name": "Shift/Level",
+      "scope": "Global",
+      "description": "Dual-purpose knob whose function depends on the selected output mode (attenuverter, output selector, time-shift, or frequency-ratio).",
+      "detail": "Mode 0: output attenuverter · Mode 1: crossfaded output routing · Mode 2: phase/apex shift · Mode 3: inter-output frequency ratio (12 o'clock = unison)"
     },
     {
       "name": "Range Button",
       "scope": "Global",
-      "description": "Cycles output range: high (VCO/audio), middle (LFO), low (AD/AR envelope).",
-      "detail": "LED color indicates range · long press toggles tap-tempo mode"
+      "description": "Selects one of three frequency ranges. LED indicates which range is active.",
+      "detail": "1/8 Hz (slow/movements) · 2 Hz (rhythms and modulations) · 130.8 Hz (audible tones)"
     },
     {
       "name": "Mode Button",
       "scope": "Global",
-      "description": "Cycles output mode: AD/AR envelope, Loop/Oscillator, Self-triggering.",
-      "detail": "In AD: TRIG required · in Loop: free-running · hold for alt-mode menu"
+      "description": "Selects the ramp/envelope behaviour of the generator.",
+      "detail": "AD: one-shot unipolar envelope (TRIG starts attack–decay) · Cyclic: free-running bipolar oscillator/LFO · AR: one-shot unipolar envelope with sustained attack while gate high, release on gate low"
     },
     {
       "name": "Output Mode Button",
       "scope": "Global",
-      "description": "Cycles the four-output polyphony/quadrature mapping.",
-      "detail": "Amplitude-offset (accent layers) · Parallel quadrature (0/90/180/270) · Frequency-shifted ratios · Four-voice ratios"
+      "description": "Cycles the relationship between the four outputs, re-interpreting the SHIFT/LEVEL knob and CV.",
+      "detail": "0 Different shapes · 1 Different amplitudes (dispatch/crossfade) · 2 Different times (apex shift) · 3 Different frequencies (polyrhythmic / just-intonation ratios)"
     },
     {
       "name": "Frequency CV Attenuverter",
       "scope": "Global",
-      "description": "Scales and inverts the FM CV input. V/OCT jack is always 1V/oct and unattenuated.",
+      "description": "Scales and inverts the FREQUENCY FM CV input. The V/OCT jack is always 1V/oct and unattenuated.",
       "detail": "±1 unity · noon: zero"
     },
     {
@@ -85,120 +89,122 @@
       "scope": "Global",
       "description": "Scales and inverts the SMOOTHNESS CV input.",
       "detail": "±1 unity · noon: zero"
+    },
+    {
+      "name": "Shift/Level Attenuverter",
+      "scope": "Global",
+      "description": "Scales and inverts the SHIFT CV input (mode-dependent like the knob).",
+      "detail": "±1 unity · noon: zero"
     }
   ],
   "inputs": [
-    { "name": "TRIG", "description": "Hard-sync in oscillator modes; retrigger in AD/AR; tap-in in tap-tempo mode.", "voltage": ">1V edge" },
-    { "name": "V/OCT", "description": "1V/octave pitch input, precalibrated. Unattenuated.", "voltage": "-3V to +6V" },
-    { "name": "FREQ CV", "description": "Frequency modulation. Scaled by FM attenuverter.", "voltage": "±5V" },
-    { "name": "SHAPE CV", "description": "Shape modulation scaled by its attenuverter.", "voltage": "±5V" },
-    { "name": "SLOPE CV", "description": "Slope modulation scaled by its attenuverter.", "voltage": "±5V" },
-    { "name": "SMOOTH CV", "description": "Smoothness modulation scaled by its attenuverter.", "voltage": "±5V" },
-    { "name": "LEVEL/CLOCK", "description": "PWM-style level CV in oscillator modes; external clock source in tap-tempo mode; amplitude VCA in envelope modes.", "voltage": "0–8V", "normalizedTo": "+8V (full level)" }
+    { "name": "TRIG", "description": "Trigger/gate. AD: rising edge resets envelope to 0V and starts attack–decay. Cyclic: edges reset oscillator phase (hard-sync). AR: gate high raises to +8V, gate low releases to 0V.", "voltage": ">1V edge" },
+    { "name": "CLOCK", "description": "External clock input. Locks the module to the clock's frequency; FREQUENCY knob becomes a multiplier/divider (1/16x – 16x). At audio rates an algorithm prioritises pitch accuracy over phase alignment.", "voltage": ">1V edge" },
+    { "name": "V/OCT", "description": "1V/octave pitch input, precalibrated and unattenuated. Separate from the FREQUENCY FM jack.", "voltage": "-3V to +6V typical" },
+    { "name": "FREQUENCY CV", "description": "Exponential frequency modulation input, scaled by its attenuverter.", "voltage": "±5V" },
+    { "name": "SHAPE CV", "description": "Shape modulation, scaled by the SHAPE attenuverter.", "voltage": "±5V" },
+    { "name": "SLOPE CV", "description": "Slope/asymmetry modulation, scaled by the SLOPE attenuverter.", "voltage": "±5V" },
+    { "name": "SMOOTHNESS CV", "description": "Smoothness modulation, scaled by the SMOOTHNESS attenuverter.", "voltage": "±5V" },
+    { "name": "SHIFT CV", "description": "Modulates the SHIFT/LEVEL parameter; behaviour depends on the selected output mode (attenuates, dispatches across outputs, shifts apex in time, or detunes the four outputs).", "voltage": "±5V" }
   ],
   "outputs": [
-    { "name": "OUT 1", "description": "First slope output. Reference phase in quadrature mode.", "voltage": "±8V (LFO/env) / ±5V (audio)" },
-    { "name": "OUT 2", "description": "Second slope. 90° phase in quadrature mode; second harmonic in frequency-shifted mode.", "voltage": "±8V (LFO/env) / ±5V (audio)" },
-    { "name": "OUT 3", "description": "Third slope. 180° phase in quadrature; third voice in polyphonic mode.", "voltage": "±8V (LFO/env) / ±5V (audio)" },
-    { "name": "OUT 4", "description": "Fourth slope. 270° phase in quadrature; fourth voice or accent sum in amplitude mode.", "voltage": "±8V (LFO/env) / ±5V (audio)" }
+    { "name": "OUT 1", "description": "Mode 0: main processed signal. Mode 1: receives crossfaded signal when SHIFT targets it. Mode 2: reference (unshifted) output. Mode 3: fundamental frequency.", "voltage": "±8V (unipolar 0–8V in AD/AR)" },
+    { "name": "OUT 2", "description": "Mode 0: raw asymmetric triangle (pre-smoothness). Mode 1/2/3: second tap of the SHIFT-controlled dispatch / time-shift / frequency-ratio spread.", "voltage": "±8V (unipolar 0–8V in AD/AR)" },
+    { "name": "OUT 3", "description": "Mode 0: end-of-attack gate. Mode 1/2/3: third tap of the SHIFT-controlled dispatch / time-shift / frequency-ratio spread.", "voltage": "±8V (unipolar 0–8V in AD/AR)" },
+    { "name": "OUT 4", "description": "Mode 0: end-of-release gate. Mode 1/2/3: fourth tap of the SHIFT-controlled dispatch / time-shift / frequency-ratio spread.", "voltage": "±8V (unipolar 0–8V in AD/AR)" }
   ],
   "behaviors": [
     {
-      "name": "AD/AR envelope mode",
-      "trigger": "low-range selected + AD or AR mode",
-      "description": "TRIG fires a complex envelope. AD: attack then decay, retriggerable. AR: sustains while gate held, releases on fall. SHAPE morphs curve; SLOPE ratios attack/decay; SMOOTHNESS shapes the knee."
+      "name": "AD envelope mode",
+      "trigger": "Mode Button: AD",
+      "description": "TRIG fires a unipolar AD envelope (0V → +8V → 0V). SHAPE morphs expo/lin/log, SLOPE sets attack-vs-decay ratio, SMOOTHNESS smooths or folds the shape. Retriggerable at any point."
     },
     {
-      "name": "Oscillator mode",
-      "trigger": "high-range + Loop/Oscillator mode",
-      "description": "Full-bandwidth cyclic slope generator tracking V/OCT. SMOOTHNESS CCW folds the waveform; CW smooths to pure sine. Acts as sine/triangle/saw/folded hybrid oscillator with independent slope controls."
+      "name": "AR envelope mode",
+      "trigger": "Mode Button: AR",
+      "description": "Gate at TRIG drives a unipolar AR envelope: gate high → attack to +8V and hold; gate low → release to 0V. SLOPE controls attack-vs-release ratio."
     },
     {
-      "name": "Quadrature LFO output mode",
-      "trigger": "Output Mode Button: parallel/quadrature setting",
-      "description": "OUT 1–4 emit the same wave phase-shifted 0°/90°/180°/270°. Useful for 4-channel panning, vector-synthesis style motion, and generating independent-looking modulations from one source."
+      "name": "Cyclic oscillator / LFO mode",
+      "trigger": "Mode Button: Cyclic",
+      "description": "Free-running bipolar generator. In the 130.8 Hz range it tracks V/OCT as a VCO; in slow and mid ranges it's a complex LFO. SMOOTHNESS CCW smooths to sine, CW wavefolds into harmonics."
     },
     {
-      "name": "Frequency-ratio polyphonic mode",
-      "trigger": "Output Mode Button: frequency-shifted",
-      "description": "OUT 1–4 run at harmonically related multiples of the base frequency. Generates instant harmonic series or drone partials from a single pitch source."
+      "name": "Output Mode 0 — Different shapes",
+      "trigger": "Output Mode Button: 0",
+      "description": "OUT 1 is the main signal. OUT 2 is the raw asymmetric triangle before smoothness. OUT 3 is an end-of-attack gate. OUT 4 is an end-of-release gate. SHIFT/LEVEL acts as a bipolar attenuverter on the main signal."
     },
     {
-      "name": "Amplitude-offset accent mode",
-      "trigger": "Output Mode Button: amplitude setting",
-      "description": "OUT 1–4 emit the same envelope at successively scaled amplitudes — patch into stacked VCAs for built-in accent layers or velocity-like drum dynamics."
+      "name": "Output Mode 1 — Different amplitudes (dispatch)",
+      "trigger": "Output Mode Button: 1",
+      "description": "The signal is routed across OUT 1–4 with smooth crossfading controlled by SHIFT/LEVEL. Sweeping SHIFT moves the envelope/LFO from one output to the next — great for quadraphonic panning or sequential VCA triggers."
     },
     {
-      "name": "Tap-tempo LFO",
-      "trigger": "long-press Range button + LFO range",
-      "description": "Rate is set by taps on TRIG rather than by the Frequency knob. Synchronizes LFO motion to an external clock or performance tap."
+      "name": "Output Mode 2 — Different times (apex shift)",
+      "trigger": "Output Mode Button: 2",
+      "description": "OUT 1 is the reference waveform; OUT 2–4 are progressively time-shifted copies whose apex/phase SHIFT/LEVEL moves. Great for quadrature-style motion or tap-delayed envelopes."
     },
     {
-      "name": "Self-triggering (looping envelope)",
-      "trigger": "Mode Button: self-triggering",
-      "description": "Envelope retriggers at end of fall creating a cyclic AD LFO whose timing responds to SLOPE/SMOOTHNESS CV. In low range this gives long-form evolving envelopes; in high range it becomes an audio waveform."
+      "name": "Output Mode 3 — Different frequencies (ratios)",
+      "trigger": "Output Mode Button: 3",
+      "description": "OUT 1–4 run at frequency ratios set by SHIFT/LEVEL. At 12 o'clock all four are unison; turning the knob spreads them into polyrhythmic LFOs or just-intonation chords."
     },
     {
-      "name": "Hard sync (TRIG in oscillator mode)",
-      "trigger": "TRIG patched + oscillator mode",
-      "description": "TRIG edges reset oscillator phase, enabling classic hard-sync sounds when driven by an external sub-octave or sequenced reset source."
+      "name": "External clock sync (PLL)",
+      "trigger": "CLOCK patched",
+      "description": "Tides locks to the CLOCK input's frequency. With TRIG unpatched it generates an envelope per clock tick in phase with it; with TRIG patched it adjusts envelope duration to the clock rate. FREQUENCY knob selects a 1/16x–16x ratio."
     },
     {
-      "name": "LEVEL as VCA",
-      "trigger": "CV patched into LEVEL/CLOCK + envelope or oscillator mode",
-      "description": "LEVEL input amplitude-modulates all four outputs simultaneously. Doubles as internal VCA — send an envelope here for a single-module tone-plus-amplitude voice."
+      "name": "Hard sync (TRIG in cyclic mode)",
+      "trigger": "TRIG patched + Cyclic mode",
+      "description": "TRIG edges reset the oscillator phase, enabling classic hard-sync timbres when driven by an external sub-oscillator or sequenced reset."
     },
     {
-      "name": "Harmonic Oscillator (alt mode)",
-      "trigger": "alt-menu via held Mode button",
-      "description": "Firmware 2 exposes a harmonic oscillator mode where the four outputs emit a fundamental and three harmonics. Shape controls harmonic balance. Strong source for additive drones."
-    },
-    {
-      "name": "Sheep-style wavetable (alt mode)",
-      "trigger": "alt-menu wavetable mode",
-      "description": "Tides 2 inherits the Sheep wavetable oscillator. Turns the module into a 4-output wavetable VCO navigable with Shape/Slope/Smoothness."
+      "name": "End-of-attack / end-of-release gates",
+      "trigger": "Output Mode 0 + AD/AR",
+      "description": "OUT 3 pulses at the end of the attack segment and OUT 4 at the end of the release segment — handy for chaining envelopes, ratcheting sequencers, or triggering secondary events."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Quadrature stereo panner",
-      "patch": "Tides in LFO range · Output Mode: quadrature · OUT 1 and OUT 3 (opposite phase) into L/R VCA CVs for cyclic auto-pan · OUT 2 into filter cutoff for swept motion correlated but phase-shifted",
-      "diagram": "Tides:\n* Range: LFO\n* Output Mode: Quadrature\n\n- Tides (OUT 1) >> VCA L (CV)\n- Tides (OUT 3) >> VCA R (CV) // 180° opposite\n- Tides (OUT 2) >> Filter (Cutoff)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA L (In)\n- Filter (Out) -> VCA R (In)"
+      "name": "Quadraphonic dispatch panner",
+      "patch": "Cyclic mode · Mid range · Output Mode 1 (Different amplitudes) · slow LFO on SHIFT CV sweeps the signal through OUT 1–4 · feed each output to a VCA on a different speaker/channel",
+      "diagram": "Tides:\n* Range: Mid (2 Hz)\n* Mode: Cyclic\n* Output Mode: 1 (Different amplitudes)\n\n- LFO (Out) >> Tides (SHIFT CV)\n- Tides (OUT 1) >> VCA A (CV)\n- Tides (OUT 2) >> VCA B (CV)\n- Tides (OUT 3) >> VCA C (CV)\n- Tides (OUT 4) >> VCA D (CV)"
     },
     {
-      "name": "Complete percussive voice (AD + VCA + tone)",
-      "patch": "Tides in AD envelope mode · SHAPE full CCW (expo) · SLOPE 10 o'clock (snappy) · OUT 1 shaping VCA · OUT 2 into filter cutoff for per-hit brightness · clock triggers TRIG · single module delivers envelope-plus-tone percussion",
-      "diagram": "Tides:\n* Range: Low\n* Mode: AD\n* Output Mode: Amplitude-offset\n\n- Clock (Out) t> Tides (TRIG)\n- VCO (Out) -> Filter (In)\n- Tides (OUT 2) >> Filter (Cutoff)\n- Filter (Out) -> VCA (In)\n- Tides (OUT 1) >> VCA (CV)\n- VCA (Out) -> Mixer (In)"
+      "name": "Percussive voice with end-of-attack accent",
+      "patch": "AD mode · Output Mode 0 · SHAPE full CCW (expo) · SLOPE 10 o'clock (snappy) · OUT 1 shapes main VCA · OUT 3 (end-of-attack gate) triggers a second VCA for a click/accent layer · clock into TRIG",
+      "diagram": "Tides:\n* Range: Slow\n* Mode: AD\n* Output Mode: 0 (Different shapes)\n\n- Clock (Out) t> Tides (TRIG)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA Main (In)\n- Tides (OUT 1) >> VCA Main (CV)\n- Tides (OUT 3) t> VCA Click (Gate) // end-of-attack accent\n- Noise (Out) -> VCA Click (In)"
     },
     {
-      "name": "Four-voice harmonic drone",
-      "patch": "Tides in VCO range · Output Mode: frequency-shifted · SMOOTHNESS full CW (sines) · four outputs mixed produce instant harmonic series · slow LFO on SHAPE gently morphs waveshape across all partials simultaneously",
-      "diagram": "Tides:\n* Range: VCO\n* Output Mode: Frequency-shifted\n* Smoothness: CW (sine)\n\n- Keyboard (Pitch) p> Tides (V/OCT)\n- LFO (Out) >> Tides (SHAPE CV)\n- Tides (OUT 1) -> Mixer (In 1) // fundamental\n- Tides (OUT 2) -> Mixer (In 2) // 2nd harmonic\n- Tides (OUT 3) -> Mixer (In 3) // 3rd harmonic\n- Tides (OUT 4) -> Mixer (In 4) // 4th harmonic\n- Mixer (Out) -> Output (In)"
+      "name": "Just-intonation four-voice drone",
+      "patch": "Fast range · Cyclic mode · Output Mode 3 (Different frequencies) · SMOOTHNESS full CCW (sines) · SHIFT knob spreads OUT 1–4 into harmonic ratios · mix all four for additive drone",
+      "diagram": "Tides:\n* Range: Fast (130.8 Hz)\n* Mode: Cyclic\n* Output Mode: 3 (Different frequencies)\n* Smoothness: CCW (sine)\n\n- Keyboard (Pitch) p> Tides (V/OCT)\n- Tides (OUT 1) -> Mixer (In 1)\n- Tides (OUT 2) -> Mixer (In 2)\n- Tides (OUT 3) -> Mixer (In 3)\n- Tides (OUT 4) -> Mixer (In 4)\n- Mixer (Out) -> Output (In)"
     },
     {
-      "name": "Tap-tempo synced LFO",
-      "patch": "Long-press Range to enter tap-tempo mode · clock from Pam's or master clock into TRIG sets LFO rate · OUT 1 modulates filter cutoff · OUT 2 (quadrature) modulates pan · LFO stays locked to song tempo",
-      "diagram": "Tides:\n* Range: LFO (tap-tempo)\n* Output Mode: Quadrature\n\n- Clock (Out) c> Tides (TRIG) // tap rate\n- Tides (OUT 1) >> Filter (Cutoff)\n- Tides (OUT 2) >> VCA Pan (CV)"
+      "name": "Clock-locked polyrhythmic LFO",
+      "patch": "Mid range · Cyclic mode · Output Mode 3 · master clock into CLOCK jack sets base rate · FREQUENCY knob picks a division · SHIFT spreads OUT 1–4 into poly-rhythmic ratios synced to tempo",
+      "diagram": "Tides:\n* Range: Mid\n* Mode: Cyclic\n* Output Mode: 3 (Different frequencies)\n\n- Clock (Out) c> Tides (CLOCK) // PLL sync\n- Tides (OUT 1) >> Filter A (Cutoff)\n- Tides (OUT 2) >> Filter B (Cutoff)\n- Tides (OUT 3) >> VCA Pan (CV)\n- Tides (OUT 4) >> FX Send (CV)"
     },
     {
-      "name": "Stacked accent drum envelopes",
-      "patch": "Output Mode: amplitude-offset · AD mode · TRIG from drum clock · OUT 1 drives kick VCA · OUT 2 drives snare VCA · OUT 3 drives hat VCA · OUT 4 sums the accent layer · one envelope source delivers four velocity-scaled drum layers",
-      "diagram": "Tides:\n* Mode: AD\n* Output Mode: Amplitude-offset\n\n- Clock (Out) t> Tides (TRIG)\n- Tides (OUT 1) >> Kick VCA (CV)\n- Tides (OUT 2) >> Snare VCA (CV)\n- Tides (OUT 3) >> Hat VCA (CV)\n- Tides (OUT 4) >> Accent VCA (CV)"
+      "name": "Quadrature-style modulation from apex shift",
+      "patch": "Slow range · Cyclic mode · Output Mode 2 (Different times) · SHIFT around 2 o'clock spreads OUT 2–4 as delayed copies of OUT 1 · patch into four modulation destinations for correlated but phase-shifted motion",
+      "diagram": "Tides:\n* Range: Slow\n* Mode: Cyclic\n* Output Mode: 2 (Different times)\n\n- Tides (OUT 1) >> VCO FM (CV)\n- Tides (OUT 2) >> Filter (Cutoff)\n- Tides (OUT 3) >> VCA Pan L (CV)\n- Tides (OUT 4) >> VCA Pan R (CV)"
     },
     {
-      "name": "Self-triggering complex LFO",
-      "patch": "Mode: self-triggering · Range: LFO · SLOPE CV modulated by slow random source for irregular phrasing · OUT 1 modulates VCO FM · OUT 3 (phase-shifted) modulates filter · self-generating evolving modulation without external clock",
-      "diagram": "Tides:\n* Range: LFO\n* Mode: Self-triggering\n\n- S&H (Out) >> Tides (SLOPE CV)\n- Tides (OUT 1) >> VCO (FM)\n- Tides (OUT 3) >> Filter (Cutoff)"
+      "name": "AR gate-controlled envelope with release flag",
+      "patch": "AR mode · Output Mode 0 · gate from sequencer into TRIG · OUT 1 opens main VCA (attacks while gate high, releases on gate low) · OUT 4 (end-of-release) retriggers a reverb send or next event",
+      "diagram": "Tides:\n* Range: Slow\n* Mode: AR\n* Output Mode: 0 (Different shapes)\n\n- Sequencer (Gate) g> Tides (TRIG)\n- Tides (OUT 1) >> VCA (CV)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- Tides (OUT 4) t> Reverb Send (Gate) // fires when release ends"
     },
     {
       "name": "Folded bass VCO",
-      "patch": "Range: VCO · Mode: Oscillator · SMOOTHNESS full CCW (wavefolded harmonics) · V/OCT from sequencer · SHAPE CV from envelope adds dynamic expo saturation · OUT 1 into filter for classic waveshaped bass with evolving folds",
-      "diagram": "Tides:\n* Range: VCO\n* Mode: Oscillator\n* Smoothness: CCW (wavefold)\n\n- Sequencer (Pitch) p> Tides (V/OCT)\n- Envelope (Out) >> Tides (SHAPE CV)\n- Tides (OUT 1) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+      "patch": "Fast range · Cyclic mode · SMOOTHNESS full CW (wavefolded harmonics) · V/OCT from sequencer · SHAPE CV from envelope adds dynamic expo bite · OUT 1 into filter for waveshaped bass with evolving folds",
+      "diagram": "Tides:\n* Range: Fast\n* Mode: Cyclic\n* Output Mode: 0\n* Smoothness: CW (wavefold)\n\n- Sequencer (Pitch) p> Tides (V/OCT)\n- Envelope (Out) >> Tides (SHAPE CV)\n- Tides (OUT 1) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
     },
     {
       "name": "Hard-sync lead",
-      "patch": "Range: VCO · Oscillator mode · external sub VCO at fixed pitch into TRIG forces phase reset · V/OCT sweeps freely · SMOOTHNESS at noon · SHAPE CV from envelope · classic aggressive sync-lead timbre",
-      "diagram": "Tides:\n* Range: VCO\n* Mode: Oscillator\n\n- Sequencer (Pitch) p> Tides (V/OCT)\n- Sub VCO (Out) t> Tides (TRIG) // hard sync\n- Envelope (Out) >> Tides (SHAPE CV)\n- Tides (OUT 1) -> Filter (In) -> VCA (In) -> Output (In)"
+      "patch": "Fast range · Cyclic mode · external sub-VCO at fixed pitch into TRIG forces phase reset · V/OCT sweeps freely · SMOOTHNESS at noon · SHAPE CV from envelope · classic aggressive sync-lead timbre",
+      "diagram": "Tides:\n* Range: Fast\n* Mode: Cyclic\n* Output Mode: 0\n\n- Sequencer (Pitch) p> Tides (V/OCT)\n- Sub VCO (Out) t> Tides (TRIG) // hard sync\n- Envelope (Out) >> Tides (SHAPE CV)\n- Tides (OUT 1) -> Filter (In) -> VCA (In) -> Output (In)"
     }
   ]
 }

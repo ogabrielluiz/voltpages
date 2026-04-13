@@ -25,22 +25,28 @@
   "description": "DROID expander. USB-C + TRS MIDI in/out with polyphonic mapping, four extra gate outs at modular levels, USB access to the master's SD card, sub-second sysex patch upload from the Forge.",
   "controls": [
     {
-      "name": "Mode switch",
+      "name": "Mode switch (top)",
       "scope": "Global",
-      "description": "Three-position slide switch selecting the function of the USB-C port.",
-      "detail": "left: SD card USB-stick mode (patch stops) · middle: off · right: USB-MIDI active"
+      "description": "Three-position switch at the top of the panel selecting the function of the USB-C port.",
+      "detail": "left: USB-stick mode (master exposes SD card, patch stops) · middle: USB off (use for loading patches / DIN adapter output) · right: USB-MIDI active"
+    },
+    {
+      "name": "TRS type A/B switch (rear)",
+      "scope": "Rear",
+      "description": "Small switch on the back of the module selecting MIDI TRS type A or B for the TRS output only (the input auto-senses).",
+      "detail": "set to position B when using the shipped TRS↔DIN adapters"
     },
     {
       "name": "USB-C port",
-      "scope": "Rear/top",
-      "description": "Class-compliant USB. Appears as mass-storage or MIDI device depending on switch.",
-      "detail": "requires Rev 1.5.1 for USB-C↔USB-C · older revs need USB-A cable"
+      "scope": "Panel",
+      "description": "Class-compliant USB. Appears as mass-storage or MIDI device depending on switch. Not a USB host.",
+      "detail": "requires Rev 1.5.1 hardware and firmware orange-912+ for USB-C↔USB-C · earlier revs need the supplied USB-A↔USB-C cable"
     },
     {
       "name": "LED indicators",
       "scope": "Panel",
-      "description": "Multicolor LEDs show SD card activity, USB-MIDI state, TRS MIDI in/out, and the four gate outputs.",
-      "detail": "top-left: SD · top-right: USB-MIDI · middle: TRS in/out · bottom: gate 9–12"
+      "description": "Eight multicolor LEDs (R49–R56) overridable in a patch. Factory function: SD card state, USB-MIDI state, TRS MIDI in, TRS MIDI out, and the four gate outputs G9–G12.",
+      "detail": "top-left: SD card · top-right: USB-MIDI · second-row-left: TRS MIDI in · second-row-right: TRS MIDI out · bottom 2×2 field: G9 G10 / G11 G12 (green=note on, red=note off, blue=other MIDI event)"
     }
   ],
   "inputs": [
@@ -58,7 +64,7 @@
     },
     {
       "name": "G9 / G10 / G11 / G12",
-      "description": "Four dedicated gate/trigger outputs at modular level. Addressed in patch as G9..G12 on a MASTER, or the next available G index on MASTER18.",
+      "description": "Four dedicated gate/trigger outputs at modular level. Always addressed in the patch as G9, G10, G11, G12 (G1–G8 are reserved for the first G8 expander, whether present or not). Output only — unlike a G8 these jacks cannot be used as inputs.",
       "voltage": "0V / 5V"
     }
   ],
@@ -66,7 +72,7 @@
     {
       "name": "Always first in the chain",
       "trigger": "installation",
-      "description": "The X7 connects to the MASTER's 6-pin controller header and MUST be the first module in the controller chain. Any P2B8, P10, B32, M4 etc. chain off the X7's OUT connector. Only one X7 per master. The X7 is not declared in the patch — it's auto-detected — and does not consume a controller number, so P1.1 still refers to the first non-X7 controller."
+      "description": "The X7 connects to the master's 6-pin controller header and MUST be the first module in the controller chain. Any P2B8, P10, B32, M4 etc. chain off the X7's OUT connector. Only one X7 per master. The X7 is not declared in the patch — it's auto-detected — and does not consume a controller number, so P1.1 still refers to the first non-X7 controller. The X7 also works with the MASTER18 (adding its four gates and a second USB/MIDI bus)."
     },
     {
       "name": "USB-stick mode stops the patch",
@@ -96,7 +102,7 @@
     {
       "name": "MIDI through routing",
       "trigger": "midithrough circuit",
-      "description": "midithrough forwards events from one MIDI stream to another with selectable filters — let USB notes pass to TRS out, split CCs, merge USB+TRS into one bus, etc. Events can be spliced in and out without stopping the native midiin/midiout behavior."
+      "description": "midithrough forwards all events from one MIDI stream (TRS or USB) to the other — e.g. let USB-MIDI pass straight to TRS out. It does no filtering or on-the-fly processing, but any midiin and midiout circuits still work in parallel, so you can splice additional events into the forwarded stream."
     },
     {
       "name": "Not a USB host",
@@ -107,8 +113,8 @@
   "patchIdeas": [
     {
       "name": "MIDI keyboard to 4-voice CV",
-      "patch": "midiin circuit declares 4 voices · pitch outputs routed to O1–O4, gates to G9–G12 · last-note priority or round-robin voice assignment via midiin parameters · plug MIDI keyboard to X7 TRS IN via supplied DIN adapter · play four-note chords driving an external 4-voice polysynth from the master.",
-      "diagram": "DROID:\n* midiin: channel=1, voices=4, pitch1=O1, pitch2=O2, pitch3=O3, pitch4=O4, gate1=G9, gate2=G10, gate3=G11, gate4=G12\n\n- MIDI Keyboard (MIDI Out) -> DROID X7 (MIDI IN)\n- DROID (O1) p> VCO 1 (V/Oct)\n- DROID (O2) p> VCO 2 (V/Oct)\n- DROID (O3) p> VCO 3 (V/Oct)\n- DROID (O4) p> VCO 4 (V/Oct)\n- DROID X7 (G9) g> VCA 1 Env (Gate)\n- DROID X7 (G10) g> VCA 2 Env (Gate)\n- DROID X7 (G11) g> VCA 3 Env (Gate)\n- DROID X7 (G12) g> VCA 4 Env (Gate)"
+      "patch": "midiin circuit declares four pitch/gate pairs (polyphony comes from the number of output pairs, not a voices parameter) · pitches routed to O1–O4, gates to G9–G12 · plug a MIDI keyboard into the X7 TRS IN via the supplied DIN adapter · play four-note chords driving an external 4-voice polysynth from the master.",
+      "diagram": "DROID:\n* midiin: channel=1, pitch1=O1, pitch2=O2, pitch3=O3, pitch4=O4, gate1=G9, gate2=G10, gate3=G11, gate4=G12\n\n- MIDI Keyboard (MIDI Out) -> DROID X7 (MIDI IN)\n- DROID (O1) p> VCO 1 (V/Oct)\n- DROID (O2) p> VCO 2 (V/Oct)\n- DROID (O3) p> VCO 3 (V/Oct)\n- DROID (O4) p> VCO 4 (V/Oct)\n- DROID X7 (G9) g> VCA 1 Env (Gate)\n- DROID X7 (G10) g> VCA 2 Env (Gate)\n- DROID X7 (G11) g> VCA 3 Env (Gate)\n- DROID X7 (G12) g> VCA 4 Env (Gate)"
     },
     {
       "name": "CV to DAW (MIDI out)",
@@ -117,8 +123,8 @@
     },
     {
       "name": "Four-gate clock distribution",
-      "patch": "lfo → _CLK at 120 BPM · clocktool divides _CLK by 1, 2, 4, 8 into G9–G12 · modular gets four synchronized clock lanes without consuming any of the master's O outputs · master's CV outs remain free for pitch/modulation.",
-      "diagram": "DROID:\n* lfo: hz=2, square=_CLK\n* clocktool: input=_CLK, output=G9\n* clocktool: input=_CLK, divide=2, output=G10\n* clocktool: input=_CLK, divide=4, output=G11\n* clocktool: input=_CLK, divide=8, output=G12\n\n- DROID X7 (G9) c> Drum 1 (Trig)\n- DROID X7 (G10) c> Drum 2 (Trig)\n- DROID X7 (G11) c> Drum 3 (Trig)\n- DROID X7 (G12) c> Drum 4 (Trig)"
+      "patch": "lfo generates _CLK at 2 Hz (120 BPM) · three clocktool circuits divide _CLK by 2, 4 and 8 into G10–G12 while G9 takes the raw clock · the modular gets four synchronized clock lanes without consuming any of the master's O outputs.",
+      "diagram": "DROID:\n* lfo: hz=2, square=_CLK\n* clocktool: clock=_CLK, output=G9\n* clocktool: clock=_CLK, divide=2, output=G10\n* clocktool: clock=_CLK, divide=4, output=G11\n* clocktool: clock=_CLK, divide=8, output=G12\n\n- DROID X7 (G9) c> Drum 1 (Trig)\n- DROID X7 (G10) c> Drum 2 (Trig)\n- DROID X7 (G11) c> Drum 3 (Trig)\n- DROID X7 (G12) c> Drum 4 (Trig)"
     },
     {
       "name": "Forge-driven live coding",

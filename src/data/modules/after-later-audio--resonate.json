@@ -2,7 +2,14 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": true
+    "verified": true,
+    "sources": [
+      "https://afterlateraudio.com/products/resonate",
+      "https://modulargrid.net/e/after-later-audio-resonate",
+      "https://www.elevatorsound.com/product/after-later-audio-resonate-eurorack-physical-modelling-resonator-module-mutable-rings-clone/",
+      "https://www.perfectcircuit.com/after-later-resonate.html",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/rings/manual/"
+    ]
   },
   "slug": "after-later-audio--resonate",
   "name": "Resonate",

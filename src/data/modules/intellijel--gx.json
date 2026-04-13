@@ -3,7 +3,12 @@
   "_meta": {
     "schemaVersion": 1,
     "verified": true,
-    "expanderOf": "intellijel--midi-1u"
+    "expanderOf": "intellijel--metropolix",
+    "sources": [
+      "https://intellijel.com/shop/eurorack/gx/",
+      "https://www.modulargrid.net/e/intellijel-gx",
+      "https://intellijel.com/wp-content/uploads/2021/03/Metropolix-Manual.pdf"
+    ]
   },
   "slug": "intellijel--gx",
   "name": "Gx",
@@ -12,80 +17,111 @@
   "tags": [
     "SEQUENCER",
     "GATE",
+    "CLOCK",
     "UTILITY"
   ],
-  "description": "4HP gate expander for the Metropolix sequencer. Connects via ribbon cable and provides 8 additional gate/trigger outputs — 4 per track — for accessing all Metropolix gate lanes.",
+  "description": "4HP active expander for Metropolix. Adds 8 gate/trigger/clock jacks assigned from Metropolix's MX menu (Transport, Prob Clocks, Mod Clocks, Stage Num, Mod Stage Num). Connects via I²C cable plus its own bus-board power. Incompatible with Metropolix Backpack.",
   "controls": [],
   "inputs": [],
   "outputs": [
     {
-      "name": "T1 Gate 1",
-      "description": "Gate output for Metropolix Track 1, Gate Lane 1.",
-      "voltage": "0–5V gate"
+      "name": "1",
+      "description": "Gate/trigger/clock output 1. Function is set globally on Metropolix via ALT + MX. Depending on MX EXPANDER mode this carries: Run gate (Transport A/B/C), x1 clock at 100% probability (Prob Clocks), MOD Lane 1 clock (Mod Clocks), a stage-1 gate for the assigned Track (Stage Num) or MOD lane (Mod Stage Num).",
+      "voltage": "0V / +5V gate"
     },
     {
-      "name": "T1 Gate 2",
-      "description": "Gate output for Metropolix Track 1, Gate Lane 2.",
-      "voltage": "0–5V gate"
+      "name": "2",
+      "description": "Gate/trigger/clock output 2. MX-assigned. Typical modes: Reset trigger (Transport A/B/C), x1 clock at 75% probability (Prob Clocks), MOD Lane 2 clock, or stage-2 gate.",
+      "voltage": "0V / +5V gate"
     },
     {
-      "name": "T1 Gate 3",
-      "description": "Gate output for Metropolix Track 1, Gate Lane 3.",
-      "voltage": "0–5V gate"
+      "name": "3",
+      "description": "Gate/trigger/clock output 3. MX-assigned. Typical modes: /1 clock (Transport A/B), x4 clock (Transport C), x1 clock at 50% probability, MOD Lane 3 clock, or stage-3 gate.",
+      "voltage": "0V / +5V gate"
     },
     {
-      "name": "T1 Gate 4",
-      "description": "Gate output for Metropolix Track 1, Gate Lane 4.",
-      "voltage": "0–5V gate"
+      "name": "4",
+      "description": "Gate/trigger/clock output 4. MX-assigned. Typical modes: /2 clock (Transport A), /3 clock (Transport B), x2 clock (Transport C), x1 clock at 25% probability, MOD Lane 4 clock, or stage-4 gate.",
+      "voltage": "0V / +5V gate"
     },
     {
-      "name": "T2 Gate 1",
-      "description": "Gate output for Metropolix Track 2, Gate Lane 1.",
-      "voltage": "0–5V gate"
+      "name": "5",
+      "description": "Gate/trigger/clock output 5. MX-assigned. Typical modes: /4 clock (Transport A/B), x1 clock (Transport C), /2 clock at 100% probability, MOD Lane 5 clock, or stage-5 gate.",
+      "voltage": "0V / +5V gate"
     },
     {
-      "name": "T2 Gate 2",
-      "description": "Gate output for Metropolix Track 2, Gate Lane 2.",
-      "voltage": "0–5V gate"
+      "name": "6",
+      "description": "Gate/trigger/clock output 6. MX-assigned. Typical modes: /4 clock +2 offset (Transport A), /5 clock (Transport B), /2 clock (Transport C), /2 clock at 75% probability, MOD Lane 6 clock, or stage-6 gate.",
+      "voltage": "0V / +5V gate"
     },
     {
-      "name": "T2 Gate 3",
-      "description": "Gate output for Metropolix Track 2, Gate Lane 3.",
-      "voltage": "0–5V gate"
+      "name": "7",
+      "description": "Gate/trigger/clock output 7. MX-assigned. Typical modes: /8 clock (Transport A/B), /4 clock (Transport C), /2 clock at 50% probability, MOD Lane 7 clock, or stage-7 gate.",
+      "voltage": "0V / +5V gate"
     },
     {
-      "name": "T2 Gate 4",
-      "description": "Gate output for Metropolix Track 2, Gate Lane 4.",
-      "voltage": "0–5V gate"
+      "name": "8",
+      "description": "Gate/trigger/clock output 8. MX-assigned. Typical modes: /16 clock (Transport A/B), /8 clock (Transport C), /2 clock at 25% probability, MOD Lane 8 clock, or stage-8 gate.",
+      "voltage": "0V / +5V gate"
     }
   ],
   "behaviors": [
     {
-      "name": "Passive Expander",
-      "trigger": "ribbon connection",
-      "description": "Connects to Metropolix via a 10-pin ribbon cable on the back. No configuration needed — Gx automatically mirrors Metropolix gate lanes to its outputs."
+      "name": "I²C expander (requires host + power)",
+      "trigger": "6-pin I²C cable to Metropolix, separate 10-pin power cable to bus board",
+      "description": "Gx is an active module: it needs its own 10-pin power connection to the eurorack bus board AND a 6-pin I²C cable to the Metropolix's I²C port on the back. Always power down before connecting/disconnecting the I²C cable. Not compatible with the Metropolix Backpack — you can install one or the other, not both."
     },
     {
-      "name": "Gate Lane Access",
-      "trigger": "Metropolix gate lanes programmed",
-      "description": "Exposes all 4 gate lanes per track that are configured in Metropolix. Gate patterns, ratchets, and mutes follow Metropolix programming exactly."
+      "name": "MX EXPANDER — Transport A / B / C",
+      "trigger": "ALT + MX on Metropolix → MX EXPANDER = Transport A/B/C",
+      "description": "Jacks 1–2 carry global Run gate and Reset trigger. Jacks 3–8 carry a bank of clock divisions/multiples of Metropolix's master clock. A: /1, /2, /4, /4+2-offset, /8, /16. B: /1, /3, /4, /5, /8, /16. C: x4, x2, x1, /2, /4, /8. MX ASSIGN is ignored in these modes."
+    },
+    {
+      "name": "MX EXPANDER — Prob Clocks",
+      "trigger": "ALT + MX → MX EXPANDER = Prob Clocks",
+      "description": "Jacks 1–4 emit an x1 clock at 100%, 75%, 50%, 25% probability respectively. Jacks 5–8 emit a /2 clock at 100%, 75%, 50%, 25% probability. Useful for generative rhythms."
+    },
+    {
+      "name": "MX EXPANDER — Mod Clocks",
+      "trigger": "ALT + MX → MX EXPANDER = Mod Clocks",
+      "description": "Jacks 1–8 output the clock for Metropolix MOD Lanes 1–8 respectively, each following that lane's CLOCK DIV setting on the DIV screen. MX ASSIGN is ignored."
+    },
+    {
+      "name": "MX EXPANDER — Stage Num",
+      "trigger": "ALT + MX → MX EXPANDER = Stage Num, MX ASSIGN = Track 1 or Track 2",
+      "description": "Each jack 1–8 emits a gate that is high while the correspondingly numbered stage is playing on the selected Track. Not affected by Metropolix's Gate Length settings. Muted Track → gates also muted. With Loopy on + sequencer stopped, Stage Player button presses fire the matching stage gates."
+    },
+    {
+      "name": "MX EXPANDER — Mod Stage Num",
+      "trigger": "ALT + MX → MX EXPANDER = Mod Stage Num, MX ASSIGN = MOD Lane 1–8",
+      "description": "Each jack 1–8 emits a gate that is high while the correspondingly numbered stage plays on the selected MOD Lane. Muted MOD Lane → gates also muted. Useful for stage-synchronous triggers on mod-lane timelines."
+    },
+    {
+      "name": "Gx vs Qx",
+      "trigger": "module selection",
+      "description": "Metropolix supports either Gx or Qx as its expander (not both). Qx adds CV/clock+MIDI features; Gx is a pure 8-jack gate/clock expander. Electrical behavior on the 8 jacks is identical — this sheet applies to the Gx."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Polyrhythmic drums",
-      "patch": "T1 Gates 1–4 → drum triggers · T2 Gates 1–4 → additional percussion voices · different patterns per lane",
-      "diagram": "GX:\n- Gx (T1 Gate 1) g> Kick (Trig)\n- Gx (T1 Gate 2) g> Snare (Trig)\n- Gx (T1 Gate 3) g> Hat (Trig)\n- Gx (T2 Gate 1) g> Clap (Trig)\n- Gx (T2 Gate 2) g> Perc (Trig) // program distinct patterns per lane in Metropolix"
+      "name": "Global transport fan-out (Transport A)",
+      "patch": "MX EXPANDER = Transport A · Gx 1 Run + Gx 2 Reset drive downstream sequencers · Gx 3–8 = /1, /2, /4, /4+2, /8, /16 clock tree for percussion and modulators",
+      "diagram": "GX:\n- Gx (1) g> Beads (Freeze gate) // Run\n- Gx (2) t> Marbles (t reset)\n- Gx (3) c> Pam's (Clk In) // /1\n- Gx (5) c> Kick (Trig) // /4 downbeat\n- Gx (6) c> Snare (Trig) // /4 w/ +2 offset = backbeat\n- Gx (7) c> Hat (Trig) // /8\n- Gx (8) c> LFO (Reset) // /16"
     },
     {
-      "name": "Envelope stacking",
-      "patch": "Multiple gate lanes → multiple envelope inputs · layered attacks on a single voice",
-      "diagram": "GX:\n- Gx (T1 Gate 1) g> Env 1 (Trig)\n- Gx (T1 Gate 2) g> Env 2 (Trig)\n- Gx (T1 Gate 3) g> Env 3 (Trig)\n- Env 1 (Out) >> VCA (CV)\n- Env 2 (Out) >> Filter (Cutoff)\n- Env 3 (Out) >> VCO (FM) // layered attacks on one voice"
+      "name": "Probabilistic hats & perc (Prob Clocks)",
+      "patch": "MX EXPANDER = Prob Clocks · Gx 1–4 = x1 clock at 100/75/50/25% → layered hi-hats · Gx 5–8 = /2 clock at 100/75/50/25% → sparse percussion",
+      "diagram": "GX:\n- Gx (1) c> Hat-closed (Trig)  // 100%\n- Gx (2) c> Hat-open (Trig)    // 75%\n- Gx (3) c> Shaker (Trig)      // 50%\n- Gx (4) c> Ghost-snare (Trig) // 25%\n- Gx (5) c> Tom-low (Trig)     // /2 100%\n- Gx (8) c> FX-trig (Trig)     // /2 25%"
     },
     {
-      "name": "Rhythmic modulation",
-      "patch": "Gate lanes → trigger inputs on function generators for rhythmic CV modulation synchronized to Metropolix",
-      "diagram": "GX:\n- Gx (T2 Gate 1) t> Maths (Ch1 Trig)\n- Gx (T2 Gate 2) t> Maths (Ch4 Trig)\n- Maths (Ch1 Out) >> Filter (Cutoff)\n- Maths (Ch4 Out) >> VCA (CV) // function gens clocked by Metropolix lanes"
+      "name": "Stage-gated events (Stage Num, Track 1)",
+      "patch": "MX EXPANDER = Stage Num · MX ASSIGN = Trk 1 · Gx 1–8 fire only while stage 1–8 plays on Track 1 · route to scene-change triggers or sample choke",
+      "diagram": "GX:\n- Gx (1) g> Morphagene (Record)      // only during Stage 1\n- Gx (4) t> Plaits (Model CV up)     // stage-4 accent\n- Gx (8) g> Mixup (Mute Ch3)         // duck on stage 8"
+    },
+    {
+      "name": "Per-MOD-lane clocking (Mod Clocks)",
+      "patch": "MX EXPANDER = Mod Clocks · each Gx jack = its MOD lane's CLOCK DIV · use as 8 independently-divided clocks for envelopes, LFOs, sequencers",
+      "diagram": "GX:\n- Gx (1) c> Maths (Ch1 Trig)   // MOD 1 div\n- Gx (2) c> Maths (Ch4 Trig)   // MOD 2 div\n- Gx (3) c> Stages (Clk)       // MOD 3 div\n- Gx (4) c> Pam's (Clk In)     // MOD 4 div"
     }
   ]
 }

@@ -2,155 +2,160 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
-    "firmwareVersion": "1.1",
+    "verified": true,
+    "firmwareVersion": "1.0a",
     "sources": [
-      "https://mutable-instruments.net/modules/warps/manual/",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/warps/manual/",
       "https://pichenettes.github.io/mutable-instruments-documentation/modules/warps/",
-      "https://mutable-instruments.net/modules/warps/",
-      "https://www.modulargrid.net/e/mutable-instruments-warps",
-      "https://www.modwiggler.com/forum/viewtopic.php?t=125220"
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/warps/firmware/",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/warps/secrets/",
+      "https://mqtthiqs.github.io/parasites/warps.html",
+      "https://www.modulargrid.net/e/mutable-instruments-warps"
     ]
   },
   "slug": "mutable-instruments--warps",
   "name": "Warps",
   "manufacturer": "Mutable Instruments",
   "hp": 10,
-  "tags": ["EFFECTS", "WAVESHAPER", "VCO", "OSCILLATOR", "DISTORTION"],
-  "description": "Meta-modulator combining two audio inputs via selectable algorithms: crossfade, ring-mod, bitcrush, frequency shifter, vocoder, comparator, and more. Includes built-in oscillator as modulator.",
+  "tags": ["EFFECTS", "WAVESHAPER", "WAVEFOLDER", "DISTORTION", "OSCILLATOR"],
+  "description": "Meta-modulator that blends and combines two audio signals through seven cross-modulation algorithms: crossfade, wavefolder, diode ring-mod, digital ring-mod, bitwise XOR, comparator/octaver and 20-band vocoder. Includes an internal digital carrier oscillator (sine/tri/saw or saw/pulse/LP-noise) with V/Oct tracking.",
   "controls": [
     {
-      "name": "Algorithm (MODEL) Button",
+      "name": "ALGORITHM Knob",
       "scope": "Global",
-      "description": "Selects cross-modulation algorithm. 8 visible primary algorithms + alt-firmware extras.",
-      "detail": "1: XFADE · 2: Folder/crossfolded · 3: Analog RM · 4: Digital RM · 5: Freq shift · 6: Bitcrush · 7: Comparator · 8: Vocoder"
-    },
-    {
-      "name": "ALGORITHM CV Attenuverter",
-      "scope": "Global",
-      "description": "Scales CV on ALGORITHM jack enabling continuous morphing between adjacent algorithms.",
-      "detail": "±unity"
+      "description": "Selects/morphs continuously between the seven cross-modulation algorithms. The knob's LED colour reflects the current algorithm.",
+      "detail": "1 Crossfade · 2 Wavefolder · 3 Diode ring-mod · 4 Digital ring-mod · 5 Bitwise XOR · 6 Comparator/octaver · 7 Vocoder"
     },
     {
       "name": "TIMBRE",
       "scope": "Global",
-      "description": "Algorithm-dependent mixing/depth parameter — pre-transform character.",
-      "detail": "Meaning varies: RM depth, bitcrush level, shift amount, etc."
+      "description": "Algorithm-dependent tone/harmonics control — brightness, fold amount, ring-mod drive, XOR bit mask or vocoder formant shift.",
+      "detail": "Crossfade: mix · Folder: fold amount · Ring-mods: gain/clip · XOR: which bits · Compare: morph · Vocoder: formant shift"
     },
     {
-      "name": "LEVEL 1",
-      "scope": "Input 1",
-      "description": "Input 1 gain. Doubles as internal-oscillator timbre control when IN 1 unpatched.",
-      "detail": "With IN 1 unpatched: shapes internal osc waveform saw/tri/sine"
+      "name": "LEVEL 1 (Carrier amplitude / Internal osc frequency)",
+      "scope": "Channel 1",
+      "description": "When the internal oscillator is OFF, sets the carrier amplitude or the amount of AM from LEVEL 1 CV. When the internal oscillator is ON, sets the internal oscillator frequency.",
+      "detail": "Gain can be pushed above unity for a warm overdrive"
     },
     {
-      "name": "LEVEL 2",
-      "scope": "Input 2",
-      "description": "Input 2 gain. Doubles as internal-oscillator pitch offset when IN 2 unpatched.",
-      "detail": "With IN 2 unpatched: tunes internal osc ±7 semitones around V/OCT"
+      "name": "LEVEL 2 (Modulator amplitude)",
+      "scope": "Channel 2",
+      "description": "Modulator input gain, or depth of AM from LEVEL 2 CV when a cable is present (LEVEL 2 CV is normalled to +5V when unpatched).",
+      "detail": "Gain can be pushed above unity for a warm overdrive"
     },
     {
-      "name": "OSC Button",
+      "name": "INT. OSC Button",
       "scope": "Global",
-      "description": "Enables internal digital oscillator as modulator source replacing IN 2.",
-      "detail": "When ON: IN 2 unused; LEVEL 2 tunes internal osc · OFF: IN 2 is modulator"
+      "description": "Enables the internal digital oscillator (replacing the external carrier) and cycles its waveform. LED colour shows current waveform; LED off = external carrier.",
+      "detail": "Cross-mod waves: sine, triangle, saw. Vocoder waves: saw, pulse, LP-filtered noise."
+    },
+    {
+      "name": "ALGORITHM CV (sum)",
+      "scope": "Global",
+      "description": "Voltage on the ALGORITHM CV input is summed with the knob position — no attenuverter; enables continuous morphing between adjacent algorithms.",
+      "detail": "No dedicated attenuverter on the panel"
     }
   ],
   "inputs": [
-    { "name": "LEVEL 1 CV", "description": "CV input for LEVEL 1 parameter.", "voltage": "±5V" },
-    { "name": "LEVEL 2 CV", "description": "CV input for LEVEL 2 parameter.", "voltage": "±5V" },
-    { "name": "ALGORITHM CV", "description": "CV for algorithm selection/morph. Scaled by attenuverter.", "voltage": "±5V" },
-    { "name": "TIMBRE CV", "description": "CV for TIMBRE parameter.", "voltage": "±5V" },
-    { "name": "V/OCT", "description": "1V/octave pitch input for the internal oscillator.", "voltage": "-3V to +5V" },
-    { "name": "IN 1", "description": "Carrier audio input. External source processed against modulator.", "voltage": "line level", "normalizedTo": "internal carrier oscillator when unpatched" },
-    { "name": "IN 2", "description": "Modulator audio input. Disabled when internal osc enabled.", "voltage": "line level", "normalizedTo": "internal modulator oscillator when OSC button ON" }
+    { "name": "LEVEL 1 CV", "description": "Carrier amplitude/AM CV when internal oscillator is OFF; acts as V/Oct input for the internal oscillator when it is ON.", "voltage": "audio/CV" },
+    { "name": "LEVEL 2 CV", "description": "Modulator amplitude CV. Normalled to +5V when unpatched — when nothing is patched here the modulator runs at the gain set by LEVEL 2.", "voltage": "audio/CV", "normalizedTo": "+5V when unpatched" },
+    { "name": "ALGORITHM CV", "description": "CV added to the ALGORITHM knob position for algorithm selection/morph.", "voltage": "CV" },
+    { "name": "TIMBRE CV", "description": "CV added to the TIMBRE knob position.", "voltage": "CV" },
+    { "name": "IN 1 (Carrier)", "description": "External carrier audio input. Expects modular level (typically 10Vpp, up to 20Vpp). When the internal oscillator is ON this input phase-modulates the oscillator, or feeds external noise into the LP filter for the noise waveform.", "voltage": "modular level (10-20Vpp)" },
+    { "name": "IN 2 (Modulator)", "description": "External modulator audio input. Expects modular level.", "voltage": "modular level (10-20Vpp)" }
   ],
   "outputs": [
-    { "name": "AUX", "description": "Auxiliary output — algorithm-specific byproduct (sum, difference, raw modulator, etc.).", "voltage": "±5V" },
-    { "name": "MAIN OUT", "description": "Primary processed output of selected algorithm.", "voltage": "±5V" }
+    { "name": "OUT (Modulator output)", "description": "Main processed output of the selected cross-modulation algorithm.", "voltage": "audio" },
+    { "name": "AUX", "description": "Auxiliary output. When the internal oscillator is OFF, carries the post-VCA sum of carrier and modulator. When the internal oscillator is ON, carries the raw internal oscillator waveform.", "voltage": "audio" }
   ],
   "behaviors": [
     {
-      "name": "Internal oscillator as modulator",
-      "trigger": "OSC button ON",
-      "description": "Built-in digital oscillator replaces IN 2 as the modulator. V/OCT tracks pitch, LEVEL 2 fine-tunes ±7 semitones. Warps becomes a single-module ring-mod/FM/vocoder voice — only a carrier is needed."
+      "name": "Internal carrier oscillator",
+      "trigger": "INT. OSC button ON",
+      "description": "Built-in digital oscillator replaces the external carrier (IN 1). LEVEL 1 becomes its frequency knob, LEVEL 1 CV becomes a V/Oct input, and IN 1 becomes a phase-modulation input (or external noise source for the noise wave). Waveforms are sine/tri/saw for cross-mod algorithms and saw/pulse/LP-noise for the vocoder."
     },
     {
       "name": "Algorithm morphing",
-      "trigger": "CV on ALGORITHM jack",
-      "description": "CV smoothly morphs between adjacent algorithms. Crossfade-to-RM-to-shifter evolution is continuous, enabling dynamic processing that shifts character with modulation."
+      "trigger": "CV on ALGORITHM input",
+      "description": "Algorithm CV is summed with the knob position and smoothly morphs between adjacent algorithms, so crossfade → folder → ring-mod → XOR → comparator → vocoder is a continuous sweep."
     },
     {
-      "name": "Vocoder mode",
-      "trigger": "Algorithm 8 (vocoder)",
-      "description": "20-band channel vocoder. IN 1 is carrier (pitched source), IN 2 is modulator (speech/drums/any wide-band). TIMBRE controls freeze/brightness. Classic robot-speech synthesis from modular signals."
+      "name": "Vocoder (algorithm 7)",
+      "trigger": "ALGORITHM at fully clockwise position",
+      "description": "20-band analog-style channel vocoder with 20 analysis + 20 synthesis third-octave 48dB filters. IN 1 is the carrier (or the internal osc on saw/pulse/LP-noise), IN 2 is the modulator (speech/drums/noise). TIMBRE warps the formant mapping (shifts formants up/down). Turning ALGORITHM further clockwise increases envelope-follower release; fully CW freezes the modulator spectrum."
     },
     {
-      "name": "Frequency shifter",
-      "trigger": "Algorithm 5",
-      "description": "Single-sideband frequency shifter shifts IN 1's spectrum by a frequency set by IN 2's pitch (or internal osc). Produces inharmonic klang, detuned clangour, pitch-shifted metallic shimmer."
+      "name": "Bitwise XOR (algorithm 5)",
+      "trigger": "ALGORITHM around 5",
+      "description": "Carrier and modulator are converted to 16-bit integers and XOR'ed bit by bit. TIMBRE selects which bits take part — lo-fi digital grit and chiptune harmonics."
     },
     {
-      "name": "Comparator (XOR/ring/bin)",
-      "trigger": "Algorithm 7",
-      "description": "Digital comparator produces square-wave harmonics from the two inputs' zero crossings. Generates aggressive lo-fi harmonics that track both inputs — useful for sub-bass grit and noisy leads."
+      "name": "Comparator / octaver (algorithm 6)",
+      "trigger": "ALGORITHM around 6",
+      "description": "Bank of comparison operations (e.g. replace the negative half of the carrier with the modulator, output whichever signal has larger absolute value, etc.). TIMBRE morphs between them — some settings resemble an octave-pedal fuzz."
     },
     {
-      "name": "Parasites alt firmware",
-      "trigger": "Parasites firmware installed",
-      "description": "Community alt-firmware adds dual oscillator mode, delay, feedback, and more algorithm slots. Still runs on stock Warps hardware via bootloader."
+      "name": "AUX behaves contextually",
+      "trigger": "Patch state of INT. OSC",
+      "description": "AUX is the post-VCA carrier+modulator sum when the internal oscillator is OFF, but becomes the raw internal-oscillator waveform when the oscillator is ON — useful as an extra VCO output."
     },
     {
-      "name": "Self-modulating carrier",
-      "trigger": "MAIN OUT → IN 2",
-      "description": "Patching Warps' output back into IN 2 creates audio-rate self-modulation. Depending on algorithm the feedback generates chaotic sidebands, runaway self-oscillation, or complex FM tones."
+      "name": "Frequency-shifter easter egg",
+      "trigger": "All cables out, TIMBRE and both LEVELs fully CCW, then dial sequence 2-4-3-6-1-5 on the ALGORITHM knob, pressing the button after each number",
+      "description": "Hidden single-sideband frequency shifter. ALGORITHM sets shift amount (centre = no shift, CW positive, CCW negative; linear to 50Hz then exponential). LEVEL 1 sets feedback, LEVEL 2 sets dry/wet, TIMBRE balances upper/lower sidebands. With INT. OSC OFF it becomes a quadrature cross-modulator that multiplies the analytic signals of IN 1 and IN 2."
     },
     {
       "name": "Calibration",
-      "trigger": "hold button at power-up",
-      "description": "Standard Mutable calibration mode via button combination. Tunes internal oscillator's V/OCT tracking and input gain normalization."
+      "trigger": "Hold INT. OSC for 5 seconds (all CV disconnected)",
+      "description": "Calibrates internal oscillator V/Oct tracking via LEVEL 1 CV using C2 (1V) and C4 (3V), with LEVEL 2 CV left floating (patched cable, other end unplugged). Knob blinks turquoise then fuchsia to guide the steps."
+    },
+    {
+      "name": "Normalisation recalibration",
+      "trigger": "Hold INT. OSC for 10 seconds",
+      "description": "Run this if the sound becomes choppy/morse-like. Patch a constant positive voltage to LEVEL 1 CV, hold INT. OSC 10s until LEDs blink red, remove all cables and press INT. OSC to confirm."
     }
   ],
   "patchIdeas": [
     {
       "name": "Internal-oscillator ring-mod voice",
-      "patch": "OSC button ON · Algorithm: analog RM · external VCO into IN 1 · LEVEL 1 at unity · V/OCT from sequencer tracks internal modulator · TIMBRE at full · MAIN OUT delivers classic ring-mod bells",
-      "diagram": "Warps:\n* Algorithm: 3 (analog RM)\n* OSC: ON\n\n- VCO (Out) -> Warps (IN 1)\n- Sequencer (Pitch) p> Warps (V/OCT)\n- Warps (MAIN OUT) -> Output (In)"
+      "patch": "INT. OSC ON (sine) · Algorithm 3 (diode RM) or 4 (digital RM) · external VCO into IN 1 (carrier, external) — or use internal osc and patch the melodic VCO into IN 2 as modulator · V/Oct (from sequencer) into LEVEL 1 CV tracks the internal osc · TIMBRE adds drive · OUT = classic ring-mod bells",
+      "diagram": "Warps:\n* Algorithm: 3 (diode RM)\n* INT. OSC: ON (sine)\n\n- Melodic VCO (Out) -> Warps (IN 2)\n- Sequencer (Pitch) p> Warps (LEVEL 1 CV)\n- Warps (OUT) -> Output (In)"
     },
     {
       "name": "Modular vocoder",
-      "patch": "Algorithm: 8 (vocoder) · chord VCO into IN 1 (carrier) · drum loop or speech into IN 2 (modulator) · TIMBRE controls brightness · MAIN OUT = talking drums/chords",
-      "diagram": "Warps:\n* Algorithm: 8 (vocoder)\n* OSC: OFF\n\n- Chord VCO (Out) -> Warps (IN 1)\n- Drum Loop (Out) -> Warps (IN 2)\n- Keyboard (Pitch) p> Chord VCO (V/Oct)\n- Warps (MAIN OUT) -> Reverb (In) -> Output (In)"
+      "patch": "Algorithm 7 (vocoder, knob fully CW) · chord VCO into IN 1 (carrier) · drum loop or speech into IN 2 (modulator) · TIMBRE shifts formants · OUT = talking chords. Nudging ALGORITHM back from full CW reduces the freeze time.",
+      "diagram": "Warps:\n* Algorithm: 7 (vocoder)\n* INT. OSC: OFF\n\n- Chord VCO (Out) -> Warps (IN 1)\n- Drum Loop (Out) -> Warps (IN 2)\n- Keyboard (Pitch) p> Chord VCO (V/Oct)\n- Warps (OUT) -> Reverb (In) -> Output (In)"
     },
     {
       "name": "Morphing algorithm effect",
-      "patch": "Slow LFO into ALGORITHM jack with attenuverter at 2 o'clock sweeps through XFADE→fold→RM·→bitcrush · TIMBRE CV from envelope · one module delivers evolving processing that rewrites itself rhythmically",
-      "diagram": "Warps:\n- VCO 1 (Out) -> Warps (IN 1)\n- VCO 2 (Out) -> Warps (IN 2)\n- Slow LFO (Out) >> Warps (ALGORITHM CV)\n- Envelope (Out) >> Warps (TIMBRE CV)\n- Warps (MAIN OUT) -> Output (In)"
+      "patch": "Slow LFO into ALGORITHM CV sweeps crossfade → folder → RM → XOR → comparator → vocoder · TIMBRE CV from an envelope · one module delivers evolving processing that rewrites itself rhythmically",
+      "diagram": "Warps:\n- VCO 1 (Out) -> Warps (IN 1)\n- VCO 2 (Out) -> Warps (IN 2)\n- Slow LFO (Out) >> Warps (ALGORITHM CV)\n- Envelope (Out) >> Warps (TIMBRE CV)\n- Warps (OUT) -> Output (In)"
     },
     {
-      "name": "Bitcrushed percussion",
-      "patch": "Algorithm: 6 (bitcrush) · drum loop into IN 1 · OSC OFF, no IN 2 (or LFO on IN 2 for sample-rate sweep) · TIMBRE at 3 o'clock (heavy crush) · MAIN OUT into mixer for lo-fi crushed drums",
-      "diagram": "Warps:\n* Algorithm: 6 (bitcrush)\n\n- Drum Loop (Out) -> Warps (IN 1)\n- LFO (Out) -> Warps (IN 2) // varies sample rate\n- Warps (MAIN OUT) -> Mixer (In)"
+      "name": "XOR bit-crushed drums",
+      "patch": "Algorithm 5 (bitwise XOR) · drum loop into IN 1 · square LFO or second drum layer into IN 2 · TIMBRE selects which bits XOR (heavy to the right) · OUT into mixer for chiptune-grit drums",
+      "diagram": "Warps:\n* Algorithm: 5 (XOR)\n\n- Drum Loop (Out) -> Warps (IN 1)\n- Square LFO (Out) -> Warps (IN 2)\n- Warps (OUT) -> Mixer (In)"
     },
     {
-      "name": "Frequency-shifter shimmer",
-      "patch": "Algorithm: 5 (freq shift) · pad into IN 1 · OSC ON · very slow V/OCT ramp tunes shift amount over minutes · delay feedback → IN 2 not needed · MAIN OUT + AUX into reverb for shimmer trail",
-      "diagram": "Warps:\n* Algorithm: 5 (freq shift)\n* OSC: ON\n\n- Pad (Out) -> Warps (IN 1)\n- Slow Ramp LFO (Out) p> Warps (V/OCT)\n- Warps (MAIN OUT) -> Delay (In)\n- Delay (Out) -> Reverb (In) -> Output (In)"
+      "name": "Frequency-shifter shimmer (easter egg)",
+      "patch": "Unlock the frequency-shifter easter egg (cables out, LEVELs+TIMBRE CCW, dial 2-4-3-6-1-5) · patch pad into IN 1 · ALGORITHM near centre for subtle shift · LEVEL 1 adds feedback · LEVEL 2 dry/wet · OUT + AUX into reverb for shimmer trail",
+      "diagram": "Warps:\n* Mode: frequency shifter (easter egg)\n\n- Pad (Out) -> Warps (IN 1)\n- Warps (OUT) -> Reverb (In) -> Output (In)"
     },
     {
       "name": "Feedback drone",
-      "patch": "Algorithm: 2 (crossfold) · single VCO into IN 1 · MAIN OUT patched back into IN 2 creating audio-rate feedback · TIMBRE dialed to edge of chaos · MAIN OUT into low-pass filter and VCA · self-oscillating warped drone",
-      "diagram": "Warps:\n* Algorithm: 2 (crossfold)\n\n- VCO (Out) -> Warps (IN 1)\n- Warps (MAIN OUT) -> Warps (IN 2) // feedback\n- Warps (MAIN OUT) -> Filter (In) -> VCA (In) -> Output (In)\n- Envelope (Out) >> VCA (CV)"
+      "patch": "Algorithm 2 (wavefolder) · single VCO into IN 1 · OUT patched back into IN 2 for audio-rate feedback · TIMBRE dialed to the edge of chaos · OUT through filter/VCA for a self-oscillating warped drone",
+      "diagram": "Warps:\n* Algorithm: 2 (folder)\n\n- VCO (Out) -> Warps (IN 1)\n- Warps (OUT) -> Warps (IN 2) // feedback\n- Warps (OUT) -> Filter (In) -> VCA (In) -> Output (In)\n- Envelope (Out) >> VCA (CV)"
     },
     {
-      "name": "Comparator bass grit",
-      "patch": "Algorithm: 7 (comparator) · sub VCO into IN 1 · second VCO detuned into IN 2 · harsh digital harmonics on MAIN OUT · AUX gives sum/diff for additional layer · aggressive industrial bass texture",
-      "diagram": "Warps:\n* Algorithm: 7 (comparator)\n\n- Sub VCO (Out) -> Warps (IN 1)\n- VCO 2 (Out) -> Warps (IN 2)\n- Warps (MAIN OUT) -> Filter (In) -> Output (In)\n- Warps (AUX) -> Mixer (In) // sum/diff layer"
+      "name": "Comparator/octaver bass grit",
+      "patch": "Algorithm 6 (comparator) · sub VCO into IN 1 · second VCO detuned into IN 2 · TIMBRE morphs between comparison laws · OUT delivers octave-pedal-style grit · AUX gives the post-VCA mix for a parallel layer",
+      "diagram": "Warps:\n* Algorithm: 6 (comparator)\n\n- Sub VCO (Out) -> Warps (IN 1)\n- VCO 2 (Out) -> Warps (IN 2)\n- Warps (OUT) -> Filter (In) -> Output (In)\n- Warps (AUX) -> Mixer (In) // carrier+modulator mix"
     },
     {
-      "name": "Envelope-modulated vocoder",
-      "patch": "Algorithm: 8 (vocoder) · carrier VCO into IN 1 · white noise into IN 2 for whispered texture · envelope on TIMBRE sweeps vocoder freeze per note · MAIN OUT through reverb · sustained breathy synth-choir pad",
-      "diagram": "Warps:\n* Algorithm: 8 (vocoder)\n\n- VCO (Saw) -> Warps (IN 1)\n- Noise (Out) -> Warps (IN 2)\n- Keyboard (Pitch) p> VCO (V/Oct)\n- Envelope (Out) >> Warps (TIMBRE CV)\n- Keyboard (Gate) g> Envelope (Trig)\n- Warps (MAIN OUT) -> Reverb (In) -> Output (In)"
+      "name": "Warps as a dual VCO (AUX trick)",
+      "patch": "INT. OSC ON · Algorithm 1 (crossfade) · no external inputs · LEVEL 1 sets internal-osc pitch, LEVEL 1 CV is V/Oct · OUT delivers the processed/crossfaded signal while AUX carries the raw internal oscillator — one module, two usable voices",
+      "diagram": "Warps:\n* Algorithm: 1 (crossfade)\n* INT. OSC: ON (saw)\n\n- Sequencer (Pitch) p> Warps (LEVEL 1 CV)\n- Warps (AUX) -> Filter A (In) // raw osc\n- Warps (OUT) -> Filter B (In) // processed voice"
     }
   ]
 }
