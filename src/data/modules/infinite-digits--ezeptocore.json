@@ -2,11 +2,14 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
-      "https://infinitedigits.myshopify.com/products/ezeptocore",
+      "https://get.ezeptocore.com/",
+      "https://infinitedigits.co/ezeptocore/",
       "https://modulargrid.net/e/infinite-digits-ezeptocore",
-      "https://get.ezeptocore.com"
+      "https://synthanatomy.com/2025/01/maneco-labs-and-infinite-digits-turns-zeptocore-sample-player-into-a-eurorack-module.html",
+      "https://zeptocore.com/",
+      "https://github.com/schollz/_core"
     ]
   },
   "slug": "infinite-digits--ezeptocore",
@@ -14,108 +17,174 @@
   "manufacturer": "Infinite Digits",
   "hp": 8,
   "tags": ["SAMPLER", "GLITCH", "CLOCK", "EFFECTS"],
-  "description": "Algorithmic breakbeat sampler and sample mangler. Streams SD-card audio, re-slices it in real time, and layers 16 effects around an internal rungler sequencer, clock division and sample-analysis triggers.",
+  "description": "Algorithmic 8 HP breakbeat sampler. Streams stereo 16-bit 44.1 kHz audio from SD (16 banks x 16 samples), slices and re-sequences it with a Turing-style rungler, and layers 16 live-switchable effects. Eurorack port of the open-source zeptocore.",
   "controls": [
     {
-      "name": "AMEN",
-      "scope": "Slice sequencer",
-      "description": "Sets the looping random-sequencer pattern that evolves slice order and break movement.",
-      "detail": "rungler / Turing-style core"
+      "name": "X",
+      "scope": "Primary parameter knob",
+      "description": "Main performance knob. Adjusts the parameter of the currently selected effect or, combined with button holds, controls pitch, tempo and bank/sample.",
+      "detail": "context-sensitive; held with A/B/C for global settings"
     },
     {
-      "name": "BREAK",
-      "scope": "Pattern / timing",
-      "description": "Scales the break-mangling side of the engine, shaping how aggressively the sample is reworked.",
-      "detail": "links to slice timing and FX behavior"
+      "name": "Y",
+      "scope": "Secondary parameter knob",
+      "description": "Second effect parameter for the active FX preset. Shapes depth or character alongside X.",
+      "detail": "per-effect parameter"
     },
     {
-      "name": "EFFECTS",
-      "scope": "FX preset bank",
-      "description": "Selects the current effect preset and intensity for the sample-mangling chain.",
-      "detail": "16 onboard effects"
+      "name": "Z",
+      "scope": "Probability / volume",
+      "description": "Sets probability for the AMEN/BREAK engine and doubles as master volume when held with A.",
+      "detail": "probability + global volume"
+    },
+    {
+      "name": "A",
+      "scope": "Modifier button",
+      "description": "Hold to access global functions: +X for tempo, +Z for volume, +B tap for manual tempo tap (30-300 BPM).",
+      "detail": "shift/modifier key"
+    },
+    {
+      "name": "B",
+      "scope": "Bank / sample select",
+      "description": "Hold B then tap a key 1-16 to pick a bank, keep holding and tap another key 1-16 to pick the sample within that bank.",
+      "detail": "bank + sample navigation"
+    },
+    {
+      "name": "C",
+      "scope": "Mode / play select",
+      "description": "Switches between play modes (jump/manual, loop, retrigger) and into mash mode or bass mode for the 16 keys.",
+      "detail": "play-mode selector"
+    },
+    {
+      "name": "D",
+      "scope": "Record / sequence",
+      "description": "Arms and captures the real-time sequencer so key presses and FX toggles are looped back as a pattern.",
+      "detail": "sequencer record"
+    },
+    {
+      "name": "16 keys",
+      "scope": "Performance pads",
+      "description": "Sixteen numbered keys. In jump mode each key jumps between 16 slices of the current sample, in mash mode they toggle the 16 effects, in bass mode they play a chromatic bass across the keyboard.",
+      "detail": "jump / mash / bass contexts"
     }
   ],
   "inputs": [
     {
       "name": "Clock In",
-      "description": "Syncs the internal sequencer and timebase.",
+      "description": "External clock input. Drives the internal sequencer, slice timing and tempo-locked effects.",
       "voltage": "clock / trigger"
-    },
-    {
-      "name": "Sample Select CV",
-      "description": "Chooses among the 16 sample banks.",
-      "voltage": "CV"
-    },
-    {
-      "name": "FX Intensity CV",
-      "description": "Modulates the strength of the selected effect preset.",
-      "voltage": "CV"
     }
   ],
   "outputs": [
     {
-      "name": "Audio Out",
-      "description": "Processed sample output from the internal SD streamer and FX chain.",
+      "name": "Audio Out L",
+      "description": "Left channel of the stereo sample and FX output.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Audio Out R",
+      "description": "Right channel of the stereo sample and FX output.",
       "voltage": "audio"
     },
     {
       "name": "Clock Out",
-      "description": "Mirrors the master clock with built-in division and multiplication.",
+      "description": "Internal clock with on-board divider and multiplier, useful for syncing other modules to the break.",
       "voltage": "clock"
     },
     {
       "name": "Trigger Out",
-      "description": "Analysis-derived trigger output for slice accents and rhythmic extraction.",
+      "description": "Analysis-derived trigger mirrored from the sample: kick, snare or hi-hat extraction follows the loop's rhythm and fires gates for the rest of the rack.",
       "voltage": "trigger"
     }
   ],
   "behaviors": [
     {
-      "name": "Rungler breaks",
-      "trigger": "AMEN knob",
-      "description": "The internal looping random sequencer generates evolving slice patterns instead of a fixed step order."
+      "name": "Rungler break order (AMEN)",
+      "trigger": "AMEN parameter (knob X in performance mode)",
+      "description": "AMEN fully counter-clockwise plays slices in their original order. As you turn it up the built-in Turing/rungler sequencer recombines slices, and at full travel it cooks up a brand new slice + FX combination every pass of the loop."
     },
     {
-      "name": "Real-time slicing",
-      "trigger": "clocked sample playback",
-      "description": "Samples stream directly from SD storage and can be chopped, sliced and transformed without preloading into a fixed program."
+      "name": "FX probability (BREAK)",
+      "trigger": "BREAK parameter",
+      "description": "BREAK controls how often the sixteen effects (and their combinations) are sprinkled onto the sample. Low = clean loop, high = wall-to-wall effect mayhem."
     },
     {
-      "name": "Tempo compensation",
-      "trigger": "clock input or tempo change",
-      "description": "The engine keeps sample playback pitched in time when the master clock changes, so breaks stay locked to tempo."
+      "name": "16 live-switchable effects",
+      "trigger": "mash mode keys / BREAK engine",
+      "description": "Effects include saturation, loss, fuzz, bit-crush, time-stretch, delay, comb filter, repeat, tighten, expand, circulate, scratch, lower, reverse and tape-stop. Any of them can be toggled from the 16 keys or automated by BREAK."
     },
     {
-      "name": "Preset FX stack",
-      "trigger": "EFFECTS knob",
-      "description": "Sixteen onboard effects are selected through curated presets, with the BREAK control shaping how hard the module leans into them."
+      "name": "Time-stretch to clock",
+      "trigger": "Clock In or tap tempo",
+      "description": "Sample playback time-stretches to match the incoming clock (or tapped tempo from 30-300 BPM), so breaks stay in time when the master clock wobbles."
     },
     {
-      "name": "Analysis triggers",
+      "name": "Stereo SD streaming",
+      "trigger": "sample load",
+      "description": "Audio streams directly from the SD card in 16-bit 44.1 kHz stereo, so you can hot-swap between any of 256 samples (16 banks x 16 slots) without loading into RAM."
+    },
+    {
+      "name": "Percussion trigger extraction",
       "trigger": "percussive sample content",
-      "description": "Kick, snare and transient analysis can produce trigger outs that follow the loop's rhythmic structure."
+      "description": "The engine analyses incoming slices and fires Trigger Out on kick, snare or hi-hat hits inside the loop, giving you a live drum trigger track from any break."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Amen break mangler",
-      "patch": "Load a breakbeat · clock it from the rack master clock · use AMEN for evolving slice order · BREAK for more violent reshaping · monitor Audio Out for a constantly mutating breakcore loop.",
-      "diagram": "EZEPTOCORE:\n* AMEN: noon\n* BREAK: 1 o'clock\n* EFFECTS: 11 o'clock\n\nClock:\n\n- Clock (Out) c> EZEPTOCORE (Clock In)\n- EZEPTOCORE (Audio Out) -> Output (In)\n- EZEPTOCORE (Clock Out) c> Clock Divider (In)"
+      "name": "Evolving amen break",
+      "patch": "Load a classic breakbeat into bank 1 · feed a master clock into Clock In · crank AMEN (X) so the rungler re-orders slices · nudge BREAK (Y) to sprinkle FX · stereo out into the mixer for a constantly mutating amen.",
+      "diagram": "EZEPTOCORE:\n* X (AMEN): 1 o'clock\n* Y (BREAK): 11 o'clock\n* Z: noon\n\nClock:\nMixer:\n\n- Clock (Out) c> EZEPTOCORE (Clock In)\n- EZEPTOCORE (Audio Out L) -> Mixer (In L)\n- EZEPTOCORE (Audio Out R) -> Mixer (In R)",
+      "steps": [
+        "Copy a drum break as break.wav onto the SD card (bank 1, slot 1).",
+        "Feed a steady 4/4 clock from your master clock into Clock In.",
+        "Hold B, tap key 1 to pick bank, then tap key 1 again for the sample.",
+        "Turn X (AMEN) up slowly - you will hear slices start to recombine.",
+        "Nudge Y (BREAK) clockwise to taste so FX begin to flicker in."
+      ],
+      "signalOut": "Audio Out L + R into the mixer",
+      "hear": "Familiar amen groove that slowly rearranges itself, with bursts of stretch, reverse and bit-crush riding on top."
     },
     {
-      "name": "Bank-hopped drum rack",
-      "patch": "CV-scan the 16 sample banks while the master clock runs · each bank swap changes the loop character from drum kit to glitch bed · use Trigger Out to clock a companion envelope or drum voice.",
-      "diagram": "EZEPTOCORE:\n* AMEN: slow\n* EFFECTS: low\n\nSequencer:\nEnvelope:\nOutput:\n\n- Sequencer (CV) >> EZEPTOCORE (Sample Select CV)\n- Clock (Out) c> EZEPTOCORE (Clock In)\n- EZEPTOCORE (Trigger Out) t> Envelope (Trig)\n- EZEPTOCORE (Audio Out) -> Output (In)"
+      "name": "Break as drum trigger source",
+      "patch": "Clock EZEPTOCORE from the rack clock · loop a breakbeat · take Trigger Out into an envelope/VCA on another drum voice so the extracted kick/snare hits play an external drum along with the break.",
+      "diagram": "EZEPTOCORE:\n* X (AMEN): low\n* Y (BREAK): low\n\nClock:\nEnvelope:\nDrum Voice:\nMixer:\n\n- Clock (Out) c> EZEPTOCORE (Clock In)\n- EZEPTOCORE (Trigger Out) t> Envelope (Trig)\n- Envelope (Out) >> Drum Voice (CV)\n- EZEPTOCORE (Audio Out L) -> Mixer (In)\n- Drum Voice (Out) -> Mixer (In)",
+      "steps": [
+        "Keep AMEN low so the original break order stays intact.",
+        "Patch Trigger Out to a percussive envelope's trigger input.",
+        "Route that envelope into a drum voice or noise-burst module.",
+        "Sum the drum voice and the EZEPTOCORE audio into the mixer.",
+        "Adjust Y (BREAK) gently - clean break, extra drum layered on top."
+      ],
+      "signalOut": "Audio Out L (or L+R) plus external drum voice into mixer",
+      "hear": "The break playing normally while a second drum voice plays along, doubling the kick/snare hits extracted from the loop."
     },
     {
-      "name": "FX-smeared stutter",
-      "patch": "Push BREAK and rotate EFFECTS to lean into time-stretch, tape stop and beat-repeat behavior · use a short break loop as source material · the result lands between sample slicing and live DJ destruction.",
-      "diagram": "EZEPTOCORE:\n* BREAK: max\n* EFFECTS: 2 o'clock\n\nMixer:\nOutput:\n\n- Mixer (Out) -> EZEPTOCORE (Audio In)\n- Clock (Out) c> EZEPTOCORE (Clock In)\n- EZEPTOCORE (Audio Out) -> Output (In)"
+      "name": "Mash-mode effect performance",
+      "patch": "Hold C to enter mash mode so the 16 keys become FX toggles · tap keys live while the break loops to throw delay, tape-stop, reverse and bit-crush on and off like a DJ's effect bar.",
+      "diagram": "EZEPTOCORE:\n* X (AMEN): 10 o'clock\n* Y (BREAK): 9 o'clock\n* Z: noon\n\nClock:\nMixer:\n\n- Clock (Out) c> EZEPTOCORE (Clock In)\n- EZEPTOCORE (Audio Out L) -> Mixer (In L)\n- EZEPTOCORE (Audio Out R) -> Mixer (In R)",
+      "steps": [
+        "Hold C and tap the key for mash mode (see the colour cue on the keys).",
+        "Start the master clock so the sample loops cleanly.",
+        "Tap a key to toggle an effect - it stays on until tapped again.",
+        "Combine keys for stacked FX (eg reverse + tape-stop).",
+        "Use D to record the tap performance back into the sequencer."
+      ],
+      "signalOut": "Audio Out L + R into the mixer",
+      "hear": "A clean break that you are rewriting live - stutters, reverses and tape stops dropping in exactly where you tap."
     },
     {
-      "name": "Triggered slice accents",
-      "patch": "Use Trigger Out for slice-derived accents · patch the trigger to an envelope and VCA · the module's analysis engine turns dense sample edits into rhythmic side-chains for a drum bus.",
-      "diagram": "EZEPTOCORE:\n* AMEN: 2 o'clock\n\nEnvelope:\nVCA:\nDrum Loop:\nOutput:\n\n- Drum Loop (Out) -> EZEPTOCORE (Audio In)\n- EZEPTOCORE (Trigger Out) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- EZEPTOCORE (Audio Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
+      "name": "Clock divider for the rack",
+      "patch": "Use EZEPTOCORE's Clock Out with its divider to feed slower clocks to envelopes and sequencers while the break plays at full tempo · the whole rack locks to the sample's downbeat.",
+      "diagram": "EZEPTOCORE:\n* X (AMEN): 10 o'clock\n* Y (BREAK): 9 o'clock\n\nMaster Clock:\nSequencer:\nEnvelope:\nMixer:\n\n- Master Clock (Out) c> EZEPTOCORE (Clock In)\n- EZEPTOCORE (Clock Out) c> Sequencer (Clock In)\n- EZEPTOCORE (Clock Out) c> Envelope (Trig)\n- EZEPTOCORE (Audio Out L) -> Mixer (In L)\n- EZEPTOCORE (Audio Out R) -> Mixer (In R)",
+      "steps": [
+        "Patch your master clock into Clock In.",
+        "Set Clock Out to a useful division (eg /4) in the settings menu.",
+        "Send Clock Out into a sequencer's clock input.",
+        "Also patch Clock Out to an envelope trigger for bass plucks.",
+        "Keep the stereo audio going to the mixer - everything now runs on the break's grid."
+      ],
+      "signalOut": "Audio Out L + R to mixer; Clock Out to the rest of the rack",
+      "hear": "A tight break with sequenced bass and envelope accents all breathing on the same subdivision."
     }
   ]
 }

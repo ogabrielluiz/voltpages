@@ -2,129 +2,212 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
-    "firmwareVersion": "2020 revision",
+    "verified": true,
+    "firmwareVersion": "2020 edition (no firmware — analog signal path)",
     "sources": [
-      "https://pichenettes.github.io/mutable-instruments-documentation/modules/veils/manual/",
-      "https://mutable-instruments.net/modules/veils/",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/veils_2020/manual/",
+      "https://pichenettes.github.io/mutable-instruments-documentation/modules/veils_2020/",
       "https://www.modulargrid.net/e/mutable-instruments-veils-2020",
       "https://www.modwiggler.com/forum/viewtopic.php?t=236841"
     ]
   },
   "slug": "mutable-instruments--veils",
-  "name": "Veils",
+  "name": "Veils (2020)",
   "manufacturer": "Mutable Instruments",
   "hp": 10,
-  "tags": ["VCA", "MIXER", "UTILITY", "DISTORTION"],
-  "description": "Four-channel DC-coupled VCA with per-channel response curve, offset/boost, and normalled mixer. 2020 revision adds LED meters and selectable linear/exponential per channel.",
+  "tags": ["VCA", "MIXER", "UTILITY"],
+  "description": "Four-channel DC-coupled VCA with per-channel response curve (linear↔exponential), positive CV offset, and daisy-chained outputs that turn the module into a flexible mixer. The 2020 edition adds bright per-channel gain LEDs and a polarity-aware output level LED.",
   "controls": [
-    {
-      "name": "Level 1–4",
-      "scope": "CH 1-4",
-      "description": "Per-channel gain knob. Also acts as CV offset when no input patched, scaling the CV attenuverter function.",
-      "detail": "0–unity · gain up to ~4x (12 dB) · LED tracks output"
-    },
     {
       "name": "Response 1–4",
       "scope": "CH 1-4",
-      "description": "Per-channel response curve knob between exponential and linear CV tracking.",
-      "detail": "CCW: full exponential (audio-ideal) · CW: linear (CV-ideal)"
+      "description": "Per-channel response curve, continuously variable between exponential (CCW) and linear (CW). Exponential gives ear-matched audio dynamics and very high gain (above 100×, +20 dB and beyond) when combined with offset; linear is artifact-free for CV processing.",
+      "detail": "CCW: exponential (audio) · CW: linear (CV)"
     },
     {
-      "name": "CV Attenuverter 1–4",
+      "name": "Offset 1–4",
       "scope": "CH 1-4",
-      "description": "Scales and inverts each channel's CV input when patched.",
-      "detail": "CCW: invert · noon: zero · CW: unity"
+      "description": "Adds a positive offset (0 to +8 V) to the gain CV. Use it to turn a bipolar LFO/CV into a unipolar modulator, to open the VCA at rest, or to push exponential response into high-gain territory.",
+      "detail": "0 V (CCW) to +8 V (CW), summed with the CV input"
+    },
+    {
+      "name": "Gain / CV amount 1–4",
+      "scope": "CH 1-4",
+      "description": "Attenuates the CV input when patched. When CV is unpatched the jack normals to +8 V, turning the knob into a manual gain fader. +5 V on the CV path = unity gain.",
+      "detail": "Manual gain when CV unpatched · CV attenuator when CV patched"
     }
   ],
   "inputs": [
-    { "name": "IN 1", "description": "Channel 1 audio/CV input. DC-coupled.", "voltage": "±10V" },
-    { "name": "IN 2", "description": "Channel 2 audio/CV input. DC-coupled.", "voltage": "±10V" },
-    { "name": "IN 3", "description": "Channel 3 audio/CV input. DC-coupled.", "voltage": "±10V" },
-    { "name": "IN 4", "description": "Channel 4 audio/CV input. DC-coupled.", "voltage": "±10V" },
-    { "name": "CV 1", "description": "Channel 1 CV input, scaled by its attenuverter.", "voltage": "±8V" },
-    { "name": "CV 2", "description": "Channel 2 CV input, scaled by its attenuverter.", "voltage": "±8V" },
-    { "name": "CV 3", "description": "Channel 3 CV input, scaled by its attenuverter.", "voltage": "±8V" },
-    { "name": "CV 4", "description": "Channel 4 CV input, scaled by its attenuverter.", "voltage": "±8V" }
+    { "name": "IN 1", "description": "Channel 1 signal input. DC-coupled — accepts audio or CV.", "voltage": "DC-coupled, 100 kΩ" },
+    { "name": "IN 2", "description": "Channel 2 signal input. DC-coupled.", "voltage": "DC-coupled, 100 kΩ" },
+    { "name": "IN 3", "description": "Channel 3 signal input. DC-coupled.", "voltage": "DC-coupled, 100 kΩ" },
+    { "name": "IN 4", "description": "Channel 4 signal input. DC-coupled.", "voltage": "DC-coupled, 100 kΩ" },
+    { "name": "CV 1", "description": "Channel 1 gain CV. Normalled to +8 V when unpatched (so the Gain knob acts as a manual fader). +5 V externally = unity gain.", "voltage": "Normalled to +8 V, 100 kΩ" },
+    { "name": "CV 2", "description": "Channel 2 gain CV. Normalled to +8 V.", "voltage": "Normalled to +8 V, 100 kΩ" },
+    { "name": "CV 3", "description": "Channel 3 gain CV. Normalled to +8 V.", "voltage": "Normalled to +8 V, 100 kΩ" },
+    { "name": "CV 4", "description": "Channel 4 gain CV. Normalled to +8 V.", "voltage": "Normalled to +8 V, 100 kΩ" }
   ],
   "outputs": [
-    { "name": "OUT 1", "description": "Channel 1 direct output. Breaks that channel out of the mix normalling.", "voltage": "±10V" },
-    { "name": "OUT 2", "description": "Channel 2 direct output. Breaks channel 2 out of the mix.", "voltage": "±10V" },
-    { "name": "OUT 3", "description": "Channel 3 direct output. Breaks channel 3 out of the mix.", "voltage": "±10V" },
-    { "name": "OUT 4 / MIX", "description": "Sum of all unbroken channels. With nothing patched in OUT 1–3 this is the full 4-channel mix; patching OUT 1–3 removes those channels from the mix.", "voltage": "±10V clipped with soft saturation" }
+    { "name": "OUT 1", "description": "Channel 1 output. When unpatched, channel 1 cascades down into OUT 2.", "voltage": "DC-coupled" },
+    { "name": "OUT 2", "description": "Channel 2 output. When unpatched, channels 1+2 cascade down into OUT 3.", "voltage": "DC-coupled" },
+    { "name": "OUT 3", "description": "Channel 3 output. When unpatched, channels 1+2+3 cascade down into OUT 4.", "voltage": "DC-coupled" },
+    { "name": "OUT 4 / MIX", "description": "Channel 4 output and final mix point. With OUT 1–3 unpatched, OUT 4 carries the sum of all four channels; patching any earlier OUT breaks the chain at that point.", "voltage": "DC-coupled" }
   ],
   "behaviors": [
     {
-      "name": "Normalled mixer",
-      "trigger": "OUT 4 patched, OUT 1–3 empty",
-      "description": "Channels 1–3 internally sum into channel 4's bus. The MIX output delivers the combined signal. Patching any of OUT 1–3 removes that channel from the sum — no extra mixer needed for a 4-input setup."
+      "name": "Daisy-chained mix bus",
+      "trigger": "Any OUT jack left unpatched",
+      "description": "Each output is normalled to the next channel down. If OUT 1–3 are empty, OUT 4 sums all four channels (free 4-into-1 mixer). Patching, say, OUT 2 splits the module into a 1+2 sub-mix on OUT 2 and a 3+4 mix on OUT 4."
     },
     {
       "name": "Per-channel response curve",
       "trigger": "Response knob position",
-      "description": "Each channel independently selectable between exponential (ear-matched for audio) and linear (artifact-free for CV). Set channels 1–2 linear for CV duties and 3–4 exponential for audio in a single Veils."
+      "description": "Each channel is independently variable between exponential (musical, ear-matched amplitude — best for audio) and linear (mathematically clean — best for CV). One Veils can host audio VCAs and CV processors side by side."
     },
     {
-      "name": "Gain above unity",
-      "trigger": "Level knob past noon or high CV",
-      "description": "Each VCA can boost up to +12 dB for recovering signal after passive attenuation, hot-rodding oscillators, or deliberately clipping into the soft-saturation output stage for warmth."
+      "name": "High-gain exponential mode",
+      "trigger": "Response CCW + Offset CW + healthy CV",
+      "description": "Exponential response combined with the positive offset pushes gain well above 100× (over +20 dB), enough to amplify line-level or weak signals up to modular level. Watch for clipping on the way out."
     },
     {
-      "name": "Soft clipping on MIX",
-      "trigger": "MIX output exceeds ±10V headroom",
-      "description": "MIX output soft-saturates rather than hard-clips when channels combined exceed headroom. Useful as a deliberate drive stage — push inputs past unity for smooth analog compression character."
+      "name": "CV offset / unipolar conversion",
+      "trigger": "Offset knob above zero",
+      "description": "The Offset knob adds 0 to +8 V to the gain CV. Turning it up converts a bipolar LFO into a one-sided modulation, opens the VCA at rest, or biases exponential response into high-gain territory."
     },
     {
       "name": "DC-coupled CV processing",
-      "trigger": "CV signal patched through any channel",
-      "description": "All four channels pass DC, so Veils doubles as a four-channel CV attenuverter/processor: IN accepts CV, CV jack scales it, Level offsets it, MIX sums multiple CV streams."
+      "trigger": "CV signal patched through any IN",
+      "description": "All four channels pass DC, so Veils doubles as a four-channel CV scaler/offset/mixer: IN takes the CV, the Gain knob/CV input scales it, the Offset knob adds bias, and the daisy-chain outputs sum CV streams together."
     },
     {
-      "name": "LED level meters",
-      "trigger": "signal present at any OUT",
-      "description": "2020 revision adds bright per-channel LEDs tracking output amplitude. Useful as a diagnostic confirming VCA action, envelope shape, and signal presence at a glance."
+      "name": "Per-channel LEDs",
+      "trigger": "Signal or CV present on a channel",
+      "description": "Each channel has a gain-indicator LED (brightness ∝ VCA gain in dB) and an output-level LED whose colour shows polarity (green = positive, red = negative). Useful for spotting silent channels, checking envelope shape, and confirming polarity when processing CV."
     }
   ],
   "patchIdeas": [
     {
       "name": "Four-voice submixer",
-      "patch": "Four voices patched into IN 1–4 · levels balanced by knobs · envelope on CV 1 shapes voice 1 · OUT 4 is the summed mix with soft saturation for glue",
-      "diagram": "Veils:\n* CH 1-4: Level at unity\n\n- VCO 1 (Out) -> Veils (IN 1)\n- VCO 2 (Out) -> Veils (IN 2)\n- VCO 3 (Out) -> Veils (IN 3)\n- VCO 4 (Out) -> Veils (IN 4)\n- Envelope (Out) >> Veils (CV 1)\n- Veils (OUT 4) -> Output (In)"
+      "patch": "Four voices into IN 1–4, daisy-chained out of OUT 4 as a free 4-into-1 mixer.",
+      "steps": [
+        "Patch four sound sources into IN 1, IN 2, IN 3, IN 4.",
+        "Leave OUT 1, OUT 2, OUT 3 unpatched so all four channels cascade down to OUT 4.",
+        "Set every Response knob fully CW (linear) if you want clean fader behaviour, or CCW (exponential) for audio-feel.",
+        "Set every Offset knob fully CCW (no offset).",
+        "Use the Gain knobs as four manual mixer faders — start each around noon (CV inputs are normalled to +8 V, so the knob is your fader).",
+        "Patch OUT 4 / MIX → your output / next module."
+      ],
+      "signalOut": "OUT 4 / MIX — DC-coupled sum of channels 1–4, each set by its Gain knob.",
+      "hear": "A four-channel manual mixer. Turn any Gain knob CCW to mute that voice, CW to push past unity. Linear response gives predictable fader feel; exponential response makes small knob moves more musical near the bottom of the range.",
+      "diagram": "Veils:\n* CH 1-4: Response CW (linear), Offset CCW, Gain noon\n\n- VCO 1 (Out) -> Veils (IN 1)\n- VCO 2 (Out) -> Veils (IN 2)\n- VCO 3 (Out) -> Veils (IN 3)\n- VCO 4 (Out) -> Veils (IN 4)\n- Veils (OUT 4) -> Output (In)"
     },
     {
-      "name": "Drum bus with sidechain",
-      "patch": "Kick → IN 1, Snare → IN 2, Hats → IN 3 summed into MIX · bass → IN 4 broken out via OUT 4 · inverted kick envelope into CV 4 ducks bass on every kick hit",
-      "diagram": "Veils:\n* CH 4: Response CW (linear)\n\n- Kick (Out) -> Veils (IN 1)\n- Snare (Out) -> Veils (IN 2)\n- Hats (Out) -> Veils (IN 3)\n- Bass (Out) -> Veils (IN 4)\n- Kick Env (Out) >> Veils (CV 4) // inverted via attenuverter CCW, ducks bass\n- Veils (OUT 4) -> Drum Bus (In)"
+      "name": "Drum bus with sidechain ducking",
+      "patch": "Three drums summed; bass on channel 4 ducked by an inverted kick envelope.",
+      "steps": [
+        "Patch Kick → IN 1, Snare → IN 2, Hats → IN 3, Bass → IN 4.",
+        "Leave OUT 1, OUT 2, OUT 3 unpatched so all four cascade into OUT 4 / MIX.",
+        "Set CH 1–3 Response CCW (exponential) for natural drum dynamics; CH 4 Response CW (linear) for clean bass-VCA control.",
+        "Set CH 1–3 Offset fully CW so those VCAs sit fully open at rest (knob = fader).",
+        "Set CH 4 Offset fully CW so the bass is also open by default.",
+        "Patch the kick envelope → CV 4. The CV path is summed with the +CW offset, so the envelope will push gain above unity unless tamed — back the Gain 4 knob CCW until the bass sits right.",
+        "Trick to invert the duck: instead of sending the envelope straight in, route it through a separate inverter/attenuverter so it pulls CV 4 down on every kick hit, dipping the bass.",
+        "Patch OUT 4 / MIX → drum bus / output."
+      ],
+      "signalOut": "OUT 4 / MIX — kick + snare + hats + (ducked) bass.",
+      "hear": "A glued drum bus where the bass briefly steps out of the way each time the kick fires, leaving room for the low-end transient. Adjust how deep the inverted envelope goes for subtle pumping vs heavy ducking.",
+      "diagram": "Veils:\n* CH 1-3: Response CCW (expo), Offset CW, Gain noon\n* CH 4: Response CW (linear), Offset CW, Gain ~10 o'clock\n\n- Kick (Out) -> Veils (IN 1)\n- Snare (Out) -> Veils (IN 2)\n- Hats (Out) -> Veils (IN 3)\n- Bass (Out) -> Veils (IN 4)\n- Kick Env (Out) -> Inverter -> Veils (CV 4)\n- Veils (OUT 4) -> Drum Bus (In)"
     },
     {
-      "name": "Stereo VCA + CV attenuators",
-      "patch": "Channels 1–2 linear for stereo audio VCA (L/R with shared envelope mult) · channels 3–4 exponential for sculpting two CVs · one Veils covers stereo amp duties and two CV processors",
-      "diagram": "Veils:\n* CH 1-2: Response CW (linear)\n* CH 3-4: Response CCW (expo)\n\n- Synth (L) -> Veils (IN 1)\n- Synth (R) -> Veils (IN 2)\n- Envelope (Out) >> Veils (CV 1)\n- Envelope (Out) >> Veils (CV 2)\n- LFO (Out) -> Veils (IN 3)\n- S&H (Out) -> Veils (IN 4)\n- Veils (OUT 1) -> Output (L)\n- Veils (OUT 2) -> Output (R)\n- Veils (OUT 3) >> Filter (Cutoff)\n- Veils (OUT 4) >> VCO (FM)"
+      "name": "Stereo VCA + two CV processors",
+      "patch": "CH 1–2 as a stereo audio VCA on a shared envelope, CH 3–4 sculpting two separate CVs.",
+      "steps": [
+        "Patch a stereo source: Synth L → IN 1, Synth R → IN 2.",
+        "Set CH 1 and CH 2 Response CCW (exponential) for natural amplitude; Offset fully CCW so the VCAs are silent at rest.",
+        "Mult one envelope into CV 1 and CV 2; set both Gain knobs the same so L and R track equally.",
+        "Patch OUT 1 → Output L. Patch OUT 2 → Output R (this also breaks the cascade, isolating CH 1 and 2 from the rest).",
+        "Patch an LFO → IN 3 and a sample-and-hold → IN 4 (now using channels 3 and 4 for CV).",
+        "Set CH 3–4 Response CW (linear) for clean CV scaling. Use Offset to bias each CV; use Gain to set its depth.",
+        "Patch OUT 3 → Filter (Cutoff). With OUT 3 patched and OUT 4 unpatched, OUT 4 carries only channel 4 — patch OUT 4 / MIX → VCO (FM)."
+      ],
+      "signalOut": "OUT 1 / OUT 2 — stereo audio shaped by the envelope. OUT 3 — scaled LFO. OUT 4 / MIX — scaled S&H (cascade was broken by patching OUT 3).",
+      "hear": "A stereo voice that opens and closes with the envelope, while two extra CV streams modulate other modules — one Veils handling stereo amp duties and two CV processors at once.",
+      "diagram": "Veils:\n* CH 1-2: Response CCW (expo), Offset CCW\n* CH 3-4: Response CW (linear)\n\n- Synth (L) -> Veils (IN 1)\n- Synth (R) -> Veils (IN 2)\n- Envelope (Out) >> Veils (CV 1)\n- Envelope (Out) >> Veils (CV 2)\n- LFO (Out) -> Veils (IN 3)\n- S&H (Out) -> Veils (IN 4)\n- Veils (OUT 1) -> Output (L)\n- Veils (OUT 2) -> Output (R)\n- Veils (OUT 3) >> Filter (Cutoff)\n- Veils (OUT 4) >> VCO (FM)"
     },
     {
-      "name": "Soft-saturation drive",
-      "patch": "Bass VCO into IN 1 · Level pushed past unity · overdriving into OUT 4's soft clipping adds analog warmth/tube-style grit · level CV from envelope adds dynamic drive",
-      "diagram": "Veils:\n* CH 1: Level ~3 o'clock (boost)\n\n- Bass VCO (Out) -> Veils (IN 1)\n- Envelope (Out) >> Veils (CV 1)\n- Veils (OUT 4) -> Filter (In) -> Output (In)"
+      "name": "Line-level / pedal-return amplifier",
+      "patch": "Use exponential mode + Offset to boost a quiet external signal up to modular level.",
+      "steps": [
+        "Patch the quiet source (line-level synth, guitar pedal return, contact mic preamp) → IN 1.",
+        "Set CH 1 Response fully CCW (exponential) — this is what unlocks the >100× / +20 dB-and-up gain.",
+        "Set CH 1 Offset fully CW (+8 V) so the exponential curve sits in its high-gain region.",
+        "Leave CV 1 unpatched (it normals to +8 V) — the Gain knob now acts as your boost amount.",
+        "Slowly bring Gain 1 up while watching the output LED — green flashes mean clean positive signal, red means negative; very bright/saturated colour means you are clipping the rails.",
+        "Patch OUT 1 → filter / next module. Back Gain off slightly if it sounds harsh."
+      ],
+      "signalOut": "OUT 1 — boosted, DC-coupled signal at modular level.",
+      "hear": "A whispery line-level signal grows loud enough to drive the rest of the rack. Push too hard and the output will distort — use the LED colour as your level meter.",
+      "diagram": "Veils:\n* CH 1: Response CCW (expo), Offset CW (+8V), Gain to taste\n\n- Quiet Source (Out) -> Veils (IN 1)\n- Veils (OUT 1) -> Filter (In) -> Output (In)"
     },
     {
-      "name": "Four-channel CV attenuverter bank",
-      "patch": "No audio patched · four CV sources into IN 1–4 · knobs set offsets · CV jacks trim per-channel depth · summed modulation on OUT 4 for complex motion on a single destination",
-      "diagram": "Veils:\n* CH 1-4: Response CW (linear)\n\n- LFO 1 (Out) >> Veils (IN 1)\n- LFO 2 (Out) >> Veils (IN 2)\n- S&H (Out) >> Veils (IN 3)\n- Envelope (Out) >> Veils (IN 4)\n- Veils (OUT 4) >> Filter (Cutoff) // summed complex CV"
+      "name": "Four-channel CV mixer / attenuverter bank",
+      "patch": "Four CV sources into IN 1–4, daisy-chained out of OUT 4 as a single complex modulation.",
+      "steps": [
+        "Patch four CV sources into IN 1, IN 2, IN 3, IN 4 (LFOs, envelopes, S&H, random — anything DC).",
+        "Set every Response knob fully CW (linear) — this gives clean, predictable CV scaling.",
+        "Use each Offset knob to bias that channel's CV (turn CW to push it more positive).",
+        "Use each Gain knob to set how much of that CV ends up in the sum.",
+        "Leave OUT 1, OUT 2, OUT 3 unpatched so all four CVs cascade into OUT 4.",
+        "Patch OUT 4 / MIX → destination (filter cutoff, VCO FM, wavefolder)."
+      ],
+      "signalOut": "OUT 4 / MIX — DC-coupled sum of four scaled-and-offset CVs.",
+      "hear": "One destination wobbling with a layered, non-repeating modulation built from four sources. Subtle Offset/Gain changes massively rework the resulting motion.",
+      "diagram": "Veils:\n* CH 1-4: Response CW (linear)\n\n- LFO 1 (Out) >> Veils (IN 1)\n- LFO 2 (Out) >> Veils (IN 2)\n- S&H (Out) >> Veils (IN 3)\n- Envelope (Out) >> Veils (IN 4)\n- Veils (OUT 4) >> Filter (Cutoff)"
     },
     {
-      "name": "Per-voice amp envelope with shared VCA",
-      "patch": "Four voice VCOs into IN 1–4 · four independent envelopes into CV 1–4 · each voice broken out via its own OUT for per-voice panning/processing · MIX remains available if any left unpatched",
-      "diagram": "Veils:\n- VCO 1 (Out) -> Veils (IN 1)\n- VCO 2 (Out) -> Veils (IN 2)\n- VCO 3 (Out) -> Veils (IN 3)\n- VCO 4 (Out) -> Veils (IN 4)\n- Env 1 (Out) >> Veils (CV 1)\n- Env 2 (Out) >> Veils (CV 2)\n- Env 3 (Out) >> Veils (CV 3)\n- Env 4 (Out) >> Veils (CV 4)\n- Veils (OUT 1) -> Pan 1 (In)\n- Veils (OUT 2) -> Pan 2 (In)\n- Veils (OUT 3) -> Pan 3 (In)\n- Veils (OUT 4) -> Pan 4 (In)"
+      "name": "Four-voice polyphonic VCAs",
+      "patch": "Four voices, four envelopes, four discrete outs for per-voice panning or processing.",
+      "steps": [
+        "Patch four VCO outputs into IN 1, IN 2, IN 3, IN 4.",
+        "Set every Response CCW (exponential) for natural note dynamics; Offset fully CCW so each VCA is silent at rest.",
+        "Patch four envelopes into CV 1, CV 2, CV 3, CV 4 — one per voice.",
+        "Set each Gain knob to taste (controls how much the envelope opens that VCA).",
+        "Patch OUT 1 → Pan 1, OUT 2 → Pan 2, OUT 3 → Pan 3, OUT 4 → Pan 4. Patching all four outs disables all cascading — every channel is now fully independent."
+      ],
+      "signalOut": "OUT 1–4 — four independent voices, each shaped by its own envelope.",
+      "hear": "A real polyphonic voice card: four notes with independent amplitude shaping that you can pan, EQ, or send to different effects.",
+      "diagram": "Veils:\n* CH 1-4: Response CCW (expo), Offset CCW\n\n- VCO 1 (Out) -> Veils (IN 1)\n- VCO 2 (Out) -> Veils (IN 2)\n- VCO 3 (Out) -> Veils (IN 3)\n- VCO 4 (Out) -> Veils (IN 4)\n- Env 1 (Out) >> Veils (CV 1)\n- Env 2 (Out) >> Veils (CV 2)\n- Env 3 (Out) >> Veils (CV 3)\n- Env 4 (Out) >> Veils (CV 4)\n- Veils (OUT 1) -> Pan 1 (In)\n- Veils (OUT 2) -> Pan 2 (In)\n- Veils (OUT 3) -> Pan 3 (In)\n- Veils (OUT 4) -> Pan 4 (In)"
     },
     {
-      "name": "Complex LFO via summed CV",
-      "patch": "Slow sine into IN 1 · fast sine (audio rate) into IN 2 · triangle at medium rate into IN 3 · S&H steps into IN 4 · each attenuverted differently · MIX emits rich non-repeating modulation for filter FM",
-      "diagram": "Veils:\n* CH 1: Level ~unity · Response linear\n* CH 2: Level low · Response linear\n* CH 3: Level medium · Response linear\n* CH 4: Level low · Response linear\n\n- LFO Slow (Out) -> Veils (IN 1)\n- LFO Fast (Out) -> Veils (IN 2)\n- LFO Mid (Out) -> Veils (IN 3)\n- S&H (Out) -> Veils (IN 4)\n- Veils (OUT 4) >> Filter (Cutoff)"
+      "name": "Bipolar-to-unipolar LFO converter",
+      "patch": "Use Offset to turn a ±5 V LFO into a 0–10 V modulation (manual's textbook example).",
+      "steps": [
+        "Patch a bipolar LFO (e.g. ±5 V triangle) → CV 1.",
+        "Leave IN 1 unpatched — we are using channel 1 purely as a CV processor.",
+        "Wait — for processing, patch the LFO into IN 1 instead, and set CV 1 to a steady source (or leave it normalled to +8 V for max throughput).",
+        "Set CH 1 Response CW (linear) so the shape is preserved.",
+        "Turn CH 1 Offset CW until the negative half of the LFO is lifted above 0 V (the output LED will stop going red).",
+        "Use CH 1 Gain to scale the resulting unipolar modulation to the depth you want.",
+        "Patch OUT 1 → destination (e.g. filter cutoff)."
+      ],
+      "signalOut": "OUT 1 — unipolar (positive-only) version of the input LFO, scaled and offset.",
+      "hear": "A filter cutoff that sweeps only upward from its base setting, instead of dipping below it — exactly what the manual describes as the prototypical Offset use-case.",
+      "diagram": "Veils:\n* CH 1: Response CW (linear), Offset CW, Gain to taste\n\n- Bipolar LFO (Out) -> Veils (IN 1)\n- Veils (OUT 1) >> Filter (Cutoff)"
     },
     {
-      "name": "Audio-rate amplitude modulation",
-      "patch": "Carrier VCO into IN 1 · fast LFO or second VCO at audio rate patched into CV 1 with attenuverter at unity · Level near unity · OUT 1 delivers ring-mod-style AM sidebands",
-      "diagram": "Veils:\n* CH 1: Response CW (linear)\n\n- VCO Carrier (Out) -> Veils (IN 1)\n- VCO Mod (Out) >> Veils (CV 1) // audio-rate AM\n- Veils (OUT 1) -> Filter (In) -> Output (In)"
+      "name": "Audio-rate amplitude modulation (ring-mod-ish)",
+      "patch": "Carrier into IN 1, audio-rate modulator into CV 1 for AM sidebands.",
+      "steps": [
+        "Patch the carrier VCO → IN 1.",
+        "Patch a second VCO (or fast audio-rate LFO) → CV 1.",
+        "Set CH 1 Response CW (linear) so the modulator's waveform shape is preserved at audio rate.",
+        "Set CH 1 Offset around noon — too high and the carrier just plays through clean; too low and the VCA stays mostly closed.",
+        "Set CH 1 Gain to taste — start near unity.",
+        "Patch OUT 1 → filter / output and tune the modulator VCO to hear sidebands move."
+      ],
+      "signalOut": "OUT 1 — carrier multiplied by the modulator: AM-style sidebands and metallic, ring-mod-flavoured tones.",
+      "hear": "Hollow, bell-like, or clangy timbres that change with the modulator's pitch — sweep the modulator VCO up and down to hear the sidebands wander. Offset controls how much dry carrier bleeds through underneath the AM.",
+      "diagram": "Veils:\n* CH 1: Response CW (linear), Offset noon\n\n- VCO Carrier (Out) -> Veils (IN 1)\n- VCO Mod (Out) >> Veils (CV 1)\n- Veils (OUT 1) -> Filter (In) -> Output (In)"
     }
   ]
 }

@@ -2,120 +2,177 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
       "https://schlappiengineering.com/products/cascade",
+      "https://cdn.shopify.com/s/files/1/0549/4538/2479/files/cascade_only_quickstart_031926.pdf?v=1775539062",
+      "https://cdn.shopify.com/s/files/1/0549/4538/2479/files/eddy_only_quickstart_031926.pdf?v=1775539053",
       "https://modulargrid.net/e/schlappi-engineering-cascade",
-      "https://schlappiengineering.com/"
+      "https://www.ctrl-mod.com/products/schlappi-expander-cascade-eddy-expander"
     ]
   },
   "slug": "schlappi-engineering--cascade",
   "name": "Cascade",
   "manufacturer": "Schlappi Engineering",
   "hp": 4,
-  "tags": ["UTILITY", "SWITCH", "I/O", "MIXER"],
-  "description": "Passive expander for Eddy that exposes its stereo VCA or feedback-filter taps and its clean, compression and distortion bus outs for parallel routing.",
-  "controls": [],
+  "tags": ["UTILITY", "VCA", "I/O", "MIXER"],
+  "description": "Passive 4HP Eddy expander. SELECT swaps three stereo pairs between per-channel stereo VCA outs (CH) and post-distortion HIGH/MID/LOW bandpass taps (EQ). MIX, DISTORTION and COMPRESSOR bus pairs break out simultaneously.",
+  "controls": [
+    {
+      "name": "SELECT",
+      "scope": "Global",
+      "description": "Two-position switch that assigns the upper three stereo pairs (HIGH-ONE, MID-TWO, LOW-THREE) to either the individual stereo VCA channel outputs or the direct bandpass-filter taps of Eddy's feedback-filter network (post-distortion).",
+      "detail": "CH = triple stereo VCA · EQ = HIGH/MID/LOW filter taps"
+    }
+  ],
   "inputs": [],
   "outputs": [
     {
-      "name": "VCA/Filter 1 L",
-      "description": "Left side of Eddy channel 1's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "name": "HIGH - ONE L",
+      "description": "Left of the first stereo pair. CH mode: Eddy channel 1 stereo VCA output (left). EQ mode: left output of the HIGH bandpass tap (~2–3 kHz, post-distortion).",
       "voltage": "audio"
     },
     {
-      "name": "VCA/Filter 1 R",
-      "description": "Right side of Eddy channel 1's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "name": "HIGH - ONE R",
+      "description": "Right of the first stereo pair. CH mode: Eddy channel 1 stereo VCA output (right). EQ mode: right output of the HIGH bandpass tap.",
       "voltage": "audio"
     },
     {
-      "name": "VCA/Filter 2 L",
-      "description": "Left side of Eddy channel 2's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "name": "MID - TWO L",
+      "description": "Left of the middle stereo pair. CH mode: Eddy channel 2 stereo VCA output (left). EQ mode: left output of the MID bandpass tap.",
       "voltage": "audio"
     },
     {
-      "name": "VCA/Filter 2 R",
-      "description": "Right side of Eddy channel 2's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "name": "MID - TWO R",
+      "description": "Right of the middle stereo pair. CH mode: Eddy channel 2 stereo VCA output (right). EQ mode: right output of the MID bandpass tap.",
       "voltage": "audio"
     },
     {
-      "name": "VCA/Filter 3 L",
-      "description": "Left side of Eddy channel 3's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "name": "LOW - THREE L",
+      "description": "Left of the lower stereo pair. CH mode: Eddy channel 3 stereo VCA output (left). EQ mode: left output of the LOW bandpass tap (~70–80 Hz, post-distortion).",
       "voltage": "audio"
     },
     {
-      "name": "VCA/Filter 3 R",
-      "description": "Right side of Eddy channel 3's expander tap. Switches between the VCA output and the feedback-filter output.",
+      "name": "LOW - THREE R",
+      "description": "Right of the lower stereo pair. CH mode: Eddy channel 3 stereo VCA output (right). EQ mode: right output of the LOW bandpass tap.",
       "voltage": "audio"
     },
     {
-      "name": "Clean L",
-      "description": "Left channel of the clean bus output.",
+      "name": "MIX L",
+      "description": "Left of the clean mix bus — the sum of all three Eddy channels before distortion and compression.",
       "voltage": "audio"
     },
     {
-      "name": "Clean R",
-      "description": "Right channel of the clean bus output.",
+      "name": "MIX R",
+      "description": "Right of the clean mix bus.",
       "voltage": "audio"
     },
     {
-      "name": "Dist L",
-      "description": "Left channel of the distortion bus output.",
+      "name": "DISTORTION L",
+      "description": "Left of the distorted mix bus (same signal as Eddy's OUT L when OUT SELECT is DIST). Self-limits at ~12Vpp.",
+      "voltage": "audio · ~12Vpp max"
+    },
+    {
+      "name": "DISTORTION R",
+      "description": "Right of the distorted mix bus.",
+      "voltage": "audio · ~12Vpp max"
+    },
+    {
+      "name": "COMPRESSOR L",
+      "description": "Left of the compressed mix bus (same signal as Eddy's OUT L when OUT SELECT is COMP).",
       "voltage": "audio"
     },
     {
-      "name": "Dist R",
-      "description": "Right channel of the distortion bus output.",
-      "voltage": "audio"
-    },
-    {
-      "name": "Comp L",
-      "description": "Left channel of the compression bus output.",
-      "voltage": "audio"
-    },
-    {
-      "name": "Comp R",
-      "description": "Right channel of the compression bus output.",
+      "name": "COMPRESSOR R",
+      "description": "Right of the compressed mix bus.",
       "voltage": "audio"
     }
   ],
   "behaviors": [
     {
-      "name": "Triple stereo VCA access",
-      "trigger": "Cascade connected to Eddy",
-      "description": "The upper three stereo pairs expose the per-channel VCA outputs so Eddy can be broken out as three independent stereo VCAs."
+      "name": "Triple stereo VCA breakout",
+      "trigger": "SELECT = CH · Eddy channels patched",
+      "description": "HIGH-ONE / MID-TWO / LOW-THREE pairs expose each of Eddy's three stereo channels post-VCA. Eddy becomes three independent CV-controlled stereo VCAs with the bus outs still usable for group processing."
     },
     {
-      "name": "Feedback filter taps",
-      "trigger": "EQ/CH switch set to filter mode",
-      "description": "The same upper three pairs can instead expose the feedback filter taps, letting the Eddy signal path be split for parallel processing."
+      "name": "HIGH/MID/LOW filter-tap breakout",
+      "trigger": "SELECT = EQ",
+      "description": "The same three pairs switch to the direct outputs of Eddy's three feedback bandpass filters (post-distortion). HIGH is centered around 2–3 kHz, LOW around 70–80 Hz, MID between them. Tuned for feedback tone-shaping, not textbook EQ — there is no clean tap, only distorted-then-filtered signal."
     },
     {
-      "name": "Bus output splitting",
+      "name": "Simultaneous three-bus breakout",
       "trigger": "Cascade connected to Eddy",
-      "description": "The lower three stereo pairs provide simultaneous clean, distortion and compression bus outs so the same performance can be sent to multiple destinations."
+      "description": "MIX, DISTORTION and COMPRESSOR stereo pairs are always live regardless of SELECT position and independent of Eddy's OUT SELECT switch. Lets a patch send clean, dirty and compressed versions to separate destinations at the same time."
     },
     {
       "name": "Passive expansion",
-      "trigger": "used with Eddy",
-      "description": "Cascade is passive and does not increase current draw. It only reveals paths already present inside Eddy."
+      "trigger": "connect ribbon to Eddy",
+      "description": "Cascade has no active circuitry, draws no current, and does nothing on its own. It only surfaces signals already present inside Eddy via the expander header."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Parallel stem split",
-      "patch": "Use the clean bus for the main mix, the distortion bus for grit, and the compression bus for side processing while the upper pairs feed individual effect chains.",
-      "diagram": "Cascade:\nFilter:\nDelay:\nCompressor:\nMixer:\nOutput:\n\n- Cascade (Clean L) -> Mixer (In 1)\n- Cascade (Dist L) -> Distortion (In)\n- Cascade (Comp L) -> Compressor (In)\n- Cascade (VCA/Filter 1 L) -> Filter (In)\n- Cascade (VCA/Filter 2 L) -> Delay (In)\n- Cascade (VCA/Filter 3 L) -> Output (In)"
+      "name": "Triple stereo VCA mixer",
+      "patch": "Use Cascade in CH mode to break Eddy out as three CV-controlled stereo VCAs feeding three separate effect chains while MIX stays as a fallback sum.",
+      "steps": [
+        "Attach Cascade's ribbon to Eddy's expander header.",
+        "Set Cascade SELECT to CH.",
+        "Patch stereo sources into Eddy IN 1 L/R, IN 2 L/R, IN 3 L/R.",
+        "Set Eddy's three input switches to up (on) and the level knobs near noon.",
+        "Patch envelopes or LFOs into Eddy CV IN 1, CV IN 2, CV IN 3 to animate each channel's gain.",
+        "Take HIGH-ONE L/R to effect chain A, MID-TWO L/R to chain B, LOW-THREE L/R to chain C.",
+        "Leave Eddy's OUT SELECT on MIX as a safety sum if you need to drop back to the stereo bus."
+      ],
+      "signalOut": "HIGH-ONE, MID-TWO, LOW-THREE stereo pairs carry Eddy ch1/2/3 post-VCA. Eddy's own OUT L/R still carries the selected bus.",
+      "hear": "Three independent stereo lanes responding to their own envelopes — effectively turning Eddy into a compact three-track stereo VCA mixer.",
+      "diagram": "Cascade:\n* SELECT: CH\n\nEddy:\n* Channel 1 switch: on\n* Channel 2 switch: on\n* Channel 3 switch: on\n* OUT SELECT: MIX\n\nSrc A:\nSrc B:\nSrc C:\nEnv A:\nEnv B:\nEnv C:\nFX A:\nFX B:\nFX C:\n\n- Src A (Out L) -> Eddy (IN 1 L)\n- Src A (Out R) -> Eddy (IN 1 R)\n- Src B (Out L) -> Eddy (IN 2 L)\n- Src B (Out R) -> Eddy (IN 2 R)\n- Src C (Out L) -> Eddy (IN 3 L)\n- Src C (Out R) -> Eddy (IN 3 R)\n- Env A (Out) >> Eddy (CV In 1)\n- Env B (Out) >> Eddy (CV In 2)\n- Env C (Out) >> Eddy (CV In 3)\n- Cascade (HIGH - ONE L) -> FX A (In L)\n- Cascade (HIGH - ONE R) -> FX A (In R)\n- Cascade (MID - TWO L) -> FX B (In L)\n- Cascade (MID - TWO R) -> FX B (In R)\n- Cascade (LOW - THREE L) -> FX C (In L)\n- Cascade (LOW - THREE R) -> FX C (In R)"
     },
     {
-      "name": "Triple stereo VCA lane",
-      "patch": "Treat the upper three stereo pairs as three separate VCAs and fan them into a three-way stereo processing chain.",
-      "diagram": "Cascade:\nFilter:\nReverb:\nDelay:\nOutput:\n\n- Cascade (VCA/Filter 1 L) -> Filter (In L)\n- Cascade (VCA/Filter 1 R) -> Filter (In R)\n- Cascade (VCA/Filter 2 L) -> Reverb (In L)\n- Cascade (VCA/Filter 2 R) -> Reverb (In R)\n- Cascade (VCA/Filter 3 L) -> Delay (In L)\n- Cascade (VCA/Filter 3 R) -> Delay (In R)\n- Filter (Out) -> Output (In)"
+      "name": "3-band distorted filter bank",
+      "patch": "Flip SELECT to EQ to grab the post-distortion HIGH/MID/LOW bandpass taps as three parallel band-split outs — a ready-made multiband distortion splitter.",
+      "steps": [
+        "Set Cascade SELECT to EQ.",
+        "Patch a full-range stereo source (drum loop or pad) into Eddy IN 1 L/R.",
+        "Raise Eddy channel 1 level into distortion territory (past noon) so the DIST bus is audibly driven — the filter taps sit after distortion.",
+        "Listen at Cascade HIGH-ONE, MID-TWO and LOW-THREE pairs: high-band around 2–3 kHz, low-band around 70–80 Hz, mid in between.",
+        "Route each band through its own processor (e.g. HIGH into a shimmer reverb, MID into a delay, LOW into a saturator/sub).",
+        "Sum the three bands back in an external mixer to taste; remember there is no clean band — every tap is distorted first."
+      ],
+      "signalOut": "HIGH-ONE / MID-TWO / LOW-THREE = three stereo bandpass taps of the distorted signal. MIX L/R still carries the clean pre-distortion sum if you want a dry parallel send.",
+      "hear": "The source torn into three distorted bands that you can process independently — great for aggressive multiband FX that a single Eddy DIST out can't give you.",
+      "diagram": "Cascade:\n* SELECT: EQ\n\nEddy:\n* Channel 1 level: past noon (drive DIST)\n* Channel 1 switch: on\n* OUT SELECT: MIX\n\nSrc:\nShimmer:\nDelay:\nSub:\nMixer:\n\n- Src (Out L) -> Eddy (IN 1 L)\n- Src (Out R) -> Eddy (IN 1 R)\n- Cascade (HIGH - ONE L) -> Shimmer (In L)\n- Cascade (HIGH - ONE R) -> Shimmer (In R)\n- Cascade (MID - TWO L) -> Delay (In L)\n- Cascade (MID - TWO R) -> Delay (In R)\n- Cascade (LOW - THREE L) -> Sub (In L)\n- Cascade (LOW - THREE R) -> Sub (In R)\n- Shimmer (Out L) -> Mixer (In 1 L)\n- Shimmer (Out R) -> Mixer (In 1 R)\n- Delay (Out L) -> Mixer (In 2 L)\n- Delay (Out R) -> Mixer (In 2 R)\n- Sub (Out L) -> Mixer (In 3 L)\n- Sub (Out R) -> Mixer (In 3 R)"
     },
     {
-      "name": "Feedback filter parallelism",
-      "patch": "Flip the upper section to feedback-filter mode and send the three taps to different processors while the bus outputs keep the mix intact.",
-      "diagram": "Cascade:\nFilter:\nPhaser:\nOutput:\n\n- Cascade (VCA/Filter 1 L) -> Filter (In)\n- Cascade (VCA/Filter 2 L) -> Phaser (In)\n- Cascade (VCA/Filter 3 L) -> Output (In L)\n- Cascade (Clean R) -> Output (In R)"
+      "name": "Parallel clean / dirty / compressed stems",
+      "patch": "Ignore the SELECT switch and use the lower three stereo pairs to send clean, distorted and compressed versions of the same mix to three destinations at once.",
+      "steps": [
+        "Patch stereo sources into Eddy IN 1–3 and set the input switches to on.",
+        "Set Eddy's level knobs so DIST has obvious grit and COMP is catching the loud parts (watch the PEAK meter).",
+        "Patch Cascade MIX L/R to your main stereo output (the clean reference).",
+        "Patch Cascade DISTORTION L/R to a parallel crusher/send-return for a harder layer.",
+        "Patch Cascade COMPRESSOR L/R to a third destination (e.g. a reverb send, or a second output for mastering choice).",
+        "Blend the three stems at your external mixer — Cascade gives you all three simultaneously, no need to touch Eddy's OUT SELECT."
+      ],
+      "signalOut": "MIX L/R = clean sum · DISTORTION L/R = Eddy's DIST bus · COMPRESSOR L/R = Eddy's COMP bus. All three live at once.",
+      "hear": "The same performance delivered clean, distorted and compressed in parallel — mix them back together externally for layered loudness and grit without re-patching Eddy.",
+      "diagram": "Cascade:\n* SELECT: CH (not used by this patch)\n\nEddy:\n* Channel 1/2/3 switches: on\n* OUT SELECT: MIX (unused — Cascade bypasses it)\n* Sidechain: IN4\n\nSrc 1:\nSrc 2:\nSrc 3:\nMain Out:\nCrusher:\nReverb:\n\n- Src 1 (Out L) -> Eddy (IN 1 L)\n- Src 1 (Out R) -> Eddy (IN 1 R)\n- Src 2 (Out L) -> Eddy (IN 2 L)\n- Src 2 (Out R) -> Eddy (IN 2 R)\n- Src 3 (Out L) -> Eddy (IN 3 L)\n- Src 3 (Out R) -> Eddy (IN 3 R)\n- Cascade (MIX L) -> Main Out (L)\n- Cascade (MIX R) -> Main Out (R)\n- Cascade (DISTORTION L) -> Crusher (In L)\n- Cascade (DISTORTION R) -> Crusher (In R)\n- Cascade (COMPRESSOR L) -> Reverb (In L)\n- Cascade (COMPRESSOR R) -> Reverb (In R)"
+    },
+    {
+      "name": "Per-channel sidechain ducking with VCA break-out",
+      "patch": "Use Cascade CH taps as post-VCA sends to effects, while Eddy's sidechain ducks the COMPRESSOR bus — get wet ducking and dry per-channel sends at the same time.",
+      "steps": [
+        "Set Cascade SELECT to CH.",
+        "Patch pad into Eddy IN 1 L/R, bass into IN 2 L/R, perc into IN 3 L/R.",
+        "Set Eddy's SIDECHAIN switch to SCHAIN.",
+        "Patch a kick into Eddy IN 4 / Sidechain — compression on the COMP bus now ducks to the kick.",
+        "Take Cascade HIGH-ONE L/R (pad post-VCA) to a long reverb.",
+        "Take Cascade MID-TWO L/R (bass post-VCA) to a saturator.",
+        "Take Cascade COMPRESSOR L/R to the main output — that's the kick-pumped mix.",
+        "Also take Cascade DISTORTION L/R to a parallel crush bus if you want a louder thump layer."
+      ],
+      "signalOut": "COMPRESSOR L/R = sidechained pumping mix · HIGH-ONE / MID-TWO = dry post-VCA per-channel sends · DISTORTION L/R = parallel dirty layer.",
+      "hear": "A kick-driven pumping main with clean per-voice FX sends — the ducking lives only on the COMP bus, so your reverb and saturation don't breathe with it unless you want them to.",
+      "diagram": "Cascade:\n* SELECT: CH\n\nEddy:\n* Channel 1/2/3 switches: on\n* Sidechain: SCHAIN\n* OUT SELECT: COMP\n\nPad:\nBass:\nPerc:\nKick:\nReverb:\nSat:\nMain Out:\n\n- Pad (Out L) -> Eddy (IN 1 L)\n- Pad (Out R) -> Eddy (IN 1 R)\n- Bass (Out L) -> Eddy (IN 2 L)\n- Bass (Out R) -> Eddy (IN 2 R)\n- Perc (Out L) -> Eddy (IN 3 L)\n- Perc (Out R) -> Eddy (IN 3 R)\n- Kick (Out) -> Eddy (IN 4 / Sidechain)\n- Cascade (HIGH - ONE L) -> Reverb (In L)\n- Cascade (HIGH - ONE R) -> Reverb (In R)\n- Cascade (MID - TWO L) -> Sat (In L)\n- Cascade (MID - TWO R) -> Sat (In R)\n- Cascade (COMPRESSOR L) -> Main Out (L)\n- Cascade (COMPRESSOR R) -> Main Out (R)"
     }
   ]
 }

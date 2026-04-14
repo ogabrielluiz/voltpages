@@ -2,11 +2,12 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
-      "https://www.modulaire-maritime.com/modules",
+      "https://www.modulaire-maritime.com/single-post/phosg%C3%A8ne",
       "https://www.modulargrid.net/e/modulaire-maritime-phosgene",
-      "https://www.modulaire-maritime.com/product-page/phosg%C3%A8ne"
+      "https://www.perfectcircuit.com/modulaire-maritime-phosg-ne.html",
+      "https://synthanatomy.com/2026/01/modulaire-maritime-phosgene-a-wavetable-fm-oscillator-for-industrial-digital-tones.html"
     ]
   },
   "slug": "modulaire-maritime--phosgene",
@@ -14,114 +15,138 @@
   "manufacturer": "Modulaire Maritime",
   "hp": 2,
   "tags": ["OSCILLATOR", "WAVESHAPER"],
-  "description": "2HP digital wavetable/FM oscillator. Two banks of 30 wavetables run in parallel with separate outputs, 100Hz FM base, V/Oct tracking, octave and octave-displace switching, and stored bank/wave/octave settings.",
+  "description": "2HP digital oscillator pairing an 11-bit wavefolded wavetable engine (2 banks of 30 waves) with a 100Hz-base FM engine. Coarse/Fold/Mod knobs feed separate Wave Out and FM Out. Tracks 1V/Oct over 8 octaves with octave and octave-displace (wavetables only) switches.",
   "controls": [
     {
-      "name": "Bank",
+      "name": "Coarse",
       "scope": "Global",
-      "description": "Selects between the two wavetable banks.",
-      "detail": "2 banks of 30 waves"
+      "description": "Main frequency control for both engines. Sets wavetable pitch and the FM carrier (sine) frequency.",
+      "detail": "shared with FM carrier"
     },
     {
-      "name": "Wave",
-      "scope": "Global",
-      "description": "Chooses the wavetable within the selected bank.",
-      "detail": "30 waves per bank"
-    },
-    {
-      "name": "Octave",
-      "scope": "Global",
-      "description": "Sets the oscillator octave.",
-      "detail": "tracks across 8 octaves"
-    },
-    {
-      "name": "Octave Displace",
+      "name": "Fold",
       "scope": "Wavetable path",
-      "description": "Shifts wavetable playback down the octave scale without affecting the FM path.",
+      "description": "Wavefolding amount applied to the selected wavetable. Drives the Wave Out from mellow shapes into industrial digital textures.",
+      "detail": "CV over Fold"
+    },
+    {
+      "name": "Mod",
+      "scope": "FM path",
+      "description": "Modulation depth for the FM engine. Pushes/pulls the amplitude of the modulator against the 100Hz base to reach the FM Out timbre.",
+      "detail": "CV over Mod"
+    },
+    {
+      "name": "Wave Select (button)",
+      "scope": "Global",
+      "description": "Short press steps to the next wavetable in the current bank. Long press switches bank (Bank 1 / Bank 2).",
+      "detail": "30 waves per bank, 2 banks"
+    },
+    {
+      "name": "Octave (button)",
+      "scope": "Global",
+      "description": "Short press steps the oscillator octave up (cycling). Long press steps down. Three octave positions around the tracked range.",
+      "detail": "tracks across 8 octaves V/Oct"
+    },
+    {
+      "name": "Octave Displace (switch)",
+      "scope": "Wavetable path",
+      "description": "Shifts wavetable playback about one octave further down the scale. FM path keeps its full range.",
       "detail": "wavetables only"
     }
   ],
   "inputs": [
     {
       "name": "V/Oct",
-      "description": "Pitch input for the oscillator.",
+      "description": "Pitch input for both engines.",
       "voltage": "1V/oct"
     },
     {
-      "name": "Bank CV",
-      "description": "External modulation of the wavetable bank.",
+      "name": "Fold CV",
+      "description": "CV over the Fold knob. Modulates wavefolding amount on the wavetable path.",
       "voltage": "CV"
     },
     {
-      "name": "Wave CV",
-      "description": "External modulation of the wavetable selection.",
-      "voltage": "CV"
-    },
-    {
-      "name": "FM CV",
-      "description": "External modulation of the FM path.",
+      "name": "Mod CV",
+      "description": "CV over the Mod knob. Modulates FM depth on the FM path.",
       "voltage": "CV"
     }
   ],
   "outputs": [
     {
-      "name": "WT OUT",
-      "description": "Wavetable output path.",
+      "name": "Wave Out",
+      "description": "Folded wavetable output. Fed by Coarse pitch, Fold amount and the selected bank/wave.",
       "voltage": "audio"
     },
     {
-      "name": "FM OUT",
-      "description": "Frequency-modulation output path.",
+      "name": "FM Out",
+      "description": "FM engine output. Sine carrier modulated against a 100Hz base, scaled by Mod.",
       "voltage": "audio"
     }
   ],
   "behaviors": [
     {
-      "name": "Parallel oscillator paths",
+      "name": "Parallel wavetable and FM paths",
       "trigger": "use both outputs",
-      "description": "Phosgène exposes wavetable and FM in parallel. That makes it easy to split a patch into a harmonically stable path and a harsher FM path without needing a second oscillator."
+      "description": "The wavetable/fold engine and the FM engine share Coarse and pitch but run in parallel to their own jacks. One knob set drives two different voices, so Phosgène often replaces two oscillators in a small case."
     },
     {
       "name": "100Hz FM base",
-      "trigger": "FM CV active",
-      "description": "The FM path uses a 100Hz base. The result is a darker, more controlled modulation spectrum that stays useful for basses and low, metallic sidebands."
+      "trigger": "FM Out in use",
+      "description": "FM is built around a 100Hz carrier base instead of tracking a normal audio-rate sine. The result is a darker, more sober spectrum that sits well for tight FM basses and deep, controlled modulations rather than bright classic FM bells."
     },
     {
-      "name": "Octave displace",
+      "name": "Wavefolding as the main timbre control",
+      "trigger": "turn Fold / patch Fold CV",
+      "description": "Fold is the primary voicing control for Wave Out. Low Fold gives clean wavetable tones; higher Fold pushes into the brand's 'industrial poison' character, and Fold CV lets an envelope or LFO open the voice dynamically."
+    },
+    {
+      "name": "Octave displace (wavetables only)",
       "trigger": "Octave Displace switch",
-      "description": "The octave-displace function only applies to the wavetable path. FM keeps the full range, so the same pitch gesture can drive low folded tables while leaving FM wide open."
+      "description": "The displace switch drops only the wavetable path about an octave further down. FM Out stays where it is, so the same V/Oct can drive a sub-like folded layer while FM holds a mid-range voice."
     },
     {
       "name": "Stored startup state",
       "trigger": "power cycle",
-      "description": "The module recalls the last bank, wave and octave settings after reboot. That makes it behave like a preset oscillator even though it is still a hands-on 2HP voice."
+      "description": "The module recalls the last bank, wave and octave settings after reboot. It boots ready-to-play, which matters in a 2HP tile where you cannot see a preset page."
     },
     {
-      "name": "High-octave alias texture",
-      "trigger": "octave high with noisy tables",
-      "description": "The 11-bit wavetable engine and high octave range can produce deliberate digital trash at the top end. That makes it suitable for brittle leads, percussion and noisy texture."
+      "name": "11-bit aliasing at the top end",
+      "trigger": "high octave + noisy tables",
+      "description": "The 11-bit wavetable engine plus high octave positions deliberately produces digital trash and aliasing. Useful for brittle leads, metallic percussion and noisy texture rather than polite sine-like tones."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Parallel voice split",
-      "patch": "WT OUT to a filter and FM OUT to a second voice or distortion path · one oscillator becomes both the clean source and the aggressive source at once.",
-      "diagram": "Phosgène:\n* Bank: 1\n* Wave: mid\n* Octave: 0\n* Octave Displace: off\n\nFilter:\nDistortion:\nMixer:\n\n- Phosgène (WT OUT) -> Filter (In)\n- Phosgène (FM OUT) -> Distortion (In)\n- Filter (Out) -> Mixer (In 1)\n- Distortion (Out) -> Mixer (In 2)"
+      "name": "Parallel voice split (one module, two voices)",
+      "patch": "Treat Wave Out and FM Out as two oscillators sharing pitch. Send Wave Out into a filter for a classic folded lead and FM Out into a distortion or another filter for a darker parallel voice, then mix them. One V/Oct drives both, so melodies stay locked.",
+      "walkthrough": "1. Patch a sequencer or keyboard to Phosgène V/Oct. 2. Set Coarse to a comfortable pitch, Fold around 10 o'clock, Mod around 12 o'clock, Octave Displace off. 3. Wave Out -> Filter In -> Mixer A. 4. FM Out -> Distortion In -> Mixer B. 5. Play the sequence and balance the two channels on the mixer: Fold shapes the bright layer, Mod shapes the dark layer.",
+      "signalOut": "Mixer main out (stereo or mono).",
+      "hear": "A single note becomes a stacked voice: a folded wavetable lead riding on top of a darker FM body, both perfectly in tune because they share Coarse and V/Oct.",
+      "diagram": "Phosgène:\n* Coarse: mid\n* Fold: ~10 o'clock\n* Mod: ~12 o'clock\n* Wave Select: Bank 1, mid wave\n* Octave: 0\n* Octave Displace: off\n\nSequencer:\nFilter:\nDistortion:\nMixer:\n\n- Sequencer (Pitch) p> Phosgène (V/Oct)\n- Phosgène (Wave Out) -> Filter (In)\n- Phosgène (FM Out) -> Distortion (In)\n- Filter (Out) -> Mixer (In 1)\n- Distortion (Out) -> Mixer (In 2)"
     },
     {
-      "name": "Dark FM bass",
-      "patch": "FM CV pushed from a sequencer or envelope · 100Hz FM base keeps the modulation under control · WT OUT can stay low while FM OUT carries the bite.",
-      "diagram": "Phosgène:\n* Bank: 1\n* Wave: bass\n* Octave: -1\n* Octave Displace: off\n\nEnvelope:\nVCA:\nOutput:\n\n- Sequencer (Pitch) p> Phosgène (V/Oct)\n- Envelope (Out) >> Phosgène (FM CV)\n- Phosgène (FM OUT) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
+      "name": "Dark FM bass from FM Out",
+      "patch": "Lean on the 100Hz FM base for a tight bass. An envelope drives Mod CV so the FM depth opens on each note, while Wave Out is ignored (or used later as a harmonic layer).",
+      "walkthrough": "1. Sequencer -> Phosgène V/Oct, low octave. 2. Coarse sets bass pitch; start Mod at ~9 o'clock. 3. Envelope (short, punchy) -> Mod CV so each gate pushes FM depth up. 4. FM Out -> VCA In. 5. Same envelope (or a copy) -> VCA CV so the note is also amplitude-shaped. 6. VCA Out -> output. Tune Mod knob and envelope amount until the attack has bite but the sustain stays clean.",
+      "signalOut": "VCA out to mixer / monitors.",
+      "hear": "A tight, slightly metallic bass with a dark attack transient from the FM sweep. The 100Hz base keeps it focused instead of going into classic bright FM territory.",
+      "diagram": "Phosgène:\n* Coarse: low\n* Fold: unused\n* Mod: ~9 o'clock (env will add more)\n* Octave: -1\n* Octave Displace: off\n\nSequencer:\nEnvelope:\nVCA:\nOutput:\n\n- Sequencer (Pitch) p> Phosgène (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Phosgène (Mod CV)\n- Phosgène (FM Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
-      "name": "Low drone with displaced tables",
-      "patch": "Octave Displace on · a slowly moving wavetable bank feeds the main output · keep FM low or unused for a stable low drone with bright aliasing edges when you open the octave switch.",
-      "diagram": "Phosgène:\n* Bank: 2\n* Wave: 12\n* Octave: -2\n* Octave Displace: on\n\nFilter:\nOutput:\n\n- Phosgène (WT OUT) -> Filter (In)\n- Phosgène (FM OUT) -> Output (Spare)\n- Filter (Out) -> Output (In)"
+      "name": "Drone with displaced sub and folded top",
+      "patch": "Use Octave Displace so Wave Out sits an octave lower than FM Out. A slow LFO into Fold CV moves the wavetable texture while FM Out holds a mid drone. Both paths mix into a filter.",
+      "walkthrough": "1. No sequencer: just tune Coarse to a drone pitch. 2. Flip Octave Displace ON - Wave Out drops about an octave, FM Out stays. 3. Slow LFO (~20s cycle) -> Fold CV so the wavetable shape breathes. 4. Long-press Wave Select to pick Bank 2, then short-press to land on a wave with motion. 5. Wave Out -> Mixer In 1, FM Out -> Mixer In 2. 6. Mixer Out -> Filter In -> Output. Open the filter until the folded highs appear, then back off.",
+      "signalOut": "Filter out to monitors.",
+      "hear": "A sustained drone with a low folded sub layer slowly morphing under a stable FM mid. Moves on its own for minutes without touching anything.",
+      "diagram": "Phosgène:\n* Coarse: drone pitch\n* Fold: ~11 o'clock (LFO will move it)\n* Mod: ~10 o'clock\n* Wave Select: Bank 2, motion wave\n* Octave: 0\n* Octave Displace: on\n\nLFO (slow):\nMixer:\nFilter:\nOutput:\n\n- LFO (Out) >> Phosgène (Fold CV)\n- Phosgène (Wave Out) -> Mixer (In 1)\n- Phosgène (FM Out) -> Mixer (In 2)\n- Mixer (Out) -> Filter (In)\n- Filter (Out) -> Output (In)"
     },
     {
-      "name": "Glitch percussion voice",
-      "patch": "Fast pitch steps into V/Oct · rapid wave changes on the wavetable CV input · the top end folds into brittle digital percussion while FM adds an independent metallic accent.",
-      "diagram": "Phosgène:\n* Bank: 1\n* Wave: 7\n* Octave: 1\n* Octave Displace: off\n\nClock:\nVCA:\nOutput:\n\n- Clock (Out) c> Sequencer (Clock)\n- Sequencer (Pitch) p> Phosgène (V/Oct)\n- Sequencer (CV) >> Phosgène (Wave CV)\n- Phosgène (WT OUT) -> VCA (In)\n- Clock (Out) t> VCA (CV)\n- VCA (Out) -> Output (In)"
+      "name": "Glitch percussion from Wave Out",
+      "patch": "Push the octave high and slam Fold CV with a fast envelope. Wave Out becomes a brittle digital percussion voice; FM Out can run alongside as a metallic accent.",
+      "walkthrough": "1. Clock -> trigger source for a short, snappy envelope. 2. Envelope -> Fold CV (large amount) so each trigger snaps the folder wide open. 3. Tap the Octave button so Phosgène sits in its highest position; pick a noisy wave. 4. Wave Out -> VCA In. 5. Same envelope -> VCA CV so you get a short percussive gate. 6. VCA Out -> output. For a second layer, send FM Out -> separate VCA with a slightly different envelope for a metallic ping.",
+      "signalOut": "VCA out(s) to mixer.",
+      "hear": "Short, bright, broken-glass hits at the top end of the module's digital range - usable as hi-hats, glitch blips or metallic percussion in a tight 2HP footprint.",
+      "diagram": "Phosgène:\n* Coarse: mid\n* Fold: low (env will open it)\n* Mod: ~10 o'clock\n* Wave Select: Bank 1, noisy wave\n* Octave: high\n* Octave Displace: off\n\nClock:\nEnvelope:\nVCA:\nOutput:\n\n- Clock (Out) t> Envelope (Trig)\n- Envelope (Out) >> Phosgène (Fold CV)\n- Phosgène (Wave Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     }
   ]
 }

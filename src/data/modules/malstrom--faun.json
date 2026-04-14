@@ -2,92 +2,93 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
       "https://www.malstromaudio.com/",
       "https://modulargrid.net/e/malstrom-faun",
-      "https://www.malstromaudio.com/faun"
+      "https://modwiggler.com/forum/viewtopic.php?t=298973",
+      "https://schneidersladen.de/en/malstrom"
     ]
   },
   "slug": "malstrom--faun",
   "name": "Faun",
   "manufacturer": "Malstrom",
   "hp": 8,
-  "tags": ["FILTER", "VCF", "DISTORTION", "EFFECTS"],
-  "description": "Variable-character filter with continuous slopes across four response types. Adds timbre ripple, dual inputs, V/oct and FM control, and enough gain to move from clean sweeps into saturated grit.",
+  "tags": ["FILTER", "VCF", "EFFECTS"],
+  "description": "Variable-character multimode filter with continuously variable slopes across lowpass, bandpass, notch, and highpass. A Timbre circuit adds passband ripple for vocal or liquid colour, plus two inputs, V/Oct, and attenuverted FM.",
   "controls": [
     {
+      "name": "Cutoff",
+      "scope": "Filter frequency",
+      "description": "Sets the cutoff frequency for all four simultaneous outputs.",
+      "detail": "main frequency knob"
+    },
+    {
       "name": "Slope",
-      "scope": "Global response",
-      "description": "Sets the curve of the filter across the four response types.",
-      "detail": "continuous morph"
+      "scope": "Response curve",
+      "description": "Continuously varies the slope of each output, sweeping lowpass and highpass from -6 dB to -24 dB and tilting the bandpass and notch shapes.",
+      "detail": "continuous slope morph"
     },
     {
       "name": "Timbre",
       "scope": "Passband ripple",
-      "description": "Adds ripple inside the passband and lifts the internal gain as it rises.",
-      "detail": "increases saturation with depth"
+      "description": "Introduces ripple in the passband (like adding a comb filter) without changing filter type or slope.",
+      "detail": "smooth to vocal / liquid"
     },
     {
-      "name": "Input Gain",
+      "name": "Input 2 Gain",
       "scope": "Variable input",
-      "description": "Sets the drive on the variable-gain input path.",
-      "detail": "up to 4x gain"
+      "description": "Sets the level of the variable-gain input, from attenuation up to 4x gain for feedback patches and drive.",
+      "detail": "up to 4x"
     },
     {
-      "name": "V/Oct",
-      "scope": "Pitch tracking",
-      "description": "Tracks cutoff for pitched sweeps and resonant lines.",
-      "detail": "1V/oct"
-    },
-    {
-      "name": "FM",
-      "scope": "Frequency modulation",
-      "description": "Adds FM to the cutoff with attenuation and polarity control.",
-      "detail": "attenuverter"
+      "name": "FM Attenuverter",
+      "scope": "FM CV",
+      "description": "Scales and inverts the FM CV applied to cutoff.",
+      "detail": "bipolar"
     }
   ],
   "inputs": [
     {
       "name": "Audio In 1",
-      "description": "Unity-gain input optimized for signals up to +-5V.",
-      "voltage": "audio / CV"
+      "description": "Unity-gain audio input.",
+      "voltage": "audio"
     },
     {
       "name": "Audio In 2",
-      "description": "Variable-gain input with attenuator for feedback patching or extra drive.",
-      "voltage": "audio / CV"
+      "description": "Variable-gain audio input with up to 4x gain, useful for feedback patching and extra drive.",
+      "voltage": "audio"
     },
     {
-      "name": "V/Oct CV",
-      "description": "Pitch tracking input for cutoff sweeps and oscillator-style use.",
+      "name": "V/Oct",
+      "description": "Pitch-tracking input for the cutoff frequency.",
       "voltage": "1V/oct"
     },
     {
-      "name": "FM CV",
-      "description": "Frequency modulation with attenuverter.",
+      "name": "FM",
+      "description": "Frequency modulation input for the cutoff, scaled by the attenuverter.",
       "voltage": "CV"
     }
   ],
   "outputs": [
     {
       "name": "Lowpass",
-      "description": "Lowpass output.",
-      "voltage": "audio"
-    },
-    {
-      "name": "Highpass",
-      "description": "Highpass output.",
+      "description": "Lowpass output, slope continuously variable from -6 dB to -24 dB.",
       "voltage": "audio"
     },
     {
       "name": "Bandpass",
-      "description": "Bandpass output.",
+      "description": "Bandpass output whose shape tilts between -18 dB LP / -6 dB HP and -6 dB LP / -18 dB HP flanks.",
       "voltage": "audio"
     },
     {
       "name": "Notch",
-      "description": "Notch output.",
+      "description": "Notch output whose shape tilts between -18 dB LP with notch and -18 dB HP with notch.",
+      "voltage": "audio"
+    },
+    {
+      "name": "Highpass",
+      "description": "Highpass output, slope continuously variable from -6 dB to -24 dB.",
       "voltage": "audio"
     }
   ],
@@ -95,49 +96,82 @@
     {
       "name": "Continuous slope morph",
       "trigger": "Slope control",
-      "description": "A single control moves the filter smoothly across the four response types instead of switching hard between modes."
+      "description": "One knob smoothly varies the curve of every output, so lowpass goes from gentle -6 dB tilt to aggressive -24 dB, and bandpass / notch shift their tilt balance rather than hard-switching modes."
     },
     {
       "name": "Passband ripple",
       "trigger": "Timbre control",
-      "description": "Timbre introduces comb-like ripple in the passband and changes the tone from smooth to vocal or liquid."
+      "description": "Timbre introduces comb-like ripple inside the passband without changing filter type or slope, moving the tone from clean to vocal, liquid, or formant-like."
     },
     {
-      "name": "Gain staging",
+      "name": "Variable input gain",
       "trigger": "Audio In 2",
-      "description": "The variable-gain input allows feedback and drive, letting the module shift from clean filter into saturated coloration."
+      "description": "Input 2 provides up to 4x gain, so feeding the same source into In 1 and In 2 (or cross-patching an output back) can push the filter into louder, more coloured territory."
     },
     {
       "name": "Pitch tracking",
       "trigger": "V/Oct input",
-      "description": "The filter can be played like a pitched resonant source when cutoff tracks 1V/oct."
+      "description": "Cutoff tracks 1V/oct, so with high resonance or strong ripple the filter can be played as a pitched voice."
     },
     {
-      "name": "Cutoff FM",
+      "name": "Attenuverted FM",
       "trigger": "FM input",
-      "description": "Frequency modulation adds motion without changing the base slope setting."
+      "description": "The FM input passes through an attenuverter, so the same modulation source can sweep the cutoff up, down, or be dialled out entirely."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Clean sweep",
-      "patch": "Feed a saw into the unity input · keep Timbre low · sweep Slope slowly from lowpass to notch · the module stays precise while the curve changes under your hand.",
-      "diagram": "Faun:\n* Slope: 9 o'clock\n* Timbre: low\n* Input Gain: unity\n\nVCO:\nOutput:\n\n- VCO (Saw) -> Faun (Audio In 1)\n- Faun (Lowpass) -> Output (L)\n- Faun (Highpass) -> Output (R)"
+      "name": "Buttery sweep",
+      "patch": "Patch a saw VCO into Audio In 1 at unity, keep Timbre low, and sweep Slope slowly from gentle lowpass toward steep lowpass while an envelope opens Cutoff. The filter stays clean and precise while the curve changes under your hand.",
+      "steps": [
+        "Patch VCO Saw out to Faun Audio In 1.",
+        "Patch an Envelope to Faun FM and set the attenuverter to about 2 o'clock (positive).",
+        "Start with Slope fully counter-clockwise and Timbre fully counter-clockwise.",
+        "Trigger the envelope, then slowly turn Slope clockwise while listening to the Lowpass output."
+      ],
+      "signalOut": "Lowpass output: a saw that gets progressively darker as the envelope falls, with a smoothly steepening slope.",
+      "hear": "A soft, buttery downward sweep that tightens into a more focused lowpass the further right you turn Slope.",
+      "diagram": "Faun:\n* Cutoff: noon\n* Slope: counter-clockwise to noon\n* Timbre: fully counter-clockwise\n* FM atv: 2 o'clock\n* Input 2 Gain: off\n\nVCO:\nEnvelope:\nOutput:\n\n- VCO (Saw) -> Faun (Audio In 1)\n- Envelope (Out) >> Faun (FM)\n- Faun (Lowpass) -> Output (In)"
     },
     {
-      "name": "Liquid formant",
-      "patch": "Use Timbre to add ripple and a slow LFO into FM · the bandpass and notch outputs move between vocal and liquid formant regions while the pitch stays centered.",
-      "diagram": "Faun:\n* Slope: noon\n* Timbre: 2 o'clock\n* Input Gain: unity\n\nLFO:\nVCO:\nOutput:\n\n- VCO (Out) -> Faun (Audio In 1)\n- LFO (Out) >> Faun (FM CV)\n- Faun (Bandpass) -> Output (In)"
+      "name": "Liquid formant bandpass",
+      "patch": "Push Timbre up so the passband develops ripple, then send a slow LFO into FM with the attenuverter around 11 o'clock. The bandpass output moves between vocal and liquid formant shapes while base pitch stays centred.",
+      "steps": [
+        "Patch VCO to Faun Audio In 1.",
+        "Patch a slow triangle LFO to Faun FM and set the attenuverter to about 11 o'clock.",
+        "Set Cutoff to noon, Slope to noon, Timbre to 2 o'clock.",
+        "Monitor the Bandpass output and fine-tune Timbre until the tone sounds vocal rather than whistly."
+      ],
+      "signalOut": "Bandpass output: a band of the VCO that drifts up and down with the LFO, with comb-like ripple colouring the passband.",
+      "hear": "A slow, liquid 'ooh / aah' motion, like a soft formant being swept across the VCO without the pitch changing.",
+      "diagram": "Faun:\n* Cutoff: noon\n* Slope: noon\n* Timbre: 2 o'clock\n* FM atv: 11 o'clock\n* Input 2 Gain: off\n\nVCO:\nLFO:\nOutput:\n\n- VCO (Out) -> Faun (Audio In 1)\n- LFO (Tri) >> Faun (FM)\n- Faun (Bandpass) -> Output (In)"
     },
     {
-      "name": "Saturated acid line",
-      "patch": "Drive the variable input hard and raise Timbre until the filter starts to bite · the output becomes a crisp, acid-leaning line with grit instead of polite resonance.",
-      "diagram": "Faun:\n* Slope: 1 o'clock\n* Timbre: high\n* Input Gain: max\n\nVCO:\nEnvelope:\nOutput:\n\n- VCO (Saw) -> Faun (Audio In 2)\n- Envelope (Out) >> Faun (FM CV)\n- Faun (Lowpass) -> Output (In)"
+      "name": "Feedback drive",
+      "patch": "Drive Audio In 2 with the same VCO plus a touch of feedback from the lowpass output. With Input 2 Gain up and Timbre high, the filter stops sounding polite and starts to bite without relying on external distortion.",
+      "steps": [
+        "Multiple the VCO: one copy to Audio In 1 at unity, one copy to Audio In 2.",
+        "Patch the Lowpass output through a passive multiple: one tap to your mixer, one tap back into Audio In 2 (or mix it in with a small mixer) for feedback.",
+        "Raise Input 2 Gain past noon, set Cutoff around 11 o'clock, Slope around 1 o'clock, Timbre high.",
+        "Play a note and nudge Input 2 Gain and Timbre together until the filter just starts to growl."
+      ],
+      "signalOut": "Lowpass output: a heavily coloured, saturated lowpass with bite on transients.",
+      "hear": "A crunchier, more acidic version of the VCO that reacts strongly to Cutoff movement; back off Input 2 Gain to clean it up.",
+      "diagram": "Faun:\n* Cutoff: 11 o'clock\n* Slope: 1 o'clock\n* Timbre: 2 o'clock\n* Input 2 Gain: past noon\n* FM atv: off\n\nVCO:\nMultA:\nMultB:\nOutput:\n\n- VCO (Saw) -> MultA (In)\n- MultA (Out 1) -> Faun (Audio In 1)\n- MultA (Out 2) -> Faun (Audio In 2)\n- Faun (Lowpass) -> MultB (In)\n- MultB (Out 1) -> Output (In)\n- MultB (Out 2) -> Faun (Audio In 2)"
     },
     {
-      "name": "Pitched notch drone",
-      "patch": "Patch V/Oct from a sequencer and listen to the notch output while modulating FM lightly · the result sits between filter and oscillator, especially with a high Timbre setting.",
-      "diagram": "Faun:\n* Slope: highpass\n* Timbre: 1 o'clock\n\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Faun (V/Oct CV)\n- Sequencer (Gate) g> VCA (CV)\n- Faun (Notch) -> Output (In)"
+      "name": "Pitched notch voice",
+      "patch": "Play V/Oct from a sequencer with high Timbre and listen to the Notch output. The filter sits between effect and pitched source, especially with light FM adding movement around each step.",
+      "steps": [
+        "Patch a pink-noise or VCO source into Faun Audio In 1.",
+        "Patch the sequencer pitch CV into Faun V/Oct.",
+        "Patch a slow LFO into Faun FM with the attenuverter around 10 o'clock.",
+        "Set Slope toward highpass, Timbre around 1 o'clock, Cutoff around noon.",
+        "Take the Notch output to your mixer and run the sequence; tweak Timbre for how 'pitched' the notch should sound."
+      ],
+      "signalOut": "Notch output: the source with a swept notch that tracks each sequencer step, plus slow drift from the LFO via FM.",
+      "hear": "A hollow, whistling line that follows the sequence like a melody played by a filter rather than a VCO.",
+      "diagram": "Faun:\n* Cutoff: noon\n* Slope: 2 o'clock\n* Timbre: 1 o'clock\n* Input 2 Gain: off\n* FM atv: 10 o'clock\n\nVCO:\nSequencer:\nLFO:\nOutput:\n\n- VCO (Out) -> Faun (Audio In 1)\n- Sequencer (Pitch) p> Faun (V/Oct)\n- LFO (Out) >> Faun (FM)\n- Faun (Notch) -> Output (In)"
     }
   ]
 }

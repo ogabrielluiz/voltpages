@@ -2,13 +2,14 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
       "https://nano-modules.com/product/st-out/",
+      "https://nano-modules.com/st-in-st-out/",
       "https://modulargrid.net/e/nano-modules-st-out",
       "https://synthanatomy.com/2025/07/nano-modules-st-in-st-out-stereo-interface-modules.html",
-      "https://www.perfectcircuit.com/nano-st-out.html",
-      "https://www.matrixsynth.com/2025/09/nano-modules-st-in-st-out-stereo-io-for.html"
+      "https://schneidersladen.de/en/nano-modules-st-out",
+      "https://www.perfectcircuit.com/nano-st-out.html"
     ]
   },
   "slug": "nano-modules--st-out",
@@ -16,84 +17,126 @@
   "manufacturer": "NANO Modules",
   "hp": 6,
   "tags": ["I/O", "UTILITY", "MIXER", "EQ"],
-  "description": "Stereo modular-to-line output interface. Fader, tilt EQ, soft/hard drive switch, and peak meter feed a balanced stereo TRS pair plus a dedicated headphone output.",
+  "description": "Stereo modular-to-line output. Volume fader, tilt EQ and soft/hard drive feed two balanced 6.3mm TRS outs plus a headphone jack, with a stereo peak LED meter. 6HP, 40mm deep.",
   "controls": [
     {
       "name": "Volume",
       "scope": "Main output",
-      "description": "Fader sets level sent to both balanced line outputs and the headphone path.",
-      "detail": "Fader · 0dB reference = 10Vpp → line level"
+      "description": "Fader sets level sent to both balanced line outputs. Headphone level is controlled separately.",
+      "detail": "Fader · taper scales ±10V modular signal down to line level"
     },
     {
       "name": "Tilt EQ",
       "scope": "Main output",
-      "description": "Single-knob tonal balance. Rotates a tilt filter around a centre frequency — one end lifts highs and cuts lows, the other reverses.",
-      "detail": "CCW: darker (bass up, treble down) · noon: flat · CW: brighter"
+      "description": "Single-knob DJ-style tone tilt. One end boosts highs while cutting lows; the other end does the reverse.",
+      "detail": "CCW: darker (bass up, treble down) · noon: flat · CW: brighter (treble up, bass down)"
     },
     {
       "name": "Drive",
       "scope": "Main output",
-      "description": "Toggle inserts an analog saturation stage before the output buffer.",
-      "detail": "Off · Soft (gentle warming) · Hard (grittier clipping)"
+      "description": "Three-position switch inserting an analog saturation stage before the output buffer.",
+      "detail": "Off · Soft (gentle warming) · Hard (harder clipping / grit)"
     },
     {
       "name": "Headphones",
       "scope": "Headphone output",
-      "description": "Independent level for the front-panel headphone jack. Does not affect line outputs.",
-      "detail": "0 – full"
+      "description": "Independent level control for the front-panel headphone jack. Does not affect the balanced line outs.",
+      "detail": "0 – full · post-drive, post-tilt, pre-main-fader tap"
     }
   ],
   "inputs": [
-    { "name": "L In", "description": "Left channel modular-level input. DC-coupled.", "voltage": "±5V (0dBu at 10Vpp)" },
-    { "name": "R In", "description": "Right channel modular-level input. DC-coupled.", "voltage": "±5V (0dBu at 10Vpp)" }
+    { "name": "L In", "description": "Left channel modular-level audio input.", "voltage": "±10V max" },
+    { "name": "R In", "description": "Right channel modular-level audio input.", "voltage": "±10V max" }
   ],
   "outputs": [
-    { "name": "L Out (balanced TRS)", "description": "Left balanced line-level output on 6.3mm TRS jack. Feeds mixer / interface / amp." },
+    { "name": "L Out (balanced TRS)", "description": "Left balanced line-level output on 6.3mm TRS jack. Connect to mixer / interface / amp with a TRS cable for the balanced send, or a TS cable for unbalanced." },
     { "name": "R Out (balanced TRS)", "description": "Right balanced line-level output on 6.3mm TRS jack." },
-    { "name": "Headphones", "description": "Stereo 6.3mm TRS headphone output. Level set by Headphones knob independent of fader." }
+    { "name": "Headphones", "description": "Stereo 6.3mm TRS headphone output on the front panel. Level set by the Headphones knob independent of the main fader." }
   ],
   "behaviors": [
     {
-      "name": "Balanced stereo conversion",
-      "trigger": "L/R patched, cables plugged into rear balanced outs",
-      "description": "Converts hot modular ±5V swings down to a balanced line level suitable for studio monitors or interfaces. Balanced sends reject long-cable hum when the receiving gear is also balanced."
+      "name": "Modular to balanced line",
+      "trigger": "L/R patched, TRS cables at the rear outs",
+      "description": "Scales hot modular ±10V swings down to a balanced line level suitable for studio monitors, interfaces or PA. Balanced sends reject long-cable hum when the receiving gear is also balanced; a TS cable still works and is simply unbalanced."
     },
     {
-      "name": "Peak metering",
-      "trigger": "Signal present on L or R",
-      "description": "Dual-channel LED meter reacts to post-drive signal. Clip LED flags when the drive stage or output buffer is being pushed into limiting — use it to set fader pre-saturation."
+      "name": "Stereo peak LED meter",
+      "trigger": "signal present on L or R",
+      "description": "Dual-channel LED meter reacts to the post-drive signal so you can set the fader before the output stage starts limiting. Use the top LEDs to judge headroom — back the fader off when they light steadily."
     },
     {
       "name": "Soft vs hard drive",
       "trigger": "Drive switch position",
-      "description": "Soft adds gentle even-order warmth and compresses peaks. Hard folds the top of the waveform harder for audible grit and buzz. Both stages run pre-fader, so Volume tames the distorted signal at the output."
+      "description": "Soft adds gentle analog warmth and rounds peaks for a subtle bus glue. Hard folds the top of the waveform for audible grit and buzz. Both stages run before the fader, so Volume tames the distorted signal at the output."
     },
     {
       "name": "Tilt EQ as final polish",
-      "trigger": "Tilt EQ knob",
-      "description": "Single-knob mastering tilt: one direction brightens while simultaneously cutting bass, the opposite direction darkens. Useful to compensate for monitoring room or to counter the high-frequency grit introduced by hard drive."
+      "trigger": "Tilt EQ knob off noon",
+      "description": "Single-knob mastering tilt: one direction brightens while simultaneously cutting bass, the opposite direction darkens. Useful to compensate for a dark monitoring room or to tame the high-frequency grit introduced by hard drive."
     }
   ],
   "patchIdeas": [
     {
       "name": "Studio monitor hand-off",
-      "patch": "Stereo mixer → L/R In · Drive off · Tilt at noon · balanced TRS out to monitor interface · fader controls master listening level.",
-      "diagram": "ST·OUT:\n* Drive: Off\n* Tilt: noon\n* Volume: ~3 o'clock\n\nMixer:\n\n- Mixer (L) -> ST·OUT (L In)\n- Mixer (R) -> ST·OUT (R In)\n- ST·OUT (L Out) -> Output (L)\n- ST·OUT (R Out) -> Output (R)"
+      "patch": "Send the modular mix out to your monitors or interface, unprocessed, with the fader as your master listening level.",
+      "steps": [
+        "Set Drive switch to Off so the signal stays clean.",
+        "Set Tilt EQ to noon (flat).",
+        "Set Volume fader all the way down before patching.",
+        "Patch your stereo mixer L Out -> ST·OUT L In.",
+        "Patch your stereo mixer R Out -> ST·OUT R In.",
+        "Connect ST·OUT L Out (rear TRS) -> Interface input L with a TRS cable.",
+        "Connect ST·OUT R Out (rear TRS) -> Interface input R with a TRS cable.",
+        "Bring the Volume fader up until the peak LEDs sit just below the top segment."
+      ],
+      "signalOut": "ST·OUT L/R Out (rear TRS) — balanced line-level stereo, ready for monitors or an interface.",
+      "hear": "Your modular mix at proper line level. Pushing the fader higher lights the top peak LEDs; back off until they only tickle on loudest hits.",
+      "diagram": "ST·OUT:\n* Drive: Off\n* Tilt: noon\n* Volume: ~3 o'clock\n\n- Mixer (L) >> ST·OUT (L In)\n- Mixer (R) >> ST·OUT (R In)\n- ST·OUT (L Out) >> Interface (L)\n- ST·OUT (R Out) >> Interface (R)"
     },
     {
-      "name": "Bus-grit on the master",
-      "patch": "Full mix into L/R · Drive set to Hard · Tilt slightly CCW to tame top grit · peak LEDs stay just below clip · recording output picks up saturated bus tone.",
-      "diagram": "ST·OUT:\n* Drive: Hard\n* Tilt: ~10 o'clock\n* Volume: ~2 o'clock\n\nMixer:\n\n- Mixer (L) -> ST·OUT (L In)\n- Mixer (R) -> ST·OUT (R In)\n- ST·OUT (L Out) -> Recorder (L)\n- ST·OUT (R Out) -> Recorder (R)"
+      "name": "Bus grit on the master",
+      "patch": "Slam the full mix into Hard drive for saturated bus tone, then tame the top end with a CCW tilt.",
+      "steps": [
+        "Flip Drive to Hard.",
+        "Start with Tilt at noon and Volume at unity.",
+        "Patch mixer L -> ST·OUT L In, mixer R -> ST·OUT R In.",
+        "Connect ST·OUT L/R Out -> your recorder or interface (balanced TRS).",
+        "Turn the fader up until the peak LEDs just start kissing clip, then back off a hair.",
+        "Roll Tilt EQ slightly CCW (around 10 o'clock) to soften the treble bite the hard drive adds."
+      ],
+      "signalOut": "ST·OUT L/R Out — saturated, slightly darkened stereo bus feeding your recorder.",
+      "hear": "The mix thickens and peaks round off. Hard drive adds buzz on transients; the CCW Tilt keeps it from getting harsh.",
+      "diagram": "ST·OUT:\n* Drive: Hard\n* Tilt: ~10 o'clock\n* Volume: ~2 o'clock\n\n- Mixer (L) >> ST·OUT (L In)\n- Mixer (R) >> ST·OUT (R In)\n- ST·OUT (L Out) >> Recorder (L)\n- ST·OUT (R Out) >> Recorder (R)"
     },
     {
       "name": "Silent-stage headphone cue",
-      "patch": "Modular feed going to interface through Line outs · Headphones knob set for cue level · performer monitors on-stage without affecting the FOH send.",
-      "diagram": "ST·OUT:\n* Drive: Soft\n* Volume: unity\n* Headphones: ~1 o'clock\n\nMixer:\n\n- Mixer (L) -> ST·OUT (L In)\n- Mixer (R) -> ST·OUT (R In)\n- ST·OUT (L Out) -> FOH (L)\n- ST·OUT (R Out) -> FOH (R)"
+      "patch": "Send modular out to FOH over balanced TRS while using the front-panel phones jack as a performer cue — the Headphones knob is independent of the main fader.",
+      "steps": [
+        "Set Drive to Soft for a touch of stage warmth.",
+        "Set Tilt to noon and Volume for your FOH send level.",
+        "Patch mixer L/R -> ST·OUT L/R In.",
+        "Connect ST·OUT L/R Out -> FOH or interface with balanced TRS cables.",
+        "Plug headphones into the front-panel Headphones jack.",
+        "Start the Headphones knob at minimum, then dial up to a comfortable monitoring level."
+      ],
+      "signalOut": "Main signal: L/R Out to FOH. Monitor signal: front-panel Headphones jack, level set locally.",
+      "hear": "Headphones give you a full stereo cue while the balanced outs continue feeding FOH untouched. Moving the Headphones knob never changes what the audience hears.",
+      "diagram": "ST·OUT:\n* Drive: Soft\n* Tilt: noon\n* Volume: unity\n* Headphones: ~1 o'clock\n\n- Mixer (L) >> ST·OUT (L In)\n- Mixer (R) >> ST·OUT (R In)\n- ST·OUT (L Out) >> FOH (L)\n- ST·OUT (R Out) >> FOH (R)\n- ST·OUT (Headphones) >> Performer (Headphones)"
     },
     {
-      "name": "Saturated mono send to effects",
-      "patch": "Only L In patched · Drive Soft for warmth · Tilt CW for lift · use single L Out to feed an external pedal or desk channel — R Out and headphone remain silent.",
-      "diagram": "ST·OUT:\n* Drive: Soft\n* Tilt: ~2 o'clock\n\nMono Source:\n\n- Mono Source (Out) -> ST·OUT (L In)\n- ST·OUT (L Out) -> FX Pedal (In)"
+      "name": "Saturated mono send to a pedal",
+      "patch": "Run a single mono source through Soft drive and a brightening tilt, then use just one balanced out to feed an external pedal or mixer channel.",
+      "steps": [
+        "Flip Drive to Soft.",
+        "Start Tilt at noon and Volume low.",
+        "Patch the mono source -> ST·OUT L In only (leave R In empty).",
+        "Connect ST·OUT L Out -> your pedal input with a TRS (or TS) cable.",
+        "Raise the Volume fader until peak LEDs sit mid-range.",
+        "Rotate Tilt CW toward 2 o'clock for presence and air."
+      ],
+      "signalOut": "ST·OUT L Out — warmed, slightly bright mono send to the pedal chain.",
+      "hear": "The source gets thicker from Soft drive and brighter from the CW Tilt. R Out and the headphone path stay silent because R In is unpatched.",
+      "diagram": "ST·OUT:\n* Drive: Soft\n* Tilt: ~2 o'clock\n* Volume: ~1 o'clock\n\n- Mono Source (Out) >> ST·OUT (L In)\n- ST·OUT (L Out) >> FX Pedal (In)"
     }
   ]
 }

@@ -2,13 +2,13 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
       "https://forge-tme.com/vhikk-x/",
-      "https://www.perfectcircuit.com/forge-tme-vhikk-x.html",
       "https://modulargrid.net/e/forge-tme-vhikk-x",
       "https://schneidersladen.de/en/forge-tme-vhikk-x-drone-voice",
-      "https://www.elevatorsound.com/product/forge-tme-vhikk-x-eurorack-stereo-synth-voice-module/"
+      "https://www.elevatorsound.com/product/forge-tme-vhikk-x-eurorack-stereo-synth-voice-module/",
+      "https://www.perfectcircuit.com/forge-tme-vhikk-x.html"
     ]
   },
   "slug": "forge-tme--vhikk-x",
@@ -16,7 +16,7 @@
   "manufacturer": "Forge TME",
   "hp": 24,
   "tags": ["OSCILLATOR", "EFFECTS", "DISTORTION", "FILTER", "DELAY"],
-  "description": "Stereo 96kHz multi-algorithm drone voice and FX processor. 36 algorithms (9 × 4 banks) selected by two toggles. True-stereo signal path, internal stereo VCA, end-to-end saturation, and USB-C firmware.",
+  "description": "Stereo 24-bit / 96 kHz multi-algorithm drone voice and FX processor. 36 algorithms across 4 banks (9 per bank via two toggles). True-stereo path, internal stereo VCA, end-to-end saturation, and USB-C mass-storage firmware.",
   "controls": [
     {
       "name": "Toggle Switch 1",
@@ -28,73 +28,95 @@
       "name": "Toggle Switch 2",
       "scope": "Global",
       "description": "Three-position toggle selecting one of three algorithm columns. Together with Toggle 1: 9 algorithms per bank.",
-      "detail": "Up / Middle / Down · 3×3 grid"
+      "detail": "Up / Middle / Down · 3×3 grid per bank"
     },
     {
-      "name": "Mode Button",
+      "name": "MODE Button",
       "scope": "Global",
-      "description": "Top button. Cycles the two central encoders between alternate parameter targets for the current algorithm.",
-      "detail": "Short press cycles modes"
+      "description": "Top button. Cycles the two central encoders between BASIS+TIME and SEED+SCAN targeting for the current algorithm.",
+      "detail": "Short press cycles encoder pages"
     },
     {
       "name": "Lower Button",
       "scope": "Global",
-      "description": "Bottom button. Function depends on current encoder mode — master volume, bank selection, or parameter randomization.",
+      "description": "Bottom button. Function follows encoder state — engages VOL control or BANK change.",
       "detail": "Context-dependent · long-press for secondary"
     },
     {
       "name": "Encoder 1 / Encoder 2",
       "scope": "Global",
-      "description": "Two central rotary encoders. Adjust the parameters currently assigned by Mode button — typically two synthesis parameters or FX depth/time per algorithm.",
-      "detail": "Click + rotate · mode-dependent targets"
+      "description": "Two central rotary encoders. Target BASIS+TIME or SEED+SCAN depending on MODE button state.",
+      "detail": "Click + rotate · paged by MODE"
     },
     {
-      "name": "Parameter Knobs",
-      "scope": "Global",
-      "description": "Fixed-function knobs covering the core parameters of each algorithm (pitch, timbre, modulation, FX). Exact function varies per algorithm and is printed around the controls.",
-      "detail": "Algorithm-dependent · 5 have CV attenuverters"
+      "name": "WARP / SPAN / MORPH / FUSE",
+      "scope": "Generator",
+      "description": "Fixed-function generator knobs shaping the wavetable source — warp amount, spectral span, morph position, and fuse/feedback character.",
+      "detail": "Algorithm-dependent · generator section"
+    },
+    {
+      "name": "FIELD",
+      "scope": "Filter",
+      "description": "Filter-section knob. Shapes the stereo post-oscillator filter stage for each algorithm.",
+      "detail": "Algorithm-dependent"
+    },
+    {
+      "name": "MIX / FEED",
+      "scope": "Processor",
+      "description": "Processor-section knobs. MIX = dry/wet between source and FX stage. FEED = internal feedback amount in the processor.",
+      "detail": "Active on FX-oriented algorithms"
     },
     {
       "name": "Bank LEDs",
       "scope": "Global",
-      "description": "Three red indicator lights between the toggles show current bank (1–4) via binary-style pattern.",
+      "description": "Three red indicator lights between the toggles show current bank (1–4) via binary pattern.",
       "detail": "3 LEDs · 4 banks"
+    },
+    {
+      "name": "Level LED strips",
+      "scope": "Output",
+      "description": "White (L) and red (R) LED strips above the outputs. Show true-stereo output level.",
+      "detail": "Visual metering"
     }
   ],
   "inputs": [
-    { "name": "IN L / IN R", "description": "Stereo audio inputs. L normals to R for mono operation.", "voltage": "20Vpp max (-inf to +30dB gain)", "normalizedTo": "IN L → IN R when R unpatched" },
-    { "name": "CV Inputs (×5+ with attenuverters)", "description": "CV over algorithm parameters. Five inputs have panel attenuverters; others sum with panel controls.", "voltage": "5V swing = full range · 20Vpp tolerant · 200kΩ" },
-    { "name": "VCA CV", "description": "CV over the internal stereo VCA for amplitude shaping without an external VCA." }
+    { "name": "IN L / IN R", "description": "Stereo audio inputs. L normals to R for mono operation. Gain stage from −inf to +30 dB.", "voltage": "20 Vpp clip point · 30kΩ in", "normalizedTo": "IN L → IN R when R unpatched" },
+    { "name": "CV: MORPH", "description": "CV over the MORPH parameter (wavetable morph position). Attenuverter on panel.", "voltage": "20Vpp clipped in software · 200kΩ · 16-bit @ 24 kHz scan" },
+    { "name": "CV: BASIS", "description": "CV over BASIS (encoder-paged pitch/base parameter). Attenuverter on panel.", "voltage": "20Vpp clipped in software · 200kΩ" },
+    { "name": "CV: FIELD", "description": "CV over the FIELD filter parameter. Attenuverter on panel.", "voltage": "20Vpp clipped in software · 200kΩ" },
+    { "name": "CV: TIME", "description": "CV over the TIME parameter (delay/envelope time depending on algorithm). Attenuverter on panel.", "voltage": "20Vpp clipped in software · 200kΩ" },
+    { "name": "CV: FORM", "description": "CV over the FORM parameter (shape/character). Attenuverter on panel.", "voltage": "20Vpp clipped in software · 200kΩ" },
+    { "name": "VCA CV", "description": "CV over the internal stereo output VCA. Unpatched reads as ~+5V (VCA held open) so the module makes sound with no cable patched here.", "voltage": "Offset ~+5V when unpatched", "normalizedTo": "+5V reference (VCA open) when unpatched" }
   ],
   "outputs": [
-    { "name": "OUT L / OUT R", "description": "Stereo output. L normals to R when R unpatched. 18Vpp full-scale with volume control.", "voltage": "18Vpp full-scale · 1kΩ out" },
-    { "name": "Level LEDs", "description": "White (L) and red (R) level windows for visual metering of both output channels." }
+    { "name": "OUT L / OUT R", "description": "Stereo output. L normals to R when R unpatched. 18 Vpp full-scale.", "voltage": "18 Vpp full-scale · 1kΩ out", "normalizedTo": "OUT L → OUT R when R unpatched" },
+    { "name": "Level LED strips", "description": "White (L) and red (R) LED strips above the outputs for visual stereo metering." }
   ],
   "behaviors": [
     {
       "name": "36-algorithm grid",
       "trigger": "toggle switches + bank selection",
-      "description": "9 algorithms per bank via two 3-position toggles. 4 banks total = 36 algorithms covering drone oscillators, granular clouds, stereo FX, distortion, delay, resonators, and signal destruction. Bank changes are instant; toggle changes crossfade depending on algorithm."
+      "description": "9 algorithms per bank via two 3-position toggles. 4 banks total = 36 algorithms spanning drone oscillators, wavetable voices, stereo FX, distortion, delay, resonators, and signal destruction. Bank changes are instant; toggle changes are near-instant within the current bank."
     },
     {
       "name": "Dual-role synth + FX",
       "trigger": "patch IN L/R vs leave unpatched",
-      "description": "Each algorithm has a sound source and an FX stage. With no input, runs as a standalone stereo drone voice. With audio at IN L/R, routes external signal into the FX stage — use Vhikk X as a 24-bit effects processor for any signal."
+      "description": "Each algorithm has a source + FX stage. With no input, Vhikk X runs as a standalone stereo drone voice. With audio at IN L/R, the external signal feeds the FX stage — the module becomes a 24-bit stereo effects processor for any signal. Input gain is −inf to +30 dB."
     },
     {
-      "name": "Mode-button parameter paging",
-      "trigger": "Mode button press",
-      "description": "Top button cycles the two encoders between different parameter targets for the current algorithm. Allows one algorithm to expose more than two encoder-adjustable params across pages, swapping without touching knobs."
+      "name": "MODE encoder paging",
+      "trigger": "MODE (top) button press",
+      "description": "Top button cycles the two encoders between BASIS+TIME and SEED+SCAN targets. One algorithm thus exposes four encoder-adjustable parameters across two pages — the fixed-function knobs (WARP/SPAN/MORPH/FUSE/FIELD/MIX/FEED) cover the rest."
     },
     {
       "name": "True-stereo signal path",
       "trigger": "select stereo algorithms",
-      "description": "Select algorithms run end-to-end in stereo — IN L and IN R processed independently through filters, delays, and effects rather than summing to mono. Creates wide, phase-decorrelated drones without external stereo tools."
+      "description": "Select algorithms run end-to-end in stereo — IN L and IN R processed independently through filters, delays, and FX rather than summing to mono. Creates wide, phase-decorrelated drones without external stereo tools."
     },
     {
       "name": "Internal stereo VCA",
       "trigger": "VCA CV input",
-      "description": "Built-in stereo VCA sits at the output. Patch an envelope or LFO to VCA CV to gate the entire module — no external stereo VCA needed to make Vhikk X a plucked or gated voice."
+      "description": "Built-in stereo VCA at the output. Unpatched, VCA CV reads ~+5V so the module always makes sound. Patch an envelope or LFO to VCA CV to gate the entire module — no external stereo VCA needed to make Vhikk X a plucked or gated voice."
     },
     {
       "name": "USB-C Mass-Storage firmware",
@@ -102,51 +124,140 @@
       "description": "Module mounts as a USB Mass Storage drive. Drag-and-drop firmware updates; HELP.TXT reveals the current version. USB and Eurorack power coexist so the module stays live during update."
     },
     {
-      "name": "Parameter randomization",
-      "trigger": "Lower button (in randomize mode)",
-      "description": "Lower button in randomize mode shuffles current algorithm parameters to a new combination. Useful live for sudden timbral shifts without re-tweaking."
+      "name": "Parameter randomize (SEED + SCAN)",
+      "trigger": "press MODE + Lower button together (firmware v003+)",
+      "description": "Pressing both buttons simultaneously internally randomises SEED and SCAN — useful live for sudden timbral shifts without re-tweaking. Other parameter knobs remain at their panel positions."
+    },
+    {
+      "name": "State saving",
+      "trigger": "auto-save ~30 s after last change",
+      "description": "Vhikk X writes its parameter state to internal storage about 30 seconds after the last touch (wear-levelling delay). Global vs per-algorithm saving is chosen by holding a button at power-on."
     }
   ],
   "patchIdeas": [
     {
       "name": "Standalone stereo drone",
-      "patch": "No inputs · select a drone algorithm bank · set toggles · dial parameters with encoders · OUT L/R → mixer · one-module ambient voice in stereo",
-      "diagram": "Vhikk X:\n* Bank: drone bank\n* Toggle 1: Mid\n* Toggle 2: Mid\n\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
+      "patch": "Bank a drone algorithm, set the toggles, and let Vhikk X run as a one-module stereo ambient voice.",
+      "steps": [
+        "Power up Vhikk X with nothing patched to IN L/R — unpatched IN means the generator runs, not the FX stage.",
+        "Press the Lower button in BANK mode to pick a drone-flavoured bank (bank LEDs show the selection).",
+        "Set Toggle 1 and Toggle 2 to Middle for a centred algorithm, then experiment with other positions.",
+        "Press MODE to page encoders to BASIS+TIME; turn BASIS to tune the drone, TIME to set the motion.",
+        "Press MODE again to reach SEED+SCAN; tweak SEED for timbral identity, SCAN for spectral motion.",
+        "Dial WARP, MORPH, FIELD, and MIX on the panel until the drone sits where you want it.",
+        "Patch OUT L → Mixer In L, OUT R → Mixer In R for a proper stereo image."
+      ],
+      "signalOut": "OUT L / OUT R — wide stereo drone at up to 18 Vpp full-scale.",
+      "hear": "A continuous stereo drone that moves on its own even without CV. Small WARP/MORPH tweaks push the timbre between clean and overtone-rich; FIELD opens and closes the filter for breathing motion.",
+      "diagram": "Vhikk X:\n* Bank: drone bank\n* Toggle 1: Mid\n* Toggle 2: Mid\n* MODE: page encoders as needed\n\n- Vhikk X (OUT L) -> Mixer (In L)\n- Vhikk X (OUT R) -> Mixer (In R)"
     },
     {
       "name": "External signal destroyer",
-      "patch": "Stereo synth voice → IN L/R · select a distortion/granular bank · Vhikk X processes external audio through its FX engine · 24-bit stereo destruction",
-      "diagram": "Vhikk X:\n* Bank: FX/distortion bank\n\nSynth:\n\n- Synth (Out L) -> Vhikk X (IN L)\n- Synth (Out R) -> Vhikk X (IN R)\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
+      "patch": "Feed a stereo synth voice into IN L/R and use Vhikk X as a 24-bit stereo distortion / granular processor.",
+      "steps": [
+        "Pick a distortion / granular bank with the Lower button in BANK mode.",
+        "Patch Synth OUT L → Vhikk X IN L and Synth OUT R → Vhikk X IN R. With both inputs patched, the generator is bypassed and the FX stage takes your signal.",
+        "Bring MIX up (panel knob) until you hear your source blended with the processed signal.",
+        "Turn FEED CW gradually — too much feedback will self-oscillate; back it off until the character is right.",
+        "Adjust Toggle 1 / Toggle 2 to move through the 9 algorithms in the bank and pick the flavour you want.",
+        "Dial FIELD to sculpt the post-FX filter tone.",
+        "Patch OUT L/R to your final output."
+      ],
+      "signalOut": "OUT L / OUT R — stereo processed audio (dry + wet set by MIX).",
+      "hear": "Your source mangled in stereo — grit, grain, or harmonic smear depending on the bank. MIX sets how much of the dry source you keep; FEED pushes the FX into self-oscillation for extreme textures.",
+      "diagram": "Vhikk X:\n* Bank: FX/distortion\n* MIX: to taste\n* FEED: low to moderate\n\nSynth:\n\n- Synth (Out L) -> Vhikk X (IN L)\n- Synth (Out R) -> Vhikk X (IN R)\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
     },
     {
       "name": "Gated stereo pluck voice",
-      "patch": "Select a percussive/resonator algorithm · gate → VCA CV via AD envelope · Vhikk X becomes a plucked stereo voice with no external VCA",
-      "diagram": "Vhikk X:\n* Bank: resonator/pluck\n\nAD:\n\nGate:\n\n- Gate (Out) g> AD (Trig)\n- AD (Out) >> Vhikk X (VCA CV)\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
+      "patch": "Use the internal stereo VCA to turn Vhikk X into a plucked / gated voice without any external VCA.",
+      "steps": [
+        "Pick a percussive or resonator-style bank with the Lower button in BANK mode.",
+        "Set the toggles to a sharp, short-sustain algorithm (pluck / mallet / resonator).",
+        "Patch your gate source → AD envelope Trigger input.",
+        "Set AD attack short and decay to your desired pluck length.",
+        "Patch AD Out → Vhikk X VCA CV. This takes over from the internal ~+5V offset, so the module is silent between hits.",
+        "Tune the voice: MODE to BASIS+TIME, turn BASIS for pitch.",
+        "Patch OUT L → Output L, OUT R → Output R."
+      ],
+      "signalOut": "OUT L / OUT R — a plucked / gated stereo voice whose envelope is the AD shape.",
+      "hear": "Silence between triggers, then a short percussive stereo hit whose body is shaped by the AD. Long decay gives bell/mallet feel; short decay gives tight plucks.",
+      "diagram": "Vhikk X:\n* Bank: resonator/pluck\n\nAD:\n\nGate:\n\n- Gate (Out) g> AD (Trig)\n- AD (Out) >> Vhikk X (VCA CV) // replaces +5V offset\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
     },
     {
       "name": "CV-morphing algorithm",
-      "patch": "LFO → CV input with attenuverter · modulating a single algorithm parameter · hold toggles but let CV sweep timbre · sustained drone with evolving character",
-      "diagram": "Vhikk X:\n* Toggle 1: Up\n* Toggle 2: Mid\n\nLFO:\n\n- LFO (Out) >> Vhikk X (CV 1)\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
+      "patch": "Hold the toggles still but let an LFO sweep one parameter through its attenuverter for evolving timbre.",
+      "steps": [
+        "Pick any bank; set Toggle 1 Up, Toggle 2 Mid (or wherever you like the starting timbre).",
+        "Dial in a baseline MORPH / FIELD / TIME setting you like.",
+        "Patch LFO Out → Vhikk X MORPH CV.",
+        "Set the MORPH attenuverter to roughly noon for a moderate sweep, or past noon for a wider one; CCW inverts.",
+        "Adjust LFO rate to the motion you want (slow for pads, faster for movement).",
+        "Patch OUT L/R to your mixer."
+      ],
+      "signalOut": "OUT L / OUT R — drone with continuous parameter motion from the LFO.",
+      "hear": "A held algorithm whose tone colour sweeps up and down in time with the LFO. The attenuverter is your depth knob — keep it small for subtle motion, crank it to hear the full parameter range.",
+      "diagram": "Vhikk X:\n* Toggle 1: Up\n* Toggle 2: Mid\n* MORPH Atten: ~noon\n\nLFO:\n\n- LFO (Out) >> Vhikk X (MORPH CV)\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
     },
     {
       "name": "Performance bank switching",
-      "patch": "Drone running · lower button in bank mode · tap to jump between 4 banks mid-performance · instant texture transitions without re-patching",
-      "diagram": "Vhikk X:\n* Mode: bank-select on lower button\n\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R) // press lower button to jump banks"
+      "patch": "Jump between 4 banks with the Lower button while a drone plays — instant texture transitions with no re-patching.",
+      "steps": [
+        "Start a drone as in the Standalone Stereo Drone patch.",
+        "Leave the Lower button in its BANK-select state (exit any volume/paging mode via MODE until the Lower button changes bank).",
+        "While the drone plays, tap the Lower button to step through banks 1→2→3→4 and back.",
+        "Bank LEDs (three red) show the current bank.",
+        "Keep the toggle positions the same — each bank exposes a different algorithm at that toggle coordinate, so one wrist movement totally reshapes the sound.",
+        "Patch OUT L/R into your mixer."
+      ],
+      "signalOut": "OUT L / OUT R — continuous audio with abrupt timbral jumps on each bank tap.",
+      "hear": "The drone stays at the same pitch roughly but totally changes character on each press — useful for arrangement beats in a live set. Some bank jumps will be dramatic; others subtle.",
+      "diagram": "Vhikk X:\n* Lower button: BANK mode\n\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R) // tap Lower to jump bank"
     },
     {
       "name": "Randomize-into-new-drone",
-      "patch": "Running drone · Mode set to randomize on lower button · tap for random parameter shuffle · sit on a new timbre until the next press · generative performance",
-      "diagram": "Vhikk X:\n* Mode: randomize on lower button\n\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
+      "patch": "Tap MODE + Lower together to randomise SEED and SCAN mid-performance (firmware v003+).",
+      "steps": [
+        "Start a drone running (any bank, any toggles).",
+        "Press MODE page until the encoders target SEED+SCAN — turn them to hear how they influence timbre first.",
+        "With the drone still running, press MODE and Lower together. The firmware internally randomises SEED and SCAN.",
+        "Listen to the new state, then randomise again if you want another shift.",
+        "Your WARP / MORPH / FIELD / MIX / FEED knobs stay put — only SEED+SCAN are shuffled.",
+        "Patch OUT L/R to your mixer."
+      ],
+      "signalOut": "OUT L / OUT R — same algorithm, new SEED+SCAN state on each two-button press.",
+      "hear": "Each press snaps the drone to a different internal state — often a dramatic timbral jump within the same algorithm family. Great for generative performance.",
+      "diagram": "Vhikk X:\n* Firmware v003+ required\n\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R) // press MODE + Lower to randomise SEED+SCAN"
     },
     {
       "name": "Stereo reverb for external voice",
-      "patch": "Mono VCO voice → IN L (normals to IN R) · select a reverb/cloud algorithm · Vhikk X returns a wide stereo reverb send — no dedicated FX module needed",
-      "diagram": "Vhikk X:\n* Bank: reverb/cloud\n\nVCO:\n\nFilter:\n\nVCA:\n\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Vhikk X (IN L) // normals to R\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
+      "patch": "Send a mono VCO voice through Vhikk X in a reverb/cloud bank for a wide stereo return — no dedicated FX module needed.",
+      "steps": [
+        "Pick a reverb / cloud bank with the Lower button in BANK mode.",
+        "Build a normal mono voice: VCO → Filter → VCA.",
+        "Patch VCA Out → Vhikk X IN L only. IN L normals to IN R internally, so a mono input hits both channels of the FX.",
+        "Set MIX to full wet if you want only the reverb return; lower MIX to blend the dry voice too.",
+        "Adjust TIME (encoder page BASIS+TIME) for reverb length, FEED for tail density.",
+        "Patch OUT L → Output L, OUT R → Output R for a wide stereo reverb."
+      ],
+      "signalOut": "OUT L / OUT R — stereo wet reverb (with dry blended by MIX).",
+      "hear": "A mono source returned as a wide stereo reverb with pitched or granular character depending on algorithm. Pull FEED back if the tail runs away; push TIME for lush cathedral sizes.",
+      "diagram": "Vhikk X:\n* Bank: reverb/cloud\n* MIX: wet-heavy\n\nVCO:\n\nFilter:\n\nVCA:\n\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Vhikk X (IN L) // normals to IN R\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
     },
     {
       "name": "Cross-modulated dual-parameter",
-      "patch": "CV 1: slow LFO · CV 2: fast LFO × first LFO (via external ring-mod) · two algorithm params co-modulated with shared source · complex timbral motion from one LFO",
-      "diagram": "Vhikk X:\n* Toggle 1: Down\n* Toggle 2: Down\n\nLFO slow:\n\nLFO fast:\n\nRing Mod:\n\n- LFO slow (Out) >> Vhikk X (CV 1)\n- LFO slow (Out) >> Ring Mod (In A)\n- LFO fast (Out) >> Ring Mod (In B)\n- Ring Mod (Out) >> Vhikk X (CV 2)\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
+      "patch": "Modulate MORPH and FIELD with related LFOs (via an external ring mod) for correlated but non-identical CV motion.",
+      "steps": [
+        "Choose a timbre-rich algorithm — set Toggle 1 Down, Toggle 2 Down as a starting point.",
+        "Patch a slow LFO → Vhikk X MORPH CV. Set the MORPH attenuverter around noon.",
+        "Patch the same slow LFO → Ring Mod In A.",
+        "Patch a faster LFO → Ring Mod In B.",
+        "Patch Ring Mod Out → Vhikk X FIELD CV. Set the FIELD attenuverter around noon.",
+        "Now MORPH follows the slow shape; FIELD follows slow × fast, sharing the slow rate as a common beat.",
+        "Patch OUT L/R to your mixer."
+      ],
+      "signalOut": "OUT L / OUT R — drone with two correlated-but-distinct modulation streams on MORPH and FIELD.",
+      "hear": "Two axes of timbral motion that breathe together on the slow shape but jitter against each other on the fast one. More organic than two unrelated LFOs; tighter than random.",
+      "diagram": "Vhikk X:\n* Toggle 1: Down\n* Toggle 2: Down\n* MORPH Atten: ~noon\n* FIELD Atten: ~noon\n\nLFO slow:\n\nLFO fast:\n\nRing Mod:\n\n- LFO slow (Out) >> Vhikk X (MORPH CV)\n- LFO slow (Out) >> Ring Mod (In A)\n- LFO fast (Out) >> Ring Mod (In B)\n- Ring Mod (Out) >> Vhikk X (FIELD CV)\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
     }
   ]
 }

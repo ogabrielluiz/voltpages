@@ -2,11 +2,13 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "firmwareVersion": "2.0",
     "sources": [
       "https://www.instruomodular.com/product/arbhar/",
-      "https://www.instruomodular.com/wp-content/uploads/2023/10/Arbhar-Manual-Firmware-2.0-A5.pdf"
+      "https://www.instruomodular.com/wp-content/uploads/2023/10/Arbhar-Manual-Firmware-2.0-A5.pdf",
+      "https://www.instruomodular.com/wp-content/uploads/2023/10/Arbhar-Booklet-Quickstart-Firmware-2-web.pdf",
+      "https://www.modulargrid.net/e/instruo-arbhar"
     ]
   },
   "slug": "instruo--arbhar",

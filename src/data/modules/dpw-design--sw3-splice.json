@@ -2,92 +2,196 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
-      "https://dpw.se/product-category/eurorack/",
       "https://dpw.se/product/sw3-splice/",
+      "https://dpw.se/product-category/eurorack/",
       "https://modulargrid.net/e/dpw-design-sw3-splice",
-      "https://modulargrid.net/e/vendors/view/381"
+      "https://www.soundonsound.com/reviews/dpw-sw3-splice",
+      "https://voltagesound.com/products/sw3-splice-dpw-design-eurorack"
     ]
   },
   "slug": "dpw-design--sw3-splice",
   "name": "SW3 Splice",
   "manufacturer": "DPW Design",
   "hp": 6,
-  "tags": ["SWITCH", "UTILITY", "I/O"],
-  "description": "Fully analog click-free wave splicer for audio or CV. Two linked lanes can hard-switch or transparently splice between A and B without added latency.",
-  "controls": [],
+  "tags": ["SWITCH", "UTILITY", "LOGIC"],
+  "description": "Fully analog 2-channel click-free signal splicer/switcher. Each channel picks between A and B via three switching modes (equal-level, equal-slope, hard) with manual or CV/gate control, at switching rates up to 200 kHz.",
+  "controls": [
+    {
+      "name": "A / Auto / B (Input select)",
+      "scope": "per channel (1 and 2)",
+      "description": "Forces input A, input B, or Auto where the module toggles when A and B momentarily match.",
+      "detail": "3-position toggle. In Auto, the switch flips at every moment A and B cross, so a mono signal self-splices instead of being manually chosen. Up = A, down = B, center = Auto."
+    },
+    {
+      "name": "1 / /2 / /4 (Toggle division)",
+      "scope": "per channel",
+      "description": "Divides how often the auto-toggle actually flips — every crossing, every other, or every fourth.",
+      "detail": "Acts as a sub-harmonic generator when the signal is an oscillator: /2 and /4 introduce octaves/sub-octaves into the composite output. Works in Auto mode and with the D (gate) input."
+    },
+    {
+      "name": "X / = / H (Splice mode)",
+      "scope": "per channel",
+      "description": "Chooses the click-free rule: X = match when equal, = = match when equal and slopes align, H = hard switch.",
+      "detail": "X waits for level equality before flipping (click-free on most signals). = is stricter and waits for equal level AND same slope direction (cleanest on audio). H ignores matching and hard-switches immediately — use for percussive effects or when driven by gates."
+    },
+    {
+      "name": "Stereo mode switches",
+      "scope": "global (2 switches near channels)",
+      "description": "Link channel 2 to channel 1 (stereo), swap the two outputs, or keep them as two independent mono switches.",
+      "detail": "Lets you use the module as: dual mono (two separate switches), stereo-linked (one decision drives both OUTs so a stereo pair switches together), or swap (channel 2 inverts the A/B choice, useful for stereo panning/ping-pong)."
+    }
+  ],
   "inputs": [
     {
       "name": "A1",
-      "description": "First source input for lane 1.",
-      "voltage": "audio / CV"
+      "description": "Channel 1 source A.",
+      "voltage": "audio or CV, ~100 kΩ input impedance"
     },
     {
       "name": "B1",
-      "description": "Second source input for lane 1.",
-      "voltage": "audio / CV"
+      "description": "Channel 1 source B.",
+      "voltage": "audio or CV, ~100 kΩ input impedance"
     },
     {
       "name": "A2",
-      "description": "First source input for lane 2.",
-      "voltage": "audio / CV"
+      "description": "Channel 2 source A.",
+      "voltage": "audio or CV, ~100 kΩ input impedance"
     },
     {
       "name": "B2",
-      "description": "Second source input for lane 2.",
-      "voltage": "audio / CV"
+      "description": "Channel 2 source B.",
+      "voltage": "audio or CV, ~100 kΩ input impedance"
+    },
+    {
+      "name": "D (Drive)",
+      "description": "External control input for switching logic. With mode switch on H, this gate/CV chooses A or B directly; in X/= modes it can force reconsideration.",
+      "voltage": "gate / CV, up to 200 kHz switching"
+    },
+    {
+      "name": "R (Reset)",
+      "description": "Reset input — resets the auto-toggle flip-flop and division counter to a known state.",
+      "voltage": "gate / trigger"
     }
   ],
   "outputs": [
     {
       "name": "OUT1",
-      "description": "Lane 1 output after switching or splice selection.",
-      "voltage": "audio / CV"
+      "description": "Channel 1 spliced/switched output. Carries whichever of A1/B1 is currently selected.",
+      "voltage": "audio or CV, 3.3 kΩ / 20 Ω through-switch impedance"
     },
     {
       "name": "OUT2",
-      "description": "Lane 2 output after switching or splice selection.",
-      "voltage": "audio / CV"
+      "description": "Channel 2 spliced/switched output. Independent, linked-to-1, or swapped depending on stereo switches.",
+      "voltage": "audio or CV, 3.3 kΩ / 20 Ω through-switch impedance"
+    },
+    {
+      "name": "ON1",
+      "description": "Logic output for channel 1. Goes to ~5V whenever input A1 is the one currently selected.",
+      "voltage": "0 / +5V gate"
+    },
+    {
+      "name": "ON2",
+      "description": "Logic output for channel 2. Goes to ~5V whenever input A2 is the one currently selected.",
+      "voltage": "0 / +5V gate"
     }
   ],
   "behaviors": [
     {
-      "name": "Click-free splice",
-      "trigger": "A and B are matched or slope-aligned",
-      "description": "The module can splice between two signals without clicks when their level or slope relationship allows a seamless transition."
+      "name": "Click-free equal-level splice (X mode)",
+      "trigger": "mode switch in X, Auto selected",
+      "description": "Flip from A to B only happens at instants where A and B are at the same voltage. Prevents the discontinuity that causes clicks when cross-fading full-range signals."
     },
     {
-      "name": "Hard switching",
-      "trigger": "manual or CV control",
-      "description": "If you want a sharper result, the same lanes can act as traditional analog switches instead of transparent splices."
+      "name": "Slope-matched splice (= mode)",
+      "trigger": "mode switch in =",
+      "description": "Flip only when A and B are equal AND moving in the same direction. Cleanest possible splice on audio — you rarely hear the transition at all."
+    },
+    {
+      "name": "Hard switch (H mode)",
+      "trigger": "mode switch in H, D input driven",
+      "description": "Immediate A/B swap on the rising edge of D. No click avoidance. Use for rhythmic wave-chopping and percussive bursts."
+    },
+    {
+      "name": "Division / sub-harmonic",
+      "trigger": "division switch on /2 or /4, audio through A and B",
+      "description": "In Auto mode, only every 2nd or 4th crossing triggers a flip, producing a sub-octave alternation on periodic signals — a sub-harmonic generator."
     },
     {
       "name": "Stereo link",
-      "trigger": "linked mode enabled",
-      "description": "The two lanes can be linked so a single control decision moves both sides together for stereo work."
+      "trigger": "stereo switch set to link",
+      "description": "Both channels follow channel 1's control decision simultaneously — a stereo signal (L → A1/A2, R → B1/B2) switches as a pair."
     },
     {
-      "name": "Audio or CV routing",
-      "trigger": "either signal type patched",
-      "description": "The SW3 does not care whether the input is audio or control voltage, which makes it useful as a general-purpose route selector."
+      "name": "Channel-swap stereo",
+      "trigger": "stereo switch set to swap",
+      "description": "Channel 2 mirrors channel 1 with A/B swapped. Patch left to A1/B2 and right to B1/A2 for hard stereo ping-pong on the same gate."
+    },
+    {
+      "name": "ON logic output",
+      "trigger": "whenever input A is selected",
+      "description": "ON1/ON2 emit a +5V gate while A is active — use them as trigger sources, clock dividers, or to drive envelopes in sync with the splice."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Stereo source splice",
-      "patch": "Switch between two stereo sources without clicks, then send the result to the main output pair.",
-      "diagram": "SW3 Splice:\nSource A:\nSource B:\nOutput:\n\n- Source A (L) -> SW3 Splice (A1)\n- Source B (L) -> SW3 Splice (B1)\n- Source A (R) -> SW3 Splice (A2)\n- Source B (R) -> SW3 Splice (B2)\n- SW3 Splice (OUT1) -> Output (L)\n- SW3 Splice (OUT2) -> Output (R)"
+      "name": "Click-free crossfade between two oscillators",
+      "patch": "Replace a crossfader: hard-pick between two VCOs with zero pop, using equal-slope mode so the transition is inaudible.",
+      "steps": [
+        "Patch VCO 1 → SW3 A1.",
+        "Patch VCO 2 → SW3 B1.",
+        "Set channel 1 mode switch to '=' (equal level + equal slope).",
+        "Set channel 1 division to '1'.",
+        "Set channel 1 input select to 'A' (start on VCO 1).",
+        "Patch SW3 OUT1 → VCA IN → mixer.",
+        "Flip the A/B switch manually, or patch a slow gate to D input and set input select to 'Auto' to let the module wait for a clean crossing."
+      ],
+      "signalOut": "OUT1 — the selected VCO at full level, mono, no click.",
+      "hear": "A completely seamless swap between the two oscillators — you'll hear the new pitch but no pop or glitch at the transition, even mid-note.",
+      "diagram": "SW3 Splice:\n* CH1 mode: =\n* CH1 div: 1\n* CH1 sel: Auto\n\n- VCO 1 (Out) -> SW3 (A1)\n- VCO 2 (Out) -> SW3 (B1)\n- Gate Source (Out) >> SW3 (D)\n- SW3 (OUT1) -> VCA (In)\n- VCA (Out) -> Mixer (In)"
     },
     {
-      "name": "CV-controlled percussion switch",
-      "patch": "Use one lane for kick sources and the other for noise bursts, then switch them with a gate to make a single drum voice change character cleanly.",
-      "diagram": "SW3 Splice:\nKick:\nNoise:\nEnvelope:\nOutput:\n\n- Kick (Out) -> SW3 Splice (A1)\n- Noise (Out) -> SW3 Splice (B1)\n- Envelope (Out) >> SW3 Splice (A2)\n- Envelope (Out) >> SW3 Splice (B2)\n- SW3 Splice (OUT1) -> Output (In)"
+      "name": "Sub-octave from a single VCO",
+      "patch": "Use Auto mode with /2 or /4 division to splice a VCO with itself inverted, producing clean sub-harmonic octaves.",
+      "steps": [
+        "Patch VCO saw out → SW3 A1.",
+        "Patch the same VCO through an inverter (or the inverted out of a mult/attenuverter) → SW3 B1.",
+        "Set channel 1 input select to 'Auto' (center).",
+        "Set channel 1 mode to 'X' (equal-level).",
+        "Set channel 1 division to '/2' for one octave down, or '/4' for two octaves down.",
+        "Patch SW3 OUT1 → mixer channel."
+      ],
+      "signalOut": "OUT1 — sub-octave of the input VCO, same waveform character.",
+      "hear": "A clean sub-octave that tracks the VCO 1:1. /2 gives one octave down, /4 gives two. Switching back to /1 returns the original pitch — great for bass thickening under a lead."
     },
     {
-      "name": "Mono into stereo field",
-      "patch": "Split a mono source across the two lanes, then route the outputs to a stereo mixer for a wide, deliberately switched field.",
-      "diagram": "SW3 Splice:\nVCO:\nMixer:\nOutput:\n\n- VCO (Out) -> SW3 Splice (A1)\n- VCO (Out) -> SW3 Splice (B1)\n- VCO (Out) -> SW3 Splice (A2)\n- VCO (Out) -> SW3 Splice (B2)\n- SW3 Splice (OUT1) -> Mixer (In 1)\n- SW3 Splice (OUT2) -> Mixer (In 2)\n- Mixer (Out) -> Output (In)"
+      "name": "Stereo ping-pong with one gate",
+      "patch": "Use the swap stereo mode to bounce a mono source between L and R at gate speed, synced to your clock.",
+      "steps": [
+        "Patch mono source → SW3 A1 and → SW3 B2 (so A1=source, B2=source).",
+        "Patch silence (or a second source) → SW3 B1 and → SW3 A2.",
+        "Set the stereo switch to 'swap'.",
+        "Set both channels' mode to 'H' (hard switch) — we want sharp rhythmic moves.",
+        "Patch a clock or rhythmic gate → D input.",
+        "Patch SW3 OUT1 → stereo mixer L, SW3 OUT2 → stereo mixer R."
+      ],
+      "signalOut": "OUT1 / OUT2 — hard-panned ping-pong of the source, following the gate.",
+      "hear": "Each gate pulse jumps the source from left to right speaker and back. Tempo-sync the gate for rhythmic panning; use a fast LFO for a tremolo-pan.",
+      "diagram": "SW3 Splice:\n* Stereo: swap\n* CH1 & CH2 mode: H\n\n- Source (Out) -> SW3 (A1)\n- Source (Out) -> SW3 (B2)\n- Clock (Out) >> SW3 (D)\n- SW3 (OUT1) -> Mixer (L)\n- SW3 (OUT2) -> Mixer (R)"
+    },
+    {
+      "name": "Gate from an audio-rate splice (ON output trick)",
+      "patch": "Turn the ON logic output into a rhythmic gate source derived from the music itself — no sequencer needed.",
+      "steps": [
+        "Patch a melodic source → SW3 A1.",
+        "Patch silence (unpatched) or a second drone → SW3 B1.",
+        "Set channel 1 mode to 'X', division to '/4', input select to 'Auto'.",
+        "Patch SW3 ON1 → envelope generator Trigger in.",
+        "Patch envelope → VCA CV controlling anything (a hi-hat, a reverb send)."
+      ],
+      "signalOut": "ON1 — +5V gate pulses every 4th zero-crossing of the source.",
+      "hear": "Rhythmic gates that lock to the melodic content feeding A1 — faster notes produce faster gates. A free 'groove follower' for triggering percussion or accents off a bassline."
     }
   ]
 }

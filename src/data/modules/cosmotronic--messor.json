@@ -2,12 +2,13 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
       "https://cosmotronic.nl/modules/messor/",
+      "https://www.modulargrid.net/e/cosmotronic-messor",
       "https://waveformmagazine.com/waveform-reviews/messor-cosmotronic/",
       "https://synthanatomy.com/2021/12/cosmotronic-messor-peradam-compressor-and-distortion-modules-with-side-chain.html",
-      "https://modulargrid.net/e/cosmotronic-messor",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=256446",
       "https://www.gearnews.com/cosmotronic-messor-and-peradam-stereo-compressor-and-side-chained-distortion/"
     ]
   },
@@ -16,18 +17,18 @@
   "manufacturer": "Cosmotronic",
   "hp": 8,
   "tags": ["COMPRESSOR", "VCA", "FILTER", "DISTORTION"],
-  "description": "Analog stereo VCA-based feed-forward compressor. Internal sidechain with switchable HP/LP filter, precision envelope follower, over-compression ratios, Warm tube saturation mode, and gain-reduction envelope output.",
+  "description": "Analog stereo VCA feed-forward compressor. Sidechain with HP/LP filter (10Hz–9kHz), ratios from off through limiting into over-compression, Warm tube-style soft-clip saturation, gain-reduction CV output, and a stereo VCA mode via Gain CV.",
   "controls": [
     {
       "name": "Threshold",
       "scope": "Global",
-      "description": "Sets the level above which compression engages. LED ring indicates crossing and gain reduction amount.",
+      "description": "Sets the level above which compression engages. LED ring indicates when signal crosses threshold and shows gain-reduction amount.",
       "detail": "LED ring feedback · illuminates when signal exceeds threshold"
     },
     {
       "name": "Ratio",
       "scope": "Global",
-      "description": "Compression ratio. Sweeps from off through normal ratios into limiting and past unity into over-compression, inverting transients.",
+      "description": "Compression ratio. Sweeps from off through normal ratios into limiting and past unity into negative/over-compression where signals above threshold are pushed below it.",
       "detail": "CCW: off · mid: 1:1 to ∞:1 · CW: negative ratios (over-compression)"
     },
     {
@@ -45,14 +46,14 @@
     {
       "name": "Gain",
       "scope": "Global",
-      "description": "Makeup gain post-compression. Full CCW mutes output, turning the stage into a CV-controlled stereo VCA via Gain CV.",
-      "detail": "CCW: mute / VCA mode · CW: +17dB · CV controllable"
+      "description": "Makeup gain post-compression. Full CCW mutes the output, turning the stage into a CV-controlled stereo VCA via Gain CV.",
+      "detail": "CCW: mute / VCA mode · CV controllable"
     },
     {
       "name": "Filter Cutoff",
       "scope": "Sidechain",
-      "description": "Cutoff for the sidechain filter that shapes what triggers compression. Lets kick/bass duck less or more depending on mode.",
-      "detail": "CV controllable · pairs with HP/LP mode switch"
+      "description": "Cutoff for the sidechain filter that shapes what triggers compression. Lets kick/bass duck more or less depending on mode.",
+      "detail": "10Hz – 9kHz · CV controllable · pairs with HP/LP mode switch"
     },
     {
       "name": "Filter Mode Switch",
@@ -63,43 +64,43 @@
     {
       "name": "Warm Switch",
       "scope": "Global",
-      "description": "Engages analog tube-style soft-clipping saturation on the output path. Adds harmonic thickness and progressive compression.",
+      "description": "Engages analog tube-emulation soft-clipping saturation on the output path. Adds harmonic thickness and progressive compression.",
       "detail": "Pure / Warm toggle"
     },
     {
       "name": "Bypass Switch",
       "scope": "Global",
-      "description": "Routes input directly to output, skipping compressor and Warm stage for A/B comparison.",
+      "description": "Routes input directly to output, skipping compressor and Warm stage for A/B comparison or for using Messor purely as an envelope follower via GR OUT.",
       "detail": "Bypass / Active toggle"
     }
   ],
   "inputs": [
     { "name": "IN L / IN R", "description": "Stereo audio input. Mono sources can patch either jack." },
-    { "name": "SC IN", "description": "External sidechain input. Overrides internal sidechain path — use for classic kick-ducks-bass patches." },
+    { "name": "SC IN", "description": "External sidechain input. Overrides the internal sidechain path — use for classic kick-ducks-bass patches." },
     { "name": "ATK CV", "description": "CV over attack time." },
     { "name": "REL CV", "description": "CV over release time." },
     { "name": "FLT CV", "description": "CV over sidechain filter cutoff." },
-    { "name": "GAIN CV", "description": "CV over makeup gain. With Gain knob fully CCW, becomes the CV input of a stereo VCA.", "voltage": "0–5V typical" }
+    { "name": "GAIN CV", "description": "CV over makeup gain. With Gain knob fully CCW, becomes the CV input of a clean stereo VCA." }
   ],
   "outputs": [
     { "name": "OUT L / OUT R", "description": "Stereo compressed (or bypassed) audio output." },
-    { "name": "GR OUT", "description": "Gain-reduction envelope as CV. Mirrors the internal ducking curve for driving other VCAs, filters, or standalone envelope-follower duties." }
+    { "name": "GR OUT", "description": "Gain-reduction envelope as CV. Mirrors the internal ducking curve for driving other VCAs, filters, or for using Messor as a standalone envelope follower." }
   ],
   "behaviors": [
     {
-      "name": "Over-compression",
+      "name": "Over-compression / negative ratios",
       "trigger": "Ratio past limiting (full CW)",
-      "description": "Past infinite ratio, Messor inverts the transient envelope — loud sections get quieter than quiet ones. Reshapes drum transients into synthetic pumping or reversed-attack shapes."
+      "description": "Past infinite ratio, signals above threshold are reduced below threshold — loud sections become quieter than quiet ones. Reshapes drum transients into reversed-attack or synthetic pumping shapes."
     },
     {
       "name": "Sidechain filter as key-EQ",
       "trigger": "HP/LP switch + Cutoff",
-      "description": "Filtering the detection path lets specific frequency bands trigger compression. HP at 200Hz ignores bass, so kick/bass don't over-compress. LP isolates lows for classic side-chain ducking."
+      "description": "Filtering the detection path lets specific frequency bands trigger compression. HP at ~200Hz ignores bass so kick/bass don't over-trigger. LP isolates lows for classic kick-driven ducking."
     },
     {
       "name": "Stereo VCA mode",
       "trigger": "Gain knob fully CCW + CV at GAIN CV",
-      "description": "With makeup at zero, GAIN CV opens the output VCA directly. Messor becomes a clean stereo VCA with threshold/ratio set to taste — compression optional."
+      "description": "With makeup at zero, GAIN CV opens the output VCA directly. Messor becomes a clean stereo VCA — compression optional."
     },
     {
       "name": "External sidechain key",
@@ -109,53 +110,130 @@
     {
       "name": "Gain-reduction envelope as modulation",
       "trigger": "GR OUT patched to any CV destination",
-      "description": "GR OUT emits the compression envelope as a usable CV. Patch into filter cutoff or VCA CV to duck other voices in lockstep with the compressor, or use Messor as a dedicated envelope follower."
+      "description": "GR OUT emits the compression envelope as usable CV. Patch into filter cutoff or VCA CV to duck other voices in lockstep, or use Messor purely as an envelope follower (Bypass on)."
     },
     {
       "name": "Warm saturation",
       "trigger": "Warm switch engaged",
-      "description": "Adds progressive soft-clipping tube emulation. Subtle on quiet signals, thickens as levels rise. Stacks with heavy compression to glue a full mix or drum bus."
+      "description": "Adds progressive tube-style soft-clipping. Subtle on quiet signals, thickens as levels rise. Stacks with heavy compression to glue a full mix or drum bus."
     }
   ],
   "patchIdeas": [
     {
       "name": "Four-on-floor kick duck",
-      "patch": "Stereo mix → IN L/R · kick trigger → external drum voice → SC IN · filter to LP ~100Hz · attack fast · release ~200ms · full mix pumps under kick",
-      "diagram": "Messor:\n* Filter: LP\n* Attack: fast\n* Release: ~200ms\n* Ratio: 4:1\n\nMixer:\n\nKick:\n\n- Mixer (Out L) -> Messor (IN L)\n- Mixer (Out R) -> Messor (IN R)\n- Kick (Out) -> Messor (SC IN) // key signal\n- Messor (OUT L) -> Output (In L)\n- Messor (OUT R) -> Output (In R)"
+      "patch": "Classic side-chain pump: kick triggers compression on a stereo mix, ducking everything under each beat.",
+      "steps": [
+        "Set Filter switch to LP, Filter Cutoff around 9 o'clock (~100Hz).",
+        "Set Attack fast (~8 o'clock), Release ~200ms (noon), Ratio ~3 o'clock (heavy).",
+        "Threshold around noon — adjust until LED ring shows clear ducking on each kick.",
+        "Patch your stereo mix → IN L / IN R.",
+        "Patch the kick voice (or its trigger fed through a VCA) → SC IN.",
+        "Take OUT L / OUT R to your output / next stage."
+      ],
+      "signalOut": "OUT L / OUT R — stereo mix audio with rhythmic ducking. Patch into your master bus.",
+      "hear": "Every kick hit briefly ducks the rest of the mix and breathes back over ~200ms — the classic 4/4 sidechain pump.",
+      "diagram": "Messor:\n* Filter: LP\n* Filter Cutoff: ~100Hz\n* Attack: fast\n* Release: ~200ms\n* Ratio: 4:1\n\nMixer:\n\nKick:\n\n- Mixer (Out L) -> Messor (IN L)\n- Mixer (Out R) -> Messor (IN R)\n- Kick (Out) -> Messor (SC IN) // key signal\n- Messor (OUT L) -> Output (In L)\n- Messor (OUT R) -> Output (In R)"
     },
     {
       "name": "Messor as envelope follower",
-      "patch": "Percussion loop → IN · Bypass ON (audio unaffected) · GR OUT → external filter cutoff · filter breathes with the drum dynamics",
+      "patch": "Use Messor purely as an envelope follower — audio passes via Bypass, GR OUT modulates a filter elsewhere.",
+      "steps": [
+        "Flip Bypass switch ON (audio passes through unaffected).",
+        "Set Threshold low, Ratio high, Attack ~10ms, Release ~150ms — drives GR OUT hard.",
+        "Patch the percussion source → IN L.",
+        "Patch GR OUT → external filter cutoff CV (or any CV destination).",
+        "Adjust Threshold so GR OUT swings on every drum hit."
+      ],
+      "signalOut": "GR OUT — gain-reduction envelope as CV. Patch into filter cutoff, VCA CV, or anywhere you want drum dynamics to modulate.",
+      "hear": "The external filter (or destination) pulses in lockstep with the drum loop — ducking on each hit, recovering at the release rate.",
       "diagram": "Messor:\n* Bypass: ON\n* Attack: ~10ms\n* Release: ~150ms\n* Ratio: heavy\n\nFilter:\n\nDrums:\n\n- Drums (Out) -> Messor (IN L)\n- Messor (GR OUT) >> Filter (Cutoff) // drum envelope modulates pad filter"
     },
     {
       "name": "Transient inverter",
-      "patch": "Snare → IN · Ratio full CW into over-compression · Attack medium · transient envelope flips — attack is quieter than the tail, reversed-snare effect",
+      "patch": "Push Ratio past limiting into negative territory so a snare's attack becomes quieter than its tail — a reversed-snare effect.",
+      "steps": [
+        "Turn Ratio fully clockwise (into over-compression / negative ratios).",
+        "Set Attack medium (~30ms) so the initial transient gets through before the envelope clamps.",
+        "Set Release ~100ms, Threshold low so most of the signal sits above it.",
+        "Patch snare → IN L.",
+        "Take OUT L to your output and listen for the inverted shape."
+      ],
+      "signalOut": "OUT L — snare audio with inverted dynamics: attack quieter than tail.",
+      "hear": "The snare's crack is squashed flat while the tail swells back up — a backwards/swelling shape, not a normal hit.",
       "diagram": "Messor:\n* Ratio: full CW (over-compression)\n* Attack: ~30ms\n* Release: ~100ms\n* Threshold: low\n\nSnare:\n\n- Snare (Out) -> Messor (IN L)\n- Messor (OUT L) -> Output (In)"
     },
     {
       "name": "Clean stereo VCA",
-      "patch": "Stereo pad → IN L/R · Gain full CCW · envelope → GAIN CV · Ratio off · Messor passes audio through the VCA stage only",
+      "patch": "Bypass the compressor and use Messor as a clean CV-controlled stereo VCA via the Gain CV input.",
+      "steps": [
+        "Turn Gain fully CCW (mutes the output until GAIN CV opens it).",
+        "Turn Ratio fully CCW (compressor off).",
+        "Leave Bypass off.",
+        "Patch a stereo source → IN L / IN R.",
+        "Patch an envelope (or LFO) → GAIN CV.",
+        "Take OUT L / OUT R."
+      ],
+      "signalOut": "OUT L / OUT R — stereo audio amplitude-modulated by GAIN CV. Acts as a clean stereo VCA.",
+      "hear": "Audio is silent at rest; each envelope rise opens both channels in lockstep — like a normal VCA but stereo, with Messor's clean signal path.",
       "diagram": "Messor:\n* Gain: full CCW\n* Ratio: OFF\n* Bypass: OFF\n\nEnvelope:\n\nPad:\n\n- Pad (Out L) -> Messor (IN L)\n- Pad (Out R) -> Messor (IN R)\n- Envelope (Out) >> Messor (GAIN CV) // opens stereo VCA\n- Messor (OUT L) -> Output (In L)\n- Messor (OUT R) -> Output (In R)"
     },
     {
-      "name": "Pumping sidechain filter",
-      "patch": "Pad → IN · LFO → FLT CV (audio rate-ish) · sidechain detection sweeps the spectrum, compressor ducks and resumes as different bands cross threshold",
+      "name": "Pumping sidechain filter sweep",
+      "patch": "Modulate the sidechain filter cutoff with an LFO so different frequency bands trigger compression over time.",
+      "steps": [
+        "Set Filter switch to HP, Filter Cutoff to noon as a starting point.",
+        "Set Ratio moderate (~3:1), Attack fast, Release ~150ms.",
+        "Patch a pad → IN L.",
+        "Patch a slow LFO → FLT CV (start with low depth via the LFO's level).",
+        "Set Threshold so the pad ducks intermittently as the cutoff sweeps.",
+        "Take OUT L."
+      ],
+      "signalOut": "OUT L — pad audio with shifting, sweep-driven ducking.",
+      "hear": "The pad ducks and recovers at uneven intervals as the LFO opens the sidechain to different parts of the spectrum — rhythmic but not strictly tempo-locked.",
       "diagram": "Messor:\n* Filter: HP\n* Ratio: moderate\n* Attack: fast\n\nLFO:\n\nPad:\n\n- Pad (Out L) -> Messor (IN L)\n- LFO (Out) >> Messor (FLT CV) // sweeping sidechain\n- Messor (OUT L) -> Output (In)"
     },
     {
       "name": "Drum-bus glue",
-      "patch": "Drum submix → IN L/R · Warm ON · Ratio 2:1 · Attack medium · Release fast · gentle threshold · drums cohere and breathe together",
+      "patch": "Gentle stereo bus compression with Warm engaged — cohere a drum submix without obvious pumping.",
+      "steps": [
+        "Engage the Warm switch.",
+        "Set Ratio ~2:1 (just past unity), Attack medium (~10ms), Release fast.",
+        "Set Threshold so the LED ring shows 2–4 dB of gain reduction on peaks (light touch).",
+        "Patch drum submix L/R → IN L / IN R.",
+        "Take OUT L / OUT R."
+      ],
+      "signalOut": "OUT L / OUT R — drum submix, glued and saturated. Patch into the master bus.",
+      "hear": "Drums sit tighter together with subtle harmonic thickness from Warm; transients are softened, not crushed.",
       "diagram": "Messor:\n* Warm: ON\n* Ratio: 2:1\n* Attack: medium\n* Release: fast\n* Threshold: light touch\n\nMixer:\n\n- Mixer (Out L) -> Messor (IN L)\n- Mixer (Out R) -> Messor (IN R)\n- Messor (OUT L) -> Output (In L)\n- Messor (OUT R) -> Output (In R)"
     },
     {
-      "name": "Rhythmic filter ducking",
-      "patch": "Pad → IN · Clock → SC IN via AD envelope · every clock tick ducks the pad · HP sidechain so the tick doesn't pre-open the detector",
+      "name": "Rhythmic clock-driven ducking",
+      "patch": "Use a clock through an AD envelope as an audio-rate key signal to duck a pad on every tick.",
+      "steps": [
+        "Patch a clock → AD envelope trigger.",
+        "Set the AD short (a few ms attack, ~50ms decay) so it produces a percussive pulse.",
+        "Set Messor: Filter HP, Cutoff ~200Hz (so the bass of the pulse doesn't pre-trigger), Attack fast, Release ~300ms, Ratio heavy.",
+        "Patch AD output → SC IN (acts as the key signal).",
+        "Patch pad → IN L.",
+        "Set Threshold so each clock tick produces a clean duck. Take OUT L."
+      ],
+      "signalOut": "OUT L — pad audio ducked on every clock tick.",
+      "hear": "The pad pumps in time with the clock — tighter and more controllable than using a raw kick because the AD shapes the key pulse.",
       "diagram": "Messor:\n* Filter: HP\n* Ratio: heavy\n* Attack: fast\n* Release: ~300ms\n\nClock:\n\nAD:\n\nPad:\n\n- Clock (Out) t> AD (Trig)\n- AD (Out) -> Messor (SC IN) // audio-shaped key\n- Pad (Out L) -> Messor (IN L)\n- Messor (OUT L) -> Output (In)"
     },
     {
       "name": "Parallel NY drum squash",
-      "patch": "Drum loop → Mult → IN and direct · Messor heavy over-compression + Warm · blend Messor output with dry loop at mixer · aggressive NYC-style parallel bus",
+      "patch": "Crush a drum loop in parallel with Warm engaged, then blend with the dry signal at a mixer for an aggressive NYC-style bus.",
+      "steps": [
+        "Mult the drum loop into two paths.",
+        "Send path 1 dry → mixer channel 1.",
+        "Send path 2 → IN L. Set Messor: Ratio past limiting, Warm ON, Attack fast, Release fast, Threshold low.",
+        "Patch Messor OUT L → mixer channel 2 (the crushed parallel signal).",
+        "Blend: start with mostly dry, then push the crushed channel up until it adds body and grit without dominating.",
+        "Take the mixer output."
+      ],
+      "signalOut": "Mixer output — dry drums plus a parallel layer of squashed, saturated drums.",
+      "hear": "The dry transients stay sharp, while the parallel crushed layer fills in sustain and saturation — drums become bigger, denser, and more aggressive without losing punch.",
       "diagram": "Messor:\n* Ratio: past limiting\n* Warm: ON\n* Attack: fast\n* Release: fast\n\nMult:\n\nMixer:\n\nDrums:\n\n- Drums (Out) -> Mult (In)\n- Mult (Out 1) -> Messor (IN L)\n- Mult (Out 2) -> Mixer (In 1) // dry\n- Messor (OUT L) -> Mixer (In 2) // crushed\n- Mixer (Out) -> Output (In)"
     }
   ]

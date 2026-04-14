@@ -2,12 +2,13 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
-      "https://modulargrid.com/e/acid-rain-technology-ziggurat",
-      "https://www.detroitmodular.com/products/acid-rain-technology-ziggurat",
-      "https://moogaudio.com/products/acid-rain-technology-ziggurat-quad-voltage-quantizer",
-      "https://www.signalsounds.com/acid-rain-technology-ziggurat-eurorack-quad-quantiser-module/"
+      "https://www.ctrl-mod.com/products/acid-rain-technology-ziggurat",
+      "https://www.signalsounds.com/acid-rain-technology-ziggurat-eurorack-quad-quantiser-module/",
+      "https://modulargrid.net/e/acid-rain-technology-ziggurat",
+      "https://schneidersladen.de/en/acid-rain-technology-ziggurat",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=298611"
     ]
   },
   "slug": "acid-rain-technology--ziggurat",
@@ -15,144 +16,198 @@
   "manufacturer": "Acid Rain Technology",
   "hp": 14,
   "tags": ["QUANTIZER", "SEQUENCER", "UTILITY", "SLEW"],
-  "description": "Quad voltage quantizer for turning CV and gates into pitch. Four independent channels with per-channel masks, slew, root, offset, range and chained note-sequence modes.",
+  "description": "Quad voltage quantizer for turning CV and gates into pitch. Four independent channels with per-channel masks, slew, root, offset, range and chained note-sequence modes. 14HP, 25mm deep.",
   "controls": [
     {
       "name": "Channel Buttons 1-4",
       "scope": "Channels",
-      "description": "Select and edit the four quantizer channels.",
-      "detail": "hold together for 1s to link channels"
+      "description": "Select and edit one of the four quantizer channels.",
+      "detail": "hold two or more for 1s to link"
     },
     {
       "name": "One-Octave Note Mask",
       "scope": "Per channel",
-      "description": "Turns notes on and off to create the quantization mask.",
+      "description": "Keyboard-style button grid. Turns each chromatic note on or off to build the quantization mask.",
       "detail": "custom mask per channel"
     },
     {
       "name": "Save / Load",
       "scope": "Global",
-      "description": "Stores and recalls complete module states.",
+      "description": "Stores and recalls the complete state of all four channels — masks, slew, root, offset, range and chains.",
       "detail": "35 slots · 5 banks of 7"
     },
     {
       "name": "Slew",
       "scope": "Per channel",
-      "description": "Adds slew to notes in the selected mask.",
-      "detail": "0.1s - 5s"
+      "description": "Per-note slew — you can enable slew on individual notes inside the mask so only chosen pitches glide.",
+      "detail": "0.1s – 5s"
     },
     {
       "name": "Root",
       "scope": "Per channel",
-      "description": "Shifts the channel output by semitone offset to change key.",
+      "description": "Shifts the channel output by a semitone offset to change musical key.",
       "detail": "semitone offset"
     },
     {
       "name": "Offset",
       "scope": "Per channel",
-      "description": "Offsets the input before quantization.",
+      "description": "Offsets the input CV by semitones before quantization — transposes where the input lands on the mask.",
       "detail": "semitone offset"
     },
     {
       "name": "Range",
       "scope": "Per channel",
-      "description": "Sets the channel output span in octaves.",
-      "detail": "-4V to +8V"
+      "description": "Sets the output voltage span. Press the lower then upper bound of the keyboard to define it.",
+      "detail": "–4V to +8V · up to 12 octaves"
     },
     {
       "name": "Chain",
       "scope": "Per channel",
-      "description": "Enters a step sequence of notes for SH-101-style stepping.",
-      "detail": "gate steps forward · 0V-5V scans"
+      "description": "Turns the channel into an SH-101 style step sequencer — enter a series of notes that advance on gate or scan with CV.",
+      "detail": "gate advances · 0V–5V scans"
     },
     {
       "name": "Mod Assign",
       "scope": "Global",
-      "description": "Assigns the mod CV input to the main edit parameters.",
+      "description": "Routes the Mod CV input to any of the main edit parameters for hands-free modulation.",
       "detail": "load · slew · root · offset · range"
     }
   ],
   "inputs": [
     {
       "name": "Channel In 1-4",
-      "description": "Four independent CV/gate inputs to be quantized.",
+      "description": "Four independent CV/gate inputs — each one is quantized by its matching channel.",
       "voltage": "CV / gate"
     },
     {
       "name": "Chain Gate In",
-      "description": "Steps the chain mode one note at a time.",
+      "description": "When the selected channel is in Chain mode, each gate advances the chain by one note.",
       "voltage": "gate"
     },
     {
       "name": "Chain CV In",
-      "description": "Scans the chain sequence in either direction with 0V-5V control.",
-      "voltage": "0V - 5V"
+      "description": "Scans through the chain sequence bidirectionally — 0V plays the first note, +5V plays the last.",
+      "voltage": "0V – 5V"
     },
     {
       "name": "Mod CV In",
-      "description": "Dynamically controls the assigned edit parameter.",
+      "description": "Dynamic CV input routed by Mod Assign to slew, root, offset, range or load.",
       "voltage": "CV"
     }
   ],
   "outputs": [
     {
       "name": "Channel Out 1-4",
-      "description": "Quantized pitch outputs for the four channels.",
-      "voltage": "pitch"
+      "description": "Four quantized pitch outputs, one per channel. Output span set by each channel's Range setting.",
+      "voltage": "–4V to +8V · 1V/oct"
     }
   ],
   "behaviors": [
     {
       "name": "Independent quantizer channels",
       "trigger": "route a CV source into a channel input",
-      "description": "Each channel quantizes independently, so one module can turn four different CV sources into four coordinated pitch lanes."
+      "description": "Each of the four channels quantizes independently with its own mask, root, offset, range, slew and chain — one module can drive four coordinated pitch lanes."
     },
     {
       "name": "Custom note masks",
       "trigger": "edit the one-octave keyboard",
-      "description": "Per-channel note masks define which notes are available to the quantizer. That lets a channel move between sparse scales, chromatic masks or a hand-built melody set."
+      "description": "Per-channel note masks define which chromatic notes are available. Channels can move between sparse scales, chromatic masks, or a hand-built melodic note set."
     },
     {
       "name": "Channel linking",
-      "trigger": "hold multiple channel buttons for 1 second",
-      "description": "Linked channels share edits, which makes it practical to build chordal or harmonized behaviors without recreating the same mask four times."
+      "trigger": "hold two or more channel buttons for 1 second",
+      "description": "Linked channels share parameter edits, so you can build chordal or harmonized behaviors without recreating the same mask in each channel."
     },
     {
       "name": "Per-note slew",
-      "trigger": "enable slew on a channel",
-      "description": "Slew smooths transitions between quantized notes. It turns the module into a gliding melodic processor rather than a hard-step quantizer."
+      "trigger": "enable slew on a note in the mask",
+      "description": "Slew is assigned per note rather than per channel — glide only the chosen pitches, leaving the rest to snap. Useful for hammer-on-style melodies where only certain intervals bend."
     },
     {
       "name": "Chain sequencer mode",
-      "trigger": "enter Chain mode",
-      "description": "Chain mode steps through a note series with gates or scans it with 0V-5V CV, behaving like a compact SH-101-style melody sequencer."
+      "trigger": "enter Chain mode on a channel",
+      "description": "Chain mode replaces the quantizer with an SH-101 style note sequence. A gate at Chain Gate In advances one step; a 0–5V CV at Chain CV In scans the entire sequence in either direction."
+    },
+    {
+      "name": "Assignable Mod CV",
+      "trigger": "assign Mod CV to a parameter",
+      "description": "One Mod CV input routes to any main parameter (load, slew, root, offset, range). That lets you modulate masks, keys or even recall presets without adding sequencers."
     },
     {
       "name": "Stored presets",
       "trigger": "save to one of 35 slots",
-      "description": "The module remembers complete states, so a performer can jump between masks, ranges and chain programs without rebuilding them by hand."
+      "description": "35 preset slots in 5 banks of 7 remember the complete module state — every mask, range, chain and assignment — so a performer can jump between full setups instantly."
     }
   ],
   "patchIdeas": [
     {
       "name": "Four-channel pitch quantizer",
-      "patch": "Four CV sources into Channel In 1-4 · mask each lane to a related scale · Channel Out 1-4 to four oscillators · classic four-voice quantized harmony.",
-      "diagram": "Ziggurat:\n* Channel 1: mask = major\n* Channel 2: mask = minor\n* Channel 3: mask = pentatonic\n* Channel 4: mask = chromatic\n\nCV 1:\nCV 2:\nCV 3:\nCV 4:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\n\n- CV 1 (Out) >> Ziggurat (Channel In 1-4)\n- CV 2 (Out) >> Ziggurat (Channel In 1-4)\n- CV 3 (Out) >> Ziggurat (Channel In 1-4)\n- CV 4 (Out) >> Ziggurat (Channel In 1-4)\n- Ziggurat (Channel Out 1-4) p> VCO 1 (V/Oct)\n- Ziggurat (Channel Out 1-4) p> VCO 2 (V/Oct)\n- Ziggurat (Channel Out 1-4) p> VCO 3 (V/Oct)\n- Ziggurat (Channel Out 1-4) p> VCO 4 (V/Oct)"
+      "patch": "Four CV sources into Channel In 1-4, each channel masked to a related scale, Channel Out 1-4 driving four oscillators — classic four-voice quantized harmony from one module.",
+      "steps": [
+        "Patch Random/LFO/Seq source 1 → Ziggurat Channel In 1, source 2 → Channel In 2, source 3 → Channel In 3, source 4 → Channel In 4.",
+        "Press Channel Button 1 — on the one-octave keyboard, enable the notes C, D, E, G, A (major pentatonic).",
+        "Press Channel Button 2 — enable C, Eb, F, G, Bb (minor pentatonic).",
+        "Press Channel Button 3 — enable the same pentatonic as channel 2 and set Root to +7 semitones for a fifth above.",
+        "Press Channel Button 4 — enable all 12 notes (chromatic) for a free lane.",
+        "Set each channel's Range to 2 octaves so voices stay in a usable register.",
+        "Patch Channel Out 1 → VCO 1 V/Oct, Channel Out 2 → VCO 2 V/Oct, Channel Out 3 → VCO 3 V/Oct, Channel Out 4 → VCO 4 V/Oct.",
+        "Patch each VCO → its own VCA/filter → mixer → output."
+      ],
+      "signalOut": "Channel Out 1-4 — four 1V/oct pitch CVs, each spanning up to 12 octaves of –4V to +8V.",
+      "hear": "Four simultaneous voices that all fit together harmonically: random wobbles on lane 4 stay chromatic glue while lanes 1-3 lock into major/minor pentatonic territory. Retune a root to shift the whole stack into a new key.",
+      "diagram": "Ziggurat:\n* CH1 mask: major pentatonic\n* CH2 mask: minor pentatonic\n* CH3 mask: minor pent + Root +7\n* CH4 mask: chromatic\n\nCV1:\nCV2:\nCV3:\nCV4:\nVCO1:\nVCO2:\nVCO3:\nVCO4:\nMixer:\n\n- CV1 (Out) >> Ziggurat (Channel In 1)\n- CV2 (Out) >> Ziggurat (Channel In 2)\n- CV3 (Out) >> Ziggurat (Channel In 3)\n- CV4 (Out) >> Ziggurat (Channel In 4)\n- Ziggurat (Channel Out 1) p> VCO1 (V/Oct)\n- Ziggurat (Channel Out 2) p> VCO2 (V/Oct)\n- Ziggurat (Channel Out 3) p> VCO3 (V/Oct)\n- Ziggurat (Channel Out 4) p> VCO4 (V/Oct)\n- VCO1 (Out) -> Mixer (In)\n- VCO2 (Out) -> Mixer (In)\n- VCO3 (Out) -> Mixer (In)\n- VCO4 (Out) -> Mixer (In)\n- Mixer (Out) -> Output (In)"
     },
     {
       "name": "Slewed mask melody",
-      "patch": "Random CV into one channel · Slew set midrange · root note shifted to taste · output to a VCO and VCA chain · quantized melody glides between allowed notes instead of jumping.",
-      "diagram": "Ziggurat:\n* Slew: mid\n* Root: +0\n\nRandom:\nVCO:\nVCA:\nEnvelope:\n\n- Random (Out) >> Ziggurat (Channel In 1-4)\n- Ziggurat (Channel Out 1-4) p> VCO (V/Oct)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
+      "patch": "Random CV into one channel, per-note slew on selected pitches, root shifted to taste — a melody that glides between certain notes and snaps between others.",
+      "steps": [
+        "Patch a slow random/LFO CV source → Ziggurat Channel In 1.",
+        "Press Channel Button 1 — enable C, D, E, G, A on the one-octave keyboard.",
+        "Enter the Slew menu and turn slew ON for the notes D and G only — about 12:00 (roughly 1-2 seconds glide).",
+        "Set Root to +5 semitones to center the lane on F.",
+        "Set Range to 2 octaves so the melody sits in a playable register.",
+        "Patch Ziggurat Channel Out 1 → VCO V/Oct.",
+        "Patch VCO (sawtooth) → VCA (In).",
+        "Trigger a gate source → Envelope → VCA CV for note articulation.",
+        "Patch VCA (Out) → your mixer or output."
+      ],
+      "signalOut": "Channel Out 1 — a 1V/oct pitch CV that snaps between most mask notes but glides smoothly through D and G.",
+      "hear": "A half-robotic, half-vocal melody: most notes click into place, but every time the sequence lands on D or G the pitch scoops into it. Turning slew on across more notes turns the line into a lyra-like glide.",
+      "diagram": "Ziggurat:\n* CH1 mask: C D E G A (slew on D, G)\n* Root: +5\n* Range: 2 oct\n\nRandom:\nVCO:\nEnv:\nVCA:\n\n- Random (Out) >> Ziggurat (Channel In 1)\n- Ziggurat (Channel Out 1) p> VCO (V/Oct)\n- VCO (Saw) -> VCA (In)\n- Gate (Trig) g> Env (Trig)\n- Env (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
       "name": "SH-101 style chain",
-      "patch": "Gate to Chain Gate In · 0V-5V CV to Chain CV In · enter a short note series · chain steps through the programmed notes like a compact melody sequencer.",
-      "diagram": "Ziggurat:\n* Chain: on\n* Range: 2 octaves\n\nClock:\nCV Source:\nVCO:\n\n- Clock (Out) g> Ziggurat (Chain Gate In)\n- CV Source (Out) >> Ziggurat (Chain CV In)\n- Ziggurat (Channel Out 1-4) p> VCO (V/Oct)"
+      "patch": "Chain mode turns channel 1 into a stepped melody sequencer — a clock advances the notes while an external 0-5V CV can scan the sequence forward or backward.",
+      "steps": [
+        "Press Channel Button 1 and enter Chain mode on the channel.",
+        "Enter a sequence of notes by tapping the keyboard — e.g. C, E, G, B, A, D, C, F (8 notes).",
+        "Set Range to 2 octaves so jumps stay musical.",
+        "Patch a clock → Ziggurat Chain Gate In — each clock advances the chain by one note.",
+        "Optional: patch a slow LFO or envelope (0-5V) → Ziggurat Chain CV In to scan the whole sequence; 0V plays the first note, +5V plays the last.",
+        "Patch Ziggurat Channel Out 1 → VCO V/Oct.",
+        "Patch VCO → filter → VCA → output.",
+        "Mult the same clock → your envelope trigger for per-step articulation."
+      ],
+      "signalOut": "Channel Out 1 — a stepped pitch CV that advances through the programmed Chain notes, 1V/oct.",
+      "hear": "A classic SH-101-style melodic run: each clock pulse hops to the next programmed note. Replace the clock with an LFO on the Chain CV In and the sequence sweeps back and forth like a tape scrub.",
+      "diagram": "Ziggurat:\n* CH1 Chain: C E G B A D C F\n* Range: 2 oct\n\nClock:\nLFO:\nVCO:\nFilter:\nVCA:\n\n- Clock (Out) g> Ziggurat (Chain Gate In)\n- LFO (Out) >> Ziggurat (Chain CV In) // optional scan\n- Ziggurat (Channel Out 1) p> VCO (V/Oct)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Clock (Out) g> Env (Trig)\n- Env (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
-      "name": "Linked harmony block",
-      "patch": "Link channels 1 and 2 · identical mask on both · modulate Root with slow CV · two outputs move as a unified harmonic pair while channels 3 and 4 stay free.",
-      "diagram": "Ziggurat:\n* Channel 1-2: linked\n* Root: fixed\n\nLFO:\nVCO 1:\nVCO 2:\n\n- LFO (Out) >> Ziggurat (Mod CV In)\n- Ziggurat (Channel Out 1-4) p> VCO 1 (V/Oct)\n- Ziggurat (Channel Out 1-4) p> VCO 2 (V/Oct)"
+      "name": "Linked harmony pair",
+      "patch": "Link channels 1 and 2 so they share a mask; offset channel 2's Root by a third for a parallel harmony voice while channels 3 and 4 remain free for bass and texture.",
+      "steps": [
+        "Press Channel Button 1 — build a major scale mask (C D E F G A B).",
+        "Hold Channel Button 1 and Channel Button 2 together for 1 second — the LEDs confirm the channels are linked.",
+        "Release; channel 2 now mirrors channel 1's mask and edits.",
+        "Select channel 2 alone and set Root to +4 semitones — a major third above channel 1.",
+        "Patch your sequencer pitch CV → Ziggurat Channel In 1, and mult the same CV → Channel In 2.",
+        "Patch Channel Out 1 → VCO 1 V/Oct, Channel Out 2 → VCO 2 V/Oct.",
+        "Assign Mod CV to Root and patch a slow LFO → Ziggurat Mod CV In to modulate the shared key.",
+        "Send both VCOs to a mixer → output."
+      ],
+      "signalOut": "Channel Out 1 + Channel Out 2 — two 1V/oct pitch CVs in a parallel harmonic interval.",
+      "hear": "A constant major-third harmony above your melody that stays in-scale because both lanes share the same mask. The slow LFO on Root drifts the key by semitones, so the harmony transposes as a unit without losing tuning.",
+      "diagram": "Ziggurat:\n* CH1+CH2 linked, major mask\n* CH2 Root: +4\n* Mod Assign: Root\n\nSeq:\nLFO:\nVCO1:\nVCO2:\nMixer:\n\n- Seq (Pitch) p> Ziggurat (Channel In 1)\n- Seq (Pitch) p> Ziggurat (Channel In 2) // multed\n- LFO (Out) >> Ziggurat (Mod CV In)\n- Ziggurat (Channel Out 1) p> VCO1 (V/Oct)\n- Ziggurat (Channel Out 2) p> VCO2 (V/Oct)\n- VCO1 (Out) -> Mixer (In)\n- VCO2 (Out) -> Mixer (In)\n- Mixer (Out) -> Output (In)"
     }
   ]
 }

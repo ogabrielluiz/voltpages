@@ -2,160 +2,230 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
+    "firmwareVersion": "Phazerville Suite (O.R.N.8 / Quadrants)",
     "sources": [
       "https://www.cctv.fm/product-page/ornament-and-crime-v4-1-diy-kit",
-      "https://www.cctv.fm/blog",
+      "https://www.cctv.fm/post/ornament-and-crime-v4-1-build-guide",
+      "https://github.com/PaulStoffregen/O_C_T41",
+      "https://firmware.phazerville.com/",
       "https://firmware.phazerville.com/Quadrants",
-      "https://firmware.phazerville.com/Setup-About"
+      "https://firmware.phazerville.com/Setup-About",
+      "https://ornament-and-cri.me/",
+      "https://www.modwiggler.com/forum/viewtopic.php?t=280365",
+      "https://modulargrid.net/e/cctv-ornament-crime-v4-1"
     ]
   },
   "slug": "cctv--ornament-crime-v41",
   "name": "Ornament and Crime v4.1",
   "manufacturer": "CCTV",
   "hp": 10,
-  "tags": ["UTILITY", "SEQUENCER", "CLOCK", "QUANTIZER", "MIDI"],
-  "description": "Phazerville-ready O.C. v4.1 DIY kit with eight CV inputs, eight CV outputs, dual audio I/O and expansion for triggers, USB and MIDI. Runs four applets at once on Teensy 4.1 hardware.",
+  "tags": ["UTILITY", "SEQUENCER", "CLOCK", "QUANTIZER", "MIDI", "EFFECTS"],
+  "description": "10HP Teensy 4.1 remake of Ornament and Crime with 8 CV in, 8 CV out and stereo audio I/O. Runs Phazerville Suite — original O_C apps plus Hemispheres applets, with Quadrants hosting four applets at once.",
   "controls": [
     {
       "name": "Left Encoder",
       "scope": "Global",
-      "description": "Navigates pages and coarse parameters; press actions depend on the active applet or setup screen.",
-      "detail": "rotate for pagination / coarse edits · press for select / edit"
+      "description": "Rotate to scroll the app/applet list, switch pages and make coarse parameter edits. Press to select an entry or enter the calibration routine from the Setup/About screen.",
+      "detail": "rotate = page / coarse · press = select / enter calibration"
     },
     {
       "name": "Right Encoder",
       "scope": "Global",
-      "description": "Moves the cursor and fine-adjusts parameters; long-press actions enter menus or confirm setup changes.",
-      "detail": "rotate for cursor / fine edits · press for select / confirm"
+      "description": "Moves the on-screen cursor and makes fine edits. Long-press to return to the App Menu from any applet; on Setup/About a press resets calibration to defaults (with confirm).",
+      "detail": "rotate = cursor / fine · press = confirm · long-press = App Menu"
     },
     {
-      "name": "A",
-      "scope": "Quadrants / ORN8 mode",
-      "description": "Selects the northwest applet or acts as the first action button in the current app.",
-      "detail": "press to focus the top-left slot"
+      "name": "A button (NW)",
+      "scope": "Quadrants",
+      "description": "Brings the north-west applet into focus in split view. Double-click to open that applet full-screen for help/config or to swap the loaded applet.",
+      "detail": "press = focus NW · double-click = full-screen / change applet"
     },
     {
-      "name": "B",
-      "scope": "Quadrants / ORN8 mode",
-      "description": "Selects the northeast applet or the second action button in the current app.",
-      "detail": "press to focus the top-right slot"
+      "name": "B button (NE)",
+      "scope": "Quadrants",
+      "description": "Brings the north-east applet into focus. Double-click for full-screen view and applet swap.",
+      "detail": "press = focus NE · double-click = full-screen / change applet"
     },
     {
-      "name": "X",
-      "scope": "Quadrants / ORN8 mode",
-      "description": "Selects the southwest applet or the third action button in the current app.",
-      "detail": "press to focus the bottom-left slot"
+      "name": "X button (SW)",
+      "scope": "Quadrants",
+      "description": "Brings the south-west applet into focus. Double-click for full-screen view and applet swap.",
+      "detail": "press = focus SW · double-click = full-screen / change applet"
     },
     {
-      "name": "Y",
-      "scope": "Quadrants / ORN8 mode",
-      "description": "Selects the southeast applet or the fourth action button in the current app.",
-      "detail": "press to focus the bottom-right slot"
+      "name": "Y button (SE)",
+      "scope": "Quadrants",
+      "description": "Brings the south-east applet into focus. Double-click for full-screen view and applet swap.",
+      "detail": "press = focus SE · double-click = full-screen / change applet"
     },
     {
-      "name": "Z",
+      "name": "Z button",
       "scope": "Global",
-      "description": "Starts, stops or arms the internal clock depending on the current applet and mode.",
-      "detail": "clock transport / context-sensitive action"
+      "description": "Start / Stop / Arm the internal clock from anywhere in Quadrants.",
+      "detail": "press = clock transport"
+    },
+    {
+      "name": "A+B chord",
+      "scope": "Quadrants",
+      "description": "Opens Clock Setup (BPM, swing, divisions, source).",
+      "detail": "hold A+B together"
+    },
+    {
+      "name": "A+Y or X+B chord",
+      "scope": "Quadrants",
+      "description": "Opens the Overview screen showing all four applets at a glance.",
+      "detail": "hold A+Y or X+B together"
     }
   ],
   "inputs": [
     {
       "name": "CV IN 1-8",
-      "description": "Eight control-voltage inputs for applets and DSP lanes.",
-      "voltage": "bipolar CV"
+      "description": "Eight 16-bit CV inputs via a discrete ADC (≈14-bit effective). Routable to any applet input or DSP parameter via the I/O remap.",
+      "voltage": "bipolar CV (typ. ±5V)"
     },
     {
-      "name": "TRIG IN 1-8",
-      "description": "Eight trigger inputs exposed through the expansion ports.",
-      "voltage": "expansion trigger input"
-    },
-    {
-      "name": "AUDIO IN 1/2",
-      "description": "Stereo or dual-mono audio inputs for the DSP applets.",
+      "name": "AUDIO IN L/R",
+      "description": "Stereo (or dual-mono) audio inputs feeding the Teensy 4.1 audio codec for DSP applets such as reverbs, delays and pitch effects.",
       "voltage": "audio level"
     },
     {
-      "name": "USB",
-      "description": "USB connection used for firmware, MIDI and host communication through the expansion interface.",
+      "name": "TRIG IN 1-8 (expansion)",
+      "description": "Eight trigger / gate inputs broken out via the expansion header on the rear of the module.",
+      "voltage": "0–5V gate / trigger"
+    },
+    {
+      "name": "USB (expansion)",
+      "description": "USB host port (480 Mbit/s) on the expansion header, plus a USB device port on the Teensy itself for firmware reflashing.",
       "voltage": "digital"
     },
     {
-      "name": "MIDI",
-      "description": "MIDI expansion input for clocking and remote control.",
+      "name": "MIDI IN (expansion)",
+      "description": "DIN-5 / TRS MIDI input via the expansion board for clocking and control of MIDI applets (e.g. Captain MIDI).",
       "voltage": "digital"
     }
   ],
   "outputs": [
     {
       "name": "CV OUT 1-8",
-      "description": "Eight control-voltage outputs from the active applets.",
-      "voltage": "bipolar CV"
+      "description": "Eight 16-bit CV outputs (DAC8565-class) — doubled from the original O_C's four. Each output is assigned by the active applet (pitch, gate, envelope, LFO, modulation).",
+      "voltage": "bipolar CV (typ. ±5V, 1V/oct calibrated)"
     },
     {
-      "name": "AUDIO OUT 1/2",
-      "description": "Stereo or dual-mono audio outputs from the DSP applets.",
+      "name": "AUDIO OUT L/R",
+      "description": "Stereo (or dual-mono) audio outputs from the DSP slots — up to five DSP processors per channel can be chained on Teensy 4.1.",
       "voltage": "audio level"
     },
     {
-      "name": "TRIG OUT 1-8",
-      "description": "Trigger outputs available through expansion and applet routing.",
-      "voltage": "expansion trigger output"
+      "name": "MIDI OUT (expansion)",
+      "description": "DIN-5 / TRS MIDI output via the expansion board, useful for sending notes/clock from Captain MIDI or sequencer applets.",
+      "voltage": "digital"
     }
   ],
   "behaviors": [
     {
-      "name": "Quadrants multitasking",
-      "trigger": "Quadrants mode",
-      "description": "Loads four applets at once, one per quadrant, so CV utility, sequencing and DSP functions can run in parallel on the same hardware."
+      "name": "Quadrants — four applets at once",
+      "trigger": "default Quadrants front-end",
+      "description": "Quadrants is the Teensy 4.1 front-end for Hemispheres applets, hosting four applets simultaneously (NW/NE/SW/SE) instead of the Hemispheres pair. A/B/X/Y bring each quadrant into focus; double-click for full-screen view, help and to swap which applet is loaded."
     },
     {
-      "name": "Dual audio pipeline",
-      "trigger": "audio applets active",
-      "description": "The Teensy 4.1 hardware supports two lanes of audio-rate DSP in addition to the CV applets, so the module can process sound and modulation together."
+      "name": "Audio DSP pipeline",
+      "trigger": "load DSP applets in the audio slots",
+      "description": "Up to 5 DSP slots per audio channel run in parallel with the four CV applets. Optional PSRAM (8 MB or 16 MB) on the Teensy 4.1 enables longer reverbs, delays and granular effects."
     },
     {
-      "name": "Trigger mapping",
-      "trigger": "assign trigger inputs in Phazerville",
-      "description": "Expansion trigger inputs can be mapped into applets, allowing external clocks, gates and resets to steer the currently loaded tools."
+      "name": "Original O_C apps preserved",
+      "trigger": "long-press right encoder → App Menu",
+      "description": "Phazerville keeps the classic full-screen apps: Quantermain (4× quantizer), CopierMaschine (4× sample-and-hold), Harrington 1200 (Neo-Riemannian chords), Automatonnetz (Tonnetz + cellular automaton), Meta-Q (meta-quantizer), Quadraturia (quadrature LFOs), Low-rents (Lorenz/Rössler chaos), Piqued (4× envelopes), Sequins (4× step sequencers), Dialectic Ping Pong (byte-beat), Acid Curds (chord progression) and Viznutcracker sweet! (byte-beat sequencer)."
     },
     {
-      "name": "Calibration and control flip",
-      "trigger": "Setup / About",
-      "description": "The calibration screen handles encoder reversal, screen flip and output calibration without needing to reflash the firmware."
+      "name": "Hemisphere Presets with auto-save",
+      "trigger": "store/recall from App Menu",
+      "description": "Phazerville stores complete applet configurations as Hemisphere Presets, auto-saved on change and selectable via MIDI Program Change or the on-module menu."
     },
     {
-      "name": "Applet menu switching",
-      "trigger": "long-press right encoder",
-      "description": "The right encoder opens the main app menu, where stored applets, presets and global settings are selected."
+      "name": "I/O remap",
+      "trigger": "I/O remap menu",
+      "description": "Any physical CV input or trigger input can be remapped to any applet input, and any applet output can be sent to any physical CV/trigger output — no fixed channel assignment."
     },
     {
-      "name": "MIDI and USB expansion",
-      "trigger": "use expansion headers",
-      "description": "The expansion ports break out USB, MIDI and additional triggers so the module can act as a deep control hub rather than a simple quantizer."
+      "name": "Setup / About / Calibration",
+      "trigger": "App Menu → Setup / About",
+      "description": "Press the LEFT encoder to start the calibration routine (DAC scaling, ADC offset, display centering, screensaver). Rotate LEFT to enter Reflash mode. Press RIGHT to reset all settings to defaults (with confirm). Long-press RIGHT to return to the App Menu. UP+DOWN dual-press toggles screen flip / I/O reverse."
+    },
+    {
+      "name": "Encoder reversal",
+      "trigger": "calibration save page",
+      "description": "On the final page of the calibration routine the UP/DOWN buttons select encoder reversal: L only, R only, both (LR), or normal — useful for builders who mounted the encoders upside-down."
+    },
+    {
+      "name": "Built-in clock with transport",
+      "trigger": "Z button / A+B chord",
+      "description": "Z starts/stops/arms the internal clock; A+B opens Clock Setup (BPM, swing, multiplier, external source). External clock can come from any TRIG input or MIDI clock via the expansion port."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Four applet hub",
-      "patch": "Quadrants mode with a quantizer, random source, clock utility and envelope applet loaded at once · the module acts as a compact modulation brain with one quadrant per task.",
-      "diagram": "Ornament and Crime v4.1:\n* Mode: Quadrants\n* App A: quantizer\n* App B: random\n* App X: clock utility\n* App Y: envelope\n\nKeyboard:\nVCO:\nVCA:\nEnvelope:\n\n- Keyboard (CV) p> Ornament and Crime v4.1 (CV IN 1)\n- Ornament and Crime v4.1 (CV OUT 1) p> VCO (V/Oct)\n- Ornament and Crime v4.1 (CV OUT 2) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+      "name": "Quad-applet modulation hub",
+      "patch": "Load four Hemispheres applets in Quadrants — Quantizer, Turing Machine, Clock Divider, EnvFollow — to run sequencer, random, clock and envelope from one 10HP module.",
+      "steps": [
+        "Power up. From the App Menu (long-press right encoder if not there) twist the left encoder to Quadrants, press to enter.",
+        "Double-click A. Twist the right encoder to 'Scale Duet' (or 'Quantizer'), press to load it into the NW slot.",
+        "Double-click B. Twist to 'Turing Machine', press to load into NE.",
+        "Double-click X. Twist to 'Clock Div', press to load into SW.",
+        "Double-click Y. Twist to 'EnvFollow', press to load into SE.",
+        "Patch a master clock into TRIG IN 1; the Turing and Clock Div applets advance on its rising edges.",
+        "Patch CV OUT 1 (NW Quantizer) into a VCO 1V/oct, CV OUT 3 (SW Clock Div) into an envelope trigger, and CV OUT 4 (SE EnvFollow) into a VCA CV.",
+        "Press Z to start the internal clock, or send your own clock to TRIG IN 1."
+      ],
+      "signalOut": "CV OUT 1 — quantized pitch from the NW applet · CV OUT 2 — Turing Machine 8-bit CV · CV OUT 3 — clock divisions / gates · CV OUT 4 — envelope-follower CV.",
+      "hear": "A complete generative voice from one panel: quantized melody, slowly mutating Turing pattern, clocked gates and a follower riding the dynamics. Double-click any quadrant to jump full-screen and tweak that applet without losing the others.",
+      "diagram": "Ornament and Crime v4.1:\n* Front-end: Quadrants\n* NW (A): Scale Duet / Quantizer\n* NE (B): Turing Machine\n* SW (X): Clock Div\n* SE (Y): EnvFollow\n\nClock:\nVCO:\nEnvelope:\nVCA:\n\n- Clock (Out) c> Ornament and Crime v4.1 (TRIG IN 1)\n- Source (Out) >> Ornament and Crime v4.1 (CV IN 1)  // for EnvFollow\n- Ornament and Crime v4.1 (CV OUT 1) p> VCO (V/Oct)\n- Ornament and Crime v4.1 (CV OUT 3) t> Envelope (Trig)\n- Ornament and Crime v4.1 (CV OUT 4) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
     },
     {
-      "name": "Trigger-and-pitch sequencer",
-      "patch": "Use a sequencer applet to emit stepped pitch on CV OUT 1 and related gates on CV OUT 2/trigger mapping · a single module handles melody and articulation.",
-      "diagram": "Ornament and Crime v4.1:\n* Mode: sequencer applet\n\nVCO:\nEnvelope:\nVCA:\n\n- Clock (Out) c> Ornament and Crime v4.1 (TRIG IN 1)\n- Ornament and Crime v4.1 (CV OUT 1) p> VCO (V/Oct)\n- Ornament and Crime v4.1 (CV OUT 2) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+      "name": "Quantermain — four-voice quantizer",
+      "patch": "Run the classic Quantermain app full-screen as four independent quantizers, one per CV pair, so a single O_C tunes a four-voice chord stack.",
+      "steps": [
+        "Long-press the right encoder to reach the App Menu. Twist left encoder to 'Quantermain', press to load.",
+        "Twist the right encoder to highlight channel 1, press, then twist to choose a scale (e.g. 'ionian').",
+        "Repeat for channels 2-4: press to enter, set each to the same scale (or a different one for layered keys).",
+        "Patch four free-running CV sources (random, LFO, sequencer) into CV IN 1-4.",
+        "Take CV OUT 1-4 to the 1V/oct inputs of four VCOs.",
+        "Send a master clock into TRIG IN 1 — Quantermain only emits a new note on a trigger (sample-and-hold style), so each VCO advances cleanly in sync."
+      ],
+      "signalOut": "CV OUT 1-4 — four independently-quantized 1V/oct pitches; the trigger inputs gate when each channel updates.",
+      "hear": "A four-voice chord that shifts as the source CVs drift, but always stays in the chosen scale. Hold the trigger to freeze the chord; release and the next clock pulse re-rolls it.",
+      "diagram": "Ornament and Crime v4.1:\n* App: Quantermain (4× quantizer)\n* Scale: ionian (per channel)\n\nLFO bank:\nClock:\nVCO A:\nVCO B:\nVCO C:\nVCO D:\n\n- LFO bank (Out) >> Ornament and Crime v4.1 (CV IN 1-4)\n- Clock (Out) c> Ornament and Crime v4.1 (TRIG IN 1)\n- Ornament and Crime v4.1 (CV OUT 1) p> VCO A (V/Oct)\n- Ornament and Crime v4.1 (CV OUT 2) p> VCO B (V/Oct)\n- Ornament and Crime v4.1 (CV OUT 3) p> VCO C (V/Oct)\n- Ornament and Crime v4.1 (CV OUT 4) p> VCO D (V/Oct)"
     },
     {
-      "name": "Audio DSP lane",
-      "patch": "Two audio lanes feed a stereo DSP applet while CV IN 1 modulates a parameter map · the module can process the sound and the control path without leaving the rack.",
-      "diagram": "Ornament and Crime v4.1:\n* Mode: audio DSP\n\nDAW:\nOutput:\nLFO:\n\n- DAW (Out L) -> Ornament and Crime v4.1 (AUDIO IN 1)\n- DAW (Out R) -> Ornament and Crime v4.1 (AUDIO IN 2)\n- LFO (Out) >> Ornament and Crime v4.1 (CV IN 1)\n- Ornament and Crime v4.1 (AUDIO OUT 1) -> Output (In L)\n- Ornament and Crime v4.1 (AUDIO OUT 2) -> Output (In R)"
+      "name": "Stereo audio DSP — reverb + delay chain",
+      "patch": "Use the Teensy 4.1 audio codec to process an external stereo signal: a reverb DSP slot followed by a delay, with one CV input modulating delay time live.",
+      "steps": [
+        "From the App Menu twist to the audio DSP host (the audio slot screen on Quadrants — accessed by entering the audio panel from the Quadrants overview).",
+        "Pick DSP slot 1 and load a Reverb effect; pick slot 2 and load a Delay.",
+        "Patch your stereo source (DAW return, drum machine) into AUDIO IN L and AUDIO IN R.",
+        "Patch AUDIO OUT L/R into your monitor or mixer.",
+        "Patch a slow LFO into CV IN 5; in the Delay slot, assign CV IN 5 to 'time' for moving delay-time modulation.",
+        "Press Z if you want internal clock to lock the delay to BPM."
+      ],
+      "signalOut": "AUDIO OUT L/R — wet stereo signal after reverb → delay; CV OUT 1-8 stay free for the four CV applets running in Quadrants.",
+      "hear": "Lush stereo reverb tail with a delay riding on top, the delay time wobbling in time with the LFO — without losing any of the four CV applets. Add a second LFO to CV IN 6 mapped to reverb size for evolving spaces.",
+      "diagram": "Ornament and Crime v4.1:\n* DSP slot 1: Reverb\n* DSP slot 2: Delay  (time <- CV IN 5)\n* Quadrants: any 4 applets still running\n\nDAW:\nLFO:\nMonitor:\n\n- DAW (Out L) -> Ornament and Crime v4.1 (AUDIO IN L)\n- DAW (Out R) -> Ornament and Crime v4.1 (AUDIO IN R)\n- LFO (Out) >> Ornament and Crime v4.1 (CV IN 5)\n- Ornament and Crime v4.1 (AUDIO OUT L) -> Monitor (In L)\n- Ornament and Crime v4.1 (AUDIO OUT R) -> Monitor (In R)"
     },
     {
-      "name": "Clock-armed quantizer",
-      "patch": "Load a quantizer applet, clock it from the Z transport or an external trigger and route the output to a VCO · the same panel can stay in tune while the other applets run nearby.",
-      "diagram": "Ornament and Crime v4.1:\n* Mode: quantizer applet\n\nClock:\nQuantizer:\nVCO:\nEnvelope:\nVCA:\n\n- Clock (Out) c> Ornament and Crime v4.1 (TRIG IN 1)\n- Ornament and Crime v4.1 (CV OUT 1) p> VCO (V/Oct)\n- Ornament and Crime v4.1 (CV OUT 2) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
+      "name": "Piqued — four envelopes from one trigger bus",
+      "patch": "Load Piqued (the original O_C four-envelope app) and fire each AD/AHD envelope from a different trigger input, giving four shaped CVs from one module.",
+      "steps": [
+        "App Menu → twist to 'Piqued', press to load.",
+        "Highlight envelope 1: press right encoder, set type to 'AD' and dial attack/decay with the right encoder.",
+        "Repeat for envelopes 2-4 — try AHD with longer decay on env 4 for a slow swell.",
+        "Patch four trigger sources into TRIG IN 1-4 (or remap via the I/O menu).",
+        "Take CV OUT 1-4 to four VCAs / filter CVs / pitch mod inputs.",
+        "Optional: patch a CV into CV IN 1 and assign it to envelope 1 'level' for accented hits."
+      ],
+      "signalOut": "CV OUT 1-4 — four independent envelope CVs (0-5V), each fired by its own trigger input.",
+      "hear": "One trigger bus turns into four shaped voices: a snappy AD on env 1 for a kick VCA, a longer AHD on env 4 opening a pad filter, two mids modulating pitch and pan. With CV IN 1 patched, each hit's loudness rides the incoming CV.",
+      "diagram": "Ornament and Crime v4.1:\n* App: Piqued (4× AD/AHD envelopes)\n\nTrigger source:\nVCA / Filter:\n\n- Trig 1-4 (Out) t> Ornament and Crime v4.1 (TRIG IN 1-4)\n- Accent CV (Out) >> Ornament and Crime v4.1 (CV IN 1)  // -> env 1 level\n- Ornament and Crime v4.1 (CV OUT 1) >> Kick VCA (CV)\n- Ornament and Crime v4.1 (CV OUT 2) >> Snare VCA (CV)\n- Ornament and Crime v4.1 (CV OUT 3) >> Hat Filter (Cutoff)\n- Ornament and Crime v4.1 (CV OUT 4) >> Pad Filter (Cutoff)"
     }
   ]
 }

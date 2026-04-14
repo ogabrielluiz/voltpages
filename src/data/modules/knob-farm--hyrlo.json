@@ -2,11 +2,11 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
       "https://knob.farm/modules/p/hyrlo",
-      "https://modulargrid.net/e/knob-farm-hyrlo",
-      "https://www.perfectcircuit.com/knob-farm-hyrlo.html"
+      "https://www.modulargrid.net/e/knob-farm-hyrlo",
+      "https://knob.farm/"
     ]
   },
   "slug": "knob-farm--hyrlo",
@@ -14,31 +14,31 @@
   "manufacturer": "knob.farm",
   "hp": 4,
   "tags": ["MIXER", "UTILITY"],
-  "description": "4 HP three-channel stereo audio mixer. Each channel is a stereo pair with L normalled to R for mono use; 3 stereo / 6 mono configurations via jack insertion. Daisy-chainable to neighbours for bigger buses.",
+  "description": "4 HP three-channel stereo audio mixer (3 stereo / up to 6 mono). L jack normals to R for mono use. Per-channel signal LED, AC-coupled, daisy-chainable for bigger buses. 34 mm deep, 40 mA per rail.",
   "controls": [
     {
       "name": "Level knob CH 1",
       "scope": "CH 1",
-      "description": "Volume for channel 1. Natural audio taper. Mutes fully at CCW. Stereo pair collapses to mono when only L is patched.",
-      "detail": "audio taper · 0 to unity · L normalled to R"
+      "description": "Volume for channel 1. Optimised audio taper. Mutes fully at CCW. Stereo pair collapses to mono when only L is patched.",
+      "detail": "audio taper · 0 to unity · L normalled to R · signal LED next to knob"
     },
     {
       "name": "Level knob CH 2",
       "scope": "CH 2",
       "description": "Volume for channel 2. Same taper as CH 1. Independent stereo/mono behaviour per channel.",
-      "detail": "audio taper · 0 to unity · L normalled to R"
+      "detail": "audio taper · 0 to unity · L normalled to R · signal LED next to knob"
     },
     {
       "name": "Level knob CH 3",
       "scope": "CH 3",
       "description": "Volume for channel 3. Same taper as CH 1. Bottom-most channel in daisy-chain order.",
-      "detail": "audio taper · 0 to unity · L normalled to R"
+      "detail": "audio taper · 0 to unity · L normalled to R · signal LED next to knob"
     }
   ],
   "inputs": [
     {
       "name": "CH 1 L / R",
-      "description": "Stereo pair input for channel 1. Patch only L for mono; R follows L. Patch both for true stereo source.",
+      "description": "Stereo pair input for channel 1. Patch only L for mono (R follows L). Patch both for true stereo source.",
       "voltage": "line / eurorack audio · AC-coupled"
     },
     {
@@ -53,64 +53,114 @@
     },
     {
       "name": "CHAIN IN L / R",
-      "description": "Daisy-chain input. Sums an upstream Hyrlo/Ferry bus into this module's output. Bypassed (disconnected from mix) if a jack is inserted at the corresponding chain output.",
+      "description": "Daisy-chain input. Sums an upstream Hyrlo (or other stereo source) into this module's output without using a CH 1-3 fader.",
       "voltage": "line / eurorack audio · AC-coupled"
     }
   ],
   "outputs": [
     {
       "name": "OUT L / R",
-      "description": "Main stereo mix of CH 1-3 plus CHAIN IN. Transparent low-noise summing.",
-      "voltage": "~10Vpp eurorack audio"
+      "description": "Main stereo mix of CH 1-3 plus CHAIN IN. Transparent, low-noise summing.",
+      "voltage": "eurorack audio · AC-coupled"
     }
   ],
   "behaviors": [
     {
       "name": "L → R mono normalling",
-      "trigger": "patch L jack only",
+      "trigger": "patch L jack only on a channel",
       "description": "Each channel's L input normals to R. A mono cable in L sends the same signal to both sides of the stereo bus, keeping the channel centred. Patching R breaks the normal and opens true stereo."
     },
     {
-      "name": "Daisy chain",
-      "trigger": "patch cable between two Hyrlo modules",
-      "description": "Hyrlo's OUT can feed the next unit's CHAIN IN, building a 6-, 9-, 12-channel stereo bus. Daisy links are interrupted when a jack is physically inserted at the chain output, allowing sub-mix taps."
+      "name": "Daisy chain expansion",
+      "trigger": "patch one Hyrlo's OUT L/R into the next Hyrlo's CHAIN IN L/R",
+      "description": "Hyrlo's OUT can feed the next unit's CHAIN IN, building 6-, 9-, 12-channel stereo buses from stacked 4 HP modules. The downstream module's OUT carries the full sum."
     },
     {
-      "name": "Flip panel",
-      "trigger": "reverse panel orientation",
-      "description": "Symmetrical layout lets the user mount the panel flipped. Jacks and pots still align; cosmetic variant only. No signal-path changes."
+      "name": "Flippable panel",
+      "trigger": "reverse panel orientation at install time",
+      "description": "Symmetrical faceplate lets the user mount the panel rotated 180°. Jacks and pots still align; cosmetic variant only. No signal-path changes."
     },
     {
       "name": "AC-coupled audio path",
       "trigger": "patching CV into an input",
-      "description": "All inputs are AC-coupled, so CV cannot pass through. Blocks DC offsets but means Hyrlo cannot mix control voltages cleanly — use a dedicated CV mixer for those."
+      "description": "All inputs and the output are AC-coupled, so DC offsets and slow CV are blocked. Use a dedicated CV mixer for control voltages."
+    },
+    {
+      "name": "Per-channel signal LED",
+      "trigger": "audio present on a channel",
+      "description": "A small LED next to each level knob brightens with the post-fader signal of that channel — quick visual check that a source is alive without unmuting the master."
     }
   ],
   "patchIdeas": [
     {
       "name": "Three-voice stereo submix",
-      "patch": "Three stereo voices into CH 1-3 · main OUT → outboard · Hyrlo's short signal path keeps transients intact",
-      "diagram": "Hyrlo:\n\nVoice 1:\n\nVoice 2:\n\nVoice 3:\n\n- Voice 1 (Out L) -> Hyrlo (CH 1 L)\n- Voice 1 (Out R) -> Hyrlo (CH 1 R)\n- Voice 2 (Out L) -> Hyrlo (CH 2 L)\n- Voice 2 (Out R) -> Hyrlo (CH 2 R)\n- Voice 3 (Out L) -> Hyrlo (CH 3 L)\n- Voice 3 (Out R) -> Hyrlo (CH 3 R)\n- Hyrlo (OUT L) -> Output (L)\n- Hyrlo (OUT R) -> Output (R)"
+      "patch": "Three stereo voices into CH 1-3 · main OUT to outboard · short signal path keeps transients intact.",
+      "steps": [
+        "Set all three Level knobs fully CCW (muted) before patching.",
+        "Patch Voice 1 OUT L → Hyrlo CH 1 L, and Voice 1 OUT R → Hyrlo CH 1 R.",
+        "Repeat for Voice 2 into CH 2 L/R and Voice 3 into CH 3 L/R.",
+        "Patch Hyrlo OUT L → mixer/interface L, Hyrlo OUT R → mixer/interface R.",
+        "Bring up CH 1 to about noon, then CH 2, then CH 3, balancing by ear. The signal LEDs confirm each channel is alive."
+      ],
+      "signalOut": "OUT L / R — full stereo mix at line level, ready for an interface or recorder.",
+      "hear": "All three voices summed in true stereo. Pulling any cable from a channel's R input collapses that voice to centre; reinserting opens the stereo image again.",
+      "diagram": "Hyrlo:\n* CH 1-3 Level: start CCW, raise to taste\n\n- Voice 1 (Out L) -> Hyrlo (CH 1 L)\n- Voice 1 (Out R) -> Hyrlo (CH 1 R)\n- Voice 2 (Out L) -> Hyrlo (CH 2 L)\n- Voice 2 (Out R) -> Hyrlo (CH 2 R)\n- Voice 3 (Out L) -> Hyrlo (CH 3 L)\n- Voice 3 (Out R) -> Hyrlo (CH 3 R)\n- Hyrlo (OUT L) -> Output (L)\n- Hyrlo (OUT R) -> Output (R)"
     },
     {
-      "name": "Six-mono mix",
-      "patch": "Patch only L jacks on CH 1-3 (3 mono sources) · add second Hyrlo via CHAIN for 3 more mono channels · drums + bass + pads in one skiff",
-      "diagram": "Hyrlo A:\n\nHyrlo B:\n\n- Kick (Out) -> Hyrlo A (CH 1 L)\n- Snare (Out) -> Hyrlo A (CH 2 L)\n- HiHat (Out) -> Hyrlo A (CH 3 L)\n- Bass (Out) -> Hyrlo B (CH 1 L)\n- Pad (Out) -> Hyrlo B (CH 2 L)\n- Lead (Out) -> Hyrlo B (CH 3 L)\n- Hyrlo B (OUT L) -> Hyrlo A (CHAIN IN L)\n- Hyrlo B (OUT R) -> Hyrlo A (CHAIN IN R)\n- Hyrlo A (OUT L) -> Output (L)\n- Hyrlo A (OUT R) -> Output (R)"
+      "name": "Six-mono mix via two Hyrlos",
+      "patch": "Two stacked Hyrlos give six mono channels in 8 HP — drums + bass + pads in one skiff.",
+      "steps": [
+        "Mount Hyrlo A (master) and Hyrlo B (sub) side by side. Levels all CCW.",
+        "Patch each mono drum to Hyrlo A's CH 1 L, CH 2 L, CH 3 L (R is left empty so each source is centred).",
+        "Patch bass / pad / lead to Hyrlo B's CH 1 L, CH 2 L, CH 3 L.",
+        "Patch Hyrlo B OUT L → Hyrlo A CHAIN IN L, and Hyrlo B OUT R → Hyrlo A CHAIN IN R.",
+        "Patch Hyrlo A OUT L/R to your interface. Bring up channels on B first (sub bus level is set by each B fader), then on A."
+      ],
+      "signalOut": "Hyrlo A OUT L / R — six mono sources summed to stereo.",
+      "hear": "Six independent mono voices in one centred stereo image. Hyrlo B has no master fader, so each B channel's knob is its own bus level into A.",
+      "diagram": "HYRLO A:\n* role: master\n\nHYRLO B:\n* role: sub-bus into A's CHAIN IN\n\n- Kick (Out) -> Hyrlo A (CH 1 L)\n- Snare (Out) -> Hyrlo A (CH 2 L)\n- HiHat (Out) -> Hyrlo A (CH 3 L)\n- Bass (Out) -> Hyrlo B (CH 1 L)\n- Pad (Out) -> Hyrlo B (CH 2 L)\n- Lead (Out) -> Hyrlo B (CH 3 L)\n- Hyrlo B (OUT L) -> Hyrlo A (CHAIN IN L)\n- Hyrlo B (OUT R) -> Hyrlo A (CHAIN IN R)\n- Hyrlo A (OUT L) -> Output (L)\n- Hyrlo A (OUT R) -> Output (R)"
     },
     {
-      "name": "Pre-FX / post-FX parallel",
-      "patch": "CH 1 = dry voice · CH 2 = reverb return · CH 3 = delay return · blend wet/dry on front panel · stereo pair on returns for true stereo FX",
-      "diagram": "Hyrlo:\n\nReverb:\n\nDelay:\n\n- Voice (Out) -> Hyrlo (CH 1 L)\n- Voice (Out) -> Reverb (In)\n- Reverb (Out L) -> Hyrlo (CH 2 L)\n- Reverb (Out R) -> Hyrlo (CH 2 R)\n- Voice (Out) -> Delay (In)\n- Delay (Out L) -> Hyrlo (CH 3 L)\n- Delay (Out R) -> Hyrlo (CH 3 R)\n- Hyrlo (OUT L) -> Output (L)\n- Hyrlo (OUT R) -> Output (R)"
+      "name": "Dry + two stereo FX returns",
+      "patch": "CH 1 dry voice · CH 2 reverb return · CH 3 delay return · blend wet/dry on the front panel.",
+      "steps": [
+        "Send the source voice to a 1-to-2 mult (or your sends) so one copy goes dry and the others feed the FX.",
+        "Patch the dry copy → Hyrlo CH 1 L (R empty, so it sits centre).",
+        "Patch the reverb's stereo return → Hyrlo CH 2 L and CH 2 R.",
+        "Patch the delay's stereo return → Hyrlo CH 3 L and CH 3 R.",
+        "Patch Hyrlo OUT L/R to the interface. CH 1 sets dry level; CH 2/CH 3 are independent wet faders."
+      ],
+      "signalOut": "OUT L / R — dry voice plus stereo reverb and delay returns mixed together.",
+      "hear": "A centred dry voice surrounded by stereo wet returns. Pulling CH 2 down kills the reverb without touching the delay, and vice versa — quick A/B of each effect.",
+      "diagram": "Hyrlo:\n* CH 1 = dry, CH 2 = reverb return, CH 3 = delay return\n\n- Voice (Out) -> Mult (In)\n- Mult (Out 1) -> Hyrlo (CH 1 L)\n- Mult (Out 2) -> Reverb (In)\n- Reverb (Out L) -> Hyrlo (CH 2 L)\n- Reverb (Out R) -> Hyrlo (CH 2 R)\n- Mult (Out 3) -> Delay (In)\n- Delay (Out L) -> Hyrlo (CH 3 L)\n- Delay (Out R) -> Hyrlo (CH 3 R)\n- Hyrlo (OUT L) -> Output (L)\n- Hyrlo (OUT R) -> Output (R)"
     },
     {
-      "name": "Chain-tap sub-bus",
-      "patch": "Drum submix on Hyrlo A → CHAIN → Hyrlo B · insert a jack at Hyrlo A OUT L/R breaks the chain to send drums to a compressor before re-entering Hyrlo B's chain",
-      "diagram": "Hyrlo A:\n* Drum submix\n\nHyrlo B:\n* Master\n\nCompressor:\n\n- Kick (Out) -> Hyrlo A (CH 1 L)\n- Snare (Out) -> Hyrlo A (CH 2 L)\n- HiHat (Out) -> Hyrlo A (CH 3 L)\n- Hyrlo A (OUT L) -> Compressor (In L) // chain broken by jack\n- Hyrlo A (OUT R) -> Compressor (In R)\n- Compressor (Out L) -> Hyrlo B (CHAIN IN L)\n- Compressor (Out R) -> Hyrlo B (CHAIN IN R)\n- Hyrlo B (OUT L) -> Output (L)\n- Hyrlo B (OUT R) -> Output (R)"
+      "name": "Drum sub-bus through outboard glue",
+      "patch": "Drum mix on Hyrlo A → external compressor → Hyrlo B CHAIN IN — bus-glue your kit before it hits the master.",
+      "steps": [
+        "On Hyrlo A patch kick/snare/hat to CH 1 L / CH 2 L / CH 3 L. Levels start CCW.",
+        "Patch Hyrlo A OUT L → Compressor IN L, and Hyrlo A OUT R → Compressor IN R.",
+        "Patch Compressor OUT L/R → Hyrlo B CHAIN IN L/R. Hyrlo B's CH 1-3 are still free for bass / synths.",
+        "Patch Hyrlo B OUT L/R to your interface.",
+        "Drive the compressor with Hyrlo A's three faders; set Hyrlo B's chain bus by adjusting the compressor's makeup gain (CHAIN IN has no fader)."
+      ],
+      "signalOut": "Hyrlo B OUT L / R — bus-compressed drum sub plus uncompressed CH 1-3 sources.",
+      "hear": "Drums sound glued and a touch tighter while bass/synth on Hyrlo B stay clean. Bypass the compressor to A/B; raise A's individual faders to push more drums into the compressor harder.",
+      "diagram": "HYRLO A:\n* role: drum sub\n\nHYRLO B:\n* role: master, CHAIN IN fed by compressor\n\n- Kick (Out) -> Hyrlo A (CH 1 L)\n- Snare (Out) -> Hyrlo A (CH 2 L)\n- HiHat (Out) -> Hyrlo A (CH 3 L)\n- Hyrlo A (OUT L) -> Compressor (In L)\n- Hyrlo A (OUT R) -> Compressor (In R)\n- Compressor (Out L) -> Hyrlo B (CHAIN IN L)\n- Compressor (Out R) -> Hyrlo B (CHAIN IN R)\n- Hyrlo B (OUT L) -> Output (L)\n- Hyrlo B (OUT R) -> Output (R)"
     },
     {
-      "name": "Stereo + two mono",
-      "patch": "CH 1 stereo synth (both L/R patched) · CH 2/3 mono drum machines (L only, auto-centred) · one 4 HP mixer handles the whole jam",
-      "diagram": "Hyrlo:\n\nStereo Synth:\n\n- Stereo Synth (Out L) -> Hyrlo (CH 1 L)\n- Stereo Synth (Out R) -> Hyrlo (CH 1 R)\n- Drum 1 (Out) -> Hyrlo (CH 2 L) // mono → centred\n- Drum 2 (Out) -> Hyrlo (CH 3 L) // mono → centred\n- Hyrlo (OUT L) -> Output (L)\n- Hyrlo (OUT R) -> Output (R)"
+      "name": "Stereo synth + two mono drums in 4 HP",
+      "patch": "CH 1 stereo synth (L/R both patched) · CH 2/3 mono drum sources (L only, auto-centred) — entire jam in one 4 HP module.",
+      "steps": [
+        "Patch your stereo synth's OUT L → Hyrlo CH 1 L and OUT R → Hyrlo CH 1 R.",
+        "Patch mono Drum 1 → Hyrlo CH 2 L (leave CH 2 R empty so it centres).",
+        "Patch mono Drum 2 → Hyrlo CH 3 L (leave CH 3 R empty).",
+        "Patch Hyrlo OUT L/R to your interface.",
+        "Bring up CH 1 first to set the stereo bed, then CH 2/CH 3 to taste. The signal LEDs flash with each drum hit."
+      ],
+      "signalOut": "OUT L / R — wide stereo synth with two centred mono drum voices on top.",
+      "hear": "A wide stereo pad with the drums punching through the centre. If you later patch a cable into CH 2 R, the snare jumps off-centre — useful for hard-pan tricks.",
+      "diagram": "Hyrlo:\n* CH 1 = stereo, CH 2/3 = mono (centred)\n\n- Stereo Synth (Out L) -> Hyrlo (CH 1 L)\n- Stereo Synth (Out R) -> Hyrlo (CH 1 R)\n- Drum 1 (Out) -> Hyrlo (CH 2 L)\n- Drum 2 (Out) -> Hyrlo (CH 3 L)\n- Hyrlo (OUT L) -> Output (L)\n- Hyrlo (OUT R) -> Output (R)"
     }
   ]
 }

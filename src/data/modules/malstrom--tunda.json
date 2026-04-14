@@ -2,12 +2,14 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
-      "https://www.malstromaudio.com/modules",
+      "https://www.malstromaudio.com/tunda",
       "https://www.malstromaudio.com/",
+      "https://modulargrid.net/e/malstrom-tunda",
       "https://modulargrid.net/e/vendors/view/1041",
-      "https://schneidersladen.de/malstrom-tunda"
+      "https://schneidersladen.de/en/malstrom-tunda",
+      "https://www.modwiggler.com/forum/viewtopic.php?p=4442008"
     ]
   },
   "slug": "malstrom--tunda",
@@ -15,99 +17,153 @@
   "manufacturer": "Malstrom",
   "hp": 2,
   "tags": ["UTILITY", "MIXER", "MULT", "ATTENUATOR"],
-  "description": "Cascaded buffer utility that can act as a 4:1 mixer, 1:4 mult, 2:2 split, precision amplifier or attenuator while keeping audio and CV steady.",
+  "description": "2HP cascaded buffer system with four normalled stages plus an averaged sum out. One module covers buffered mult, precision mixer, 2:2 split, attenuator and amplifier duties for audio and CV — linkable with more Tundas for longer chains.",
   "controls": [],
   "inputs": [
     {
       "name": "In 1",
-      "description": "First cascaded buffer input. Use it as the head of a mix, mult or scaling chain.",
-      "voltage": "audio / CV"
+      "description": "First stage input. Head of the cascade — whatever goes here shows up on Out 1 and, via normalling, is summed into every stage below it unless you break the chain by plugging into a later input.",
+      "voltage": "audio / CV, ±10V"
     },
     {
       "name": "In 2",
-      "description": "Second cascaded buffer input.",
-      "voltage": "audio / CV"
+      "description": "Second stage input. Normalled to the first stage so Out 2 carries In 1 + In 2. Plugging here breaks the normal from In 1 for stages 2–4.",
+      "voltage": "audio / CV, ±10V"
     },
     {
       "name": "In 3",
-      "description": "Third cascaded buffer input.",
-      "voltage": "audio / CV"
+      "description": "Third stage input. Normalled from above; patching here breaks the chain at stage 3.",
+      "voltage": "audio / CV, ±10V"
     },
     {
       "name": "In 4",
-      "description": "Fourth cascaded buffer input.",
-      "voltage": "audio / CV"
+      "description": "Fourth stage input. Normalled from above. Patching here breaks the chain at the last stage.",
+      "voltage": "audio / CV, ±10V"
     }
   ],
   "outputs": [
     {
       "name": "Out 1",
-      "description": "First cascaded buffer output.",
-      "voltage": "audio / CV"
+      "description": "Buffered tap after stage 1. Use it as a clean copy of In 1 or as the head of a buffered mult chain.",
+      "voltage": "audio / CV, ±10V"
     },
     {
       "name": "Out 2",
-      "description": "Second cascaded buffer output.",
-      "voltage": "audio / CV"
+      "description": "Buffered tap after stage 2. If In 2 is empty this mirrors Out 1; otherwise it carries the running sum of stages 1–2.",
+      "voltage": "audio / CV, ±10V"
     },
     {
       "name": "Out 3",
-      "description": "Third cascaded buffer output.",
-      "voltage": "audio / CV"
+      "description": "Buffered tap after stage 3. Either a mult copy of the upstream signal or a running sum of stages 1–3, depending on what's patched.",
+      "voltage": "audio / CV, ±10V"
     },
     {
       "name": "Out 4",
-      "description": "Fourth cascaded buffer output.",
-      "voltage": "audio / CV"
+      "description": "Buffered tap after stage 4. With all four inputs patched this is the full 4:1 sum (precision x2/x3/x4 amp when fewer duplicates are used).",
+      "voltage": "audio / CV, ±10V"
     },
     {
       "name": "Average Out",
-      "description": "Average output for controlled summing without level runaway.",
-      "voltage": "audio / CV"
+      "description": "Averaged sum of the four stages — divides the combined level back down so a 4:1 mix stays inside ±10V without clipping. Great for CV averaging and safe voice summing.",
+      "voltage": "audio / CV, ±10V"
     }
   ],
   "behaviors": [
     {
-      "name": "4:1 mix",
-      "trigger": "four sources patched into the chain",
-      "description": "Tunda can behave like a compact averaging mixer when you feed it multiple signals and take the average output."
+      "name": "Cascade normalling",
+      "trigger": "patch into a later input to break the chain",
+      "description": "The four stages are normalled together top-to-bottom. Plugging into In 2/3/4 breaks the normal at that point, which is what lets a single module reshape between mult, mix and split roles without a switch."
     },
     {
-      "name": "1:4 mult",
-      "trigger": "one source into the first stage",
-      "description": "A single source can be distributed through the cascade as a buffered mult without the sag of passive splitting."
+      "name": "1:4 buffered mult",
+      "trigger": "one source into In 1, leave In 2/3/4 empty",
+      "description": "Out 1–4 all carry a buffered copy of In 1. No sag on V/Oct, no loading when driving many destinations."
+    },
+    {
+      "name": "4:1 precision sum",
+      "trigger": "four sources into In 1–4, take Out 4",
+      "description": "Out 4 is the running sum of all four stages. Useful when you want the full combined level; use Average Out instead if you need to stay inside ±10V."
     },
     {
       "name": "2:2 split",
-      "trigger": "two branches patched",
-      "description": "The cascade can be used as two buffered branches, making it easy to keep a pitch or modulation path clean and stable."
+      "trigger": "source A into In 1, source B into In 3",
+      "description": "Out 1–2 carry source A (B is blocked at stage 3's break), Out 3–4 carry source B. Two independent buffered pairs in 2HP."
     },
     {
-      "name": "Precision scaling",
-      "trigger": "use the buffer chain for gain staging",
-      "description": "The module is intended for exact ratios such as x2, x3, x4 or 0.75, 0.5 and 0.25, which makes it useful for CV and audio alike."
+      "name": "Precision gain x2 / x3 / x4",
+      "trigger": "duplicate one source across consecutive inputs and take the last used Out",
+      "description": "Copy In 1 into In 2 (and 3, 4) to get 2x, 3x or 4x gain at Out 2/3/4 — handy for scaling a 1V/oct bus to higher octaves or boosting quiet CV."
     },
     {
-      "name": "Chainable routing",
-      "trigger": "multiple Tundas patched together",
-      "description": "The cascade can be extended by linking several units, so the utility scales with the size of the patch instead of capping it."
+      "name": "Precision attenuation 0.75 / 0.5 / 0.25",
+      "trigger": "feed one source, take Average Out with 1–4 stages engaged",
+      "description": "Average Out divides by 4. Combine with empty stages or identical sources to land on 0.25x, 0.5x, 0.75x or 1x scaling — clean, calibrated CV attenuation with no pots to drift."
+    },
+    {
+      "name": "Chainable",
+      "trigger": "patch Out 4 of one Tunda into In 1 of another",
+      "description": "Cascade keeps going across modules — two Tundas give you an 8-stage buffered chain, three give you 12, etc."
     }
   ],
   "patchIdeas": [
     {
-      "name": "Buffered pitch fan-out",
-      "patch": "Feed one sequencer CV into the first stage and use the cascade to drive several oscillators without losing tuning stability.",
+      "name": "Buffered V/Oct fan-out to four VCOs",
+      "patch": "One sequencer CV drives four oscillators in tune via the cascade normalling.",
+      "steps": [
+        "Patch Sequencer (Pitch CV) into Tunda IN 1.",
+        "Leave IN 2, IN 3 and IN 4 empty — the normal copies IN 1 down the chain.",
+        "Patch Tunda OUT 1 into VCO 1 V/Oct.",
+        "Patch Tunda OUT 2 into VCO 2 V/Oct.",
+        "Patch Tunda OUT 3 into VCO 3 V/Oct.",
+        "Patch Tunda OUT 4 into VCO 4 V/Oct.",
+        "Detune each VCO by ear — the pitch CV itself stays identical across all four."
+      ],
+      "signalOut": "Tunda OUT 1–4 — four buffered copies of the same V/Oct, no tuning droop.",
+      "hear": "Four oscillators tracking in perfect unison across the keyboard. Detune by cents at each VCO for a thick supersaw/chorus stack without pitch drift as you add more voices.",
       "diagram": "Tunda:\nSequencer:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\n\n- Sequencer (Pitch) p> Tunda (In 1)\n- Tunda (Out 1) p> VCO 1 (V/Oct)\n- Tunda (Out 2) p> VCO 2 (V/Oct)\n- Tunda (Out 3) p> VCO 3 (V/Oct)\n- Tunda (Out 4) p> VCO 4 (V/Oct)"
     },
     {
-      "name": "Averaged voice mix",
-      "patch": "Send four voices into the four stages and take the average output to keep the sum controlled before the final mixer.",
+      "name": "Safe 4-voice summing mixer",
+      "patch": "Average Out sums four voices with built-in divide-by-4 so the bus stays inside ±10V.",
+      "steps": [
+        "Patch Voice 1 OUT into Tunda IN 1.",
+        "Patch Voice 2 OUT into Tunda IN 2.",
+        "Patch Voice 3 OUT into Tunda IN 3.",
+        "Patch Voice 4 OUT into Tunda IN 4.",
+        "Patch Tunda AVERAGE OUT into your main output / recorder input.",
+        "If a voice sounds too quiet in the mix, boost it at its source — Tunda keeps the gain structure exact, it doesn't have per-channel pots."
+      ],
+      "signalOut": "Tunda AVERAGE OUT — the four voices combined at 0.25x each, staying clipless.",
+      "hear": "A clean, balanced four-voice sum. Level stays controlled no matter how loud the inputs are — trade per-channel volume control for guaranteed headroom.",
       "diagram": "Tunda:\nVoice 1:\nVoice 2:\nVoice 3:\nVoice 4:\nOutput:\n\n- Voice 1 (Out) -> Tunda (In 1)\n- Voice 2 (Out) -> Tunda (In 2)\n- Voice 3 (Out) -> Tunda (In 3)\n- Voice 4 (Out) -> Tunda (In 4)\n- Tunda (Average Out) -> Output (In)"
     },
     {
-      "name": "Modulation scaler",
-      "patch": "Use Tunda to scale a slow LFO upward into audio-range motion or pull it down into a gentle attenuated sweep.",
-      "diagram": "Tunda:\nLFO:\nFilter:\nOutput:\n\n- LFO (Out) -> Tunda (In 1)\n- Tunda (Out 1) >> Filter (Cutoff)\n- Tunda (Average Out) -> Output (In)"
+      "name": "Precision CV scaler (0.5x attenuator)",
+      "patch": "Cut any CV in half cleanly using Average Out with two copies of the same signal.",
+      "steps": [
+        "Patch your source CV (e.g. an LFO) into Tunda IN 1.",
+        "Mult the same source and patch it into Tunda IN 2 as well.",
+        "Leave IN 3 and IN 4 empty.",
+        "Patch Tunda AVERAGE OUT into the destination (e.g. filter cutoff).",
+        "The destination now sees exactly 0.5x the source — add a third copy into IN 3 for 0.75x, or use one copy alone for 0.25x."
+      ],
+      "signalOut": "Tunda AVERAGE OUT — calibrated fraction of the source (0.25 / 0.5 / 0.75 / 1.0).",
+      "hear": "The modulation destination moves by a precise, repeatable fraction of the source. No pot wobble — useful for dialing in exact transposition amounts or matching two modulation depths.",
+      "diagram": "Tunda:\nLFO:\nFilter:\n\n- LFO (Out) -> Tunda (In 1)\n- LFO (Out) -> Tunda (In 2) // duplicate for 0.5x\n- Tunda (Average Out) >> Filter (Cutoff)"
+    },
+    {
+      "name": "2:2 split — two independent buffered branches",
+      "patch": "One Tunda acts as two separate stereo-style buffered mults in 2HP.",
+      "steps": [
+        "Patch Source A (e.g. a pitch CV) into Tunda IN 1 — leave IN 2 empty so the normal carries A into stage 2.",
+        "Patch Source B (e.g. an LFO) into Tunda IN 3 — this breaks the chain at stage 3.",
+        "Take Tunda OUT 1 and OUT 2 as two buffered copies of Source A.",
+        "Take Tunda OUT 3 and OUT 4 as two buffered copies of Source B.",
+        "AVERAGE OUT is still live — it will output the average of A, A, B, B (= 0.5·A + 0.5·B) if you want a bonus combined signal."
+      ],
+      "signalOut": "OUT 1–2 = Source A (x2 copies). OUT 3–4 = Source B (x2 copies).",
+      "hear": "Two completely independent buffered pairs. Great for sending one pitch CV to two oscillators while simultaneously sending one LFO to two filters — no crosstalk between the pairs.",
+      "diagram": "Tunda:\nPitch CV:\nLFO:\nVCO 1:\nVCO 2:\nFilter 1:\nFilter 2:\n\n- Pitch CV (Out) p> Tunda (In 1)\n- LFO (Out) >> Tunda (In 3) // breaks the chain\n- Tunda (Out 1) p> VCO 1 (V/Oct)\n- Tunda (Out 2) p> VCO 2 (V/Oct)\n- Tunda (Out 3) >> Filter 1 (Cutoff)\n- Tunda (Out 4) >> Filter 2 (Cutoff)"
     }
   ]
 }

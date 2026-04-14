@@ -2,16 +2,17 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "firmwareVersion": "3.1",
     "sources": [
       "https://www.vult-dsp.com/freak",
-      "https://modlfo.github.io/VultModules/freak/",
       "https://github.com/modlfo/VultFreakFirmware",
+      "https://modlfo.github.io/VultModules/freak/",
       "https://waveformmagazine.com/waveform-reviews/vult-freak-manifold-filter/",
       "https://modulargrid.net/e/vult-freak",
       "https://modwiggler.com/forum/viewtopic.php?t=223775",
-      "https://www.vult-dsp.com/post/everything-new-with-freak-2-0"
+      "https://synthanatomy.com/2019/07/vult-freak-is-a-new-filter-for-eurorack-who-has-a-vcv-rack-history.html",
+      "https://www.gearnews.com/vult-freak-manifold-filter-eurorack-module-of-multiple-personalities/"
     ]
   },
   "slug": "vult--freak",
@@ -19,107 +20,107 @@
   "manufacturer": "Vult",
   "hp": 12,
   "tags": ["FILTER", "VCF", "DISTORTION", "VCA", "WAVESHAPER"],
-  "description": "Digital manifold stereo filter modelling 13+ Vult analog filters plus waveshapers and distortions across 45+ configurations. Stereo or Duo (independent mono) modes, built-in VCAs, drive, and A/B CV cross-modulation routing.",
+  "description": "Digital manifold stereo filter modelling 13+ Vult analog filter designs plus waveshapers and distortions across 45+ configurations. Stereo, Dual (two independent mono) and Duplex (two stereo) modes, built-in VCAs, drive, and A/B CV cross-modulation routing.",
   "controls": [
     {
       "name": "Cutoff",
       "scope": "Global",
-      "description": "Primary filter frequency. Full CCW closed, full CW open. 1V/Oct tracking via cutoff CV with attenuverter.",
+      "description": "Primary filter frequency. Full CCW closed, full CW open. 1V/Oct-trackable via CUTOFF CV with attenuverter centred.",
       "detail": "1V/Oct trackable · full range across models"
     },
     {
       "name": "Resonance",
       "scope": "Global",
-      "description": "Boosts frequencies near cutoff. Most models self-oscillate; character depends on selected filter (Polivoks bite, Moog warmth, Steiner scream).",
+      "description": "Boosts frequencies near cutoff. Most models self-oscillate; character depends on the selected filter (Polivoks bite, Moog warmth, Steiner scream).",
       "detail": "Self-oscillates · per-model curve"
     },
     {
       "name": "Drive",
       "scope": "Global",
-      "description": "Input saturation stage ahead of the filter. Subtle pinch of warmth at low settings to full saturation at max.",
+      "description": "Input saturation stage ahead of the filter. Subtle pinch of warmth at low settings, full saturation at max.",
       "detail": "Clean → saturated → fully overdriven"
     },
     {
       "name": "Cutoff Attenuverter",
       "scope": "Global",
-      "description": "Bipolar attenuator for cutoff CV input. Centre is zero.",
+      "description": "Bipolar attenuator for CUTOFF CV input. Centre is zero.",
       "detail": "Bipolar · centre detent"
     },
     {
       "name": "Resonance Attenuverter",
       "scope": "Global",
-      "description": "Bipolar attenuator for resonance CV input.",
+      "description": "Bipolar attenuator for RES CV input.",
       "detail": "Bipolar"
     },
     {
       "name": "Drive Attenuverter",
       "scope": "Global",
-      "description": "Bipolar attenuator for drive CV input.",
+      "description": "Bipolar attenuator for DRIVE CV input.",
       "detail": "Bipolar"
     },
     {
       "name": "Filter Selector",
       "scope": "Global",
-      "description": "Chooses one of the modelled filters: Vortex, Unstabile, Lateralus, Tangents (YU/MS/XX), Stabile, Ferox, Nurage, Rescomb, Vorg, Boomstick, Debriatus, Phonok, and distortions/waveshapers.",
-      "detail": "13+ models · screen-selected"
+      "description": "Chooses the modelled filter or processor. Includes Vortex, Unstabile, Lateralus, Tangens-YU/MS/XX, Stabile, Ferox, Nurage, Rescomb, Vorg, Boomstick, Disjoint, Nitrous, Debriatus, Wolv, Phonok, plus Flame distortions and Nopskate octaver.",
+      "detail": "13+ models · 45+ configurations · menu/encoder-selected"
     },
     {
       "name": "Mode Selector",
       "scope": "Per model",
-      "description": "Selects filter mode for the current model: LP/BP/HP/Notch variants, or 6/12/18/24dB slopes on Lateralus.",
+      "description": "Selects filter mode for the current model: LP/BP/HP/Notch variants, 6/12/18/24 dB slopes on Lateralus, 96 dB slopes on Disjoint, two modes on Rescomb and Debriatus.",
       "detail": "Model-dependent · LP, BP, HP, Notch, multi-slope"
     },
     {
       "name": "Mod Route",
-      "scope": "Duo Mode",
+      "scope": "A/B CV",
       "description": "Routes A/B CV inputs between channels. Combined: A+B to both. Individual: A→L, B→R. Inverse: A-B→L, B-A→R.",
       "detail": "Combined / Individual / Inverse"
     },
     {
       "name": "Settings Menu",
       "scope": "Global",
-      "description": "Access extra modes: Stereo vs Duo, VCA modes (Duplex/Nitrous/Wolv), Nopskate octaver, Flame distortion variants, screensaver.",
+      "description": "Access extra modes: Stereo / Dual / Duplex, built-in VCA enable, modulation input ranges, audio output levels, Nopskate octaver, Flame distortion variants, Wolfram cellular-automata screensaver. Long-press the encoder from v2.5 onward.",
       "detail": "Menu-selected · firmware 3.1"
     }
   ],
   "inputs": [
-    { "name": "IN L", "description": "Stereo left input (or channel A input in Duo mode)." },
-    { "name": "IN R", "description": "Stereo right input (or channel B input in Duo mode)." },
-    { "name": "CUTOFF CV", "description": "Filter cutoff CV. 1V/Oct-trackable with attenuverter centred." },
-    { "name": "RES CV", "description": "Resonance CV input." },
-    { "name": "DRIVE CV", "description": "Drive CV input." },
-    { "name": "A CV", "description": "CV input A. Routed per Mod Route selector in Duo mode; in Stereo, maps to a menu-assigned parameter." },
-    { "name": "B CV", "description": "CV input B. Routed per Mod Route selector." }
+    { "name": "IN L", "description": "Stereo left input (or channel A input in Dual mode)." },
+    { "name": "IN R", "description": "Stereo right input (or channel B input in Dual mode)." },
+    { "name": "CUTOFF CV", "description": "Filter cutoff CV. 1V/Oct-trackable with attenuverter centred (on self-oscillating models)." },
+    { "name": "RES CV", "description": "Resonance CV input, attenuverted." },
+    { "name": "DRIVE CV", "description": "Drive CV input, attenuverted." },
+    { "name": "A CV", "description": "Primary modulation CV A. In Dual mode, routed per Mod Route selector; in Stereo, applied to both channels or a menu-assigned parameter." },
+    { "name": "B CV", "description": "Primary modulation CV B. Routed per Mod Route selector." }
   ],
   "outputs": [
-    { "name": "OUT L", "description": "Stereo left output (or channel A output in Duo mode)." },
-    { "name": "OUT R", "description": "Stereo right output (or channel B output in Duo mode)." }
+    { "name": "OUT L", "description": "Stereo left output (or channel A output in Dual mode)." },
+    { "name": "OUT R", "description": "Stereo right output (or channel B output in Dual mode)." }
   ],
   "behaviors": [
     {
       "name": "13+ filter models",
       "trigger": "Filter selector",
-      "description": "Each model emulates a classic circuit: Vortex (Polivoks), Lateralus (Moog ladder, 6/12/18/24dB), Tangents (Steiner-Parker, three variants), Stabile (state-variable), Ferox (CMOS), Nurage (Buchla LPG), Vorg (MS-20), Rescomb (resonant comb), Boomstick (Sallen-Key), Debriatus (waveshaper chain), Unstabile (circuit-bent SVF), plus Phonok."
+      "description": "Each model emulates a classic circuit: Vortex (Polivoks LP/BP), Lateralus (Moog ladder, 6/12/18/24 dB LP), Tangens-YU/MS/XX (Steiner-Parker, LP/HP/BP), Stabile (state-variable, LP/BP/HP), Ferox (CMOS, LP/HP/BP/Notch), Nurage (Buchla-style LPG), Vorg (MS-20 OTA), Rescomb (resonant comb, 2 modes), Boomstick (Sallen-Key LP, plus HP), Unstabile (circuit-bent SVF), Disjoint (with 96 dB modes), Nitrous (303 acid), plus Debriatus and Wolv waveshapers and Phonok vowel resonator."
     },
     {
-      "name": "Stereo vs Duo mode",
+      "name": "Stereo / Dual / Duplex modes",
       "trigger": "Settings menu",
-      "description": "Stereo: L/R pair processed by the same filter settings (true stereo). Duo: two independent mono filters with shared model but separate cutoff/CV per channel. Duo enables L and R as independent voices or parallel/series processing."
+      "description": "Stereo: a single filter processes L/R as a true-stereo pair. Dual: two fully independent mono filters sharing the selected model but with separate cutoff/CV per channel. Duplex: two stereo filters stacked — e.g. two different models in series or parallel across the same L/R pair."
     },
     {
       "name": "A/B cross-modulation routing",
-      "trigger": "Mod Route selector in Duo mode",
-      "description": "Individual: A modulates left only, B modulates right only. Inverse: routes A-B to left and B-A to right, creating opposing motion between channels — wide phasey stereo from a single LFO pair."
+      "trigger": "Mod Route selector",
+      "description": "Combined routes A+B to both channels. Individual routes A to left, B to right. Inverse routes A-B to left and B-A to right, creating opposing motion between channels — wide phasey stereo from a single LFO pair."
     },
     {
       "name": "Self-oscillation across models",
       "trigger": "Resonance near max on most models",
-      "description": "Most filter models self-oscillate with distinct character: Lateralus pure sine, Vortex aggressive Polivoks tone, Tangents throaty Steiner scream, Ferox gritty CMOS peak. Self-oscillating models track 1V/Oct well — plays as a filter-voice oscillator."
+      "description": "Most filter models self-oscillate with distinct character: Lateralus pure sine, Vortex aggressive Polivoks tone, Tangens throaty Steiner scream, Ferox gritty CMOS peak. Self-oscillating models track 1V/Oct well via CUTOFF CV — Freak plays as a filter-voice oscillator."
     },
     {
       "name": "Built-in VCAs",
-      "trigger": "Settings → VCA mode (Duplex/Nitrous/Wolv)",
-      "description": "Internal VCAs on L/R outputs controllable via A/B CV or dedicated mapping. Duplex/Nitrous/Wolv are distinct VCA response curves. Turns Freak into a full voice stage — no external VCA needed."
+      "trigger": "Settings → VCAs enabled (firmware 2.4+)",
+      "description": "Internal VCAs sit on the L/R outputs and are driven by A/B CV (or a menu-assigned source). Removes the need for an external VCA after the filter. The Nurage-VCA filter model combines LPG + VCA with adjustable vactrol decay as a dedicated voice-building patch."
     },
     {
       "name": "Drive as pre-filter saturation",
@@ -127,56 +128,167 @@
       "description": "Drive saturates the signal before the filter stage, not after. Harmonics introduced by drive are then filtered by cutoff/resonance — different character from post-filter distortion. Low settings warm the signal; max settings behave like a distortion pedal into the filter."
     },
     {
-      "name": "Debriatus waveshaper chain",
-      "trigger": "Filter selector → Debriatus",
-      "description": "Not a traditional filter — two waveshaper chains in series that destroy input harmonic content. Pair with cutoff sweep for evolving noise textures rather than classic filtering."
+      "name": "Debriatus / Wolv waveshaper chains",
+      "trigger": "Filter selector → Debriatus or Wolv",
+      "description": "Not traditional filters — Debriatus is a two-mode waveshaper chain that destroys input harmonic content; Wolv is a second waveshaper added in v3.0. Pair with cutoff sweep for evolving noise-adjacent textures rather than classic filtering."
     },
     {
       "name": "Rescomb resonant comb",
       "trigger": "Filter selector → Rescomb",
-      "description": "Two comb-filter modes with resonance feedback. Tunable delay lines — plays Karplus-Strong-like plucks when fed with noise bursts and driven at audio-rate cutoff CV."
+      "description": "Two comb-filter modes with resonance feedback. The resonant peaks of the tunable delay line play Karplus-Strong-style plucks when fed with short noise bursts and pitched via CUTOFF CV."
+    },
+    {
+      "name": "Nitrous 303-style acid",
+      "trigger": "Filter selector → Nitrous (firmware 3.0+)",
+      "description": "Dedicated acid-filter model inspired by the TB-303. Biting resonant squelch with characteristic low-pass envelope-accent behaviour — pair with a short envelope on CUTOFF CV for squelchy acid lines."
+    },
+    {
+      "name": "Phonok vowel resonator",
+      "trigger": "Filter selector → Phonok (firmware 2.5+)",
+      "description": "Formant resonator that imprints vowel shapes onto the input. Cutoff scans through vowel pairs rather than a single frequency — turns any harmonic-rich source into a talking/vocalising pad."
     }
   ],
   "patchIdeas": [
     {
       "name": "Karplus pluck via Rescomb",
-      "patch": "Noise burst (AD × noise) → IN L · Filter: Rescomb · V/Oct sequence → CUTOFF CV · each burst rings the comb at the sequenced pitch · plucky string voice",
-      "diagram": "Freak:\n* Filter: Rescomb\n* Resonance: ~2 o'clock\n\nNoise:\n\nAD:\n\nGate:\n\nSequencer:\n\n- Gate (Out) g> AD (Trig)\n- AD (Out) >> Noise (VCA CV)\n- Noise (Out) -> Freak (IN L)\n- Sequencer (Pitch) p> Freak (CUTOFF CV)\n- Freak (OUT L) -> Output (In L)"
+      "patch": "Short noise bursts fed into Rescomb with a sequenced CUTOFF CV — each burst excites the resonant comb line at the sequenced pitch, yielding plucky string tones.",
+      "steps": [
+        "Turn Freak on and hold the encoder to open Settings. Set Mode to Stereo and ensure VCAs are off for now.",
+        "Rotate the encoder to select Rescomb as the active filter model and pick Mode 1 (the classic resonant comb).",
+        "Set Cutoff fully CCW (Rescomb's cutoff sets the comb pitch — CV will sweep it).",
+        "Set Resonance to about 2 o'clock — enough ring to sustain a pluck.",
+        "Set Drive to 0 and centre all three attenuverters.",
+        "Patch a noise source through a VCA, with an AD envelope (short rise, ~50 ms decay) on the VCA CV.",
+        "Patch each sequencer gate into the AD trigger — each gate produces a noise burst.",
+        "Patch the VCA output → Freak IN L.",
+        "Patch the sequencer pitch CV → Freak CUTOFF CV. Rotate the Cutoff attenuverter to ~1 o'clock so 1V produces roughly an octave of comb-pitch movement.",
+        "Patch Freak OUT L → mixer."
+      ],
+      "signalOut": "Freak OUT L — pitched, plucky string-like tones at modular level. Silent between notes.",
+      "hear": "Each trigger fires a kalimba/nylon-string pluck. Longer noise bursts soften the attack into bowed strings; higher resonance lengthens the decay tail. Sweep Cutoff attenuverter to tune tracking.",
+      "diagram": "Freak:\n* Filter: Rescomb (Mode 1)\n* Resonance: ~2 o'clock\n* Mode: Stereo\n\nNoise:\n\nVCA:\n\nAD:\n\nSequencer:\n\n- Sequencer (Gate) t> AD (Trig)\n- AD (Out) >> VCA (CV)\n- Noise (Out) -> VCA (In)\n- VCA (Out) -> Freak (IN L)\n- Sequencer (Pitch) p> Freak (CUTOFF CV)\n- Freak (OUT L) -> Output (In)"
     },
     {
       "name": "Inverse stereo wobble",
-      "patch": "Pad stereo → IN L/R · Mode: Duo · Mod Route: Inverse · single LFO → A · cutoff opens on L as it closes on R · opposing stereo motion",
-      "diagram": "Freak:\n* Mode: Duo\n* Mod Route: Inverse\n* Filter: Vortex\n\nLFO:\n\nPad:\n\n- Pad (Out L) -> Freak (IN L)\n- Pad (Out R) -> Freak (IN R)\n- LFO (Out) >> Freak (A CV) // A-B to L · B-A to R\n- Freak (OUT L) -> Output (In L)\n- Freak (OUT R) -> Output (In R)"
+      "patch": "Stereo pad into Dual mode with Mod Route: Inverse — a single LFO drives A CV and Freak computes A-B and B-A to produce opposing cutoff motion on the two channels.",
+      "steps": [
+        "Hold the encoder, open Settings, set Mode to Dual, and set Mod Route to Inverse.",
+        "Select Vortex as the filter model and LP as the mode.",
+        "Set Cutoff to noon, Resonance to ~11 o'clock (enough colour without ringing), Drive to 0.",
+        "Centre the Cutoff attenuverter, set both A and B attenuverters to ~2 o'clock.",
+        "Patch a stereo pad source: pad OUT L → Freak IN L, pad OUT R → Freak IN R.",
+        "Patch a slow LFO (~0.1 Hz triangle, ±5V) → Freak A CV. Leave B CV unpatched (it reads 0 V so A-B = A on L, and B-A = -A on R).",
+        "Freak OUT L → Mixer In L, Freak OUT R → Mixer In R.",
+        "Adjust the A attenuverter to set wobble depth."
+      ],
+      "signalOut": "Freak OUT L/R — stereo pad with opposing cutoff motion across the two sides.",
+      "hear": "As the LFO rises, the left side opens while the right closes, producing a very wide phasey stereo sweep from a single LFO. Swap Resonance higher for a vocal/formant motion instead of a flat sweep.",
+      "diagram": "Freak:\n* Mode: Dual\n* Mod Route: Inverse\n* Filter: Vortex / LP\n\nLFO:\n\nPad:\n\n- Pad (Out L) -> Freak (IN L)\n- Pad (Out R) -> Freak (IN R)\n- LFO (Out) >> Freak (A CV) // A-B → L · B-A → R\n- Freak (OUT L) -> Mixer (In L)\n- Freak (OUT R) -> Mixer (In R)"
     },
     {
-      "name": "Polivoks scream",
-      "patch": "VCO saw → IN L · Filter: Vortex · Mode: LP · Resonance high · Drive moderate · aggressive Polivoks-style acid squelch · sequencer → CUTOFF CV with attenuverter",
-      "diagram": "Freak:\n* Filter: Vortex\n* Mode: LP\n* Resonance: ~3 o'clock\n* Drive: ~1 o'clock\n\nVCO:\n\nSequencer:\n\n- VCO (Out) -> Freak (IN L)\n- Sequencer (CV) >> Freak (CUTOFF CV)\n- Freak (OUT L) -> Output (In)"
+      "name": "Polivoks acid squelch",
+      "patch": "Classic Polivoks-style acid line: saw VCO into Vortex LP with high resonance, short envelope squelching the cutoff per note.",
+      "steps": [
+        "Select Vortex as the filter model and LP as the mode.",
+        "Set Cutoff to ~10 o'clock (darker starting point), Resonance to ~3 o'clock for the Polivoks bite, Drive to ~1 o'clock.",
+        "Set the Cutoff attenuverter to ~2 o'clock (positive depth).",
+        "Patch your sequencer pitch CV → VCO V/Oct, sequencer gate → envelope trigger.",
+        "On the envelope: short rise (~2 ms), fast decay (~150 ms).",
+        "Patch VCO saw → Freak IN L.",
+        "Patch the envelope Out → Freak CUTOFF CV — each note snaps the cutoff open then ducks back down.",
+        "Patch Freak OUT L → output.",
+        "Tweak Drive upward for more growl; lower Cutoff for a deeper squelch floor."
+      ],
+      "signalOut": "Freak OUT L — biting acid bassline at modular level, loud with Drive up.",
+      "hear": "A snarling, Polivoks-style acid squelch. Short envelope + high resonance = classic accent. Push Drive past noon for a distorted, gnarly 303-adjacent tone.",
+      "diagram": "Freak:\n* Filter: Vortex / LP\n* Resonance: ~3 o'clock\n* Drive: ~1 o'clock\n* Cutoff att: ~2 o'clock\n\nVCO:\n\nEnv:\n\nSequencer:\n\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) g> Env (Trig)\n- VCO (Saw) -> Freak (IN L)\n- Env (Out) >> Freak (CUTOFF CV)\n- Freak (OUT L) -> Output (In)"
     },
     {
       "name": "Self-oscillating sine voice",
-      "patch": "No input · Filter: Lateralus 24dB · Resonance max · Drive 0 · V/Oct sequence → CUTOFF CV (centred attenuverter) · Freak as a clean sine oscillator that tracks 1V/Oct",
-      "diagram": "Freak:\n* Filter: Lateralus\n* Mode: LP 24dB\n* Resonance: max\n* Drive: 0\n\nSequencer:\n\n- Sequencer (Pitch) p> Freak (CUTOFF CV)\n- Freak (OUT L) -> Output (In)"
+      "patch": "No input — Lateralus LP24 at max resonance self-oscillates as a clean sine VCO that tracks 1V/Oct via CUTOFF CV.",
+      "steps": [
+        "Leave IN L and IN R unpatched.",
+        "Select Lateralus as the filter model and Mode: LP 24 dB.",
+        "Set Resonance to max — the cleanest self-oscillation on Freak.",
+        "Set Drive to 0 so nothing colours the sine.",
+        "Centre the Cutoff attenuverter (clean 1V/Oct tracking).",
+        "Patch sequencer pitch CV → Freak CUTOFF CV.",
+        "Patch Freak OUT L → a VCA, gated by a separate envelope triggered from the sequencer.",
+        "Tune by ear: adjust the Cutoff knob until the played C matches your reference — Freak now behaves as a self-oscillating sine VCO across ~5 octaves."
+      ],
+      "signalOut": "Freak OUT L — clean sine tone tracking 1V/Oct input. Continuous (gate with a VCA downstream).",
+      "hear": "A pure sine voice. Swap the filter model to Tangens-MS or Vortex for a throatier, non-sine self-oscillation character. Adding a touch of Drive thickens the sine toward a softly-clipped sine.",
+      "diagram": "Freak:\n* Filter: Lateralus / LP 24 dB\n* Resonance: max\n* Drive: 0\n\nSequencer:\n\nEnv:\n\nVCA:\n\n- Sequencer (Pitch) p> Freak (CUTOFF CV)\n- Freak (OUT L) -> VCA (In)\n- Sequencer (Gate) g> Env (Trig)\n- Env (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
-      "name": "Nurage Buchla LPG",
-      "patch": "VCO → IN L · Filter: Nurage · LPG mode · trigger → via envelope → A CV (VCA-mapped) · plucky low-pass-gate bongo with Buchla character",
-      "diagram": "Freak:\n* Filter: Nurage\n* VCA mode: Duplex (A→VCA)\n\nVCO:\n\nEnv:\n\nGate:\n\n- VCO (Out) -> Freak (IN L)\n- Gate (Out) g> Env (Trig)\n- Env (Out) >> Freak (A CV) // opens internal VCA\n- Freak (OUT L) -> Output (In)"
+      "name": "Nurage LPG voice",
+      "patch": "Nurage-VCA model with an envelope into A CV drives the internal LPG + VCA — a complete Buchla-style plucky bongo voice from a single VCO.",
+      "steps": [
+        "Open Settings → enable built-in VCAs (firmware 2.4+).",
+        "Select Nurage as the filter model. Choose the Nurage-VCA variant (LPG + VCA, vactrol decay adjustable in Settings).",
+        "Set Cutoff to ~1 o'clock (opens further when struck), Resonance to ~11 o'clock, Drive to 0.",
+        "Set the A attenuverter fully CW (maximum modulation depth).",
+        "Patch VCO square → Freak IN L.",
+        "Patch a trigger → a short envelope (~5 ms rise, ~300 ms decay).",
+        "Patch the envelope Out → Freak A CV — A drives the Nurage LPG + internal VCA.",
+        "Patch sequencer pitch CV → VCO V/Oct for melodies.",
+        "Patch Freak OUT L → mixer."
+      ],
+      "signalOut": "Freak OUT L — percussive plucked voice, silent between gates (the internal VCA closes).",
+      "hear": "Buchla-style bongo or plucky bass character — darker and softer on decay, brighter on attack. Adjust vactrol decay in Settings for longer, more bloomy tails.",
+      "diagram": "Freak:\n* Filter: Nurage-VCA\n* Cutoff: ~1 o'clock\n* VCAs: enabled\n\nVCO:\n\nEnv:\n\nSequencer:\n\n- Sequencer (Pitch) p> VCO (V/Oct)\n- VCO (Square) -> Freak (IN L)\n- Sequencer (Gate) g> Env (Trig)\n- Env (Out) >> Freak (A CV) // drives LPG + VCA\n- Freak (OUT L) -> Output (In)"
     },
     {
-      "name": "Parallel series Duo",
-      "patch": "Source → IN L · Freak Duo · OUT L → IN R (via external cable) · two stages of the same model in series · drive stacking for aggressive saturation",
-      "diagram": "Freak:\n* Mode: Duo\n* Filter: Tangents-XX\n* Mod Route: Individual\n\nVCO:\n\n- VCO (Out) -> Freak (IN L)\n- Freak (OUT L) -> Freak (IN R) // series feedback\n- Freak (OUT R) -> Output (In)"
+      "name": "Dual series overdrive",
+      "patch": "Dual mode with L output externally cabled into R input — two instances of the same Tangens model in series, each contributing its own drive stage for thick saturation.",
+      "steps": [
+        "Open Settings → set Mode to Dual and Mod Route to Individual (A→L, B→R).",
+        "Select Tangens-XX as the filter model, Mode: LP.",
+        "Set Cutoff to ~1 o'clock, Resonance to ~2 o'clock, Drive to ~1 o'clock (both channels share these).",
+        "Patch VCO saw → Freak IN L.",
+        "Patch Freak OUT L → Freak IN R — the left channel's output feeds the right channel's input.",
+        "Patch sequencer pitch CV → VCO V/Oct.",
+        "Optional: patch a slow LFO → A CV to modulate only the L-stage cutoff, then a faster LFO → B CV for the R stage.",
+        "Take the final audio from Freak OUT R → output.",
+        "Lower Drive if it gets too crunchy — two stages of Drive compound quickly."
+      ],
+      "signalOut": "Freak OUT R — the source filtered and driven twice in series, modular level (loud — mind your VCA).",
+      "hear": "A gnarly, thick Steiner-scream character with double the saturation. Independent A/B modulation gives different movement on each stage for evolving drive. Try Tangens-YU on one stage and -MS on the other by switching back and forth to compare colours.",
+      "diagram": "Freak:\n* Mode: Dual\n* Mod Route: Individual\n* Filter: Tangens-XX / LP\n* Drive: ~1 o'clock\n\nVCO:\n\nSequencer:\n\n- Sequencer (Pitch) p> VCO (V/Oct)\n- VCO (Saw) -> Freak (IN L)\n- Freak (OUT L) -> Freak (IN R) // series\n- Freak (OUT R) -> Output (In)"
     },
     {
       "name": "Debriatus destroyer",
-      "patch": "Clean synth line → IN L · Filter: Debriatus · Drive high · cutoff sweep from LFO · waveshaper chain annihilates the signal into noise-adjacent textures",
-      "diagram": "Freak:\n* Filter: Debriatus\n* Drive: ~3 o'clock\n\nSynth:\n\nLFO:\n\n- Synth (Out) -> Freak (IN L)\n- LFO (Out) >> Freak (CUTOFF CV)\n- Freak (OUT L) -> Output (In)"
+      "patch": "Debriatus waveshaper chain with high drive and an LFO scanning cutoff — melts a clean synth line into evolving noise-adjacent textures.",
+      "steps": [
+        "Select Debriatus as the filter model and pick Mode 1 (the first of its two waveshaper chains).",
+        "Set Cutoff to noon, Resonance to noon, Drive to ~3 o'clock.",
+        "Set the Cutoff attenuverter to ~2 o'clock (positive depth).",
+        "Patch a clean synth line (VCO → VCA → envelope) → Freak IN L.",
+        "Patch a slow LFO (~0.2 Hz triangle, ±5V) → Freak CUTOFF CV.",
+        "Patch Freak OUT L → mixer.",
+        "Sweep Drive from 0 to max while listening — the waveshaper chain annihilates more harmonic content as Drive increases.",
+        "Try Mode 2 for a second chain character."
+      ],
+      "signalOut": "Freak OUT L — heavily-destroyed audio ranging from gritty saturation to near-noise textures.",
+      "hear": "The clean source gradually disintegrates into metallic, crushed, evolving noise. Lower Drive for subtle grit; max it for full destruction. Debriatus Mode 2 adds a different flavour of mangling.",
+      "diagram": "Freak:\n* Filter: Debriatus (Mode 1)\n* Drive: ~3 o'clock\n* Cutoff att: ~2 o'clock\n\nSynth:\n\nLFO:\n\n- Synth (Out) -> Freak (IN L)\n- LFO (Out) >> Freak (CUTOFF CV)\n- Freak (OUT L) -> Output (In)"
     },
     {
       "name": "Stereo Tangens scream",
-      "patch": "Drone pad stereo → IN L/R · Filter: Tangents-MS · Mode: BP · Resonance near self-osc · Stereo mode · drone screams with Steiner-Parker bite across both channels",
-      "diagram": "Freak:\n* Filter: Tangents-MS\n* Mode: BP\n* Mode: Stereo\n* Resonance: ~3 o'clock\n\nDrone:\n\n- Drone (Out L) -> Freak (IN L)\n- Drone (Out R) -> Freak (IN R)\n- Freak (OUT L) -> Output (In L)\n- Freak (OUT R) -> Output (In R)"
+      "patch": "Stereo drone into Tangens-MS BP just below self-oscillation — the Steiner-Parker bite dominates both channels with a true-stereo pair of peaks.",
+      "steps": [
+        "Open Settings → set Mode to Stereo.",
+        "Select Tangens-MS as the filter model, Mode: BP.",
+        "Set Cutoff to noon, Resonance to ~3 o'clock (near but below self-osc), Drive to ~1 o'clock.",
+        "Centre all attenuverters.",
+        "Patch a stereo drone source: drone OUT L → Freak IN L, drone OUT R → Freak IN R.",
+        "Patch a slow LFO (~0.1 Hz, ±5V) → Freak CUTOFF CV. Set the Cutoff attenuverter to ~1 o'clock for a gentle sweep.",
+        "Patch Freak OUT L → Mixer L and Freak OUT R → Mixer R.",
+        "Raise Resonance toward max for a screaming Steiner-style character (watch volume)."
+      ],
+      "signalOut": "Freak OUT L/R — screaming band-pass filtered drone with Steiner-Parker bite, modular level.",
+      "hear": "A wide, throaty BP scream that sweeps slowly across the drone's harmonics. The stereo pair stays phase-coherent (single filter processes both), so the scream feels mono-wide rather than animated — swap to Dual mode for independent L/R motion.",
+      "diagram": "Freak:\n* Filter: Tangens-MS / BP\n* Mode: Stereo\n* Resonance: ~3 o'clock\n\nDrone:\n\nLFO:\n\n- Drone (Out L) -> Freak (IN L)\n- Drone (Out R) -> Freak (IN R)\n- LFO (Out) >> Freak (CUTOFF CV)\n- Freak (OUT L) -> Mixer (L)\n- Freak (OUT R) -> Mixer (R)"
     }
   ]
 }

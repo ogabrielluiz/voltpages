@@ -2,174 +2,304 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
+      "https://www.ericasynths.lv/media/Fusion_VCO2_manual_web.pdf",
       "https://www.ericasynths.lv/news/fusion-vco-v2/",
+      "https://www.manua.ls/erica-synths/fusion-vco2/manual",
       "https://modulargrid.net/e/erica-synths-fusion-vco2",
-      "https://www.signalsounds.com/erica-synths-fusion-vco-2-eurorack-valve-oscillator-module",
-      "https://www.gearnews.com/erica-synths-fusion-vco-v2-is-dark-and-full-of-terrors/",
-      "https://www.controlvoltage.net/erica-synths-fusion-vco2.html",
-      "https://www.missionsynths.com/products/erica-synths-vco-v2",
-      "https://modwiggler.com/forum/viewtopic.php?t=225572"
+      "https://www.sweetwater.com/store/detail/FusionVCO2--erica-synths-fusion-vco-v2-analogue-oscillator-eurorack-module-with-tube-overdrive-and-audio-input",
+      "https://modwiggler.com/forum/viewtopic.php?t=225572",
+      "https://modwiggler.com/forum/viewtopic.php?t=256876"
     ]
   },
   "slug": "erica-synths--fusion-vco2",
   "name": "Fusion VCO2",
   "manufacturer": "Erica Synths",
   "hp": 14,
-  "tags": ["VCO", "OSCILLATOR", "WAVESHAPER", "DISTORTION"],
-  "description": "Full-analog AS3340 VCO with real 12AX7/ECC83 vacuum tube overdrive. Three simultaneous waveforms with waveshape CV, transistor sub with three colour modes, BBD-based detune, hard sync, FM, and external audio input through the tube.",
+  "tags": ["VCO", "OSCILLATOR", "DISTORTION", "WAVESHAPER"],
+  "description": "Analog AS3340 VCO through a vacuum tube overdrive. -1 oct transistor sub with Colour low-pass, BBD Detune emulates a second drifting VCO, and a main OUT sums VCO + sub + external audio through the tube.",
   "controls": [
     {
-      "name": "Coarse Tune",
+      "name": "TUNE",
       "scope": "VCO core",
-      "description": "Coarse frequency control covering the full 8-octave tracking range.",
-      "detail": "~8 octaves · AS3340 core · LFO-capable at extreme CCW"
+      "description": "Manual coarse tuning knob.",
+      "detail": "~2-octave knob range · 1V/oct CV tracks over 8+ octaves (C0–C8 and beyond)"
     },
     {
-      "name": "Fine Tune",
+      "name": "+1 / -1 OCT switch",
       "scope": "VCO core",
-      "description": "Fine pitch trim for tuning against other oscillators.",
-      "detail": "±semitone range typical"
+      "description": "Three-position octave switch transposing the principal VCO up an octave, leaving it centered, or down an octave.",
+      "detail": "useful for jumping registers without retuning"
     },
     {
-      "name": "FM Amount",
+      "name": "FM LEVEL",
       "scope": "VCO core",
-      "description": "Attenuator for the external FM CV input before it reaches the exponential frequency control.",
-      "detail": "Exponential FM · feeds 1V/oct summing point"
+      "description": "Logarithmic attenuator for the external FM CV input before it reaches the exponential frequency control.",
+      "detail": "exponential FM · CCW: no FM · CW: deep modulation/inharmonic"
     },
     {
-      "name": "Waveshape",
+      "name": "PULSE WIDTH",
       "scope": "VCO core",
-      "description": "Morphs the principal waveform between sine, triangle and square variants; also performs PWM on the square.",
-      "detail": "CCW: sine · noon: tri · CW: square/PWM · CV-modulatable via Wave input"
+      "description": "Manual pulse-width control for the internal square waveform that feeds the tube stage and main output.",
+      "detail": "center: ~50% duty · CCW/CW: asymmetric · also CV-modulatable via PWM IN"
     },
     {
-      "name": "Detune",
+      "name": "DETUNE",
       "scope": "BBD detune",
-      "description": "Sets the amount of BBD-delayed, pitch-shifted signal mixed back into the main output to emulate a second detuned VCO.",
-      "detail": "Two BBD delay lines form a frequency shifter · from subtle chorus to beating unison"
+      "description": "Sets the amount of BBD-delayed, pitch-shifted signal mixed back into the principal oscillator to emulate a second detuned VCO. Also raises the internal LFO that sweeps the BBD clock.",
+      "detail": "two BBD delay lines acting as a frequency shifter · CCW: off · CW: more detune AND faster internal LFO"
     },
     {
-      "name": "Sub Level",
+      "name": "SUB LEVEL",
       "scope": "sub-oscillator",
-      "description": "Dry/wet blend of the transistor sub into the main mix.",
-      "detail": "CCW: sub off · CW: sub dominates · sub tracks VCO at -1 / -2 oct per Colour mode"
+      "description": "Mix level of the -1 oct transistor sub-oscillator into the main signal path.",
+      "detail": "CCW: sub off · CW: max sub presence (added on top of the VCO before the tube)"
     },
     {
-      "name": "Sub Colour",
+      "name": "COLOUR",
       "scope": "sub-oscillator",
-      "description": "Three-way switch selecting the sub waveform/octave character.",
-      "detail": "Pos 1: smooth -1 oct · Pos 2: intermediate · Pos 3: biting -2 oct square"
+      "description": "Switch acting as a fixed low-pass filter on the sub, selecting between two timbre flavours.",
+      "detail": "two positions · brighter (square-like edge) vs. rounder (filtered, smoother low-end)"
     },
     {
-      "name": "Tube Drive",
+      "name": "TUBE CRUNCH",
       "scope": "tube stage",
-      "description": "Drives the 12AX7/ECC83 vacuum tube overdrive that processes the sum of VCO, sub and external audio input.",
-      "detail": "CCW: clean · noon: warm saturation · CW: aggressive harmonic distortion"
+      "description": "Drives the vacuum tube overdrive that processes the sum of VCO + sub + external audio. Manual gain into the dual tube stages.",
+      "detail": "CCW: clean · noon: warm saturation · CW: aggressive harmonic crunch"
     },
     {
-      "name": "External Audio Level",
+      "name": "AUDIO LEVEL",
       "scope": "ext input",
-      "description": "Sets how much external audio is summed into the tube stage alongside the oscillator.",
-      "detail": "Line-level friendly · feed filter, VCA or second VCO for tube colouration"
+      "description": "Sets how much external audio (from AUDIO IN) is summed into the tube stage alongside the oscillator.",
+      "detail": "use as a stand-alone tube colour by lowering SUB LEVEL and the VCO's contribution"
     }
   ],
   "inputs": [
-    { "name": "V/Oct", "description": "Precision 1V/oct pitch input with 8-octave tracking.", "voltage": "-3V to +5V typical" },
-    { "name": "FM CV", "description": "Exponential FM input attenuated by the FM Amount knob. Patch audio-rate sources for classic FM tones.", "voltage": "±5V" },
-    { "name": "Sync", "description": "Hard-sync input. Rising edges reset the VCO core phase for classic sync sweeps.", "voltage": "gate/audio" },
-    { "name": "Wave CV", "description": "CV input modulating the Waveshape position, adding dynamic timbral movement and PWM.", "voltage": "±5V" },
-    { "name": "External Audio", "description": "Line/modular audio input summed into the tube overdrive stage alongside the oscillator core.", "voltage": "±10V audio" }
+    { "name": "1V/OCT", "description": "Precision 1V/oct pitch input. Tracks great over 8+ octaves.", "voltage": "±5 V typical" },
+    { "name": "FM IN", "description": "Exponential FM input attenuated by the FM LEVEL knob. Patch audio-rate sources for classic FM-style tones.", "voltage": "audio/CV" },
+    { "name": "PWM IN", "description": "CV input for pulse-width modulation, summed with the PULSE WIDTH knob position.", "voltage": "-5 V to +5 V" },
+    { "name": "SYNC IN", "description": "Hard-sync input. Rising edges reset the VCO core phase for classic sync sweeps.", "voltage": "gate / audio" },
+    { "name": "AUDIO IN", "description": "External audio input summed into the tube overdrive stage alongside the oscillator core. Line-level friendly.", "voltage": "modular / line audio" }
   ],
   "outputs": [
-    { "name": "Sine", "description": "Dedicated sine output direct from the AS3340 core, pre-waveshape, pre-tube.", "voltage": "10Vpp" },
-    { "name": "Triangle", "description": "Dedicated triangle output from the VCO core, pre-waveshape, pre-tube.", "voltage": "10Vpp" },
-    { "name": "Square / PWM", "description": "Dedicated square output with waveshape-controlled pulse width. Pre-tube.", "voltage": "10Vpp" },
-    { "name": "Main Out", "description": "Post-tube, post-sub, post-detune mixed main output carrying the shaped waveform plus external audio through the overdrive.", "voltage": "~10Vpp" }
+    { "name": "TRI OUT", "description": "Dedicated triangle output tapped from the AS3340 core, before the sub mix and the tube stage. Use for clean modulation duties or to feed an external filter.", "voltage": "10 Vptp" },
+    { "name": "SUB OUT", "description": "Dedicated -1 oct transistor sub output, post-Colour switch, pre-mix.", "voltage": "10 Vptp" },
+    { "name": "OUT", "description": "Main mix output: principal VCO (square, PWM-shaped) + BBD detune + sub, all driven through the dual tube overdrive. The 'Fusion' voice.", "voltage": "10 Vptp" }
   ],
   "behaviors": [
     {
       "name": "Tube warm-up",
       "trigger": "power-on",
-      "description": "12AX7/ECC83 vacuum tube requires brief warm-up after powering the rack. Tone darkens and gain stabilises over the first minute as the heater reaches operating temperature."
+      "description": "Vacuum tube needs a brief warm-up after powering the rack. Tone darkens and gain stabilises over the first minute as the heater reaches operating temperature."
     },
     {
       "name": "BBD detune as fake-unison",
-      "trigger": "Detune knob > 0",
-      "description": "Two BBD delay lines form a frequency shifter that returns a pitch-drifted copy of the oscillator. Low settings produce chorusing; higher settings emulate a second detuned VCO without using a second core."
+      "trigger": "DETUNE knob > 0",
+      "description": "Two BBD delay lines act as a frequency shifter that returns a pitch-drifted copy of the oscillator. Low settings produce chorusing; higher settings emulate a second detuned VCO without using a second core. The same DETUNE knob also speeds up the internal LFO that sweeps the BBD clock, so detune motion gets faster as you turn CW."
     },
     {
-      "name": "External audio through tube",
-      "trigger": "signal → External Audio input",
-      "description": "Any modular or line source patched to the external input is summed with the oscillator before the tube stage, turning the module into a stand-alone tube overdrive/colour effect when VCO level is low."
+      "name": "External audio through the tube",
+      "trigger": "signal → AUDIO IN",
+      "description": "Any modular or line-level source patched into AUDIO IN is summed with the oscillator before the tube stage. Pull SUB LEVEL and the VCO's contribution down and the module becomes a stand-alone tube overdrive / colour effect."
     },
     {
-      "name": "Waveshape CV timbre",
-      "trigger": "CV → Wave CV input",
-      "description": "Modulating Waveshape with an LFO or envelope smoothly morphs sine→tri→square with PWM at the end of travel, giving animated harmonic content from a single voice."
+      "name": "PWM CV animation",
+      "trigger": "CV → PWM IN",
+      "description": "Modulating PWM with an LFO or envelope animates the duty cycle of the internal square that feeds the tube stage, producing classic chorus-like timbral movement on the main OUT."
     },
     {
       "name": "Hard sync sweeps",
-      "trigger": "pitched audio → Sync",
-      "description": "Sync input hard-resets the VCO phase each rising edge. Sweeping Coarse Tune over a synced master produces the classic formant-like sync lead timbres, amplified by the tube."
+      "trigger": "pitched audio → SYNC IN",
+      "description": "SYNC IN hard-resets the VCO phase on each rising edge. Sweeping TUNE over a synced master produces the classic formant-like sync-lead timbres, amplified and coloured by the tube stage on OUT."
     },
     {
       "name": "Sub Colour voicing",
-      "trigger": "Sub Colour switch",
-      "description": "The three-position Colour switch changes both spectral content and effective sub octave, stepping from smooth low-end reinforcement to a biting -2 oct square useful for bass leads."
+      "trigger": "COLOUR switch",
+      "description": "The COLOUR switch is a fixed low-pass filter on the -1 oct sub. One position keeps the sub bright and edgy; the other rounds it off into a smoother low-end reinforcement. Choose per bassline character."
+    },
+    {
+      "name": "Octave-switch register jumps",
+      "trigger": "+1 / -1 OCT switch",
+      "description": "Hard transposes the principal VCO by an octave up or down without touching TUNE — handy live for jumping the same melody or sequence between bass, mid and lead registers."
+    },
+    {
+      "name": "Clean taps via TRI / SUB OUT",
+      "trigger": "patch TRI OUT or SUB OUT",
+      "description": "TRI OUT and SUB OUT bypass the tube stage entirely, giving you clean oscillator material for FM duty, filter input, or layering the dirty OUT against a clean fundamental in the mixer."
     }
   ],
   "patchIdeas": [
     {
       "name": "Fat tube bass",
-      "patch": "Pitch CV → V/Oct · Sub Colour pos 3 · Sub full · Tube Drive 3 o'clock · Main Out → VCA → output",
-      "diagram": "FUSION VCO2:\n* Coarse: bass range\n* Sub Colour: pos 3 (bite)\n* Sub Level: max\n* Tube Drive: 3 o'clock\n- Seq (CV) p> Fusion VCO2 (V/Oct)\n- Seq (Gate) g> VCA (Gate)\n- Fusion VCO2 (Main Out) -> VCA (In)"
+      "patch": "Pitch CV → 1V/OCT · -1 OCT down · SUB LEVEL high with a darker COLOUR · TUBE CRUNCH past noon · OUT through a VCA shaped by the gate.",
+      "steps": [
+        "Patch your sequencer's pitch CV → Fusion VCO2 1V/OCT.",
+        "Set the +1/-1 OCT switch to -1 OCT for a bass register.",
+        "Turn TUNE so the lowest note lands where you want the kick to sit.",
+        "Set SUB LEVEL to 3 o'clock and choose the rounder COLOUR position for fat low-end (or the brighter one if you want bite).",
+        "Set DETUNE fully CCW (off) to keep the bass tight.",
+        "Set PULSE WIDTH around 11 o'clock for a slightly asymmetric square.",
+        "Turn TUBE CRUNCH to about 3 o'clock for warm harmonic distortion.",
+        "Patch your sequencer's gate → VCA gate input.",
+        "Patch Fusion VCO2 OUT → VCA input → mixer."
+      ],
+      "signalOut": "OUT — the post-tube main mix, ~10 Vptp, gated by the VCA.",
+      "hear": "A thick, growling tube bass with a solid sub fundamental and gritty harmonics from the tube stage. Pulling TUBE CRUNCH back gives a rounder, jazzier tone; pushing SUB LEVEL CCW thins it out into more of a mid-bass.",
+      "diagram": "FUSION VCO2:\n* +1/-1 OCT: -1 OCT\n* SUB LEVEL: 3 o'clock\n* COLOUR: rounder pos\n* TUBE CRUNCH: 3 o'clock\n* DETUNE: off\n\n- Seq (CV) p> Fusion VCO2 (1V/OCT)\n- Seq (Gate) g> VCA (Gate)\n- Fusion VCO2 (OUT) -> VCA (In)\n- VCA (Out) -> Mixer (In)"
     },
     {
       "name": "Detuned unison lead",
-      "patch": "Sequencer → V/Oct · Detune noon · Waveshape CW for PWM · Tube warm · Main Out → filter",
-      "diagram": "FUSION VCO2:\n* Detune: noon\n* Waveshape: CW (PWM)\n* Tube Drive: noon\n- Seq (CV) p> Fusion VCO2 (V/Oct)\n- Fusion VCO2 (Main Out) -> VCF (In)\n- Env (Out) >> VCF (Cutoff)"
+      "patch": "Sequencer → 1V/OCT · DETUNE around noon for a 'second VCO' shimmer · PULSE WIDTH animated by a slow LFO · OUT into a filter for screaming leads.",
+      "steps": [
+        "Patch your sequencer's pitch CV → Fusion VCO2 1V/OCT.",
+        "Centre the +1/-1 OCT switch (no transpose) and tune TUNE to your lead register.",
+        "Set DETUNE to noon — you should hear two oscillators beating against each other.",
+        "Patch a slow LFO → Fusion VCO2 PWM IN, set PULSE WIDTH knob to noon for symmetric starting point.",
+        "Set TUBE CRUNCH around noon for a warm but musical drive.",
+        "Set SUB LEVEL low (8 o'clock) so the sub adds body without dominating.",
+        "Patch Fusion VCO2 OUT → filter input.",
+        "Patch an envelope → filter cutoff CV for per-note brightness.",
+        "Patch filter output → VCA → mixer."
+      ],
+      "signalOut": "OUT — fat detuned lead, ~10 Vptp, filter-shaped per note.",
+      "hear": "A wide, chorused lead voice that sounds like two VCOs running into a tube preamp. The PWM LFO adds slow timbral motion; raising DETUNE further pushes the second 'VCO' into more dramatic frequency-shifter territory.",
+      "diagram": "FUSION VCO2:\n* DETUNE: noon\n* PULSE WIDTH: noon\n* TUBE CRUNCH: noon\n* SUB LEVEL: 8 o'clock\n\n- Seq (CV) p> Fusion VCO2 (1V/OCT)\n- LFO (Out) >> Fusion VCO2 (PWM IN)\n- Fusion VCO2 (OUT) -> VCF (In)\n- Env (Out) >> VCF (Cutoff)\n- VCF (Out) -> VCA (In)"
     },
     {
-      "name": "Dynamic waveshape pad",
-      "patch": "Slow LFO → Wave CV · Sub low · Tube low · Main Out → reverb",
-      "diagram": "FUSION VCO2:\n* Sub Level: low\n* Tube Drive: low\n- LFO (Out) >> Fusion VCO2 (Wave CV)\n- Fusion VCO2 (Main Out) -> Reverb (In)"
+      "name": "Slow PWM pad",
+      "patch": "Hold a chord on TRI OUT for a clean sine-ish layer, animate the dirty OUT with PWM CV, blend in a touch of DETUNE for shimmer, and send the whole thing to reverb.",
+      "steps": [
+        "Patch your sequencer/keyboard pitch CV → Fusion VCO2 1V/OCT.",
+        "Set TUNE for a mid-pad register and centre the +1/-1 OCT switch.",
+        "Set PULSE WIDTH to 1 o'clock and patch a very slow LFO (~0.1 Hz) → PWM IN.",
+        "Set DETUNE to about 9 o'clock — gentle chorus.",
+        "Set SUB LEVEL low and TUBE CRUNCH around 11 o'clock for warmth without crunch.",
+        "Patch Fusion VCO2 TRI OUT → Mixer Input 1 (clean fundamental).",
+        "Patch Fusion VCO2 OUT → Reverb → Mixer Input 2 (animated body).",
+        "Sum and listen — the mix gives a clean carrier with a breathing tube layer behind it."
+      ],
+      "signalOut": "Mixer output — clean TRI fundamental + reverbed, PWM-animated tube OUT.",
+      "hear": "A soft, evolving pad: the TRI provides a clean pitch reference while the PWM-modulated OUT slowly breathes underneath. Raise TUBE CRUNCH for a darker, more saturated pad; raise DETUNE for more chorus motion.",
+      "diagram": "FUSION VCO2:\n* PULSE WIDTH: 1 o'clock\n* DETUNE: 9 o'clock\n* TUBE CRUNCH: 11 o'clock\n* SUB LEVEL: low\n\n- Seq (CV) p> Fusion VCO2 (1V/OCT)\n- LFO (slow) >> Fusion VCO2 (PWM IN)\n- Fusion VCO2 (TRI OUT) -> Mixer (Ch 1)\n- Fusion VCO2 (OUT) -> Reverb (In)\n- Reverb (Out) -> Mixer (Ch 2)"
     },
     {
       "name": "Sync lead scream",
-      "patch": "Master VCO → Sync · Env → FM CV · Tube CW · Main Out → amp",
-      "diagram": "FUSION VCO2:\n* Tube Drive: CW\n* FM Amount: noon\n- Master VCO (Sqr) -> Fusion VCO2 (Sync)\n- Env (Out) >> Fusion VCO2 (FM CV)\n- Seq (CV) p> Fusion VCO2 (V/Oct)\n- Fusion VCO2 (Main Out) -> VCA (In)"
+      "patch": "Master VCO → SYNC IN · envelope → FM IN for per-note FM kick · TUBE CRUNCH cranked · OUT to the amp for searing sync leads.",
+      "steps": [
+        "Patch a master VCO's square or saw → Fusion VCO2 SYNC IN.",
+        "Patch your sequencer's pitch CV → both the master VCO 1V/oct and Fusion VCO2 1V/OCT.",
+        "Tune Fusion VCO2 TUNE noticeably above the master so you hear sync sidebands.",
+        "Patch a fast envelope → Fusion VCO2 FM IN, FM LEVEL to 1 o'clock.",
+        "Set TUBE CRUNCH fully CW for screaming harmonics.",
+        "Set SUB LEVEL low (3 o'clock or less) so the sub doesn't muddy the sync.",
+        "Patch Fusion VCO2 OUT → VCA → amp.",
+        "Mult the same envelope → VCA CV for per-note dynamics."
+      ],
+      "signalOut": "OUT — searing sync lead through the tube, ~10 Vptp.",
+      "hear": "Classic hard-sync formants — sweeping TUNE while the master holds steady creates that 'ow!' sync-sweep voice, here amplified and coloured by the tube. Rolling FM LEVEL back tames the FM kick into a softer sync attack.",
+      "diagram": "FUSION VCO2:\n* TUBE CRUNCH: full CW\n* FM LEVEL: 1 o'clock\n* SUB LEVEL: low\n\n- Master VCO (Sqr) -> Fusion VCO2 (SYNC IN)\n- Seq (CV) p> Master VCO (1V/oct)\n- Seq (CV) p> Fusion VCO2 (1V/OCT)\n- Env (Out) >> Fusion VCO2 (FM IN)\n- Env (Out) >> VCA (CV)\n- Fusion VCO2 (OUT) -> VCA (In)"
     },
     {
       "name": "External audio tube colour",
-      "patch": "Drum bus → External Audio · VCO level low · Tube Drive set to taste · Main Out → mixer",
-      "diagram": "FUSION VCO2:\n* Sub Level: 0\n* Tube Drive: 2 o'clock\n- Drum Bus (Out) -> Fusion VCO2 (External Audio)\n- Fusion VCO2 (Main Out) -> Mixer (In)"
+      "patch": "Drum bus → AUDIO IN · SUB LEVEL down · VCO inaudible (low PWM contribution / TUNE out of register) · TUBE CRUNCH to taste · OUT into the mixer for parallel grit.",
+      "steps": [
+        "Patch a drum bus or any submix → Fusion VCO2 AUDIO IN.",
+        "Set SUB LEVEL fully CCW (sub off).",
+        "Pull TUNE to an extreme so the VCO is out of the way (or unpatch 1V/OCT and ignore it).",
+        "Set the AUDIO LEVEL knob to noon for unity.",
+        "Set TUBE CRUNCH to 2 o'clock for a warm, edge-of-breakup tone.",
+        "Patch Fusion VCO2 OUT → an aux channel on your mixer.",
+        "Blend the parallel tube channel under the dry drums for thickness.",
+        "Push TUBE CRUNCH further CW for grungier saturation."
+      ],
+      "signalOut": "OUT — your external audio re-coloured by the vacuum tube stage, ~10 Vptp.",
+      "hear": "Anything you feed in (drums, vocals, a synth submix) takes on the warm, slightly gritty character of the Fusion's tube. Useful for parallel saturation, a 'tape' colour, or full-on overdriven destruction at higher TUBE CRUNCH settings.",
+      "diagram": "FUSION VCO2:\n* SUB LEVEL: 0\n* TUBE CRUNCH: 2 o'clock\n* AUDIO LEVEL: noon\n\n- Drum Bus (Out) -> Fusion VCO2 (AUDIO IN)\n- Fusion VCO2 (OUT) -> Mixer (Aux In)"
     },
     {
-      "name": "Classic FM bells",
-      "patch": "Modulator VCO → FM CV · FM Amount moderate · Sine out → VCA · no tube",
-      "diagram": "FUSION VCO2:\n* FM Amount: noon\n* Tube Drive: low\n- Mod VCO (Sine) >> Fusion VCO2 (FM CV)\n- Seq (CV) p> Fusion VCO2 (V/Oct)\n- Fusion VCO2 (Sine) -> VCA (In)\n- Env (Out) >> VCA (CV)"
+      "name": "FM bells from TRI",
+      "patch": "Modulator VCO → FM IN · FM LEVEL moderate · take TRI OUT (clean, pre-tube) → VCA for bell-like FM tones without saturation.",
+      "steps": [
+        "Patch a modulator VCO's sine or triangle → Fusion VCO2 FM IN.",
+        "Set FM LEVEL to noon for a moderate index.",
+        "Patch your sequencer's pitch CV → Fusion VCO2 1V/OCT.",
+        "Tune the modulator to a non-integer ratio of the carrier (e.g. 1.41×) for inharmonic bells.",
+        "Set TUBE CRUNCH fully CCW (clean) — we're using TRI OUT, but keep the rest of the module quiet.",
+        "Patch Fusion VCO2 TRI OUT → VCA input (TRI OUT bypasses the tube stage).",
+        "Patch a percussive envelope → VCA CV.",
+        "Trigger the envelope per note for clean FM bells."
+      ],
+      "signalOut": "VCA out — clean FM bell tone derived from TRI OUT, no tube colour.",
+      "hear": "Crystalline FM bells with the inharmonic spectrum of classic 4-op FM. Switching the modulator to integer ratios gives metallic mallets; raising FM LEVEL pushes into chaotic, gong-like territory.",
+      "diagram": "FUSION VCO2:\n* FM LEVEL: noon\n* TUBE CRUNCH: 0 (clean)\n\n- Mod VCO (Sine) >> Fusion VCO2 (FM IN)\n- Seq (CV) p> Fusion VCO2 (1V/OCT)\n- Fusion VCO2 (TRI OUT) -> VCA (In)\n- Env (Out) >> VCA (CV)"
     },
     {
       "name": "BBD chorus stack",
-      "patch": "Single note held · Detune swept slowly · Tri Out + Main Out mixed in stereo",
-      "diagram": "FUSION VCO2:\n* Detune: swept\n- LFO (Out) >> Fusion VCO2 (Wave CV) // gentle shimmer\n- Fusion VCO2 (Triangle) -> Mixer (L)\n- Fusion VCO2 (Main Out) -> Mixer (R)"
+      "patch": "Hold one note · DETUNE swept slowly by hand or LFO · TRI OUT and OUT mixed in stereo for a wide chorused drone.",
+      "steps": [
+        "Patch a fixed pitch CV (or just hold a note) → Fusion VCO2 1V/OCT.",
+        "Set TUNE to a comfortable mid register, +1/-1 OCT centred.",
+        "Set DETUNE around 1 o'clock for clear beating.",
+        "Set SUB LEVEL low, TUBE CRUNCH around 11 o'clock for warmth.",
+        "Patch Fusion VCO2 TRI OUT → Mixer Left (clean fundamental).",
+        "Patch Fusion VCO2 OUT → Mixer Right (detuned, tubed signal).",
+        "Optional: patch a very slow LFO → PWM IN for extra timbral shimmer on the OUT side.",
+        "Listen in headphones — the channels should beat against each other slowly across the stereo field."
+      ],
+      "signalOut": "Stereo mixer — TRI OUT (L) clean vs. OUT (R) detuned + tubed.",
+      "hear": "A wide stereo chorus drone. The clean TRI on one side stays steady while the BBD-detuned OUT on the other side drifts in and out of tune, producing rich beating and a 'breathing' stereo image. Raise DETUNE for stronger frequency-shifter motion.",
+      "diagram": "FUSION VCO2:\n* DETUNE: 1 o'clock\n* TUBE CRUNCH: 11 o'clock\n\n- Pitch (CV) p> Fusion VCO2 (1V/OCT)\n- Fusion VCO2 (TRI OUT) -> Mixer (L)\n- Fusion VCO2 (OUT) -> Mixer (R)\n- LFO (slow) >> Fusion VCO2 (PWM IN) // optional shimmer"
     },
     {
-      "name": "PWM square with tube bite",
-      "patch": "LFO → Wave CV · Square Out → VCF · Main Out parallel for tube grit",
-      "diagram": "FUSION VCO2:\n* Waveshape: CW (square/PWM)\n* Tube Drive: 2 o'clock\n- LFO (Out) >> Fusion VCO2 (Wave CV)\n- Seq (CV) p> Fusion VCO2 (V/Oct)\n- Fusion VCO2 (Square) -> VCF (In)\n- Fusion VCO2 (Main Out) -> Mixer (In) // parallel tube"
+      "name": "PWM square with parallel tube grit",
+      "patch": "LFO → PWM IN for classic chorus-y PWM · TUBE CRUNCH high · OUT into a filter for fat PWM lead with tube body.",
+      "steps": [
+        "Patch your sequencer's pitch CV → Fusion VCO2 1V/OCT.",
+        "Patch a moderate LFO (~3 Hz) → Fusion VCO2 PWM IN.",
+        "Set the PULSE WIDTH knob to noon as the LFO centre.",
+        "Set TUBE CRUNCH to 2 o'clock for grit.",
+        "Set DETUNE off and SUB LEVEL low.",
+        "Patch Fusion VCO2 OUT → filter input.",
+        "Patch an envelope → filter cutoff for per-note movement.",
+        "Patch filter → VCA → mixer."
+      ],
+      "signalOut": "Filter/VCA output — PWM-modulated tubed lead voice.",
+      "hear": "A classic chorused PWM tone that's been pushed through a tube, giving it more midrange weight than a clean PWM. The LFO rate determines the chorus 'wobble'; faster LFO settings move into vibrato-like timbral motion.",
+      "diagram": "FUSION VCO2:\n* PULSE WIDTH: noon\n* TUBE CRUNCH: 2 o'clock\n* DETUNE: off\n\n- LFO (~3Hz) >> Fusion VCO2 (PWM IN)\n- Seq (CV) p> Fusion VCO2 (1V/OCT)\n- Fusion VCO2 (OUT) -> VCF (In)\n- Env (Out) >> VCF (Cutoff)"
     },
     {
-      "name": "Drone with slow detune",
-      "patch": "Fixed V/Oct · slow LFO → Wave CV · Detune high · Sub max · Tube noon",
-      "diagram": "FUSION VCO2:\n* Detune: 3 o'clock\n* Sub Level: max\n- LFO (Out) >> Fusion VCO2 (Wave CV)\n- Fusion VCO2 (Main Out) -> Reverb (In)"
+      "name": "Drone with slow detune sweep",
+      "patch": "Fixed pitch · slow LFO modulating PWM · DETUNE high so the BBD frequency shifter drifts heavily · SUB LEVEL maxed · OUT into reverb.",
+      "steps": [
+        "Patch a fixed pitch CV (or use the keyboard) → Fusion VCO2 1V/OCT.",
+        "Set DETUNE to 3 o'clock — heavy BBD detune AND fast internal LFO.",
+        "Set SUB LEVEL fully CW with the rounder COLOUR position for big low-end.",
+        "Set PULSE WIDTH around noon and patch a slow LFO → PWM IN for breathing.",
+        "Set TUBE CRUNCH at noon for warmth.",
+        "Patch Fusion VCO2 OUT → reverb → mixer.",
+        "Optional: also patch SUB OUT → mixer for a clean sub layer underneath."
+      ],
+      "signalOut": "OUT through reverb — a thick, drifting tube drone with optional clean sub layer.",
+      "hear": "A massive, slowly evolving drone that breathes between in-tune fundamentals and frequency-shifted dissonance as the BBD's internal LFO sweeps. Reverb glues the moving partials into a single immersive bed.",
+      "diagram": "FUSION VCO2:\n* DETUNE: 3 o'clock\n* SUB LEVEL: max (rounder COLOUR)\n* TUBE CRUNCH: noon\n\n- Pitch (CV) p> Fusion VCO2 (1V/OCT)\n- LFO (slow) >> Fusion VCO2 (PWM IN)\n- Fusion VCO2 (OUT) -> Reverb (In)\n- Fusion VCO2 (SUB OUT) -> Mixer (In) // optional clean sub"
     },
     {
-      "name": "Kick body + sub reinforcement",
-      "patch": "Fast decay env → FM CV · low V/Oct · Sub Colour pos 1 · short VCA",
-      "diagram": "FUSION VCO2:\n* Coarse: low\n* Sub Colour: pos 1\n* FM Amount: 2 o'clock\n- Trig (Out) t> Env (Trig)\n- Env (Out) >> Fusion VCO2 (FM CV)\n- Env (Out) >> VCA (CV)\n- Fusion VCO2 (Main Out) -> VCA (In)"
+      "name": "Kick body with sub reinforcement",
+      "patch": "Fast decay envelope → FM IN for the pitch click · -1 OCT switch · SUB LEVEL up · short VCA on OUT for a tube-coloured kick with built-in sub layer.",
+      "steps": [
+        "Set the +1/-1 OCT switch to -1 OCT and TUNE for a low fundamental.",
+        "Patch a fast-decay envelope → Fusion VCO2 FM IN, set FM LEVEL to 2 o'clock.",
+        "Set SUB LEVEL to about 2 o'clock with the rounder COLOUR position for kick weight.",
+        "Set DETUNE off so the kick stays tight.",
+        "Set TUBE CRUNCH around 1 o'clock for body and bite.",
+        "Patch a trigger → envelope (Trig).",
+        "Mult the envelope → VCA CV for the kick amplitude shape.",
+        "Patch Fusion VCO2 OUT → VCA → mixer."
+      ],
+      "signalOut": "VCA out — analog tube kick, pitched by FM IN, with built-in sub layer.",
+      "hear": "A thick, club-ready kick. The envelope on FM IN gives the classic pitch-down click on the attack; the sub adds weight; the tube glues it together with harmonic warmth. Tighten TUBE CRUNCH for cleaner kicks; push it for distorted industrial thumps.",
+      "diagram": "FUSION VCO2:\n* +1/-1 OCT: -1 OCT\n* SUB LEVEL: 2 o'clock\n* COLOUR: rounder pos\n* TUBE CRUNCH: 1 o'clock\n* FM LEVEL: 2 o'clock\n\n- Trig (Out) t> Env (Trig)\n- Env (Out) >> Fusion VCO2 (FM IN)\n- Env (Out) >> VCA (CV)\n- Fusion VCO2 (OUT) -> VCA (In)"
     }
   ]
 }

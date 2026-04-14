@@ -2,7 +2,7 @@
   "$schema": "../../modules.schema.json",
   "_meta": {
     "schemaVersion": 1,
-    "verified": false,
+    "verified": true,
     "sources": [
       "https://www.pindsvikaudio.com/shop/tlbx-24",
       "https://www.pindsvikaudio.com/shop/tlbx-24/document/15",
@@ -13,111 +13,179 @@
   "name": "TLBX",
   "manufacturer": "Pindsvik Audio",
   "hp": 2,
-  "tags": ["UTILITY", "MIXER", "MULT", "ATTENUATOR"],
-  "description": "2HP precision utility for multing, mixing and differencing audio or CV. Generates 1V and 5V references, normalizes sections together, and doubles as a range converter, octave transposer and comparator.",
+  "tags": ["UTILITY", "MULT", "MIXER", "BUFFER"],
+  "description": "2HP precision toolbox: a 1-to-2 buffered mult, a 2-to-1 mix/adder, and a 2-to-2 adder/subtractor. Sections cascade through normalization, turning the module into a mult, mixer, 2x/1.5x/3x/6x voltage multiplier, octave transposer, range converter or comparator.",
   "controls": [],
   "inputs": [
     {
       "name": "MULT IN",
-      "description": "Feed the precision mult section.",
-      "voltage": "audio / CV"
+      "description": "Input to the 1-to-2 precision multiple. When unpatched, OUT1 and OUT2 become 1V and 5V references.",
+      "voltage": "audio / CV, DC-coupled, 100k input impedance"
     },
     {
-      "name": "MIX IN 1",
-      "description": "Primary mixer input.",
-      "voltage": "audio / CV"
+      "name": "MIX IN1",
+      "description": "First mixer input. When left unpatched, MIX OUT copies MULT IN (input normalization from MULT).",
+      "voltage": "audio / CV, DC-coupled, 100k input impedance"
     },
     {
-      "name": "MIX IN 2",
-      "description": "Secondary mixer input, normalized to MIX IN 1 when unpatched.",
-      "voltage": "audio / CV",
-      "normalizedTo": "MIX IN 1"
+      "name": "MIX IN2",
+      "description": "Second mixer input. Normalized to IN1 when unpatched, so a signal on IN1 alone appears doubled at MIX OUT (precision 2x).",
+      "voltage": "audio / CV, DC-coupled, 100k input impedance",
+      "normalizedTo": "MIX IN1"
     },
     {
-      "name": "DIFF IN 1",
-      "description": "Primary adder/subtractor input.",
-      "voltage": "audio / CV"
+      "name": "DIFF A",
+      "description": "First DIFF input. When both DIFF inputs are unpatched, DIFF takes its signal from MIX OUT (input normalization from MIX).",
+      "voltage": "audio / CV, DC-coupled, 100k input impedance"
     },
     {
-      "name": "DIFF IN 2",
-      "description": "Secondary adder/subtractor input.",
-      "voltage": "audio / CV"
+      "name": "DIFF B",
+      "description": "Second DIFF input. If only DIFF A is patched, A+B copies A and A-B copies A. If only DIFF B is patched, A+B copies B and A-B outputs an inverted copy of B.",
+      "voltage": "audio / CV, DC-coupled, 100k input impedance"
     }
   ],
   "outputs": [
     {
-      "name": "MULT OUT 1",
-      "description": "Precision mult output and 1V reference when nothing is patched.",
-      "voltage": "audio / CV"
+      "name": "MULT OUT1 (1V)",
+      "description": "Buffered copy of MULT IN. When MULT IN is unpatched, outputs a 1V reference (typ. <±0.5mV, max <±1mV). If left unpatched while MULT IN is patched, the mult signal is also summed into MIX OUT (output normalization).",
+      "voltage": "buffered, zero-impedance output"
     },
     {
-      "name": "MULT OUT 2",
-      "description": "Precision mult output and 5V reference when nothing is patched.",
-      "voltage": "audio / CV"
+      "name": "MULT OUT2 (5V)",
+      "description": "Buffered copy of MULT IN. When MULT IN is unpatched, outputs a 5V reference (typ. <±1mV, max <±2.5mV). If left unpatched while MULT IN is patched, the mult signal is summed into both DIFF outputs (output normalization).",
+      "voltage": "buffered, zero-impedance output"
     },
     {
       "name": "MIX OUT",
-      "description": "Precision summed output from the two mixer inputs.",
-      "voltage": "audio / CV"
+      "description": "Precision sum of MIX IN1 + MIX IN2. If MIX OUT is unpatched, the mix is passed to the DIFF section at full gain into A+B and halved into A-B (output normalization).",
+      "voltage": "buffered, zero-impedance output"
     },
     {
-      "name": "DIFF SUM",
-      "description": "Adder output from the diff section.",
-      "voltage": "audio / CV"
+      "name": "DIFF A+B",
+      "description": "Precision sum of DIFF A and DIFF B.",
+      "voltage": "buffered, zero-impedance output"
     },
     {
-      "name": "DIFF DIFF",
-      "description": "Subtractor output from the diff section.",
-      "voltage": "audio / CV"
+      "name": "DIFF A-B",
+      "description": "Precision difference (A minus B). Combined with A+B gives a 2-to-2 adder/subtractor; can also act as an inverter when only B is patched.",
+      "voltage": "buffered, zero-impedance output"
     }
   ],
   "behaviors": [
     {
-      "name": "Reference source",
-      "trigger": "leave MULT input unpatched",
-      "description": "The mult section turns into a calibrated 1V / 5V reference pair for pitch transposition and voltage checking."
+      "name": "1V / 5V voltage references",
+      "trigger": "leave MULT IN unpatched",
+      "description": "MULT OUT1 outputs 1V (<±1mV typ), MULT OUT2 outputs 5V (<±2.5mV typ). Used for tuning VCOs, calibrating attenuverters, driving quantizers to a known octave, or feeding the rest of the module as a DC source. The reference path is excluded from the inter-section normalization."
     },
     {
-      "name": "Normalized mix",
-      "trigger": "patch one signal into MIX IN 1",
-      "description": "MIX IN 2 follows MIX IN 1 when left open, turning the section into a precision 2x multiplier or small signal adder."
+      "name": "Section normalization cascade",
+      "trigger": "leave a section's output unpatched while its inputs are driven",
+      "description": "MULT OUT1 unpatched -> mult signal sums into MIX OUT. MULT OUT2 unpatched -> mult signal sums into both DIFF outs. MIX OUT unpatched -> mix feeds DIFF A+B at x1 and A-B at x0.5. Breaking a cable into a downstream input breaks that section's input normalization."
     },
     {
-      "name": "Adder / subtractor",
-      "trigger": "patch both DIFF inputs",
-      "description": "The diff section exposes summed and difference outputs, which makes it useful for stereo-to-mono, bipolar offsets and phase comparison."
+      "name": "Precision 2x multiplier (MIX)",
+      "trigger": "patch a signal into MIX IN1 only",
+      "description": "With MIX IN2 unpatched, IN2 is normalized to IN1 and MIX OUT = 2 x IN1. Combined with the MULT-to-MIX cascade, a single input into MULT IN can reach 3x or 6x at the A+B output."
+    },
+    {
+      "name": "Adder / subtractor / inverter (DIFF)",
+      "trigger": "patch the DIFF section",
+      "description": "Both inputs -> A+B is the sum, A-B is the difference. Only A patched -> both outs copy A (doubles as a 1-to-2 mult). Only B patched -> A+B copies B, A-B outputs -B, giving a clean signal inverter."
+    },
+    {
+      "name": "Octave transposer",
+      "trigger": "patch MULT OUT1 (1V ref) into a DIFF input and run V/Oct through the other",
+      "description": "Adding or subtracting the calibrated 1V reference transposes a 1V/Oct pitch line by exactly one octave. Using MULT OUT2 (5V) the same way gives 5-octave shifts; doubling via MIX yields 2-octave shifts."
     },
     {
       "name": "Voltage range conversion",
-      "trigger": "use the sections together",
-      "description": "The normalization between sections lets TLBX translate between 0-5V, -5-5V and 0-10V signal ranges without a full utility row."
+      "trigger": "combine MIX doubling with a DIFF subtraction of 5V",
+      "description": "0-5V -> -5..+5V by doubling then subtracting 5V. -5..+5V -> 0-5V by adding 5V and halving. TLBX replaces a pile of offset and scale utilities for bipolar/unipolar conversions."
     },
     {
-      "name": "Comparator-like behavior",
-      "trigger": "run CV through the diff and sum paths",
-      "description": "The precision structure and fixed references make it easy to derive threshold-style results or octave-locked pitch offsets."
+      "name": "Comparator via feedback",
+      "trigger": "patch MIX OUT back into MIX IN2 (or similar self-feedback)",
+      "description": "DC-coupled, high-gain feedback through the mix path saturates to the op-amp rails, producing roughly +/-10V based on whether the input is above or below 0V. Good for hard thresholding CV into gates."
     }
   ],
   "patchIdeas": [
     {
       "name": "Reference calibrator",
-      "patch": "Leave MULT unpatched · use 1V and 5V refs to calibrate oscillators, VCA trims or sequencer offsets · the tiny module becomes a bench reference tucked into the rack.",
-      "diagram": "TLBX:\n\nVCO:\nVCA:\n\n- TLBX (MULT OUT 1) p> VCO (V/Oct)\n- TLBX (MULT OUT 2) >> VCA (CV)\n- VCO (Out) -> Output (In)"
+      "patch": "Use TLBX as a bench reference: 1V on OUT1 tunes a VCO to an octave, 5V on OUT2 acts as a trusted source for attenuverter/offset calibration.",
+      "steps": [
+        "Leave MULT IN unpatched so the references are active.",
+        "Patch MULT OUT1 (1V) into your VCO's V/Oct input.",
+        "Play the VCO against a tuner and adjust the coarse knob until it sits exactly one octave above its 0V pitch.",
+        "Swap the cable to MULT OUT2 (5V) to verify five octaves — if it drifts, recalibrate TLBX's trimmer as shown in the manual."
+      ],
+      "signalOut": "MULT OUT1 — rock-steady 1V; MULT OUT2 — rock-steady 5V (DC reference).",
+      "hear": "Silent DC. You'll see the VCO jump up exactly one octave (then five octaves) with no drift over time.",
+      "diagram": "TLBX:\nVCO:\nOutput:\n\n- TLBX (MULT OUT1) p> VCO (V/Oct)\n- VCO (Out) -> Output (In)"
     },
     {
-      "name": "Octave doubler",
-      "patch": "Feed a sequencer row into MIX IN 1 and leave MIX IN 2 normalized · take the MIX output as a precise 2x version of the line for octave jumps or range expansion.",
-      "diagram": "TLBX:\n\nSequencer:\nVCO:\nOutput:\n\n- Sequencer (Pitch) p> TLBX (MIX IN 1)\n- TLBX (MIX OUT) p> VCO (V/Oct)\n- VCO (Out) -> Output (In)"
+      "name": "3x voltage multiplier (0-5V LFO becomes 0-15V)",
+      "patch": "Route a signal through MULT -> MIX -> DIFF and take A+B to triple the amplitude of a modulation source.",
+      "steps": [
+        "Patch your LFO or envelope into MULT IN.",
+        "Leave MULT OUT1, MULT OUT2, MIX IN1, MIX IN2, MIX OUT, DIFF A and DIFF B all unpatched so every normalization cascades downstream.",
+        "Take DIFF A+B as the output."
+      ],
+      "signalOut": "DIFF A+B — the input signal multiplied by 3 (clipping at the +/-12V rails if you push too hard).",
+      "hear": "A slow LFO going 0-5V will now swing 0-15V (rail-limited). Great for dramatic filter sweeps from gentle modulators.",
+      "diagram": "TLBX:\nLFO:\nVCF:\n\n- LFO (Out) p> TLBX (MULT IN)\n- TLBX (DIFF A+B) p> VCF (Cutoff)"
     },
     {
-      "name": "Stereo gain trim",
-      "patch": "Use DIFF as a precision mono-to-stereo helper · sum one source and subtract another · the module acts as a tiny matrix for balancing two adjacent voices.",
-      "diagram": "TLBX:\n\nVoice A:\nVoice B:\nMixer:\nOutput:\n\n- Voice A (Out) -> TLBX (DIFF IN 1)\n- Voice B (Out) -> TLBX (DIFF IN 2)\n- TLBX (DIFF SUM) -> Mixer (L)\n- TLBX (DIFF DIFF) -> Mixer (R)\n- Mixer (Out) -> Output (In)"
+      "name": "One-octave transposer",
+      "patch": "Add the 1V reference to a V/Oct line on DIFF A+B (up an octave) while DIFF A-B gives the same line transposed one octave down.",
+      "steps": [
+        "Leave MULT IN unpatched so OUT1 reads 1V.",
+        "Patch MULT OUT1 (1V) into DIFF B.",
+        "Patch your sequencer's V/Oct into DIFF A.",
+        "Patch DIFF A+B to one VCO for the up-octave voice.",
+        "Patch DIFF A-B to a second VCO for the down-octave voice."
+      ],
+      "signalOut": "DIFF A+B — original pitch +1 octave; DIFF A-B — original pitch -1 octave.",
+      "hear": "A melody layered across three octaves with perfect tuning. Unpatch DIFF B to collapse both voices back to unison.",
+      "diagram": "TLBX:\nSequencer:\nVCO 1:\nVCO 2:\nMixer:\n\n- Sequencer (V/Oct) p> TLBX (DIFF A)\n- TLBX (MULT OUT1) p> TLBX (DIFF B)\n- TLBX (DIFF A+B) p> VCO 1 (V/Oct)\n- TLBX (DIFF A-B) p> VCO 2 (V/Oct)\n- VCO 1 (Out) -> Mixer (In)\n- VCO 2 (Out) -> Mixer (In)"
     },
     {
-      "name": "Range shifter",
-      "patch": "Use the three sections as a chain · mult a pitch line, mix in an offset and subtract the result against a second lane · the patch moves between 0-5V, bipolar and unipolar control ranges cleanly.",
-      "diagram": "TLBX:\n\nSequencer:\nQuantizer:\nOutput:\n\n- Sequencer (Pitch) p> TLBX (MULT IN)\n- TLBX (MULT OUT 1) p> Quantizer (In)\n- Quantizer (Out) p> Output (In)"
+      "name": "Bipolar to unipolar range converter",
+      "patch": "Turn a -5..+5V LFO into a clean 0-5V modulator for a unipolar destination by adding 5V and halving via MIX+DIFF.",
+      "steps": [
+        "Leave MULT IN unpatched so OUT2 is 5V.",
+        "Patch MULT OUT2 (5V) into MIX IN1 — this adds 5V to the signal.",
+        "Patch your bipolar LFO into MIX IN2.",
+        "Leave MIX OUT unpatched so the sum cascades into DIFF.",
+        "Patch DIFF A-B (which receives MIX OUT halved) to your destination."
+      ],
+      "signalOut": "DIFF A-B — a clean 0-5V version of a -5..+5V input.",
+      "hear": "A bipolar LFO now sweeps a filter or wavefolder that only responds to positive CV without clipping the bottom half.",
+      "diagram": "TLBX:\nLFO:\nVCF:\n\n- TLBX (MULT OUT2) p> TLBX (MIX IN1)\n- LFO (Out) p> TLBX (MIX IN2)\n- TLBX (DIFF A-B) p> VCF (Cutoff)"
+    },
+    {
+      "name": "5-channel mixer",
+      "patch": "Exploit every normalization to sum up to five CV or audio sources on DIFF A+B (with IN1 running at +6dB, the other four at unity).",
+      "steps": [
+        "Patch sources 1 and 2 into MULT IN and MULT OUT1 is left open (signal cascades into MIX).",
+        "Patch sources into MULT IN, MIX IN1, MIX IN2, DIFF A and DIFF B — one per jack.",
+        "Leave MULT OUT1/OUT2 and MIX OUT unpatched so the cascade sums everything through to DIFF.",
+        "Take DIFF A+B as the master mix. MULT IN appears at roughly 2x, the other four at unity — attenuate source 1 upstream if you want unity gain on it too."
+      ],
+      "signalOut": "DIFF A+B — single mono sum of up to five inputs, DC-coupled so it works for audio or CV.",
+      "hear": "A full mini-mixer in 2HP. Pull any cable to that section's output to break its branch out of the mix.",
+      "diagram": "TLBX:\nSrc 1:\nSrc 2:\nSrc 3:\nSrc 4:\nSrc 5:\nOutput:\n\n- Src 1 (Out) -> TLBX (MULT IN)\n- Src 2 (Out) -> TLBX (MIX IN1)\n- Src 3 (Out) -> TLBX (MIX IN2)\n- Src 4 (Out) -> TLBX (DIFF A)\n- Src 5 (Out) -> TLBX (DIFF B)\n- TLBX (DIFF A+B) -> Output (In)"
+    },
+    {
+      "name": "CV comparator (zero-crossing gate)",
+      "patch": "Feed MIX OUT back into MIX IN2 to create a high-gain loop that slams to the rails, converting a bipolar CV into a hard +/-10V gate at each zero-crossing.",
+      "steps": [
+        "Patch your bipolar CV source (LFO, VCO, slow envelope) into MIX IN1.",
+        "Use a short cable to patch MIX OUT back into MIX IN2.",
+        "Take MIX OUT (or its doubled version on DIFF A+B) to your gate destination."
+      ],
+      "signalOut": "MIX OUT — approximately +10V when the input is above 0V, -10V when below 0V.",
+      "hear": "A smooth LFO becomes a square-wave gate. Slow LFOs produce long trigger windows; audio-rate inputs produce a squared-up sub-octave.",
+      "diagram": "TLBX:\nLFO:\nEnvelope:\n\n- LFO (Out) p> TLBX (MIX IN1)\n- TLBX (MIX OUT) -> TLBX (MIX IN2)\n- TLBX (MIX OUT) -> Envelope (Gate)"
     }
   ]
 }
