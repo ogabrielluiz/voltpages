@@ -67,7 +67,8 @@
   "inputs": [
     { "name": "L (Left)", "description": "Left stereo audio input.", "voltage": "audio ±1V nominal" },
     { "name": "R (Right)", "description": "Right stereo audio input. Normalled to L for mono-to-stereo processing.", "voltage": "audio ±1V nominal", "normalizedTo": "L" },
-    { "name": "CV / D/W", "description": "Assignable CV input. By default controls Dry/Wet mix. Can be reassigned to Control 1, 2, 3, sample rate reducer, or preset selection.", "voltage": "0–5V" }
+    { "name": "CV", "description": "Assignable CV input. Target selected via CV Assignment — Control 1, Control 2, Control 3, Sample Rate Reducer (SRR), or Preset Selection (LED 1+5). Also used as the firmware-update audio input.", "voltage": "0–5V (firmware update: line level ±1V)" },
+    { "name": "D/W", "description": "Dedicated CV input for the Dry/Wet mix knob. Independent of the assignable CV input.", "voltage": "0–5V" }
   ],
   "outputs": [
     { "name": "L (Left)", "description": "Left stereo audio output.", "voltage": "audio" },
@@ -106,12 +107,12 @@
         "Control 3 (Tone): 12 o'clock — neutral.",
         "D/W knob: 1 o'clock — mostly wet.",
         "Patch voice/mix Out to FX AID 1U L Input. R is normalled from L for mono-to-stereo.",
-        "Patch a slow bipolar LFO (0–5V range, ~0.1Hz) to FX AID 1U CV/D/W Input.",
+        "Patch a slow bipolar LFO (0–5V range, ~0.1Hz) to FX AID 1U CV Input.",
         "Patch FX AID 1U L Output and R Output to your mixer L/R."
       ],
       "signalOut": "L/R Outputs — stereo hall reverb at line level, tail length fixed by Decay knob; pre-delay swept by LFO.",
       "hear": "A long hall tail whose early-reflection timing breathes with the LFO — the space seems to expand and contract around the source.",
-      "diagram": "FX AID 1U:\n* Program: Reverb Hall Medium\n* CV assign: Control 2 (Pre-Delay)\n* Control 1 (Decay): 2:00 · D/W: 1:00\n\n- Voice (Out) -> FX AID 1U (In L)\n- LFO (Out) >> FX AID 1U (CV / D/W)\n- FX AID 1U (Out L) -> Mixer (L)\n- FX AID 1U (Out R) -> Mixer (R)"
+      "diagram": "FX AID 1U:\n* Program: Reverb Hall Medium\n* CV assign: Control 2 (Pre-Delay)\n* Control 1 (Decay): 2:00 · D/W: 1:00\n\n- Voice (Out) -> FX AID 1U (In L)\n- LFO (Out) >> FX AID 1U (CV)\n- FX AID 1U (Out L) -> Mixer (L)\n- FX AID 1U (Out R) -> Mixer (R)"
     },
     {
       "name": "Clocked delay",
@@ -123,12 +124,12 @@
         "Control 3 (Clock Divider): 12 o'clock — 1:1 (adjust for 1/2, 1/4, 1/8 divisions).",
         "D/W: 12 o'clock — equal dry/wet.",
         "Patch source audio to FX AID 1U L Input.",
-        "Patch a square/gate clock (0–5V, ≥2.5V peak) to FX AID 1U CV/D/W Input.",
+        "Patch a square/gate clock (0–5V, ≥2.5V peak) to FX AID 1U CV Input.",
         "Patch L and R Outputs to mixer."
       ],
       "signalOut": "L/R Outputs — source plus tempo-locked echoes. Delay time tracks incoming clock rate.",
       "hear": "Echoes that land exactly on musical divisions. Turn the Divider knob live to jump between whole/half/quarter note feels without losing sync.",
-      "diagram": "FX AID 1U:\n* Program: Delay Clock Sync\n* CV assign: Control 1 (Clock In)\n* Feedback: 12:00 · Divider: 12:00 · D/W: 12:00\n\n- Voice (Out) -> FX AID 1U (In L)\n- Clock (Out) c> FX AID 1U (CV / D/W)\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R)"
+      "diagram": "FX AID 1U:\n* Program: Delay Clock Sync\n* CV assign: Control 1 (Clock In)\n* Feedback: 12:00 · Divider: 12:00 · D/W: 12:00\n\n- Voice (Out) -> FX AID 1U (In L)\n- Clock (Out) c> FX AID 1U (CV)\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R)"
     },
     {
       "name": "Shimmer pad generator",
@@ -156,12 +157,12 @@
         "Control 3 (Pitch Shift): 12 o'clock — set manual shift to zero so the envelope does the work.",
         "D/W: 2 o'clock — mostly wet.",
         "Patch a single percussion/pluck source to FX AID 1U L Input.",
-        "Patch a slow ramp envelope (0–5V rising) to FX AID 1U CV/D/W Input — each repeat transposes upward as the ramp climbs.",
+        "Patch a slow ramp envelope (0–5V rising) to FX AID 1U CV Input — each repeat transposes upward as the ramp climbs.",
         "Patch L and R Outputs to mixer. Trigger the envelope once per cascade."
       ],
       "signalOut": "L/R Outputs — one seed hit followed by a climbing staircase of pitched repeats, Shepard-like, at line level.",
       "hear": "A single percussion strike turns into a tumbling waterfall of ever-higher echoes. Lower Feedback to shorten the cascade, or invert the ramp for a tumbling-downward trail.",
-      "diagram": "FX AID 1U:\n* Program: Delay Pitch Shift\n* CV assign: Control 3 (±Pitch Shift)\n* Feedback: 3:00 · D/W: 2:00\n\n- Percussion (Out) -> FX AID 1U (In L)\n- Envelope (Ramp) >> FX AID 1U (CV / D/W) // each repeat transposes up\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R)"
+      "diagram": "FX AID 1U:\n* Program: Delay Pitch Shift\n* CV assign: Control 3 (±Pitch Shift)\n* Feedback: 3:00 · D/W: 2:00\n\n- Percussion (Out) -> FX AID 1U (In L)\n- Envelope (Ramp) >> FX AID 1U (CV) // each repeat transposes up\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R)"
     },
     {
       "name": "Self-oscillating LP delay howl",
@@ -173,12 +174,12 @@
         "Control 1 (Clock Divide): 9 o'clock — short delay time for tight howl.",
         "D/W: full CW — 100% wet.",
         "Patch a short gate (~10ms) to FX AID 1U L Input — brief noise bursts seed the feedback loop.",
-        "Patch a sequencer or LFO (0–5V) to FX AID 1U CV/D/W Input — sweeps the filter to change howl pitch.",
+        "Patch a sequencer or LFO (0–5V) to FX AID 1U CV Input — sweeps the filter to change howl pitch.",
         "Patch L and R Outputs to mixer."
       ],
       "signalOut": "L/R Outputs — sustained self-oscillating howl at line level, pitch set by the filter frequency.",
       "hear": "A woozy, sliding howl that follows the sequencer. Not chromatic (no V/Oct tracking), but musical slides and gestures. Drop Feedback to choke the howl instantly.",
-      "diagram": "FX AID 1U:\n* Program: Delay LP\n* Feedback: 3:00 (past unity) · D/W: 100% wet\n* CV assign: Control 3 (Frequency)\n\n- Gate/Click (Out) -> FX AID 1U (In L) // seeds feedback\n- Sequencer (CV) >> FX AID 1U (CV / D/W) // sweeps filter\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R)"
+      "diagram": "FX AID 1U:\n* Program: Delay LP\n* Feedback: 3:00 (past unity) · D/W: 100% wet\n* CV assign: Control 3 (Frequency)\n\n- Gate/Click (Out) -> FX AID 1U (In L) // seeds feedback\n- Sequencer (CV) >> FX AID 1U (CV) // sweeps filter\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R)"
     },
     {
       "name": "Karplus-Strong pluck",
@@ -209,12 +210,12 @@
         "Patch VCF Output to FX AID 1U L Input — no audio source anywhere in the chain.",
         "Patch FX AID 1U L Output back to the mixer Return (closing the loop).",
         "Patch LFO1 (slow) to VCF Cutoff — sets what frequencies can pass through the loop.",
-        "Patch LFO2 (slower) to FX AID 1U CV/D/W Input — sweeps delay time.",
+        "Patch LFO2 (slower) to FX AID 1U CV Input — sweeps delay time.",
         "Patch mixer Main Out to your monitors. Raise the Aux Send level slowly until the loop howls."
       ],
       "signalOut": "Mixer Main Out — pure feedback-generated drones, howls and squeals, no external source.",
       "hear": "The loop is its own instrument. LFO1 sweeps which pitches the loop can resonate at; LFO2 slides the delay time so the drone evolves. Small Aux Send changes cause big character shifts — play the send knob.",
-      "diagram": "FX AID 1U:\n* Program: Delay Tape (or any delay)\n* CV assign: Control 1 (Heads/Time)\n* Feedback: 2:00 · D/W: 100% wet\n\n- Mixer (Aux Send) -> Filter (In)\n- Filter (Out) -> FX AID 1U (In L) // no source — pure loop\n- FX AID 1U (Out L) -> Mixer (Return) // closes the loop\n- LFO1 (Out) >> Filter (Cutoff)\n- LFO2 (Out) >> FX AID 1U (CV / D/W)\n- Mixer (Main Out) -> Output (In)"
+      "diagram": "FX AID 1U:\n* Program: Delay Tape (or any delay)\n* CV assign: Control 1 (Heads/Time)\n* Feedback: 2:00 · D/W: 100% wet\n\n- Mixer (Aux Send) -> Filter (In)\n- Filter (Out) -> FX AID 1U (In L) // no source — pure loop\n- FX AID 1U (Out L) -> Mixer (Return) // closes the loop\n- LFO1 (Out) >> Filter (Cutoff)\n- LFO2 (Out) >> FX AID 1U (CV) // sweeps delay time (CV assigned to Heads/Time)\n- Mixer (Main Out) -> Output (In)"
     }
   ]
 }

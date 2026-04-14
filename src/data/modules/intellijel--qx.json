@@ -141,8 +141,8 @@
       "diagram": "QX + QUADRAX:\n* CH 1: BURST mode\n\n- Clock (Clk) c> Quadrax (CH 1 TRIG)\n- Qx (EOR 1) t> Drum Voice (Trig) // per-pulse hits\n- Qx (EOF 1) t> Crash (Trig) // end-of-burst accent"
     },
     {
-      "name": "Quadrature clocks from one LFO",
-      "patch": "A single CYCLE channel gives you two square clocks 180° apart on EOR and EOF.",
+      "name": "Alternating clocks from one LFO",
+      "patch": "A single CYCLE channel gives you two complementary square clocks on EOR and EOF — 180° inverse, half-period offset.",
       "steps": [
         "Set Quadrax CH 1 to CYCLE mode (MODE button green).",
         "Set CH 1 Rise and Fall to match — this sets the LFO period.",
@@ -150,8 +150,8 @@
         "Patch Qx EOF 1 → Sequencer B clock input.",
         "Patch Quadrax OUT 1 → Filter Cutoff for the triangle LFO itself."
       ],
-      "signalOut": "EOR 1 and EOF 1 — two 0–5V square clocks, phase-offset. OUT 1 — the triangle LFO itself.",
-      "hear": "Two sequencers step in alternation off the same LFO, while the filter breathes with the underlying triangle. Instant polyrhythm from one channel.",
+      "signalOut": "EOR 1 and EOF 1 — two 0–5V square clocks, 180° inverse (one high while the other is low). OUT 1 — the triangle LFO itself.",
+      "hear": "Two sequencers step in alternation off the same LFO — Sequencer A ticks on the rise half, Sequencer B on the fall half. The filter breathes with the underlying triangle.",
       "diagram": "QX + QUADRAX:\n* CH 1: CYCLE mode, Rise = Fall\n\n- Qx (EOR 1) c> Sequencer A (Clock)\n- Qx (EOF 1) c> Sequencer B (Clock)\n- Quadrax (OUT 1) >> Filter (Cutoff)"
     },
     {
