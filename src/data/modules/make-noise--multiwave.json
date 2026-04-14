@@ -80,8 +80,8 @@
     {
       "name": "Osc B Pitch Panel Control",
       "scope": "Osc B",
-      "description": "Sets starting Pitch for Osc B (coarse).",
-      "detail": "1V/oct tracking when attenuverter full CW"
+      "description": "Sets starting Pitch for Osc B (coarse). Sums with Fine, TRPS and V/Oct input plus Glide.",
+      "detail": "Coarse pitch · V/Oct input tracks 1V/oct"
     },
     {
       "name": "Osc B Pitch Fine Tune",
@@ -194,7 +194,7 @@
     {
       "name": "Spread Modulation",
       "trigger": "Spread pot/CV",
-      "description": "Distributes modulation across 8 channels in differing amounts for Rise, Fall, Osc, Wave, Strength parameters simultaneously from a single control."
+      "description": "Distributes modulation across 8 channels in differing amounts to unpatched Spreadable parameters (Osc A Wave, Osc B Wave, Mod Time, Osc A Pitch) simultaneously from a single control. Up to 40 destinations weighted by the Spread direction."
     },
     {
       "name": "Output Mixing (Page 2)",

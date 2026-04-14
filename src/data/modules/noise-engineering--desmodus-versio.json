@@ -177,7 +177,7 @@
     {
       "name": "Self-Sustaining Drone",
       "trigger": "FSU with no audio input",
-      "description": "FSU injects white noise burst into reverb tank with infinite feedback. Becomes a self-sustaining drone voice with no audio input required. Shape with Tone (LP/HP filter), Size (pitch/density), Dense (smear vs delay character)."
+      "description": "With no input patched and Regen past noon, DV self-oscillates from the tank's internal noise floor. Holding FSU (or a high gate on FSU Gate) maxes feedback and mutes input, locking the tank into a sustained drone. Shape with Tone (LP/HP filter), Size (pitch/density), Dense (smear vs delay character)."
     },
     {
       "name": "BND switch (delay interpolation)",
@@ -275,7 +275,7 @@
         "Flip the lower switch to BND.",
         "Set Regen past noon to enter the self-oscillation/infinite-feedback zone.",
         "Set Tone to noon, Size to 11 o'clock, Dense to 2 o'clock, Blend full CW.",
-        "Press and hold FSU (or send a sustained gate >+2V to FSU Gate) — this injects a burst that seeds the tank.",
+        "Press and hold FSU (or send a sustained gate >+2V to FSU Gate) — this locks the tank into infinite feedback so the self-oscillating drone sustains.",
         "Sweep Tone CCW/CW to shape the drone from bassy LP to whistling HP.",
         "Turn Size to retune the drone (smaller = brighter, larger = deeper).",
         "Sweep Dense to morph between pinged-delay and smeared-reverb character.",
@@ -375,7 +375,7 @@
       "steps": [
         "Leave In L and In R unpatched — this patch is a self-oscillating voice, not an effect.",
         "Flip the upper switch to DST, lower switch to BND.",
-        "Set Regen around 10–11 o'clock (short release — each FSU ping fades between hits).",
+        "Set Regen just past noon — enough to enter the self-oscillation zone so each FSU gate pings an audible tone that decays between hits.",
         "Set Size to 10 o'clock, Dense 2 o'clock, Tone noon, Blend full CW.",
         "Patch a gate/trigger sequencer → Desmodus Versio FSU Gate to 'ping' the tank rhythmically (each gate = one attack).",
         "Patch a VCO sine output → Desmodus Versio Size CV. The 0–5V CV window means audio-rate input here creates FM-style pitch modulation of the tank.",
@@ -384,7 +384,7 @@
       ],
       "signalOut": "Desmodus Versio Out L / Out R — a pitched, pinged drone voice generated entirely from the self-oscillating tank plus audio-rate Size FM.",
       "hear": "An FM-tinged, pinged drone voice — each gate plucks the tank, and the VCO-sine on Size CV warps the pitch into metallic drone melodies.",
-      "diagram": "DESMODUS VERSIO:\n* Mode: DST · BND switch\n* Regen: below noon · Dense: 2 o'clock · Tone: noon · inputs unpatched\n- Gate Seq (Out) g> Desmodus Versio (FSU Gate) // rhythmic tank pings\n- VCO (Sine) >> Desmodus Versio (Size CV) // audio-rate FM of tank size\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // pitched self-oscillating drone"
+      "diagram": "DESMODUS VERSIO:\n* Mode: DST · BND switch\n* Regen: just past noon · Dense: 2 o'clock · Tone: noon · inputs unpatched\n- Gate Seq (Out) g> Desmodus Versio (FSU Gate) // rhythmic tank pings\n- VCO (Sine) >> Desmodus Versio (Size CV) // audio-rate FM of tank size\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // pitched self-oscillating drone"
     },
     {
       "name": "Reverb->delay->reverb shimmer chain",

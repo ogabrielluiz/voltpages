@@ -106,7 +106,7 @@
       "name": "TAP EDIT buttons (MUTE / LEVEL / PAN / CUT / Q / TYPE / PITCH SHIFT)",
       "scope": "TAP# mode",
       "description": "Red button row selects which per-tap parameter is displayed/edited across all 16 taps. PITCH SHIFT press-twice reveals DETUNE (<0.5 semitone).",
-      "detail": "Per-tap: 32 LEVEL steps · ±16 semis pitch"
+      "detail": "Per-tap: 32 LEVEL steps · -16/+15 semis pitch"
     },
     {
       "name": "FX ON / MUTE (Delay)",
@@ -182,7 +182,7 @@
     {
       "name": "Karplus-Strong strings",
       "trigger": "Comb FB config = Guitar/Sitar/Clarinet/Raw + 1V/OCT",
-      "description": "Comb section emulates plucked strings. Short input bursts excite the comb; 1V/OCT input tracks pitch. Feedback config changes timbre: Guitar (exponential), Sitar (modulated bridge), Clarinet (rectified), Raw (no nonlinearity)."
+      "description": "Comb section emulates plucked strings. Short input bursts excite the comb; 1V/OCT input tracks pitch. Feedback config changes timbre: Guitar (exponential averaging, no nonlinearity), Sitar (comb size modulated by rectified input — curved-bridge effect), Clarinet (odd-harmonic nonlinearity in feedback path — hollow/squarewave character), Raw (tap 64 fed directly back, no filter or nonlinearity)."
     },
     {
       "name": "Four routing modes",
@@ -212,7 +212,7 @@
     {
       "name": "128 factory presets",
       "trigger": "LOAD + encoder",
-      "description": "128 non-volatile slots. First 82 are factory (Krellverb, Karplus, Spiral, Chorus, Flanger, Symphony, 40-Tap String, AllTap, TechnoLoop, Resonator, etc.); 46 are user slots. MIDI SysEx export/import."
+      "description": "128 non-volatile slots, all overwritable. Factory-filled with presets 1–69 + 82–128 named (Krellverb, Karplus, Spiral, AllTapz, Alienizer, etc.); slots 70–81 ship blank for your own patches. Presets 82–128 were designed by Richard Devine. MIDI SysEx export/import."
     }
   ],
   "patchIdeas": [

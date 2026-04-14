@@ -13,7 +13,7 @@
   "slug": "intellijel--stereo-i-o-1u",
   "name": "Stereo I/O 1U",
   "manufacturer": "Intellijel",
-  "hp": 14,
+  "hp": 20,
   "tags": ["I/O", "MIXER", "ATTENUATOR"],
   "description": "All-in-one stereo audio interface for Intellijel cases. Balanced stereo line input with gain switch, stereo cue and main inputs, headphone output with independent level and source selection, and balanced stereo line output.",
   "controls": [

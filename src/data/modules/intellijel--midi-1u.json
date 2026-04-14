@@ -49,7 +49,7 @@
     },
     {
       "name": "CLK",
-      "description": "Divided MIDI clock output. Division set by CLK+ button.",
+      "description": "Divided MIDI clock output. Division set by CLK÷ button.",
       "voltage": "0–5V gate"
     },
     {
@@ -140,15 +140,15 @@
       "patch": "CLK at /24 = quarter notes; RST resets the sequencer on MIDI Start/Reset.",
       "steps": [
         "Start MIDI clock from your DAW or hardware sequencer into the case's MIDI IN.",
-        "Press CLK+ repeatedly until the LED blinks at quarter-note speed — this is the /24 setting.",
+        "Press CLK÷ repeatedly until the LED blinks at quarter-note speed — this is the /24 setting.",
         "Patch MIDI 1U CLK → your sequencer's Clock In.",
         "Patch MIDI 1U RST → your sequencer's Reset input (RST outputs a trigger on MIDI Start/Reset by default).",
         "Press Play in your DAW — the sequencer should snap to beat 1 and advance one step per quarter note.",
-        "If you want half notes or 16ths, press CLK+ again to cycle (/48 = half, /6 = 16th, /12 = 8th, etc.)."
+        "If you want half notes or 16ths, press CLK÷ again to cycle (/48 = half, /6 = 16th, /12 = 8th, etc.)."
       ],
       "signalOut": "CLK: 0–5V gate pulses at the selected division · RST: 0–5V trigger on MIDI Start/Reset.",
       "hear": "External sequencers lock to your DAW's tempo and restart cleanly on every play.",
-      "diagram": "MIDI 1U:\n* CLK+: /24 (quarter notes)\n- MIDI 1U (CLK) c> Sequencer (Clock In)\n- MIDI 1U (RST) t> Sequencer (Reset)"
+      "diagram": "MIDI 1U:\n* CLK÷: /24 (quarter notes)\n- MIDI 1U (CLK) c> Sequencer (Clock In)\n- MIDI 1U (RST) t> Sequencer (Reset)"
     },
     {
       "name": "Mod wheel filter sweep",

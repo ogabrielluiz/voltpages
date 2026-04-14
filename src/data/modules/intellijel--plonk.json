@@ -69,7 +69,7 @@
       "name": "CONFIG Button",
       "scope": "Menu",
       "description": "Opens Configuration menu: Output Gain, Saturation, Bitcrusher, VEL Mode, Init Preset, Global Config.",
-      "detail": "Output Gain -20/+40 dB · Saturation 0-60 dB · Bitcrusher off-to-1bit"
+      "detail": "Output Gain -20/+40 dB · Saturation 0-60 dB · Bitcrusher off → 10-bit → 1-bit"
     },
     {
       "name": "LOAD Button",
@@ -193,7 +193,7 @@
     {
       "name": "Saturation + Bitcrusher",
       "trigger": "CONFIG or X/Y/MOD destination",
-      "description": "Asymmetric saturation (0–60 dB) and bit reduction (off to 1-bit) sit at the end of the audio path. Available as mod destinations for per-hit grit. Exempt from Randomize so patch sits consistently."
+      "description": "Asymmetric saturation (0–60 dB) and bit reduction (off → 10-bit → 1-bit) sit at the end of the audio path. Available as mod destinations for per-hit grit. Exempt from Randomize so patch sits consistently."
     }
   ],
   "patchIdeas": [
