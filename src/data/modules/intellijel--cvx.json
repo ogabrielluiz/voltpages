@@ -170,7 +170,7 @@
       "steps": [
         "Expander: Out 1×1 → Output Type = Clock (Always), Clock Division = 24 (quarter notes).",
         "Out 1×2 → Clock (Always), Clock Division = 6 (16th notes).",
-        "Out 1×3 → Clock (Always), Clock Division = 32 (dotted 8ths — useful for polymeter).",
+        "Out 1×3 → Clock (Always), Clock Division = 18 (dotted 8ths — useful for polymeter).",
         "Out 1×4 → Output Type = Reset (fires on MIDI Start).",
         "Patch Out 1 → Sequencer A clock; Out 2 → Sequencer B clock; Out 3 → Sequencer C clock.",
         "Patch Out 4 → all sequencers' Reset inputs (mult if needed).",
@@ -178,7 +178,7 @@
       ],
       "signalOut": "Out 1 — 1/4 note clock, Out 2 — 1/16 note clock, Out 3 — dotted-8th clock (all 0–5V pulses). Out 4 — reset pulse on Start.",
       "hear": "Three sequencers run in time with the DAW but at different rates, creating a polyrhythmic interplay that all restart together when you press play.",
-      "diagram": "CVx:\n* Out 1 = Clock /24 · Out 2 = Clock /6 · Out 3 = Clock /32 · Out 4 = Reset\n\n- CVx (Out 1) c> Seq A (Clock)\n- CVx (Out 2) c> Seq B (Clock)\n- CVx (Out 3) c> Seq C (Clock)\n- CVx (Out 4) t> Seq A/B/C (Reset) // polymetric DAW sync"
+      "diagram": "CVx:\n* Out 1 = Clock /24 · Out 2 = Clock /6 · Out 3 = Clock /18 · Out 4 = Reset\n\n- CVx (Out 1) c> Seq A (Clock)\n- CVx (Out 2) c> Seq B (Clock)\n- CVx (Out 3) c> Seq C (Clock)\n- CVx (Out 4) t> Seq A/B/C (Reset) // polymetric DAW sync"
     }
   ]
 }

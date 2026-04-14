@@ -59,13 +59,12 @@
   "inputs": [
     { "name": "IN 1–4 (Channel CV)", "description": "V/Oct CV inputs for each of the four quantizer channels.", "voltage": "-3 to +7V" },
     { "name": "TRSP (Transpose CV)", "description": "Transpose CV input. Can work as pre-quantize, post-quantize, or octave transposer per channel (set in Edit menu).", "voltage": "-5 to +5V" },
-    { "name": "GT IN (Gate Input)", "description": "Gate input used as Track & Hold (default) or Sample & Hold (rising-edge, selectable in Options). Assigned per channel in Edit menu.", "voltage": "0 to +5V" },
+    { "name": "GT IN (Gate Input)", "description": "Gate input (jack 2) used as Track & Hold (default) or Sample & Hold (rising-edge, selectable via C button in Options). Assigned per channel in Edit menu. When a channel is set as Arpeggiator, the Edit Gate In column offers a third option (Reset in) that resets the arp pattern on a rising edge.", "voltage": "0 to +5V" },
     { "name": "HRMN (Harmony CV)", "description": "CV input for Harmony potentiometer position, selecting between the 8 harmony locations.", "voltage": "-5 to +5V" }
   ],
   "outputs": [
-    { "name": "OUT 1–4 (Channel CV)", "description": "Quantized V/Oct outputs for each channel. Supports V/Oct, Hz/V, and 1.2V/Oct output norms.", "voltage": "-3 to +7V" },
-    { "name": "HRMN (Harmony CV)", "description": "Harmony CV output mirroring the current harmony position for use with other modules.", "voltage": "-5 to +5V" },
-    { "name": "TRIG OUT", "description": "Trigger output that fires each time a note change is detected on an assigned channel.", "voltage": "0 to +5V" }
+    { "name": "OUT 1–4 (Channel CV)", "description": "Quantized V/Oct outputs for each channel (jack 5). Supports V/Oct, Hz/V, and 1.2V/Oct output norms (set per channel via µTune + Channel button).", "voltage": "-3 to +7V" },
+    { "name": "TRIG OUT", "description": "Trigger output (jack 1) that fires each time a note change is detected on an assigned channel. Channel assignment via Edit menu T OUT column.", "voltage": "0 to +5V" }
   ],
   "behaviors": [
     {

@@ -99,7 +99,7 @@
     {
       "name": "Gx vs Qx",
       "trigger": "module selection",
-      "description": "Metropolix supports either Gx or Qx as its expander (not both). Qx adds CV/clock+MIDI features; Gx is a pure 8-jack gate/clock expander. Electrical behavior on the 8 jacks is identical — this sheet applies to the Gx."
+      "description": "Metropolix supports either Gx or Qx as its expander (not both). Both are 8-jack gate/trigger/clock expanders; the manual treats them identically for all seven MX modes. This sheet applies to the Gx."
     }
   ],
   "patchIdeas": [

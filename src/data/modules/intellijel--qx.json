@@ -75,7 +75,7 @@
     {
       "name": "AD mode gates",
       "trigger": "Quadrax channel set to AD",
-      "description": "EOR goes high at the peak of the attack and stays high for the entire decay. EOF is low during rise+fall, then goes high at the end of the decay (inverse of EOR)."
+      "description": "EOR goes high at the peak of the attack and stays high for the entire decay, then drops to 0V. EOF is the inverse: high during rise, goes low at the attack peak, stays low through the decay, then goes high at the end of decay."
     },
     {
       "name": "AHR mode gates",
@@ -85,7 +85,7 @@
     {
       "name": "CYCLE mode gates",
       "trigger": "Quadrax channel set to CYCLE",
-      "description": "EOR is high during the decay half of each cycle, low during rise. EOF is the inverse. Effectively a square wave at the LFO rate — useful as a clock or 90°-offset gate."
+      "description": "EOR is high during the decay half of each cycle, low during rise. EOF is the inverse (180° opposite). Effectively a square wave at the LFO rate on each output — useful as a clock or complementary gate pair."
     },
     {
       "name": "BURST mode gates",
@@ -95,7 +95,7 @@
     {
       "name": "LFO mode gates (STANDARD)",
       "trigger": "Quadrax channel set to LFO (standard)",
-      "description": "EOR goes high at the LFO midpoint and drops when the cycle resets — a square at LFO rate, 90° shifted from EOF. EOF is high for the first half of the cycle, low for the second."
+      "description": "EOR goes high at the LFO midpoint and drops when the cycle resets — a square at LFO rate. EOF is the inverse (180° opposite): high for the first half of the cycle, low for the second."
     },
     {
       "name": "LFO mode gates (ALTERNATE)",

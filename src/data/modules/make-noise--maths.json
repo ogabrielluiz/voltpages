@@ -26,22 +26,22 @@
       "detail": "0.001s – 10s+ · CV controllable"
     },
     {
-      "name": "Curve",
+      "name": "Vari-Response (Curve)",
       "scope": "CH 1 & 4",
-      "description": "Response shape. Noon = linear.",
-      "detail": "CCW: expo · noon: linear · CW: log"
+      "description": "Response shape for Rise + Fall. Tick mark = Linear.",
+      "detail": "CCW: log · noon: linear · CW: expo → hyper-expo"
     },
     {
       "name": "Attenuverters",
-      "scope": "CH 2 & 3",
-      "description": "Signal scaling.",
+      "scope": "CH 1-4",
+      "description": "Scale, attenuate, amplify or invert each channel's Variable Out (feeds SUM/OR bus).",
       "detail": "CCW: invert · noon: zero · CW: unity"
     },
     {
-      "name": "Offset",
-      "scope": "CH 2 & 3",
-      "description": "DC offset. Adds to SUM output.",
-      "detail": "±5V range"
+      "name": "DC Offset (via CH 2 / CH 3)",
+      "scope": "CH 2 & 3 (unpatched)",
+      "description": "With nothing patched to CH 2/3 Signal In, the attenuverter scales an internal reference, producing a DC offset into SUM / OR.",
+      "detail": "CH 2: ±10V range · CH 3: ±5V range"
     }
   ],
   "inputs": [

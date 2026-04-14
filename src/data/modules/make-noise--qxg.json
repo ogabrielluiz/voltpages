@@ -42,8 +42,8 @@
     }
   ],
   "inputs": [
-    { "name": "Signal Inputs 1–4", "description": "Signal inputs for the four LPG circuits. Normalled to N.U.S.S. signal input header (MultiWAVE). Patching breaks normalling.", "voltage": "audio" },
-    { "name": "Control Inputs 1–4", "description": "CV inputs for the four LPG circuits. Normalled to N.U.S.S. control input header (PoliMATHS). Patching breaks normalling.", "voltage": "CV" },
+    { "name": "Signal Inputs 1–4", "description": "Signal inputs for the four LPG circuits. Normalled to N.U.S.S. signal input header (MultiWAVE or MultiMod). Patching breaks normalling.", "voltage": "audio" },
+    { "name": "Control Inputs 1–4", "description": "CV inputs for the four LPG circuits. Normalled to N.U.S.S. control input header (PoliMATHS or MultiMod). Patching breaks normalling.", "voltage": "CV" },
     { "name": "XPREAD CV", "description": "CV input for XPREAD stereo spread parameter.", "voltage": "CV" },
     { "name": "Left (Mono) Aux Input", "description": "Stereo aux input L for chaining a second QXG or adding audio to mix. Mono use: patch to L only — appears at both mix outputs.", "voltage": "audio" },
     { "name": "Right Aux Input", "description": "Stereo aux input R for chaining or adding audio to mix.", "voltage": "audio" }

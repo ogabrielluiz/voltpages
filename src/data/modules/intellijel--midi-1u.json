@@ -24,9 +24,9 @@
       "detail": "Off = normal · Solid blue = LEARN CC+CH · Flashing blue = LEARN MOD+CH · long-press = toggle Dual Mode"
     },
     {
-      "name": "CLK+ Button",
+      "name": "CLK\u00f7 Button",
       "scope": "Global",
-      "description": "Sets MIDI clock division for the CLK output jack.",
+      "description": "Sets MIDI clock division for the CLK output jack. In LEARN mode, toggles CC/MOD jack CV polarity (unipolar/bipolar).",
       "detail": "/1 (24ppq) · /3 (32nd) · /6 (16th) · /12 (8th) · /24 (quarter) · /48 (half) · /96 (whole) · LED blinks with division"
     }
   ],

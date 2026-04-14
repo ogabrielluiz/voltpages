@@ -177,7 +177,7 @@
     {
       "name": "64-tap comb resonator",
       "trigger": "FX ON (comb)",
-      "description": "Separate 64-tap delay line summed for comb/reverberation effects. 16 tap patterns (Uniform, Flat Middle, Early Comb, Fibonacci, Flat Comb, Late Comb, Rev Fib, Ess, plus 8 randomized variants)."
+      "description": "Separate 64-tap delay line summed for comb/reverberation effects. Active tap count adjustable 1–64. 16 tap patterns (Uniform, Flat Middle, Early Comb, Fibonacci, Flat Comb, Late Comb, Rev Fib, Ess, plus 8 randomized variants)."
     },
     {
       "name": "Karplus-Strong strings",
