@@ -5,6 +5,61 @@ import '../styles/global.css';
 
 const allModules = getAllModules().sort((a, b) => a.module.name.localeCompare(b.module.name));
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Top-level role chips. Each chip maps to a set of tags from modules.schema.json —
+// a module matches the chip if any of its tags appear in `tags`. Order here is the
+// order rendered on the page.
+const ROLE_FILTERS: { id: string; label: string; tags: string[] }[] = [
+  { id: 'oscillator', label: 'Oscillator', tags: ['OSCILLATOR', 'VCO'] },
+  { id: 'filter', label: 'Filter', tags: ['VCF', 'FILTER'] },
+  { id: 'env-lfo', label: 'Envelope / LFO', tags: ['ENVELOPE', 'LFO', 'FUNCTION', 'SLEW'] },
+  { id: 'sequencer', label: 'Sequencer', tags: ['SEQUENCER', 'CLOCK', 'TRIGGER', 'LOGIC', 'SWITCH'] },
+  { id: 'sampler', label: 'Sampler', tags: ['SAMPLER', 'GRANULAR'] },
+  { id: 'fx', label: 'FX', tags: ['REVERB', 'DELAY', 'EFFECTS', 'DISTORTION', 'WAVESHAPER', 'PHASER', 'CHORUS', 'GLITCH', 'WAVEFOLDER', 'RESONATOR'] },
+  { id: 'utility', label: 'Utility', tags: ['UTILITY', 'MIXER', 'VCA', 'ATTENUATOR', 'ATTENUVERTER', 'MULT', 'BUFFER', 'MIDI', 'I/O', 'EQ', 'COMPRESSOR', 'QUANTIZER', 'NOISE', 'RANDOM', 'GATE'] },
+  { id: 'drum', label: 'Drum', tags: ['DRUM'] },
+];
+
+// Precompute each card's role-filter membership so the client-side filter is a
+// simple attribute check — no repeated tag-matching at click time.
+function rolesFor(tags: string[]): string[] {
+  const set = new Set<string>();
+  for (const filter of ROLE_FILTERS) {
+    if (tags.some((t) => filter.tags.includes(t))) set.add(filter.id);
+  }
+  return Array.from(set);
+}
+
+// Group by manufacturer while preserving an alphabetized module order within each group.
+const grouped = new Map<string, typeof allModules>();
+for (const entry of allModules) {
+  const bucket = grouped.get(entry.module.manufacturer) ?? [];
+  bucket.push(entry);
+  grouped.set(entry.module.manufacturer, bucket);
+}
+const manufacturersSorted = Array.from(grouped.keys()).sort((a, b) => a.localeCompare(b));
+
+const SUGGESTION_CHIPS = [
+  'self-patching',
+  'quantizer',
+  '< 8HP',
+  'stereo in',
+  'triggers on rise',
+  'generative',
+];
+
+function roleLine(tags: string[]): string {
+  // Spec: "role = first entry of tags[], lowercased".
+  return (tags[0] ?? '').toLowerCase();
+}
+
+// Count per role-filter for the chip labels.
+const roleCounts: Record<string, number> = { all: allModules.length };
+for (const filter of ROLE_FILTERS) {
+  roleCounts[filter.id] = allModules.filter((e) =>
+    rolesFor(e.module.tags).includes(filter.id),
+  ).length;
+}
 ---
 
 <BaseLayout title="Home">
@@ -33,8 +88,17 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
         id="search-input"
         type="text"
         placeholder="Search modules, patches, behaviors..."
+        autocomplete="off"
+        aria-label="Search modules, patches, behaviors"
         class="w-full text-base border-2 border-border-strong bg-white text-fg py-3.5 px-5 outline-none"
       />
+    </div>
+
+    <!-- Suggestion chips -->
+    <div class="mt-3 flex flex-wrap gap-1.5 justify-center max-w-[480px]">
+      {SUGGESTION_CHIPS.map((label) => (
+        <button type="button" class="suggestion-chip chip" data-suggest={label}>{label}</button>
+      ))}
     </div>
 
     <p class="mt-4 md:mt-6 text-[11px] text-subtle tracking-wide flex items-center gap-2 flex-wrap justify-center">
@@ -43,33 +107,97 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
       <a href="https://github.com/ogabrielluiz/voltpages" class="underline underline-offset-2 text-faint hover:text-fg">GitHub</a>
       <span aria-hidden="true">·</span>
       <a href="https://github.com/ogabrielluiz/voltpages/blob/main/CONTRIBUTING.md" class="underline underline-offset-2 text-faint hover:text-fg">contribute</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://www.buymeacoffee.com/ogabrielluiz" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 text-faint hover:text-fg">☕ support</a>
     </p>
 
-    <!-- Module grid — filtered by Pagefind -->
-    <div class="mt-8 md:mt-10 w-full max-w-[1100px]">
-      <div id="module-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 border-t border-l border-border">
-        {allModules.map(({ slug, module }) => (
-          <a href={`${basePath}/modules/${slug}/`}
-             data-slug={slug}
-             data-name={module.name.toLowerCase()}
-             data-manufacturer={module.manufacturer.toLowerCase()}
-             data-tags={module.tags.join(' ').toLowerCase()}
-             class="module-card px-3 py-3 border-r border-b border-border hover:bg-surface no-underline">
-            <span class="block text-sm font-semibold text-fg">{module.name}</span>
-            <span class="block text-[11px] text-subtle mt-0.5">{module.manufacturer}</span>
-            <span class="match-count hidden text-[10px] font-mono text-highlight mt-1"></span>
-          </a>
+    <!-- Role filter rail -->
+    <div class="mt-6 md:mt-8 w-full max-w-[1100px] overflow-x-auto">
+      <div id="role-filters" class="flex gap-1.5 flex-nowrap md:flex-wrap justify-start md:justify-center" role="tablist" aria-label="Filter by role">
+        <button type="button" class="role-chip chip chip--touch is-active" data-role="all" aria-pressed="true">
+          All · {roleCounts.all}
+        </button>
+        {ROLE_FILTERS.filter((f) => roleCounts[f.id] > 0).map((filter) => (
+          <button type="button" class="role-chip chip chip--touch" data-role={filter.id} aria-pressed="false">
+            {filter.label} · {roleCounts[filter.id]}
+          </button>
         ))}
       </div>
     </div>
 
-  </div>
+    <!-- Module grid -->
+    <div class="mt-6 md:mt-8 w-full max-w-[1100px]">
+      <!-- Grouped view (default) -->
+      <div id="grouped-grid" aria-live="polite" aria-atomic="false">
+        {manufacturersSorted.map((manufacturer) => {
+          const entries = grouped.get(manufacturer)!;
+          const mfrSlug = manufacturer.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          return (
+            <section class="mfr-group mb-6" data-manufacturer={mfrSlug}>
+              <h2 class="mfr-header micro sticky top-0 bg-bg z-[1] pb-1 mb-2 border-b border-border">{manufacturer}</h2>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 border-t border-l border-border">
+                {entries.map(({ slug, module }) => {
+                  const roles = rolesFor(module.tags);
+                  return (
+                    <a href={`${basePath}/modules/${slug}/`}
+                       data-slug={slug}
+                       data-name={module.name.toLowerCase()}
+                       data-manufacturer={module.manufacturer.toLowerCase()}
+                       data-tags={module.tags.join(' ').toLowerCase()}
+                       data-roles={roles.join(' ')}
+                       data-hp={module.hp}
+                       class="module-card px-3 py-3 border-r border-b border-border hover:bg-surface no-underline flex flex-col">
+                      <div class="flex items-baseline justify-between gap-2">
+                        <span class="block text-sm font-semibold text-fg truncate">{module.name}</span>
+                        <span class="hidden sm:inline text-[10px] font-mono text-faint shrink-0">{module.hp}HP</span>
+                      </div>
+                      <span class="block text-[11px] text-subtle mt-0.5">
+                        {module.manufacturer}
+                        {module.tags.length > 0 && (
+                          <span class="text-faint"> · {roleLine(module.tags)}</span>
+                        )}
+                      </span>
+                      <span class="match-count hidden text-[10px] font-mono text-highlight mt-1"></span>
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
+      </div>
 
-  <footer class="fixed bottom-4 left-0 right-0 flex justify-center pointer-events-none">
-    <a href="https://www.buymeacoffee.com/ogabrielluiz" target="_blank" rel="noopener noreferrer" class="pointer-events-auto">
-      <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" class="h-[40px] w-[145px]" />
-    </a>
-  </footer>
+      <!-- Flat grid (hidden by default — shown when a tag filter or search is active) -->
+      <div id="flat-grid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 border-t border-l border-border" aria-live="polite" aria-atomic="false">
+        {allModules.map(({ slug, module }) => {
+          const roles = rolesFor(module.tags);
+          return (
+            <a href={`${basePath}/modules/${slug}/`}
+               data-slug={slug}
+               data-name={module.name.toLowerCase()}
+               data-manufacturer={module.manufacturer.toLowerCase()}
+               data-tags={module.tags.join(' ').toLowerCase()}
+               data-roles={roles.join(' ')}
+               data-hp={module.hp}
+               class="module-card flat-card px-3 py-3 border-r border-b border-border hover:bg-surface no-underline flex flex-col">
+              <div class="flex items-baseline justify-between gap-2">
+                <span class="block text-sm font-semibold text-fg truncate">{module.name}</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-faint shrink-0">{module.hp}HP</span>
+              </div>
+              <span class="block text-[11px] text-subtle mt-0.5">
+                {module.manufacturer}
+                {module.tags.length > 0 && (
+                  <span class="text-faint"> · {roleLine(module.tags)}</span>
+                )}
+              </span>
+              <span class="match-count hidden text-[10px] font-mono text-highlight mt-1"></span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+
+  </div>
 
   <!-- Pagefind search API (not the UI widget) -->
   <script is:inline define:vars={{ basePath }}>
@@ -82,87 +210,69 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
         pagefind = await import(basePath + '/pagefind/pagefind.js');
         await pagefind.init();
       } catch (e) {
-        // Pagefind not available (dev mode) — fall back to local filtering
         pagefind = null;
       }
       return pagefind;
     }
 
-    function localFilter(query) {
-      // Fallback: filter cards by name/manufacturer/tags when Pagefind isn't available
-      const cards = document.querySelectorAll('.module-card');
-      const q = query.toLowerCase();
-      let visible = 0;
-      cards.forEach(card => {
-        const name = card.dataset.name || '';
-        const mfr = card.dataset.manufacturer || '';
-        const tags = card.dataset.tags || '';
-        const match = name.includes(q) || mfr.includes(q) || tags.includes(q);
-        card.style.display = match ? '' : 'none';
-        const badge = card.querySelector('.match-count');
-        if (badge) { badge.classList.add('hidden'); badge.textContent = ''; }
-        if (match) visible++;
-      });
-      document.getElementById('module-count').textContent = `${visible} modules`;
+    const SECTION_FILTERS = ['patches', 'behaviors', 'controls'];
+    const SECTION_LABEL = { patches: 'patches', behaviors: 'behaviors', controls: 'controls' };
+
+    function getActiveRole() {
+      const url = new URL(window.location.href);
+      return url.searchParams.get('role') || 'all';
     }
 
-    function resetGrid() {
-      const cards = document.querySelectorAll('.module-card');
-      cards.forEach(card => {
-        card.style.display = '';
-        const badge = card.querySelector('.match-count');
-        if (badge) { badge.classList.add('hidden'); badge.textContent = ''; }
-      });
-      document.getElementById('module-count').textContent = `${cards.length} modules`;
+    function setActiveRoleInURL(role) {
+      const url = new URL(window.location.href);
+      if (role && role !== 'all') url.searchParams.set('role', role);
+      else url.searchParams.delete('role');
+      window.history.replaceState({}, '', url.toString());
     }
 
-    async function handleSearch(query) {
-      if (!query || query.length < 2) {
-        resetGrid();
-        return;
+    function switchView(isFlat) {
+      const grouped = document.getElementById('grouped-grid');
+      const flat = document.getElementById('flat-grid');
+      if (!grouped || !flat) return;
+      if (isFlat) {
+        grouped.classList.add('hidden');
+        flat.classList.remove('hidden');
+      } else {
+        flat.classList.add('hidden');
+        grouped.classList.remove('hidden');
       }
+    }
 
-      const pf = await initPagefind();
-      if (!pf) {
-        localFilter(query);
-        return;
-      }
+    function applyFiltersAndCount(query, role, slugCounts) {
+      const isFlat = (role && role !== 'all') || (query && query.length >= 2);
+      switchView(isFlat);
 
-      const search = await pf.search(query);
-      const results = await Promise.all(search.results.map(r => r.data()));
-
-      // Count mentions per module slug
-      const slugCounts = {};
-      for (const result of results) {
-        // URL looks like /voltpages/modules/make-noise--maths/
-        const match = result.url.match(/\/modules\/([^/]+)/);
-        if (match) {
-          const slug = match[1];
-          slugCounts[slug] = (slugCounts[slug] || 0) + 1;
-        }
-      }
-
-      // Also do a local name/manufacturer match so typing "intellijel" always shows their modules
-      const cards = document.querySelectorAll('.module-card');
-      const q = query.toLowerCase();
+      const cards = document.querySelectorAll(isFlat ? '#flat-grid .module-card' : '#grouped-grid .module-card');
+      const q = (query || '').toLowerCase();
       let visible = 0;
 
-      cards.forEach(card => {
+      cards.forEach((card) => {
         const slug = card.dataset.slug;
         const name = card.dataset.name || '';
         const mfr = card.dataset.manufacturer || '';
         const tags = card.dataset.tags || '';
-        const pagefindMatch = slugCounts[slug];
-        const localMatch = name.includes(q) || mfr.includes(q) || tags.includes(q);
-        const isMatch = pagefindMatch || localMatch;
+        const roles = (card.dataset.roles || '').split(' ');
 
+        const roleMatch = !role || role === 'all' || roles.includes(role);
+        let queryMatch = true;
+        if (q.length >= 2) {
+          const pagefindHit = slugCounts && slugCounts[slug];
+          const localHit = name.includes(q) || mfr.includes(q) || tags.includes(q);
+          queryMatch = Boolean(pagefindHit) || localHit;
+        }
+        const isMatch = roleMatch && queryMatch;
         card.style.display = isMatch ? '' : 'none';
 
         const badge = card.querySelector('.match-count');
         if (badge) {
-          if (pagefindMatch && pagefindMatch > 0) {
-            const word = pagefindMatch === 1 ? 'mention' : 'mentions';
-            badge.textContent = `${pagefindMatch} ${word}`;
+          const counts = slugCounts && slugCounts[slug];
+          if (q.length >= 2 && counts && counts.dominant) {
+            badge.textContent = `${counts.dominant.count} ${SECTION_LABEL[counts.dominant.type] || counts.dominant.type}`;
             badge.classList.remove('hidden');
           } else {
             badge.classList.add('hidden');
@@ -173,19 +283,135 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
         if (isMatch) visible++;
       });
 
-      document.getElementById('module-count').textContent = `${visible} modules`;
+      // Hide manufacturer groups that have no visible cards
+      if (!isFlat) {
+        document.querySelectorAll('.mfr-group').forEach((group) => {
+          const hasVisible = Array.from(group.querySelectorAll('.module-card'))
+            .some((c) => c.style.display !== 'none');
+          group.style.display = hasVisible ? '' : 'none';
+        });
+      }
+
+      const countEl = document.getElementById('module-count');
+      if (countEl) countEl.textContent = `${visible} modules`;
+    }
+
+    async function runPagefindSearch(query) {
+      const pf = await initPagefind();
+      if (!pf) return null;
+
+      try {
+        // One filtered search per section type so we can attribute hits to
+        // patches / behaviors / controls individually.
+        const searches = await Promise.all(
+          SECTION_FILTERS.map((section) => pf.search(query, { filters: { section } })),
+        );
+        const perSection = await Promise.all(
+          searches.map(async (s, i) => ({
+            type: SECTION_FILTERS[i],
+            results: await Promise.all(s.results.map((r) => r.data())),
+          })),
+        );
+        // Unfiltered search so module pages matched by name/manufacturer still land in the set.
+        const unfiltered = await pf.search(query);
+        const unfilteredResults = await Promise.all(unfiltered.results.map((r) => r.data()));
+
+        const slugCounts = {};
+        const bumpSlug = (slug, type) => {
+          if (!slugCounts[slug]) slugCounts[slug] = { patches: 0, behaviors: 0, controls: 0, other: 0 };
+          slugCounts[slug][type] = (slugCounts[slug][type] || 0) + 1;
+        };
+
+        for (const bucket of perSection) {
+          for (const r of bucket.results) {
+            const m = r.url.match(/\/modules\/([^/]+)/);
+            if (m) bumpSlug(m[1], bucket.type);
+          }
+        }
+        for (const r of unfilteredResults) {
+          const m = r.url.match(/\/modules\/([^/]+)/);
+          if (!m) continue;
+          const slug = m[1];
+          if (!slugCounts[slug]) bumpSlug(slug, 'other');
+        }
+
+        for (const slug of Object.keys(slugCounts)) {
+          const c = slugCounts[slug];
+          const typed = [
+            { type: 'patches', count: c.patches },
+            { type: 'behaviors', count: c.behaviors },
+            { type: 'controls', count: c.controls },
+          ].filter((x) => x.count > 0).sort((a, b) => b.count - a.count);
+          c.dominant = typed[0] || null;
+        }
+        return slugCounts;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function handleSearch(query, role) {
+      role = role || getActiveRole();
+      if (!query || query.length < 2) {
+        applyFiltersAndCount('', role, null);
+        return;
+      }
+      const slugCounts = await runPagefindSearch(query);
+      applyFiltersAndCount(query, role, slugCounts || {});
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       const input = document.getElementById('search-input');
+      const roleButtons = document.querySelectorAll('.role-chip');
+      const suggestionChips = document.querySelectorAll('.suggestion-chip');
       if (!input) return;
+
+      // Restore role filter from URL
+      const initialRole = getActiveRole();
+      roleButtons.forEach((btn) => {
+        const active = btn.dataset.role === initialRole;
+        btn.classList.toggle('is-active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
 
       input.addEventListener('input', () => {
         clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => handleSearch(input.value.trim()), 200);
+        searchTimeout = setTimeout(() => handleSearch(input.value.trim()), 120);
       });
 
-      // Focus on load
+      roleButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const role = btn.dataset.role;
+          roleButtons.forEach((b) => {
+            const active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          });
+          setActiveRoleInURL(role);
+          handleSearch(input.value.trim(), role);
+        });
+      });
+
+      suggestionChips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          input.value = chip.dataset.suggest || '';
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+          input.focus();
+        });
+      });
+
+      // Keyboard: "/" focuses the search input (unless already typing in one)
+      document.addEventListener('keydown', (e) => {
+        if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+          const tag = document.activeElement?.tagName;
+          if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+          e.preventDefault();
+          input.focus();
+        }
+      });
+
+      // Initial apply so role=... URL param filters the view on first load.
+      handleSearch(input.value.trim(), initialRole);
       input.focus();
     });
   </script>

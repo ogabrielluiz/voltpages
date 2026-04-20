@@ -54,22 +54,22 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
   </nav>
 
   <!-- Patch Ideas -->
-  <section id="patches" class="px-4 md:px-7 py-5 md:py-6 border-b border-border scroll-mt-12">
+  <section id="patches" data-pagefind-filter="section:patches" class="px-4 md:px-7 py-5 md:py-6 border-b border-border scroll-mt-12">
     <PatchIdeas patchIdeas={module.patchIdeas} />
   </section>
 
   <!-- Behaviors -->
-  <section id="behaviors" class="px-4 md:px-7 py-5 md:py-6 border-b border-border scroll-mt-12">
+  <section id="behaviors" data-pagefind-filter="section:behaviors" class="px-4 md:px-7 py-5 md:py-6 border-b border-border scroll-mt-12">
     <BehaviorsPanel behaviors={module.behaviors} />
   </section>
 
   <!-- Controls -->
-  <section id="controls" class="px-4 md:px-7 py-5 md:py-6 border-b border-border scroll-mt-12">
+  <section id="controls" data-pagefind-filter="section:controls" class="px-4 md:px-7 py-5 md:py-6 border-b border-border scroll-mt-12">
     <ControlsTable controls={module.controls} />
   </section>
 
   <!-- I/O -->
-  <section id="io" class="px-4 md:px-7 py-5 md:py-6 scroll-mt-12 border-b border-border">
+  <section id="io" data-pagefind-filter="section:io" class="px-4 md:px-7 py-5 md:py-6 scroll-mt-12 border-b border-border">
     <IOPanel inputs={module.inputs} outputs={module.outputs} />
   </section>
 
