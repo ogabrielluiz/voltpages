@@ -13,9 +13,162 @@
   --color-output-red: #7a2a2a;
   --color-highlight: #c9a96e;
   --color-surface: #f0ede6;
+  --color-accent: #d9571f;
+  --color-ok: #2a7a2a;
+  --color-warn: #b8561a;
 
   --font-sans: -apple-system, "Helvetica Neue", "Arial", sans-serif;
   --font-mono: "SF Mono", "Courier New", monospace;
+}
+
+/* ---------- Typography micro-scale (F-14) ---------- */
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-subtle);
+}
+
+.micro {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+/* ---------- Chip primitives ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border: 1px solid var(--color-tag-border);
+  background: var(--color-bg);
+  color: var(--color-subtle);
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.chip:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-fg);
+}
+
+.chip[aria-pressed="true"],
+.chip.is-active {
+  background: var(--color-surface);
+  border-color: var(--color-border-strong);
+  color: var(--color-fg);
+  font-weight: 600;
+}
+
+.chip--static {
+  cursor: default;
+  pointer-events: none;
+}
+
+.chip--touch {
+  min-height: 44px;
+  padding: 10px 12px;
+}
+
+.chip--ok { color: var(--color-ok); border-color: var(--color-ok); }
+.chip--warn { color: var(--color-warn); border-color: var(--color-warn); }
+.chip--accent {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* ---------- Diagram thumbnail (F-09) ---------- */
+.diagram-thumb {
+  width: 96px;
+  height: 56px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  padding: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+  display: block;
+  transition: border-color 0.1s;
+}
+
+.diagram-thumb:hover {
+  border-color: var(--color-border-strong);
+}
+
+.diagram-thumb-inner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diagram-thumb-inner svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  min-width: 0 !important;
+  max-width: none;
+}
+
+/* ---------- Section-nav scroll-progress (F-04) ---------- */
+.section-nav-progress {
+  height: 3px;
+  width: 100%;
+  background: var(--color-surface);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-nav-progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--color-accent);
+  width: 0%;
+  transition: width 60ms linear;
+}
+
+.section-nav a[aria-current="location"] {
+  background: var(--color-surface);
+  border-color: var(--color-border-strong);
+  color: var(--color-fg);
+  font-weight: 600;
+}
+
+/* ---------- Skip link (F-19) ---------- */
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  padding: 8px 12px;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  z-index: 100;
+  transform: translateY(-200%);
+  transition: transform 0.1s;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 /* Print mode — the UI Print button is hidden, but browser-level Cmd+P still
