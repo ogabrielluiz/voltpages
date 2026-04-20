@@ -132,6 +132,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Quad drum voice sequencer",
       "patch": "4 pads → 4 drum voices · Table pot walks preset banks (Shakmat Basics / Richard Devine / Konstantine Funky etc.) · Fill All gate from performance button triggers breakdowns",
       "diagram": "FOUR BRICKS ROOK:\n* Table slot: 1 Richard Devine's Beats\n- Clock (Out) c> Four Bricks Rook (Clock)\n- Performer (Gate) g> Four Bricks Rook (Fill All)\n- Four Bricks Rook (Out 1) t> Kick (Trig)\n- Four Bricks Rook (Out 2) t> Snare (Trig)\n- Four Bricks Rook (Out 3) t> Hat (Trig)\n- Four Bricks Rook (Out 4) t> Perc (Trig)"
@@ -147,6 +148,7 @@
       "diagram": "FOUR BRICKS ROOK:\n* L=4 · 32-step recording\n- Clock (Out) c> Four Bricks Rook (Clock)\n- S&H (Out) >> Four Bricks Rook (Shift CV)\n- LFO (Out) >> Four Bricks Rook (Table CV)\n- Four Bricks Rook (Out 1) t> Drum A (Trig)\n- Four Bricks Rook (Out 2) t> Drum B (Trig)\n- Four Bricks Rook (Out 3) t> Drum C (Trig)\n- Four Bricks Rook (Out 4) t> Drum D (Trig)"
     },
     {
+      "essential": true,
       "name": "A/B verse/chorus switch",
       "patch": "Bank A = verse groove · Bank B = chorus groove · performer toggles A/B at bar · identical trigger voices · identical table so Pattern mode can overlay fills on either",
       "diagram": "FOUR BRICKS ROOK:\n* Bank A: verse · Bank B: chorus\n- Clock (Out) c> Four Bricks Rook (Clock)\n- Bar Clock (Out) t> Four Bricks Rook (Reset)\n- Four Bricks Rook (Out 1) t> Kick (Trig)\n- Four Bricks Rook (Out 2) t> Snare (Trig)\n- Four Bricks Rook (Out 3) t> Hat (Trig)\n- Four Bricks Rook (Out 4) t> Tom (Trig)"
@@ -157,6 +159,7 @@
       "diagram": "FOUR BRICKS ROOK:\n* Track 1 trig length: clock period\n- Clock (Out) -> Clock Multiplier (x2)\n- Clock Multiplier (Out) c> Four Bricks Rook (Clock)\n- Four Bricks Rook (Out 1) g> VCA (Gate) // sustained gate\n- Four Bricks Rook (Out 2) t> Drum (Trig)"
     },
     {
+      "essential": true,
       "name": "Randomizer fills with probability",
       "patch": "Per-track random amount: Track1=0 (no random), Track2=3 (light), Track3=6 (medium), Track4=9 (chaos) · random hits pile near sequence end for natural drum fills · Reset from bar clock resets the build-up",
       "diagram": "FOUR BRICKS ROOK:\n* Rand A: 0/3/6/9 per track\n- Clock (Out) c> Four Bricks Rook (Clock)\n- Bar Clock (Out) t> Four Bricks Rook (Reset)\n- Four Bricks Rook (Out 1) t> Kick (Trig) // solid\n- Four Bricks Rook (Out 2) t> Snare (Trig) // occasional\n- Four Bricks Rook (Out 3) t> Hat (Trig) // busy\n- Four Bricks Rook (Out 4) t> Ride (Trig) // chaotic"

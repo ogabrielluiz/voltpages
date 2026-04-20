@@ -185,11 +185,13 @@
       "diagram": "Morgasmatron:\n* Filter A: Q max · CUTOFF ≈ C3\n* Filter B: Q max · CUTOFF ≈ C4\n\nSequencer A:\n\nSequencer B:\n\n- Sequencer A (Pitch) p> Morgasmatron (1V/OCT A)\n- Sequencer B (Pitch) p> Morgasmatron (1V/OCT B)\n- Morgasmatron (OUT A) -> Mixer (L)\n- Morgasmatron (OUT B) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Self-osc kick",
       "patch": "Filter A Q max · trigger → short AD → FM2 A (attenuverter positive) for pitch thump · second short AD → VCA after OUT A for amp · Q-Drive cranked for squarer attack · fat self-oscillated kick",
       "diagram": "Morgasmatron:\n* Filter A: Q max · Q-Drive high · LP2\n\nENV A:\n\nENV B:\n\nSequencer:\n\n- Sequencer (Trig) t> ENV A (Trig)\n- Sequencer (Trig) t> ENV B (Trig)\n- ENV A (Out) >> Morgasmatron (FM2 A)\n- Morgasmatron (OUT A) -> VCA (In)\n- ENV B (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "4-pole stacked LP",
       "patch": "Both filters LP2 · Series ON · same CUTOFF, same Q · CV to FM2 A normals to B · single envelope opens both simultaneously — steep 4-pole slope with extra squelch from cascaded resonance",
       "diagram": "Morgasmatron:\n* Series ON\n* Filter A: LP2 · Filter B: LP2\n* FM2 attenuverters: matched\n\nVCO:\n\nENV:\n\n- VCO (Out) -> Morgasmatron (IN A)\n- ENV (Out) >> Morgasmatron (FM2 A) // normals to FM2 B\n- Morgasmatron (OUT B) -> Output (In)"
@@ -210,6 +212,7 @@
       "diagram": "Morgasmatron:\n* Parallel · DRY A: ON · DRY B: ON\n* PHASE INVERT: ON · XFADE: noon\n\nVCO 1:\n\nVCO 2:\n\n- VCO 1 (Saw) -> Morgasmatron (IN A)\n- VCO 2 (Sine) >> Morgasmatron (XFADE CV)\n- Morgasmatron (MIX) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Wet/dry parallel distortion",
       "patch": "Bass VCO → IN A · IN B same source · Parallel · OVERDRIVE A ON · DRY B ON · XFADE = wet/dry blend · keeps bass weight while adding grit",
       "diagram": "Morgasmatron:\n* Parallel · OVERDRIVE A: ON · DRY B: ON\n* Filter A: LP2 · cutoff open\n\nVCO:\n\nMult:\n\n- VCO (Out) -> Mult (In)\n- Mult (1) -> Morgasmatron (IN A)\n- Mult (2) -> Morgasmatron (IN B)\n- Morgasmatron (MIX) -> Output (In) // XFADE = distortion amount"

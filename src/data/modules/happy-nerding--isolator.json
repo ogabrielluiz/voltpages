@@ -99,6 +99,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Final stereo out to a mixer",
       "patch": "Route the stereo master from a eurorack mixer through Isolator into a studio desk or interface with no ground hum.",
       "steps": [
@@ -114,6 +115,7 @@
       "diagram": "Isolator:\n* Level: set to taste (start CCW)\n\nEurorack Mixer:\nAudio Interface:\n\n- Eurorack Mixer (Out L) -> Isolator (L In)\n- Eurorack Mixer (Out R) -> Isolator (R In)\n- Isolator (Out L) -> Audio Interface (In L) // 1/4 TRS balanced\n- Isolator (Out R) -> Audio Interface (In R)"
     },
     {
+      "essential": true,
       "name": "Mono jam to stereo PA",
       "patch": "Send a single mono bus to both sides of the PA using the L-to-R normalled routing.",
       "steps": [
@@ -128,6 +130,7 @@
       "diagram": "Isolator:\n* R In: empty (mono normalling active)\n* Level: to PA target\n\nMono Bus:\nPA:\n\n- Mono Bus (Out) -> Isolator (L In)\n- Isolator (Out L) -> PA (Left)\n- Isolator (Out R) -> PA (Right) // normalled copy of L"
     },
     {
+      "essential": true,
       "name": "Silent headphone pre-check",
       "patch": "Audition the rack on headphones with the balanced outs muted before unmuting the house.",
       "steps": [

@@ -203,6 +203,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four-envelope drum voice",
       "patch": "Four gates into G/T 1-4 · Env 1-4 each driving its own VCA or filter · kick, snare, hat and accent envelopes from one 14 HP module.",
       "diagram": "Quadigy:\n* Mode: Studio (for setup) → Live (for the gig)\n* Cycle: off on all 4\n* EG: trigger mode per channel to taste\n\nSequencer:\nKick VCO:\nNoise:\nKick VCA:\nSnare VCA:\nHat VCA:\nAccent bus:\nMixer:\nOutput:\n\n- Sequencer (Trig 1) t> Quadigy (G/T 1)\n- Sequencer (Trig 2) t> Quadigy (G/T 2)\n- Sequencer (Trig 3) t> Quadigy (G/T 3)\n- Sequencer (Trig 4) t> Quadigy (G/T 4)\n- Quadigy (Env 1) >> Kick VCA (CV)\n- Quadigy (Env 2) >> Snare VCA (CV)\n- Quadigy (Env 3) >> Hat VCA (CV)\n- Quadigy (Env 4) >> Accent bus (CV)\n- Kick VCO (Out) -> Kick VCA (In) -> Mixer (In 1)\n- Noise (Out) -> Snare VCA (In) -> Mixer (In 2)\n- Noise (Out) -> Hat VCA (In) -> Mixer (In 3)\n- Mixer (Out) -> Output (In)",
@@ -218,6 +219,7 @@
       "hear": "A full four-element drum voice from one module — kick, snare, hat and accent all swing off their own envelopes with no cross-talk."
     },
     {
+      "essential": true,
       "name": "Tempo-locked cycling pad",
       "patch": "External clock into Clock · Env 1 and Env 2 cycling, fit-to-clock on, set to long slow shapes · they become two tempo-synced pseudo-LFOs that shape a filter and VCA of a chord.",
       "diagram": "Quadigy:\n* Env 1: Cycle = External, Div /4, long A and R\n* Env 2: Cycle = External, Div /2, Offset +3\n* Mode: Live\n\nClock:\nVCO:\nFilter:\nVCA:\nOutput:\n\n- Clock (Out) c> Quadigy (Clock)\n- Quadigy (Env 1) >> Filter (Cutoff)\n- Quadigy (Env 2) >> VCA (CV)\n- VCO (Out) -> Filter (In) -> VCA (In) -> Output (In)"
@@ -249,6 +251,7 @@
       "hear": "Identical trigger pattern grows from tight plucks into long airy swells — the whole envelope bank transforms rather than switching abruptly."
     },
     {
+      "essential": true,
       "name": "Polyphonic multi-edit",
       "patch": "Hold [1] and tap [2], [3], [4] so all four envelopes are selected at once · tweak a single fader and all four channels track the same change — ideal for a four-voice patch where every voice must behave consistently.",
       "diagram": "Quadigy:\n* Env 1-4 selected together\n* EG fader page: ADSR\n\nPoly Keyboard:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\nVCA 1:\nVCA 2:\nVCA 3:\nVCA 4:\nMixer:\nOutput:\n\n- Poly Keyboard (Gate 1) g> Quadigy (G/T 1)\n- Poly Keyboard (Gate 2) g> Quadigy (G/T 2)\n- Poly Keyboard (Gate 3) g> Quadigy (G/T 3)\n- Poly Keyboard (Gate 4) g> Quadigy (G/T 4)\n- Quadigy (Env 1) >> VCA 1 (CV)\n- Quadigy (Env 2) >> VCA 2 (CV)\n- Quadigy (Env 3) >> VCA 3 (CV)\n- Quadigy (Env 4) >> VCA 4 (CV)\n- VCO 1 (Out) -> VCA 1 (In) -> Mixer (In 1)\n- VCO 2 (Out) -> VCA 2 (In) -> Mixer (In 2)\n- VCO 3 (Out) -> VCA 3 (In) -> Mixer (In 3)\n- VCO 4 (Out) -> VCA 4 (In) -> Mixer (In 4)\n- Mixer (Out) -> Output (In)",

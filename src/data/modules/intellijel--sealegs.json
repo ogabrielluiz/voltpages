@@ -241,11 +241,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Dub delay with tone-darkening repeats",
       "patch": "Audio → IN L · MODEL BBD · COLOR ~50% · FB 60% · HPF low, LPF ~3 o'clock · DELAY SYNC to external clock · each repeat darkens progressively · live LPF tweaks dub-style",
       "diagram": "Sealegs:\n* MODEL: BBD · COLOR: 50% · FB: 60%\n* STEREO: PONG · DELAY SYNC: ON\n\nClock:\n\n- Synth (Out) -> Sealegs (IN L)\n- Clock (Out) c> Sealegs (CLK)\n- Sealegs (OUT L) -> Output (Left)\n- Sealegs (OUT R) -> Output (Right)"
     },
     {
+      "essential": true,
       "name": "Shoegaze ambient wash",
       "patch": "MODEL TAPE · COLOR high · FOG position MIX · FOG level high · decay long (ALT + FOG) · MOD = SINE, sync'd · slight DEPTH · MIX 70% wet · swelling tape reverb with gentle chorus",
       "diagram": "Sealegs:\n* MODEL: TAPE · COLOR: high\n* FOG POSITION: MIX · FOG: 70% · DECAY: long\n* MOD: SINE synced · MOD DEPTH: 20%\n\nPad:\n\n- Pad (Out) -> Sealegs (IN L)\n- Sealegs (OUT L) -> Output (Left)\n- Sealegs (OUT R) -> Output (Right)"
@@ -256,6 +258,7 @@
       "diagram": "Sealegs:\n* MODEL: DIGI · TIME RANGE: S\n* FB: 100% · HPF/LPF: mid\n\nNoise:\n\nENV:\n\nVCA:\n\n- Trig (Out) t> ENV (Gate)\n- Noise (Out) -> VCA (In)\n- ENV (Out) >> VCA (CV)\n- VCA (Out) -> Sealegs (IN L)\n- Sealegs (OUT L) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Sync'd ping-pong eighth-notes",
       "patch": "Audio → IN L · STEREO CONFIG PONG · DELAY SYNC ON · TIME slider on 1/8 division · WIDTH adds 33% offset on right · FB 40% · classic rhythmic stereo delay that locks to tempo",
       "diagram": "Sealegs:\n* STEREO: PONG · MODEL: DIGI\n* DELAY SYNC: ON · TIME: 1/8\n\nClock:\n\n- Synth (Out) -> Sealegs (IN L)\n- Clock (Out) c> Sealegs (CLK)\n- Sealegs (OUT L) -> Output (Left)\n- Sealegs (OUT R) -> Output (Right)"

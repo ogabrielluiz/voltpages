@@ -156,11 +156,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four-tap CV delay from one source",
       "patch": "LFO to the common CV input · separate/common = common · four different clock divisions to the four pulse inputs · each channel samples the same LFO at its own rate · four staggered CV outputs from one source",
       "diagram": "264t:\n* Switch: common\n* S/T all: sample\n\nLFO:\nClock Div:\nFilter A:\nFilter B:\nFilter C:\nFilter D:\n\n- LFO (Out) >> 264t (CV IN 4) // common input\n- Clock Div (÷1) c> 264t (PULSE IN 1)\n- Clock Div (÷2) c> 264t (PULSE IN 2)\n- Clock Div (÷4) c> 264t (PULSE IN 3)\n- Clock Div (÷8) c> 264t (PULSE IN 4)\n- 264t (CV OUT 1) >> Filter A (Cutoff)\n- 264t (CV OUT 2) >> Filter B (Cutoff)\n- 264t (CV OUT 3) >> Filter C (Cutoff)\n- 264t (CV OUT 4) >> Filter D (Cutoff)"
     },
     {
+      "essential": true,
       "name": "Four-voice poly from mono source",
       "patch": "sequencer CV to common · sequencer gate to POLY IN · NUMBER OF VOICES = 4 · four ART outputs fanned to four 259t oscillators · each new note dispatches to the next voice · instant four-voice poly with auto voice-stealing",
       "diagram": "264t:\n* Switch: common\n* NUMBER OF VOICES: 4\n* SCALE: major · KEY: C\n\nSequencer:\n259t OSC 1:\n259t OSC 2:\n259t OSC 3:\n259t OSC 4:\nMixer:\n\n- Sequencer (Pitch) >> 264t (CV IN 4) // common\n- Sequencer (Gate) g> 264t (POLY IN)\n- 264t (ART OUT 1) p> 259t OSC 1 (ART)\n- 264t (ART OUT 2) p> 259t OSC 2 (ART)\n- 264t (ART OUT 3) p> 259t OSC 3 (ART)\n- 264t (ART OUT 4) p> 259t OSC 4 (ART)\n- 259t OSC 1 (Out) -> Mixer (In 1)\n- 259t OSC 2 (Out) -> Mixer (In 2)\n- 259t OSC 3 (Out) -> Mixer (In 3)\n- 259t OSC 4 (Out) -> Mixer (In 4)"
@@ -176,6 +178,7 @@
       "diagram": "264t:\n* Switch: common · SCALE: m · KEY: A\n* S/T all: sample\n\nNoise:\nClock:\nMult:\n\n- Noise (Out) >> 264t (CV IN 4)\n- Clock (Out) c> Mult (In)\n- Mult (Out 1) c> 264t (PULSE IN 1)\n- Mult (Out 2) c> 264t (PULSE IN 2)\n- Mult (Out 3) c> 264t (PULSE IN 3)\n- Mult (Out 4) c> 264t (PULSE IN 4) // four quantized voices"
     },
     {
+      "essential": true,
       "name": "Stepped envelope from 281t ramp",
       "patch": "281t slope output to common CV input · fast clock samples at regular intervals · the ramp gets stair-stepped into discrete CV levels · classic Buchla 'step from slope' per the manual's example",
       "diagram": "264t:\n* Switch: common\n* S/T ch1: sample\n\n281t:\nFast Clock:\nFilter:\n\n- 281t (Slope Out) >> 264t (CV IN 4)\n- Fast Clock (Out) c> 264t (PULSE IN 1)\n- 264t (CV OUT 1) >> Filter (Cutoff) // stepped ramp"

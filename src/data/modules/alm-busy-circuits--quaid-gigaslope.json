@@ -124,16 +124,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four-stage envelope bank",
       "patch": "Slope 1-4 each run as their own Env contour into four VCAs. One gate from the keyboard can trigger all four by normalising the trigger input chain, giving a compact polyphonic envelope bank.",
       "diagram": "QUAID GIGASLOPE:\n* Slope: 1\n* Type: Env\n* Start: Stage 1\n* End: Stage 4\n* Output range: 0-5V\n\nVCA 1:\nVCA 2:\nVCA 3:\nVCA 4:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\n\n- Keyboard (Gate) g> QUAID GIGASLOPE (Trigger Input 1)\n- QUAID GIGASLOPE (Slope Output 1) >> VCA 1 (CV)\n- QUAID GIGASLOPE (Slope Output 2) >> VCA 2 (CV)\n- QUAID GIGASLOPE (Slope Output 3) >> VCA 3 (CV)\n- QUAID GIGASLOPE (Slope Output 4) >> VCA 4 (CV)\n- VCO 1 (Out) -> VCA 1 (In)\n- VCO 2 (Out) -> VCA 2 (In)\n- VCO 3 (Out) -> VCA 3 (In)\n- VCO 4 (Out) -> VCA 4 (In)\n- VCA 1 (Out) -> Mixer (In 1)\n- VCA 2 (Out) -> Mixer (In 2)\n- VCA 3 (Out) -> Mixer (In 3)\n- VCA 4 (Out) -> Mixer (In 4)"
     },
     {
+      "essential": true,
       "name": "Looping animated LFO",
       "patch": "Slope 2 in Loop mode with a short stage span and alternating curves. The output becomes a custom modulation source that can sweep filter cutoff while Trigger Output 2 marks the loop boundary.",
       "diagram": "QUAID GIGASLOPE:\n* Slope: 2\n* Type: Loop\n* Start: Stage 2\n* End: Stage 6\n\nLFO:\nVCO:\nFilter:\nVCA:\n\n- Clock (Out) c> QUAID GIGASLOPE (Trigger Input 2)\n- QUAID GIGASLOPE (Slope Output 2) >> Filter (Cutoff)\n- QUAID GIGASLOPE (Trigger Output 2) t> Envelope (Trig)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Quantised step melody",
       "patch": "Slope 3 in Step mode, quantiser on, and a short 5-stage range. The stage levels become a melodic pattern while Trigger Output 3 can re-fire an envelope on each new step.",
       "diagram": "QUAID GIGASLOPE:\n* Slope: 3\n* Type: Step\n* Quantiser: on\n* Start: Stage 1\n* End: Stage 5\n\nQuantizer:\nVCO:\nEnvelope:\nVCA:\n\n- Clock (Out) c> QUAID GIGASLOPE (Trigger Input 3)\n- QUAID GIGASLOPE (Slope Output 3) >> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- QUAID GIGASLOPE (Trigger Output 3) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"

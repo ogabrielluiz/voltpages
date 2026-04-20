@@ -107,6 +107,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Percussive envelope from taps",
       "patch": "Fast-attack/fast-release envelope jumper · GAIN at noon · tap the piezo pad · ENV → filter cutoff (attenuverter-scaled) · GATE → percussive envelope trigger on a VCA · taps on Ears become plucked notes with dynamic filter sweep.",
       "diagram": "Ears:\n* Envelope jumper: fast\n* Gate jumper: medium\n* GAIN: noon\n\nVCO:\nFilter:\nEnvelope:\nVCA:\n\n- VCO (Out) -> Filter (In) -> VCA (In) -> Output (In)\n- Ears (ENV) >> Filter (Cutoff)\n- Ears (GATE) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)"
@@ -117,11 +118,13 @@
       "diagram": "Ears:\n* Envelope jumper: slow\n* GAIN: ~3 o'clock\n\nVCO:\nFilter:\n\n- Microphone (Out) -> Ears (IN)\n- VCO (Drone) -> Filter (In) -> Output (In)\n- Ears (ENV) >> Filter (Cutoff)"
     },
     {
+      "essential": true,
       "name": "Acoustic clock source",
       "patch": "Metronome, kick drum, or clapping hands near the piezo · medium gate threshold · GATE → clock input of a sequencer · Ears converts acoustic rhythm into modular clocks so a live drummer or a metronome app can clock a patch without a MIDI interface.",
       "diagram": "Ears:\n* Gate jumper: medium\n\nSequencer:\n\n- Ears (GATE) c> Sequencer (Clock)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)"
     },
     {
+      "essential": true,
       "name": "Guitar into modular",
       "patch": "Electric guitar → IN (disconnects piezo) · GAIN at 3 o'clock to hit modular level · OUT → wavefolder → filter → VCA · ENV → wavefolder amount so playing harder pushes into folding · GATE → envelope trigger for note-on dynamics.",
       "diagram": "Ears:\n* GAIN: ~3 o'clock\n\nGuitar:\nWavefolder:\nFilter:\nEnvelope:\nVCA:\n\n- Guitar (Out) -> Ears (IN)\n- Ears (OUT) -> Wavefolder (In) -> Filter (In) -> VCA (In) -> Output (In)\n- Ears (ENV) >> Wavefolder (Fold CV)\n- Ears (GATE) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)"

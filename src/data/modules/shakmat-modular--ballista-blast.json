@@ -152,6 +152,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic acid bass",
       "patch": "Classic engine · 4-pole LP filter · envelope to filter cutoff · velocity to resonance for accent · distortion soft-clip for body.",
       "steps": [
@@ -168,6 +169,7 @@
       "diagram": "Ballista Blast:\n* Engine: Classic (saw + sub)\n* Filter: 4-pole LP\n* Envelope: AD -> Filter cutoff (+)\n* Velocity: -> Emphasis (small +)\n* Distortion: soft-clip\n\n- Sequencer (Pitch) p> Ballista Blast (V/Oct)\n- Sequencer (Gate) g> Ballista Blast (Gate)\n- Accent (CV) >> Ballista Blast (Velocity)\n- Ballista Blast (OUT) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Wavetable evolving lead",
       "patch": "Wavetable engine · slow LFO scans the 8 waves of one bank · envelope on amplitude · randomiser on Parameter (bank) for occasional bank flips.",
       "steps": [
@@ -184,6 +186,7 @@
       "diagram": "Ballista Blast:\n* Engine: Wavetable\n* Envelope: AR -> VCA (full)\n* LFO -> Harmonics CV (slow morph)\n* Randomiser -> Parameter (small depth)\n\n- Keyboard (Pitch) p> Ballista Blast (V/Oct)\n- Keyboard (Gate) g> Ballista Blast (Gate)\n- LFO (Out) >> Ballista Blast (Harmonics CV)\n- Ballista Blast (OUT) -> Reverb (In)"
     },
     {
+      "essential": true,
       "name": "FM bell strike",
       "patch": "FM engine · short AD envelope on amplitude · velocity on FM index for hammer dynamics · 2-pole BP to focus the partials.",
       "steps": [

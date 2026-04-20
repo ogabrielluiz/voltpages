@@ -113,6 +113,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic melodic random",
       "patch": "Stepped Output quantized to pitch, Burst Output as rhythm trigger — a self-contained generative melody.",
       "steps": [
@@ -130,6 +131,7 @@
       "diagram": "Richter Wogglebug:\n* Speed/Chaos: ~12:00\n* Ego/Id: ~10:00\n\nQuantizer:\n\n- Wogglebug (Stepped) >> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Wogglebug (Burst) g> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Bit-crushed S&H",
       "patch": "Drive Ego In with an audio-rate signal while the clock runs above 200 Hz — Stepped Output becomes a bit/sample-rate reducer.",
       "steps": [
@@ -192,6 +194,7 @@
       "diagram": "Richter Wogglebug:\n* Speed/Chaos: ~11:00\n* Woggle: ~12:00\n\nFilter:\n\nVCA:\n\nVCO:\n\n- Wogglebug (Stepped) >> Filter (Cutoff)\n- Wogglebug (Smooth) >> VCA (CV)\n- Wogglebug (Woggle CV) >> VCO (FM In)"
     },
     {
+      "essential": true,
       "name": "Influence-driven chaos",
       "patch": "Sequencer pitch CV into Influence In makes the Ring-Mod Output speak per-step, each step with a different angular timbre.",
       "steps": [

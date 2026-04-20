@@ -153,11 +153,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "LFO to arpeggio",
       "patch": "Slow triangle LFO → PITCH · clock → TRIG · active scale = minor pentatonic · clock samples LFO into steps along the scale · one LFO becomes a melodic arpeggio that follows the LFO shape",
       "diagram": "Scales:\n* Scale: minor pentatonic\n\nLFO:\n\nClock:\n\nVCO:\n\nENV:\n\n- LFO (Out) >> Scales (PITCH)\n- Clock (Out) t> Scales (In TRIG)\n- Scales (OUT A) p> VCO (V/Oct)\n- Scales (Out TRIG) g> ENV (Gate)"
     },
     {
+      "essential": true,
       "name": "Two-voice harmony",
       "patch": "Sequencer pitch → PITCH · INTRVL DIATONIC + 2 · OUT A drives VCO 1 (melody) · OUT B drives VCO 2 (third above) · instant two-voice harmony that follows scale contour · no matter the scale, intervals stay diatonic",
       "diagram": "Scales:\n* Scale: major · INTRVL DIATONIC +2\n\nSequencer:\n\n- Sequencer (Pitch) p> Scales (PITCH)\n- Sequencer (Gate) g> Scales (In TRIG)\n- Scales (OUT A) p> VCO 1 (V/Oct)\n- Scales (OUT B) p> VCO 2 (V/Oct)\n- Sequencer (Gate) g> ENV (Gate)"
@@ -168,6 +170,7 @@
       "diagram": "Scales:\n* OUT B: DUAL\n* Scale: dorian\n\nSequencer 1:\n\nSequencer 2:\n\n- Sequencer 1 (Out) >> Scales (PITCH)\n- Sequencer 2 (Out) >> Scales (SHIFT)\n- Scales (OUT A) p> VCO 1 (V/Oct)\n- Scales (OUT B) p> VCO 2 (V/Oct)"
     },
     {
+      "essential": true,
       "name": "Turing Machine tamed",
       "patch": "Turing Machine CV → PITCH · Turing clock → TRIG · scale = user-defined (e.g., C blues) · random voltages turn into generative melody constrained to the blues scale · slowly morph scale notes on/off during performance",
       "diagram": "Scales:\n* Scale: C blues (user)\n\nTuring Machine:\n\nClock:\n\nVCO:\n\nENV:\n\n- Turing Machine (CV Out) >> Scales (PITCH)\n- Clock (Out) t> Turing Machine (Clock)\n- Clock (Out) t> Scales (In TRIG)\n- Scales (OUT A) p> VCO (V/Oct)\n- Scales (Out TRIG) g> ENV (Gate)"

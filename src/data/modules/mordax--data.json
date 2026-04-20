@@ -190,6 +190,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Calibrate an analog VCO",
       "patch": "Use the Tuner program to trim an analog VCO's 1V/oct scaling against DATA's reference.",
       "steps": [
@@ -206,6 +207,7 @@
       "diagram": "DATA:\n* Program: Tuner\n* Input: IN 1\n\nVCO:\n\nReference:\n\n- Reference (Out) p> VCO (V/Oct)\n- VCO (Out) -> DATA (IN 1)"
     },
     {
+      "essential": true,
       "name": "Quad master clock",
       "patch": "Drive four destinations from DATA's Clock Output at related divisions — whole notes, quarters, eighths, and triplets.",
       "steps": [
@@ -223,6 +225,7 @@
       "diagram": "DATA:\n* Program: Clock Output\n* Mode: Internal Master\n* BPM: 120\n* OUT 1: x1\n* OUT 2: x2\n* OUT 3: x3 (8T)\n* OUT 4: /4\n\nDrum:\n\nHats:\n\nPerc:\n\nEnvelope:\n\n- DATA (OUT 1) c> Drum (Trig)\n- DATA (OUT 2) c> Hats (Trig)\n- DATA (OUT 3) c> Perc (Trig)\n- DATA (OUT 4) t> Envelope (Trig)"
     },
     {
+      "essential": true,
       "name": "Dual LFO pair with phase offset",
       "patch": "Use Wave Output for two slow LFOs with a deliberate phase offset — stereo-style movement from one module.",
       "steps": [

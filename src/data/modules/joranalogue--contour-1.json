@@ -172,6 +172,7 @@
       "hear": "A bright, buzzy sawtooth tone. Without the self-patch the waveform sounds duller; with FALL→TRIG. the reset edge sharpens it noticeably."
     },
     {
+      "essential": true,
       "name": "AR envelope from a gate",
       "patch": "Slew mode. Feed any gate into GATE; Contour 1 rises to +10V while high, falls back to IN voltage when released.",
       "diagram": "Contour 1:\n* Slew/Loop: Slew\n* Full/Audio: Full\n- Sequencer (Gate) g> Contour 1 (GATE)\n- Contour 1 (OUT) >> VCA (CV)\n- VCO (Out) -> VCA (In)",
@@ -189,6 +190,7 @@
       "hear": "Classic attack-release shape under each note. Longer Fall slider gives lingering tails; a concave Fall bend makes the release feel more natural."
     },
     {
+      "essential": true,
       "name": "AD envelope with trigger reset",
       "patch": "Slew mode. A rising edge on TRIG. resets to 0V and fires a full rise→fall — great for drums and plucks.",
       "diagram": "Contour 1:\n* Slew/Loop: Slew\n- Sequencer (Trig) t> Contour 1 (TRIG.)\n- Contour 1 (OUT) >> VCA (CV)\n- VCO (Out) -> VCA (In)",
@@ -205,6 +207,7 @@
       "hear": "Snappy percussive envelope. Every trigger punches the output up to +10V and back down; Fall slider controls the decay length."
     },
     {
+      "essential": true,
       "name": "Envelope follower",
       "patch": "Slew mode, full range. Fast Rise tracks peaks, moderate Fall sets decay — extract a CV envelope from any audio.",
       "diagram": "Contour 1:\n* Slew/Loop: Slew\n* Full/Audio: Full\n* Rise: fastest\n* Fall: moderate\n- Audio Source (Out) -> Contour 1 (IN)\n- Contour 1 (OUT) >> VCF (Cutoff)",

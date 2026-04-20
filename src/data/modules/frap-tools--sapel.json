@@ -202,11 +202,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Generative melody with locked octave",
       "patch": "Yellow 2ⁿ set to n=2 (4 semitones per chord pool) · Yellow n+1 at n=1 (2 octaves) · clock Yellow at moderate rate · sum 2ⁿ and n+1 for pitch that stays in a 2-octave window with a 4-note set · probability knob biases toward mid-range centre of the pool.",
       "diagram": "SAPÈL:\n* Yellow 2ⁿ Value: n=2\n* Yellow n+1 Value: n=1\n* Probability: noon\n* Probability Dist Switch (2ⁿ): ON\n\n- Clock (Out) c> SAPÈL (Ext Clock In Yellow)\n- SAPÈL.Yellow (2ⁿ Out) p> Mixer (In 1)\n- SAPÈL.Yellow (n+1 Out) p> Mixer (In 2)\n- Mixer (Out) p> VCO (V/Oct)"
     },
     {
+      "essential": true,
       "name": "Uncorrelated pitch & timbre",
       "patch": "One clock drives Yellow · Yellow 2ⁿ → VCO pitch · Yellow raw S&H → filter cutoff · both update together but sample independent noise sources · each gate produces a new pitch and a new colour, never tied.",
       "diagram": "SAPÈL:\n* Yellow 2ⁿ Value: n=3\n\n- Clock (Out) c> SAPÈL (Ext Clock In Yellow)\n- SAPÈL.Yellow (2ⁿ Out) p> VCO (V/Oct)\n- SAPÈL.Yellow (S&H Out) >> Filter (Cutoff)\n- SAPÈL.Yellow (Main Clock Out) t> Envelope (Trig)"
@@ -222,6 +224,7 @@
       "diagram": "SAPÈL:\n* Yellow Random Clock Mode: subtractive\n* Yellow FRV Rate: noon\n\n- Clock (Out) c> SAPÈL (Ext Clock In Yellow)\n- SAPÈL.Yellow (Random Clock Out) t> Drum (Trig)"
     },
     {
+      "essential": true,
       "name": "Smooth random modulation",
       "patch": "Green FRV output at moderate rate drives filter resonance · no clock needed — FRV runs continuously · FRV Rate CV lets an envelope bend the fluctuation speed, faster during note attacks, slower on release.",
       "diagram": "SAPÈL:\n* Green FRV Rate: noon\n\n- SAPÈL.Green (FRV Out) >> Filter (Resonance CV)\n- Envelope (Out) >> SAPÈL.Green (FRV Rate CV)"

@@ -97,16 +97,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "4-note pitch sequencer",
       "patch": "Four offset voltages → I/O 1–4 · clock → Trig. In · O/I → VCO 1V/oct",
       "diagram": "A-151:\n* Steps: 4\n- Offset 1 (CV) >> A-151 (I/O 1)\n- Offset 2 (CV) >> A-151 (I/O 2)\n- Offset 3 (CV) >> A-151 (I/O 3)\n- Offset 4 (CV) >> A-151 (I/O 4)\n- Clock (Clk) c> A-151 (Trig. In)\n- A-151 (O/I) p> VCO (1V/oct)"
     },
     {
+      "essential": true,
       "name": "VCO waveform stepper",
       "patch": "VCO saw/tri/sqr/sine → I/O 1–4 · LFO → Trig. In · O/I → VCF",
       "diagram": "A-151:\n- VCO (Saw) -> A-151 (I/O 1)\n- VCO (Tri) -> A-151 (I/O 2)\n- VCO (Sqr) -> A-151 (I/O 3)\n- VCO (Sine) -> A-151 (I/O 4)\n- LFO (Sqr) c> A-151 (Trig. In)\n- A-151 (O/I) -> VCF (In) // timbral cycling"
     },
     {
+      "essential": true,
       "name": "Rotating envelope across 4 voices",
       "patch": "Gate source → O/I · I/O 1–4 → four ADSR gates · each note triggers a different envelope",
       "diagram": "A-151:\n- Keyboard (Gate) g> A-151 (O/I)\n- A-151 (I/O 1) g> ADSR 1 (Gate)\n- A-151 (I/O 2) g> ADSR 2 (Gate)\n- A-151 (I/O 3) g> ADSR 3 (Gate)\n- A-151 (I/O 4) g> ADSR 4 (Gate)\n- Keyboard (Gate) t> A-151 (Trig. In) // advance on each note"

@@ -98,6 +98,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "CV-controlled reverb decay",
       "patch": "Load Reverb Hall Medium, assign CV to Control 2 (Pre-Delay), LFO sweeps the ambience as it breathes.",
       "steps": [
@@ -115,6 +116,7 @@
       "diagram": "FX AID 1U:\n* Program: Reverb Hall Medium\n* CV assign: Control 2 (Pre-Delay)\n* Control 1 (Decay): 2:00 · D/W: 1:00\n\n- Voice (Out) -> FX AID 1U (In L)\n- LFO (Out) >> FX AID 1U (CV)\n- FX AID 1U (Out L) -> Mixer (L)\n- FX AID 1U (Out R) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Clocked delay",
       "patch": "Delay Clock Sync locks delay time to an external clock via the CV input — no knob tweaking to stay in tempo.",
       "steps": [
@@ -132,6 +134,7 @@
       "diagram": "FX AID 1U:\n* Program: Delay Clock Sync\n* CV assign: Control 1 (Clock In)\n* Feedback: 12:00 · Divider: 12:00 · D/W: 12:00\n\n- Voice (Out) -> FX AID 1U (In L)\n- Clock (Out) c> FX AID 1U (CV)\n- FX AID 1U (Out L) -> Output (L)\n- FX AID 1U (Out R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Shimmer pad generator",
       "patch": "Reverb Shimmer Input Dual turns any sustained input into an up+down octave shimmer pad.",
       "steps": [

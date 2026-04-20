@@ -96,6 +96,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Split pitch to three VCOs",
       "patch": "Sequencer pitch CV → 1:3 IN · three OUTs → V/Oct of three VCOs for a detuned unison or stacked intervals · since 1:3 is buffered with 0.1% precision, all three stay in tune after hours without the usual passive-mult sag.",
       "diagram": "Links:\n\nSequencer:\nVCO 1:\nVCO 2:\nVCO 3:\n\n- Sequencer (Pitch) p> Links (1:3 IN)\n- Links (1:3 OUT 1) p> VCO 1 (V/Oct)\n- Links (1:3 OUT 2) p> VCO 2 (V/Oct)\n- Links (1:3 OUT 3) p> VCO 3 (V/Oct)"
@@ -111,11 +112,13 @@
       "diagram": "Links:\n\nVCO 1:\nVCO 2:\nVCO 3:\nFilter:\n\n- VCO 1 (Saw) -> Links (3:1 IN 1)\n- VCO 2 (Saw) -> Links (3:1 IN 2)\n- VCO 3 (Saw) -> Links (3:1 IN 3)\n- Links (3:1 OUT) -> Filter (In) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Modulation averaging",
       "patch": "Three slow LFOs at different rates → 3:1 · output becomes a compound modulation that never repeats · 3:1 OUT → filter cutoff · the averaged CV stays centered (sum of three bipolar sources averages toward zero) unlike a unity summer which accumulates.",
       "diagram": "Links:\n\nLFO 1:\nLFO 2:\nLFO 3:\nFilter:\n\n- LFO 1 (Out) >> Links (3:1 IN 1)\n- LFO 2 (Out) >> Links (3:1 IN 2)\n- LFO 3 (Out) >> Links (3:1 IN 3)\n- Links (3:1 OUT) >> Filter (Cutoff)"
     },
     {
+      "essential": true,
       "name": "Five-way buffered pitch mult",
       "patch": "Sequencer → 1:3 IN · take three buffered copies · route Sequencer also into 2:2 IN A (leave IN B unpatched) · 2:2 gives two more precision copies · total five in-tune pitch CVs from a single Links · use for stacked VCO rig or sending the same pitch to multiple quantizers/shifters.",
       "diagram": "Links:\n\nSequencer:\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\nVCO 5:\n\n- Sequencer (Pitch) p> Links (1:3 IN)\n- Links (1:3 OUT 1) p> VCO 1 (V/Oct)\n- Links (1:3 OUT 2) p> VCO 2 (V/Oct)\n- Links (1:3 OUT 3) p> VCO 3 (V/Oct)\n- Sequencer (Pitch) p> Links (2:2 IN A) // IN B unpatched\n- Links (2:2 OUT A) p> VCO 4 (V/Oct)\n- Links (2:2 OUT B) p> VCO 5 (V/Oct)"

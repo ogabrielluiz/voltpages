@@ -127,16 +127,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic ADSR keyboard voice",
       "patch": "CH 1 = AD · CH 2 = ASR · both triggered by keyboard gate · ENV 2 OR attenuator sets sustain · OR 1+2 → VCA CV · one-knob sustain control with true ADSR shape",
       "diagram": "Quadra:\n* CH 1: AD mode · linear\n* CH 2: ASR mode · linear\n* Expander: ENV 2 OR atten = sustain level\n\nKeyboard:\n\n- Keyboard (Gate) g> Quadra (TRIG 1)\n- Keyboard (Gate) g> Quadra (TRIG 2)\n- Quadra Expander (OR 1+2) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Kick drum (West Coast)",
       "patch": "Sine VCO → VCA 2 · CH 1 AD (fast A, med D) → VCO pitch CV via attenuator (pitch sweep) · CH 2 AD (fast A, slightly shorter D) → VCA CV (amp) · both triggered from sequencer · snappy boomy kick",
       "diagram": "Quadra:\n* CH 1: AD · exp · fast A, medium D\n* CH 2: AD · exp · pitch decay < amp decay\n\nVCO:\n\nVCA:\n\nAttenuator:\n\nSequencer:\n\n- Sequencer (Trig) t> Quadra (TRIG 1)\n- Sequencer (Trig) t> Quadra (TRIG 2)\n- Quadra (ENV 1) >> Attenuator (In)\n- Attenuator (Out) p> VCO (FM)\n- VCO (Sine) -> VCA (In)\n- Quadra (ENV 2) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Quadrature LFO pair",
       "patch": "QUAD 1+2 switch ON · CH 1 + CH 2 in AD mode, short A and D · OR 1+2 → complex looping LFO shape · ENV 1 and ENV 2 individually drive two filter cutoffs for stereo motion that never phases together identically",
       "diagram": "Quadra:\n* CH 1: AD · CH 2: AD\n* Expander: QUAD 1+2 ON\n\n- Quadra (ENV 1) >> Filter L (Cutoff)\n- Quadra (ENV 2) >> Filter R (Cutoff)\n- Quadra Expander (OR 1+2) >> VCA (CV) // complex composite shape"

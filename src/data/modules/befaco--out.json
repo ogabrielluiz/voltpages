@@ -105,11 +105,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Mono jam on a stereo rig",
       "patch": "Final VCA → L IN only · Source MAIN · Phones up · L IN normalizes to R internally so the same signal reaches both balanced outs and both cans · single-cable master-out for mono patches",
       "diagram": "OUT V3:\n* Source: MAIN\n\nVCA:\n\n- VCA (Out) -> OUT V3 (L IN) // L normalizes to R internally\n- OUT V3 (L OUT) -> Output (L)\n- OUT V3 (R OUT) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Stereo reverb send",
       "patch": "Dry mix → OUT L and OUT R inputs · stereo reverb returns mixed upstream · Main Level sets live volume to PA · Phones switch on MAIN to monitor the full stereo image in headphones without extra cables",
       "diagram": "OUT V3:\n* Source: MAIN\n\nMixer:\nReverb:\n\n- Mixer (Out L) -> OUT V3 (L IN)\n- Mixer (Out R) -> OUT V3 (R IN)\n- OUT V3 (L OUT) -> Output (L)\n- OUT V3 (R OUT) -> Output (R)\n- OUT V3 (Phones) -> Headphones (In)"
@@ -125,6 +127,7 @@
       "diagram": "OUT V3:\n* Main Level: 0\n* Phones Level: up\n* Source: MAIN\n\nPatch:\n\n- Patch (Out L) -> OUT V3 (L IN)\n- Patch (Out R) -> OUT V3 (R IN)\n- OUT V3 (Phones) -> Headphones (In) // main outs silent"
     },
     {
+      "essential": true,
       "name": "Clip-free gain staging",
       "patch": "Working mix → L/R IN · push last VCA or mixer output until the L/R clip LEDs just start flashing red on peaks · back off a hair · guarantees the 1/4\" outs hit line-level full-scale without distorting your interface preamp",
       "diagram": "OUT V3:\n* Source: MAIN\n\nMixer:\n\n- Mixer (Out L) -> OUT V3 (L IN) // watch L clip LED\n- Mixer (Out R) -> OUT V3 (R IN) // watch R clip LED\n- OUT V3 (L OUT) -> Interface (L)\n- OUT V3 (R OUT) -> Interface (R)"

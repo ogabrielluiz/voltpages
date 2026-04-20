@@ -141,16 +141,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Six-tempo master divider",
       "patch": "Master clock feeds six voices at different rates: A1=/1 lead, A2=/2 bass, A3=/4 arp, B4=/3 hats, B5=/8 kick, B6=/16 chord change",
       "diagram": "TIME WIZARD:\n* A1=/1 · A2=/2 · A3=/4 · B4=/3 · B5=/8 · B6=/16\n- Master Clock (Out) c> Time Wizard (Clock)\n- Time Wizard (A1) c> Lead Seq (Clock)\n- Time Wizard (A2) c> Bass Seq (Clock)\n- Time Wizard (A3) c> Arp (Clock)\n- Time Wizard (B4) t> Hat (Trig)\n- Time Wizard (B5) t> Kick (Trig)\n- Time Wizard (B6) t> Chord (Change)"
     },
     {
+      "essential": true,
       "name": "Triplet against straight groove",
       "patch": "Multiply A x3 · A column divides the tripled clock for triplet feel · B column divides original clock for straight feel · triplets and straights layered from one master",
       "diagram": "TIME WIZARD:\n* Multiply A: x3 · Clock B: OFF\n- Master (Out) c> Time Wizard (Clock)\n- Time Wizard (A1) c> Triplet Seq (Clock)\n- Time Wizard (A2) t> Triplet Hat (Trig)\n- Time Wizard (B4) c> Straight Seq (Clock)\n- Time Wizard (B5) t> Kick (Trig)\n- Time Wizard (B6) t> Snare (Trig)"
     },
     {
+      "essential": true,
       "name": "Self-resetting bar structure",
       "patch": "B6=/16 with Reset B6 switch = lower position · every 16 clocks B6 fires and resets both columns · locks all outputs to a 16-step bar regardless of tempo changes",
       "diagram": "TIME WIZARD:\n* Reset B6: reset A+B · B6=/16\n- Master (Out) c> Time Wizard (Clock)\n- Time Wizard (A1) c> Bass Seq (Clock)\n- Time Wizard (A2) t> Kick (Trig)\n- Time Wizard (A3) t> Hat (Trig)\n- Time Wizard (B4) t> Snare (Trig)\n- Time Wizard (B5) t> Perc (Trig)"

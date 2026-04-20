@@ -89,16 +89,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "4-voice audio submix",
       "patch": "Four voice outs → Input 1-4 · balance with Level 1-4 · Output → main mixer · compact submix for drum or chord voice group that otherwise eats HP",
       "diagram": "Mix:\n\nDrum 1:\nDrum 2:\nDrum 3:\nDrum 4:\n\n- Drum 1 (Out) -> Mix (Input 1)\n- Drum 2 (Out) -> Mix (Input 2)\n- Drum 3 (Out) -> Mix (Input 3)\n- Drum 4 (Out) -> Mix (Input 4)\n- Mix (Output) -> Main Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Modulation summer",
       "patch": "LFO 1 → Input 1 · LFO 2 → Input 2 · S&H → Input 3 · envelope → Input 4 · Output → filter cutoff · combine four modulation sources with per-source amount on one cutoff — cheaper than a dedicated CV mixer",
       "diagram": "Mix:\n\nLFO 1:\nLFO 2:\nS&H:\nEnvelope:\nFilter:\n\n- LFO 1 (Out) >> Mix (Input 1)\n- LFO 2 (Out) >> Mix (Input 2)\n- S&H (Out) >> Mix (Input 3)\n- Envelope (Out) >> Mix (Input 4)\n- Mix (Output) >> Filter (Cutoff)"
     },
     {
+      "essential": true,
       "name": "Pitch + transpose summer",
       "patch": "Sequencer 1V/oct → Input 1 (Level 1 full CW for accurate tracking) · octave switch (0/+1/+2V) → Input 2 · slow LFO (vibrato) → Input 3 · Output → VCO 1V/oct · transposable sequence with vibrato in a 2HP footprint",
       "diagram": "Mix:\n* Level 1: full CW\n\nSequencer:\nOctave Switch:\nLFO:\nVCO:\n\n- Sequencer (Pitch) p> Mix (Input 1)\n- Octave Switch (Out) p> Mix (Input 2)\n- LFO (Sine) >> Mix (Input 3)\n- Mix (Output) p> VCO (V/Oct)"

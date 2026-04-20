@@ -151,11 +151,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Stereo formant wash",
       "patch": "Pad into IN L and IN R · gentle Q · slowly move FREQ with an LFO · use LOW L and BAND R for a wide, speech-like stereo wash.",
       "diagram": "Serge Stereo VCFQ:\n* FREQ: noon\n* Q: low\n* VC F: gentle\n* VC Q: gentle\n\nPad:\nLFO:\nOutput:\n\n- Pad (Out L) -> Serge Stereo VCFQ (IN L)\n- Pad (Out R) -> Serge Stereo VCFQ (IN R)\n- LFO (Out) >> Serge Stereo VCFQ (FREQ CV)\n- Serge Stereo VCFQ (LOW L) -> Output (L)\n- Serge Stereo VCFQ (BAND R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Pinged resonator",
       "patch": "Set Q high · send short triggers to TRIG IN · use AUX IN for a quiet source or leave it empty · the filter rings as a struck resonator instead of a static EQ.",
       "diagram": "Serge Stereo VCFQ:\n* Q: high\n* FREQ: 1-2 o'clock\n* VC Q: high\n\nTrigger:\nNoise:\nOutput:\n\n- Trigger (Out) t> Serge Stereo VCFQ (TRIG IN)\n- Noise (Out) -> Serge Stereo VCFQ (AUX IN)\n- Serge Stereo VCFQ (BAND L) -> Output (L)\n- Serge Stereo VCFQ (BAND R) -> Output (R)"
@@ -166,6 +168,7 @@
       "diagram": "Serge Stereo VCFQ:\n* Q: full CW\n* FREQ: tuned\n* VC Q: none\n\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Serge Stereo VCFQ (1V/OCT)\n- Serge Stereo VCFQ (HIGH L) -> Serge Stereo VCFQ (IN L)\n- Serge Stereo VCFQ (HIGH R) -> Serge Stereo VCFQ (IN R)\n- Serge Stereo VCFQ (LOW L) -> Output (L)\n- Serge Stereo VCFQ (LOW R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Mono source, stereo band split",
       "patch": "Mono audio into AUX IN · use the band outputs as a stereo splitter for one source · FREQ sets the crossover point while the two sides stay phase-coherent.",
       "diagram": "Serge Stereo VCFQ:\n* FREQ: noon\n* Q: medium\n\nMono Source:\nOutput:\n\n- Mono Source (Out) -> Serge Stereo VCFQ (AUX IN)\n- Serge Stereo VCFQ (BAND L) -> Output (L)\n- Serge Stereo VCFQ (BAND R) -> Output (R)"

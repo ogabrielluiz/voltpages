@@ -130,6 +130,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Melodic sample playback from sequencer",
       "patch": "Set Length to ~40% so each trigger plays a percussive slice · sequencer gate → Play/Rec · sequencer pitch → Pitch · same sample replays at sequencer pitch per step · add second CV output to Sample jack for multi-timbral sequencing across 10 slots",
       "diagram": "Sampler:\n* Length: ~40%\n* Start Pos: 0\n\nSequencer:\n\n- Sequencer (Gate) t> Sampler (Play/Rec)\n- Sequencer (Pitch) p> Sampler (In Pitch)\n- Sequencer (CV 2) >> Sampler (In Sample)\n- Sampler (Left OUT) -> Output (L)\n- Sampler (Right OUT) -> Output (R)"
@@ -160,11 +161,13 @@
       "diagram": "Sampler:\n* Length: ~70%\n* Play: looping\n\nSlow LFO:\n* Period: many bars\n\n- Slow LFO (Out) >> Sampler (In Start Pos.)\n- Sampler (End Out) t> Sampler (Reverse)\n- Sampler (Left OUT) -> Output (L)\n- Sampler (Right OUT) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Clock-synced loop",
       "patch": "Master clock → Play/Rec · hold Play first to enable loop · Length <100% so loop period is shorter than clock interval · sample restarts on every clock tick, resetting any drift · change Pitch freely above 50% Length — loop tempo stays locked to clock",
       "diagram": "Sampler:\n* Length: 60-90%\n* Play: looping (preset)\n\nClock:\n\n- Clock (Out) c> Sampler (Play/Rec)\n- Sampler (Left OUT) -> Output (L)\n- Sampler (Right OUT) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Drum machine from one bank",
       "patch": "Load 10 drum hits into one color bank · Length ~30% for percussive envelope · trigger sequencer gates → Play/Rec · CV per step → Sample (0–5V / 10 steps = 0.5V each) · one module becomes 10-voice drum sampler with per-hit pitch via Pitch CV",
       "diagram": "Sampler:\n* Length: ~30%\n* Start Pos: 0\n\nSequencer:\n\n- Sequencer (Gate) t> Sampler (Play/Rec)\n- Sequencer (CV Sample) >> Sampler (In Sample)\n- Sequencer (CV Pitch) p> Sampler (In Pitch)\n- Sampler (Left OUT) -> Mixer (In)"

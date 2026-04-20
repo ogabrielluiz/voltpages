@@ -235,6 +235,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic 16-band vocoder",
       "patch": "Square-wave VCO into Main In (blue) as carrier · voice microphone into Mod In (grey) · all faders to unity · E.F. Attack fast, E.F. Release medium · All Out delivers the sung carrier · tune the VCO to match voice fundamental.",
       "diagram": "FUMANA:\n* Faders 1-16: unity\n* E.F. Attack: fast\n* E.F. Release: medium\n* Unvoiced In: pink noise\n\n- VCO (Square) -> FUMANA (Main Odd In)\n- Mic Preamp (Out) -> FUMANA (Mod Odd In)\n- Noise (Pink) -> FUMANA (Unvoiced In)\n- FUMANA (All Out) -> Output (In)"
@@ -245,6 +246,7 @@
       "diagram": "FUMANA:\n* Faders 1-16: unity\n\n- VCO 1 (Square) -> FUMANA (Main Odd In)\n- VCO 2 (Triangle) -> FUMANA (Main Even In)\n- Drums (Out) -> FUMANA (Mod Odd In)\n- Voice (Out) -> FUMANA (Mod Even In)\n- FUMANA (Odd Out) -> Mixer (In 1)\n- FUMANA (Even Out) -> Mixer (In 2)"
     },
     {
+      "essential": true,
       "name": "Spectral sidechain ducking",
       "patch": "Drum bus through Main · bassline envelope into Tilt CV · each kick tilts the band distribution upward (attenuates lows) · bass breathes back in during rests · more musical than a broadband sidechain.",
       "diagram": "FUMANA:\n* Tilt CV Attenuverter: ~2 o'clock\n\n- Drum Bus (Out) -> FUMANA (Main Odd In)\n- Kick Envelope (Out) >> FUMANA (Tilt CV)\n- FUMANA (All Out) -> Output (In)"
@@ -270,6 +272,7 @@
       "diagram": "FUMANA:\n* Faders 1-16: unity\n\n- Carrier (Out) -> FUMANA (Main Odd In)\n- FUMANA (Band 10 Out) -> FX (In)\n- FX (Out) -> Mixer (Wet In)\n- FUMANA (All Out) -> Mixer (Dry In)"
     },
     {
+      "essential": true,
       "name": "Spectral freeze with faders",
       "patch": "Patch modulator with brief phrase · set E.F. Release CW (long) · immediately after the phrase, all VCAs stay open at their last-sampled levels · manual fader adjustments freeze a static spectral emphasis derived from the sampled moment.",
       "diagram": "FUMANA:\n* E.F. Attack: fast\n* E.F. Release: very long (CW)\n\n- Voice (Out) -> FUMANA (Mod Odd In)\n- Drone (Out) -> FUMANA (Main Odd In)\n- FUMANA (All Out) -> Output (In)"

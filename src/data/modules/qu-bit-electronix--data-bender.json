@@ -147,6 +147,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Clocked beat mangler",
       "patch": "Macro Mode with an external clock and both Bend and Break active: the drum bus comes out re-timed, occasionally reversed, with vinyl pops — but still locked to the grid.",
       "steps": [
@@ -165,6 +166,7 @@
       "diagram": "Data Bender:\n* Mode: Macro\n* Time: x1 (match input clock)\n* Bend: ~2 o'clock (enabled)\n* Break: ~2 o'clock (enabled)\n* Stereo: Unique\n\nClock:\n\nDrums:\n\n- Clock (Out) c> Data Bender (clock)\n- Drums (L) -> Data Bender (In left)\n- Drums (R) -> Data Bender (In right)\n- Data Bender (Out left) -> Output (L)\n- Data Bender (Out right) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Tape-stop freeze stab",
       "patch": "Micro Mode with Bend below noon (reversed playback) and Freeze set to momentary: each snare trigger freezes the buffer briefly and spits a reversed stutter over the dry signal.",
       "steps": [
@@ -219,6 +221,7 @@
       "diagram": "Data Bender:\n* Clock: External\n* Time: /4\n* Corrupt gate: Reset (SHIFT+Corrupt)\n\nDAW Clock:\n\nBar Trig:\n\nSource:\n\n- DAW Clock (Out) c> Data Bender (clock)\n- Bar Trig (Out) t> Data Bender (corrupt gate) // buffer/clock reset\n- Source (Out) -> Data Bender (In left)\n- Data Bender (Out left) -> Output (L)"
     },
     {
+      "essential": true,
       "name": "Micro scrub instrument",
       "patch": "Micro Mode + Freeze latched + V/oct-style CV into bend CV: the Bend knob becomes a ±3 octave playback-speed control, turning a frozen buffer into a playable sampler.",
       "steps": [

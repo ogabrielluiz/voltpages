@@ -243,11 +243,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Scale-locked arp lead",
       "patch": "NOTE IN takes the melody · PLAY IN advances the upper arpeggio voice · CLK IN locks the rhythm · TIMBRE at noon and RATIO slightly detuned produce a moving but still coherent lead · L/R OUT goes straight to the main output.",
       "diagram": "Citadel Alchemist:\n* MODE: FILTER\n* TIMBRE: noon\n* RATIO: slight detune\n* ENV: medium\n\nSequencer:\nClock:\n\n- Sequencer (Pitch) p> Citadel Alchemist (NOTE IN)\n- Clock (Out) c> Citadel Alchemist (CLK IN)\n- Sequencer (Gate) g> Citadel Alchemist (PLAY IN)\n- Citadel Alchemist (L/R OUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Mode-morph drone",
       "patch": "MODE CV moves between synthesis types · LFO into TIMBRE MOD and ENV MOD keeps the sound alive without constant re-patching · leave PLAY IN untriggered for long-held tones and slow harmonic drift.",
       "diagram": "Citadel Alchemist:\n* MODE: FM\n* ENV: long\n* LFO: synced slow\n\nLFO:\nEnvelope:\n\n- LFO (Out) >> Citadel Alchemist (TIMBRE MOD)\n- Envelope (Out) >> Citadel Alchemist (ENV MOD)\n- Citadel Alchemist (L/R OUT) -> Output (In)"
@@ -263,6 +265,7 @@
       "diagram": "Citadel Alchemist:\n* MODE: FILTER\n* TIMBRE: low\n* ENV: medium\n\nAudio Source:\n\n- Audio Source (L) -> Citadel Alchemist (L/R IN)\n- Audio Source (R) -> Citadel Alchemist (L/R IN)\n- Citadel Alchemist (L/R OUT) -> Output (L)\n- Citadel Alchemist (L/R OUT) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "MIDI bridge voice",
       "patch": "USB-C on the rear bridges a DAW or controller into the module while the front panel stays fully patchable · use the pattern generator to sequence the voice and export the result as stereo audio or CV for the rest of the rack.",
       "diagram": "Citadel Alchemist:\n* MODE: SUPERSAW\n* ENV: medium\n\nComputer:\nOutput:\n\n- Computer (USB MIDI) >> Citadel Alchemist (USB-C)\n- Citadel Alchemist (CV OUT) >> Filter (Cutoff)\n- Citadel Alchemist (L/R OUT) -> Output (In)"

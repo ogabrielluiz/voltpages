@@ -191,6 +191,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic 909 kick",
       "patch": "Mode: Liquid · B/A/T: Bass · Pitch 9 o'clock · Decay 2 o'clock · Attack noon · Morph 10 o'clock (tri-ish) · Harm 10 o'clock · Fold 10 o'clock · Spread full CCW · clock triggers Trig · Liquid pitch envelope delivers the 909 bloom without external envelope · tighten by lowering Decay",
       "diagram": "Basimilus Iteritas Alter:\n* Mode: Liquid · Range: Bass\n* Pitch: 9 o'clock · Decay: 2 o'clock · Harm: 10 o'clock · Morph: 10 o'clock · Fold: 10 o'clock · Spread: full CCW\n\nClock:\n\n- Clock (Out) t> Basimilus Iteritas Alter (Trig)\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
@@ -211,6 +212,7 @@
       "diagram": "Basimilus Iteritas Alter:\n* Pitch: noon · Decay: 1 o'clock · Attack: 11 o'clock · Harm: 11 o'clock · Fold: noon · Spread: 1 o'clock\n\nS&H:\nClock:\n\n- Clock (Out) t> S&H (Trig)\n- S&H (Out) >> Basimilus Iteritas Alter (S/L/M)\n- Clock (Out) t> Basimilus Iteritas Alter (Trig)\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Pitched melodic voice",
       "patch": "Mode: Skin · B/A/T: Alto · quantized sequencer → Pitch 1V/oct · Decay full CW (drone) · Attack 1 o'clock (slow) · Harm 11 o'clock · Fold 10 o'clock · Morph 9 o'clock (sine-ish) · Spread full CCW (strict harmonic) · held trigger (or loop gate) · plays as a 6-partial additive synth voice for melodic material",
       "diagram": "Basimilus Iteritas Alter:\n* Mode: Skin · Range: Alto\n* Decay: full CW · Attack: 1 o'clock · Harm: 11 o'clock · Fold: 10 o'clock · Morph: 9 o'clock · Spread: full CCW\n\nSequencer:\nGate Source:\n\n- Sequencer (Pitch) p> Basimilus Iteritas Alter (Pitch)\n- Gate Source (Out) g> Basimilus Iteritas Alter (Trig) // sustained gate\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
@@ -226,6 +228,7 @@
       "diagram": "Basimilus Iteritas Alter:\n* Mode: Metal · Range: Treble\n* Pitch: 2 o'clock · Decay: 9 o'clock · Attack: full CCW · Harm: 3 o'clock · Fold: 2 o'clock · Spread: 1 o'clock\n\nEuclidean:\nGate Seq:\n\n- Euclidean (Out) t> Basimilus Iteritas Alter (Trig)\n- Gate Seq (Out) >> Basimilus Iteritas Alter (Decay) // open/closed HH\n- Basimilus Iteritas Alter (Out) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "FM bass with morph sweep",
       "patch": "Mode: Metal · B/A/T: Bass · Pitch 8 o'clock · Decay full CW · Attack noon · Harm 11 o'clock · Fold 9 o'clock · slow sine LFO → Morph CV (full swing) · sustained gate into Trig · pitched 1V/oct sequencer · drone-bass voice with a slowly morphing FM character · works as a reese-style bass for techno",
       "diagram": "Basimilus Iteritas Alter:\n* Mode: Metal · Range: Bass\n* Decay: full CW · Attack: noon · Harm: 11 o'clock · Fold: 9 o'clock\n\nSequencer:\nLFO:\n\n- Sequencer (Pitch) p> Basimilus Iteritas Alter (Pitch)\n- Sequencer (Gate) g> Basimilus Iteritas Alter (Trig) // sustain\n- LFO (Sine) >> Basimilus Iteritas Alter (Morph) // slow full-swing sweep\n- Basimilus Iteritas Alter (Out) -> VCF (In)\n- VCF (Out) -> Mixer (In)"

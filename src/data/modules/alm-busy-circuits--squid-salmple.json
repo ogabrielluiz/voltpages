@@ -236,6 +236,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Auto-sliced break beat",
       "patch": "Record a breakbeat to Ch 1 · Func+Cues → Auto (transient detection) generates cue sets per hit · CV Assign 1 to active cue set · random or stepped CV into CV 1 sweeps through slices on each trigger · drums chopped without a computer",
       "diagram": "Squid Salmple:\n* CH 1: Breakbeat loaded · Cue Sets: Auto\n* CV 1 → Active Cue Set\n\nClock:\n\nRandom:\n\n- Clock (Out) t> Squid Salmple (Trigger 1) // fire slice\n- Random (Out) >> Squid Salmple (CV 1) // pick slice\n- Squid Salmple (1+2 Out) -> Output (In)"
@@ -271,11 +272,13 @@
       "diagram": "Squid Salmple:\n* CH 1: Loop=GATE · tight loop window · Bits=8 · Filter=LP\n\nGate Source:\n\n- Gate Source (Out) g> Squid Salmple (Trigger 1) // sustain\n- Squid Salmple (1+2 Out) -> Reverb (In) // granular pad"
     },
     {
+      "essential": true,
       "name": "Choke group hi-hat pair",
       "patch": "CH 1 closed hat · CH 2 open hat · CH 2 Choke=1 (open chokes on closed hit) · Pam or clock triggers → Trigger 1 and Trigger 2 · classic drum machine behaviour where a closed hat kills any decaying open hat",
       "diagram": "Squid Salmple:\n* CH 1: Closed hat\n* CH 2: Open hat, Choke=1\n\nClock:\n\n- Clock (OUT 1) t> Squid Salmple (Trigger 1) // closed on\n- Clock (OUT 2) t> Squid Salmple (Trigger 2) // open on off-beats\n- Squid Salmple (Mix Out) -> Output (In) // closed kills open"
     },
     {
+      "essential": true,
       "name": "Reverse glitch stutter",
       "patch": "CH 1 long vocal sample · Reverse assigned to CV 1 (hold Reverse + Assign 1) · square LFO → CV 1 · playback flips forward/reverse at LFO rate · combine with short loop for stuttering glitch texture · excellent over breaks or pads",
       "diagram": "Squid Salmple:\n* CH 1: Vocal · Loop=zig-zag · Reverse→CV 1\n\nLFO:\n\nClock:\n\n- LFO (Square) >> Squid Salmple (CV 1) // flip direction\n- Clock (Out) t> Squid Salmple (Trigger 1)\n- Squid Salmple (1+2 Out) -> Delay (In) // glitch chop"

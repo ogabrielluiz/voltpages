@@ -170,6 +170,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Vocal formant sweep",
       "patch": "BB mode with two peaks tuned to formant ratios; a slow LFO scans FREQ for a vowel sweep, BALANCE CV opens consonant emphasis.",
       "steps": [
@@ -188,6 +189,7 @@
       "diagram": "Belgrad:\n* MODE: BB\n* RESO: 7\n* SPAN: 3\n\n- VCO (Out) -> Belgrad (INPUT)\n- LFO (Out) >> Belgrad (FM) // vowel scan\n- Envelope (Out) >> Belgrad (BALANCE) // consonant morph\n- Belgrad (OUTPUT) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Dual sine VCO from self-oscillation",
       "patch": "No INPUT. RESO past self-osc gives two sine VCOs; SPAN sets the interval, BALANCE crossfades between them, V/OCT tracks pitch.",
       "steps": [
@@ -223,6 +225,7 @@
       "diagram": "Belgrad:\n* MODE: HH\n* TITO: XM\n* RESO: 8.5\n* SPAN: ~3 (moderate)\n\n- Keyboard (CV) p> Belgrad (V/OCT)\n- Envelope (Out) >> Belgrad (SPAN) // timbre opens\n- LFO (Out) >> Belgrad (BALANCE)\n- Belgrad (OUTPUT) -> VCA (In)"
     },
     {
+      "essential": true,
       "name": "Pingable highpass kick",
       "patch": "HH mode just below self-osc — triggers into FM ping the highpass peak, V/OCT sets the pitch of the zap.",
       "steps": [

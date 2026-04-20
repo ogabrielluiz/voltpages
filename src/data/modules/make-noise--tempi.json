@@ -108,16 +108,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Polyrhythmic percussion loop",
       "patch": "Master clock → Leading Tempo · CH 1 set 1/1 (gate main kick) · CH 2 Machine-programmed to ×3 (hi-hats in triplet) · CH 3 ÷2 (snare on 2nd half), CH 4 ÷3 (perc accent) · CH 5 Fibonacci State (Bank A State 7) · state select via knob auditions presets live · instant polyrhythm bed.",
       "diagram": "TEMPI:\n* CH 1: ×1\n* CH 2: ×3\n* CH 3: ÷2\n* CH 4: ÷3\n\n- Master Clock (Clk) c> TEMPI (Leading Tempo)\n- TEMPI (CH 1 Out) c> Kick (Trig)\n- TEMPI (CH 2 Out) c> HiHat (Trig)\n- TEMPI (CH 3 Out) c> Snare (Trig)\n- TEMPI (CH 4 Out) c> Perc (Trig)"
     },
     {
+      "essential": true,
       "name": "CV-scanned State sequencer",
       "patch": "Master clock → Leading Tempo · slow LFO or Pressure Points CV → State Select CV (combo pot ~50%) · TEMPI walks through States in current Bank as CV sweeps · each State is a different rhythmic feel · ideal for song-section morphing without touching the module.",
       "diagram": "TEMPI:\n* States 1-8: programmed feels\n\n- Master Clock (Clk) c> TEMPI (Leading Tempo)\n- LFO (Out) >> TEMPI (State Select CV)\n- TEMPI (CH 1 Out) c> Destination A (Clk)\n- TEMPI (CH 2 Out) c> Destination B (Clk)"
     },
     {
+      "essential": true,
       "name": "Shift variations live",
       "patch": "Program 3 channels for related rhythm · enter Program Edit and enable Shift (Button 4 red) · Mod-enable those 3 channels (purple) · rhythmic gate → Mod Gate · each Mod pulse rotates clock values between the 3 channels producing live rhythmic variations that return on State change. Button 4 purple = Random shift (RODENT mode).",
       "diagram": "TEMPI:\n* CH 2, 3, 5: Mod-enabled (purple)\n* Shift: CW (red)\n\n- Master Clock (Clk) c> TEMPI (Leading Tempo)\n- Variation Gate (Gate) g> TEMPI (Mod Gate) // each pulse rotates rhythms\n- TEMPI (CH 2 Out) c> Voice A (Trig)\n- TEMPI (CH 3 Out) c> Voice B (Trig)\n- TEMPI (CH 5 Out) c> Voice C (Trig)"

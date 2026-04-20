@@ -260,11 +260,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Acid 303 bassline",
       "patch": "MODE=Frd · SCALE=Minor · slides on stages 2, 5, 7 · PULSE COUNT mostly 1, one stage at 2 for a tied note · GATE MODE mostly SINGLE · one REST · short GATE TIME · quick SLIDE TIME · route PITCH to VCO, GATE to envelope, envelope to resonant LPF · signature acid squelch",
       "diagram": "Metropolis:\n* MODE=Frd · SCALE=Minor · SLIDE on S2,S5,S7\n* PULSE mostly 1 · one REST · GATE=SINGLE\n\n- Metropolis (PITCH) p> VCO (V/Oct)\n- Metropolis (GATE) g> Envelope (Trig)\n- VCO (Out) -> LPF (In)\n- Envelope (Out) >> LPF (Cutoff)\n- Envelope (Out) >> VCA (CV)\n- LPF (Out) -> VCA (In) // 303 acid slide bass"
     },
     {
+      "essential": true,
       "name": "Polyrhythmic ratchet snare fill",
       "patch": "Main voice uses PITCH+GATE · separate ratchet snare driven by AUX A assigned to rATch · program ratchets 4 on stages 4 and 8 · snare trigger comes from GATE · each 4th/8th stage becomes a 4-gate machine-gun roll while the pitch line continues normally",
       "diagram": "Metropolis:\n* Ratchet=4 on S4,S8 · AUX A=rATch\n\n- Metropolis (PITCH) p> VCO (V/Oct)\n- Metropolis (GATE) t> Snare (Trig)\n- Metropolis (GATE) g> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV) // machine-gun fills S4/S8"
@@ -290,6 +292,7 @@
       "diagram": "Metropolis #1:\n* SYnL · AUX A=rooT\nMetropolis #2:\n* EXT CLK · 4 stages FRD\n\n- Metropolis #1 (SYNC) c> Metropolis #2 (CLK)\n- Metropolis #2 (PITCH) p> Metropolis #1 (AUX A)\n- Metropolis #1 (PITCH) p> VCO (V/Oct)\n- Metropolis #1 (GATE) g> Envelope (Trig) // song-form chord progression"
     },
     {
+      "essential": true,
       "name": "Swing-heavy trap hat",
       "patch": "SWING=68 (30% shuffle) · all stages PULSE=2 GATE=REPEAT STEP/DIV=STEP1 · some stages ratchet=3 for rolls · GATE to hi-hat trigger · classic trap hat syncopation with human-feel swing",
       "diagram": "Metropolis:\n* SWING=68 · PULSE=2 · REPEAT STEP1\n* Ratchet 3 on S3,S7\n\n- Metropolis (GATE) t> Hi-Hat (Trig)\n- Metropolis (PITCH) >> Filter (Cutoff) // pitch CV modulates hat tuning"

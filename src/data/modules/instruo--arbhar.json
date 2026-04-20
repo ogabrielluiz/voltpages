@@ -227,6 +227,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Frozen cloud",
       "patch": "Capture a slow pad into layer alpha, then play it back as a stable granular cloud with stereo spread.",
       "steps": [
@@ -293,6 +294,7 @@
       "diagram": "arbhar:\n* Layer: alpha\n* Dub: just past noon\n* Intensity: ~10 o'clock\n* Length: ~2 o'clock\n\nVCO:\nOutput:\n\n- VCO (Saw) -> arbhar (Input)\n- arbhar (Output 1) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Strike percussion accents",
       "patch": "Fire one short pitched grain per sequencer step with the strike engine, sitting on top of a dry rhythm.",
       "steps": [
@@ -326,6 +328,7 @@
       "diagram": "arbhar:\n* Input: (unpatched - mic active)\n* Layer: alpha\n* Length: ~12 o'clock\n* Dry/Wet: full CW\n\nMixer:\n\n- (panel mic) -> arbhar (Input - normalised)\n- arbhar (Output 1) -> Mixer (L)\n- arbhar (Output 2) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "1V/oct melodic granular voice",
       "patch": "Capture a held tone, then play arbhar as a pitched instrument tracked by a sequencer's 1V/oct.",
       "steps": [

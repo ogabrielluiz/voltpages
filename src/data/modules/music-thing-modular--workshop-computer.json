@@ -152,11 +152,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Turing Machine bassline",
       "patch": "Load the Turing Machine card · tap a clock or feed one in · use the CV lane for pitch and the pulse lane for drum accents · one module becomes a repeatable random sequencer.",
       "diagram": "Workshop Computer:\n* Card: Turing Machine\n* Mode switch: default\n\nClock:\nQuantizer:\nVCO:\nEnvelope:\nVCA:\nKick:\nOutput:\n\n- Clock (Out) c> Workshop Computer (Pulse In 2)\n- Workshop Computer (Pulse Out 1) t> Kick (Trig)\n- Workshop Computer (Precision CV Out 2) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Workshop Computer (Pulse Out 2) t> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Reverb freeze wash",
       "patch": "Load Reverb+ · feed stereo audio into the top row · freeze with a pulse into the freeze input · modulate decay and wet mix from slow CV for evolving frozen pads.",
       "diagram": "Workshop Computer:\n* Card: Reverb+\n* Main knob: wet/dry\n* Knob X: decay\n* Knob Y: tone\n\nPad:\nLFO:\nClock:\nMixer:\n\n- Pad (Out L) -> Workshop Computer (Audio/CV In 1)\n- Pad (Out R) -> Workshop Computer (Audio/CV In 2)\n- LFO (Out) >> Workshop Computer (Precision CV In 1)\n- LFO (Out) >> Workshop Computer (Precision CV In 2)\n- Clock (Out) g> Workshop Computer (Pulse In 1) // freeze\n- Workshop Computer (Audio/CV Out 1) -> Mixer (In L)\n- Workshop Computer (Audio/CV Out 2) -> Mixer (In R)"
@@ -167,6 +169,7 @@
       "diagram": "Workshop Computer:\n* Card: Simple MIDI\n\nMIDI Controller:\nQuantizer:\nVCO:\nEnvelope:\nDrum:\nOutput:\n\n- MIDI Controller (Note) -> Workshop Computer (Audio/CV In 1)\n- MIDI Controller (Gate) -> Workshop Computer (Pulse In 1)\n- Workshop Computer (Precision CV Out 1) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Workshop Computer (Pulse Out 1) t> Envelope (Trig)\n- Workshop Computer (Pulse Out 2) t> Drum (Trig)\n- VCO (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Toolbox utility card",
       "patch": "Load a utility program card from the library · use the computer as a small source bank for clock, noise, and sample-and-hold duties · fold it into a bigger modular patch.",
       "diagram": "Workshop Computer:\n* Card: Toolbox\n\nFilter:\nVCA:\nClock:\nNoise:\nEnvelope:\nOutput:\n\n- Workshop Computer (Pulse Out 1) c> Clock (In)\n- Workshop Computer (Audio/CV Out 1) -> Noise (In)\n- Workshop Computer (Audio/CV Out 2) -> VCA (In)\n- Workshop Computer (Precision CV Out 1) >> Filter (Cutoff)\n- Workshop Computer (Pulse Out 2) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"

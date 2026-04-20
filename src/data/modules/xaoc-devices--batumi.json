@@ -145,6 +145,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Quadrature stereo modulation",
       "patch": "QUAD mode · SINE 1 and SINE 3 (180° apart) sweep stereo filter cutoffs; SINE 2 and SINE 4 modulate L/R VCAs.",
       "steps": [
@@ -161,6 +162,7 @@
       "diagram": "Batumi:\n* Mode: QUAD\n* Slider 1: slow\n\n- Batumi (SINE 1) >> Filter L (Cutoff)\n- Batumi (SINE 3) >> Filter R (Cutoff) // 180° phase\n- Batumi (SINE 2) >> VCA L (CV)\n- Batumi (SINE 4) >> VCA R (CV)"
     },
     {
+      "essential": true,
       "name": "Clocked polyrhythm LFO",
       "patch": "DIVIDE mode locked to an external clock; SQUARE 2/3/4 fire polyrhythmic triggers, SINE 1 modulates a filter at the master rate.",
       "steps": [
@@ -193,6 +195,7 @@
       "diagram": "Batumi:\n* Mode: PHASE\n* Slider 2: 90°\n* Slider 3: 180°\n\n- Batumi (SINE 2) >> Batumi (FRQ·PH·DIV 3) // self-patch phase mod\n- Batumi (SINE 3) >> VCA (CV)\n- Batumi (SINE 4) >> Filter (Cutoff)"
     },
     {
+      "essential": true,
       "name": "V/oct LFO pitch tracking",
       "patch": "FREE mode · keyboard V/oct into FRQ 1 lets CH 1 track pitch up to ~500 Hz — use as a tracked vibrato source or a tracked audio-rate FM modulator.",
       "steps": [

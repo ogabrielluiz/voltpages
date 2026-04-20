@@ -124,11 +124,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Euclidean drum bed",
       "patch": "OUT 1 E(3,16) → kick · OUT 2 E(5,16) ERot=2 → snare · OUT 3 E(7,16) ERot=5 → hat · three primes produce a 16-step groove that never loops identically within a phrase · classic Euclidean rhythm generator",
       "diagram": "Pamela's NEW Workout:\n* OUT 1: Gate x1, EStep=16 ETrig=3\n* OUT 2: Gate x1, EStep=16 ETrig=5 ERot=2\n* OUT 3: Gate x1, EStep=16 ETrig=7 ERot=5\n\n- Pamela's NEW Workout (OUT 1) t> Kick (Trig)\n- Pamela's NEW Workout (OUT 2) t> Snare (Trig)\n- Pamela's NEW Workout (OUT 3) t> Hat (Trig)"
     },
     {
+      "essential": true,
       "name": "Quantised random melody",
       "patch": "OUT 1 Random wave · /4 · Quant=Pentatonic Minor · Level=100% → VCO V/oct · OUT 2 Gate /4 → envelope · new pitch on every beat, always in scale · loop=8 creates a recallable 8-beat melody",
       "diagram": "Pamela's NEW Workout:\n* OUT 1: Random wave, /4, Quant=Pm, Loop=8\n* OUT 2: Gate /4\n\n- Pamela's NEW Workout (OUT 1) p> VCO (V/oct) // scale-locked random melody\n- Pamela's NEW Workout (OUT 2) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
@@ -149,6 +151,7 @@
       "diagram": "Pamela's NEW Workout:\n* Clock sub-menu: PPQN=24, Run=Y\n* OUT 1: Gate /4\n* OUT 2: Triangle /1\n\nExt DIN Sync:\n\n- Ext DIN Sync (Clock) c> Pamela's NEW Workout (Clk)\n- Ext DIN Sync (Run) g> Pamela's NEW Workout (Run) // slave sync\n- Pamela's NEW Workout (OUT 1) t> Drum (Trig)\n- Pamela's NEW Workout (OUT 2) >> Filter (Cutoff)"
     },
     {
+      "essential": true,
       "name": "Humanised hi-hat via Slop",
       "patch": "OUT 1 Gate /16 EStep=16 ETrig=12 · Slop=15% · each hit drifts slightly in time · repetitive pattern stops feeling robotic · raise to 30% for drunk-drummer feel",
       "diagram": "Pamela's NEW Workout:\n* OUT 1: Gate /16, EStep=16 ETrig=12, Slop=15%\n\n- Pamela's NEW Workout (OUT 1) t> Hi-Hat (Trig) // humanised timing"

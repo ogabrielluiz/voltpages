@@ -172,16 +172,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Clock-synced dotted-eighth dub delay",
       "patch": "Clock into SYNC · tap-tempo red · T3 TIME dial at 3:2 factor · FBCK ~6 · TONE slightly down for dub darkness · vocal into INPUT · MIXED OUT to mixer",
       "diagram": "Sarajewo:\n* TIME factor: 3:2\n* FBCK: 6\n* TONE: -2\n* EFFECT: 6\n\n- ClockSrc (Out) c> Sarajewo (SYNC)\n- Voice (Out) -> Sarajewo (INPUT)\n- Sarajewo (MIXED OUTPUT) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Tape-style pitch-bend dives",
       "patch": "Free mode · slow envelope or CV slew into TIME CV · delay dips while the bass plays · BBD OFF-RANGE will briefly flash if you push past ¼",
       "diagram": "Sarajewo:\n* Mode: FREE\n* T3 TIME: 600ms\n* FBCK: 5\n\n- Bass (Out) -> Sarajewo (INPUT)\n- Slew Env (Out) >> Sarajewo (TIME CV)\n- Sarajewo (MIXED OUTPUT) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Chorus/flange via T1 and audio-rate time FM",
       "patch": "T3 TIME at ~80ms giving T1 ~27ms · small LFO ±1V into TIME CV · use T1 output directly · mix dry externally for classic chorus",
       "diagram": "Sarajewo:\n* Mode: FREE\n* T3 TIME: 80ms\n* FBCK: 2\n\n- Pad (Out) -> Sarajewo (INPUT)\n- LFO (Sine, slow) >> Sarajewo (TIME CV) // small depth\n- Sarajewo (T1) -> Mixer (ChA)\n- Pad (Out) -> Mixer (ChB) // dry"

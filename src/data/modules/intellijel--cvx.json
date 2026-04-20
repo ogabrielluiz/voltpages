@@ -103,6 +103,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "4-voice polyphonic MIDI synth",
       "patch": "Assign Outs 1–4 as Pitch and Outs 5–8 as Gate of a single Poly synth to get 4-voice MIDI polyphony into four VCO voices.",
       "steps": [
@@ -119,6 +120,7 @@
       "diagram": "CVx:\n* Out 1-4 = Pitch (Poly Synth 3) · Out 5-8 = Gate (Poly Synth 3)\n\n- CVx (Out 1) p> VCO A (V/Oct)\n- CVx (Out 2) p> VCO B (V/Oct)\n- CVx (Out 3) p> VCO C (V/Oct)\n- CVx (Out 4) p> VCO D (V/Oct)\n- CVx (Out 5) g> EG A (Trig)\n- CVx (Out 6) g> EG B (Trig)\n- CVx (Out 7) g> EG C (Trig)\n- CVx (Out 8) g> EG D (Trig) // 4-voice MIDI polyphony"
     },
     {
+      "essential": true,
       "name": "Paraphonic chord with Gate (Any)",
       "patch": "Four pitch outs share a single envelope via Gate (Any) on Out 5 — cheap paraphonic chords through one VCA.",
       "steps": [
@@ -134,6 +136,7 @@
       "diagram": "CVx:\n* Out 1-4 = Pitch (Poly Synth 4) · Out 5 = Gate (Any)\n\n- CVx (Out 1) p> VCO 1 (V/Oct)\n- CVx (Out 2) p> VCO 2 (V/Oct)\n- CVx (Out 3) p> VCO 3 (V/Oct)\n- CVx (Out 4) p> VCO 4 (V/Oct)\n- VCO 1-4 (Out) -> Mixer (In) -> VCA (In)\n- CVx (Out 5) g> EG (Trig)\n- EG (Out) >> VCA (CV) // shared paraphonic envelope"
     },
     {
+      "essential": true,
       "name": "MIDI drum bus",
       "patch": "Map 8 MIDI note numbers to 8 trigger outs for a drum rack driving individual sample modules.",
       "steps": [

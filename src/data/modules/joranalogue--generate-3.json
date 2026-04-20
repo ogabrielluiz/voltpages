@@ -212,6 +212,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Through-zero FM lead",
       "patch": "Audio range. Sequencer pitch into V/OCT. LFO into TZ FM with Bias off for true through-zero FM. Mix Fundamental and Odd at Full Output for a thin, pitch-stable lead that stays in tune under deep modulation.",
       "diagram": "Generate 3:\n* Range: AUDIO\n* Bias: off\n* AC: off\n* TZ FM: ~2 o'clock\n* Fundamental: noon (max)\n* Even: off (centre)\n* Odd: ~2 o'clock\n\nSequencer:\nLFO:\nEnvelope:\nVCA:\nOutput:\n\n- Sequencer (Pitch) p> Generate 3 (V/OCT)\n- LFO (Out) >> Generate 3 (TZ FM)\n- Generate 3 (Full Output) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)",
@@ -229,6 +230,7 @@
       "hear": "A thin, edgy FM tone with bell-like overtones at higher depths. Because the core flips direction at zero crossings the pitch does not drift sharp like with ordinary linear FM."
     },
     {
+      "essential": true,
       "name": "Additive organ",
       "patch": "Audio range. Balance all three harmonic channels at the Full Output for a stacked, organ-like tone. A gentle exponential FM adds movement; Core Output reinforces the sub-octave.",
       "diagram": "Generate 3:\n* Range: AUDIO\n* Fundamental: ~1 o'clock\n* Even: noon-plus (~1 o'clock)\n* Odd: ~1 o'clock\n* Exp FM: small positive\n\nSequencer:\nSlow LFO:\nMixer:\nOutput:\n\n- Sequencer (Pitch) p> Generate 3 (V/OCT)\n- Slow LFO (Out) >> Generate 3 (EXP FM)\n- Generate 3 (Fundamental Output) -> Mixer (In 1)\n- Generate 3 (Even Output) -> Mixer (In 2)\n- Generate 3 (Odd Output) -> Mixer (In 3)\n- Generate 3 (Core Output) -> Mixer (In 4)\n- Mixer (Out) -> Output (In)"
@@ -263,6 +265,7 @@
       "hear": "A wide, shifting wash. With Odd low it feels vowel-like; pushing the LFO harder brings an FM-style warble even though no FM is happening."
     },
     {
+      "essential": true,
       "name": "Hard-sync lead",
       "patch": "Audio range. Sequencer sets the master pitch on V/OCT; a second VCO fires RESET for hard-sync bite. FLIP stays free for softer layering. Phase knob sculpts the sync edge.",
       "diagram": "Generate 3:\n* Range: AUDIO\n* Bias: off\n* AC: on\n* Fundamental: ~2 o'clock\n* Even: low\n* Odd: ~1 o'clock\n* Phase knob: noon\n\nSequencer:\nSync VCO:\nEnvelope:\nVCA:\nOutput:\n\n- Sequencer (Pitch) p> Generate 3 (V/OCT)\n- Sync VCO (Out) t> Generate 3 (RESET)\n- Generate 3 (Full Output) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)",

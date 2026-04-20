@@ -150,6 +150,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Karplus pluck via Rescomb",
       "patch": "Short noise bursts fed into Rescomb with a sequenced CUTOFF CV — each burst excites the resonant comb line at the sequenced pitch, yielding plucky string tones.",
       "steps": [
@@ -186,6 +187,7 @@
       "diagram": "Freak:\n* Mode: Dual\n* Mod Route: Inverse\n* Filter: Vortex / LP\n\nLFO:\n\nPad:\n\n- Pad (Out L) -> Freak (IN L)\n- Pad (Out R) -> Freak (IN R)\n- LFO (Out) >> Freak (A CV) // A-B → L · B-A → R\n- Freak (OUT L) -> Mixer (In L)\n- Freak (OUT R) -> Mixer (In R)"
     },
     {
+      "essential": true,
       "name": "Polivoks acid squelch",
       "patch": "Classic Polivoks-style acid line: saw VCO into Vortex LP with high resonance, short envelope squelching the cutoff per note.",
       "steps": [
@@ -204,6 +206,7 @@
       "diagram": "Freak:\n* Filter: Vortex / LP\n* Resonance: ~3 o'clock\n* Drive: ~1 o'clock\n* Cutoff att: ~2 o'clock\n\nVCO:\n\nEnv:\n\nSequencer:\n\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) g> Env (Trig)\n- VCO (Saw) -> Freak (IN L)\n- Env (Out) >> Freak (CUTOFF CV)\n- Freak (OUT L) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Self-oscillating sine voice",
       "patch": "No input — Lateralus LP24 at max resonance self-oscillates as a clean sine VCO that tracks 1V/Oct via CUTOFF CV.",
       "steps": [

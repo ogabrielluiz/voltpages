@@ -92,6 +92,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Full ADSR + mixer on one P10",
       "patch": "P1.1 attack, P1.2 decay, P1.3 sustain, P1.4 release on a contour · P1.5–P1.8 four mixer inputs with per-input attenuation done in the expression (input1 = I2 * P1.5 etc., since the mixer circuit has no separate level jacks) · two large pots stay free for live performance (filter + VCA or similar).",
       "diagram": "DROID:\n* contour: gate=I1, attack=P1.1, decay=P1.2, sustain=P1.3, release=P1.4, output=O1\n* mixer: input1=I2 * P1.5, input2=I3 * P1.6, input3=I4 * P1.7, input4=I5 * P1.8, output=O2\n\nP10:\n\n- Gate Source (Out) g> DROID (I1)\n- DROID (O1) >> VCA (CV)\n- DROID (O2) >> Output (In)"
@@ -102,6 +103,7 @@
       "diagram": "DROID:\n* minifonion: input=I1, root=P1.1 * 12, degree=P1.2 * 11, select1=P1.3, select3=P1.4, select5=P1.5, select7=P1.6, select9=P1.7, select11=P1.8, select13=P1.9, transpose=P1.10, output=O1\n\nP10:\n\n- Sequencer (CV) p> DROID (I1)\n- DROID (O1) p> VCO (V/Oct)"
     },
     {
+      "essential": true,
       "name": "Eight-step sequencer",
       "patch": "sequencer circuit with pitch1..pitch8 tied to P1.1..P1.8 · clock on I1 · P1.9 * 8 scaled into stages to set active length (1–8 steps) · P1.10 routed to gatelength for variable gate shape · pitchoutput on O1 to VCO, gateoutput on O2 to envelope · pots directly set step voltages (not quantized — add a minifonion after O1 if you want musical pitches).",
       "diagram": "DROID:\n* sequencer: clock=I1, pitch1=P1.1, pitch2=P1.2, pitch3=P1.3, pitch4=P1.4, pitch5=P1.5, pitch6=P1.6, pitch7=P1.7, pitch8=P1.8, stages=P1.9 * 8, gatelength=P1.10, pitchoutput=O1, gateoutput=O2\n\nP10:\n\n- Clock (Out) c> DROID (I1)\n- DROID (O1) p> VCO (V/Oct)\n- DROID (O2) g> VCA Env (Gate)"
@@ -112,6 +114,7 @@
       "diagram": "DROID:\n* buttongroup: button1=B2.1, button2=B2.2, led1=L2.1, led2=L2.2\n* pot: pot=P1.1, select=L2.1, output=_A1\n* pot: pot=P1.1, select=L2.2, output=_A2\n* algoquencer: clock=I1, activity=_A1, trigger=O1\n* algoquencer: clock=I1, activity=_A2, trigger=O2\n\nP10:\n\nP2B8:\n\n- Clock (Out) c> DROID (I1)\n- DROID (O1) t> Drum 1 (Trig)\n- DROID (O2) t> Drum 2 (Trig)"
     },
     {
+      "essential": true,
       "name": "Live modulation matrix",
       "patch": "Ten independent LFOs, one per pot · each pot sets the rate of its lfo · outputs summed pairwise into mixers · sends modulation to O1..O5 · P10 becomes a live modulation console where each knob sweeps an LFO rate from slow drift to audio-rate · perfect for drones, generative textures.",
       "diagram": "DROID:\n* lfo: hz=P1.1, sine=O1\n* lfo: hz=P1.2, sine=O2\n* lfo: hz=P1.3, triangle=O3\n* lfo: hz=P1.4, triangle=O4\n* lfo: hz=P1.5, square=O5\n\nP10:\n\nFilter:\n\nVCA:\n\nPan:\n\nFX:\n\nDrone:\n\n- DROID (O1) >> Filter (Cutoff)\n- DROID (O2) >> VCA (CV)\n- DROID (O3) >> Pan (CV)\n- DROID (O4) >> FX (Time)\n- DROID (O5) >> Drone (PWM)"

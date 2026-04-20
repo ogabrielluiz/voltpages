@@ -179,11 +179,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Stereo drum desk",
       "patch": "kick and snare on channel 1 and 2 · hats on 3 · percussion on 4 · bus A goes dry · bus B gets reverb return · the mixer keeps the kit wide without sacrificing level control.",
       "diagram": "Xcelon:\n* Ch 1: drum 1\n* Ch 2: drum 2\n* Ch 3: drum 3\n* Ch 4: drum 4\n\nDrum 1:\nDrum 2:\nDrum 3:\nDrum 4:\nReverb:\nOutput:\n\n- Drum 1 (Out) -> Xcelon (INPUT 1 L)\n- Drum 2 (Out) -> Xcelon (INPUT 2 L)\n- Drum 3 (Out) -> Xcelon (INPUT 3 L)\n- Drum 4 (Out) -> Xcelon (INPUT 4 L)\n- Xcelon (FX SEND 1 L) -> Reverb (In)\n- Xcelon (FX SEND 1 R) -> Reverb (In)\n- Reverb (Out L) -> Xcelon (FX RETURN 1 L)\n- Reverb (Out R) -> Xcelon (FX RETURN 1 R)\n- Xcelon (MIX OUT A L) -> Output (L)\n- Xcelon (MIX OUT A R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Wet send rack",
       "patch": "synth voice into channel 5 · FX1 to delay · FX2 to reverb · channel stays dry on bus A while bus B collects the wet returns for performance mixing.",
       "diagram": "Xcelon:\n* Ch 5: dry voice\n* FX1: delay send\n* FX2: reverb send\n\nVCO:\nDelay:\nReverb:\nOutput:\n\n- VCO (Out) -> Xcelon (INPUT 5 L)\n- Xcelon (FX SEND 1 L) -> Delay (In)\n- Xcelon (FX SEND 2 L) -> Reverb (In)\n- Delay (Out L) -> Xcelon (FX RETURN 1 L)\n- Delay (Out R) -> Xcelon (FX RETURN 1 R)\n- Reverb (Out L) -> Xcelon (FX RETURN 2 L)\n- Reverb (Out R) -> Xcelon (FX RETURN 2 R)\n- Xcelon (MIX OUT A L) -> Output (L)\n- Xcelon (MIX OUT A R) -> Output (R)"
@@ -199,6 +201,7 @@
       "diagram": "Xcelon:\n* Ch 1-3: bus A\n* Ch 4-6: bus B\n\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\nVCO 5:\nVCO 6:\nOutput:\n\n- VCO 1 (Out) -> Xcelon (INPUT 1 L)\n- VCO 2 (Out) -> Xcelon (INPUT 2 L)\n- VCO 3 (Out) -> Xcelon (INPUT 3 L)\n- VCO 4 (Out) -> Xcelon (INPUT 4 L)\n- VCO 5 (Out) -> Xcelon (INPUT 5 L)\n- VCO 6 (Out) -> Xcelon (INPUT 6 L)\n- Xcelon (MIX OUT A L) -> Output (A L)\n- Xcelon (MIX OUT A R) -> Output (A R)\n- Xcelon (MIX OUT B L) -> Output (B L)\n- Xcelon (MIX OUT B R) -> Output (B R)"
     },
     {
+      "essential": true,
       "name": "CV-controlled blend desk",
       "patch": "use VOL CV on a few channels like VCAs · pan with BAL CV from an envelope follower or slow LFO · Xcelon becomes a playable modulation surface rather than a static submixer.",
       "diagram": "Xcelon:\n* Ch 1: VOL CV on\n* Ch 2: BAL CV on\n\nEnvelope:\nLFO:\nVCO:\nOutput:\n\n- Envelope (Out) >> Xcelon (VOL CV 1)\n- LFO (Out) >> Xcelon (BAL CV 2)\n- VCO (Out) -> Xcelon (INPUT 1 L)\n- VCO (Out) -> Xcelon (INPUT 2 L)\n- Xcelon (MIX OUT A L) -> Output (L)\n- Xcelon (MIX OUT A R) -> Output (R)"

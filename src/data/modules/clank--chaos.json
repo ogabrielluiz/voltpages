@@ -137,11 +137,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "6-voice chaotic drum kit",
       "patch": "All channels synced to master · each channel's Time set to 1:1, 2:1, 1:2, 3:1, 4:1, 1:4 · probability ~70% per channel · six drums triggered by gates 1-6 · polyrhythmic chaos drums",
       "diagram": "Chaos:\n* CH 1-6: synced\n* CH 1: time 1:1, prob 80%\n* CH 2: time 2:1, prob 60%\n* CH 3: time 1:2, prob 70%\n* CH 4-6: various ratios\n\nClock Source:\n\n- Clock Source (Out) c> Chaos (clock in)\n- Chaos (Gate 1) t> Drum 1 (Trig)\n- Chaos (Gate 2) t> Drum 2 (Trig)\n- Chaos (Gate 3) t> Drum 3 (Trig)\n- Chaos (Gate 4) t> Drum 4 (Trig)\n- Chaos (Gate 5) t> Drum 5 (Trig)\n- Chaos (Gate 6) t> Drum 6 (Trig)"
     },
     {
+      "essential": true,
       "name": "Quantized melody with chaos injections",
       "patch": "CH 1 synced · quant = Major pentatonic root C · voltage window 2V (2 octaves) · gate into chaos in from a downbeat every 4 bars · melody re-rolls periodically for variation",
       "diagram": "Chaos:\n* CH 1: synced 1:1\n* Scale: Major pentatonic\n* Root: C\n* Voltage window: 2V\n\nClock:\n\nClock Divider:\n\n- Clock (Out) c> Chaos (clock in)\n- Clock Divider (/16) t> Chaos (chaos in) // re-roll every 4 bars\n- Chaos (CV 1) p> VCO (V/Oct)\n- Chaos (Gate 1) g> Envelope (Trig)"
@@ -157,6 +159,7 @@
       "diagram": "Chaos:\n* CH 1-5: chaos-in assigned\n* CH 1-5: entropy 20%\n* CH 6: prob 30%, time 2:1\n\n- Clock Source (Out) c> Chaos (clock in)\n- Chaos (Gate 6) t> Chaos (chaos in) // self-patch for evolution\n- Chaos (CV 1) p> VCO 1 (V/Oct)\n- Chaos (CV 2) p> VCO 2 (V/Oct)"
     },
     {
+      "essential": true,
       "name": "Turing machine from loop",
       "patch": "CH 1 synced · capture 16 steps via loop · quantized chromatic · voltage window 1V · behaves like a Turing Machine with 16-step lock, and loop modifiers can drift probability/width over time while pitch stays locked",
       "diagram": "Chaos:\n* CH 1: synced 1:1, loop ON\n* Loop length: 16\n* Scale: Chromatic\n* Voltage window: 1V\n\nClock:\n\n- Clock (Out) c> Chaos (clock in)\n- Chaos (CV 1) p> VCO (V/Oct)\n- Chaos (Gate 1) g> Envelope (Trig)"

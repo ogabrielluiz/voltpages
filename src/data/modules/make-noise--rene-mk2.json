@@ -162,16 +162,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Standard melodic sequence (X only)",
       "patch": "Clock → X-CLK · X-CV → VCO 1V/Oct (via VCA + envelope) · X-G → envelope Trig · enter ACCESS page, disable a couple steps for rests · QUANT page: 2-octave range, major scale · knobs set the melody · rock-solid melodic 16-step sequence with step disables for rests.",
       "diagram": "René Mk2:\n* X: ACCESS page — some steps off\n* X QUANT: 2-oct major\n\n- Clock (Out) c> René (X-CLK)\n- René (X-CV) p> VCO (V/Oct)\n- René (X-G) g> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Cartesian polyphonic voice",
       "patch": "Two different-rate clocks (e.g., TEMPI CH 1 and TEMPI CH 2 at ×3) → X-CLK, Y-CLK · X-CV → VCO A · Y-CV → VCO B · C-CV → VCO C · three independent voices from two clocks · each channel has own QUANT scale for rich harmony · C-Gate with C.FUN.TRIG OFF ties notes across X/Y positions.",
       "diagram": "René Mk2:\n* X/Y/C QUANT: major scale, 2 oct\n* C.FUN.TRIG: OFF\n\n- TEMPI (CH 1 Out) c> René (X-CLK)\n- TEMPI (CH 2 Out) c> René (Y-CLK)\n- René (X-CV) p> VCO A (V/Oct)\n- René (Y-CV) p> VCO B (V/Oct)\n- René (C-CV) p> VCO C (V/Oct)\n- René (X-G) g> Envelope A (Trig)\n- René (Y-G) g> Envelope B (Trig)\n- René (C-G) g> Envelope C (Trig)"
     },
     {
+      "essential": true,
       "name": "Snake-selected variation",
       "patch": "Clock → X-CLK · X-FUN.CV.SNAKE ON · slow smooth random CV → X-CV (combo pot ~50%) · CV drifts selects different Snake pattern on the fly · same melody notes but re-ordered pattern every few bars · knobs unchanged — variation comes from order.",
       "diagram": "René Mk2:\n* X: FUN.CV.SNAKE ON\n* SNAKE page: enable first 8 patterns\n\n- Clock (Out) c> René (X-CLK)\n- Smooth Random (Out) >> René (In X-CV)\n- René (Out X-CV) p> VCO (V/Oct)\n- René (X-G) g> Envelope (Trig)"

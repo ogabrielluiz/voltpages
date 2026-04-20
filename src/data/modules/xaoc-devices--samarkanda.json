@@ -211,6 +211,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Two independent stereo delays (A+B, C+D)",
       "patch": "LINK A↔B and C↔D · set knobs in B and D to noon (1:1) · channels B/D follow A/C. Delay-time, feedback, mix changes in A/C affect both pairs · patch stereo L/R into A and C",
       "diagram": "Samarkanda:\n* LINK A-B: ON\n* LINK C-D: ON\n* BEHAVIOUR A/B: ANALOG\n* BEHAVIOUR C/D: ANALOG\n\n- SourceL (Out) -> Samarkanda (INPUT A)\n- SourceR (Out) -> Samarkanda (INPUT C)\n- Samarkanda (MIX OUT B) -> Output (L)\n- Samarkanda (MIX OUT D) -> Output (R)"
@@ -221,11 +222,13 @@
       "diagram": "Samarkanda:\n* BEHAVIOUR A/B/C/D: DIGITAL\n* TIME A: 1/4\n* TIME B: 1/8\n* TIME C: 3/8\n* TIME D: 1/2\n\n- ClockSrc (Out) c> Samarkanda (SYNC A)\n- ClockSrc (Out) c> Samarkanda (SYNC B)\n- ClockSrc (Out) c> Samarkanda (SYNC C)\n- ClockSrc (Out) c> Samarkanda (SYNC D)\n- Voice (Out) -> Samarkanda (INPUT A)\n- Samarkanda (MIX OUT D) -> Output (L)\n- Samarkanda (MIX OUT D) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Tuned loop sampler (1V/oct loop playback)",
       "patch": "Record a phrase into A · press HOLD · BEHAVIOUR ANALOG · PURGE+HOLD combo to ensure +1V/oct polarity · keyboard → TIME A · TIME knob sets base loop length",
       "diagram": "Samarkanda:\n* A BEHAVIOUR: ANALOG\n* A HOLD: ON\n* A RANGE: X10\n\n- Voice (Out) -> Samarkanda (INPUT A)\n- Kbd (Pitch) p> Samarkanda (TIME A)\n- Samarkanda (MIX OUT A) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Ping-pong with cross-coupled feedback",
       "patch": "Patch WET OUT A → FB INPUT B and WET OUT B → FB INPUT A · link off · different TIMEs per channel · stereo bounces between sides",
       "diagram": "Samarkanda:\n* LINK: OFF\n* BEHAVIOUR A/B: ANALOG\n\n- Voice (Out) -> Samarkanda (INPUT A)\n- Samarkanda (WET OUT A) -> Samarkanda (FB INPUT B)\n- Samarkanda (WET OUT B) -> Samarkanda (FB INPUT A)\n- Samarkanda (MIX OUT A) -> Output (L)\n- Samarkanda (MIX OUT B) -> Output (R)"

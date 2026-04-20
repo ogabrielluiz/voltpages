@@ -300,16 +300,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Vocal vowel — fixed formants, played keyboard",
       "patch": "SHAPE A/B = SINE · RATIO TRACK A/B = OFF (fixed formants) · RATIO A ~3 (F1), RATIO B ~6 (F2) · DAMP sliders mid · FUND·ELEM MIX mid · V/Oct from keyboard",
       "diagram": "Sofia:\n* OCTAVE: 4'\n* RATIO A: 3\n* RATIO B: 6\n* RATIO TRACK A: OFF\n* RATIO TRACK B: OFF\n* SHAPE A: SINE\n* SHAPE B: SINE\n\n- Keyboard (CV) p> Sofia (PITCH CV V/OCT)\n- Env (Out) >> VCA (CV)\n- Sofia (MAIN OUT) -> VCA (In)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Morphing vowel sequence",
       "patch": "Two S&H from clocked random → RATIO A CV and RATIO B CV · attenuators ~5 · fixed formant tracking · creates stepped vowel shifts per note",
       "diagram": "Sofia:\n* RATIO TRACK A: OFF\n* RATIO TRACK B: OFF\n* DAMP A: 50\n* DAMP B: 60\n\n- Seq (Pitch) p> Sofia (PITCH CV V/OCT)\n- Clock (Out) c> S&H1 (Trig)\n- Clock (Out) c> S&H2 (Trig)\n- Noise (Out) >> S&H1 (In)\n- Noise (Out) >> S&H2 (In)\n- S&H1 (Out) >> Sofia (RATIO A)\n- S&H2 (Out) >> Sofia (RATIO B)\n- Sofia (MAIN OUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Plucked string via warp and damp",
       "patch": "SHAPE A = SQUARE · DAMP A low (short ring) · WARP A full CW (front-loaded density) · RATIO A tracks on · envelope into DAMP A CV extends ring",
       "diagram": "Sofia:\n* SHAPE A: SQUARE\n* DAMP A: 20\n* WARP A: full CW\n* RATIO TRACK A: ON\n* FUND·ELEM MIX: 8\n\n- Seq (Pitch) p> Sofia (PITCH CV V/OCT)\n- Env (Out) >> Sofia (DAMP A)\n- Sofia (MAIN OUT) -> Output (In)"

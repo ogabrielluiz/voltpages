@@ -204,6 +204,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "8-voice polyphony with PoliMATHS",
       "patch": "Uses the N.U.S.S. header chain: PoliMATHS selects a channel on MultiWAVE while its own envelope outputs gate that voice's level on QXG.",
       "steps": [
@@ -221,6 +222,7 @@
       "diagram": "MULTIWAVE:\n* Mode: Channel Index\n* Span: noon\n* Span CV atten: full CW\n* Blend: noon\n- PoliMATHS (Channel Index Output) >> MultiWAVE (Span CV) // selects voice\n- MIDI/Keys (Pitch) p> MultiWAVE (TRPS) // global 1V/oct\n- MultiWAVE (Channel 1–8 Outputs) -> QXG (Signal Inputs 1–4) // via N.U.S.S. header\n- PoliMATHS (Channel Outputs 1–8) >> QXG (Control Inputs 1–4) // via N.U.S.S. header"
     },
     {
+      "essential": true,
       "name": "Harmonic oscillator drone",
       "patch": "DETUNE fully CW stretches the 8 voices into a harmonic series instead of chorus — sequence TRPS to transpose the whole stack.",
       "steps": [
@@ -237,6 +239,7 @@
       "diagram": "MULTIWAVE:\n* Detune: Full CW\n* Blend: noon\n* Follow (Osc A): Green (Integer Multiply)\n- Sequencer (CV Out) p> MultiWAVE (TRPS) // transpose harmonic series\n- MultiWAVE (Channel 1–8 Outputs) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Drifting polyphonic pad with Spread",
       "patch": "Round mode cycles voices from a single clock; a slow LFO into SPREAD CV distributes modulation unevenly across the 8 channels.",
       "steps": [

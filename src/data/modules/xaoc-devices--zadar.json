@@ -144,6 +144,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Snappy transient via WARP",
       "patch": "A percussive bank-U shape on channel A, time-warped tight and bent concave, used to excite a noise-fed resonator for crisp plucks.",
       "steps": [
@@ -162,6 +163,7 @@
       "diagram": "Zadar:\n* CH A shape: bank U\n* CH A TIME: 50ms\n* CH A WARP: +80\n* CH A RSP: -40\n\n- Clock (Out) t> Zadar (TRIG A)\n- Noise (Out) -> VCA (In)\n- Zadar (OUT A) >> VCA (CV)\n- VCA (Out) -> Resonator (In)"
     },
     {
+      "essential": true,
       "name": "Looping LFO with CV shape select",
       "patch": "Channel B free-runs as an oscillator, while a slow external LFO scans through its shape bank via the ASGN input — the modulation family keeps mutating.",
       "steps": [
@@ -257,6 +259,7 @@
       "diagram": "Zadar:\n* CH A: sine-like shape\n* Copied to B/C/D\n* PHASE A/B/C/D: 0/25/50/75\n\n- Clock (Out) t> Mult (In)\n- Mult (Out 1) t> Zadar (TRIG A)\n- Mult (Out 2) t> Zadar (TRIG B)\n- Mult (Out 3) t> Zadar (TRIG C)\n- Mult (Out 4) t> Zadar (TRIG D)\n- Zadar (OUT A) >> Filter L (Cutoff)\n- Zadar (OUT C) >> Filter R (Cutoff)"
     },
     {
+      "essential": true,
       "name": "CV-morphing bass envelope",
       "patch": "Velocity CV into ASGN A drives WARP, so soft hits play rounded envelopes and hard hits play snappy ones — a single envelope with dynamic shape.",
       "steps": [

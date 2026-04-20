@@ -93,6 +93,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Three-voice stereo submix",
       "patch": "Three stereo voices into CH 1-3 · main OUT to outboard · short signal path keeps transients intact.",
       "steps": [
@@ -107,6 +108,7 @@
       "diagram": "Hyrlo:\n* CH 1-3 Level: start CCW, raise to taste\n\n- Voice 1 (Out L) -> Hyrlo (CH 1 L)\n- Voice 1 (Out R) -> Hyrlo (CH 1 R)\n- Voice 2 (Out L) -> Hyrlo (CH 2 L)\n- Voice 2 (Out R) -> Hyrlo (CH 2 R)\n- Voice 3 (Out L) -> Hyrlo (CH 3 L)\n- Voice 3 (Out R) -> Hyrlo (CH 3 R)\n- Hyrlo (OUT L) -> Output (L)\n- Hyrlo (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Six-mono mix via two Hyrlos",
       "patch": "Two stacked Hyrlos give six mono channels in 8 HP — drums + bass + pads in one skiff.",
       "steps": [
@@ -121,6 +123,7 @@
       "diagram": "HYRLO A:\n* role: master\n\nHYRLO B:\n* role: sub-bus into A's CHAIN IN\n\n- Kick (Out) -> Hyrlo A (CH 1 L)\n- Snare (Out) -> Hyrlo A (CH 2 L)\n- HiHat (Out) -> Hyrlo A (CH 3 L)\n- Bass (Out) -> Hyrlo B (CH 1 L)\n- Pad (Out) -> Hyrlo B (CH 2 L)\n- Lead (Out) -> Hyrlo B (CH 3 L)\n- Hyrlo B (OUT L) -> Hyrlo A (CHAIN IN L)\n- Hyrlo B (OUT R) -> Hyrlo A (CHAIN IN R)\n- Hyrlo A (OUT L) -> Output (L)\n- Hyrlo A (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Dry + two stereo FX returns",
       "patch": "CH 1 dry voice · CH 2 reverb return · CH 3 delay return · blend wet/dry on the front panel.",
       "steps": [

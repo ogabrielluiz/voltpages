@@ -198,16 +198,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Complete voice",
       "patch": "Audio source into Audio In · Gate opens the envelopes · ADSR drives the VCA · ADSR also sweeps the filter in Post mode · a compact one-module voice.",
       "diagram": "Trivium:\n* Pre/Post switch: Post\n* VCA source switch: ADSR\n* Filter source switch: ADSR\n* Filter type switch: Low Pass\n\nVCO:\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Trivium (Cutoff CV)\n- Sequencer (Gate) g> Trivium (Gate)\n- VCO (Out) -> Trivium (Audio In)\n- Trivium (Audio Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Pinged percussion",
       "patch": "AD/AR mode selected · high resonance · short attack and decay · the filter rings like a struck body and the VCA follows the same percussive contour.",
       "diagram": "Trivium:\n* Pre/Post switch: Pre\n* VCA source switch: AD/AR\n* Filter source switch: AD/AR\n* Filter type switch: Band Pass\n\nTrigger:\nOutput:\n\n- Trigger (Out) g> Trivium (Gate)\n- Trivium (Audio Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Self-oscillating lead",
       "patch": "No audio input · resonance pushed up · cutoff tracks pitch CV · hold the VCA open and use the filter as a playable oscillator.",
       "diagram": "Trivium:\n* Pre/Post switch: Post\n* VCA source switch: HOLD\n* Filter source switch: ADSR\n* Filter type switch: Low Pass\n* Resonance: high\n\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Trivium (Cutoff CV)\n- Sequencer (Gate) g> Trivium (Gate)\n- Trivium (Audio Out) -> Output (In)"

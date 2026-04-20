@@ -93,6 +93,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Sub-Timbral melodic voice",
       "patch": "Variable Shape → MMG/filter AC in · SUB → MMG DC in · STO FREQ ~12:00 · slow log LFO from MATHS → SHAPE CV, SHAPE knob ~60% · sequencer pitch → 1V/Oct · gate-triggered expo envelope → filter cutoff · rich sine + sub + animated harmonics under envelope control — the classic STO voice.",
       "diagram": "STO:\n* FREQ: ~12:00\n* SHAPE: ~60% (as attenuator)\n\n- Sequencer (Pitch) p> STO (1V/Oct)\n- MATHS.CH 4 (OUT) >> STO (Shape CV) // slow log LFO\n- STO (Sine) -> Filter (AC In)\n- STO (SUB) -> Filter (DC In)\n- Envelope (Out) >> Filter (Cutoff)\n- Filter (Out) -> Output (In)"
@@ -118,11 +119,13 @@
       "diagram": "STO:\n* SHAPE: ~50% (sets depth)\n\n- Sequencer (Pitch) p> Mult (In)\n- Mult (Out 1) p> STO (1V/Oct)\n- Mult (Out 2) >> STO (Shape CV) // key-tracked harmonics\n- STO (Variable SHAPE) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Bassline with gated Sub",
       "patch": "Slow square LFO (or cycling MATHS EOC) → S-Gate AND → sequencer clock · sequencer pitch → 1V/Oct · monitor SUB only · Sub turns on/off per clock step creating a note-like pulse without a VCA · adjust LFO pulse width (or MATHS Rise/Fall) to change note length.",
       "diagram": "STO:\n* FREQ: bass range\n* SHAPE: irrelevant\n\nLFO:\n\n- LFO (Square) c> Mult (In)\n- Mult (Out 1) c> Sequencer (Clk)\n- Mult (Out 2) g> STO (S-Gate) // gates Sub per step\n- Sequencer (Pitch) p> STO (1V/Oct)\n- STO (SUB) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Dynamic Expo FM pings",
       "patch": "Sine from another VCO → Optomix CH 1 · Optomix CH 1 out → STO EXPO · gate → Optomix STRIKE · Optomix CONTROL full CCW · each gate opens a short FM burst into EXPO · STO frequency disassembles for percussion accents that decay naturally with vactrol damping.",
       "diagram": "STO:\n* FREQ: high register\n\nVCO:\n\n- VCO (Sine) -> Optomix.CH 1 (In)\n- Gate Source (Gate) g> Optomix.CH 1 (Strike)\n- Optomix.CH 1 (Out) >> STO (EXPO) // dynamic FM\n- STO (Variable SHAPE) -> Output (In) // percussive blip"

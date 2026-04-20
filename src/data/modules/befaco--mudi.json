@@ -89,6 +89,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Master clock distribution",
       "patch": "Master clock → CLK/RST · three F outs feed sequencer clock, drum clock, modulation trigger source · 1/2F drives snare on the offbeat · 1/4F drives a slow arpeggiator · 2HP of clock routing without a dedicated hub",
       "diagram": "MuDi:\n\nClock Source:\nSequencer:\nDrums:\nLFO Trig:\nSnare:\nArp:\n\n- Clock Source (Out) c> MuDi (CLK/RST)\n- MuDi (F 1) c> Sequencer (Clock)\n- MuDi (F 2) c> Drums (Clock)\n- MuDi (F 3) c> LFO Trig (Trig)\n- MuDi (1/2F) c> Snare (Trig)\n- MuDi (1/4F) c> Arp (Clock)"
@@ -104,11 +105,13 @@
       "diagram": "MuDi:\n\nClock:\nChord Envelope:\nLong Sequencer:\n\n- Clock (Out) c> MuDi (CLK/RST)\n- MuDi (1/16F) t> Chord Envelope (Trig)\n- MuDi (1/16F) t> Long Sequencer (Reset)"
     },
     {
+      "essential": true,
       "name": "MIDI clock cleanup",
       "patch": "MIDI-to-CV module clock pulse (often low-voltage or rounded) → CLK/RST · MuDi rescales every output to 10V · F outs distribute clean rack clocks · divisions now reliably trigger envelope modules that previously missed quiet edges",
       "diagram": "MuDi:\n\nMIDI Interface:\nEnvelope 1:\nEnvelope 2:\nSequencer:\n\n- MIDI Interface (Clock) c> MuDi (CLK/RST)\n- MuDi (F 1) c> Sequencer (Clock)\n- MuDi (1/2F) t> Envelope 1 (Trig)\n- MuDi (1/4F) t> Envelope 2 (Trig)"
     },
     {
+      "essential": true,
       "name": "Reset-locked polyrhythm",
       "patch": "Clock → tip of CLK/RST via splitter · bar-length reset → ring · three division outs drive separate voices · reset pulls every division back to phase zero each bar so polyrhythms repeat identically instead of drifting",
       "diagram": "MuDi:\n\nClock:\nBar Reset:\nVoice 1:\nVoice 2:\nVoice 3:\n\n- Clock (Out) c> MuDi (CLK/RST) // tip via splitter\n- Bar Reset (Out) t> MuDi (CLK/RST) // ring via splitter\n- MuDi (1/2F) t> Voice 1 (Trig)\n- MuDi (1/4F) t> Voice 2 (Trig)\n- MuDi (1/8F) t> Voice 3 (Trig)"

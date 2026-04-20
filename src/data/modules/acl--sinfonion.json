@@ -197,11 +197,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Minimum viable chord voice",
       "patch": "Sequencer feeds CH 1 IN · CH 1 OUT to bass voice · CHORDS OUT 1-4 to four VCOs · MODE Chords · ROOT/DEGREE set chord · SPREAD opens voicing · one Sinfonion covers five-voice jazz harmony in one module.",
       "diagram": "Sinfonion:\n* MODE: Chords\n* ROOT: C\n* DEGREE: maj7\n* Chords: ROOT 3RD 5TH 7TH lit\n* SPREAD: noon\n\nBass VCO:\n\nVCO 1:\n\nVCO 2:\n\nVCO 3:\n\nVCO 4:\n\n- Sequencer (Pitch) p> Sinfonion (CH 1 IN)\n- Sinfonion (CH 1 OUT) p> Bass VCO (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 1 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 2 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 3 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 4 (V/Oct)"
     },
     {
+      "essential": true,
       "name": "Chord progression with clocked changes",
       "patch": "Master clock to CLK · SEQ on · song 1A with 4 steps (Cmaj7 → Am7 → Dm7 → G7) · 4 beats each · CHORDS OUT 1-4 → four VCOs through one VCA pad · chord changes lock to clock.",
       "diagram": "Sinfonion:\n* SEQ: on\n* Song 1A: Cmaj7 - Am7 - Dm7 - G7 (4 beats each)\n\nMaster Clock:\n\nVCO 1:\n\nVCO 2:\n\nVCO 3:\n\nVCO 4:\n\n- Master Clock (Out) c> Sinfonion (CLK)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 1 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 2 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 3 (V/Oct)\n- Sinfonion (CHORDS OUT 1-4) p> VCO 4 (V/Oct)"
@@ -212,6 +214,7 @@
       "diagram": "Sinfonion:\n* Arpeggio: ROOT 3RD 5TH 7TH lit\n* PATTERN: Baroque\n* RANGE: ~2 octaves\n* BEGIN: 3rd\n\nClock:\n\nVCO:\n\nEnvelope:\n\nVCA:\n\n- Clock (Out) c> Sinfonion (ARP CLK)\n- Clock (Out) t> Envelope (Trig)\n- Sinfonion (ARP OUT) p> VCO (V/Oct)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Walking bass with root on 1 and 3",
       "patch": "Random CV to CH 1 IN · CH 1 side A: 5TH 7TH 9TH · side B: ROOT · Menu → Ch 1 A/B 'Each Odd Beat' · sequencer on with 4-beat bar · bass plays root on beats 1 & 3, scale notes on 2 & 4 — walking-bass feel locked to chord changes.",
       "diagram": "Sinfonion:\n* SEQ: on\n* CH 1 A side: 5TH 7TH 9TH\n* CH 1 B side: ROOT\n* Menu: Ch 1 A/B = Each Odd Beat\n\nRandom CV:\n\nClock:\n\nBass VCO:\n\n- Clock (Out) c> Sinfonion (CLK)\n- Random CV (Out) >> Sinfonion (CH 1 IN)\n- Sinfonion (CH 1 OUT) p> Bass VCO (V/Oct)"

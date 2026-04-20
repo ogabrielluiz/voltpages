@@ -111,6 +111,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic voice envelope",
       "patch": "Gate → Gate · Output → VCA CV · Inverse Output → VCF CV for sweep-down",
       "diagram": "A-140:\n* A: fast · D: med · S: 6 · R: med · Time Range: M\n- Keyboard (Gate) g> A-140 (Gate)\n- A-140 (Output) >> VCA (CV)\n- A-140 (Inverse Output) >> VCF (CV) // filter closes as envelope opens"
@@ -126,11 +127,13 @@
       "diagram": "A-140:\n* A: slow · D: med · S: 4 · R: slow\n- Gate Source (Gate) g> A-140 (Gate)\n- A-140 (Output) >> VCA (CV)\n- A-140 (Output) >> VCO (Exp FM) // small pitch rise on attack"
     },
     {
+      "essential": true,
       "name": "Ducking sidechain",
       "patch": "Drum gate → Gate · Inverse Output → VCA CV on pad voice for rhythmic duck",
       "diagram": "A-140:\n* A: very fast · D: med · S: 0 · R: med\n- Drum (Gate) g> A-140 (Gate)\n- Pad Voice (Audio) -> VCA (In)\n- A-140 (Inverse Output) >> VCA (CV) // VCA dips on each hit"
     },
     {
+      "essential": true,
       "name": "Slow drone morph",
       "patch": "Time Range H for minute-long sweeps · Output → filter cutoff for slowly evolving timbre",
       "diagram": "A-140:\n* A: 10 · D: 10 · S: 5 · R: 10 · Time Range: H\n- Manual Gate (Gate) g> A-140 (Gate)\n- A-140 (Output) >> VCF (Cutoff) // multi-minute opening"

@@ -138,6 +138,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Slope-morphing bass",
       "patch": "Genus modulated by slow LFO ±2.5V · Q ~noon (no oscillation) · bass oscillator into INPUT · cutoff at 150Hz · filter slope morphs between 18 and 36 dB/oct cyclically, breathing the low-end character without changing pitch or resonance",
       "diagram": "Evolution:\n* Frequency: ~150Hz\n* Q: ~noon\n* Genus: noon\n* Genus CV2 attenuverter: ~3 o'clock\n\nLFO:\n\nVCO:\n\n- VCO (Out) -> Evolution (INPUT)\n- LFO (Out) >> Evolution (GENUS CV2)\n- Evolution (OUTPUT) -> Output (In)"
@@ -153,11 +154,13 @@
       "diagram": "Evolution:\n* Q: at oscillation threshold\n* Genus: 4 poles\n* Frequency: base pitch\n\nSequencer:\n\n- Sequencer (Pitch) p> Evolution (1V/OCT)\n- Evolution (OUTPUT) -> VCA (In)"
     },
     {
+      "essential": true,
       "name": "Through-zero filter FM",
       "patch": "Genus 5 poles · Q high · audio-rate VCO into FREQ CV2 with attenuverter swept through noon · bipolar FM crosses zero · harsh metallic inharmonic tones built from ladder-filter self-oscillation",
       "diagram": "Evolution:\n* Genus: 5 poles\n* Q: high (near oscillation)\n\nModulator VCO:\n\nAudio VCO:\n\n- Audio VCO (Out) -> Evolution (INPUT)\n- Modulator VCO (Out) >> Evolution (FREQ CV2)\n- Evolution (OUTPUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Fat resonant bass",
       "patch": "Q ~3 o'clock · Q LEVEL COMPENSATION fully CW · cutoff 200Hz tracked with keyboard · Species at ~1 o'clock for warmth · the low body stays full under high resonance instead of thinning — aggressive acid bass without the classic ladder thin-out",
       "diagram": "Evolution:\n* Q: ~3 o'clock\n* Q Level Compensation: full CW\n* Species: ~1 o'clock\n* Frequency: ~200Hz\n\nBass VCO:\n\nKeyboard:\n\n- Bass VCO (Out) -> Evolution (INPUT)\n- Keyboard (Pitch) p> Evolution (1V/OCT)\n- Evolution (OUTPUT) -> VCA (In)"

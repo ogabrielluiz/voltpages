@@ -91,11 +91,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Expressive touch macro",
       "patch": "Control mode · position → filter cutoff · pressure → resonance · single finger sculpts timbre in one gesture · latching OFF so envelope falls on release",
       "diagram": "Gliss:\n* Mode: Control · Latching: OFF\n\n- Gliss (OUT TOP) >> Filter (Cutoff)\n- Gliss (OUT BOTTOM) >> Filter (Resonance)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)"
     },
     {
+      "essential": true,
       "name": "Hand-drawn LFO",
       "patch": "Record mode · draw a 10-second gesture · loops as custom LFO modulating pitch · re-draw live to mutate the shape · pairs beautifully with slow drones",
       "diagram": "Gliss:\n* Mode: Record · Loop: ON\n\n- Gliss (OUT TOP) >> VCO (FM)\n- Gliss (OUT BOTTOM) >> VCA (CV) // envelope of gesture\n- VCO (Out) -> VCA (In)"
@@ -111,6 +113,7 @@
       "diagram": "Gliss:\n* Mode: Signal\n\nChaos LFO:\n\n- Chaos LFO (Out) >> Gliss (IN)\n- Gliss (OUT TOP) >> Filter (Cutoff) // tamed\n- Gliss (OUT BOTTOM) >> VCA (CV) // env follower"
     },
     {
+      "essential": true,
       "name": "Five-note touch keyboard",
       "patch": "Notes mode · tune five zones to a pentatonic scale · pressure → velocity on bottom out · ideal for performing melodies over a drone",
       "diagram": "Gliss:\n* Mode: Notes · 5 zones = pentatonic\n\n- Gliss (OUT TOP) p> VCO (V/Oct)\n- Gliss (OUT BOTTOM) >> VCA (CV) // velocity\n- VCO (Out) -> VCA (In)"

@@ -135,6 +135,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Touchpoint performance distortion",
       "patch": "Drum loop → IN 1 @ 75% · FREQUENCY mid · GAIN 75% · x100 OFF · play the 4 right touchpoints with a thumb · adjacent input/output pairs create resistive patches in real time",
       "diagram": "100 Grit:\n* IN 1: 75%\n* FREQUENCY: ~12 o'clock\n* GAIN: 75%\n* x100: OFF\n\nDrums:\n\n- Drums (Out) -> 100 Grit (IN 1)\n- 100 Grit (DIST) -> Output (In) // play touchpoints live"
@@ -150,11 +151,13 @@
       "diagram": "100 Grit:\n* RES: ~2 o'clock\n* GAIN: 75%\n* FM 1: up (DIST feedback normalled)\n\nEnvelope:\n\nTrigger:\n\n- Trigger (Out) t> Envelope (Trig)\n- Envelope (Out) >> 100 Grit (FM 2)\n- 100 Grit (DIST) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Self-oscillating sine voice",
       "patch": "No input · RES full CW · V/Oct → FM 2 · GAIN CV from ADSR · 100 Grit sings as a ladder-sine voice with distortion character via x100",
       "diagram": "100 Grit:\n* RES: full CW\n* GAIN: 0\n* x100: OFF\n\nSequencer:\n\nADSR:\n\n- Sequencer (Pitch) p> 100 Grit (FM 2)\n- ADSR (Out) >> 100 Grit (GAIN CV)\n- 100 Grit (OUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Dynamic audio-rate FM resonance",
       "patch": "Synth pad → IN 1 · RES mid · RES CV up with unpatched RES CV (DIST normalled for audio-rate res mod) · screeching harmonics ride the pad's resonance",
       "diagram": "100 Grit:\n* IN 1: 50%\n* RES: ~1 o'clock\n* RES CV: 60% (DIST normalled)\n* GAIN: 60%\n\nPad:\n\n- Pad (Out) -> 100 Grit (IN 1)\n- 100 Grit (OUT) -> Output (In)"

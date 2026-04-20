@@ -73,11 +73,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "V/Oct transposer",
       "patch": "Keyboard pitch into A · static offset CV into B · A+B delivers transposed pitch · A-B delivers inverse transposition for a stereo-mirrored voice",
       "diagram": "SUMDIF:\n- Keyboard (Pitch) p> SumDif (A)\n- Offset (CV) >> SumDif (B)\n- SumDif (A+B) p> VCO 1 (V/Oct) // transposed up\n- SumDif (A-B) p> VCO 2 (V/Oct) // mirrored down"
     },
     {
+      "essential": true,
       "name": "Mid/Side processor",
       "patch": "Stereo L and R into A and B · Mid (A+B) into a reverb · Side (A-B) kept dry · second section (C,D) decodes processed Mid+dry Side back to L/R",
       "diagram": "SUMDIF:\n* Both -6 dB jumpers: ON\n- Source (L) -> SumDif (A)\n- Source (R) -> SumDif (B)\n- SumDif (A+B) -> Reverb (In) // Mid\n- Reverb (Out) -> SumDif (C)\n- SumDif (A-B) -> SumDif (D) // Side dry\n- SumDif (C+D) -> Output (L)\n- SumDif (C-D) -> Output (R)"
@@ -88,6 +90,7 @@
       "diagram": "SUMDIF:\n- LFO 1 (Out) >> SumDif (B)\n- LFO 2 (Out) >> SumDif (D)\n- SumDif (A-B) >> VCF 1 (Cutoff) // inverted LFO 1\n- SumDif (C-D) >> VCF 2 (Cutoff) // inverted LFO 2"
     },
     {
+      "essential": true,
       "name": "Buffered V/Oct mult",
       "patch": "Single pitch CV into A · B unpatched · A+B and A-B both carry buffered copies of A with V/Oct accuracy preserved to cents",
       "diagram": "SUMDIF:\n- Sequencer (Pitch) p> SumDif (A)\n- SumDif (A+B) p> VCO 1 (V/Oct)\n- SumDif (A-B) p> VCO 2 (V/Oct)"

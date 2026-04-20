@@ -113,6 +113,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Voltage offset pair",
       "patch": "Leave both FADER inputs open · set each fader to different positions · use the two channels as offset sources for pitch or filter modulation · a tiny analog bias box with hands-on control.",
       "steps": [
@@ -129,6 +130,7 @@
       "diagram": "Déjà Vu:\n* FADER A MODE: attenuator\n* FADER B MODE: attenuator\n* FADER GAIN: 1x\n\nLFO:\nFilter:\nVCO:\n\n- LFO (Out) >> Déjà Vu (ADD A)\n- Déjà Vu (OUT A) >> Filter (Cutoff)\n- Déjà Vu (OUT B) >> VCO (Fine Tune)"
     },
     {
+      "essential": true,
       "name": "Crossfade macro",
       "patch": "Use channel A as a crossfader between two modulation sources · feed the result into channel B for fine trimming · one fader performs the macro move while the second sets the final range.",
       "steps": [
@@ -162,6 +164,7 @@
       "diagram": "Déjà Vu:\n* FADER A MODE: attenuator\n* FADER B MODE: attenuator\n* FADER GAIN: 10x\n\nSource L:\nSource R:\nOutput:\n\n- Source L (Out) -> Déjà Vu (FADER A)\n- Source R (Out) -> Déjà Vu (FADER B)\n- Déjà Vu (OUT A) -> Output (L)\n- Déjà Vu (OUT B) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Cascade 4-input mixer",
       "patch": "Patch several sources into A and B, leave OUT A unpatched, and let the cascade jumper fold both channels into a small mixer. The module turns into a compact two-stage mix block.",
       "steps": [

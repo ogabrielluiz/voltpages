@@ -197,6 +197,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Shimmer pad",
       "patch": "SHM mode + BND switch: an octave-up pitch shift feeds back into the reverb, blooming a luminous pad above a chord source.",
       "steps": [
@@ -232,6 +233,7 @@
       "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Size: 10-11 o'clock · Dense: 2-3 o'clock · Regen: 9-11 o'clock · Blend: 1-2 o'clock\n- Source (Out L) -> Desmodus Versio (In L)\n- Source (Out R) -> Desmodus Versio (In R)\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R) // short diffuse plate, no modulation"
     },
     {
+      "essential": true,
       "name": "Rhythmic ducking reverb",
       "patch": "Regen past 3 o'clock puts the tank into built-in sidechain mode — incoming transients automatically duck the infinite tail.",
       "steps": [
@@ -303,6 +305,7 @@
       "diagram": "DESMODUS VERSIO:\n* Mode: LIM · BND switch\n* Size: noon · Dense: 2-3 o'clock · Regen: just past noon\n- Source (Out) -> Desmodus Versio (In L)\n- LFO (Sine) >> Desmodus Versio (Size CV) // slow 0.1-0.3 Hz, wet-only detuned chorus\n- Desmodus Versio (Out L) -> Output (In L)\n- Desmodus Versio (Out R) -> Output (In R)"
     },
     {
+      "essential": true,
       "name": "Pitch-rise freeze",
       "patch": "Freeze a chord in SHM mode and the octave-up shift compounds every feedback pass — the pad rises an octave at a time.",
       "steps": [

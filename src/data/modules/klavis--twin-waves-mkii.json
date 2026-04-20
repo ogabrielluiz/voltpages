@@ -139,6 +139,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Dual detuned VCO",
       "patch": "both sections in VCO · OSC 1 Unison (5 stacked saws) with Spread mid · OSC 2 Unison slightly detuned via Coarse · V/Oct mode Offset so V.Oct 2 adds to V.Oct 1 · fat 10-voice lead from one module",
       "diagram": "Twin Waves MkII:\n* OSC 1: Unison saw, Spread noon\n* OSC 2: Unison saw, Coarse +5 cents\n* V/Oct mode: Offset\n\nSequencer:\n\n- Sequencer (Pitch) p> Twin Waves MkII (V.Oct 1)\n- Twin Waves MkII (Out 1) -> Output (L)\n- Twin Waves MkII (Out 2) -> Output (R)"
@@ -149,11 +150,13 @@
       "diagram": "Twin Waves MkII:\n* OSC 2: LFO · Randomly-timed S&H\n* Qtz/Clk: external clock\n* Coarse: ÷4\n\nClock:\n\n- Clock (Out) c> Twin Waves MkII (Sync/Clk)\n- Twin Waves MkII (Out 2) >> Filter (Cutoff)\n- Twin Waves MkII (Sqr 1) t> Envelope (Trig) // trigger per cycle"
     },
     {
+      "essential": true,
       "name": "BZX FM growl",
       "patch": "OSC 1 in VCO sine · FM/AM set to BZX · OSC 2 as modulator · Param 1 cross-pot taps OSC 2 back into OSC 1 phase · V.Oct 1 pitches both with Offset mode · through-zero FM bass",
       "diagram": "Twin Waves MkII:\n* OSC 1: Sine · FM/AM: BZX\n* OSC 2: Sine · Coarse: ratio\n* V/Oct mode: Offset\n\nSequencer:\n\n- Sequencer (Pitch) p> Twin Waves MkII (V.Oct 1)\n- Twin Waves MkII (Out 2) >> Twin Waves MkII (FM/AM) // TZ-FM carrier\n- Twin Waves MkII (Out 1) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Self-locked quantized melody",
       "patch": "OSC 1 in VCO · Qtz Pentatonic · OSC 2 in LFO Brownian vectors as slow melodic CV · Param 1 unpatched pulls OSC 2 output into OSC 1 algorithm · vectors quantized into melody",
       "diagram": "Twin Waves MkII:\n* OSC 1: Saw · Qtz: Pentatonic\n* OSC 2: LFO Brownian vectors · slow rate\n\n- Twin Waves MkII (Out 2) p> Twin Waves MkII (V.Oct 1)\n- Twin Waves MkII (Out 1) -> Filter (In)"

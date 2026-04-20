@@ -105,6 +105,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Two-voice AD (stereo voices in 10HP)",
       "patch": "Each channel becomes a full voice: gate in, VCO in the VCA, OUT is the enveloped voice. Pan hard L/R for an instant stereo duo.",
       "steps": [
@@ -121,6 +122,7 @@
       "diagram": "Delta-V:\n* CH 1: Cycle OFF · Attack short · Decay medium · Atten full CW\n* CH 2: Cycle OFF · Attack short · Decay long · Atten full CW\n* Link: OFF\n\nVCO 1:\n\nVCO 2:\n\n- Gate 1 (Out) g> Delta-V (TRIG 1)\n- Gate 2 (Out) g> Delta-V (TRIG 2)\n- VCO 1 (Out) -> Delta-V (VCA 1)\n- VCO 2 (Out) -> Delta-V (VCA 2)\n- Delta-V (OUT 1) -> Output (In L)\n- Delta-V (OUT 2) -> Output (In R)"
     },
     {
+      "essential": true,
       "name": "Audio-rate cycling VCO",
       "patch": "Flip CH 1 to LFO mode with very short Attack+Decay and OUT 1 becomes a low-fi AD oscillator up to about 1.7kHz. Shape morphs the waveform.",
       "steps": [
@@ -168,6 +170,7 @@
       "diagram": "Delta-V:\n* Link: ON\n* CH 1: Cycle OFF · Attack very short · Decay short · Atten ~80% CW\n* CH 2: Cycle OFF · Attack medium · Decay long · Atten ~60% CW\n\n- Gate (Out) g> Delta-V (TRIG 1)\n- Delta-V (SUM) >> Filter (Cutoff) // bite + body"
     },
     {
+      "essential": true,
       "name": "Bouncing-ball envelope (self-modulated decay)",
       "patch": "CH 1 free-runs as an LFO, and its own OUT drives its Decay CV — each cycle shortens the fall, giving the characteristic accelerating bounce.",
       "steps": [

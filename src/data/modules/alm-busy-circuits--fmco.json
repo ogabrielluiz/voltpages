@@ -116,16 +116,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "FM bell",
       "patch": "Tune to the song root · Ratio locked to a clean harmonic interval · short trigger into Trig · low Index for the attack and a little more depth on sustain · glassy bell strikes without extra envelopes.",
       "diagram": "FMco:\n* Tune: root note\n* Ratio: locked\n* FM Index: low\n\nSequencer:\nOutput:\n\n- Sequencer (Gate) g> FMco (Trig)\n- Sequencer (CV) p> FMco (Chord CV)\n- FMco (OUT L) -> Output (L)\n- FMco (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Chord stab",
       "patch": "Chord mode on · inversion stepped from a sequencer CV lane · each trigger opens the decay envelope and lets the voice hit like a one-module chord machine.",
       "diagram": "FMco:\n* Chord: on\n* Tune: root note\n\nSequencer:\nOutput:\n\n- Sequencer (Gate) g> FMco (Trig)\n- Sequencer (CV) p> FMco (Chord CV)\n- FMco (OUT L) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Index sweep lead",
       "patch": "A slow LFO into Index CV · Ratio stays locked · Wave set bright · the same note blooms from clean to clangorous as the envelope decays, which makes one voice cover both lead and percussion duties.",
       "diagram": "FMco:\n* Wave: bright\n* Ratio: locked\n\nLFO:\nOutput:\n\n- LFO (Out) >> FMco (Index CV)\n- Sequencer (Gate) g> FMco (Trig)\n- FMco (OUT L) -> Output (L)\n- FMco (OUT R) -> Output (R)"

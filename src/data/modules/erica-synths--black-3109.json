@@ -120,6 +120,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic Roland lowpass lead",
       "patch": "Straight 24dB lowpass voice with envelope-swept cutoff and amp — the Juno/SH-101 recipe.",
       "steps": [
@@ -135,6 +136,7 @@
       "diagram": "Black 3109:\n* CUTOFF: ~9 o'clock\n* RESONANCE: ~10 o'clock\n* VOL COMP: ON\n* AUDIO LVL: unity\n* VCF CV1 LVL: ~2 o'clock\n\nVCO:\n\nSequencer:\n\nEnvelope:\n\nMult:\n\n- VCO (Saw) -> Black 3109 (INPUT)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Mult (In)\n- Mult (Out 1) >> Black 3109 (VCF CV IN)\n- Mult (Out 2) >> Black 3109 (VCA CV IN)\n- Black 3109 (OUTPUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Sine VCO from self-oscillation",
       "patch": "Drive RESONANCE to self-oscillation and play the filter as a pitched sine oscillator via the CV2 input.",
       "steps": [
@@ -164,6 +166,7 @@
       "diagram": "Black 3109:\n* CUTOFF: noon\n* RESONANCE: ~3 o'clock\n* VOL COMP: toggle\n* AUDIO LVL: unity\n* VCA CV LVL: full CW\n\nVCO:\n\n- VCO (Saw) -> Black 3109 (INPUT)\n- Black 3109 (OUTPUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Keyboard-tracked filter",
       "patch": "Track the filter cutoff with pitch CV so timbral character stays constant across the keyboard while the envelope still sweeps musically.",
       "steps": [

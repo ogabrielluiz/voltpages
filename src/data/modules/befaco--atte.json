@@ -123,16 +123,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four manual offsets",
       "patch": "All INs empty · IN A normalled to +10V propagates to B, C, D · each knob becomes a 0-10V offset · flip channel switches to − for negative offsets · feed four destinations that need static CV with no external module",
       "diagram": "ATTE:\n* All INs: unpatched\n* CH 1: + · knob sets offset\n* CH 2: − · knob sets negative offset\n* CH 3-4: + · taste\n\nVCO 1:\nVCO 2:\nFilter:\nVCA:\n\n- ATTE (OUT A) >> VCO 1 (FM)\n- ATTE (OUT B) >> VCO 2 (Detune)\n- ATTE (OUT C) >> Filter (Cutoff)\n- ATTE (OUT D) >> VCA (Bias)"
     },
     {
+      "essential": true,
       "name": "LFO splitter with depth per destination",
       "patch": "LFO → IN A · cascade feeds B, C, D · each knob dials modulation depth independently · switch on one channel to − for out-of-phase modulation · one source modulates four parameters at different intensities and polarities",
       "diagram": "ATTE:\n* CH 1-3: + · depth to taste\n* CH 4: − · inverted copy\n\nLFO:\nVCO:\nFilter:\nVCA:\nPan:\n\n- LFO (Out) >> ATTE (IN A)\n- ATTE (OUT A) >> VCO (FM)\n- ATTE (OUT B) >> Filter (Cutoff)\n- ATTE (OUT C) >> VCA (CV)\n- ATTE (OUT D) >> Pan (CV) // inverted"
     },
     {
+      "essential": true,
       "name": "Attenuverter for bipolar CV",
       "patch": "Bipolar CV (±5V) → IN A · switch to − to send −5..+5 inverted · knob scales 0-100% of the signal · zero at full CCW makes muting precise · useful for taming a hot source or flipping a modulation polarity",
       "diagram": "ATTE:\n* CH 1: switch − · knob = depth\n\nLFO:\nFilter:\n\n- LFO (Out) >> ATTE (IN A)\n- ATTE (OUT A) >> Filter (Cutoff) // inverted, attenuated"

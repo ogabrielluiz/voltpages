@@ -136,6 +136,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Standalone stereo drone",
       "patch": "Bank a drone algorithm, set the toggles, and let Vhikk X run as a one-module stereo ambient voice.",
       "steps": [
@@ -152,6 +153,7 @@
       "diagram": "Vhikk X:\n* Bank: drone bank\n* Toggle 1: Mid\n* Toggle 2: Mid\n* MODE: page encoders as needed\n\n- Vhikk X (OUT L) -> Mixer (In L)\n- Vhikk X (OUT R) -> Mixer (In R)"
     },
     {
+      "essential": true,
       "name": "External signal destroyer",
       "patch": "Feed a stereo synth voice into IN L/R and use Vhikk X as a 24-bit stereo distortion / granular processor.",
       "steps": [
@@ -199,6 +201,7 @@
       "diagram": "Vhikk X:\n* Toggle 1: Up\n* Toggle 2: Mid\n* MORPH Atten: ~noon\n\nLFO:\n\n- LFO (Out) >> Vhikk X (MORPH CV)\n- Vhikk X (OUT L) -> Output (In L)\n- Vhikk X (OUT R) -> Output (In R)"
     },
     {
+      "essential": true,
       "name": "Performance bank switching",
       "patch": "Jump between 4 banks with the Lower button while a drone plays — instant texture transitions with no re-patching.",
       "steps": [

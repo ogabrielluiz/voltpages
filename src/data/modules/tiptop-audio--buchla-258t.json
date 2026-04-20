@@ -153,6 +153,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Two-operator West Coast FM",
       "patch": "OSC 2 (modulator) FM-modulates OSC 1 (carrier) · both tracked from same 1V/oct source via mult · FM attenuverter on OSC 1 sets index · brighter partials as index rises · waveshape CV brings in saw/square harmonics on top of the FM spectrum",
       "diagram": "258t:\n* OSC 1: waveshape center (sine-to-saw midway)\n* OSC 2: FM attenuverter 2 o'clock\n\nSequencer:\nMult:\nLPG:\n\n- Sequencer (Pitch) p> Mult (In)\n- Mult (Out 1) p> 258t.OSC 1 (1V/oct)\n- Mult (Out 2) p> 258t.OSC 2 (1V/oct)\n- 258t.OSC 2 (OUT) -> 258t.OSC 1 (FM) // modulator into carrier\n- 258t.OSC 1 (OUT) -> LPG (In)"
@@ -163,6 +164,7 @@
       "diagram": "258t:\n* OSC 1: FREQ = low A\n* OSC 2: FREQ = low A, FINE +5 cents\n\nLFO:\nMixer:\n\n- LFO (Out) >> 258t.OSC 1 (Waveshape CV)\n- LFO (Out) >> 258t.OSC 2 (Waveshape CV)\n- 258t.OSC 1 (OUT) -> Mixer (In 1)\n- 258t.OSC 2 (OUT) -> Mixer (In 2)"
     },
     {
+      "essential": true,
       "name": "Bell/clang via audio-rate FM",
       "patch": "OSC 2 FREQ set independent of OSC 1 (non-integer ratio) · OSC 2 OUT to OSC 1 FM · FM attenuverter high · resulting inharmonic partials are bell-like · shape with envelope on VCA",
       "diagram": "258t:\n* OSC 1: FREQ mid-audio\n* OSC 2: FREQ ~1.47× OSC 1\n* OSC 1: FM attenuverter CW\n\nEnvelope:\nVCA:\n\n- 258t.OSC 2 (OUT) -> 258t.OSC 1 (FM)\n- 258t.OSC 1 (OUT) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
@@ -188,6 +190,7 @@
       "diagram": "258t:\n* OSC 1: waveshape midway\n* OSC 2: waveshape midway\n\nLFO 1:\nLFO 2:\nSequencer:\nMult:\nStereo Output:\n\n- Sequencer (Pitch) p> Mult (In)\n- Mult (Out 1) p> 258t.OSC 1 (1V/oct)\n- Mult (Out 2) p> 258t.OSC 2 (1V/oct)\n- LFO 1 (Out) >> 258t.OSC 1 (Waveshape CV)\n- LFO 2 (Out) >> 258t.OSC 2 (Waveshape CV)\n- 258t.OSC 1 (OUT) -> Stereo Output (L)\n- 258t.OSC 2 (OUT) -> Stereo Output (R)"
     },
     {
+      "essential": true,
       "name": "Vibrato via FM sub-audio",
       "patch": "slow LFO (3-7Hz) into OSC 1 FM input · FM attenuverter at ~9 o'clock for subtle musical vibrato · attenuverter polarity chooses up-vs-down first · deeper FM attenuverter sweeps vibrato into siren/chorus territory",
       "diagram": "258t:\n* OSC 1: FM attenuverter 9 o'clock\n\nLFO:\n\n- LFO (Out) >> 258t.OSC 1 (FM) // ~5Hz vibrato"

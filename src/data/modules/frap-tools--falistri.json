@@ -247,11 +247,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "AHDSR via quadrature",
       "patch": "Yellow Play Mode: Transient · Green Play Mode: Hold · Quadrature switch right · yellow Rise = Attack, yellow Fall = Release, green Rise = Decay, green Fall = Sustain time · green attenuverter sets Sustain level · take Max Output · fires full AHDSR from one gate patched to yellow trigger.",
       "diagram": "FALISTRI:\n* Yellow Mode: Transient\n* Green Mode: Hold\n* Quadrature: ON\n* Green Attenuverter: Sustain level\n\n- Gate (Out) g> FALISTRI.Yellow (Trig)\n- FALISTRI (Max Out) >> VCA (CV)"
     },
     {
+      "essential": true,
       "name": "Bouncing ball envelope",
       "patch": "Yellow Loop mode · yellow attenuverted output → yellow Fall CV · each cycle feeds back and shortens the fall · envelope self-accelerates like a bouncing ball · trigger manual button to restart.",
       "diagram": "FALISTRI:\n* Yellow Mode: Loop\n* Yellow Attenuverter: ~2 o'clock\n\n- FALISTRI.Yellow (Attenuverted Out) >> FALISTRI.Yellow (Fall CV) // positive FB shortens fall"
@@ -262,6 +264,7 @@
       "diagram": "FALISTRI:\n* Green Back Switch: On Rest\n* Green Mode: Transient\n\n- Clock (Out) t> FALISTRI.Green (Trig)\n- FALISTRI.Green (Bipolar Out) -> VCA (In)"
     },
     {
+      "essential": true,
       "name": "Single-module synth voice",
       "patch": "Yellow as audio oscillator (Time Scale down, Loop mode, V/Oct from sequencer) · green as envelope (Transient, triggered by gate) · leave 4QM inputs unpatched — semi-norm brings yellow unipolar into 4QM1 and green bipolar into 4QM2 · 4QM output is oscillator × envelope — the complete voice.",
       "diagram": "FALISTRI:\n* Yellow: Loop, Time Scale short\n* Green: Transient, Time Scale long\n* 4QM inputs: unpatched (semi-norm)\n\n- Sequencer (Pitch) p> FALISTRI.Yellow (V/Oct)\n- Gate (Out) g> FALISTRI.Green (Trig)\n- FALISTRI (4QM Out) -> Output (In)"

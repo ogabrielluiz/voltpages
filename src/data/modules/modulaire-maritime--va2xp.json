@@ -178,6 +178,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Two-source VC crossfader (channel 1)",
       "patch": "Use channel 1 as a dedicated VC crossfader between two voices, with pan knob centered so the blend sits in the middle of the stereo field.",
       "steps": [
@@ -193,6 +194,7 @@
       "diagram": "VA2XP:\n\nVoice A:\nVoice B:\nLFO:\nOutput:\n\n- Voice A (Out) -> VA2XP (Channel 1 In L)\n- Voice B (Out) -> VA2XP (Channel 1 In R)\n- LFO (Out) >> VA2XP (Channel 1 Crossfade CV)\n- VA2XP (Main Out L) -> Output (L)\n- VA2XP (Main Out R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Mono-to-stereo spread",
       "patch": "Patch one mono voice to channel 1 L only and use the pan CV to turn it into a wide, moving stereo image.",
       "steps": [
@@ -238,6 +240,7 @@
       "diagram": "VA2XP:\n\nDrums:\nSynth:\nClick:\nPA:\nPhones:\n\n- Drums (Out L) -> VA2XP (Channel 2 In L)\n- Drums (Out R) -> VA2XP (Channel 2 In R)\n- Synth (Out L) -> VA2XP (Channel 3 In L)\n- Synth (Out R) -> VA2XP (Channel 3 In R)\n- Click (Out) -> VA2XP (Cue In)\n- VA2XP (Main Out L) -> PA (L)\n- VA2XP (Main Out R) -> PA (R)\n- VA2XP (Headphones) -> Phones (In)"
     },
     {
+      "essential": true,
       "name": "Crossfade + pan on the same voice",
       "patch": "Exploit channel 1's unique dual-CV layout: modulate the L/R crossfade with an envelope while a separate LFO pans the result.",
       "steps": [

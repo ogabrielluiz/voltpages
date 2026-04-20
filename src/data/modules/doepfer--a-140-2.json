@@ -142,16 +142,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Paired VCA envelopes",
       "patch": "Gate 1 from keyboard or sequencer drives both ADSRs via the normalled gate bus; Output 1 opens a VCA, Output 4 opens a second voice, and the inverted output shapes a complementary filter envelope. The two voices stay locked but move differently.",
       "diagram": "A-140-2 Dual Mini ADSR:\n* Gate 1 -> Gate 2 normalled\n* Output 2 = inverted\n\nKeyboard:\nVCA 1:\nVCA 2:\nVCO 1:\nVCO 2:\nFilter:\nMixer:\n\n- Keyboard (Gate) g> A-140-2 Dual Mini ADSR (Gate 1)\n- Keyboard (Pitch) p> VCO 1 (V/Oct)\n- Keyboard (Pitch) p> VCO 2 (V/Oct)\n- A-140-2 Dual Mini ADSR (Output 1) >> VCA 1 (CV)\n- A-140-2 Dual Mini ADSR (Output 4) >> VCA 2 (CV)\n- A-140-2 Dual Mini ADSR (Output 2) >> Filter (Cutoff)\n- VCO 1 (Out) -> VCA 1 (In)\n- VCO 2 (Out) -> VCA 2 (In)\n- VCA 1 (Out) -> Mixer (In 1)\n- VCA 2 (Out) -> Mixer (In 2)"
     },
     {
+      "essential": true,
       "name": "Retrig percussion",
       "patch": "A short gate opens the first ADSR, and a faster trigger train into Retrig 1 restarts the decay while the note is still held. The result is a single envelope that can spit ratcheted accents without extra logic.",
       "diagram": "A-140-2 Dual Mini ADSR:\n* Time Range: M\n\nClock:\nEnvelope:\nVCA:\n\n- Keyboard (Gate) g> A-140-2 Dual Mini ADSR (Gate 1)\n- Clock (Out) t> A-140-2 Dual Mini ADSR (Retrig 1)\n- A-140-2 Dual Mini ADSR (Output 1) >> Envelope (Trig)\n- A-140-2 Dual Mini ADSR (Output 1) >> VCA (CV)\n- Envelope (Out) >> VCA (CV)\n- Noise (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Slow dual contour",
       "patch": "CVT is jumpered to A, D, and R on both channels, with the attenuator set low and the time range on H. A slow LFO into CVT lengthens and shortens both envelopes together for long drone swells and fades.",
       "diagram": "A-140-2 Dual Mini ADSR:\n* Time Range: H\n* CVT affects: A+D+R\n\nLFO:\nVCO:\nFilter:\nVCA:\n\n- LFO (Out) >> A-140-2 Dual Mini ADSR (CVT 1)\n- LFO (Out) >> A-140-2 Dual Mini ADSR (CVT 2)\n- A-140-2 Dual Mini ADSR (Output 1) >> Filter (Cutoff)\n- A-140-2 Dual Mini ADSR (Output 4) >> VCA (CV)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- VCA (Out) -> Output (In)"

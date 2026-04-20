@@ -93,11 +93,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic Euclidean drum pair",
       "patch": "Revised Euclidean table · L=16 P=5 on Out 1 → kick · Main mode / Invert sub-mode on Out 2 → hats fill the gaps",
       "diagram": "KNIGHT'S GALLOP:\n* Table: Revised Euclidean · Mode: MN/Invert · L=16 P=5\n- Clock (Out) c> Knight's Gallop (Clock)\n- Knight's Gallop (Out 1) t> Kick (Trig)\n- Knight's Gallop (Out 2) t> Hat (Trig) // inverse of Out 1"
     },
     {
+      "essential": true,
       "name": "Compute polyrhythm pair",
       "patch": "CP mode / L & P/2 sub-mode · Out 1 kick busy, Out 2 snare with half the hits over same length · shared clock keeps them phase-locked",
       "diagram": "KNIGHT'S GALLOP:\n* Mode: CP · sub: L & P/2 · L=12 P=6\n- Clock (Out) c> Knight's Gallop (Clock)\n- Knight's Gallop (Out 1) t> Kick (Trig) // 6 hits / 12 steps\n- Knight's Gallop (Out 2) t> Snare (Trig) // 3 hits / 12 steps"
@@ -108,6 +110,7 @@
       "diagram": "KNIGHT'S GALLOP:\n* Table: Anti-Euclidean\n- Clock (Out) c> Knight's Gallop (Clock)\n- Bar Clock (Out) t> Knight's Gallop (Reset)\n- Envelope (Out) >> Knight's Gallop (Pulses CV) // density swells\n- Knight's Gallop (Out 1) t> Tom (Trig)\n- Knight's Gallop (Out 2) t> Rim (Trig)"
     },
     {
+      "essential": true,
       "name": "Live shift groove morph",
       "patch": "Steady 16-step Revised Euclidean pattern · +/- Shift buttons rotate the pattern live · Out 2 in MN/No Shift holds a reference downbeat · creates call-and-response between steady and shifting drum",
       "diagram": "KNIGHT'S GALLOP:\n* Mode: MN/No Shift · L=16 P=6\n- Clock (Out) c> Knight's Gallop (Clock)\n- Knight's Gallop (Out 1) t> Shifting Drum (Trig) // rotates with +/-\n- Knight's Gallop (Out 2) t> Steady Drum (Trig) // anchor"

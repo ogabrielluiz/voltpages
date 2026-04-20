@@ -100,16 +100,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Basic 4-voice stereo submix",
       "patch": "Drum bus mono into IN 1 · bass mono into IN 2 · synth stereo into IN 3L/3R · pad stereo into IN 4L/4R (always on) · MIX L/R to output · mute bass or drum drops with switches",
       "diagram": "Mixup:\n* LEVEL 1-3 set · IN 4 unity\n\n- Drums (Out) -> Mixup (IN 1)\n- Bass (Out) -> Mixup (IN 2)\n- Synth L (Out) -> Mixup (IN 3L)\n- Synth R (Out) -> Mixup (IN 3R)\n- Pad L (Out) -> Mixup (IN 4L)\n- Pad R (Out) -> Mixup (IN 4R)\n- Mixup (MIX L) -> Output (L)\n- Mixup (MIX R) -> Output (R) // 4-voice stereo mix"
     },
     {
+      "essential": true,
       "name": "Chain two Mixups for 12+ inputs",
       "patch": "First Mixup handles drums + synths · CHAIN-OUT of Mixup 1 into CHAIN-IN of Mixup 2 · Mixup 2 handles pads + FX returns · final MIX L/R on Mixup 2 sums everything · watch the clip LED on the downstream unit",
       "diagram": "Mixup 1:\n* Drums + synths patched\nMixup 2:\n* Pads + FX returns patched\n\n- Mixup 1 (CHAIN-OUT) -> Mixup 2 (CHAIN-IN)\n- Mixup 2 (MIX L) -> Output (L)\n- Mixup 2 (MIX R) -> Output (R) // 12 inputs across two mixers"
     },
     {
+      "essential": true,
       "name": "FX return with mute pre-fader",
       "patch": "Dry voice into IN 1 · send to external reverb · reverb return stereo to IN 3L/3R · MUTE 3 kills only the wet tail without affecting the dry voice on IN 1 · drop-out fills on performance mute",
       "diagram": "Mixup:\n* LEVEL 1 noon · LEVEL 3 low\n\n- Voice (Out) -> Mixup (IN 1)\n- Voice (Out) -> Reverb (In)\n- Reverb (L) -> Mixup (IN 3L)\n- Reverb (R) -> Mixup (IN 3R)\n- Mixup (MIX L) -> Output (L)\n- Mixup (MIX R) -> Output (R) // mute wet only"

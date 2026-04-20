@@ -99,6 +99,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Pinged percussion voice",
       "patch": "Res just below self-osc · clock → Trig · Freq knob sets pitch · output is a decaying plucked tone with no audio input · attach envelope → VCA CV to add amplitude shaping",
       "diagram": "Pip Filter:\n* Res: just below self-osc\n* Freq: sets pitch\n\nClock:\n\nEnvelope:\n\n- Clock (Out) t> Pip Filter (Trig) // pings resonant peak\n- Envelope (Out) >> Pip Filter (VCA) // amplitude shape\n- Pip Filter (Out) -> Output (In)"
@@ -109,6 +110,7 @@
       "diagram": "Pip Filter:\n* Res: full CW (self-osc)\n* -/+: ~2 o'clock\n\nSequencer:\n\nLFO:\n\n- Sequencer (V/oct) p> Pip Filter (Freq)\n- LFO (Out) >> Pip Filter (-/+) // attenuverted vibrato\n- Pip Filter (Out) -> VCA (In)"
     },
     {
+      "essential": true,
       "name": "Ducked filter sweep",
       "patch": "Audio → In · envelope → VCA CV (ducks volume under filter sweep) · LFO → Freq CV 1 attenuverted for bipolar cutoff modulation · built-in VCA saves a dedicated VCA module",
       "diagram": "Pip Filter:\n* Freq: ~noon\n* Res: moderate\n* -/+: ~1 o'clock\n\nVCO:\n\nLFO:\n\nEnvelope:\n\n- VCO (Out) -> Pip Filter (In)\n- LFO (Out) >> Pip Filter (-/+) // bipolar cutoff sweep\n- Envelope (Out) >> Pip Filter (VCA) // amp shape in-module\n- Pip Filter (Out) -> Output (In)"
@@ -119,6 +121,7 @@
       "diagram": "Pip Filter:\n* Res: full CW\n* Freq: low-mid range\n* -/+: ~1 o'clock\n\nLFO:\n\n- LFO (Out) >> Pip Filter (-/+) // slow drift\n- Pip Filter (Out) -> Mixer (In) // sine drone"
     },
     {
+      "essential": true,
       "name": "Pluck with pitched ping",
       "patch": "Sequencer V/oct → Freq CV 2 · Res just below self-osc · trigger pattern → Trig · filter pings in tune with sequence · no VCO needed · acoustic-like plucked melody",
       "diagram": "Pip Filter:\n* Res: just below self-osc\n* Freq: tuned to A2\n\nSequencer:\n\n- Sequencer (V/oct) p> Pip Filter (Freq)\n- Sequencer (Gate) t> Pip Filter (Trig) // pitched plucks\n- Pip Filter (Out) -> Reverb (In)"

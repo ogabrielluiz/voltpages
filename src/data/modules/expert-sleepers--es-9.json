@@ -102,16 +102,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "DAW multitrack recording of modular",
       "patch": "enable DC-blocking on input pairs used for audio · route each module's audio out to IN 1–14 · set DAW to 16 tracks mapped to inputs 1–14 + S/PDIF 15/16 · arm and record · 14 simultaneous modular channels + optional stereo S/PDIF from an outboard converter",
       "diagram": "ES-9:\n* Input DC Blocking: all on\n\nDrums:\n\nBass:\n\nSynth:\n\nFX:\n\n- Drums (Out) -> ES-9 (IN 1)\n- Bass (Out) -> ES-9 (IN 2)\n- Synth (L) -> ES-9 (IN 3)\n- Synth (R) -> ES-9 (IN 4)\n- FX (L) -> ES-9 (IN 5)\n- FX (R) -> ES-9 (IN 6)\n- ES-9 (USB-C) -> Output (DAW)"
     },
     {
+      "essential": true,
       "name": "Plug-in FX loop via send / return",
       "patch": "route two modular outs into IN 13/14 (DC block on) · in the DAW insert a reverb/compressor plug-in on those inputs · route the DAW plug-in output back through USB channels 15/16 · ES-9 maps USB 15/16 to OUT 7/8 via the mixer · near-zero-latency plug-in as a modular insert",
       "diagram": "ES-9:\n* Mixer 1: USB 15 -> OUT 7, USB 16 -> OUT 8\n\nSource:\n\nDAW:\n\n- Source (L) -> ES-9 (IN 13)\n- Source (R) -> ES-9 (IN 14)\n- ES-9 (Out USB-C) -> DAW (Plugin In)\n- DAW (Plugin Out) -> ES-9 (In USB-C)\n- ES-9 (OUT 7) -> Mixer (L)\n- ES-9 (OUT 8) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Silent Way / CV Tools CV sequencing",
       "patch": "disable DC-blocking on IN pairs used for CV capture (not needed for outputs) · in the DAW load Silent Way / Bitwig CV Tools · send 1V/oct to ES-9 USB channels 9–16 which drive OUT 1–8 DC-coupled · any modular VCO/filter controlled from the DAW in perfect sync",
       "diagram": "ES-9:\n* Outputs: DC-coupled\n\nDAW:\n\nVCO:\n\nFilter:\n\n- DAW (Pitch) -> ES-9 (USB-C)\n- ES-9 (OUT 1) p> VCO (V/Oct)\n- ES-9 (OUT 2) >> Filter (Cutoff)\n- ES-9 (OUT 3) g> VCO (Gate)\n- VCO (Out) -> Output (L)"

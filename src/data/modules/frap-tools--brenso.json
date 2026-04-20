@@ -353,6 +353,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Complex-OSC lead",
       "patch": "Mutual semi-normalled TZFM between yellow and green, shaped through Triangle Shaper into a cranked Wavefolder, tracked by the V/oct sequence.",
       "steps": [
@@ -403,6 +404,7 @@
       "diagram": "BRENSO:\n* Green Sync: Flip\n* Yellow Coarse: mid\n\n- Noise (White) >> BRENSO.Green (Expo FM In)\n- BRENSO.Green (Sine) -> Filter (In)"
     },
     {
+      "essential": true,
       "name": "TZFM modulator sequencing",
       "patch": "Two quantized sequences drive yellow V/oct and a separate VCO feeding yellow's Linear TZ FM — true two-operator FM voices.",
       "steps": [
@@ -485,6 +487,7 @@
       "diagram": "BRENSO:\n* Green: LFO mode\n\n- BRENSO (Mod Bus Out) >> Filter (Cutoff)\n- BRENSO.Green (Triangle) >> VCA (CV)\n- BRENSO.Green (Square) c> Clock Div (In)\n- BRENSO.Green (Saw) >> Reverb (Time CV)"
     },
     {
+      "essential": true,
       "name": "Classic dual-VCO ring mod",
       "patch": "AM/RM switch to 4-quadrant, AM/RM knob full CW — Final carries only the ring-modulated product of yellow's Timbre and green's sine.",
       "steps": [

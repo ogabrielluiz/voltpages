@@ -111,6 +111,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Hello world · LFO to O1",
       "patch": "Canonical first patch. Declare one lfo circuit · set hz=5 · route square output to O1 · load to master · O1 pulses at 5 Hz · demonstrates that a DROID patch is just a list of circuits with parameters mapped to registers.",
       "diagram": "DROID:\n* lfo: hz=5, square=O1\n\n- DROID (O1) c> Envelope (Trig)"
@@ -126,6 +127,7 @@
       "diagram": "DROID:\n* random: output=_RAND\n* sample: input=_RAND, trigger=I1, output=_NOTE\n* minifonion: input=_NOTE, root=P1.1, scale=P1.2, output=O1\n\nP2B8:\n\n- External Clock (Out) c> DROID (I1)\n- DROID (O1) p> VCO (V/Oct)"
     },
     {
+      "essential": true,
       "name": "Euclidean drum trio",
       "patch": "Three euklid circuits, one per drum · shared clock on I1 · length/fill/rotate from P1.1–P1.6 on a P10 · outputs → O1/O2/O3 → kick/snare/hat · B1.1 on a P2B8 mutes the hat via a button circuit · full rhythm box inside one 8HP module.",
       "diagram": "DROID:\n* euklid: clock=I1, length=P1.1, fill=P1.2, output=O1\n* euklid: clock=I1, length=P1.3, fill=P1.4, output=O2\n* euklid: clock=I1, length=P1.5, fill=P1.6, output=O3, mute=B2.1\n\nP10:\n\nP2B8:\n\n- External Clock (Out) c> DROID (I1)\n- DROID (O1) t> Kick (Trig)\n- DROID (O2) t> Snare (Trig)\n- DROID (O3) t> Hat (Trig)"
@@ -146,6 +148,7 @@
       "diagram": "DROID:\n* algoquencer: clock=I1, step1..8=B1.1..B1.8, trigger=O1, output=_RAW\n* minifonion: input=_RAW, root=2, scale=1, output=O2\n\nB32:\n\nP10:\n\n- External Clock (Out) c> DROID (I1)\n- DROID (O1) t> Drum (Trig)\n- DROID (O2) p> VCO (V/Oct)"
     },
     {
+      "essential": true,
       "name": "Self-tuning VCO with calibrator",
       "patch": "calibrator circuit measures VCO frequency at O1 while sweeping through known V/oct values · stores correction curve to DROIDSTA.BIN · subsequent playback through O1 is octave-perfect across six octaves · feed VCO square out back to I1 · run calibration once from a button, use daily.",
       "diagram": "DROID:\n* vcotuner: input=I1\n* calibrator: input=I1, trigger=B1.1, output=O1\n\nP2B8:\n\n- VCO (Square) -> DROID (I1) // frequency measurement\n- DROID (O1) p> VCO (V/Oct) // calibrated pitch"

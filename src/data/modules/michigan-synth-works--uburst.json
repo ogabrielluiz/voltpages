@@ -131,6 +131,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Spectral freeze drone",
       "patch": "Spectral Madness mode with Freeze held and slow LFOs on Position and Size — infinite evolving harmonic drone.",
       "steps": [
@@ -148,6 +149,7 @@
       "diagram": "uBurst:\n* Mode: Spectral Madness (5s hold Quality + 3 presses)\n* Freeze: ON\n* Blend slot: Dry/Wet, full CW\n- Source (Out) -> uBurst (In L)\n- LFO 1 (Slow) >> uBurst (Position CV)\n- LFO 2 (Slower) >> uBurst (Size CV)\n- uBurst (Out L) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
     },
     {
+      "essential": true,
       "name": "Pitched reverb",
       "patch": "Pitch-shifter/Time-stretcher mode with a quantized melody on V/Oct and heavy reverb in the Blend slot.",
       "steps": [
@@ -164,6 +166,7 @@
       "diagram": "uBurst:\n* Mode: Pitch-shifter/Time-stretcher (5s hold + 1 press)\n* Blend slot: Reverb (yellow), ~3 o'clock\n* Size: ~1 o'clock\n- VCO (Out) -> uBurst (In L)\n- Quantizer (Out) p> uBurst (V/Oct)\n- uBurst (Out L) -> Mixer (In L)\n- uBurst (Right Out) -> Mixer (In R)"
     },
     {
+      "essential": true,
       "name": "Granular stutter",
       "patch": "One grain per clock pulse with Density at noon — rhythmic micro-slicing of incoming audio.",
       "steps": [

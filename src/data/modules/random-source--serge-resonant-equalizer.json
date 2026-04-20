@@ -113,16 +113,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Formant vocal sweep",
       "patch": "saw VCO into IN A · raise bands around the 500 Hz to 3 kHz region · drive one comb output lightly into the mix · the equalizer acts like a fixed formant bank for synthetic vowels and spoken tones.",
       "diagram": "ResEQ:\n* Band 1-10: sculpted for vowels\n* Feedback: low\n\nVCO:\nOutput:\n\n- VCO (Saw) -> ResEQ (IN A)\n- ResEQ (MIX OUT 1) -> Output (L)\n- ResEQ (MIX OUT 2) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Comb stereo split",
       "patch": "mono source into IN A and IN B via the mixer · route COMB 1 and COMB 2 to separate channels · move the band knobs as a stereo performance control rather than a static EQ.",
       "diagram": "ResEQ:\n* Input A: noon\n* Input B: noon\n* Feedback: off\n\nMixer:\nOutput:\n\n- Mixer (Out) -> ResEQ (IN A)\n- Mixer (Out) -> ResEQ (IN B)\n- ResEQ (COMB 1) -> Output (L)\n- ResEQ (COMB 2) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Resonant ping bank",
       "patch": "short trigger burst into IN A through a VCA · bias the upper bands upward · the module rings like a tuned metallic object without needing a separate resonator.",
       "diagram": "ResEQ:\n* Band 1-10: bright and peaked\n* Feedback: medium\n\nVCO:\nEnvelope:\nVCA:\nTrigger:\nOutput:\n\n- Trigger (Out) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> ResEQ (IN A)\n- ResEQ (MIX OUT 1) -> Output (In)"

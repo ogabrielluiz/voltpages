@@ -227,11 +227,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Wavetable lead with Link unison",
       "patch": "Osc B Link ON · Osc B Fine Tune slightly off center (~10 cents) · X slider 3 · Y slider 4 · Z slider 2 · slow LFO → Y CV (depth ~30%) · Mix output → filter → VCA · detuned dual-osc lead with slowly morphing wavetable position across the Y plane",
       "diagram": "Piston Honda mk III:\n* Osc B: Link ON · Fine: +10 cents\n* X: 3 · Y: 4 · Z: 2\n\nSequencer:\nLFO:\nFilter:\nVCA:\nEnvelope:\n\n- Sequencer (Pitch) p> Piston Honda mk III (1V/Oct Osc A)\n- LFO (Out) >> Piston Honda mk III (Y CV)\n- Piston Honda mk III (Mix) -> Filter (In)\n- Envelope (Out) >> VCA (CV)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Thru-zero FM bell",
       "patch": "Osc A as carrier · Osc B Link OFF · Osc B output normalled to Osc A FM (no cable) · Osc A FM attenuator ~1 o'clock · Osc B Frequency set ~ratio 1:2.76 for bell · X 2 Y 1 Z 1 (sine-like carrier) · envelope → Osc A CV (modulating FM index via attenuverter) · DX-style bell voice from the internal normal",
       "diagram": "Piston Honda mk III:\n* Osc A: carrier · FM attn: ~1 o'clock\n* Osc B: Link OFF · Freq ratio ~2.76\n* X: 2 · Y: 1 · Z: 1\n\nSequencer:\nEnvelope:\n\n- Sequencer (Pitch) p> Piston Honda mk III (1V/Oct Osc A)\n- Envelope (Out) >> Piston Honda mk III (CV Osc A) // FM index swell\n- Piston Honda mk III (A) -> VCA (In)"
@@ -242,6 +244,7 @@
       "diagram": "Piston Honda mk III:\n* Osc A: Mode Ext In\n* X: scan 1-8 · Y: 3 · Z: 1\n\nVCO:\n* Wave: Sine\n\nEnvelope:\n\n- VCO (Sine) -> Piston Honda mk III (FM/Ext In Osc A)\n- Envelope (Out) >> Piston Honda mk III (CV Osc A) // VCA gain\n- Piston Honda mk III (A) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Hard-sync wavetable scream",
       "patch": "Osc A: master pitch · Osc B: Sync input patched from Osc A (use a mult or patch Osc A out to Osc B Sync) · Osc B Frequency 1 octave above A · sweep LFO → Y CV (both oscs selected) · Osc B Select only for knob edits · classic sync-sweep plus moving wavetable = aggressive lead",
       "diagram": "Piston Honda mk III:\n* Osc A: base pitch\n* Osc B: one octave up, Link OFF\n\nSequencer:\nMult:\nLFO:\n\n- Sequencer (Pitch) p> Piston Honda mk III (1V/Oct Osc A)\n- Piston Honda mk III (A) -> Mult (In)\n- Mult (Out) t> Piston Honda mk III (Sync Osc B)\n- LFO (Out) >> Piston Honda mk III (Y CV)\n- Piston Honda mk III (B) -> Output (In)"

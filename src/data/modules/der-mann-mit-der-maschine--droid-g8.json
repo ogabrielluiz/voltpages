@@ -91,16 +91,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "8-voice drum trigger rack",
       "patch": "Eight [algoquencer] circuits, each with its own pattern and its trigger routed to a different G8 jack · shared clock on I1 · activity/density per voice driven from P10 pots · master's O1–O8 stay free for pitch or decay CV.",
       "diagram": "DROID:\n* algoquencer: clock=I1, trigger=G1\n* algoquencer: clock=I1, trigger=G2\n* algoquencer: clock=I1, trigger=G3\n* algoquencer: clock=I1, trigger=G4\n* algoquencer: clock=I1, trigger=G5\n* algoquencer: clock=I1, trigger=G6\n* algoquencer: clock=I1, trigger=G7\n* algoquencer: clock=I1, trigger=G8\n\nDROID G8:\n\n- External Clock (Out) c> DROID (I1)\n- DROID G8 (G1) t> Drum 1 (Trig)\n- DROID G8 (G2) t> Drum 2 (Trig)\n- DROID G8 (G3) t> Drum 3 (Trig)\n- DROID G8 (G4) t> Drum 4 (Trig)"
     },
     {
+      "essential": true,
       "name": "Gate-based logic utility",
       "patch": "Three external gate signals → G1, G2, G3 (as inputs) · three [logic] circuits produce AND/OR/XOR → written to G6, G7, G8 (as outputs) · same G8 module simultaneously reads three inputs and outputs three derived logic signals · no extra logic module needed.",
       "diagram": "DROID:\n* logic: input1=G1, input2=G2, and=G6\n* logic: input1=G1, input2=G2, or=G7\n* logic: input1=G1, input2=G3, xor=G8\n\nDROID G8:\n\n- Clock A (Out) c> DROID G8 (G1)\n- Clock B (Out) c> DROID G8 (G2)\n- Clock C (Out) c> DROID G8 (G3)\n- DROID G8 (G6) t> Destination A (Trig)\n- DROID G8 (G7) t> Destination B (Trig)\n- DROID G8 (G8) t> Destination C (Trig)"
     },
     {
+      "essential": true,
       "name": "Euclidean polyrhythm bank",
       "patch": "Four [euklid] circuits, each with different length/beats settings driven by four P10 pots · each output writes to G1–G4 of the G8 · four polyrhythmic gate streams from one master+P10+G8 · master's I1 carries the shared clock · O1–O8 stay free for pitch, accents, decay modulation.",
       "diagram": "DROID:\n* euklid: clock=I1, length=16, beats=P1.1*15+1, output=G1\n* euklid: clock=I1, length=16, beats=P1.2*15+1, output=G2\n* euklid: clock=I1, length=16, beats=P1.3*15+1, output=G3\n* euklid: clock=I1, length=16, beats=P1.4*15+1, output=G4\n\nP10:\n\nDROID G8:\n\n- External Clock (Out) c> DROID (I1)\n- DROID G8 (G1) t> Voice 1 (Trig)\n- DROID G8 (G2) t> Voice 2 (Trig)\n- DROID G8 (G3) t> Voice 3 (Trig)\n- DROID G8 (G4) t> Voice 4 (Trig)"

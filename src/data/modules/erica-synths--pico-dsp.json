@@ -75,11 +75,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Drone freeze",
       "patch": "VCO burst → IN · Effect: Granular Delay · Parameter 1 → max to freeze · Wet full",
       "diagram": "PICO DSP:\n* Effect: Granular Delay\n* Param 1: CW (freeze)\n* Wet/Dry: full wet\n- VCO (Out) -> Pico DSP (IN)\n- Pico DSP (OUT L) -> Mixer (L)\n- Pico DSP (OUT R) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Clocked pitch delay",
       "patch": "Drum bus → IN · Effect: Pitch Shift Delay · clock-derived CV → Param 1 for stepped pitch",
       "diagram": "PICO DSP:\n* Effect: Pitch Shift Delay\n- Drum Bus (Out) -> Pico DSP (IN)\n- S&H (Out) >> Pico DSP (CV) // stepped pitch\n- Pico DSP (OUT L) -> Mixer (L)\n- Pico DSP (OUT R) -> Mixer (R)"
@@ -90,6 +92,7 @@
       "diagram": "PICO DSP:\n* Effect: Leslie\n* Param 2: HP filter low\n- VCO (Out) -> Pico DSP (IN)\n- LFO (Out) >> Pico DSP (CV) // rotation speed\n- Pico DSP (OUT L) -> Mixer (L)\n- Pico DSP (OUT R) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Saturated cave reverb",
       "patch": "Mono mix → IN · Effect: Saturated Reverb · Wet high · Param 2 (time) max",
       "diagram": "PICO DSP:\n* Effect: Saturated Reverb\n* Wet/Dry: 3 o'clock\n- Mixer (Send) -> Pico DSP (IN)\n- Pico DSP (OUT L) -> Output (L)\n- Pico DSP (OUT R) -> Output (R)"

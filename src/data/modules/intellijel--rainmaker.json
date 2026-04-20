@@ -217,6 +217,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Polyrhythmic 16-tap delay",
       "patch": "Load preset 8 '16tap Beat'. External clock locks CLK TIME. GROOVE = Hard Swing shoves the 16 tap positions into a swung grid; per-tap pans spread them across the stereo field.",
       "steps": [
@@ -235,6 +236,7 @@
       "diagram": "Rainmaker:\n* Preset: 16tap Beat · GROOVE: Hard Swing · AMT 70\n* Routing: DLY only\n\nClock:\n\n- Synth (Out) -> Rainmaker (IN L)\n- Clock (Out) c> Rainmaker (CLK Delay)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
+      "essential": true,
       "name": "Karplus-Strong string synth",
       "patch": "Comb-only routing plus 1V/OCT on COMB SIZE turns the 64-tap comb into a plucked string. A gated noise burst excites it; Guitar feedback config gives an exponential-averaging string timbre.",
       "steps": [
@@ -272,6 +274,7 @@
       "diagram": "Rainmaker:\n* Taps 1-16: pitch shift 0,+2,+4...+16\n* GROOVE: Straight · DLY FB: low\n\n- Synth (Out) -> Rainmaker (IN L)\n- Rainmaker (OUT L) -> Output (Left)\n- Rainmaker (OUT R) -> Output (Right)"
     },
     {
+      "essential": true,
       "name": "Spectral filter bank reverb",
       "patch": "Tune each tap filter to a harmonic of the source and pan them across the stereo field — Rainmaker becomes a 16-band resonant filter bank.",
       "steps": [

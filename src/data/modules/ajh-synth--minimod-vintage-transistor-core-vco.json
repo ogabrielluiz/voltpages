@@ -119,6 +119,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic Model D voice",
       "patch": "Saw to ladder filter · 8' octave · Envelope into filter cutoff · keyboard V/oct via bus · thick monosynth bass matching the original design intent",
       "diagram": "VCO:\n* Octave: 8'\n\nFilter:\n\nEnvelope:\n\nVCA:\n\n- VCO (Saw) -> Filter (In)\n- Envelope (Out) >> Filter (Cutoff)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
@@ -129,6 +130,7 @@
       "diagram": "VCO:\n* Octave: 8'\n* PWM CV: 70%\n* PWM SHAPE: noon\n\nLFO:\n\n- LFO (Tri) >> VCO (PWM-CV) // classic PWM sweep\n- VCO (Square) -> Filter (In)\n- Filter (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Dual-VCO hard sync lead",
       "patch": "Master VCO free-running · slave VCO Sync Switch = S2 · master Saw to slave SYNC · slave frequency swept by envelope · screaming sync lead",
       "diagram": "VCO 1 (master):\n* Octave: 8'\n\nVCO 2 (slave):\n* Octave: 8'\n* Sync Switch: S2\n* SYNC LEVEL: 3\n\nEnvelope:\n\n- VCO 1 (Saw) -> VCO 2 (SYNC)\n- Envelope (Out) >> VCO 2 (EXP-CV)\n- VCO 2 (Saw) -> Filter (In)"
@@ -139,6 +141,7 @@
       "diagram": "VCO:\n* Octave: LO\n\nFilter:\n\nVCA:\n\nDelay:\n\nMixer:\n\n- VCO (Triangle) >> Filter (Cutoff)\n- VCO (Square) >> VCA (CV)\n- VCO (Shark) >> Delay (Time)\n- VCO (Saw) >> Mixer (Pan CV)"
     },
     {
+      "essential": true,
       "name": "Sharktooth bass",
       "patch": "Shark output into filter · tuned to 32' for sub · the Shark waveform sits between saw and triangle harmonically giving a warm, punchy low end without the buzz of pure saw",
       "diagram": "VCO:\n* Octave: 32'\n\nFilter:\n\nEnvelope:\n\nVCA:\n\n- VCO (Shark) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"

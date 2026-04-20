@@ -109,6 +109,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic acid slide",
       "patch": "Sequencer pitch → IN · RISE low · FALL low · SHAPE full CW for time-compensated glide · OUT → VCO V/Oct · short glides between steps regardless of interval size · sub-mV tracking keeps tuning locked",
       "diagram": "SLEW:\n* RISE: low\n* FALL: low\n* SHAPE: full CW\n* RANGE: middle\n\nSequencer:\nVCO:\n\n- Sequencer (Pitch) p> SLEW (IN)\n- SLEW (OUT) p> VCO (V/Oct)"
@@ -124,6 +125,7 @@
       "diagram": "SLEW:\n* RISE: low\n* FALL: low\n* RANGE: fastest\n\nLFO:\nEnvelope A:\nEnvelope B:\n\n- LFO (Out) >> SLEW (IN)\n- SLEW (RISING) t> Envelope A (Trig)\n- SLEW (FALLING) t> Envelope B (Trig)"
     },
     {
+      "essential": true,
       "name": "Voltage-controlled glide depth",
       "patch": "Sequencer pitch → IN · OUT → VCO · expression pedal or LFO into CV · switch to RF to modulate both rise and fall · RISE and FALL faders set max glide time · dynamic portamento that opens and closes under CV",
       "diagram": "SLEW:\n* RISE: mid\n* FALL: mid\n* CV switch: RF\n* SHAPE: 2 o'clock\n\nSequencer:\nLFO:\nVCO:\n\n- Sequencer (Pitch) p> SLEW (IN)\n- LFO (Out) >> SLEW (CV)\n- SLEW (OUT) p> VCO (V/Oct)"
@@ -134,6 +136,7 @@
       "diagram": "SLEW:\n* RISE: 0 (instant)\n* FALL: mid\n* SHAPE: CCW\n* RANGE: fastest\n\nClock:\nVCO:\nFilter:\nVCA:\n\n- Clock (Out) t> SLEW (IN)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- SLEW (OUT) >> VCA (CV)\n- SLEW (OUT) >> Filter (Cutoff)"
     },
     {
+      "essential": true,
       "name": "Smooth sample-and-hold",
       "patch": "S&H output → IN · RANGE middle, RISE and FALL matched · OUT → filter cutoff · stepped random becomes smooth random contour · SHAPE 2 o'clock so big jumps still arrive on time",
       "diagram": "SLEW:\n* RISE: mid\n* FALL: mid\n* SHAPE: 2 o'clock\n* RANGE: middle\n\nS&H:\nFilter:\n\n- S&H (Out) >> SLEW (IN)\n- SLEW (OUT) >> Filter (Cutoff)"

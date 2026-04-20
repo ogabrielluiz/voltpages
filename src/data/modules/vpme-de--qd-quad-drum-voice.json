@@ -124,11 +124,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four-part drum rack",
       "patch": "Voice 1 = kick model · Voice 2 = snare model · Voice 3 = hat model · Voice 4 = percussion model · sequencer clocks each voice separately · stereo mix stays internal until the final output stage.",
       "diagram": "QD:\n* Voice 1: kick model\n* Voice 2: snare model\n* Voice 3: hat model\n* Voice 4: percussion model\n\nSequencer:\nOutput:\n\n- Sequencer (Trig 1) t> QD (TRIG 1)\n- Sequencer (Trig 2) t> QD (TRIG 2)\n- Sequencer (Trig 3) t> QD (TRIG 3)\n- Sequencer (Trig 4) t> QD (TRIG 4)\n- QD (OUT L) -> Output (L)\n- QD (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Random sample percussion",
       "patch": "Voice 1 in sample mode · RANDOM folder enabled · CV 1 scans sample select · short gates retrigger a changing hit pattern with low-latency repeats and controlled randomness.",
       "diagram": "QD:\n* Voice 1: sample mode\n* Voice 1 folder: RANDOM\n* CV 1: sample select\n\nSequencer:\nLFO:\nOutput:\n\n- Sequencer (Gate) g> QD (TRIG 1)\n- LFO (Out) >> QD (CV 1)\n- QD (OUT L) -> Output (In)"
@@ -144,6 +146,7 @@
       "diagram": "QD:\n* Voice 3: hat model\n* Voice 4: accent model\n\nSequencer:\nMixer:\nOutput:\n\n- Sequencer (Trig 3) t> QD (TRIG 3)\n- Sequencer (Trig 4) t> QD (TRIG 4)\n- QD (OUT L) -> Mixer (In 1)\n- QD (OUT R) -> Mixer (In 2)\n- Mixer (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Preset morph performance",
       "patch": "CV 4 selects presets · store contrasting drum kits in adjacent slots · sweep CV 4 with a slow LFO or stepped CV for live kit changes without reprogramming triggers.",
       "diagram": "QD:\n* CV 4: preset select\n* Presets: multiple kits\n\nLFO:\nOutput:\n\n- LFO (Out) >> QD (CV 4)\n- QD (OUT L) -> Output (L)\n- QD (OUT R) -> Output (R)"

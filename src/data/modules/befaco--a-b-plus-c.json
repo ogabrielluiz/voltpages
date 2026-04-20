@@ -149,6 +149,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Ring modulator pair",
       "patch": "Two independent four-quadrant multipliers — one per channel. Classic sum/difference ring-mod tones from two pairs of VCOs.",
       "steps": [
@@ -186,6 +187,7 @@
       "diagram": "A*B+C:\n* Mode: MULT\n* B1 gain switch: x1\n* C1 gain switch: x1\n* B1 Level: full CW\n* C1 Level: full CCW\n\nVCO:\nEnvelope:\n\n- VCO (Out) -> A*B+C (A 1)\n- Envelope (Out) >> A*B+C (B 1)\n- A*B+C (OUT 1) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Dual bipolar offset / DC source",
       "patch": "Two independent manual DC voltages from the C normals. Tune VCOs, set S&H thresholds, bias filter cutoffs — no patch cables into the inputs.",
       "steps": [
@@ -203,6 +205,7 @@
       "diagram": "A*B+C:\n* Mode: MULT\n* C1 gain switch: choose x1 / x2 / -1 for range & polarity\n* C2 gain switch: choose x1 / x2 / -1\n\nVCO 1:\nVCO 2:\n\n- A*B+C (OUT 1) >> VCO 1 (V/Oct) // offset 1\n- A*B+C (OUT 2) >> VCO 2 (V/Oct) // offset 2"
     },
     {
+      "essential": true,
       "name": "Two-channel CV mixer",
       "patch": "Sum two modulation sources (each with attenuation and optional polarity invert) into one control line. Uses MIX mode.",
       "steps": [

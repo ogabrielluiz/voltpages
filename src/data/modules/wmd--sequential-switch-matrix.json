@@ -212,11 +212,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four-source drum router",
       "patch": "Four drum voices feed the four inputs. Step Input advances the matrix each bar so the output routing changes on cue, while Comp Out can fire envelopes whenever a voice rises above the threshold.",
       "diagram": "Sequential Switch Matrix:\n* Bank: 0\n* Matrix: 0\n* Top: 3\n\nDrum 1:\nDrum 2:\nDrum 3:\nDrum 4:\nMixer:\nEnvelope:\nClock:\n\n- Drum 1 (Out) -> Sequential Switch Matrix (Inputs 1-4)\n- Drum 2 (Out) -> Sequential Switch Matrix (Inputs 1-4)\n- Drum 3 (Out) -> Sequential Switch Matrix (Inputs 1-4)\n- Drum 4 (Out) -> Sequential Switch Matrix (Inputs 1-4)\n- Clock (Out) t> Sequential Switch Matrix (Step Input)\n- Sequential Switch Matrix (Outputs 1-4) -> Mixer (In 1)\n- Sequential Switch Matrix (Outputs 1-4) -> Mixer (In 2)\n- Sequential Switch Matrix (Comp Out) t> Envelope (Trig)"
     },
     {
+      "essential": true,
       "name": "8-bit pitch source",
       "patch": "Use the first two columns as a weighted DAC and feed DAC 1:2 Out into a quantizer or oscillator. The matrix becomes a stepped pitch source that can still be re-routed live with the routing buttons.",
       "diagram": "Sequential Switch Matrix:\n* Bank: 1\n* Matrix: 7\n* CV Limit: on\n\nQuantizer:\nVCO:\nEnvelope:\nVCA:\n\n- Sequential Switch Matrix (DAC 1:2 Out) >> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Clock (Out) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
@@ -227,6 +229,7 @@
       "diagram": "Sequential Switch Matrix:\n* Bank: 2\n* Matrix: 4\n* CV Limit: on\n\nLFO:\nEnvelope:\nVCA:\nFilter:\n\n- LFO (Out) >> Sequential Switch Matrix (CV Input)\n- LFO (Out) >> Sequential Switch Matrix (Compare In)\n- Sequential Switch Matrix (Comp Out) t> Envelope (Trig)\n- Sequential Switch Matrix (Outputs 1-4) -> Filter (In)\n- Envelope (Out) >> VCA (CV)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Banked scene changes",
       "patch": "Store different routings across the four banks, then step or CV-scan between them while keeping the actual audio sources connected on the rear MixOut bus. This gives quick scene changes without rewiring the rack.",
       "diagram": "Sequential Switch Matrix:\n* Bank: 0\n* Matrix: 0\n* Rnd Rcl: off\n\nSource 1:\nSource 2:\nMixer:\nOutput:\nClock:\n\n- Source 1 (Out) -> Sequential Switch Matrix (Inputs 1-4)\n- Source 2 (Out) -> Sequential Switch Matrix (Inputs 1-4)\n- Sequential Switch Matrix (MixOut rear) -> Sequential Switch Matrix (MixIn rear)\n- Clock (Out) c> Sequential Switch Matrix (Step Input)\n- Sequential Switch Matrix (Outputs 1-4) -> Mixer (In 1)\n- Sequential Switch Matrix (Outputs 1-4) -> Mixer (In 2)\n- Mixer (Out) -> Output (In)"

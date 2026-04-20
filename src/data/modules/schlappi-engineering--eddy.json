@@ -173,16 +173,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Clean stereo submix",
       "patch": "Three stereo sources into channels 1-3 · OUT select on MIX · level pots around noon · use CV inputs for final automation on a compact stereo bus.",
       "diagram": "Eddy:\n* OUT select: MIX\n* Sidechain: IN4\n* Channel 1 switch: on\n* Channel 2 switch: on\n* Channel 3 switch: on\n\nVCO A:\nVCO B:\nPad:\nOutput:\n\n- VCO A (Out L) -> Eddy (IN 1 L)\n- VCO A (Out R) -> Eddy (IN 1 R)\n- VCO B (Out L) -> Eddy (IN 2 L)\n- VCO B (Out R) -> Eddy (IN 2 R)\n- Pad (Out L) -> Eddy (IN 3 L)\n- Pad (Out R) -> Eddy (IN 3 R)\n- Eddy (OUT L) -> Output (L)\n- Eddy (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Sidechain pump",
       "patch": "Pads on channels 1-3 · kick into IN 4 as the sidechain source · OUT select on COMP · the mix ducks around the kick without extra patching.",
       "diagram": "Eddy:\n* OUT select: COMP\n* Sidechain: SCHAIN\n* Channel 1 switch: on\n* Channel 2 switch: on\n* Channel 3 switch: on\n\nKick:\nPad:\nOutput:\n\n- Pad (Out L) -> Eddy (IN 1 L)\n- Pad (Out R) -> Eddy (IN 1 R)\n- Pad (Out L) -> Eddy (IN 2 L)\n- Pad (Out R) -> Eddy (IN 2 R)\n- Pad (Out L) -> Eddy (IN 3 L)\n- Pad (Out R) -> Eddy (IN 3 R)\n- Kick (Out) -> Eddy (IN 4 / Sidechain)\n- Eddy (OUT L) -> Output (L)\n- Eddy (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Distorted bus",
       "patch": "OUT select on DIST · drive the input levels harder · use the invert switches to hollow the center or reinforce the sides before the bus clips.",
       "diagram": "Eddy:\n* OUT select: DIST\n* Channel 1 switch: on\n* Channel 2 switch: invert\n* Channel 3 switch: on\n\nVCO A:\nVCO B:\nOutput:\n\n- VCO A (Out L) -> Eddy (IN 1 L)\n- VCO A (Out R) -> Eddy (IN 1 R)\n- VCO B (Out L) -> Eddy (IN 2 L)\n- VCO B (Out R) -> Eddy (IN 2 R)\n- Eddy (OUT L) -> Output (L)\n- Eddy (OUT R) -> Output (R)"

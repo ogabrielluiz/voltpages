@@ -115,16 +115,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Sub-reinforced bass",
       "patch": "VCO mode · Saw into filter · Sub -1 mixed under the Saw · pitch CV from sequencer · layered sub octave fattens the low end without detuning voices.",
       "diagram": "ONA:\n* Mode: VCO\n* OCT: 2\n* PW: noon\n\nMixer:\n\nFilter:\n\n- Sequencer (Pitch) p> ONA (OCT)\n- ONA (Saw) -> Filter (In)\n- ONA (Sub -1) -> Mixer (In 2)\n- Filter (Out) -> Mixer (In 1)"
     },
     {
+      "essential": true,
       "name": "Evolving complex pad",
       "patch": "VCO mode · Complex 1 into low-pass filter · slow LFO into PW input · duty cycle modulation reshapes the triangle-plus-PWM mix for slow harmonic drift.",
       "diagram": "ONA:\n* Mode: VCO\n* FM Mode: EXP\n* PW: noon\n\nLFO:\n\nFilter:\n\n- LFO (Out) >> ONA (PW)\n- ONA (Complex 1) -> Filter (In)\n- Filter (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Linear FM bells",
       "patch": "VCO mode · FM Mode LIN · second VCO's sine into FM input · FM knob near unity · carrier Sine out · inharmonic metallic FM tones that keep pitch stable.",
       "diagram": "ONA:\n* Mode: VCO\n* FM Mode: LIN\n* FM: ~3 o'clock\n\nVCO 2:\n\nVCA:\n\n- VCO 2 (Sine) -> ONA (FM)\n- Sequencer (Pitch) p> ONA (OCT)\n- ONA (Sine) -> VCA (In)"

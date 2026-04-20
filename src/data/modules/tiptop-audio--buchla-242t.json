@@ -176,11 +176,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Three-part polymetric drum pattern",
       "patch": "program A=kick pattern (length 4), B=hats (length 7), C=snare (length 12) · same internal clock · each MATRIX output to its drum voice · classic Buchla-style polymetric groove that never repeats the same way for 84 bars",
       "diagram": "242t:\n* n(A)=4, n(B)=7, n(C)=12\n* A: 1,3 · B: 1,4,6 · C: 5,9,11\n* PERIOD: ~125ms (120 BPM sixteenths)\n\nKick:\nHats:\nSnare:\n\n- 242t (MATRIX A) g> Kick (Trig)\n- 242t (MATRIX B) g> Hats (Trig)\n- 242t (MATRIX C) g> Snare (Trig)"
     },
     {
+      "essential": true,
       "name": "Direct LPG strike via ramp",
       "patch": "ramp OUT to 292t (or any vactrol LPG) CV · matrix A triggers the 259t/258t voice · each stage fires a self-enveloping note with no extra envelope module needed · PERIOD knob shapes the decay",
       "diagram": "242t:\n* A: 1,3,5,7\n* PERIOD: ~400ms\n\nVCO:\nLPG:\n\n- VCO (Out) -> LPG (In)\n- 242t (Ramp OUT) >> LPG (CV) // self-striking ramp\n- 242t (MATRIX A) t> VCO (Trig)"
@@ -216,6 +218,7 @@
       "diagram": "242t:\n* A: 1,3,5,7,9,11\n\nFootswitch:\nDrum:\n\n- Footswitch (Start) g> 242t (start IN)\n- Footswitch (Stop) g> 242t (stop IN)\n- 242t (MATRIX A) t> Drum (Trig)"
     },
     {
+      "essential": true,
       "name": "Generative melody via ALL OUT + quantizer",
       "patch": "ALL OUT steady clock · matrix A triggers a random/S&H voice · B triggers a second voice · C triggers an accent · three-voice generative line with polyrhythm between them",
       "diagram": "242t:\n* n(A)=5, n(B)=7, n(C)=3\n\nS&H:\nVCO:\nNoise:\nQuantizer:\nDrum:\nAccent Drum:\n\n- Noise (Out) >> S&H (In)\n- 242t (ALL OUT) c> S&H (Trig)\n- S&H (Out) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- 242t (MATRIX A) g> VCO (Gate)\n- 242t (MATRIX B) t> Drum (Trig)\n- 242t (MATRIX C) t> Accent Drum (Trig)"

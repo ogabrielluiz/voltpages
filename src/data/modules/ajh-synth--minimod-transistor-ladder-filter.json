@@ -102,6 +102,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Model D bass tracking",
       "patch": "Sequencer V/oct → 1V/Oct filter input · VCO into IN 1 · Envelope into FREQ-CV with FREQ CV at 2 o'clock · EMPHASIS ~5 · classic Moog-style filter envelope with full keyboard tracking",
       "diagram": "VCF:\n* EMPHASIS: 5\n* FREQ CV: 2 o'clock (pos 7)\n\nVCO:\n\nSequencer:\n\nEnvelope:\n\nVCA:\n\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Pitch) p> VCF (1V/Oct)\n- VCO (Saw) -> VCF (IN 1)\n- Envelope (Out) >> VCF (FREQ-CV)\n- VCF (OUT) -> VCA (In)\n- VCA (Out) -> Output (In)"
@@ -112,11 +113,13 @@
       "diagram": "VCF:\n* EMPHASIS: 7\n* FREQ knob: noon\n\nVCO:\n\nSequencer:\n\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Sequencer (Pitch) >> VCF (2/3 CV) // 1.5V/oct tracking\n- VCO (Saw) -> VCF (IN 1)\n- VCF (OUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Three-oscillator fat unison",
       "patch": "Three detuned VCOs into IN 1-3 · levels balanced ~70% each · J1 jumper removed for pre-filter overdrive · EMPHASIS ~4 keeps the fatness without squealing · classic thick Moog bass",
       "diagram": "VCF:\n* J1 jumper: REMOVED (overdrive)\n* INPUT 1-3: ~70%\n* EMPHASIS: 4\n\nVCO 1:\n\nVCO 2:\n\nVCO 3:\n\nEnvelope:\n\nVCA:\n\n- VCO 1 (Saw) -> VCF (IN 1)\n- VCO 2 (Saw) -> VCF (IN 2)\n- VCO 3 (Pulse) -> VCF (IN 3)\n- Envelope (Out) >> VCF (FREQ-CV)\n- VCF (OUT) -> VCA (In)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Sine VCO from self-oscillation",
       "patch": "No audio input · EMPHASIS at 10 · 1V/Oct from sequencer · filter sings as a sinewave VCO tracking ~3-4 octaves · FM the cutoff via FREQ-CV for timbral motion",
       "diagram": "VCF:\n* EMPHASIS: 10 (self-osc)\n* INPUT 1-3: 0\n\nSequencer:\n\nLFO:\n\n- Sequencer (Pitch) p> VCF (1V/Oct)\n- LFO (Out) >> VCF (FREQ-CV) // timbral FM\n- VCF (OUT) -> Output (In)"

@@ -120,6 +120,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four-on-floor kick duck",
       "patch": "Classic side-chain pump: kick triggers compression on a stereo mix, ducking everything under each beat.",
       "steps": [
@@ -193,6 +194,7 @@
       "diagram": "Messor:\n* Filter: HP\n* Ratio: moderate\n* Attack: fast\n\nLFO:\n\nPad:\n\n- Pad (Out L) -> Messor (IN L)\n- LFO (Out) >> Messor (FLT CV) // sweeping sidechain\n- Messor (OUT L) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Drum-bus glue",
       "patch": "Gentle stereo bus compression with Warm engaged — cohere a drum submix without obvious pumping.",
       "steps": [
@@ -222,6 +224,7 @@
       "diagram": "Messor:\n* Filter: HP\n* Ratio: heavy\n* Attack: fast\n* Release: ~300ms\n\nClock:\n\nAD:\n\nPad:\n\n- Clock (Out) t> AD (Trig)\n- AD (Out) -> Messor (SC IN) // audio-shaped key\n- Pad (Out L) -> Messor (IN L)\n- Messor (OUT L) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Parallel NY drum squash",
       "patch": "Crush a drum loop in parallel with Warm engaged, then blend with the dry signal at a mixer for an aggressive NYC-style bus.",
       "steps": [

@@ -94,16 +94,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four mono voices into stereo",
       "patch": "Four mono VCOs → CH1-CH4 L(M) inputs, R jacks empty · each channel auto-upmixes to centred stereo · fader per voice · OUT L/R → master out · dense four-voice centre mix with one cable per voice",
       "diagram": "STMix:\n* CH 1-4: Level to taste\n\nVCO 1:\nVCO 2:\nVCO 3:\nVCO 4:\n\n- VCO 1 (Out) -> STMix (L(M) IN 1)\n- VCO 2 (Out) -> STMix (L(M) IN 2)\n- VCO 3 (Out) -> STMix (L(M) IN 3)\n- VCO 4 (Out) -> STMix (L(M) IN 4)\n- STMix (OUT L) -> Output (L)\n- STMix (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Stereo FX in, dry on AUX",
       "patch": "CH1-CH3 feed voices into the mix · CH4 stereo = wet return from a reverb send · dry sum of the voices → AUX L/R to sit at unity behind the wet channel · fade CH4 to dial wet/dry without touching the voices",
       "diagram": "STMix:\n* CH 1-3: voices\n* CH 4: wet return\n\nVCO 1:\nVCO 2:\nVCO 3:\nReverb:\nMult:\n\n- VCO 1 (Out) -> STMix (L(M) IN 1)\n- VCO 2 (Out) -> STMix (L(M) IN 2)\n- VCO 3 (Out) -> STMix (L(M) IN 3)\n- Mult (Sum L) -> Reverb (In L) // dry send\n- Mult (Sum R) -> Reverb (In R)\n- Reverb (Out L) -> STMix (L(M) IN 4)\n- Reverb (Out R) -> STMix (R IN 4)\n- Mult (Sum L) -> STMix (AUX L) // dry unity\n- Mult (Sum R) -> STMix (AUX R)"
     },
     {
+      "essential": true,
       "name": "CV summing bus",
       "patch": "Four modulation sources (LFO, envelope, random, offset) → CH1-CH4 L(M) · faders scale each contribution · OUT L = composite CV · because inputs are DC-coupled, STMix doubles as a 4-into-1 CV mixer with per-source level and unity AUX for a fifth signal",
       "diagram": "STMix:\n* CH 1-4: Level = mix amount per source\n\nLFO:\nEnvelope:\nRandom:\nOffset:\nExtra CV:\n\n- LFO (Out) >> STMix (L(M) IN 1)\n- Envelope (Out) >> STMix (L(M) IN 2)\n- Random (Out) >> STMix (L(M) IN 3)\n- Offset (Out) >> STMix (L(M) IN 4)\n- Extra CV (Out) >> STMix (AUX L) // unity\n- STMix (OUT L) >> Filter (Cutoff) // composite CV"

@@ -102,16 +102,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Pinged vactrol bass",
       "patch": "RES near self-osc · close FREQ low · no IN signal · clock-derived trigger to PING · take 4P (LP mode) · results in plucky pitched bass tones with natural decay",
       "diagram": "C4RBN:\n* RES: ~3 o'clock\n* FREQ: low\n* 4P mode: LP\n\nClock:\n\n- Clock (Out) t> C4RBN (PING)\n- Sequencer (Pitch) p> C4RBN (V/OCT)\n- C4RBN (4P) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Screaming fold lead",
       "patch": "audio through IN · SAT cycled to stage 3 · FOLD enabled · RES high · envelope to FM via attenuverter · take 4P for overdriven folded lead",
       "diagram": "C4RBN:\n* SAT: stage 3\n* FOLD: on\n* RES: high\n* 4P mode: BP\n\nVCO:\nEnvelope:\n\n- VCO (Saw) -> C4RBN (IN)\n- Envelope (Out) >> C4RBN (FM)\n- C4RBN (4P) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Parallel LP/HP notch",
       "patch": "mix LP and HP 2-pole outputs to external mixer with HP inverted · pseudo-notch with resonance peak at cutoff · FM attenuverter sweeps with bipolar LFO",
       "diagram": "C4RBN:\n\nVCO:\nLFO:\nMixer:\n\n- VCO (Out) -> C4RBN (IN)\n- LFO (Out) >> C4RBN (FM)\n- C4RBN (LP) -> Mixer (In 1)\n- C4RBN (HP) -> Mixer (In 2) // invert at mixer\n- Mixer (Out) -> Output (In)"

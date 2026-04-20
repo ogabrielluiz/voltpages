@@ -288,16 +288,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Lush hall",
       "patch": "Stereo synth into IN L/R · MODEL set to a hall or plate · MIX around noon · SWELL off · classic wide reverb for pads and chords.",
       "diagram": "Swells:\n* MODEL X/Y/Z: X\n* MODEL 1/2/3: 1\n* LO-FI: OFF\n* MIX: noon\n\nSynth:\nOutput:\n\n- Synth (Out L) -> Swells (IN L)\n- Synth (Out R) -> Swells (IN R)\n- Swells (OUT L) -> Output (L)\n- Swells (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Sidechain ducked space",
       "patch": "Kick into SC · pad into IN L/R · SWELL output to a VCA CV input or downstream filter cutoff · the reverb breathes around the kick without manual automation.",
       "diagram": "Swells:\n* MODEL X/Y/Z: Y\n* MODEL 1/2/3: 2\n* LO-FI: MIN\n* RISE: slow\n* FALL: medium\n\nKick:\nPad:\nVCA:\nOutput:\n\n- Kick (Out) -> Swells (SC)\n- Pad (Out L) -> Swells (IN L)\n- Pad (Out R) -> Swells (IN R)\n- Swells (SWELL) >> VCA (CV)\n- Pad (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Freeze cloud",
       "patch": "A short chord enters IN L/R · FREEZE catches the tail · SWELL keeps moving a filter or VCA in the rest of the rack · endless sustain without a separate sampler.",
       "diagram": "Swells:\n* MODEL X/Y/Z: Z\n* MODEL 1/2/3: 3\n* FREEZE: on\n* MIX: wet\n\nClock:\nFilter:\nOutput:\n\n- Clock (Out) t> Swells (TRIG)\n- Synth (Out L) -> Swells (IN L)\n- Synth (Out R) -> Swells (IN R)\n- Swells (SWELL) >> Filter (Cutoff)\n- Swells (OUT L) -> Output (L)\n- Swells (OUT R) -> Output (R)"

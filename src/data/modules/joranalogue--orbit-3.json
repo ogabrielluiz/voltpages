@@ -180,6 +180,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Slow chaotic modulation bus",
       "patch": "LOW range · TAME · moderate DISTRIBUTION · six outputs drive six destinations (filter, VCA, pan, FX, etc.) · correlated-yet-different modulations give organic motion without six separate LFOs",
       "diagram": "Orbit 3:\n* Range: LOW\n* TAME/WILD: TAME\n* DISTRIBUTION: noon\n\n- Orbit 3 (+X) >> Filter (Cutoff)\n- Orbit 3 (+Y) >> VCA (CV)\n- Orbit 3 (+Z) >> Pan (CV)\n- Orbit 3 (−X) >> FX (Time)\n- Orbit 3 (−Y) >> VCO (FM)\n- Orbit 3 (−Z) >> Filter (Res)"
@@ -190,6 +191,7 @@
       "diagram": "Orbit 3:\n* Range: LOW\n* TAME/WILD: TAME\n\n- Orbit 3 (+Z) >> VCO (FM)\n- Orbit 3 (EP) g> Switch (CV)\n- VCO (Saw) -> Switch (In A)\n- VCO (Square) -> Switch (In B)\n- Switch (Out) -> Filter (In)"
     },
     {
+      "essential": true,
       "name": "Saw-wave chaos VCO",
       "patch": "AUDIO range · 1V/oct sequencer → V/OCT · +X → FREQ. input at max FREQ. MOD. · feedback warps the sine core · Z outputs become saw/ramp-like · chaotic overtones bend with DISTRIBUTION",
       "diagram": "Orbit 3:\n* Range: AUDIO\n* FREQ. MOD.: max\n\n- Sequencer (Pitch) p> Orbit 3 (V/OCT.)\n- Orbit 3 (+X) >> Orbit 3 (FREQ.) // self-FM feedback\n- Orbit 3 (+Z) -> Filter (In)\n- Envelope (Out) >> Filter (Cutoff)"
@@ -210,6 +212,7 @@
       "diagram": "Orbit 3:\n* Range: AUDIO\n* TAME/WILD: TAME\n* DISTRIBUTION: low\n\n- Orbit 3 (+X) -> Mixer (In 1)\n- Orbit 3 (+Y) -> Mixer (In 2)\n- Orbit 3 (+Z) -> Mixer (In 3)\n- Orbit 3 (−X) -> Mixer (In 4)\n- Orbit 3 (−Y) -> Mixer (In 5)\n- Orbit 3 (−Z) -> Mixer (In 6)\n- Mixer (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Chaotic S&H source",
       "patch": "LOW range · WILD · +X feeds S&H input · clock samples at steady rate · resulting voltages are correlated-but-irregular · feed to quantizer for deterministic melodic sequences",
       "diagram": "Orbit 3:\n* Range: LOW\n* TAME/WILD: WILD\n\n- Orbit 3 (+X) >> S&H (In)\n- Clock (Out) c> S&H (Trig)\n- S&H (Out) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)"

@@ -150,6 +150,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Mother-32 + DFAM classic sync",
       "patch": "Mother-32 melody locked to DFAM drums · Setup page 1 value 2 (Clock default) · ASSIGN at Mother = 16th-note clock · patch Mother ASSIGN → DFAM ADV/CLOCK · start DFAM then Mother · both advance in lockstep · experiment with Clock/2 or Clock/4 divisions for polyrhythms",
       "diagram": "Mother-32:\n* Sequencer: running\n* ASSIGN: Clock (Setup p1 v2)\n\nDFAM:\n* RUN/STOP armed before Mother starts\n\n- Mother-32 (ASSIGN) c> DFAM (ADV/CLOCK)"
@@ -175,11 +176,13 @@
       "diagram": "Mother-32:\n* Setup p3 v4: TEMPO = Step Address CV\n* Pattern: 8 stored pitches\n\n- LFO (Out) >> Mother-32 (TEMPO) // CV voltage selects step"
     },
     {
+      "essential": true,
       "name": "Ratcheting acid line",
       "patch": "Program 8 steps · SHIFT + GLIDE on steps 3 and 7 to set ratchet = 4 · glide ON between steps · GLIDE knob ~9 o'clock · Decay short · VCF MOD SOURCE = EG · VCF MOD AMOUNT 3 o'clock · classic 303-style roll with slides and bursts",
       "diagram": "Mother-32:\n* Pattern: 8 steps with ratchet=4 on steps 3 & 7\n* GLIDE: ~9 o'clock\n* SUSTAIN: ON\n* VCF MOD SRC: EG · AMT: 3 o'clock\n\n- Mother-32 (VCA) -> Output (In) // internal voice"
     },
     {
+      "essential": true,
       "name": "Ping-filter drum voice",
       "patch": "VCA MODE: ON · VCF MOD SOURCE: EG · VCF MOD AMOUNT 3 o'clock · RESONANCE ~3 o'clock · short Decay · feed ASSIGN (Clock) → GATE · filter pings with every clock pulse · detune with CUTOFF for tom/kick flavors",
       "diagram": "Mother-32:\n* VCA MODE: ON\n* VCF MOD SRC: EG · VCF MOD AMT: 3 o'clock\n* RESONANCE: ~3 o'clock · DECAY: short\n* ASSIGN: Clock\n\n- Mother-32 (ASSIGN) t> Mother-32 (GATE) // ping on every clock"

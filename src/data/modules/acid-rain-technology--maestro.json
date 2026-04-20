@@ -168,6 +168,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Six-lane synced modulation bus",
       "patch": "Master clock → clock in · CH I: 1/16 ramp-up for hat accent · CH II: 1/4 square bipolar → VCA punch · CH III: 1/2 triangle → filter cutoff · CH IV: 1/4s random+smooth → resonance · CH V: 1/8 square for arpeggio decay · CH VI: 1 bar slow ramp → pan sweep · one module replaces six LFOs",
       "diagram": "Maestro:\n* CH I: 1/16 ramp-up\n* CH II: 1/4 square · bipolar\n* CH III: 1/2 triangle\n* CH IV: 1/4s random + smooth\n* CH V: 1/8 square\n* CH VI: 1 bar slow ramp\n\nClock Source:\nHat VCA:\nKick VCA:\nFilter:\nVCA:\nArp Env:\nPan:\n\n- Clock Source (Out) c> Maestro (clock in)\n- Maestro (channel out I) >> Hat VCA (CV)\n- Maestro (channel out II) >> Kick VCA (CV)\n- Maestro (channel out III) >> Filter (Cutoff)\n- Maestro (channel out IV) >> Filter (Resonance)\n- Maestro (channel out V) >> Arp Env (Level)\n- Maestro (channel out VI) >> Pan (CV)"
@@ -183,6 +184,7 @@
       "diagram": "Maestro:\n* CH I: falling saw + smooth\n* CH II: triangle-down + smooth + bipolar\n* CH III: 1/16 square (free run)\n\nKick Trig:\nSnare Trig:\nClock:\nKick VCA:\nSnare VCA:\nHat VCA:\n\n- Clock (Out) c> Maestro (clock in)\n- Kick Trig (Out) t> Maestro (gate / trig in I)\n- Snare Trig (Out) t> Maestro (gate / trig in II)\n- Maestro (channel out I) >> Kick VCA (CV)\n- Maestro (channel out II) >> Snare VCA (CV)\n- Maestro (channel out III) >> Hat VCA (CV)"
     },
     {
+      "essential": true,
       "name": "Performance recall scene change",
       "patch": "Slot 1 = verse mod set · slot 2 = chorus · slot 3 = bridge · press load + channel buttons II, IV to only swap those two lanes between scenes · bass modulation on CH I and drum mods on CH III, V, VI stay untouched · scene changes with no clock glitch",
       "diagram": "Maestro:\n* slot 1: verse · slot 2: chorus · slot 3: bridge\n* load+CH II, IV → partial load\n\nClock:\nBass Filter:\nPad Filter:\nFX Send:\n\n- Clock (Out) c> Maestro (clock in)\n- Maestro (channel out I) >> Bass Filter (Cutoff)\n- Maestro (channel out II) >> Pad Filter (Cutoff)\n- Maestro (channel out IV) >> FX Send (Level)"
@@ -203,6 +205,7 @@
       "diagram": "Maestro:\n* CH VI: ramp-up + slow + bipolar · 1/32s (32 bars)\n\nClock:\nMacro Filter:\n\n- Clock (Out) c> Maestro (clock in)\n- Maestro (channel out VI) >> Macro Filter (Cutoff)"
     },
     {
+      "essential": true,
       "name": "Tap-tempo standalone clock hub",
       "patch": "No external clock · enter clock menu · tap on ramp-up button for live BPM · use clock out to master the system · channels I-VI drive sequencer clocks, LFO triggers, reset pulses · Maestro acts as 20HP clock hub + six modulators",
       "diagram": "Maestro:\n* clock menu: tap tempo live\n* CH I: 1/16 square (master clock copy)\n* CH II: 1/4 ramp-down\n\nSequencer:\nLFO:\nResetter:\n\n- Maestro (clock out) c> Sequencer (Clock)\n- Maestro (reset out) t> Sequencer (Reset)\n- Maestro (channel out I) c> LFO (Trig)\n- Maestro (channel out II) >> Resetter (In)"

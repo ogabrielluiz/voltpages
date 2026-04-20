@@ -63,11 +63,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "9-way pitch mult",
       "patch": "Patch sequencer V/oct into Red IN 1 · leave Yellow IN 1 and Green IN 1 unpatched so the cascade propagates · all nine outputs carry the same pitch CV, each buffered independently · distribute to nine oscillators without degrading tracking.",
       "diagram": "333:\n* All -6 dB: off\n* Yellow IN 1, Green IN 1: unpatched (cascade active)\n\n- Sequencer (V/oct) p> 333.Red (IN 1)\n- 333.Red (OUT 1) p> VCO 1 (V/Oct)\n- 333.Red (OUT 2) p> VCO 2 (V/Oct)\n- 333.Red (OUT 3) p> VCO 3 (V/Oct)\n- 333.Yellow (OUT 1) p> VCO 4 (V/Oct)\n- 333.Yellow (OUT 2) p> VCO 5 (V/Oct)\n- 333.Yellow (OUT 3) p> VCO 6 (V/Oct)\n- 333.Green (OUT 1) p> VCO 7 (V/Oct)\n- 333.Green (OUT 2) p> VCO 8 (V/Oct)\n- 333.Green (OUT 3) p> VCO 9 (V/Oct)"
     },
     {
+      "essential": true,
       "name": "7-to-1 sum",
       "patch": "Seven signals into Red IN 1-3, Yellow IN 2-3, Green IN 2-3 · cascade carries Red's sum into Yellow IN 1 and Yellow's sum into Green IN 1 · Green OUT is the running total · engage -6 dB per section as needed to keep the sum inside ±10 V.",
       "diagram": "333:\n* Yellow IN 1, Green IN 1: unpatched\n* -6 dB: per section as needed\n\n- Source 1 (Out) -> 333.Red (IN 1)\n- Source 2 (Out) -> 333.Red (IN 2)\n- Source 3 (Out) -> 333.Red (IN 3)\n- Source 4 (Out) -> 333.Yellow (IN 2)\n- Source 5 (Out) -> 333.Yellow (IN 3)\n- Source 6 (Out) -> 333.Green (IN 2)\n- Source 7 (Out) -> 333.Green (IN 3)\n- 333.Green (OUT 1) -> Output (In)"
@@ -78,6 +80,7 @@
       "diagram": "333:\n\n- Clock A (Out) c> 333.Red (IN 1)\n- Clock B (Out) c> 333.Red (IN 2)\n- Clock C (Out) c> 333.Red (IN 3)\n- 333.Red (OUT 1) c> Drum 1 (Trig)\n- 333.Red (OUT 2) c> Drum 2 (Trig)\n- 333.Red (OUT 3) c> Drum 3 (Trig)"
     },
     {
+      "essential": true,
       "name": "CV sum with headroom",
       "patch": "Three LFOs summed into one composite modulation · all three into one section, -6 dB engaged so the triple-summed signal sits inside ±5 V · three buffered copies delivered to three targets at the same amplitude.",
       "diagram": "333:\n* Yellow -6 dB: ON\n\n- LFO 1 (Out) >> 333.Yellow (IN 1)\n- LFO 2 (Out) >> 333.Yellow (IN 2)\n- LFO 3 (Out) >> 333.Yellow (IN 3)\n- 333.Yellow (OUT 1) >> Filter (Cutoff)\n- 333.Yellow (OUT 2) >> VCA (CV)\n- 333.Yellow (OUT 3) >> FX (Time CV)"

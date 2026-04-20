@@ -154,6 +154,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four-voice performance mixer with gated mutes",
       "patch": "Four voices into INPUT 1–4 · each channel in unipolar (green) with envelope → VOL CV · manual mutes for live arrangement · sum via STEREO SUM to main out",
       "diagram": "Praga:\n* Ch1 Mode: UNIPOLAR\n* Ch2 Mode: UNIPOLAR\n* Ch3 Mode: UNIPOLAR\n* Ch4 Mode: UNIPOLAR\n\n- Voice1 (Out) -> Praga (INPUT 1)\n- Env1 (Out) >> Praga (VOL CV 1)\n- Voice2 (Out) -> Praga (INPUT 2)\n- Env2 (Out) >> Praga (VOL CV 2)\n- Voice3 (Out) -> Praga (INPUT 3)\n- Voice4 (Out) -> Praga (INPUT 4)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"
@@ -169,6 +170,7 @@
       "diagram": "Praga:\n* Ch2 Mode: UNIPOLAR\n* Ch2 PAN: noon\n\n- Pad (Out) -> Praga (INPUT 2)\n- AD Env (Out) >> Praga (VOL CV 2)\n- Slow LFO (Tri) >> Praga (PAN CV 2)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Reverb send with pre-delay",
       "patch": "Vocal/lead into Ch1 · AUX full CW to send B · AUX SEND B → reverb in · reverb L/R → AUX RETURN B pair · pre-delay via delay in the send path",
       "diagram": "Praga:\n* Ch1 AUX: full CW (send B)\n\n- Voice (Out) -> Praga (INPUT 1)\n- Praga (AUX SEND B) -> Delay (In)\n- Delay (Out) -> Reverb (In)\n- Reverb (OutL) -> Praga (AUX RETURN B L)\n- Reverb (OutR) -> Praga (AUX RETURN B R)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"
@@ -194,6 +196,7 @@
       "diagram": "Praga#1:\n* all channels: UNIPOLAR\n\nPraga#2:\n* all channels: UNIPOLAR\n\n- Voice1 (Out) -> Praga#1 (INPUT 1)\n- Voice2 (Out) -> Praga#1 (INPUT 2)\n- Voice3 (Out) -> Praga#1 (INPUT 3)\n- Voice4 (Out) -> Praga#1 (INPUT 4)\n- Voice5 (Out) -> Praga#2 (INPUT 1)\n- Voice6 (Out) -> Praga#2 (INPUT 2)\n- Voice7 (Out) -> Praga#2 (INPUT 3)\n- Voice8 (Out) -> Praga#2 (INPUT 4)\n- Praga#2 (STEREO SUM L) -> Output (L)\n- Praga#2 (STEREO SUM R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Sidechain duck via bipolar mode",
       "patch": "Bass on Ch1 unipolar · kick-triggered envelope inverted → VOL CV 1 in bipolar mode · knob sets duck floor · kick punches a hole in the bass",
       "diagram": "Praga:\n* Ch1 Mode: BIPOLAR\n* Ch1 VOL: 8\n\n- Bass (Out) -> Praga (INPUT 1)\n- Kick (Trig) t> Env (Trig)\n- Env (Inv) >> Praga (VOL CV 1)\n- Praga (STEREO SUM L) -> Output (L)\n- Praga (STEREO SUM R) -> Output (R)"

@@ -110,6 +110,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Reference calibrator",
       "patch": "Use TLBX as a bench reference: 1V on OUT1 tunes a VCO to an octave, 5V on OUT2 acts as a trusted source for attenuverter/offset calibration.",
       "steps": [
@@ -149,6 +150,7 @@
       "diagram": "TLBX:\nSequencer:\nVCO 1:\nVCO 2:\nMixer:\n\n- Sequencer (V/Oct) p> TLBX (DIFF A)\n- TLBX (MULT OUT1) p> TLBX (DIFF B)\n- TLBX (DIFF A+B) p> VCO 1 (V/Oct)\n- TLBX (DIFF A-B) p> VCO 2 (V/Oct)\n- VCO 1 (Out) -> Mixer (In)\n- VCO 2 (Out) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Bipolar to unipolar range converter",
       "patch": "Turn a -5..+5V LFO into a clean 0-5V modulator for a unipolar destination by adding 5V and halving via MIX+DIFF.",
       "steps": [
@@ -163,6 +165,7 @@
       "diagram": "TLBX:\nLFO:\nVCF:\n\n- TLBX (MULT OUT2) p> TLBX (MIX IN1)\n- LFO (Out) p> TLBX (MIX IN2)\n- TLBX (DIFF A-B) p> VCF (Cutoff)"
     },
     {
+      "essential": true,
       "name": "5-channel mixer",
       "patch": "Exploit every normalization to sum up to five CV or audio sources on DIFF A+B (with IN1 running at +6dB, the other four at unity).",
       "steps": [

@@ -112,11 +112,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "MIDI keyboard to 4-voice CV",
       "patch": "midiin circuit declares four pitch/gate pairs (polyphony comes from the number of output pairs, not a voices parameter) · pitches routed to O1–O4, gates to G9–G12 · plug a MIDI keyboard into the X7 TRS IN via the supplied DIN adapter · play four-note chords driving an external 4-voice polysynth from the master.",
       "diagram": "DROID:\n* midiin: channel=1, pitch1=O1, pitch2=O2, pitch3=O3, pitch4=O4, gate1=G9, gate2=G10, gate3=G11, gate4=G12\n\n- MIDI Keyboard (MIDI Out) -> DROID X7 (MIDI IN)\n- DROID (O1) p> VCO 1 (V/Oct)\n- DROID (O2) p> VCO 2 (V/Oct)\n- DROID (O3) p> VCO 3 (V/Oct)\n- DROID (O4) p> VCO 4 (V/Oct)\n- DROID X7 (G9) g> VCA 1 Env (Gate)\n- DROID X7 (G10) g> VCA 2 Env (Gate)\n- DROID X7 (G11) g> VCA 3 Env (Gate)\n- DROID X7 (G12) g> VCA 4 Env (Gate)"
     },
     {
+      "essential": true,
       "name": "CV to DAW (MIDI out)",
       "patch": "Eurorack sequencer V/oct → I1 · gate → I2 · midiout converts to note-on/off on USB channel 1 · X7 switch RIGHT · DAW records a clean MIDI performance with stabilized pitch (no jitter retriggers) · modular plays, DAW captures.",
       "diagram": "DROID:\n* midiout: channel=1, pitch1=I1, gate1=I2\n\n- Sequencer (Pitch) p> DROID (I1)\n- Sequencer (Gate) g> DROID (I2)\n- DROID X7 (USB-C) -> DAW (USB In)"
@@ -132,6 +134,7 @@
       "diagram": "DROID X7:\n* switch: RIGHT\n\n- Laptop (Forge) -> DROID X7 (USB-C) // sysex Activate!"
     },
     {
+      "essential": true,
       "name": "MIDI clock slave",
       "patch": "midiin reads MIDI clock from external hardware · clock output → G9 at 24 PPQ · running-state flag → G10 (high while master transport is playing) · sync the whole DROID patch to DAW or groovebox · beat-accurate without audio-rate drift.",
       "diagram": "DROID:\n* midiin: channel=1, clock=G9, running=G10\n\n- DAW (MIDI Clock) -> DROID X7 (MIDI IN)\n- DROID X7 (G9) c> System Clock (In)\n- DROID X7 (G10) g> Transport Gate (In)"

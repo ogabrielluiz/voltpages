@@ -146,6 +146,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Dual one-shot drum voice",
       "patch": "Clock sequencer triggers the two channels independently for a stereo drum pair.",
       "steps": [
@@ -160,6 +161,7 @@
       "diagram": "SAMPLE DRUM:\n* Ch1 Mode: Trigger\n* Ch2 Mode: Trigger\n- Seq (Trk1) t> Sample Drum (TRIG 1)\n- Seq (Trk2) t> Sample Drum (TRIG 2)\n- Sample Drum (OUT 1) -> Mixer (L)\n- Sample Drum (OUT 2) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Melodic chromatic sample (1V/oct)",
       "patch": "Quantizer drives Tune for chromatic melodies; sequencer fires hits.",
       "steps": [
@@ -175,6 +177,7 @@
       "diagram": "SAMPLE DRUM:\n* Ch1 Mode: Trigger\n* Ch1 CV3: Tune (1V/oct)\n- Quant (CV) p> Sample Drum (CV3 ch1)\n- Seq (Gate) g> Sample Drum (TRIG 1)\n- Sample Drum (OUT 1) -> VCF (In)"
     },
     {
+      "essential": true,
       "name": "Loop with moving start point",
       "patch": "Long sample looped while an external LFO walks the start point for shifting textures.",
       "steps": [

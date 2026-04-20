@@ -198,16 +198,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Quadrature LFOs from one source",
       "patch": "CH A: Free LFO, sine wave · CH C: Osc Copy A · Hold C + turn encoder to set Phase +90° · CH D: Osc Copy A, Phase 180° · three synced phase-offset LFOs for quadrature panning or phase-modulated swarms without patch cables",
       "diagram": "Kermit mk III:\n* CH A: LFO Free, sine\n* CH C: Osc Copy A, Phase 90°\n* CH D: Osc Copy A, Phase 180°\n\nVCA L:\nVCA R:\n\n- Kermit mk III (A) >> VCA L (CV)\n- Kermit mk III (C) >> VCA R (CV)\n- Kermit mk III (D) >> Filter (Cutoff) // phase-offset vibrato"
     },
     {
+      "essential": true,
       "name": "Clocked envelope bank",
       "patch": "Global tap tempo synced to master clock · CH A: Tempo Envelope, bank 6 shapes, ÷8 · CH B: Tempo Envelope ÷4 · CH C: Tempo Envelope ÷2 · three rhythmic envelopes at related divisions feed VCAs across a drum bus · morph wave for different envelope shapes",
       "diagram": "Kermit mk III:\n* CH A: Tempo Env ÷8, bank 6\n* CH B: Tempo Env ÷4, bank 6\n* CH C: Tempo Env ÷2, bank 6\n\nClock:\nVCA 1:\nVCA 2:\nVCA 3:\n\n- Clock (Out) c> Kermit mk III (Tap)\n- Kermit mk III (A) >> VCA 1 (CV)\n- Kermit mk III (B) >> VCA 2 (CV)\n- Kermit mk III (C) >> VCA 3 (CV)"
     },
     {
+      "essential": true,
       "name": "FM pair with cross-modulation",
       "patch": "CH A: Oscillator mode, pitched by sequencer · CH B: Oscillator mode, Unison · hold A button + turn B Frequency knob (center → CW) to route A output as FM into B · hold B button + turn A Waveform to route B as wavetable mod on A · entwined dual VCO with no cables · C-D free for further modulation",
       "diagram": "Kermit mk III:\n* CH A: Oscillator\n* CH B: Oscillator Unison\n* Mod matrix: A→B Freq, B→A Waveform\n\nSequencer:\n\n- Sequencer (Pitch) p> Kermit mk III (1V/Oct A)\n- Sequencer (Pitch) p> Kermit mk III (1V/Oct B)\n- Kermit mk III (A) -> Mixer (In 1)\n- Kermit mk III (B) -> Mixer (In 2)"

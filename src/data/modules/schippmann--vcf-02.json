@@ -147,6 +147,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic 24dB ladder-style LP",
       "patch": "LP24 green only · all others off · Reso ~6 Emph 0.5 · Drop -3dB to compensate bass loss · envelope into CV1 · sounds like a Moog ladder but with Schippmann transparency",
       "diagram": "VCF-02:\n* LP24: green\n* Reso: 6\n* Emph: 0.5\n* Drop: -3dB\n* CV1: 1 oct/V\n\nVCO:\n\nEnvelope:\n\nVCA:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- Envelope (Out) >> VCF-02 (CV1)\n- VCF-02 (Output) -> VCA (In)\n- VCA (Out) -> Output (In)"
@@ -157,6 +158,7 @@
       "diagram": "VCF-02:\n* ALL: blue on\n* LP24: red\n* BP18: green\n* LP12: green\n* BP6: red\n* Reso: 4\n\nVCO:\n\nLFO:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- LFO (Tri) >> VCF-02 (CV1)\n- VCF-02 (Output) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Whisper self-oscillation behind mix",
       "patch": "Emph 0.1 · Reso 10 · 1V/Oct from sequencer · self-oscillating sine sits quietly in the mix as a ghost melody under a dry lead · unique Emph/Reso split makes this possible",
       "diagram": "VCF-02:\n* LP24: green\n* Reso: 10 (self-osc)\n* Emph: 0.1 (whisper)\n\nSequencer:\n\n- Sequencer (Pitch) p> VCF-02 (1 V/Oct)\n- VCF-02 (Output) -> Mixer (In 2)"
@@ -167,6 +169,7 @@
       "diagram": "VCF-02:\n* ALL: blue on\n* LP24: green\n* BP18: red\n* LP12: red\n* BP6: red\n* Reso: 2\n* CV2 phase: 180\n\nVCO:\n\nLFO:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- LFO (Tri) >> VCF-02 (CV2)\n- VCF-02 (Output) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "CV-morphed filter type",
       "patch": "Sequencer gate/CV into LP12 and LP24 jacks (overrides buttons) · different steps yield different filter shapes per step · the filter becomes a filter-type sequencer",
       "diagram": "VCF-02:\n* ALL: blue on\n\nSequencer:\n\nVCO:\n\n- VCO (Saw) -> VCF-02 (Input1)\n- Sequencer (CV 1) >> VCF-02 (LP12) // steps through off/+/-\n- Sequencer (CV 2) >> VCF-02 (LP24) // independent morph\n- VCF-02 (Output) -> Output (In)"

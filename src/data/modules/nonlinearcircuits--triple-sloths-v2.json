@@ -122,6 +122,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Three-rate mod bank (one voice, three timescales)",
       "patch": "Torpor X → filter cutoff · Apathy Y → VCA CV · Inertia Z → VCO FM — one voice breathes on three unrelated timescales.",
       "steps": [
@@ -137,6 +138,7 @@
       "diagram": "Triple Sloths v2:\n* Torpor: ~12:00\n* Apathy: ~12:00\n\nVCO:\n\nFilter:\n\nVCA:\n\n- Triple Sloths v2 (Torpor X) >> Filter (Cutoff)\n- Triple Sloths v2 (Apathy Y) >> VCA (CV)\n- Triple Sloths v2 (Inertia Z) >> VCO (FM)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Quantized chaos melody",
       "patch": "Apathy X → quantizer → VCO V/Oct · Torpor Z → filter cutoff · a wandering-but-musical line with independent timbre drift.",
       "steps": [
@@ -168,6 +170,7 @@
       "diagram": "Triple Sloths v2:\n* Torpor: ~12:00\n* Apathy: ~12:00\n\nDrum A:\n\nDrum B:\n\n- Triple Sloths v2 (+) >> VCA-A (CV)\n- Triple Sloths v2 (-) >> VCA-B (CV)\n- Drum A (Out) -> VCA-A (In)\n- Drum B (Out) -> VCA-B (In)\n- VCA-A (Out) -> Mixer (L)\n- VCA-B (Out) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Stereo drift (Y vs Z)",
       "patch": "Apathy Y → left filter cutoff, Apathy Z → right filter cutoff — the inverted pair opens one side as it closes the other.",
       "steps": [

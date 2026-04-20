@@ -84,11 +84,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "DAW multitrack capture",
       "patch": "four modular sources into IN 1-4 · record each channel in the DAW · ES-8 keeps the capture DC-coupled so CV or audio can be archived without extra conversion.",
       "diagram": "ES-8:\n* USB mode: capture\n\nDAW:\nSource 1:\nSource 2:\nSource 3:\nSource 4:\n\n- Source 1 (Out) -> ES-8 (ANALOG IN 1)\n- Source 2 (Out) -> ES-8 (ANALOG IN 2)\n- Source 3 (Out) -> ES-8 (ANALOG IN 3)\n- Source 4 (Out) -> ES-8 (ANALOG IN 4)\n- ES-8 (USB OUT) -> DAW (Tracks)"
     },
     {
+      "essential": true,
       "name": "DAW CV sequencer",
       "patch": "DAW pitch lanes to OUT 1-4 · VCO 1V/oct and filter cutoff under computer control · clock and gates stay sample-accurate to the session timeline.",
       "diagram": "ES-8:\n* USB mode: CV output\n\nDAW:\nVCO:\nFilter:\nEnvelope:\nOutput:\n\n- DAW (Pitch) -> ES-8 (USB IN)\n- ES-8 (ANALOG OUT 1) p> VCO (V/Oct)\n- ES-8 (ANALOG OUT 2) >> Filter (Cutoff)\n- ES-8 (ANALOG OUT 3) g> Envelope (Trig)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> Output (In)"
@@ -104,6 +106,7 @@
       "diagram": "ES-8:\n* ES-5 header: connected\n\nES-5:\n\nDrum:\nClock:\nEnvelope:\n\n- DAW (Gate) -> ES-8 (USB IN)\n- ES-8 (ES-5 header) -> ES-5 (In)\n- ES-5 (Gate 1) t> Drum (Trig)\n- ES-5 (Gate 2) c> Clock (Reset)\n- ES-5 (Gate 3) t> Envelope (Trig)"
     },
     {
+      "essential": true,
       "name": "Hybrid send and return",
       "patch": "modular source into IN 1-2 · DAW reverb/compressor on USB return · processed audio back to OUT 7-8 · the ES-8 behaves like a low-latency insert point for a Eurorack voice.",
       "diagram": "ES-8:\n* USB mode: insert loop\n\nSource:\nDAW:\nOutput:\n\n- Source (L) -> ES-8 (ANALOG IN 1)\n- Source (R) -> ES-8 (ANALOG IN 2)\n- ES-8 (USB OUT) -> DAW (Plugin In)\n- DAW (Plugin Out) -> ES-8 (USB IN)\n- ES-8 (ANALOG OUT 7) -> Output (L)\n- ES-8 (ANALOG OUT 8) -> Output (R)"

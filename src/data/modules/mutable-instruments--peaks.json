@@ -159,11 +159,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Dual ADSR voice",
       "patch": "FUNCTION: envelope · SPLIT off (twin) · knobs 1-4 set A/D/S/R · sequencer gate → TRIG 1 (for VCF env) and TRIG 2 (for VCA env) · OUT 1 → filter cutoff · OUT 2 → VCA CV · one Peaks covers both modulation envelopes for a classic voice.",
       "diagram": "Peaks:\n* FUNCTION: envelope\n* SPLIT: off (twin ADSR)\n\nSequencer:\nVCO:\nFilter:\nVCA:\n\n- Sequencer (Gate) g> Peaks (TRIG 1)\n- Sequencer (Gate) g> Peaks (TRIG 2)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- VCO (Out) -> Filter (In) -> VCA (In) -> Output (In)\n- Peaks (OUT 1) >> Filter (Cutoff)\n- Peaks (OUT 2) >> VCA (CV)"
     },
     {
+      "essential": true,
       "name": "Quadrature LFO from twin reset",
       "patch": "FUNCTION: LFO · SPLIT off · knob 4 (phase on restart) set to 90° offset · TRIG 1 and TRIG 2 both reset from the same clock · OUT 1 and OUT 2 are phase-shifted copies of the same sine wave · pan modulation and stereo filter motion from one module.",
       "diagram": "Peaks:\n* FUNCTION: LFO\n* Waveform: sine\n* Phase: 90 degrees\n\nClock:\nFilter:\nVCA:\n\n- Clock (Out) c> Peaks (TRIG 1)\n- Clock (Out) c> Peaks (TRIG 2)\n- Peaks (OUT 1) >> Filter (Cutoff L)\n- Peaks (OUT 2) >> Filter (Cutoff R) // 90 deg offset"
@@ -174,6 +176,7 @@
       "diagram": "Peaks:\n* FUNCTION: tap-LFO\n* Waveform: sine\n* Amplitude: 3 o'clock\n\nClock:\nDelay:\n\n- Clock (Out) c> Peaks (TRIG 1) // swung clock learned\n- Peaks (OUT 1) >> Delay (Time CV)"
     },
     {
+      "essential": true,
       "name": "808 kick + snare from one module",
       "patch": "FUNCTION: drum · SPLIT on · knobs 1/2 = BD tone/decay, knobs 3/4 = SD tone/snappy · sequencer pattern 1 → TRIG 1 (kick) · pattern 2 → TRIG 2 (snare) · OUT 1 + OUT 2 → mixer · instant '808 sweet-spot' drum kit in 8HP.",
       "diagram": "Peaks:\n* FUNCTION: drum\n* SPLIT: on (808 sweet-spot)\n\nSequencer:\n\n- Sequencer (Pattern 1) t> Peaks (TRIG 1) // kick\n- Sequencer (Pattern 2) t> Peaks (TRIG 2) // snare\n- Peaks (OUT 1) -> Mixer (In 1)\n- Peaks (OUT 2) -> Mixer (In 2)"

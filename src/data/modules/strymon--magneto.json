@@ -207,11 +207,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Clock-locked quarter-note delay",
       "patch": "ECHO mode · HEADS: EVEN · CLK IN from sequencer master clock at quarter notes · REPEATS ~50% · WET ~noon · all four heads at equal level · four rhythmic echoes (16th, 8th, dotted-8th, quarter) locked to the sequencer · use CLK 4 OUT as a slower sub-clock elsewhere",
       "diagram": "Magneto:\n* Mode: ECHO\n* Heads: EVEN\n* Repeats: ~50%\n* Playback 1-4: equal\n\nClock:\n\nSource:\n\n- Clock (Out) c> Magneto (CLK IN)\n- Source (Out) -> Magneto (LEFT IN)\n- Magneto (LEFT OUT) -> Output (L)\n- Magneto (RIGHT OUT) -> Output (R)\n- Magneto (CLK 4 OUT) c> Drums (Clock) // sub clock"
     },
     {
+      "essential": true,
       "name": "Tape oscillator voice",
       "patch": "no input · SPEED/PITCH CCW · REPEATS 100% · tap TAP once to prime oscillation · hold TAP to enter Pitch Quantize (chromatic) · play sequencer 1V/oct into SPEED CV · self-oscillating Magneto becomes a scale-quantized sine voice with tape coloration",
       "diagram": "Magneto:\n* Mode: ECHO\n* Repeats: 100%\n* Speed: CCW\n* Pitch Quantize: Chromatic (hold TAP)\n* Wow & Flutter: taste\n\nSequencer:\n\n- Sequencer (Pitch) p> Magneto (SPEED)\n- Magneto (LEFT OUT) -> Output (L)"
@@ -227,6 +229,7 @@
       "diagram": "Magneto:\n* Mode: SAMPLE\n\nSource:\n\n- Source (Out) -> Magneto (LEFT IN)\n- Magneto (CLK 4 OUT) t> Magneto (RESTART) // continuous re-trigger\n- Magneto (LEFT OUT) -> Output (L)\n- Magneto (RIGHT OUT) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Sound-on-sound looper",
       "patch": "LOOP mode · FEEDBACK 4 ON (required for loop playback) · PLAYBACK 4 ~noon · REPEATS ~70% for evolving layers · tap TAP to splice in, tap to splice out and begin playback · layer new material on top each pass",
       "diagram": "Magneto:\n* Mode: LOOP\n* Feedback 4: ON\n* Playback 4: ~noon\n* Repeats: ~70%\n\nSource:\n\n- Source (Out) -> Magneto (LEFT IN)\n- Magneto (LEFT OUT) -> Output (L)\n- Magneto (RIGHT OUT) -> Output (R)"

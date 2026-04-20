@@ -121,16 +121,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Self-contained percussive voice",
       "patch": "Model: KICK or SNAR · BITS/RATE lowered for crunch · TRIG from clock · V/OCT fixed · internal AD shapes hit via |\\VCA · OUT direct to mixer",
       "diagram": "Braids:\n* Model: KICK\n* Menu: BITS 8, |\\VCA ON\n\n- Clock (Out) t> Braids (TRIG)\n- Braids (OUT) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "META-morphing texture",
       "patch": "Menu META: ON · slow LFO into FM jack · FM attenuverter sets model sweep range · TRIG from clock so model changes are sampled on each hit · timbre evolves rhythmically across model groups",
       "diagram": "Braids:\n* Menu: META ON\n\n- Keyboard (Pitch) p> Braids (V/OCT)\n- Slow LFO (Out) >> Braids (FM) // selects model\n- Clock (Out) t> Braids (TRIG)\n- Braids (OUT) -> Filter (In) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Drifting analog-style bass",
       "patch": "Model: CSAW · menu DRFT 2 + FLAT 1 for VCO-flavoured instability · sequencer on V/OCT · envelope into TIMBRE CV for filter-like sweep · feels like a vintage VCO",
       "diagram": "Braids:\n* Model: CSAW\n* Menu: DRFT 2, FLAT 1\n\n- Sequencer (Pitch) p> Braids (V/OCT)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Braids (TIMBRE)\n- Braids (OUT) -> Filter (In) -> VCA (In) -> Output (In)\n- Envelope (Out) >> VCA (CV)"

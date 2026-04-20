@@ -120,16 +120,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Stereo sweep",
       "patch": "Send a mono voice through the phaser · take Output A and Output B as a faux stereo pair · slow triangle LFO moves the notches apart · classic widening without external modulation.",
       "diagram": "Kamieniec II:\n* Tuning FREQ: noon\n* Depth: low\n* Reso: low\n* Resonance mode switch: stoned\n\nVCO:\nLFO:\nOutput:\n\n- VCO (Out) -> Kamieniec II (Input)\n- LFO (Out) >> Kamieniec II (Ext mod)\n- Kamieniec II (Output A) -> Output (L)\n- Kamieniec II (Output B) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Clocked swirl",
       "patch": "Trigger the LFO reset from clock pulses · the sweep restarts each bar · use the phase rotator like a clock-locked filter animation for rhythmically consistent motion.",
       "diagram": "Kamieniec II:\n* Tuning FREQ: slow\n* Depth: medium\n* Resonance mode switch: wasted\n\nClock:\nFilter:\nOutput:\n\n- Clock (Out) c> Kamieniec II (LFO reset)\n- Sequencer (Gate) g> Kamieniec II (Input)\n- Kamieniec II (Output A) -> Filter (In)\n- Filter (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Resonant drone",
       "patch": "Push resonance near self-oscillation · feed a sustained oscillator into the input · Output A becomes a formant-rich drone while the LFO Out can move a separate filter or VCA.",
       "diagram": "Kamieniec II:\n* Tuning FREQ: noon\n* Depth: low\n* Reso: high\n* Resonance mode switch: k-holed\n\nVCO:\nVCA:\nOutput:\n\n- VCO (Saw) -> Kamieniec II (Input)\n- Kamieniec II (LFO Out) >> VCA (CV)\n- Kamieniec II (Output A) -> VCA (In)\n- VCA (Out) -> Output (In)"

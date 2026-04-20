@@ -172,16 +172,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four-voice drum grid",
       "patch": "Euclidean bank on · Prime at noon · four trigger outs drive kick, snare, hat, and percussion · accents add motion to the same voices without extra sequencing.",
       "diagram": "Multi Repetitor:\n* Set: Euclidean\n* Modify: Multiply\n* Accent: Next\n* Prime: noon\n\nClock:\nKick:\nSnare:\nHat:\nPerc:\n\n- Clock (Out) c> Multi Repetitor (CLOCK)\n- Multi Repetitor (TRIG 1) t> Kick (Trig)\n- Multi Repetitor (TRIG 2) t> Snare (Trig)\n- Multi Repetitor (TRIG 3) t> Hat (Trig)\n- Multi Repetitor (TRIG 4) t> Perc (Trig)\n- Multi Repetitor (ACCENT 1) g> Kick (Accent)\n- Multi Repetitor (ACCENT 2) g> Snare (Accent)\n- Multi Repetitor (ACCENT 3) g> Hat (Accent)\n- Multi Repetitor (ACCENT 4) g> Perc (Accent)"
     },
     {
+      "essential": true,
       "name": "Accent-to-timbre groove",
       "patch": "Trigger lanes hit the drum voices while the accent outs open envelopes on a filter and VCA chain · the pattern stays simple, the motion comes from dynamic accents.",
       "diagram": "Multi Repetitor:\n* Set: Numeric\n* Modify: Offset\n* Accent: Previous\n\nKick:\nSnare:\nFilter:\nVCA:\nOutput:\n\n- Clock (Out) c> Multi Repetitor (CLOCK)\n- Multi Repetitor (TRIG 1) t> Kick (Trig)\n- Multi Repetitor (TRIG 2) t> Snare (Trig)\n- Multi Repetitor (ACCENT 1) t> Envelope (Trig)\n- Envelope (Out) >> Filter (Cutoff)\n- Multi Repetitor (ACCENT 2) t> VCA (CV)\n- Kick (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Bank-scanned groove",
       "patch": "A slow LFO scans SET CV while a stepped random source modulates the factor lanes · the core pattern keeps changing banks without losing the pulse.",
       "diagram": "Multi Repetitor:\n* Set: CV-scanned\n* Modify: Prime offset\n\nLFO:\nS&H:\nClock:\nDrum:\nOutput:\n\n- Clock (Out) c> Multi Repetitor (CLOCK)\n- LFO (Out) >> Multi Repetitor (SET CV)\n- S&H (Out) >> Multi Repetitor (FACTOR 1 CV)\n- S&H (Out) >> Multi Repetitor (FACTOR 2 CV)\n- S&H (Out) >> Multi Repetitor (FACTOR 3 CV)\n- S&H (Out) >> Multi Repetitor (FACTOR 4 CV)\n- Multi Repetitor (TRIG 1) t> Drum (Trig)\n- Drum (Out) -> Output (In)"

@@ -90,6 +90,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Stereo bandpass sweep",
       "patch": "Link ON · LFO sweeps HPF CV (bandpass center) · LPF sets bandwidth · resonance on both edges.",
       "steps": [
@@ -106,6 +107,7 @@
       "diagram": "DUAL DAGGER:\n* Link: ON\n* HP Resonance: ON\n* LP Resonance: ON\n- VCO L (OUT) -> Dual Dagger (IN1)\n- VCO R (OUT) -> Dual Dagger (IN2)\n- LFO (CV) >> Dual Dagger (HPF CV) // sweeps bandpass center\n- Dual Dagger (OUT1) -> Mixer (L)\n- Dual Dagger (OUT2) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Dual resonant peak",
       "patch": "Mono noise → IN1 · sum OUT1+OUT2 · PANLP CV splits the two LP peaks for double-resonant comb.",
       "steps": [
@@ -122,6 +124,7 @@
       "diagram": "DUAL DAGGER:\n* LP Resonance: ON\n- Noise (OUT) -> Dual Dagger (IN1) // IN2 normalled from IN1\n- LFO (CV) >> Dual Dagger (PANLP CV) // splits the two LP peaks\n- Dual Dagger (OUT1) -> Mixer (CH1)\n- Dual Dagger (OUT2) -> Mixer (CH2)"
     },
     {
+      "essential": true,
       "name": "Sine VCO voice with stereo detune",
       "patch": "Hi jumper · resonance max · HPF self-oscillates tracking V/Oct · LPF smooths · PANHP detunes the two channels.",
       "steps": [

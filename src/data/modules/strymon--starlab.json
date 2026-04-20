@@ -257,11 +257,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Diffuse ambient bloom",
       "patch": "TEXTURE: diffuse · DECAY 3 o'clock · SHIMMER ~noon with REGEN on · GLIMMER ~10 o'clock, HIGH BAND on · LOW DAMP ~9 o'clock, HIGH DAMP ~1 o'clock · sparse synth plucks bloom into slow octave-stacking wash with soft highs",
       "diagram": "StarLab:\n* Texture: diffuse\n* Decay: 3 o'clock\n* Shimmer: noon · REGEN on\n* Glimmer: ~10 o'clock · HIGH BAND on\n\nSynth:\n\n- Synth (Out) -> StarLab (LEFT IN)\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Karplus string voice",
       "patch": "enter Karplus (hold ECHO ON + DELAY/TUNE CW until TAP/TRIG red) · FEEDBACK ~2 o'clock · ECHO ON engaged · sequencer 1V/oct into SIZE/PITCH CV · gate into TAP/TRIG CV for plucks · IN GATE for bowed passages · light reverb tail with TEXTURE: dense, DECAY ~11 o'clock",
       "diagram": "StarLab:\n* Mode: Karplus-Strong\n* Feedback: ~2 o'clock\n* Texture: dense\n* Decay: ~11 o'clock\n* Echo On: engaged\n\nSequencer:\n\n- Sequencer (Pitch) p> StarLab (SIZE/PITCH)\n- Sequencer (Gate) t> StarLab (TAP/TRIG) // pluck\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
@@ -282,6 +284,7 @@
       "diagram": "StarLab:\n* Shape: env\n* Depth: ~10 o'clock (negative)\n* LFO Target: filter\n* Low Pass: on\n* High Damp: ~2 o'clock\n\nSource:\n\n- Source (Out) -> StarLab (LEFT IN)\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Infinite frozen pad under new input",
       "patch": "play a chord, press INFINITE or gate INFINITE CV · frozen bed holds while new input continues to pass through the reverb structure · TEXTURE: diffuse, DECAY max · play a melody over the pad · CLEAR CV rising edge erases the frozen bed",
       "diagram": "StarLab:\n* Texture: diffuse\n* Decay: max\n\nGate:\n\nTrigger:\n\nSource:\n\n- Source (Out) -> StarLab (LEFT IN)\n- Gate (Out) g> StarLab (INFINITE)\n- Trigger (Out) t> StarLab (CLEAR) // erase pad\n- StarLab (LEFT OUT) -> Output (L)\n- StarLab (RIGHT OUT) -> Output (R)"

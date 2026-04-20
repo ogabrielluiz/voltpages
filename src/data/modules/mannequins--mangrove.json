@@ -118,6 +118,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Spoken-vowel synthesis",
       "patch": "wave/formant: constant formant · FORMANT at ~1 o'clock · BARREL just off centre · AIR at noon · Sequencer v/oct → V/8 PITCH · FORMANT CV → slow LFO for vowel glide · melody retains a fixed formant peak like a vocalised tract",
       "diagram": "Mangrove:\n* wave/formant: constant formant\n* FORMANT: ~1 o'clock\n* BARREL: just off centre\n* AIR: noon\n\nLFO:\n\n- Sequencer (Pitch) p> Mangrove (V/8 PITCH)\n- LFO (Out) >> Mangrove (FORMANT CV) // vowel morph\n- Mangrove (FORMANT) -> Output (In)"
@@ -128,6 +129,7 @@
       "diagram": "Mangrove:\n* wave/formant: constant formant\n* FORMANT: ~11 o'clock\n* BARREL: full CCW\n* AIR: noon\n\nEnvelope:\n\n- Sequencer (Pitch) p> Mangrove (V/8 PITCH)\n- Envelope (Out) >> Mangrove (FORMANT CV)\n- Mangrove (FORMANT) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
     },
     {
+      "essential": true,
       "name": "Through-zero FM pair",
       "patch": "Two Mangroves · Mangrove A SQUARE → Mangrove B FM · Mangrove B constant wave · FM INDEX driven by envelope for dynamic FM · share v/oct so both track · classic DX-style FM with formant character",
       "diagram": "Mangrove A:\nMangrove B:\n* wave/formant: constant wave\n\nEnvelope:\n\n- Sequencer (Pitch) p> Mangrove A (V/8 PITCH)\n- Sequencer (Pitch) p> Mangrove B (V/8 PITCH)\n- Mangrove A (SQUARE) -> Mangrove B (FM)\n- Envelope (Out) >> Mangrove B (FM INDEX)\n- Mangrove B (FORMANT) -> Output (In)"
@@ -143,6 +145,7 @@
       "diagram": "Mangrove:\n* wave/formant: constant formant\n* FORMANT: ~3 o'clock\n* BARREL: CCW\n\nVCO:\nLFO:\n\n- VCO (Out) -> Mangrove (SYNC) // audio-rate sync\n- Sequencer (Pitch) p> VCO (V/Oct)\n- LFO (Out) >> Mangrove (V/8 PITCH)\n- Mangrove (FORMANT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Kick drum",
       "patch": "constant wave · PITCH low · snappy envelope → V/8 PITCH for pitch drop · short envelope → AIR CV (attenuverter CW) for amplitude · BARREL asymmetric for click transient · FORMANT full CW for sharp attack · instant analog kick",
       "diagram": "Mangrove:\n* wave/formant: constant wave\n* FORMANT: full CW\n* BARREL: asymmetric\n* AIR: starts closed\n\nEnvelope:\n\n- Envelope (Out) >> Mangrove (V/8 PITCH) // pitch drop\n- Envelope (Out) >> Mangrove (AIR CV) // amp env\n- Clock (Out) t> Envelope (Trig)\n- Mangrove (FORMANT) -> Output (In)"

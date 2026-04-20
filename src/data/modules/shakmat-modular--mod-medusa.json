@@ -140,16 +140,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Quad correlated modulation",
       "patch": "Clock into CLK · Main mode · four outputs modulate VCF cutoff, VCA level, FX send, pan · peak sync ON for beat-aligned swells",
       "diagram": "MOD MEDUSA:\n* Mode: MN · P Sync: ON · Uni: bipolar\n- Clock (Out) c> Mod Medusa (Clock)\n- Mod Medusa (Out 1) >> VCF (Cutoff)\n- Mod Medusa (Out 2) >> VCA (CV) // backward\n- Mod Medusa (Out 3) >> FX Send (Level) // inverted\n- Mod Medusa (Out 4) >> Pan (CV) // 1 per length"
     },
     {
+      "essential": true,
       "name": "Quadrature-phase filter sweep",
       "patch": "Phase mode · stereo filter cutoff L/R from Out 1 and Out 3 (L/2 shift) · Out 2 at L/4 feeds reverb size · Out 4 at 3L/4 feeds pan",
       "diagram": "MOD MEDUSA:\n* Mode: PH · L=8\n- Clock (Out) c> Mod Medusa (Clock)\n- Mod Medusa (Out 1) >> VCF (Cutoff L)\n- Mod Medusa (Out 3) >> VCF (Cutoff R) // L/2 shift\n- Mod Medusa (Out 2) >> Reverb (Size) // L/4 shift\n- Mod Medusa (Out 4) >> Pan (CV) // 3L/4 shift"
     },
     {
+      "essential": true,
       "name": "Track & Hold stepped LFO",
       "patch": "A Gate menu = Track & Hold · gate from sequencer · outputs freeze to stepped values between gates · great for melodic CV if fed to quantizer",
       "diagram": "MOD MEDUSA:\n* A Gate: T&H\n- Clock (Out) c> Mod Medusa (Clock)\n- Sequencer (Gate) g> Mod Medusa (A Gate)\n- Mod Medusa (Out 1) >> Quantizer (CV)\n- Quantizer (Out) p> VCO (V/Oct)\n- Mod Medusa (Out 2) >> VCF (Cutoff)"

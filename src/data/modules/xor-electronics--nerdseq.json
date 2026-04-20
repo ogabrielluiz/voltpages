@@ -153,11 +153,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic tracker voice",
       "patch": "track 1 CV 1V/Oct to VCO · track 1 TRIGGER to envelope · envelope to VCA · 16-step pattern with melodic notes · patches add per-step velocity via MOD 1 to VCA CV",
       "diagram": "NerdSEQ:\n* Track 1: CV/Gate, 1V/Oct\n* Pattern: 16 steps\n\nVCO:\nVCA:\nEnvelope:\n\n- NerdSEQ (CV 1) p> VCO (V/Oct)\n- NerdSEQ (TRIGGER 1) t> Envelope (Trig)\n- NerdSEQ (MOD 1) >> VCA (CV)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"
     },
     {
+      "essential": true,
       "name": "Polyrhythm per track",
       "patch": "tracks 1-4 pattern lengths 16/13/7/11 · track dividers ÷2, ÷3, ÷4 mixed · shared clock · each TRIGGER feeds a drum · evolving polyrhythmic pattern from same pattern numbers",
       "diagram": "NerdSEQ:\n* Track 1: 16 steps, /2\n* Track 2: 13 steps, /3\n* Track 3: 7 steps, /4\n* Track 4: 11 steps, /1\n\nDrum 1:\nDrum 2:\nDrum 3:\nDrum 4:\n\n- NerdSEQ (TRIGGER 1) t> Drum 1 (Trig)\n- NerdSEQ (TRIGGER 2) t> Drum 2 (Trig)\n- NerdSEQ (TRIGGER 3) t> Drum 3 (Trig)\n- NerdSEQ (TRIGGER 4) t> Drum 4 (Trig)"
@@ -173,6 +175,7 @@
       "diagram": "NerdSEQ:\n* Track 1: record from INPUT 1\n\nKeyboard:\n\n- Keyboard (CV) p> NerdSEQ (INPUT 1)\n- Keyboard (Gate) g> NerdSEQ (INPUT 2)\n- NerdSEQ (CV 1) p> VCO (V/Oct)\n- NerdSEQ (TRIGGER 1) t> Envelope (Trig)"
     },
     {
+      "essential": true,
       "name": "Probability-driven hats",
       "patch": "track 4 16-step pattern · every even step 100% · every odd 30% probability · table 02 ratchets chosen steps 2-4x at random · generates organic hat variation",
       "diagram": "NerdSEQ:\n* Track 4: 16 steps\n* Even steps: 100% prob\n* Odd steps: 30% prob · Table 02 ratchet\n\nHats:\n\n- NerdSEQ (TRIGGER 4) t> Hats (Trig)\n- NerdSEQ (MOD 4) >> Hats (Accent)"

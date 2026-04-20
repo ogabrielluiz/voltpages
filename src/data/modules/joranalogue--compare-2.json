@@ -104,6 +104,7 @@
       "description": "Every rising XOR edge toggles the FF output. Divides XOR rate by two; transitions OUT-based pulse train into sub-octave or latched gate."
     },
     {
+      "essential": true,
       "name": "Set/reset latch",
       "trigger": "feedback: OUT → SIZE CV",
       "description": "Per comparator, patching OUT back to SIZE CV with SHIFT min and SIZE ~3 o'clock turns it into an SR latch. SHIFT CV rising edge sets, IN rising edge resets."
@@ -121,11 +122,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Complex rhythm generator",
       "patch": "LFO → left IN · dial SHIFT/SIZE per side to carve gate patterns at different points of the LFO cycle · AND/OR/XOR/FF outputs drive envelopes or drums · modulate SHIFT/SIZE CV to evolve the rhythm",
       "diagram": "Compare 2:\n* CH 1 SHIFT: taste\n* CH 1 SIZE: narrow\n* CH 2 SHIFT: different offset\n* CH 2 SIZE: medium\n\n- LFO (Out) >> Compare 2 (IN) // normalises to right\n- Compare 2 (AND) g> Envelope 1 (Trig)\n- Compare 2 (XOR) g> Drum (Trig)\n- Compare 2 (FF) g> Envelope 2 (Gate) // half-rate latch"
     },
     {
+      "essential": true,
       "name": "Audio frequency multiplier",
       "patch": "Triangle VCO → left IN (normalised to right) · both comparators on · XOR output as audio · SHIFT/SIZE sweep output between fundamental, +1 and +2 octave with complex pulse waveforms · use FF for −1/0/+1 octave jumps",
       "diagram": "Compare 2:\n* CH 1 SHIFT: noon\n* CH 1 SIZE: narrow\n* CH 2 SHIFT: offset\n* CH 2 SIZE: narrow\n\n- VCO (Tri) -> Compare 2 (IN)\n- Compare 2 (XOR) -> Mixer (In) // pulse, octave-shifting with SIZE\n- Compare 2 (FF) -> Mixer (In) // sub-octave variant"

@@ -193,6 +193,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic 909 kick",
       "patch": "Liquid mode provides the pitch bloom of a 909 kick from a single module, clocked straight in.",
       "steps": [
@@ -209,6 +210,7 @@
       "diagram": "Basimilus Iteritas Alia:\n* Mode: Liquid · Range: Bass\n* Pitch: low · Decay: 2 o'clock · Attack: noon · Morph: 10 o'clock · Harmonic: 10 o'clock · Fold: 10 o'clock · Spread: full CCW\n\nClock:\nMixer:\n\n- Clock (Out) t> Basimilus Iteritas Alia (Trig)\n- Basimilus Iteritas Alia (Out) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Metal crash with morphing ratios",
       "patch": "Modulates Spread and Harmonic so every Metal-mode hit lands on a different FM ratio, giving a single voice a library of crashes.",
       "steps": [
@@ -255,6 +257,7 @@
       "diagram": "Basimilus Iteritas Alia:\n* Mode: Liquid · Range: Bass\n\nClock:\nVCA:\n* Atten: inverted\nPad Bus:\nMixer:\n\n- Clock (Out) t> Basimilus Iteritas Alia (Trig)\n- Basimilus Iteritas Alia (Out) -> Mixer (In)\n- Basimilus Iteritas Alia (Env Out) >> VCA (CV) // inverted = duck\n- Pad Bus (Out) -> VCA (In)\n- VCA (Out) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Pitched melodic voice",
       "patch": "Uses sustained triggers and Decay full CW to turn Alia into a six-partial additive drone voice tracked by 1V/oct.",
       "steps": [

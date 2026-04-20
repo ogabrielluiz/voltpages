@@ -86,11 +86,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic envelope + audio VCA",
       "patch": "VCO into IN A · envelope into CV A · EXP-LIN A fully clockwise for expo response · BIAS A at zero · punchy plucked note shaping",
       "diagram": "µVCA II:\n* EXP-LIN A=CW (expo) · BIAS A=0\n\n- VCO (Out) -> µVCA II (IN A)\n- Envelope (Out) >> µVCA II (CV A)\n- µVCA II (OUT A) -> Output (In) // expo VCA pluck"
     },
     {
+      "essential": true,
       "name": "Two-source mixer via cascade",
       "patch": "VCO 1 into IN A · VCO 2 into IN B · leave OUT A unpatched · take sum at OUT B · BIAS knobs set mix levels · CV inputs act as individual automation for each source",
       "diagram": "µVCA II:\n* BIAS A noon · BIAS B noon · OUT A unpatched\n\n- VCO 1 (Out) -> µVCA II (IN A)\n- VCO 2 (Out) -> µVCA II (IN B)\n- LFO (Out) >> µVCA II (CV A)\n- µVCA II (OUT B) -> Filter (In) // cascaded mix of A+B"
@@ -106,6 +108,7 @@
       "diagram": "µVCA II:\n* EXP-LIN A=LIN (for clean CV) · BIAS A=0\n\n- Sequencer (Pitch) p> µVCA II (IN A)\n- Offset Source (Out) >> µVCA II (CV A)\n- µVCA II (OUT A) p> VCO 2 (V/Oct) // scaled pitch CV"
     },
     {
+      "essential": true,
       "name": "Side-chain ducking",
       "patch": "Pad into IN A · inverted envelope from kick drum trigger into CV A · BIAS A around 3 V so pad sits at ~unity when nothing plays · each kick briefly ducks the pad · classic dance-floor pump",
       "diagram": "µVCA II:\n* EXP-LIN A=LIN · BIAS A ~3V\n\n- Pad (Out) -> µVCA II (IN A)\n- Kick Trigger (Out) t> Envelope (Trig)\n- Envelope (Out) >> Inverter (In)\n- Inverter (Out) >> µVCA II (CV A)\n- µVCA II (OUT A) -> Output (In) // side-chain duck"

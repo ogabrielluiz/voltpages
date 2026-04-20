@@ -151,6 +151,7 @@
       "diagram": "BARD QUARTET:\n* CH 2-4: A# shift register mode\n- Sequencer (Pitch) p> Bard Quartet (IN 1)\n- Clock (Gate) g> Bard Quartet (Gate Input) // advances shift register\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
+      "essential": true,
       "name": "SATB Vocal Quartet (Bass/Tenor/Alto/Soprano)",
       "patch": "Four-part chorale: each of the 8 harmonies stores a root-position 4-note chord, HRMN CV walks the song, GT IN fires Track & Hold.",
       "steps": [
@@ -169,6 +170,7 @@
       "diagram": "BARD QUARTET:\n* Arp: OFF · 8 harmonies = 4-note chord voicings\n- Sequencer (Out) >> Bard Quartet (HRMN)\n- Clock (Out) g> Bard Quartet (Gate)\n- Bard Quartet (OUT 1) p> Bass VCO (V/Oct)\n- Bard Quartet (OUT 2) p> Tenor VCO (V/Oct)\n- Bard Quartet (OUT 3) p> Alto VCO (V/Oct)\n- Bard Quartet (OUT 4) p> Soprano VCO (V/Oct)\n- Bard Quartet (TRIG) t> Envelope (Trig) // retrigger all voices"
     },
     {
+      "essential": true,
       "name": "Harmonic Orbit (HRMN-driven progression)",
       "patch": "Slow LFO sweeps 8 harmonies programmed as I-vi-IV-V-iii-IV-ii-V; lead on CH 1 rides over S&H pads on CH 2–4.",
       "steps": [
@@ -220,6 +222,7 @@
       "diagram": "BARD QUARTET:\n* CH1=C maj · CH2=F# maj · CH3=Bb Dor · CH4=E min pent\n- LFO 1 (Out) >> Bard Quartet (IN 1)\n- LFO 2 (Out) >> Bard Quartet (IN 2)\n- LFO 3 (Out) >> Bard Quartet (IN 3)\n- LFO 4 (Out) >> Bard Quartet (IN 4)\n- Bard Quartet (OUT 1) p> VCO 1 (V/Oct)\n- Bard Quartet (OUT 2) p> VCO 2 (V/Oct)\n- Bard Quartet (OUT 3) p> VCO 3 (V/Oct)\n- Bard Quartet (OUT 4) p> VCO 4 (V/Oct)"
     },
     {
+      "essential": true,
       "name": "Parallel Harmonizer (Root/3rd/5th/Octave)",
       "patch": "Melody CV multed to all four channels; same scale but with degree offsets baked into each channel's programmed notes.",
       "steps": [

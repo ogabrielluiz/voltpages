@@ -99,11 +99,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Manual 10V offset",
       "patch": "All jacks empty · A polariser sweeps −5V to +5V from the +5V ref · B polariser does the same, summed via A→B normal · together generate −10V to +10V offsets with no cables",
       "diagram": "Select 2:\n* A Polariser: taste\n* B Polariser: taste\n\n- Select 2 (B OUT) >> VCO (FM) // A normalises into B OUT for ±10V range"
     },
     {
+      "essential": true,
       "name": "CV sequence selector",
       "patch": "Sequence 1 → left IN · sequence 2 → right IN · gate pattern → SELECT (same clock) · low picks sequence 1, high picks sequence 2 · quickly generate hybrid melodies from two sources",
       "diagram": "Select 2:\n* A Polariser: max\n\n- Sequencer 1 (Pitch) p> Select 2.A (SIG left)\n- Sequencer 2 (Pitch) p> Select 2.A (SIG right)\n- Gate Seq (Out) g> Select 2.A (SELECT)\n- Select 2 (A OUT) p> VCO (V/Oct)"
@@ -129,6 +131,7 @@
       "diagram": "Select 2:\n* A Polariser: max\n\n- VCO (Sine) -> Select 2.A (SIG left)\n- VCO (Saw) -> Select 2.A (SIG right)\n- VCO (Pulse) g> Select 2.A (SELECT)\n- Select 2 (A OUT) -> Filter (In)"
     },
     {
+      "essential": true,
       "name": "Attenuvert + offset in one pair",
       "patch": "Signal → B left IN · A polariser sets −5V to +5V offset (from +5V ref) · B polariser attenuverts the signal · A OUT unpatched so it sums into B OUT · one knob pair handles both jobs",
       "diagram": "Select 2:\n* A Polariser: offset amount\n* B Polariser: attenuversion\n\n- Modulation (Out) >> Select 2.B (SIG left)\n- Select 2 (B OUT) >> VCO (FM) // A OUT unpatched → sums into B"

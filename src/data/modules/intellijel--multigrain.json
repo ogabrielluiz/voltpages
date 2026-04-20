@@ -143,6 +143,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Ambient drone cloud",
       "patch": "Latch a sustaining pad Sound with long grains, slow rate, Bell shape and heavy BLUR for a self-running drone.",
       "steps": [
@@ -159,6 +160,7 @@
       "diagram": "MULTIGRAIN:\n* SIZE: 2-4s\n* RATE: 1-2Hz\n* SHAPE: Bell\n* BLUR: high\n* LATCH: ON\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // self-sustaining drone, no external trigger needed"
     },
     {
+      "essential": true,
       "name": "Rhythmic grain percussion",
       "patch": "Sync RATE to a clock and use short grains over a drum loop so Multigrain rearranges the beat one grain per pulse.",
       "steps": [
@@ -192,6 +194,7 @@
       "diagram": "MULTIGRAIN:\n* Scene A / Scene B: contrasting settings\n* MORPH ATT: ~2 o'clock\n- LFO (Out) >> MULTIGRAIN (MORPH CV)\n- MULTIGRAIN (OUT L) -> MIXER (In L)\n- MULTIGRAIN (OUT R) -> MIXER (In R) // one cable morphs all params"
     },
     {
+      "essential": true,
       "name": "Live granular looper",
       "patch": "Assign a Sound to the Looping Recorder so incoming audio is granulated in real time, with optional THRSH auto-freeze.",
       "steps": [

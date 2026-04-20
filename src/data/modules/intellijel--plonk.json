@@ -198,6 +198,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Drum kit from one voice via Preset Step",
       "patch": "A kit preset (1, 5, 9, or 13) is a Preset Step bank: MOD CV picks kick/snare/hat per step while TRIG fires them.",
       "steps": [
@@ -214,6 +215,7 @@
       "diagram": "Plonk:\n* Preset kit loaded · MOD=Preset Step · Poly=2\n\n- CV Sequencer (CV) >> Plonk (MOD)\n- Gate Sequencer (Gate) t> Plonk (TRIG)\n- Plonk (OUT) -> Output (In) // one voice, drum kit"
     },
     {
+      "essential": true,
       "name": "Duophonic marimba with MIDI velocity",
       "patch": "Marimba resonator with Poly=2 plays legato melodies; VEL=dynamics makes velocity drive exciter strength.",
       "steps": [
@@ -230,6 +232,7 @@
       "diagram": "Plonk:\n* Marimba · Poly=2 · VEL=dynamics\n* X=M Stiffness · Y=R Position\n\n- MIDI-CV (Pitch) p> Plonk (PITCH)\n- MIDI-CV (Gate) g> Plonk (TRIG)\n- MIDI-CV (Velocity) >> Plonk (VEL)\n- Plonk (OUT) -> VCA (In) // velocity-sensitive marimba"
     },
     {
+      "essential": true,
       "name": "Open hat choked by closed hat",
       "patch": "A long plate preset rings as open hat; a trigger to MOD with Choke Both cuts it short like a closed hat.",
       "steps": [

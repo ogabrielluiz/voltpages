@@ -147,11 +147,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic supersaw trance lead",
       "patch": "Sequencer p> V/O 1 · Shape CCW for saw · Spread 2 o'clock · Shift 0 · Out L/R → stereo delay → reverb · one voice already delivers 7 detuned saws wide in stereo · move Spread by LFO for shimmer",
       "diagram": "Ripsaw:\n* Shape: CCW (saw)\n* Spread: 2 o'clock\n* Shift: 0\n\nSequencer:\nLFO:\nFX Stereo:\n\n- Sequencer (Pitch) p> Ripsaw (V/O 1)\n- LFO (Out) >> Ripsaw (Spread CV)\n- Ripsaw (Out L) -> FX Stereo (In L)\n- Ripsaw (Out R) -> FX Stereo (In R)"
     },
     {
+      "essential": true,
       "name": "Four-voice paraphonic chord",
       "patch": "Poly quantizer or chord module → V/O 1-4 · insertion activates all four voices = 28 oscillators (56 stereo) · root held by encoder · single trigger gates a stereo pad through an external envelope/VCA · big cinematic stacks from 6HP",
       "diagram": "Ripsaw:\n* Spread: mid\n* Shape: 11 o'clock\n* Shift: 0\n\nChord Module:\nEnvelope:\nStereo VCA:\n\n- Chord Module (Out 1) p> Ripsaw (V/O 1)\n- Chord Module (Out 2) p> Ripsaw (V/O 2)\n- Chord Module (Out 3) p> Ripsaw (V/O 3)\n- Chord Module (Out 4) p> Ripsaw (V/O 4)\n- Ripsaw (Out L) -> Stereo VCA (In L)\n- Ripsaw (Out R) -> Stereo VCA (In R)\n- Envelope (Out) >> Stereo VCA (CV)"
@@ -167,6 +169,7 @@
       "diagram": "Ripsaw:\n* Shape: noon\n* Spread: 2 o'clock\n\nVCO Mod:\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Ripsaw (V/O 1)\n- VCO Mod (Out) >> Ripsaw (Shape CV)\n- Ripsaw (Out L) -> Output (L)\n- Ripsaw (Out R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Unison bass through a filter",
       "patch": "Spread fully CCW = near unison · Shape 11 o'clock · sub-bass melody on V/O 1 only (other voices off) · Out L → mono low-pass filter → VCA · fat seven-oscillator unison bass with micro-detune chorus — not a thin single saw",
       "diagram": "Ripsaw:\n* Shape: 11 o'clock\n* Spread: fully CCW\n* Shift: 0\n\nSequencer:\nFilter:\nVCA:\nEnvelope:\n\n- Sequencer (Pitch) p> Ripsaw (V/O 1)\n- Ripsaw (Out L) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"

@@ -173,16 +173,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Vector-controlled 4-voice crossfader",
       "patch": "Four VCOs (distinct timbres) into A-D IN · MIX output to filter · joystick crossfades in 2D between the four voices · record a slow orbital gesture and loop for autonomous morphing",
       "diagram": "Planar 2:\n* ABCD=lit · LOOP=lit\n\n- VCO 1 (Out) -> Planar 2 (A IN)\n- VCO 2 (Out) -> Planar 2 (B IN)\n- VCO 3 (Out) -> Planar 2 (C IN)\n- VCO 4 (Out) -> Planar 2 (D IN)\n- Planar 2 (MIX) -> Filter (In)\n- Filter (Out) -> VCA (In) // joystick crossfades 4 timbres"
     },
     {
+      "essential": true,
       "name": "Two-axis filter + wavefolder control",
       "patch": "Nothing patched to A-D IN (so outputs are 0-10V CV) · X OUT to filter cutoff · Y OUT to wavefolder amount · bipolar switch on Y for positive/negative fold · play the filter and fold independently with one stick",
       "diagram": "Planar 2:\n* X=UNI · Y=+/-\n\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> Wavefolder (In)\n- Planar 2 (X OUT) >> Filter (Cutoff)\n- Planar 2 (Y OUT) >> Wavefolder (Fold)\n- Wavefolder (Out) -> VCA (In) // 2-axis tone control"
     },
     {
+      "essential": true,
       "name": "Looped gesture as complex LFO",
       "patch": "SENSE up so motion triggers gates · draw circles, figure-8s, or jagged shapes with the joystick while recording · enable LOOP · MIX and X/Y outputs now emit a custom LFO shape far more complex than a sine · gate follows the motion",
       "diagram": "Planar 2:\n* SENSE=up · LOOP=lit · recording active\n\n- Planar 2 (X OUT) >> VCO (FM)\n- Planar 2 (Y OUT) >> Filter (Cutoff)\n- Planar 2 (GATE OUT) g> Envelope (Trig)\n- Envelope (Out) >> VCA (CV) // custom gesture LFO"

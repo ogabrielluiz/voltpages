@@ -137,16 +137,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic rhythm scaffolding",
       "patch": "Master clock (16ths) → Clock In · POW2 mode · Out 1 = 8ths · Out 2 = quarters · Out 3 = half · use for kick/snare/hat",
       "diagram": "A-160-2:\n* Division Mode: POW2 · Output Mode: Gate\n- Master Clock (Clk) c> A-160-2 (Clock In)\n- A-160-2 (Out 1 (÷2)) c> Hat (Trig)\n- A-160-2 (Out 2) c> Snare (Trig)\n- A-160-2 (Out 3) c> Kick (Trig)"
     },
     {
+      "essential": true,
       "name": "Prime polyrhythm drone",
       "patch": "PRIME mode · Out 4 (÷7), Out 5 (÷11), Out 6 (÷13) each trigger slow envelopes on separate drones",
       "diagram": "A-160-2:\n* Division Mode: PRIME · Output Mode: Gate\n- Master Clock (Clk) c> A-160-2 (Clock In)\n- A-160-2 (Out 4) g> ADSR 1 (Gate)\n- A-160-2 (Out 5) g> ADSR 2 (Gate)\n- A-160-2 (Out 6) g> ADSR 3 (Gate) // 7:11:13 drift"
     },
     {
+      "essential": true,
       "name": "Seven-step odd meter",
       "patch": "INT mode · Out 6 (÷7) resets a sequencer every seven clocks for 7/8 phrasing",
       "diagram": "A-160-2:\n* Division Mode: INT · Output Mode: Trigger\n- Master Clock (Clk) c> A-160-2 (Clock In)\n- Master Clock (Clk) c> Sequencer (Clk)\n- A-160-2 (Out 6) t> Sequencer (Reset) // 7-step cycle"

@@ -178,11 +178,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "MIDI poly voice",
       "patch": "TRS MIDI In from a keyboard or sequencer plays Plinky v3 as an 8-voice touch synth. The stereo output goes straight to the mixer while Pitch Hi / Lo and Gate Output can still drive external voices.",
       "diagram": "Plinky Synth:\n* TRS MIDI In: enabled\n\nMixer:\nVCO 1:\nVCO 2:\nEnvelope:\nVCA:\n\n- MIDI Keyboard (Out) -> Plinky Synth (TRS MIDI In)\n- Plinky Synth (Euro L / R) -> Mixer (In 1)\n- Plinky Synth (Pitch Hi / Lo Output) p> VCO 1 (V/Oct)\n- Plinky Synth (Gate Output) g> Envelope (Trig)\n- VCO 1 (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Mixer (In 2)"
     },
     {
+      "essential": true,
       "name": "Touch-controlled filter voice",
       "patch": "Use the main pads to play Plinky, then send Touch Output to a filter cutoff and A Output to a VCA. The same finger pressure that opens the strings also animates the external analog voice.",
       "diagram": "Plinky Synth:\n\nVCO:\nFilter:\nVCA:\nOutput:\n\n- Plinky Synth (Touch Output) >> Filter (Cutoff)\n- Plinky Synth (A, B, X, Y Outputs) >> VCA (CV)\n- Plinky Synth (Euro L / R) -> Output (In)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- VCA (Out) -> Output (In)"
@@ -193,6 +195,7 @@
       "diagram": "Plinky Synth:\n\nDelay:\nReverb:\nMixer:\n\n- Drum Loop (Out) -> Plinky Synth (Audio Input)\n- Plinky Synth (A, B, X, Y Outputs) >> Delay (Time CV)\n- Plinky Synth (A, B, X, Y Outputs) >> Reverb (Mix CV)\n- Plinky Synth (Euro L / R) -> Mixer (In 1)\n- Delay (Out) -> Mixer (In 2)\n- Reverb (Out) -> Mixer (In 3)"
     },
     {
+      "essential": true,
       "name": "Clocked touch sequencer",
       "patch": "Clock Input locks the arpeggiator or sequencer, Trigger Output retriggers envelopes, and Gate Output keeps a companion VCA open only while notes are held. The result is a compact touch-led pattern voice with external sync.",
       "diagram": "Plinky Synth:\n\nClock:\nEnvelope:\nVCA:\nFilter:\n\n- Clock (Out) c> Plinky Synth (Clock Input)\n- Plinky Synth (Trigger Output) t> Envelope (Trig)\n- Plinky Synth (Gate Output) g> VCA (CV)\n- Plinky Synth (Euro L / R) -> Filter (In)\n- Envelope (Out) >> Filter (Cutoff)\n- Filter (Out) -> VCA (In)\n- VCA (Out) -> Output (In)"

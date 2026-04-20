@@ -131,6 +131,7 @@
       "description": "AUX input normals to the MIX output. Setting either channel's SYM-X-AUX to AUX creates an internal feedback path — generates chaotic noise, squawks and self-oscillation with nothing else patched."
     },
     {
+      "essential": true,
       "name": "Ring modulator",
       "trigger": "PHASE switch ON · both XFADE selects IN · SYM-X-AUX = X",
       "description": "With S inverted and both folders bypassed (IN selects), XFADE knob nulls the two inputs. Patching a second oscillator to XFADE CV multiplies it against IN P — ring modulation output at MIX."
@@ -158,11 +159,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Sine to square evolution",
       "patch": "Sine → IN P · slow LFO >> FOLD P CV · FOLD P attenuator ~3 o'clock · FOLD knob at noon · MIX out · as CV sweeps, sine gains odd harmonics then approaches square",
       "diagram": "LFO:\n\nVCO:\n\n- VCO (Sine) -> Bifold (IN P)\n- LFO (Out) >> Bifold (FOLD P)\n- Bifold (MIX) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Stereo fold",
       "patch": "Sine → IN P · IN S normals from IN P · OUT P → left · OUT S → right · set SYM-X-AUX (P) to SYM with bias · leave S at X · two fold flavours panned L/R for wide stereo image",
       "diagram": "Bifold:\n* SYM-X-AUX (P): SYM\n* SYM-AUX (P) attenuator: ~2 o'clock\n* SYM-X-AUX (S): X\n\nVCO:\n\n- VCO (Sine) -> Bifold (IN P)\n- Bifold (OUT P) -> Output (Left)\n- Bifold (OUT S) -> Output (Right)"

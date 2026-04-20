@@ -131,6 +131,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Fat tube bass",
       "patch": "Pitch CV → 1V/OCT · -1 OCT down · SUB LEVEL high with a darker COLOUR · TUBE CRUNCH past noon · OUT through a VCA shaped by the gate.",
       "steps": [
@@ -149,6 +150,7 @@
       "diagram": "FUSION VCO2:\n* +1/-1 OCT: -1 OCT\n* SUB LEVEL: 3 o'clock\n* COLOUR: rounder pos\n* TUBE CRUNCH: 3 o'clock\n* DETUNE: off\n\n- Seq (CV) p> Fusion VCO2 (1V/OCT)\n- Seq (Gate) g> VCA (Gate)\n- Fusion VCO2 (OUT) -> VCA (In)\n- VCA (Out) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Detuned unison lead",
       "patch": "Sequencer → 1V/OCT · DETUNE around noon for a 'second VCO' shimmer · PULSE WIDTH animated by a slow LFO · OUT into a filter for screaming leads.",
       "steps": [
@@ -184,6 +186,7 @@
       "diagram": "FUSION VCO2:\n* PULSE WIDTH: 1 o'clock\n* DETUNE: 9 o'clock\n* TUBE CRUNCH: 11 o'clock\n* SUB LEVEL: low\n\n- Seq (CV) p> Fusion VCO2 (1V/OCT)\n- LFO (slow) >> Fusion VCO2 (PWM IN)\n- Fusion VCO2 (TRI OUT) -> Mixer (Ch 1)\n- Fusion VCO2 (OUT) -> Reverb (In)\n- Reverb (Out) -> Mixer (Ch 2)"
     },
     {
+      "essential": true,
       "name": "Sync lead scream",
       "patch": "Master VCO → SYNC IN · envelope → FM IN for per-note FM kick · TUBE CRUNCH cranked · OUT to the amp for searing sync leads.",
       "steps": [

@@ -247,6 +247,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Locked dice melody",
       "patch": "Both engines in dice-mode over a single stored 16-step pattern — the fastest way to get a repeatable generative hook out of meloDICER.",
       "steps": [
@@ -265,6 +266,7 @@
       "diagram": "meloDICER:\n* Mode: A\n* NOTE VALUE: 1/8\n* VARIATION/LEGATO/REST: 0\n* LO: 0 · HI: ~3/5\n* Scale faders: C D E G A = full\n* DICE R: on · DICE M: on\n\n- Clock (Out) c> meloDICER (CLK IN)\n- meloDICER (1V/OCT OUT) p> VCO (V/Oct)\n- meloDICER (GATE OUT) g> Env (Trig)\n- Env (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Realtime melody over fixed rhythm",
       "patch": "Lock the rhythm engine, let the melody engine run realtime — you keep the groove but the pitches are reshuffled every single step.",
       "steps": [
@@ -299,6 +301,7 @@
       "diagram": "meloDICER:\n* Mode: B\n* Scale: D E F G A Bb C\n* LO: ~1/3 · HI: ~4/5\n* DICE M: on · LEGATO: ~9 · REST: ~10\n\n- Ext Seq (Gate) g> meloDICER (GATE IN 1)\n- meloDICER (1V/OCT OUT) p> VCO (V/Oct)\n- meloDICER (GATE OUT) g> Env (Trig)\n- Env (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Gated scale-quantizer (Mode D)",
       "patch": "Mode D turns meloDICER into a strobed quantizer — CV IN 2 only gets re-sampled while GATE IN 2 is high. Great for capturing specific moments of a slow LFO as in-key notes.",
       "steps": [

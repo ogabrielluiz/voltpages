@@ -106,11 +106,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Tactile 4-note keyboard",
       "patch": "Row Y → VCO V/Oct · Common Gate → envelope Trig · envelope → VCA CV · tune Y knobs to four pitches · press plates to play notes",
       "diagram": "PRESSURE POINTS:\n* Row Y: tune to 4 pitches\n\n- Pressure Points (Tuned Voltage Out Y) p> VCO (V/Oct)\n- Pressure Points (CH 4 Gate / Combined) g> Envelope (Trig)\n- VCO (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Preset patch-state recall",
       "patch": "X/Y/Z rows become three CVs per preset · Common Pressure adds expressive layer per stage · pick a stage = recall three timbre/modulation values at once",
       "diagram": "PRESSURE POINTS:\n* Row X: cutoff per preset\n* Row Y: resonance per preset\n* Row Z: FM index per preset\n\n- Pressure Points (Tuned Voltage Out X) >> Filter (Cutoff)\n- Pressure Points (Tuned Voltage Out Y) >> Filter (Resonance)\n- Pressure Points (Tuned Voltage Out Z) >> VCO (FM)\n- Pressure Points (CH 4 Pressure / Combined) >> VCA (CV) // expressive touch"
@@ -136,6 +138,7 @@
       "diagram": "PRESSURE POINTS:\n\n- VCO (Out) -> Optomix (In)\n- LFO (Sine) >> VCO (Linear FM) // 2-op FM\n- Pressure Points (CH 4 Gate / Combined) g> Optomix (Strike)\n- Pressure Points (CH 3 Gate Output) g> Optomix (Damp)\n- Optomix (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Clocked 4-step sequencer (with BRAINS)",
       "patch": "BRAINS attached · clock → BRAINS clock · reset → BRAINS reset · Row Y now acts as a 4-step pitch sequence, advanced by the clock",
       "diagram": "PRESSURE POINTS:\n* BRAINS expander attached (1PP mode)\n* Row Y: step pitches\n\n- Clock (Out) c> BRAINS (Clock)\n- Pressure Points (Tuned Voltage Out Y) p> VCO (V/Oct)\n- Pressure Points (CH 4 Gate / Combined) g> Envelope (Trig)"

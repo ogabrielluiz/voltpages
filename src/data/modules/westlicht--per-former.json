@@ -173,6 +173,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "8-voice polyphonic rig",
       "patch": "all 8 tracks Note mode · each track one voice · CV OUT n to VCO n, GATE OUT n to envelope n · 8 independent monophonic sequences for 8 VCOs · or use MIDI/CV poly mode on one track driving 8 CV+gate pairs",
       "diagram": "PER|FORMER:\n* Tracks 1-8: Note mode\n* Scale: Minor\n\nVCO 1:\nVCO 2:\n\n- PER|FORMER (CV OUT 1) p> VCO 1 (V/Oct)\n- PER|FORMER (GATE OUT 1) g> Envelope 1 (Trig)\n- PER|FORMER (CV OUT 2) p> VCO 2 (V/Oct)\n- PER|FORMER (GATE OUT 2) g> Envelope 2 (Trig)\n- PER|FORMER (CLOCK OUT) c> External (Clock)"
@@ -183,6 +184,7 @@
       "diagram": "PER|FORMER:\n* Tracks 5-8: Curve mode\n* T5 divisor /1, T6 /2, T7 /3, T8 /4\n* Routing: CV IN 1 → T5 Rotation\n\nFilter:\nVCA:\n\n- PER|FORMER (CV OUT 5) >> Filter (Cutoff)\n- PER|FORMER (CV OUT 6) >> Filter (Resonance)\n- PER|FORMER (CV OUT 7) >> VCA (CV)\n- LFO (Out) >> PER|FORMER (CV IN 1) // mutate"
     },
     {
+      "essential": true,
       "name": "Euclidean polymeter",
       "patch": "track 1 16 steps, divisor /1 · track 2 13 steps /1 · track 3 7 steps /1 · step conditions N:M = 2:3, 3:5, 1:4 on accent steps · evolving poly-rhythm from short patterns",
       "diagram": "PER|FORMER:\n* T1: 16 steps /1, cond. 2:3 on step 1\n* T2: 13 steps /1\n* T3: 7 steps /1, cond. 3:5 on step 1\n\nDrum 1:\nDrum 2:\nDrum 3:\n\n- PER|FORMER (GATE OUT 1) t> Drum 1 (Trig)\n- PER|FORMER (GATE OUT 2) t> Drum 2 (Trig)\n- PER|FORMER (GATE OUT 3) t> Drum 3 (Trig)"
@@ -193,6 +195,7 @@
       "diagram": "PER|FORMER:\n* USB: Launchpad\n* Performance: Sequence Mode\n\nVCO:\n\n- PER|FORMER (CV OUT 1) p> VCO (V/Oct)\n- PER|FORMER (GATE OUT 1) g> Envelope (Trig)"
     },
     {
+      "essential": true,
       "name": "CV-recorded melody",
       "patch": "PAGE+PLAY record mode · Overdub · external keyboard CV into CV IN 1 via routing to T1 pitch · gate from keyboard into CV IN 2 · hit play and play keyboard live · quantized to sequence scale",
       "diagram": "PER|FORMER:\n* Recording: Overdub\n* Routing: CV IN 1 → T1 Pitch, CV IN 2 → T1 Gate\n* T1 Scale: Pentatonic\n\nKeyboard:\n\n- Keyboard (CV) p> PER|FORMER (CV IN 1)\n- Keyboard (Gate) g> PER|FORMER (CV IN 2)\n- PER|FORMER (CV OUT 1) p> VCO (V/Oct)"

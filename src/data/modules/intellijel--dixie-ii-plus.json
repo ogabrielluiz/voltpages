@@ -104,16 +104,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic hard-sync lead",
       "patch": "Master VCO into Dixie SYNC · sweep Dixie pitch with envelope · take saw output · sharp timbral sweeps tracking keyboard pitch of the master",
       "diagram": "Dixie II+:\n* VCO mode · OCT 4\n\n- Master VCO (Saw) -> Dixie II+ (SYNC)\n- Sequencer (Pitch) p> Master VCO (V/Oct)\n- Envelope (Out) >> Dixie II+ (FM2)\n- Dixie II+ (SAW) -> Filter (In)\n- Sequencer (Pitch) p> Dixie II+ (1V/OCT) // hard-sync sweep"
     },
     {
+      "essential": true,
       "name": "Linear-FM bell",
       "patch": "Modulator VCO sine → Dixie FM1 · EXP/LIN set to LIN · FM1 attenuator ~noon · take SINE output · produces clean DX-style bells that still track 1V/oct",
       "diagram": "Dixie II+:\n* VCO mode · EXP/LIN=LIN · FM1 atten noon\n\n- Modulator VCO (Sine) -> Dixie II+ (FM1)\n- Sequencer (Pitch) p> Dixie II+ (1V/OCT)\n- Sequencer (Pitch) p> Modulator VCO (V/Oct)\n- Envelope (Out) >> VCA (CV)\n- Dixie II+ (SINE) -> VCA (In) // linear FM bell"
     },
     {
+      "essential": true,
       "name": "Sub-augmented bass",
       "patch": "Saw to filter for main voice · SUB mixed underneath at equal level · PULSE width narrowed for click transient · thick square-octave-down bass with percussive attack",
       "diagram": "Dixie II+:\n* VCO mode · PW ~11 o'clock\n\n- Dixie II+ (SAW) -> Mixer (In 1)\n- Dixie II+ (SUB) -> Mixer (In 2)\n- Dixie II+ (PULSE) -> Mixer (In 3)\n- Mixer (Out) -> Filter (In)\n- Envelope (Out) >> Filter (Cutoff)\n- Sequencer (Pitch) p> Dixie II+ (1V/OCT) // fat bass + sub + click"

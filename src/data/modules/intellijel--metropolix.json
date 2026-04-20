@@ -263,6 +263,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Boards of Canada chord progression",
       "patch": "MOD Lane 1 assigned to Pitch Post of both tracks, /8 clock, LEN 4, stepped values transpose the whole sequence every couple of bars while sliders stay fixed.",
       "steps": [
@@ -279,6 +280,7 @@
       "diagram": "Metropolix:\n* MOD 1: DIV /8 · LEN 4 · values 0,+2,+5,+7 → Pitch Post\n* TRK 1: running · TRK 2: running\n\n- Metropolix (Track 1 Pitch) p> VCO1 (V/oct)\n- Metropolix (Track 2 Pitch) p> VCO2 (V/oct)\n- Metropolix (Track 1 Gate) g> ENV1 (Gate)\n- Metropolix (Track 2 Gate) g> ENV2 (Gate) // mod lane transposes both tracks"
     },
     {
+      "essential": true,
       "name": "Chord arpeggio within a single stage",
       "patch": "One stage fires three ratchets and accumulates +4 semitones per ratchet, sounding a root–3rd–5th arpeggio in a single pulse.",
       "steps": [
@@ -294,6 +296,7 @@
       "diagram": "Metropolix:\n* Stage: Gate=SINGLE · RATCH=3 · ACCUM +4st · LIM +7st\n\n- Metropolix (Track 1 Pitch) p> VCO (V/oct)\n- Metropolix (Track 1 Gate) g> ENV (Gate) // ratchets step pitch root→3rd→5th"
     },
     {
+      "essential": true,
       "name": "Two-voice counterpoint from one sequence",
       "patch": "Track 1 forward, Track 2 reverse and half speed, same sliders — instant two-voice counterpoint.",
       "steps": [

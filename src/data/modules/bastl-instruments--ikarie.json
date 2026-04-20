@@ -133,16 +133,19 @@
       "diagram": "Ikarie:\n* STEREO switch: SPREAD\n* STEREO: ~2 o'clock\n* RESONANCE: 75%\n\nVCO:\nLFO:\n\n- VCO (Saw) -> Ikarie (L IN)\n- LFO (Out) >> Ikarie (MOD)\n- Ikarie (L OUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Twin peak stereo drone",
       "patch": "noise into L IN · STEREO SPREAD wide · L OUT to left · BEYOND to right · creates disorienting stereo image with sum on one side, difference on the other",
       "diagram": "Ikarie:\n* STEREO switch: SPREAD\n* STEREO: full\n* RESONANCE: 80%\n\nNoise:\nLFO:\n\n- Noise (Out) -> Ikarie (L IN)\n- LFO (Out) >> Ikarie (MOD)\n- Ikarie (L OUT) -> Output (L)\n- Ikarie (BEYOND) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Pinged snare",
       "patch": "trigger burst to L IN · INPUT 3 o'clock · RESONANCE max · FOLLOW fast · FOLLOW → VCA CV · BEYOND gives metallic ring · self-contained percussion voice",
       "diagram": "Ikarie:\n* RESONANCE: max\n* FOLLOW: FAST\n* STEREO switch: SPREAD\n* STEREO: ~1 o'clock\n\nClock:\n\n- Clock (Out) t> Ikarie (L IN) // trigger as audio\n- Ikarie (FOLLOW) >> Ikarie (VCA CV)\n- Ikarie (BEYOND) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Serial 24dB acid bass",
       "patch": "L OUT into R IN · listen R OUT · RESONANCE high · envelope to MOD · INPUT drive for overdrive · steep saturated bass with classic 24dB character",
       "diagram": "Ikarie:\n* INPUT: 4 o'clock\n* RESONANCE: 70%\n\nVCO:\nEnvelope:\n\n- VCO (Saw) -> Ikarie (L IN)\n- Ikarie (L OUT) -> Ikarie (R IN) // series\n- Envelope (Out) >> Ikarie (MOD)\n- Ikarie (R OUT) -> Output (In)"

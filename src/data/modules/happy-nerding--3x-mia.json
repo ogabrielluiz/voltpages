@@ -88,6 +88,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Six-LFO complex modulator",
       "patch": "Six LFOs summed through all three blocks into Out 3 as one evolving CV.",
       "steps": [
@@ -103,6 +104,7 @@
       "diagram": "3x MIA:\n* Chain switches: both down (6-into-1)\n\nLFO 1:\nLFO 2:\nLFO 3:\nLFO 4:\nLFO 5:\nLFO 6:\nFilter:\n\n- LFO 1 (Out) >> 3x MIA (A 1)\n- LFO 2 (Out) >> 3x MIA (B 1)\n- LFO 3 (Out) >> 3x MIA (A 2)\n- LFO 4 (Out) >> 3x MIA (B 2)\n- LFO 5 (Out) >> 3x MIA (A 3)\n- LFO 6 (Out) >> 3x MIA (B 3)\n- 3x MIA (Out 3) >> Filter (Cutoff)"
     },
     {
+      "essential": true,
       "name": "Stereo panner from one source",
       "patch": "Mono source multed to A1 (CW) and B1 (CCW) for a dry/inverted pair routed L and R.",
       "steps": [
@@ -118,6 +120,7 @@
       "diagram": "3x MIA:\n* A1: full CW · B1: full CCW (invert)\n\nMono Source:\nMult:\n\n- Mono Source (Out) -> Mult (In)\n- Mult (Out 1) -> 3x MIA (A 1)\n- Mult (Out 2) -> 3x MIA (B 1)\n- 3x MIA (Out 1) -> Output (L)\n- 3x MIA (Out 2) -> Output (R) // use Out 2 as inverted mirror"
     },
     {
+      "essential": true,
       "name": "CV transpose with attenuated modulation",
       "patch": "Sum sequencer pitch + manual octave offset + vibrato in blocks 1 and 2, chained to Out 2.",
       "steps": [

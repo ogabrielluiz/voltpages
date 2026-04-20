@@ -125,11 +125,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic MS-20 lead",
       "patch": "Saw VCO into IN · FCV from envelope · RES past 3 o'clock · GAIN mid for bite · Link=0% for pure LP squelch",
       "diagram": "Steve's MS-22:\n* Link: 0% · Res: 3 o'clock · Gain: noon\n\nEnvelope:\n\n- VCO (Saw) -> Steve's MS-22 (IN)\n- Envelope (Out) >> Steve's MS-22 (FCV)\n- Steve's MS-22 (OUT) -> VCA (In)"
     },
     {
+      "essential": true,
       "name": "Self-oscillating sine voice",
       "patch": "No input · RES maxed · LP self-oscillates · sequencer into FCV tracks 1V/oct · sine voice in 4 HP · add drive via GAIN for overtones",
       "diagram": "Steve's MS-22:\n* Res: max · Link: 0% · FCV attn: full CW\n\nSequencer:\n\n- Sequencer (Pitch) p> Steve's MS-22 (FCV)\n- Envelope (Out) >> VCA (CV)\n- Steve's MS-22 (OUT) -> VCA (In)"
@@ -146,6 +148,7 @@
       "diagram": "Steve's MS-22:\n* Link: 0% · Matrix HP: -ACV\n\nEnvelope:\n\n- VCO (Saw) -> Steve's MS-22 (IN)\n- Envelope (Out) >> Steve's MS-22 (FCV)\n- Envelope (Out) >> Steve's MS-22 (ACV)\n- Steve's MS-22 (OUT) -> VCA (In)"
     },
     {
+      "essential": true,
       "name": "Filter + VCA voice card",
       "patch": "Matrix: GAIN=+ACV · envelope → ACV · GAIN doubles as VCA · saves one VCA module for a full voice in 4 HP",
       "diagram": "Steve's MS-22:\n* Matrix Gain: +ACV · Res: 2 o'clock\n\nEnvelope:\n\n- VCO (Saw) -> Steve's MS-22 (IN)\n- Envelope (Out) >> Steve's MS-22 (ACV) // acts as VCA CV\n- Keyboard (Pitch) p> Steve's MS-22 (FCV)\n- Steve's MS-22 (OUT) -> Output (In)"

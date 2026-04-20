@@ -109,6 +109,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Self-contained melodic resonator",
       "patch": "Sequencer into V/OCT only — Resonate generates its own exciter on each note change.",
       "steps": [
@@ -124,6 +125,7 @@
       "diagram": "RESONATE:\n* Resonator Type: Modal\n* Polyphony: 1 voice\n- Sequencer (CV) p> Resonate (V/OCT) // step changes trigger internal excitation\n- Resonate (ODD) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Drum hits as exciter",
       "patch": "Drum transients feed IN so Resonate becomes a pitched resonant body tuned by V/OCT.",
       "steps": [
@@ -140,6 +142,7 @@
       "diagram": "RESONATE:\n* Resonator Type: Modal\n- Drum (Out) -> Resonate (IN) // percussive exciter\n- Sequencer (CV) p> Resonate (V/OCT)\n- Resonate (ODD) -> Mixer (In)\n- Resonate (EVEN) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Polyphonic chords",
       "patch": "4-voice polyphony with a fast pitch sequence strums chords from the internal exciter.",
       "steps": [

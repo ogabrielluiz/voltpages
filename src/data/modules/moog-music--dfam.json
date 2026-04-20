@@ -139,6 +139,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "DFAM + Mother-32 sync",
       "patch": "Mother-32 ASSIGN out clocks DFAM's step advance so both instruments play locked together.",
       "steps": [
@@ -169,6 +170,7 @@
       "diagram": "DFAM A:\n* Primary · RUN/STOP armed second\n\nDFAM B:\n* Secondary · RUN/STOP armed first\n\n- DFAM A (TRIGGER) c> DFAM B (ADV/CLOCK)\n- DFAM A (VCA) -> Output (L)\n- DFAM B (VCA) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Kick + snare in one voice",
       "patch": "Alternate low/high PITCH per step and add noise on snare steps for a two-part drum pattern from a single DFAM.",
       "steps": [
@@ -187,6 +189,7 @@
       "diagram": "DFAM:\n* SEQ PITCH MOD: VCO 1&2\n* PITCH 1,3,5,7: low (kick) · 2,4,6,8: mid (snare)\n* VCO 1 EG AMT: 2 o'clock\n* VCA EG: FAST · VCA DECAY: ~10 o'clock\n\n- LFO (Out) >> DFAM (NOISE LEVEL) // optional noise swell"
     },
     {
+      "essential": true,
       "name": "Sequenced bass voice",
       "patch": "DFAM plays a tuned 8-note bass line with long VCA decay and slow attack for glide-feeling notes.",
       "steps": [

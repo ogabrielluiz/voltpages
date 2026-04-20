@@ -83,6 +83,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Bongo (PP + FM + LPG)",
       "patch": "Touchplate-played bongo: FM source into CH 1, Pressure Points Common Gate strikes, CH 3 Gate adds dampening mid-decay.",
       "steps": [
@@ -100,6 +101,7 @@
       "diagram": "Optomix:\n* CH 1 CONTROL: full CCW\n* CH 1 DAMP: ~30% (set dampening)\n\n- VCO (Out) -> Optomix.CH 1 (Signal In) // FM source\n- Pressure Points (Common Gate) g> Optomix.CH 1 (Strike) // touchplate 4\n- Pressure Points (CH 3 Gate) g> Optomix.CH 1 (DAMP CV) // touchplate 3 dampens\n- Optomix.CH 1 (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "FM pings",
       "patch": "CH 1 processes a sine, its output drives another VCO's Linear FM input. Each STRIKE trigger pings a short FM burst.",
       "steps": [
@@ -167,6 +169,7 @@
       "diagram": "Optomix:\n* CH 1 DAMP: ~65%\n\nMATHS:\n* CH 1: Rise ≥60%, Fall <50%\n\n- Gate Source (Gate) g> Optomix.CH 1 (Strike)\n- Gate Source (Gate) g> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> Optomix.CH 1 (DAMP CV) // delayed palm mute\n- VCO (Out) -> Optomix.CH 1 (Signal In)\n- Optomix.CH 1 (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Two-voice LPG mixer",
       "patch": "Voice 1 → CH 1, Voice 2 → CH 2, each with own STRIKE and DAMP. SUM Out gives the mix; AUX can chain another LPG.",
       "steps": [

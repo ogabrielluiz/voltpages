@@ -117,11 +117,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Kick + hat drum voice",
       "patch": "Step sequencer → TRIG1 (kick) · TRIG2 (hat) · short Decay 2 · Exclusive off",
       "diagram": "PICO DRUMS:\n* Sample 1: kick\n* Sample 2: hat\n* Decay 2: CCW\n- Seq (Trig1) t> Pico Drums (TRIG 1)\n- Seq (Trig2) t> Pico Drums (TRIG 2)\n- Pico Drums (OUT) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Melodic drum 1",
       "patch": "CV Assign → pitch · quantized sequencer → CV1 · trigger → TRIG1",
       "diagram": "PICO DRUMS:\n* CV Assign: pitch\n- Quant (CV) p> Pico Drums (CV 1)\n- Seq (Gate) g> Pico Drums (TRIG 1)\n- Pico Drums (OUT) -> VCF (In)"
@@ -132,6 +134,7 @@
       "diagram": "PICO DRUMS:\n* CV Assign: sample-select\n- Seq (CV) >> Pico Drums (CV 1)\n- Clock (Out) c> Pico Drums (TRIG 1)\n- Pico Drums (OUT) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Choked kick/clap",
       "patch": "Exclusive on · TRIG1 = kick · TRIG2 = clap · common clock with offbeat splits",
       "diagram": "PICO DRUMS:\n* Exclusive: on\n- Seq (Trig1) t> Pico Drums (TRIG 1)\n- Seq (Trig2) t> Pico Drums (TRIG 2)\n- Pico Drums (OUT) -> VCA (In)"
