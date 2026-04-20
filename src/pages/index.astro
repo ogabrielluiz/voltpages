@@ -125,6 +125,17 @@ for (const filter of ROLE_FILTERS) {
       </div>
     </div>
 
+    <!-- Active raw-tag filter pill (shown when ?tag= is in the URL, e.g. from
+         clicking a tag chip in a module header). Rendered hidden; JS reveals
+         it if a tag filter is active. -->
+    <div id="tag-filter-pill" class="mt-4 hidden w-full max-w-[1100px] flex justify-center">
+      <button type="button" class="chip chip--touch chip--accent" id="tag-filter-clear" aria-label="Clear tag filter">
+        <span class="kicker" style="font-size: 10px; letter-spacing: 2px; margin-right: 4px">Tag</span>
+        <span id="tag-filter-label"></span>
+        <span aria-hidden="true" class="ml-1">✕</span>
+      </button>
+    </div>
+
     <!-- Module grid -->
     <div class="mt-6 md:mt-8 w-full max-w-[1100px]">
       <!-- Grouped view (default) -->
@@ -165,6 +176,16 @@ for (const filter of ROLE_FILTERS) {
             </section>
           );
         })}
+      </div>
+
+      <!-- Empty state (shown when filters/query return zero results) -->
+      <div id="empty-state" class="hidden py-16 text-center" role="status" aria-live="polite">
+        <p class="text-fg text-base mb-1">No matches <span id="empty-state-query" class="font-mono text-subtle"></span></p>
+        <p class="text-subtle text-[13px] mb-5">Nothing in this corner of the rack yet.</p>
+        <div class="flex gap-2 justify-center flex-wrap">
+          <button type="button" id="empty-state-clear" class="chip chip--touch">Clear search</button>
+          <button type="button" id="empty-state-browse" class="chip chip--touch is-active">Browse all {allModules.length}</button>
+        </div>
       </div>
 
       <!-- Flat grid (hidden by default — shown when a tag filter or search is active) -->
@@ -245,6 +266,34 @@ for (const filter of ROLE_FILTERS) {
       window.history.replaceState({}, '', url.toString());
     }
 
+    // Raw-tag filter (N-06). Populated by external links (module-header tag
+    // chips) and dismissed via the tag-filter pill.
+    function getActiveTag() {
+      const url = new URL(window.location.href);
+      const raw = url.searchParams.get('tag');
+      return raw ? raw.trim() : null;
+    }
+
+    function setActiveTagInURL(tag) {
+      const url = new URL(window.location.href);
+      if (tag) url.searchParams.set('tag', tag);
+      else url.searchParams.delete('tag');
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    function renderTagPill(tag) {
+      const pill = document.getElementById('tag-filter-pill');
+      const label = document.getElementById('tag-filter-label');
+      if (!pill || !label) return;
+      if (tag) {
+        label.textContent = tag;
+        pill.classList.remove('hidden');
+      } else {
+        pill.classList.add('hidden');
+        label.textContent = '';
+      }
+    }
+
     function switchView(isFlat) {
       const grouped = document.getElementById('grouped-grid');
       const flat = document.getElementById('flat-grid');
@@ -258,29 +307,35 @@ for (const filter of ROLE_FILTERS) {
       }
     }
 
-    function applyFiltersAndCount(query, role, slugCounts) {
-      const isFlat = (role && role !== 'all') || (query && query.length >= 2);
+    function applyFiltersAndCount(query, role, slugCounts, tag) {
+      const isFlat = (role && role !== 'all') || (query && query.length >= 2) || Boolean(tag);
       switchView(isFlat);
 
       const cards = document.querySelectorAll(isFlat ? '#flat-grid .module-card' : '#grouped-grid .module-card');
       const q = (query || '').toLowerCase();
+      const tagLower = tag ? tag.toLowerCase() : null;
       let visible = 0;
 
       cards.forEach((card) => {
         const slug = card.dataset.slug;
         const name = card.dataset.name || '';
         const mfr = card.dataset.manufacturer || '';
-        const tags = card.dataset.tags || '';
+        const tagsAttr = card.dataset.tags || '';
         const roles = (card.dataset.roles || '').split(' ');
 
         const roleMatch = !role || role === 'all' || roles.includes(role);
+        // data-tags stores tags space-separated; match on word boundaries so
+        // "vco" doesn't incidentally match "vcovcf". Every tag already tokenises
+        // cleanly in the schema (uppercase, hyphens, slashes are the only
+        // non-letters), so a split + includes is exact.
+        const tagMatch = !tagLower || tagsAttr.split(' ').includes(tagLower);
         let queryMatch = true;
         if (q.length >= 2) {
           const pagefindHit = slugCounts && slugCounts[slug];
-          const localHit = name.includes(q) || mfr.includes(q) || tags.includes(q);
+          const localHit = name.includes(q) || mfr.includes(q) || tagsAttr.includes(q);
           queryMatch = Boolean(pagefindHit) || localHit;
         }
-        const isMatch = roleMatch && queryMatch;
+        const isMatch = roleMatch && tagMatch && queryMatch;
         card.style.display = isMatch ? '' : 'none';
 
         const badge = card.querySelector('.match-count');
@@ -306,6 +361,25 @@ for (const filter of ROLE_FILTERS) {
             .some((c) => c.style.display !== 'none');
           group.style.display = hasVisible ? '' : 'none';
         });
+      }
+
+      // Empty-state (N-07): when filters narrow the view to zero, swap the
+      // grid for a recoverable block. The status container is aria-live so
+      // the empty-ness gets announced.
+      const hasAnyFilter = isFlat; // any filter or a query forces flat view
+      const emptyEl = document.getElementById('empty-state');
+      const groupedEl = document.getElementById('grouped-grid');
+      const flatEl = document.getElementById('flat-grid');
+      if (emptyEl) {
+        if (hasAnyFilter && visible === 0) {
+          emptyEl.classList.remove('hidden');
+          if (groupedEl) groupedEl.classList.add('hidden');
+          if (flatEl) flatEl.classList.add('hidden');
+          const queryEl = document.getElementById('empty-state-query');
+          if (queryEl) queryEl.textContent = q ? `for "${query}"` : '';
+        } else {
+          emptyEl.classList.add('hidden');
+        }
       }
 
       const countEl = document.getElementById('module-count');
@@ -369,14 +443,16 @@ for (const filter of ROLE_FILTERS) {
       return null;
     }
 
-    async function handleSearch(query, role) {
+    async function handleSearch(query, role, tag) {
       role = role || getActiveRole();
+      tag = tag === undefined ? getActiveTag() : tag;
+      renderTagPill(tag);
       if (!query || query.length < 2) {
-        applyFiltersAndCount('', role, null);
+        applyFiltersAndCount('', role, null, tag);
         return;
       }
       const slugCounts = await runPagefindSearch(query);
-      applyFiltersAndCount(query, role, slugCounts || {});
+      applyFiltersAndCount(query, role, slugCounts || {}, tag);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -407,9 +483,44 @@ for (const filter of ROLE_FILTERS) {
             b.setAttribute('aria-pressed', active ? 'true' : 'false');
           });
           setActiveRoleInURL(role);
-          handleSearch(input.value.trim(), role);
+          // Role and raw-tag are different browse axes; picking a role clears
+          // the raw-tag so users aren't surprised by a double-narrowed view.
+          setActiveTagInURL(null);
+          handleSearch(input.value.trim(), role, null);
         });
       });
+
+      // Tag filter pill — clicking anywhere on it clears the tag.
+      const tagClear = document.getElementById('tag-filter-clear');
+      if (tagClear) {
+        tagClear.addEventListener('click', () => {
+          setActiveTagInURL(null);
+          handleSearch(input.value.trim(), getActiveRole(), null);
+        });
+      }
+
+      // Empty-state recovery buttons (N-07).
+      const emptyClear = document.getElementById('empty-state-clear');
+      if (emptyClear) {
+        emptyClear.addEventListener('click', () => {
+          input.value = '';
+          handleSearch('', getActiveRole(), getActiveTag());
+        });
+      }
+      const emptyBrowse = document.getElementById('empty-state-browse');
+      if (emptyBrowse) {
+        emptyBrowse.addEventListener('click', () => {
+          input.value = '';
+          setActiveRoleInURL('all');
+          setActiveTagInURL(null);
+          roleButtons.forEach((b) => {
+            const active = b.dataset.role === 'all';
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          });
+          handleSearch('', 'all', null);
+        });
+      }
 
       suggestionChips.forEach((chip) => {
         chip.addEventListener('click', () => {
@@ -429,8 +540,8 @@ for (const filter of ROLE_FILTERS) {
         }
       });
 
-      // Initial apply so role=... URL param filters the view on first load.
-      handleSearch(input.value.trim(), initialRole);
+      // Initial apply so role=... / tag=... URL params filter the view on first load.
+      handleSearch(input.value.trim(), initialRole, getActiveTag());
       input.focus();
     });
   </script>

@@ -12,6 +12,7 @@ interface Props {
 }
 
 const { name, manufacturer, hp, tags, verified, firmwareVersion, role, sources = [], slug } = Astro.props;
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 const issueTitle = encodeURIComponent(`Correction: ${name}`);
 const issueBody = encodeURIComponent(
   `**Module:** ${name} (${manufacturer})\n` +
@@ -72,9 +73,13 @@ const trustDialogId = 'trust-dialog';
     </div>
     <div class="flex gap-1.5 flex-wrap">
       {tags.map((tag) => (
-        <span class="text-[11px] md:text-xs font-mono text-muted tracking-[1px] uppercase px-2 py-0.5 border border-tag-border">
+        <a
+          href={`${basePath}/?tag=${encodeURIComponent(tag)}`}
+          class="text-[11px] md:text-xs font-mono text-muted tracking-[1px] uppercase px-2 py-0.5 border border-tag-border no-underline hover:text-fg hover:border-border-strong"
+          title={`Browse all ${tag} modules`}
+        >
           {tag}
-        </span>
+        </a>
       ))}
     </div>
   </div>
