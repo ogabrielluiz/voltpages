@@ -14,11 +14,13 @@ const { controls } = Astro.props;
     <tbody>
       {controls.map((control, i) => (
         <tr class={i < controls.length - 1 ? "border-b border-border" : ""}>
+          <td class="py-2.5 w-[72px] md:w-[88px] align-top">
+            {control.scope && (
+              <span class="control-scope-chip">{control.scope}</span>
+            )}
+          </td>
           <td class="py-2.5 w-[100px] md:w-[140px] font-semibold text-fg align-top text-sm md:text-[15px]">
             {control.name}
-            {control.scope && (
-              <div class="text-[11px] md:text-xs font-mono text-subtle font-normal mt-0.5">{control.scope}</div>
-            )}
           </td>
           <td class="py-2.5 text-muted align-top">
             {control.description}

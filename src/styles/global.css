@@ -146,6 +146,21 @@
   font-weight: 600;
 }
 
+/* ---------- Controls scope chip (F-13) ---------- */
+.control-scope-chip {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-subtle);
+  background: var(--color-bg);
+  border: 1px solid var(--color-tag-border);
+  padding: 2px 6px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
 /* ---------- I/O direction encoding (F-11, F-12) ---------- */
 .io-heading--in { color: var(--color-input-green); }
 .io-heading--out { color: var(--color-output-red); }
