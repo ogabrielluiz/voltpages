@@ -38,7 +38,7 @@ for (const idea of patchIdeas) {
       const diagramSvg = renderedDiagrams.get(idea.name);
       const diagramIndex = ideaIndexes.get(idea.name);
       return (
-        <div class="pl-3 border-l-2 border-border-strong">
+        <div class="pl-3 border-l-2 border-border-strong" data-patch-card>
           <div class="text-[15px] font-semibold text-fg">{idea.name}</div>
           <div class="text-[13px] text-muted leading-relaxed mt-0.5">{idea.patch}</div>
 

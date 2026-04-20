@@ -43,15 +43,23 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
   <p class="px-4 md:px-7 pt-3 pb-0 text-sm text-muted leading-relaxed">{module.description}</p>
 
   <!-- Section nav -->
-  <nav class="px-4 md:px-7 pt-5 pb-3 flex gap-1.5 md:gap-2 sticky top-0 bg-bg z-10 border-b border-border overflow-x-auto" aria-label="Module sections">
-    <a href="#patches" class="text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-2.5 md:px-3 py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0">Patches</a>
-    <a href="#behaviors" class="text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-2.5 md:px-3 py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0">Behaviors</a>
-    <a href="#controls" class="text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-2.5 md:px-3 py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0">Controls</a>
-    <a href="#io" class="text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-2.5 md:px-3 py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0">I/O</a>
-    {expanders.length > 0 && (
-      <a href="#expanders" class="text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-2.5 md:px-3 py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0">Expanders</a>
-    )}
-  </nav>
+  <div class="sticky top-0 bg-bg z-10 border-b border-border">
+    <nav class="section-nav px-4 md:px-7 pt-5 pb-3 flex gap-1.5 md:gap-2 overflow-x-auto items-center" aria-label="Module sections">
+      <a href="#patches" data-section-link="patches" class="section-link text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 min-h-[44px] md:min-h-0 md:py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0 inline-flex items-center">
+        <span class="section-link-label">Patches</span>
+        <span class="section-link-count hidden ml-1 text-faint" aria-hidden="true"></span>
+      </a>
+      <a href="#behaviors" data-section-link="behaviors" class="section-link text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 min-h-[44px] md:min-h-0 md:py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0 inline-flex items-center">Behaviors</a>
+      <a href="#controls" data-section-link="controls" class="section-link text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 min-h-[44px] md:min-h-0 md:py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0 inline-flex items-center">Controls</a>
+      <a href="#io" data-section-link="io" class="section-link text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 min-h-[44px] md:min-h-0 md:py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0 inline-flex items-center">I/O</a>
+      {expanders.length > 0 && (
+        <a href="#expanders" data-section-link="expanders" class="section-link text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 min-h-[44px] md:min-h-0 md:py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0 inline-flex items-center">Expanders</a>
+      )}
+    </nav>
+    <div class="section-nav-progress" aria-hidden="true">
+      <div id="section-nav-progress-fill" class="section-nav-progress-fill"></div>
+    </div>
+  </div>
 
   <!-- Patch Ideas -->
   <section id="patches" data-pagefind-filter="section:patches" class="px-4 md:px-7 py-5 md:py-6 border-b border-border scroll-mt-12">
@@ -74,7 +82,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
   </section>
 
   {expanders.length > 0 && (
-    <section id="expanders" class="px-4 md:px-7 py-5 md:py-6 scroll-mt-12">
+    <section id="expanders" data-pagefind-filter="section:expanders" class="px-4 md:px-7 py-5 md:py-6 scroll-mt-12">
       <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">Expanders</h2>
       <div class="flex flex-col gap-6">
         {expanders.map((exp) => (
@@ -111,3 +119,94 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
   )}
 
 </div>
+
+<script is:inline define:vars={{ patchCount: module.patchIdeas.length }}>
+  (function () {
+    const links = Array.from(document.querySelectorAll('[data-section-link]'));
+    if (links.length === 0) return;
+
+    // Active-section tracking. rootMargin biases the trigger to roughly the
+    // upper third of the viewport so the active chip changes shortly after a
+    // section's heading crosses the top, not when its last pixel leaves.
+    const sections = links
+      .map((link) => {
+        const id = link.getAttribute('data-section-link');
+        const el = id ? document.getElementById(id) : null;
+        return el ? { id, el, link } : null;
+      })
+      .filter(Boolean);
+
+    function setActive(id) {
+      for (const s of sections) {
+        const active = s.id === id;
+        if (active) s.link.setAttribute('aria-current', 'location');
+        else s.link.removeAttribute('aria-current');
+      }
+    }
+
+    const visible = new Set();
+    if (typeof IntersectionObserver === 'function') {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            const id = entry.target.id;
+            if (entry.isIntersecting) visible.add(id);
+            else visible.delete(id);
+          }
+          // Pick the first section in document order that is currently visible —
+          // this matches the "what am I looking at" intent better than picking
+          // the most-intersected section, which flickers on short sections.
+          const first = sections.find((s) => visible.has(s.id));
+          if (first) setActive(first.id);
+        },
+        { rootMargin: '-20% 0px -70% 0px', threshold: 0 },
+      );
+      for (const s of sections) io.observe(s.el);
+    }
+
+    // Patches chip count: "Patches · N / total" while the user is scrolling
+    // within the patches section, plain "Patches" otherwise.
+    const patchesLink = links.find((l) => l.getAttribute('data-section-link') === 'patches');
+    const patchesSection = document.getElementById('patches');
+    const patchesCountEl = patchesLink && patchesLink.querySelector('.section-link-count');
+
+    function updatePatchCount() {
+      if (!patchesLink || !patchesSection || !patchesCountEl) return;
+      const rect = patchesSection.getBoundingClientRect();
+      const inSection = rect.top < window.innerHeight * 0.5 && rect.bottom > 0;
+      if (!inSection) {
+        patchesCountEl.classList.add('hidden');
+        patchesCountEl.textContent = '';
+        return;
+      }
+      const cards = patchesSection.querySelectorAll('[data-patch-card]');
+      const total = cards.length || patchCount;
+      let seen = 0;
+      cards.forEach((c) => {
+        if (c.getBoundingClientRect().top < window.innerHeight * 0.5) seen++;
+      });
+      const display = Math.min(Math.max(seen, 1), total);
+      patchesCountEl.textContent = `· ${display} / ${total}`;
+      patchesCountEl.classList.remove('hidden');
+    }
+
+    // Scroll progress rule under the sticky nav.
+    const fill = document.getElementById('section-nav-progress-fill');
+    let rafPending = false;
+    function onScroll() {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        rafPending = false;
+        if (fill) {
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = docHeight > 0 ? Math.min(100, Math.max(0, (window.scrollY / docHeight) * 100)) : 0;
+          fill.style.width = pct + '%';
+        }
+        updatePatchCount();
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
