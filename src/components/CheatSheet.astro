@@ -55,6 +55,16 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
       {expanders.length > 0 && (
         <a href="#expanders" data-section-link="expanders" class="section-link text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 min-h-[44px] md:min-h-0 md:py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0 inline-flex items-center">Expanders</a>
       )}
+      <button
+        type="button"
+        id="print-btn"
+        class="text-[11px] md:text-xs font-mono text-subtle hover:text-fg no-underline tracking-wide uppercase px-3 min-h-[44px] md:min-h-0 md:py-1.5 border border-border hover:border-border-strong whitespace-nowrap shrink-0 inline-flex items-center gap-1 ml-auto cursor-pointer bg-transparent"
+        aria-label="Print or save as PDF"
+        title="Print / PDF (⌘P)"
+      >
+        <span aria-hidden="true">⎙</span>
+        <span>Print / PDF</span>
+      </button>
     </nav>
     <div class="section-nav-progress" aria-hidden="true">
       <div id="section-nav-progress-fill" class="section-nav-progress-fill"></div>
@@ -208,5 +218,10 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+
+    const printBtn = document.getElementById('print-btn');
+    if (printBtn) {
+      printBtn.addEventListener('click', () => window.print());
+    }
   })();
 </script>

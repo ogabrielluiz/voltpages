@@ -44,26 +44,10 @@ const goatcounterCode = import.meta.env.PUBLIC_GOATCOUNTER_CODE || 'ogabrielluiz
     <title>{displayTitle}</title>
   </head>
   <body class="bg-bg text-fg font-sans antialiased">
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <main id="main-content">
       <slot />
     </main>
-
-    <!-- Print is intentionally disabled for now. The underlying CSS and JS
-         that style the page for paper are kept; only the affordances (UI
-         button and keyboard shortcut) are suppressed so the feature can be
-         re-enabled later without rebuilding it. -->
-    <script is:inline>
-      window.addEventListener(
-        'keydown',
-        (e) => {
-          if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase() === 'p') {
-            e.preventDefault();
-            e.stopPropagation();
-          }
-        },
-        { capture: true },
-      );
-    </script>
 
     <!-- GoatCounter analytics — privacy-friendly, no cookies, free for open source -->
     {goatcounterCode && (
