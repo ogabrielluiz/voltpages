@@ -75,9 +75,13 @@
   pointer-events: none;
 }
 
-.chip--touch {
-  min-height: 44px;
-  padding: 10px 12px;
+/* Touch sizing only bites on coarse pointers / narrow viewports so
+ * desktop keeps the compact chip rhythm. */
+@media (max-width: 640px), (hover: none) {
+  .chip--touch {
+    min-height: 44px;
+    padding: 10px 12px;
+  }
 }
 
 .chip--ok { color: var(--color-ok); border-color: var(--color-ok); }
@@ -366,6 +370,15 @@
 /* Focus-visible for keyboard navigation */
 a:focus-visible, button:focus-visible, input:focus-visible {
   outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
+}
+
+/* Primary affordances — the search input and every module-card link on the
+ * home page — get an accent-colored focus ring so the keyboard path through
+ * the index is easier to follow. */
+#search-input:focus-visible,
+.module-card:focus-visible {
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
