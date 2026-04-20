@@ -1,5 +1,5 @@
 ---
-import type { PatchIdea } from '../types/module';
+import type { PatchIdea, PatchIntent } from '../types/module';
 import { render as renderPatchflow } from '@ogabrielluiz/patchflow';
 
 interface Props {
@@ -29,77 +29,167 @@ for (const idea of patchIdeas) {
     ideaIndexes.set(idea.name, globalIndex++);
   }
 }
+
+const INTENT_FILTERS: { id: PatchIntent; label: string }[] = [
+  { id: 'envelope', label: 'Envelope' },
+  { id: 'lfo', label: 'LFO' },
+  { id: 'audio-rate', label: 'Audio-rate' },
+  { id: 'utility', label: 'Utility' },
+  { id: 'generative', label: 'Generative' },
+];
+
+function intentsFor(idea: PatchIdea): PatchIntent[] {
+  if (!idea.intent) return [];
+  return Array.isArray(idea.intent) ? idea.intent : [idea.intent];
+}
+
+const hasEssentials = patchIdeas.some((i) => i.essential);
+const availableIntents = new Set<PatchIntent>();
+for (const idea of patchIdeas) {
+  for (const intent of intentsFor(idea)) availableIntents.add(intent);
+}
+
+// The chip rail only earns its space when there are enough patches to benefit
+// from filtering AND there's at least one classification to filter by. For
+// shorter lists or fully-unclassified data we keep the plain heading.
+const showFilterRail =
+  patchIdeas.length >= 5 && (hasEssentials || availableIntents.size > 0);
+
+const DIFFICULTY_LABEL: Record<string, { label: string; cls: string }> = {
+  essential: { label: 'EASY', cls: 'chip--ok' },
+  intermediate: { label: 'INT', cls: '' },
+  advanced: { label: 'ADV', cls: 'chip--warn' },
+};
 ---
 
 <div class="mt-7">
-  <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-3">Patch Ideas</h2>
-  <div class="flex flex-col gap-2.5">
+  <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-3">
+    Patch Ideas <span class="text-faint">· {patchIdeas.length}</span>
+  </h2>
+
+  {showFilterRail && (
+    <div class="patch-filter-rail flex flex-wrap gap-1.5 mb-4" role="tablist" aria-label="Filter patches">
+      <button type="button" class="patch-chip chip is-active" data-patch-filter="all" aria-pressed="true">All</button>
+      {hasEssentials && (
+        <button type="button" class="patch-chip chip chip--accent" data-patch-filter="essential" aria-pressed="false">★ Essentials</button>
+      )}
+      {INTENT_FILTERS.filter((f) => availableIntents.has(f.id)).map((f) => (
+        <button type="button" class="patch-chip chip" data-patch-filter={`intent:${f.id}`} aria-pressed="false">{f.label}</button>
+      ))}
+    </div>
+  )}
+
+  <div class="flex flex-col gap-4" id="patch-list">
     {patchIdeas.map((idea) => {
       const diagramSvg = renderedDiagrams.get(idea.name);
       const diagramIndex = ideaIndexes.get(idea.name);
+      const intents = intentsFor(idea);
+      const difficulty = idea.difficulty ? DIFFICULTY_LABEL[idea.difficulty] : null;
+      const detailsId = `patch-diagram-${diagramIndex ?? 'x'}`;
       return (
-        <div class="pl-3 border-l-2 border-border-strong" data-patch-card>
-          <div class="text-[15px] font-semibold text-fg">{idea.name}</div>
-          <div class="text-[13px] text-muted leading-relaxed mt-0.5">{idea.patch}</div>
-
-          {idea.steps && idea.steps.length > 0 && (
-            <div class="mt-2.5 text-[13px] leading-relaxed">
-              <div class="text-[10px] font-mono text-subtle uppercase tracking-[2px] mb-1">Walkthrough</div>
-              <ol class="list-decimal ml-5 text-muted space-y-0.5 marker:text-subtle marker:font-mono marker:text-[11px]">
-                {idea.steps.map((step) => (
-                  <li>{step}</li>
-                ))}
-              </ol>
-              {idea.signalOut && (
-                <div class="mt-2 text-muted">
-                  <span class="text-[10px] font-mono text-subtle uppercase tracking-[2px] mr-2">Signal out</span>
-                  {idea.signalOut}
-                </div>
-              )}
-              {idea.hear && (
-                <div class="mt-1 text-muted">
-                  <span class="text-[10px] font-mono text-subtle uppercase tracking-[2px] mr-2">Listen for</span>
-                  {idea.hear}
+        <article
+          class="patch-card flex flex-col md:flex-row gap-3 md:gap-5"
+          data-patch-card
+          data-essential={idea.essential ? 'true' : 'false'}
+          data-intents={intents.join(' ')}
+          data-signal-type={idea.signalType || ''}
+          data-difficulty={idea.difficulty || ''}
+          tabindex="0"
+        >
+          <div class="flex-1 pl-3 border-l-2 border-border-strong">
+            <div class="flex items-baseline gap-3 justify-between">
+              <div class="text-[15px] font-semibold text-fg">
+                {idea.essential && (
+                  <span class="text-accent mr-1" aria-label="Essential patch" title="Essential patch">★</span>
+                )}
+                {idea.name}
+              </div>
+              {(difficulty || idea.signalType) && (
+                <div class="flex gap-1.5 shrink-0">
+                  {difficulty && (
+                    <span class={`chip chip--static ${difficulty.cls}`}>{difficulty.label}</span>
+                  )}
+                  {idea.signalType && (
+                    <span class="chip chip--static">{idea.signalType.toUpperCase()}</span>
+                  )}
                 </div>
               )}
             </div>
-          )}
+            <div class="text-[13px] text-muted leading-relaxed mt-0.5">{idea.patch}</div>
 
-          {diagramSvg && (
-            <details class="mt-2 group">
-              <summary class="text-[11px] font-mono text-subtle cursor-pointer tracking-wide uppercase hover:text-fg select-none list-none inline-flex items-center gap-1 py-1">
-                <span class="inline-block transition-transform group-open:rotate-90">▸</span>
-                <span class="group-open:hidden">Show diagram</span>
-                <span class="hidden group-open:inline">Hide diagram</span>
-              </summary>
-              <div class="diagram-shell mt-2">
-                <button
-                  type="button"
-                  class="diagram-expand-btn"
-                  aria-label="Open diagram in larger view"
-                  data-diagram-index={diagramIndex}
-                >⤢</button>
-                <div class="diagram-container p-3 bg-white border border-border overflow-x-auto">
-                  <div class="diagram-svg" set:html={diagramSvg} />
-                  <div class="diagram-mark" aria-hidden="true">
-                    <svg viewBox="0 0 48 48" width="14" height="14">
-                      <rect x="5" y="5" width="38" height="38" rx="2" fill="#1a1a1a"/>
-                      <g fill="none" stroke="#f7f5f0" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="10" cy="10" r="1.8" stroke-width="1.2"/>
-                        <circle cx="38" cy="10" r="1.8" stroke-width="1.2"/>
-                        <circle cx="10" cy="38" r="1.8" stroke-width="1.2"/>
-                        <circle cx="38" cy="38" r="1.8" stroke-width="1.2"/>
-                        <path d="M 13 24 C 16 24, 17 32, 20 32 C 23 32, 23 16, 26 16 C 29 16, 30 24, 35 24" stroke-width="2"/>
-                      </g>
-                      <circle cx="26" cy="16" r="2" fill="#d9571f"/>
-                    </svg>
-                    <span>Voltpages</span>
+            {idea.steps && idea.steps.length > 0 && (
+              <div class="mt-2.5 text-[13px] leading-relaxed">
+                <div class="text-[10px] font-mono text-subtle uppercase tracking-[2px] mb-1">Walkthrough</div>
+                <ol class="list-decimal ml-5 text-muted space-y-0.5 marker:text-subtle marker:font-mono marker:text-[11px]">
+                  {idea.steps.map((step) => (
+                    <li>{step}</li>
+                  ))}
+                </ol>
+                {idea.signalOut && (
+                  <div class="mt-2 text-muted">
+                    <span class="text-[10px] font-mono text-subtle uppercase tracking-[2px] mr-2">Signal out</span>
+                    {idea.signalOut}
+                  </div>
+                )}
+                {idea.hear && (
+                  <div class="mt-1 text-muted">
+                    <span class="text-[10px] font-mono text-subtle uppercase tracking-[2px] mr-2">Listen for</span>
+                    {idea.hear}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {diagramSvg && (
+              <details class="mt-2 group" id={detailsId}>
+                <summary class="text-[11px] font-mono text-subtle cursor-pointer tracking-wide uppercase hover:text-fg select-none list-none inline-flex items-center gap-1 py-1">
+                  <span class="inline-block transition-transform group-open:rotate-90">▸</span>
+                  <span class="group-open:hidden">Show diagram</span>
+                  <span class="hidden group-open:inline">Hide diagram</span>
+                </summary>
+                <div class="diagram-shell mt-2">
+                  <button
+                    type="button"
+                    class="diagram-expand-btn"
+                    aria-label="Open diagram in larger view"
+                    title="Enlarge diagram (E)"
+                    data-diagram-index={diagramIndex}
+                  >⤢</button>
+                  <div class="diagram-container p-3 bg-white border border-border overflow-x-auto">
+                    <div class="diagram-svg" set:html={diagramSvg} />
+                    <div class="diagram-mark" aria-hidden="true">
+                      <svg viewBox="0 0 48 48" width="14" height="14">
+                        <rect x="5" y="5" width="38" height="38" rx="2" fill="#1a1a1a"/>
+                        <g fill="none" stroke="#f7f5f0" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="10" cy="10" r="1.8" stroke-width="1.2"/>
+                          <circle cx="38" cy="10" r="1.8" stroke-width="1.2"/>
+                          <circle cx="10" cy="38" r="1.8" stroke-width="1.2"/>
+                          <circle cx="38" cy="38" r="1.8" stroke-width="1.2"/>
+                          <path d="M 13 24 C 16 24, 17 32, 20 32 C 23 32, 23 16, 26 16 C 29 16, 30 24, 35 24" stroke-width="2"/>
+                        </g>
+                        <circle cx="26" cy="16" r="2" fill="#d9571f"/>
+                      </svg>
+                      <span>Voltpages</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </details>
+              </details>
+            )}
+          </div>
+
+          {diagramSvg && (
+            <button
+              type="button"
+              class="diagram-thumb self-start"
+              aria-controls={detailsId}
+              aria-expanded="false"
+              aria-label={`Expand diagram for ${idea.name}`}
+              data-diagram-thumb
+            >
+              <div class="diagram-thumb-inner" set:html={diagramSvg} />
+            </button>
           )}
-        </div>
+        </article>
       );
     })}
   </div>
@@ -146,22 +236,136 @@ for (const idea of patchIdeas) {
         <span>Voltpages</span>
       </div>`;
 
+    function openLightboxFromCard(card) {
+      const shell = card.querySelector('.diagram-shell');
+      const svg = shell && shell.querySelector('.diagram-svg');
+      if (!svg) return;
+      body.innerHTML = svg.innerHTML + MARK_HTML;
+      applyDiagramSizing(body);
+      if (typeof dialog.showModal === 'function') {
+        dialog.showModal();
+      } else {
+        const blob = new Blob([svg.innerHTML], { type: 'image/svg+xml' });
+        window.open(URL.createObjectURL(blob));
+      }
+    }
+
     document.querySelectorAll('.diagram-expand-btn').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        const shell = btn.closest('.diagram-shell');
-        const svg = shell && shell.querySelector('.diagram-svg');
-        if (!svg) return;
-        body.innerHTML = svg.innerHTML + MARK_HTML;
-        applyDiagramSizing(body);
-        if (typeof dialog.showModal === 'function') {
-          dialog.showModal();
-        } else {
-          const blob = new Blob([svg.innerHTML], { type: 'image/svg+xml' });
-          window.open(URL.createObjectURL(blob));
-        }
+        const card = btn.closest('.patch-card');
+        if (card) openLightboxFromCard(card);
       });
     });
+
+    // The thumbnail is the primary affordance: click to toggle the <details>
+    // and update aria-expanded on the button itself.
+    document.querySelectorAll('[data-diagram-thumb]').forEach((thumb) => {
+      thumb.addEventListener('click', (e) => {
+        e.preventDefault();
+        const card = thumb.closest('.patch-card');
+        const details = card && card.querySelector('details');
+        if (!details) return;
+        details.open = !details.open;
+        thumb.setAttribute('aria-expanded', details.open ? 'true' : 'false');
+        if (details.open) details.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      });
+    });
+
+    // Keyboard: `E` enlarges the diagram for whichever patch card is focused.
+    // `J`/`K` jump to next/previous patch card from anywhere inside the patches section.
+    const cards = Array.from(document.querySelectorAll('.patch-card'));
+    document.addEventListener('keydown', (e) => {
+      const tag = document.activeElement && document.activeElement.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const key = e.key.toLowerCase();
+
+      if (key === 'e') {
+        const focused = document.activeElement && document.activeElement.closest && document.activeElement.closest('.patch-card');
+        if (!focused) return;
+        e.preventDefault();
+        openLightboxFromCard(focused);
+        return;
+      }
+
+      if ((key === 'j' || key === 'k') && cards.length > 0) {
+        const active = document.activeElement && document.activeElement.closest && document.activeElement.closest('.patch-card');
+        const idx = active ? cards.indexOf(active) : -1;
+        const next = key === 'j'
+          ? Math.min(cards.length - 1, idx + 1)
+          : Math.max(0, idx === -1 ? 0 : idx - 1);
+        const target = cards[next];
+        if (target) {
+          e.preventDefault();
+          target.focus();
+          target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+      }
+    });
+
+    // Filter rail. Active filter is persisted in `?patch=` so a shared link
+    // lands the reader on the same filtered view.
+    function getActiveFilter() {
+      const url = new URL(window.location.href);
+      return url.searchParams.get('patch') || 'all';
+    }
+
+    function setActiveFilter(value) {
+      const url = new URL(window.location.href);
+      if (value && value !== 'all') url.searchParams.set('patch', value);
+      else url.searchParams.delete('patch');
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    function applyPatchFilter(value) {
+      cards.forEach((card) => {
+        const essential = card.getAttribute('data-essential') === 'true';
+        const intents = (card.getAttribute('data-intents') || '').split(' ').filter(Boolean);
+        let match = true;
+        if (value === 'essential') match = essential;
+        else if (value && value.startsWith('intent:')) match = intents.includes(value.slice('intent:'.length));
+        card.style.display = match ? '' : 'none';
+      });
+
+      // Pin essentials to the top when that filter is active. We restore the
+      // original order by re-reading data-original-index, set once below.
+      const list = document.getElementById('patch-list');
+      if (!list) return;
+      if (value === 'essential') {
+        const sorted = cards.slice().sort((a, b) => {
+          const aEss = a.getAttribute('data-essential') === 'true' ? 0 : 1;
+          const bEss = b.getAttribute('data-essential') === 'true' ? 0 : 1;
+          if (aEss !== bEss) return aEss - bEss;
+          return Number(a.dataset.originalIndex) - Number(b.dataset.originalIndex);
+        });
+        sorted.forEach((c) => list.appendChild(c));
+      } else {
+        cards.slice().sort((a, b) => Number(a.dataset.originalIndex) - Number(b.dataset.originalIndex))
+          .forEach((c) => list.appendChild(c));
+      }
+    }
+
+    cards.forEach((card, i) => { card.dataset.originalIndex = String(i); });
+
+    const filterButtons = document.querySelectorAll('.patch-chip');
+    const initial = getActiveFilter();
+    filterButtons.forEach((btn) => {
+      const active = btn.getAttribute('data-patch-filter') === initial;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      btn.addEventListener('click', () => {
+        const value = btn.getAttribute('data-patch-filter') || 'all';
+        filterButtons.forEach((b) => {
+          const a = b === btn;
+          b.classList.toggle('is-active', a);
+          b.setAttribute('aria-pressed', a ? 'true' : 'false');
+        });
+        setActiveFilter(value);
+        applyPatchFilter(value);
+      });
+    });
+    if (filterButtons.length > 0) applyPatchFilter(initial);
 
     dialog.addEventListener('click', (e) => {
       const rect = dialog.getBoundingClientRect();
@@ -170,8 +374,6 @@ for (const idea of patchIdeas) {
       if (!inDialog) dialog.close();
     });
 
-    // Open all <details> for print (CSS alone can't override the UA's
-    // collapsed-content behavior) and restore their state after.
     const previousOpenState = new WeakMap();
     function openAllForPrint() {
       document.querySelectorAll('details').forEach((d) => {
@@ -186,7 +388,6 @@ for (const idea of patchIdeas) {
     }
     window.addEventListener('beforeprint', openAllForPrint);
     window.addEventListener('afterprint', restoreAfterPrint);
-    // Safari / older browsers only expose matchMedia('print') transitions.
     if (window.matchMedia) {
       const mql = window.matchMedia('print');
       const onChange = (e) => (e.matches ? openAllForPrint() : restoreAfterPrint());

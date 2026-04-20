@@ -215,8 +215,10 @@ for (const filter of ROLE_FILTERS) {
       return pagefind;
     }
 
-    const SECTION_FILTERS = ['patches', 'behaviors', 'controls'];
-    const SECTION_LABEL = { patches: 'patches', behaviors: 'behaviors', controls: 'controls' };
+    // Typed per-section badges would need section-scoped indexing. Pagefind's
+    // page-level `data-pagefind-filter` tags the whole page once per value, so
+    // "which section did the match come from" can't be answered without a
+    // separate index. Until we rework the indexing, show honest mention counts.
 
     function getActiveRole() {
       const url = new URL(window.location.href);
@@ -270,9 +272,9 @@ for (const filter of ROLE_FILTERS) {
 
         const badge = card.querySelector('.match-count');
         if (badge) {
-          const counts = slugCounts && slugCounts[slug];
-          if (q.length >= 2 && counts && counts.dominant) {
-            badge.textContent = `${counts.dominant.count} ${SECTION_LABEL[counts.dominant.type] || counts.dominant.type}`;
+          const mentions = slugCounts && slugCounts[slug];
+          if (q.length >= 2 && mentions && mentions > 0) {
+            badge.textContent = mentions === 1 ? '1 mention' : `${mentions} mentions`;
             badge.classList.remove('hidden');
           } else {
             badge.classList.add('hidden');
@@ -299,50 +301,15 @@ for (const filter of ROLE_FILTERS) {
     async function runPagefindSearch(query) {
       const pf = await initPagefind();
       if (!pf) return null;
-
       try {
-        // One filtered search per section type so we can attribute hits to
-        // patches / behaviors / controls individually.
-        const searches = await Promise.all(
-          SECTION_FILTERS.map((section) => pf.search(query, { filters: { section } })),
-        );
-        const perSection = await Promise.all(
-          searches.map(async (s, i) => ({
-            type: SECTION_FILTERS[i],
-            results: await Promise.all(s.results.map((r) => r.data())),
-          })),
-        );
-        // Unfiltered search so module pages matched by name/manufacturer still land in the set.
-        const unfiltered = await pf.search(query);
-        const unfilteredResults = await Promise.all(unfiltered.results.map((r) => r.data()));
-
+        const search = await pf.search(query);
+        const results = await Promise.all(search.results.map((r) => r.data()));
         const slugCounts = {};
-        const bumpSlug = (slug, type) => {
-          if (!slugCounts[slug]) slugCounts[slug] = { patches: 0, behaviors: 0, controls: 0, other: 0 };
-          slugCounts[slug][type] = (slugCounts[slug][type] || 0) + 1;
-        };
-
-        for (const bucket of perSection) {
-          for (const r of bucket.results) {
-            const m = r.url.match(/\/modules\/([^/]+)/);
-            if (m) bumpSlug(m[1], bucket.type);
-          }
-        }
-        for (const r of unfilteredResults) {
-          const m = r.url.match(/\/modules\/([^/]+)/);
+        for (const result of results) {
+          const m = result.url.match(/\/modules\/([^/]+)/);
           if (!m) continue;
           const slug = m[1];
-          if (!slugCounts[slug]) bumpSlug(slug, 'other');
-        }
-
-        for (const slug of Object.keys(slugCounts)) {
-          const c = slugCounts[slug];
-          const typed = [
-            { type: 'patches', count: c.patches },
-            { type: 'behaviors', count: c.behaviors },
-            { type: 'controls', count: c.controls },
-          ].filter((x) => x.count > 0).sort((a, b) => b.count - a.count);
-          c.dominant = typed[0] || null;
+          slugCounts[slug] = (slugCounts[slug] || 0) + 1;
         }
         return slugCounts;
       } catch (e) {
