@@ -5,11 +5,14 @@ export interface Control {
   detail: string;
 }
 
+export type SignalType = "cv" | "gate" | "audio" | "env" | "clk";
+
 export interface IO {
   name: string;
   description: string;
   voltage?: string;
   normalizedTo?: string;
+  signalType?: SignalType;
 }
 
 export interface Behavior {
@@ -18,6 +21,10 @@ export interface Behavior {
   description: string;
 }
 
+export type PatchDifficulty = "essential" | "intermediate" | "advanced";
+export type PatchIntent = "envelope" | "lfo" | "utility" | "audio-rate" | "generative";
+export type PatchSignalType = "cv" | "gate" | "audio";
+
 export interface PatchIdea {
   name: string;
   patch: string;
@@ -25,6 +32,10 @@ export interface PatchIdea {
   steps?: string[];
   signalOut?: string;
   hear?: string;
+  difficulty?: PatchDifficulty;
+  intent?: PatchIntent | PatchIntent[];
+  signalType?: PatchSignalType;
+  essential?: boolean;
 }
 
 export interface ModuleMeta {
@@ -45,6 +56,7 @@ export interface Module {
   hp: number;
   tags: string[];
   description: string;
+  role?: string;
   controls: Control[];
   inputs: IO[];
   outputs: IO[];

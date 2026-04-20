@@ -49,6 +49,11 @@
       }
     },
     "description": { "type": "string", "minLength": 10, "maxLength": 300 },
+    "role": {
+      "type": "string",
+      "description": "Single-line role descriptor rendered under the module name — e.g. 'Analog function generator · utility swiss-army knife'. Optional.",
+      "maxLength": 140
+    },
     "controls": {
       "type": "array",
       "items": {
@@ -71,7 +76,12 @@
           "name": { "type": "string" },
           "description": { "type": "string" },
           "voltage": { "type": "string" },
-          "normalizedTo": { "type": "string" }
+          "normalizedTo": { "type": "string" },
+          "signalType": {
+            "type": "string",
+            "enum": ["cv", "gate", "audio", "env", "clk"],
+            "description": "Rendered as a small chip next to the jack. Optional — inferred from voltage/description when absent."
+          }
         }
       }
     },
@@ -84,7 +94,12 @@
           "name": { "type": "string" },
           "description": { "type": "string" },
           "voltage": { "type": "string" },
-          "normalizedTo": { "type": "string" }
+          "normalizedTo": { "type": "string" },
+          "signalType": {
+            "type": "string",
+            "enum": ["cv", "gate", "audio", "env", "clk"],
+            "description": "Rendered as a small chip next to the jack. Optional — inferred from voltage/description when absent."
+          }
         }
       }
     },
@@ -127,6 +142,37 @@
           "hear": {
             "type": "string",
             "description": "What the reader should expect to hear or see once patched — concrete behavior, not metaphor."
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": ["essential", "intermediate", "advanced"],
+            "description": "Drives the EASY / INT / ADV chip on each patch card."
+          },
+          "intent": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": ["envelope", "lfo", "utility", "audio-rate", "generative"]
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["envelope", "lfo", "utility", "audio-rate", "generative"]
+                },
+                "uniqueItems": true
+              }
+            ],
+            "description": "Single tag or list of tags used by the patch-list filter rail."
+          },
+          "signalType": {
+            "type": "string",
+            "enum": ["cv", "gate", "audio"],
+            "description": "Rendered as CV / GATE / AUDIO chip on each patch card."
+          },
+          "essential": {
+            "type": "boolean",
+            "description": "When true, renders a ★ glyph and pins the patch to the top when the Essentials filter is active."
           }
         }
       }
