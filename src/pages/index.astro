@@ -215,10 +215,23 @@ for (const filter of ROLE_FILTERS) {
       return pagefind;
     }
 
-    // Typed per-section badges would need section-scoped indexing. Pagefind's
-    // page-level `data-pagefind-filter` tags the whole page once per value, so
-    // "which section did the match come from" can't be answered without a
-    // separate index. Until we rework the indexing, show honest mention counts.
+    // F-02 typed badges. Each module page tags its section headings with
+    // stable ids (h-patches / h-behaviors / h-controls / h-io). Pagefind's
+    // sub_results group matches by nearest preceding heading id, so we can
+    // attribute "where in the sheet did this query hit" by looking at the
+    // anchor fragment on each sub_result URL.
+    const ANCHOR_TO_TYPE = {
+      'h-patches': 'patches',
+      'h-behaviors': 'behaviors',
+      'h-controls': 'controls',
+      'h-io': 'io',
+    };
+    const TYPE_LABEL = {
+      patches: { singular: 'patch', plural: 'patches' },
+      behaviors: { singular: 'behavior', plural: 'behaviors' },
+      controls: { singular: 'control', plural: 'controls' },
+      io: { singular: 'I/O', plural: 'I/O' },
+    };
 
     function getActiveRole() {
       const url = new URL(window.location.href);
@@ -272,9 +285,10 @@ for (const filter of ROLE_FILTERS) {
 
         const badge = card.querySelector('.match-count');
         if (badge) {
-          const mentions = slugCounts && slugCounts[slug];
-          if (q.length >= 2 && mentions && mentions > 0) {
-            badge.textContent = mentions === 1 ? '1 mention' : `${mentions} mentions`;
+          const hits = slugCounts && slugCounts[slug];
+          const label = q.length >= 2 ? formatTypedBadge(hits) : null;
+          if (label) {
+            badge.textContent = label;
             badge.classList.remove('hidden');
           } else {
             badge.classList.add('hidden');
@@ -304,17 +318,55 @@ for (const filter of ROLE_FILTERS) {
       try {
         const search = await pf.search(query);
         const results = await Promise.all(search.results.map((r) => r.data()));
-        const slugCounts = {};
+        const slugHits = {};
         for (const result of results) {
           const m = result.url.match(/\/modules\/([^/]+)/);
           if (!m) continue;
           const slug = m[1];
-          slugCounts[slug] = (slugCounts[slug] || 0) + 1;
+          if (!slugHits[slug]) slugHits[slug] = { total: 0, patches: 0, behaviors: 0, controls: 0, io: 0 };
+          slugHits[slug].total += 1;
+
+          // Each result has sub_results — one per heading-id section the query
+          // matched inside. Sub_results without an anchor are the page-level
+          // match (typically the module name); we count those into total but
+          // don't attribute them to a section type.
+          const subs = result.sub_results || [];
+          for (const sr of subs) {
+            const anchorId = sr.anchor?.id;
+            const type = anchorId && ANCHOR_TO_TYPE[anchorId];
+            if (type) slugHits[slug][type] += 1;
+          }
         }
-        return slugCounts;
+        // Work out the dominant section type per slug for the badge.
+        for (const slug of Object.keys(slugHits)) {
+          const hits = slugHits[slug];
+          const typed = Object.keys(ANCHOR_TO_TYPE)
+            .map((id) => ANCHOR_TO_TYPE[id])
+            .map((type) => ({ type, count: hits[type] || 0 }))
+            .filter((x) => x.count > 0)
+            .sort((a, b) => b.count - a.count);
+          hits.dominant = typed[0] || null;
+        }
+        return slugHits;
       } catch (e) {
         return null;
       }
+    }
+
+    function formatTypedBadge(hits) {
+      if (!hits) return null;
+      if (hits.dominant) {
+        const { type, count } = hits.dominant;
+        const label = TYPE_LABEL[type];
+        if (!label) return null;
+        const word = count === 1 ? label.singular : label.plural;
+        return `${count} ${word}`;
+      }
+      // No section-tagged hit — the match was page-level (name / manufacturer).
+      // Show an untyped count so the badge still tells the user "this card has
+      // content matching your query" rather than going silent.
+      if (hits.total > 0) return hits.total === 1 ? '1 match' : `${hits.total} matches`;
+      return null;
     }
 
     async function handleSearch(query, role) {

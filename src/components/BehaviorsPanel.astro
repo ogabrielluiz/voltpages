@@ -3,13 +3,14 @@ import type { Behavior } from '../types/module';
 
 interface Props {
   behaviors: Behavior[];
+  nested?: boolean;
 }
 
-const { behaviors } = Astro.props;
+const { behaviors, nested = false } = Astro.props;
 ---
 
 <div>
-  <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">Behaviors</h2>
+  <h2 id={nested ? undefined : 'h-behaviors'} class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">Behaviors</h2>
   <div class="flex flex-col gap-3">
     {behaviors.map((behavior, i) => (
       <div class={i > 0 ? "border-t border-border pt-3" : ""}>

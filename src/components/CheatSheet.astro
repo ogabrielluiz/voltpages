@@ -108,21 +108,21 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
               <p class="text-sm text-muted leading-relaxed mb-4">{exp.description}</p>
               {exp.behaviors.length > 0 && (
                 <div class="mb-4">
-                  <BehaviorsPanel behaviors={exp.behaviors} />
+                  <BehaviorsPanel behaviors={exp.behaviors} nested />
                 </div>
               )}
               {exp.patchIdeas.length > 0 && (
                 <div class="mb-4">
-                  <PatchIdeas patchIdeas={exp.patchIdeas} />
+                  <PatchIdeas patchIdeas={exp.patchIdeas} nested />
                 </div>
               )}
               {(exp.inputs.length > 0 || exp.outputs.length > 0) && (
                 <div class="mb-4">
-                  <IOPanel inputs={exp.inputs} outputs={exp.outputs} />
+                  <IOPanel inputs={exp.inputs} outputs={exp.outputs} nested />
                 </div>
               )}
               {exp.controls.length > 0 && (
-                <ControlsTable controls={exp.controls} />
+                <ControlsTable controls={exp.controls} nested />
               )}
             </div>
           </details>

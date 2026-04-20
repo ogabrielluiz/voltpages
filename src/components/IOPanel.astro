@@ -4,9 +4,10 @@ import type { IO, SignalType } from '../types/module';
 interface Props {
   inputs: IO[];
   outputs: IO[];
+  nested?: boolean;
 }
 
-const { inputs, outputs } = Astro.props;
+const { inputs, outputs, nested = false } = Astro.props;
 
 // Infer a display-only signal type from voltage + description when the sheet
 // doesn't specify one. The authored `signalType` field always wins.
@@ -31,7 +32,7 @@ const SIGNAL_LABEL: Record<SignalType, string> = {
 ---
 
 <div class="mt-6">
-  <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">I/O</h2>
+  <h2 id={nested ? undefined : 'h-io'} class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">I/O</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 md:gap-x-12 gap-y-8">
     {inputs.length > 0 && (
       <section aria-label="Inputs">

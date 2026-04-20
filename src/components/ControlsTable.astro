@@ -3,13 +3,14 @@ import type { Control } from '../types/module';
 
 interface Props {
   controls: Control[];
+  nested?: boolean;
 }
 
-const { controls } = Astro.props;
+const { controls, nested = false } = Astro.props;
 ---
 
 <div>
-  <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">Controls</h2>
+  <h2 id={nested ? undefined : 'h-controls'} class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-4">Controls</h2>
   <table class="w-full border-collapse text-sm">
     <tbody>
       {controls.map((control, i) => (

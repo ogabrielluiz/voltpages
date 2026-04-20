@@ -4,9 +4,10 @@ import { render as renderPatchflow } from '@ogabrielluiz/patchflow';
 
 interface Props {
   patchIdeas: PatchIdea[];
+  nested?: boolean;
 }
 
-const { patchIdeas } = Astro.props;
+const { patchIdeas, nested = false } = Astro.props;
 
 // Pre-render diagrams at build time
 const renderedDiagrams: Map<string, string> = new Map();
@@ -63,7 +64,7 @@ const DIFFICULTY_LABEL: Record<string, { label: string; cls: string }> = {
 ---
 
 <div class="mt-7">
-  <h2 class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-3">
+  <h2 id={nested ? undefined : 'h-patches'} class="text-xs uppercase tracking-[3px] text-subtle font-mono mb-3">
     Patch Ideas <span class="text-faint">· {patchIdeas.length}</span>
   </h2>
 
