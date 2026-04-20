@@ -6,25 +6,67 @@ interface Props {
   tags: string[];
   verified: boolean;
   firmwareVersion?: string;
+  role?: string;
+  sources?: string[];
+  slug: string;
 }
 
-const { name, manufacturer, hp, tags, verified, firmwareVersion } = Astro.props;
+const { name, manufacturer, hp, tags, verified, firmwareVersion, role, sources = [], slug } = Astro.props;
+const issueTitle = encodeURIComponent(`Correction: ${name}`);
+const issueBody = encodeURIComponent(
+  `**Module:** ${name} (${manufacturer})\n` +
+  `**Sheet:** https://ogabrielluiz.github.io/voltpages/modules/${slug}/\n\n` +
+  `**What is inaccurate?**\n\n\n` +
+  `**What it should say instead (with source if possible):**\n\n\n`,
+);
+const issueHref = `https://github.com/ogabrielluiz/voltpages/issues/new?title=${issueTitle}&body=${issueBody}`;
+const trustDialogId = 'trust-dialog';
 ---
 
 <header class="px-4 md:px-7 py-4 md:py-5 border-b-2 border-border-strong">
   <div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-baseline">
-    <div>
+    <div class="min-w-0">
       <div class="flex items-baseline gap-3 flex-wrap">
         <h1 class="text-2xl md:text-[28px] font-bold text-fg tracking-tight">{name}</h1>
         <span class="text-[13px] text-subtle">{manufacturer}</span>
         <span class="text-[13px] text-subtle font-mono">{hp}HP</span>
       </div>
-      <div class="flex items-center gap-3 mt-1">
+      {role && (
+        <p class="text-[13px] text-muted mt-1 leading-snug">{role}</p>
+      )}
+      <div class="flex items-center gap-3 mt-1.5 flex-wrap">
         {firmwareVersion && (
           <span class="text-xs font-mono text-subtle">fw {firmwareVersion}</span>
         )}
-        {!verified && (
-          <span class="text-[11px] font-mono text-subtle tracking-wide uppercase">AI-generated</span>
+        {verified ? (
+          <button
+            type="button"
+            class="trust-pill trust-pill--verified"
+            aria-haspopup="dialog"
+            aria-controls={trustDialogId}
+            data-trust-open
+          >
+            <span aria-hidden="true">✓</span>
+            <span>verified</span>
+            {sources.length > 0 && (
+              <span class="trust-pill-meta">· {sources.length} source{sources.length === 1 ? '' : 's'}</span>
+            )}
+          </button>
+        ) : (
+          <button
+            type="button"
+            class="trust-pill trust-pill--ai"
+            aria-haspopup="dialog"
+            aria-controls={trustDialogId}
+            data-trust-open
+          >
+            <span aria-hidden="true">⚠</span>
+            <span>AI-generated</span>
+            {sources.length > 0 && (
+              <span class="trust-pill-meta">· {sources.length} source{sources.length === 1 ? '' : 's'}</span>
+            )}
+            <span class="trust-pill-meta">· suggest correction</span>
+          </button>
         )}
       </div>
     </div>
@@ -37,3 +79,62 @@ const { name, manufacturer, hp, tags, verified, firmwareVersion } = Astro.props;
     </div>
   </div>
 </header>
+
+<dialog id={trustDialogId} class="trust-dialog" aria-label="Sheet trust and sources">
+  <form method="dialog" class="trust-dialog-close-form">
+    <button type="submit" class="trust-dialog-close" aria-label="Close">✕</button>
+  </form>
+  <div class="trust-dialog-body">
+    <h2 class="text-sm font-semibold text-fg mb-1">
+      {verified ? 'Verified sheet' : 'AI-generated sheet'}
+    </h2>
+    <p class="text-[13px] text-muted leading-relaxed mb-4">
+      {verified
+        ? 'The facts on this sheet have been cross-checked against the sources below.'
+        : 'This sheet was generated from the sources below. Cross-check anything critical against the manufacturer\'s manual.'}
+    </p>
+    {sources.length > 0 ? (
+      <>
+        <div class="kicker mb-2">Sources</div>
+        <ul class="text-[13px] space-y-1.5 mb-5 list-none pl-0">
+          {sources.map((url) => (
+            <li class="break-all">
+              <a href={url} target="_blank" rel="noopener noreferrer" class="text-fg underline underline-offset-2 hover:text-accent">{url}</a>
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <p class="text-[13px] text-faint italic mb-5">No sources recorded.</p>
+    )}
+    <a
+      href={issueHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 text-[13px] font-mono uppercase tracking-wide text-fg border border-border-strong px-3 py-2 hover:bg-surface no-underline"
+    >
+      <span aria-hidden="true">✎</span>
+      <span>Suggest a correction</span>
+    </a>
+  </div>
+</dialog>
+
+<script is:inline>
+  (function () {
+    const openers = document.querySelectorAll('[data-trust-open]');
+    const dialog = document.getElementById('trust-dialog');
+    if (!dialog || openers.length === 0) return;
+    openers.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (typeof dialog.showModal === 'function') dialog.showModal();
+        else dialog.setAttribute('open', '');
+      });
+    });
+    dialog.addEventListener('click', (e) => {
+      const rect = dialog.getBoundingClientRect();
+      const inside = e.clientY >= rect.top && e.clientY <= rect.bottom &&
+                     e.clientX >= rect.left && e.clientX <= rect.right;
+      if (!inside) dialog.close();
+    });
+  })();
+</script>

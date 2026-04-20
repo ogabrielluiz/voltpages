@@ -39,6 +39,9 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
     tags={module.tags}
     verified={module._meta.verified}
     firmwareVersion={module._meta.firmwareVersion}
+    role={module.role}
+    sources={module._meta.sources}
+    slug={module.slug}
   />
   <p class="px-4 md:px-7 pt-3 pb-0 text-sm text-muted leading-relaxed">{module.description}</p>
 

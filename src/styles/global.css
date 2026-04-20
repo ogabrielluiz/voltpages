@@ -146,6 +146,97 @@
   font-weight: 600;
 }
 
+/* ---------- Trust pill + dialog (F-07) ---------- */
+.trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 5px 8px;
+  border: 1px solid var(--color-tag-border);
+  background: var(--color-bg);
+  color: var(--color-muted);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.trust-pill:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-fg);
+}
+
+.trust-pill--verified {
+  color: var(--color-ok);
+  border-color: var(--color-ok);
+}
+
+.trust-pill--ai {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.trust-pill-meta {
+  color: var(--color-subtle);
+  font-weight: normal;
+}
+
+.trust-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  max-width: min(560px, 90vw);
+  width: 100%;
+  max-height: 85vh;
+  padding: 0;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  overflow: hidden;
+}
+
+.trust-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.trust-dialog::backdrop {
+  background: rgba(20, 18, 14, 0.6);
+}
+
+.trust-dialog-close-form {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  margin: 0;
+}
+
+.trust-dialog-close {
+  width: 32px;
+  height: 32px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--color-subtle);
+  background: transparent;
+  border: 1px solid var(--color-tag-border);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.trust-dialog-close:hover {
+  color: var(--color-fg);
+  border-color: var(--color-border-strong);
+}
+
+.trust-dialog-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+}
+
 /* ---------- Skip link (F-19) ---------- */
 .skip-link {
   position: absolute;
