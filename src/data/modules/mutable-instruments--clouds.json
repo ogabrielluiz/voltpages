@@ -131,6 +131,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Frozen ambient pad",
       "patch": "Capture a phrase, freeze the buffer, and drown it in reverb for an instant evolving pad.",
       "steps": [
@@ -148,6 +149,7 @@
       "diagram": "Clouds:\n* Mode: Granular (green)\n* Freeze: ON (after capture)\n* Blend slot: Reverb (yellow), ~3 o'clock\n* Size: ~2 o'clock · Density: ~2 o'clock\n\n- Source (Out) -> Clouds (IN L)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Pitch-shifted looping delay",
       "patch": "Switch to Looping Delay mode so SIZE becomes delay time and PITCH CV detunes each repeat.",
       "steps": [
@@ -197,6 +199,7 @@
       "diagram": "Clouds:\n* Mode: Pitch-Shifter / Time-Stretcher (yellow) // hold FREEZE + tap Quality until yellow\n* Pitch: -1 oct\n* Density: full CCW // playback speed\n* Size: ~3 o'clock\n* Blend slot: Reverb, ~2 o'clock\n\n- Field Rec (Out) -> Clouds (IN L)\n- Clouds (OUT L) -> Output (L)\n- Clouds (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Spectral phaser",
       "patch": "Spectral mode + two slow LFOs on TEXTURE and POSITION turn any sustained source into paul-stretch phaser.",
       "steps": [

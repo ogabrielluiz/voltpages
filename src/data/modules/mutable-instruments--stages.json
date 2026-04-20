@@ -100,6 +100,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Six-step CV sequencer",
       "patch": "All six segments set to STEP so each slider is a target voltage; clock into GATE 1 advances the chain step-by-step.",
       "steps": [
@@ -115,6 +116,7 @@
       "diagram": "Stages:\n* All segments: STEP (orange)\n* All SHAPE/TIME: fully CCW (fast glide)\n\n- Clock (Out) c> Stages (GATE 1)\n- Stages (OUT 6) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Clock (Out) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)"
     },
     {
+      "essential": true,
       "name": "Full ADSR envelope",
       "patch": "Four-segment chain — RAMP attack, RAMP decay, HOLD sustain, RAMP release — triggered from one keyboard gate on GATE 1.",
       "steps": [
@@ -176,6 +178,7 @@
       "diagram": "Stages:\n* Seg 1: STEP (orange) · SHAPE ~10 o'clock\n\n- Sequencer (Gate) g> Stages (GATE 1)\n- Sequencer (Pitch CV) >> Stages (SLIDER CV 1 via expander)\n- Stages (OUT 1) p> VCO (V/Oct)"
     },
     {
+      "essential": true,
       "name": "Audio oscillator + envelope on one module",
       "patch": "Segment 1 long-pressed 3s becomes a pitched audio oscillator (1.2 firmware); segments 3–6 form an ADSR fired by the same gate that plays notes.",
       "steps": [

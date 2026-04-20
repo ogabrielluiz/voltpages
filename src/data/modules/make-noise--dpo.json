@@ -191,6 +191,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Animated lead (classic DPO voice)",
       "patch": "VCO A in LFO mode animates VCO B's Timbre via the Mod Bus while Follow keeps the harmonic relationship locked to the sequence.",
       "steps": [
@@ -260,6 +261,7 @@
       "diagram": "DPO:\n* VCO B: Shape/Fold full CCW, atts 12:00\n\n- Pressure Points (Tuned B) p> DPO (VCO B 1V/Oct)\n- Pressure Points (Common Gate) g> DPO (Strike)\n- Pressure Points (Pressure) >> DPO (Mod Bus Ext Source)\n- DPO (VCO B FINAL) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Wobble bass",
       "patch": "VCO A as LFO modulates VCO B's Timbre, and Follow makes the wobble rate double per octave so it stays musical across the bassline.",
       "steps": [
@@ -312,6 +314,7 @@
       "diagram": "DPO 1:\n* VCO B tuned to root\n\nDPO 2:\n* VCO B tuned to 3rd\n\n- DPO 1 (VCO B Square) -> DPO 2 (Ext Lock)\n- DPO 1 (VCO B FINAL) -> Mixer (In)\n- DPO 2 (VCO B FINAL) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "West-coast bongo",
       "patch": "Strike opens Fold into a percussive chirp that is then plucked by Optomix — classic Buchla-style bongo from one gate.",
       "steps": [

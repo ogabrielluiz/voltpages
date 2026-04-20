@@ -107,16 +107,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Three-band parallel processor",
       "patch": "Audio → ALL(IN) · Response: crossover · FREQ noon, SPAN wide · take LOW(OUT) to compressor, HIGH(OUT) to reverb, CENTRE(OUT) to dry mixer · recombine externally for multiband shaping without phase cancellation",
       "diagram": "Three Sisters:\n* Response: crossover\n* FREQ: noon · SPAN: wide\n\nMixer:\n\n- Audio (Out) -> Three Sisters (ALL IN)\n- Three Sisters (LOW OUT) -> Compressor (In)\n- Three Sisters (CENTRE OUT) -> Mixer (In)\n- Three Sisters (HIGH OUT) -> Reverb (In)\n- Compressor (Out) -> Mixer (In)\n- Reverb (Out) -> Mixer (In)"
     },
     {
+      "essential": true,
       "name": "Pinged formant chord",
       "patch": "Response: formant · QUALITY ~2 o'clock · trigger burst → ALL(IN) · LOW/CENTRE/HIGH peaks ring as three-note chord · SPAN sets chord interval · FREQ plays the chord via v/8",
       "diagram": "Three Sisters:\n* Response: formant\n* QUALITY: ~2 o'clock (high Q)\n\n- Trigger (Out) -> Three Sisters (ALL IN) // pings the peaks\n- Sequencer (Pitch) p> Three Sisters (FREQ)\n- Three Sisters (ALL OUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Three-voice sine oscillator",
       "patch": "Nothing patched to inputs · QUALITY full CW (all three self-oscillate) · FREQ CV = v/oct from sequencer · SPAN sets interval between voices · LOW/CENTRE/HIGH = three sine voices · stack or mix for instant sine chord",
       "diagram": "Three Sisters:\n* QUALITY: full CW (self-oscillating)\n* SPAN: sets chord interval\n\n- Sequencer (Pitch) p> Three Sisters (FREQ)\n- Three Sisters (LOW OUT) -> VCA 1 (In)\n- Three Sisters (CENTRE OUT) -> VCA 2 (In)\n- Three Sisters (HIGH OUT) -> VCA 3 (In)"

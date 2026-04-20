@@ -131,6 +131,7 @@
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Smooth Random, Loop=16, Cross Op S&H, Cross Src OUT 2\n* OUT 2: Gate /4\n\n- Pamela's PRO Workout (OUT 1) p> VCO (V/oct) // stepped random melody on quarter notes"
     },
     {
+      "essential": true,
       "name": "Polyrhythm with prime divisions",
       "patch": "Three prime divisors on three outputs create a polyrhythm that only resolves after 1001 beats.",
       "steps": [
@@ -210,6 +211,7 @@
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Main drum trigger, continuous\n* OUT 2: Euclidean 16/12, Loop=8, Wake=1, Nap=7\n\n- Pamela's PRO Workout (OUT 1) t> Kick (Trig)\n- Pamela's PRO Workout (OUT 2) t> Fill Drum (Trig) // fires only on bar 8"
     },
     {
+      "essential": true,
       "name": "Smooth random portamento melody",
       "patch": "Smooth Random into the Quantiser produces a gliding pentatonic melody without harsh jumps.",
       "steps": [
@@ -257,6 +259,7 @@
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Euclidean 16/12, FLEX HUMAN 15%\n\n- Pamela's PRO Workout (OUT 1) t> Hi-Hat (Trig) // micro-timing drift per hit"
     },
     {
+      "essential": true,
       "name": "Euclidean four-piece drum bed",
       "patch": "Four Euclidean outputs with different trigger counts and shifts drive kick, snare, hat, perc from one module.",
       "steps": [
@@ -339,6 +342,7 @@
       "diagram": "Pamela's PRO Workout:\n* OUT 1: Gate x3\n* OUT 2: Gate x5, Cross Op OR, Cross Src OUT 1\n* OUT 3: Gate x7, Cross Op OR, Cross Src OUT 2, FLEX SWING 15%\n\n- Pamela's PRO Workout (OUT 3) t> Percussion (Trig) // prime-division burst fills"
     },
     {
+      "essential": true,
       "name": "Eight-output generative brain",
       "patch": "All eight outputs drive a full patch — clocks, gates, pitches, modulators, and scene changes from one module.",
       "steps": [

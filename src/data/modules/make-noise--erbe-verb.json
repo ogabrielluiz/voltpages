@@ -173,11 +173,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Gated reverb",
       "patch": "Mult source → Signal In AND → MATHS CH 1 Trig · MATHS Rise = 12:00, Fall full CCW (linear response) · MATHS CH 1 OUT → Mix CV · Mix knob sets max wetness (attenuates the CV) · each trigger opens the reverb then slams it shut — 80s drum-gate sound.",
       "diagram": "Erbe-Verb:\n* Size: ~2:00 (plate)\n* Decay: 12:00\n\n- Source (Out) -> Mult (In)\n- Mult (Out 1) -> Erbe-Verb (Signal In)\n- Mult (Out 2) g> MATHS.CH 1 (Trig)\n- MATHS.CH 1 (OUT) >> Erbe-Verb (Mix CV) // gated wet\n- Erbe-Verb (L) -> Output (L)\n- Erbe-Verb (R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Decay Hell (infinite feedback on demand)",
       "patch": "Sine voice → Optomix CH 1 (plucked via MATHS cycle) → Signal In · Start from Hall settings · Pressure Points Pressure Out → Decay CV (attenuator full CW) · pressing a PP plate pushes Decay into infinite feedback, releasing returns to hall · hands-on feedback performance.",
       "diagram": "Erbe-Verb:\n* Size: 3:00 (hall)\n* Decay: just below unity\n* Decay CV Att: full CW\n\n- STO (SUB) -> Optomix.CH 1 (Signal In)\n- MATHS.CH 1 (EOR) g> Optomix.CH 1 (Strike)\n- Optomix.CH 1 (Out) -> Erbe-Verb (Signal In)\n- Pressure Points (Pressure) >> Erbe-Verb (Decay CV) // push to infinity\n- Erbe-Verb (L) -> Output (L)"
@@ -188,6 +190,7 @@
       "diagram": "Erbe-Verb:\n* Size: ~12:00 (room)\n* Pre-Delay: 1/2 (noon-ish)\n* Reverse: ON\n\n- Clock (Out) c> Erbe-Verb (Tempo)\n- Source (Out) -> Erbe-Verb (Signal In)\n- LFO (Out) >> Erbe-Verb (Size CV)\n- Erbe-Verb (L) -> Output (L)\n- Erbe-Verb (R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Shimmer drone",
       "patch": "Size full CW · Pre-Delay full CW · Decay 2:00 · Depth full CW (Shimmer, Ergodic max) · Speed 12:00–3:00 · drone source → Signal In · Mix 100% · upward shimmer octave-cascades on sustained tones · slow CV on Tilt keeps motion fresh.",
       "diagram": "Erbe-Verb:\n* Size: full CW (heaven)\n* Pre-Delay: full CW\n* Decay: 2:00\n* Depth: full CW (Shimmer)\n* Mix: 100% wet\n\n- Drone (Out) -> Erbe-Verb (Signal In)\n- Slow LFO (Out) >> Erbe-Verb (Tilt CV)\n- Erbe-Verb (L) -> Output (L)\n- Erbe-Verb (R) -> Output (R)"

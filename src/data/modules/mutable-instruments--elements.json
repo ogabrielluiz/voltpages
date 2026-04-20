@@ -206,11 +206,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Bowed string lead",
       "patch": "Default resonator model · BOW ~2 o'clock · BLOW/STRIKE at 0 · GEOMETRY in the string zone · DAMPING ~2 o'clock · CONTOUR with some sustain · V/OCT + GATE from keyboard · take OUT L/R stereo",
       "diagram": "Elements:\n* Model: Original (modal)\n\n- Keyboard (Pitch) p> Elements (V/OCT)\n- Keyboard (Gate) g> Elements (GATE)\n- Elements (OUT L) -> Output (L)\n- Elements (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Drums through the resonator",
       "patch": "Drum loop into EXT IN 2 (raw path) · all internal exciters at 0 · DAMPING medium · quantised pitch sequence on V/OCT · SPACE at 10 o'clock for a room · stereo out",
       "diagram": "Elements:\n* BOW/BLOW/STRIKE: 0\n\n- Drum Loop (Out) -> Elements (EXT IN 2)\n- Sequencer (Pitch) p> Quantizer (In)\n- Quantizer (Out) p> Elements (V/OCT)\n- Elements (OUT L) -> Output (L)\n- Elements (OUT R) -> Output (R)"
@@ -221,6 +223,7 @@
       "diagram": "Elements:\n* GEOMETRY: tube zone\n\n- Keyboard (Pitch) p> Elements (V/OCT)\n- Keyboard (Gate) g> Elements (GATE)\n- Slow LFO (Out) >> Elements (FLOW CV)\n- Elements (OUT L) -> Output (L)\n- Elements (OUT R) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Self-oscillating sine",
       "patch": "DAMPING full CW · BOW at ~10 o'clock · BLOW/STRIKE at 0 · GATE held high (+5 V offset) so CONTOUR stays open · COARSE/FINE set the pitch like a VCO · GEOMETRY finds the harmonic notch for a clean tone",
       "diagram": "Elements:\n* DAMPING: max\n\n- Offset (+5V) g> Elements (GATE)\n- Sequencer (Pitch) p> Elements (V/OCT)\n- Elements (OUT L) -> Output (L)\n- Elements (OUT R) -> Output (R)"

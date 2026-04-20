@@ -159,6 +159,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Tape-lofi frozen loop",
       "patch": "Record a bar into Beads on Scorched cassette, freeze, then play the buffer back as a hazy granular loop.",
       "steps": [
@@ -192,6 +193,7 @@
       "diagram": "Beads:\n* Quality: Cold digital\n* Assign [M]: PITCH\n* Density: noon\n\n- Pad (Out) -> Beads (IN L)\n- Sequencer (1V/oct) p> Beads (CV in 6)\n- Sequencer (Gate) g> Beads (SEED)\n- Beads (OUT L) -> Mixer (L)\n- Beads (OUT R) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Frozen octave-up shimmer pad",
       "patch": "Freeze a chord, transpose grains an octave up, and let the internal reverb do the shimmer work.",
       "steps": [
@@ -225,6 +227,7 @@
       "diagram": "Beads:\n* Quality: Cold digital\n* Freeze: ON\n* Assign [M]: SIZE\n* Shape: full CCW\n\n- Drone VCO (Out) -> Beads (IN L)\n- Mod VCO (Square) >> Beads (CV in 6) // audio-rate\n- Beads (OUT L) -> Mixer (L)\n- Beads (OUT R) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Granular delay with feedback runaway",
       "patch": "Use SEED-clocked grains plus FEEDBACK [J] as a pitch-shiftable tape delay.",
       "steps": [

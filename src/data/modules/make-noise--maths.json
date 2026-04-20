@@ -127,6 +127,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Bouncing ball (self-accelerating envelope)",
       "patch": "Positive-feedback envelope that speeds up on each cycle, like a ball bouncing and losing energy.",
       "steps": [
@@ -142,6 +143,7 @@
       "diagram": "MATHS:\n* CH 1: Cycle ON\n* CH 1 Atten: full CW\n* CH 2 Atten: ~2 o'clock\n\n- MATHS.CH 1 (Variable Out 1) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Fall CV) // shortens fall each cycle\n- MATHS.CH 1 (Unity Out) >> VCA (CV) // audible envelope"
     },
     {
+      "essential": true,
       "name": "Quadrature LFOs",
       "patch": "Two LFOs, 90° out of phase, running off each other's end-of-stage pulses — no Cycle button needed.",
       "steps": [
@@ -498,6 +500,7 @@
       "diagram": "MATHS:\n* CH 1: Cycle ON\n* CH 4: Cycle ON\n* CH 2 & CH 3 Atten: moderate\n\n- MATHS.CH 1 (Variable Out 1) >> MATHS.CH 3 (In)\n- MATHS.CH 3 (Out) >> MATHS.CH 4 (Rise CV) // CH 1 warps CH 4\n- MATHS.CH 4 (Variable Out 4) >> MATHS.CH 2 (In)\n- MATHS.CH 2 (Out) >> MATHS.CH 1 (Fall CV) // CH 4 warps CH 1\n- MATHS.CH 1 (Unity Out) p> VCO (V/Oct) // chaotic pitch drift"
     },
     {
+      "essential": true,
       "name": "Slew + sum + inverter (three jobs, one module)",
       "patch": "Use MATHS as a utility swiss-army knife — portamento on one channel, inversion on another, CV summing on a third. One module, three jobs for a whole voice.",
       "steps": [

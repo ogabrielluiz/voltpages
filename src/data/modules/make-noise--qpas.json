@@ -143,6 +143,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Stereo Radiate animation",
       "patch": "Mono VCO through QPAS with opposing Radiate modulation — one LFO spreads the Left peaks outward while the Right peaks close inward, creating a ping-pong stereo image from a mono source.",
       "steps": [
@@ -159,6 +160,7 @@
       "diagram": "QPAS:\n* Q: ~noon\n* Radiate-L att: CW\n* Radiate-R att: CCW (inverted)\n\nVCO:\n\nLFO:\n\n- VCO (Saw) -> QPAS (L Input)\n- LFO (Out) >> QPAS (Radiate-L CV In) // normalled to R\n- QPAS (LP L) -> Mixer (L)\n- QPAS (LP R) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Pinged melody",
       "patch": "No VCO needed — triggers into the audio input ping the filter's resonance at the currently-set FREQ, producing a kalimba-like melody purely from QPAS self-ringing.",
       "steps": [
@@ -279,6 +281,7 @@
       "diagram": "QPAS:\n* Q: ~11:00\n* Q CV att: full CW\n* FREQ: below noon\n\nMorphagene:\n\n- Morphagene (Out L) -> QPAS (L Input)\n- Morphagene (Out R) -> QPAS (R Input)\n- Morphagene (CV Out) >> QPAS (Q CV In)\n- QPAS (HP L) -> Output (In) // resonant tails"
     },
     {
+      "essential": true,
       "name": "Drone cluster",
       "patch": "A sine VCO into high-Q QPAS with Radiate opened — four slightly-offset filter peaks ring near the VCO pitch, producing a rich formant-cluster drone from a single oscillator.",
       "steps": [

@@ -108,6 +108,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Locked generative melody",
       "patch": "External clock drives a locked 8-step loop, CV OUT goes through a quantizer to an oscillator, and nudging the big knob CCW introduces slow mutations.",
       "steps": [
@@ -125,6 +126,7 @@
       "diagram": "Turing Machine:\n* Length: 8 · Big knob: fully CW (locked)\n\nClock:\n\nQuantizer:\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Turing Machine (CV OUT) p> Quantizer (In)\n- Quantizer (Out) p> VCO (V/Oct)\n- Turing Machine (PULSE OUT) g> Envelope (Trig)"
     },
     {
+      "essential": true,
       "name": "Probability modulation",
       "patch": "A very slow LFO into KNOB CV drifts the module between fully random and fully locked without touching the panel.",
       "steps": [
@@ -158,6 +160,7 @@
       "diagram": "Turing Machine:\n* Length: 16 · Big knob: locked CW\n\n- Clock (Out) c> Turing Machine (CLOCK IN)\n- Turing Machine (CV OUT) p> VCO (V/Oct)\n- Turing Machine (PULSE OUT) g> Drum (Trig) // thins out as register clears"
     },
     {
+      "essential": true,
       "name": "Bassline + drum pulse",
       "patch": "One external clock drives both the kick and the Turing Machine — quantized CV OUT plays a locked bassline while PULSE OUT adds hats.",
       "steps": [

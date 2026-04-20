@@ -163,6 +163,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Classic 1/1 loop playback",
       "patch": "Record a phrase into a Splice and play it back at original speed/length — Morphagene as a simple stereo looper.",
       "steps": [
@@ -179,6 +180,7 @@
       "diagram": "Morphagene:\n* Gene-Size: full CCW\n* Morph: noon (1/1)\n* Vari-Speed: 2:30 (Green)\n* S.O.S.: full CW\n\n- Sound Source (Out) -> Morphagene (Audio In L)\n- Morphagene (Audio Out L) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Clocked Gene Shift",
       "patch": "With CLK patched and Morph below 2/1, each clock pulse steps chronologically through Genes within the Splice.",
       "steps": [
@@ -194,6 +196,7 @@
       "diagram": "Morphagene:\n* Gene-Size: ~2:00\n* Morph: 10:00 (Red, Gene Shift)\n\n- Clock (Out) c> Morphagene (CLK In)\n- LFO (Out) >> Morphagene (Slide CV)\n- Morphagene (Audio Out L) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Time-stretch dub",
       "patch": "Push Morph past 2/1 and an incoming clock stretches or compresses the Splice — Vari-Speed changes pitch only.",
       "steps": [

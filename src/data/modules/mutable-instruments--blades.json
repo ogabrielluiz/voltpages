@@ -169,16 +169,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Series drive into low-pass",
       "patch": "Patch a saw VCO into Filter 1 IN. Set ROUTING fully clockwise for series. Both filters on low-pass, filter 1 with moderate DRIVE around 11 o'clock, filter 2 clean and resonant. MAIN out to a VCA. You get grit shaped into filter 2's sweep.",
       "diagram": "Blades:\n* Routing: series (CW)\n* Filter 1: LP, Drive 11 o'clock, Resonance low\n* Filter 2: LP, Resonance medium-high\n\nVCO:\nEnvelope:\nVCA:\nOutput:\n\n- VCO (Saw) -> Blades (Filter 1 IN)\n- Sequencer (Pitch) p> VCO (V/Oct)\n- Envelope (Out) >> Blades (Cutoff CV)\n- Blades (Main Output) -> VCA (In)\n- Envelope (Out) >> VCA (CV)\n- VCA (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Parallel split-band or stereo",
       "patch": "ROUTING at 12 o'clock for parallel. Cutoff Coupling off. Filter 1 set to LP, filter 2 set to HP, both with the same source at Filter 1 IN. Take Filter 1 Out and Filter 2 Out to L/R for a wide split-band processor.",
       "diagram": "Blades:\n* Routing: parallel (noon)\n* Cutoff Coupling: off\n* Filter 1: LP, Cutoff low-mid\n* Filter 2: HP, Cutoff mid-high\n\nVCO:\nLFO:\nOutput:\n\n- VCO (Saw) -> Blades (Filter 1 IN)\n- LFO (Out) >> Blades (Cutoff CV, filter 1)\n- Blades (Filter 1 Output) -> Output (L)\n- Blades (Filter 2 Output) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Dual sine VCO with coupling",
       "patch": "Both Resonance knobs at max for self-oscillation. Cutoff Coupling on. Set filter 2 FREQUENCY above noon for a fifth offset. V/OCT tracks the pair. Use Filter 1 Out and Filter 2 Out as two sine voices.",
       "diagram": "Blades:\n* No input patched\n* Resonance 1 and 2: max (self-osc)\n* Cutoff Coupling: on\n* Filter 2 Frequency: ~3 o'clock (fifth up)\n\nSequencer:\nOutput:\n\n- Sequencer (Pitch) p> Blades (V/OCT)\n- Blades (Filter 1 Output) -> Output (L)\n- Blades (Filter 2 Output) -> Output (R)"

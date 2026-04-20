@@ -172,6 +172,7 @@
       "diagram": "Tides:\n* Range: Mid (2 Hz)\n* Mode: Cyclic\n* Output Mode: 1 (Different amplitudes)\n\n- LFO (Out) >> Tides (SHIFT CV)\n- Tides (OUT 1) >> VCA A (CV)\n- Tides (OUT 2) >> VCA B (CV)\n- Tides (OUT 3) >> VCA C (CV)\n- Tides (OUT 4) >> VCA D (CV)"
     },
     {
+      "essential": true,
       "name": "Percussive voice with end-of-attack accent",
       "patch": "AD mode · Output Mode 0 · SHAPE full CCW (expo) · SLOPE 10 o'clock (snappy) · OUT 1 shapes main VCA · OUT 3 (end-of-attack gate) triggers a second VCA for a click/accent layer · clock into TRIG",
       "diagram": "Tides:\n* Range: Slow\n* Mode: AD\n* Output Mode: 0 (Different shapes)\n\n- Clock (Out) t> Tides (TRIG)\n- VCO (Out) -> Filter (In)\n- Filter (Out) -> VCA Main (In)\n- Tides (OUT 1) >> VCA Main (CV)\n- Tides (OUT 3) t> VCA Click (Gate) // end-of-attack accent\n- Noise (Out) -> VCA Click (In)"
@@ -182,6 +183,7 @@
       "diagram": "Tides:\n* Range: Fast (130.8 Hz)\n* Mode: Cyclic\n* Output Mode: 3 (Different frequencies)\n* Smoothness: CCW (sine)\n\n- Keyboard (Pitch) p> Tides (V/OCT)\n- Tides (OUT 1) -> Mixer (In 1)\n- Tides (OUT 2) -> Mixer (In 2)\n- Tides (OUT 3) -> Mixer (In 3)\n- Tides (OUT 4) -> Mixer (In 4)\n- Mixer (Out) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Clock-locked polyrhythmic LFO",
       "patch": "Mid range · Cyclic mode · Output Mode 3 · master clock into CLOCK jack sets base rate · FREQUENCY knob picks a division · SHIFT spreads OUT 1–4 into poly-rhythmic ratios synced to tempo",
       "diagram": "Tides:\n* Range: Mid\n* Mode: Cyclic\n* Output Mode: 3 (Different frequencies)\n\n- Clock (Out) c> Tides (CLOCK) // PLL sync\n- Tides (OUT 1) >> Filter A (Cutoff)\n- Tides (OUT 2) >> Filter B (Cutoff)\n- Tides (OUT 3) >> VCA Pan (CV)\n- Tides (OUT 4) >> FX Send (CV)"
@@ -197,6 +199,7 @@
       "diagram": "Tides:\n* Range: Slow\n* Mode: AR\n* Output Mode: 0 (Different shapes)\n\n- Sequencer (Gate) g> Tides (TRIG)\n- Tides (OUT 1) >> VCA (CV)\n- VCO (Out) -> Filter (In) -> VCA (In)\n- Tides (OUT 4) t> Reverb Send (Gate) // fires when release ends"
     },
     {
+      "essential": true,
       "name": "Folded bass VCO",
       "patch": "Fast range · Cyclic mode · SMOOTHNESS full CW (wavefolded harmonics) · V/OCT from sequencer · SHAPE CV from envelope adds dynamic expo bite · OUT 1 into filter for waveshaped bass with evolving folds",
       "diagram": "Tides:\n* Range: Fast\n* Mode: Cyclic\n* Output Mode: 0\n* Smoothness: CW (wavefold)\n\n- Sequencer (Pitch) p> Tides (V/OCT)\n- Envelope (Out) >> Tides (SHAPE CV)\n- Tides (OUT 1) -> Filter (In)\n- Filter (Out) -> VCA (In)\n- Envelope (Out) >> VCA (CV)"

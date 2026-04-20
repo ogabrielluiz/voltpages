@@ -167,6 +167,7 @@
       "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: shape\n* INTONE: CW\n\n- Clock (Out) c> Just Friends (TRIGGER 6N) // cascades to all 6\n- Just Friends (OUT 1N) >> Filter (Cutoff)\n- Just Friends (OUT 2N) >> VCA (CV)\n- Just Friends (OUT 3N) >> VCO (FM)\n- Just Friends (OUT 4N) >> FX (Time)"
     },
     {
+      "essential": true,
       "name": "PLUME six-voice polysynth",
       "patch": "RUN firmware in SUSTAIN + SOUND turns Just Friends into a six-voice polysynth with built-in LPGs — gates play each channel like a key.",
       "steps": [
@@ -219,6 +220,7 @@
       "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: shape\n* RUN: ~+2V\n\n- Clock (Out) t> Just Friends (TRIGGER 6N)\n- Offset (+2V) >> Just Friends (RUN) // burst count\n- Just Friends (OUT 6N) t> Drum (Trig) // ratcheted hits\n- Just Friends (OUT 1N) t> Drum 2 (Trig)"
     },
     {
+      "essential": true,
       "name": "Six related LFOs for animation",
       "patch": "CYCLE + SHAPE with INTONE just off noon produces six gently diverging LFOs — one module animates a whole voice.",
       "steps": [
@@ -239,6 +241,7 @@
       "diagram": "Just Friends:\n* MODE: cycle\n* RANGE: shape\n* INTONE: just CCW of noon\n\n- Just Friends (OUT 1N) >> Filter (Cutoff)\n- Just Friends (OUT 2N) >> VCO (FM)\n- Just Friends (OUT 3N) >> Wavefolder (Amount)\n- Just Friends (OUT 4N) >> Pan (CV)\n- Just Friends (OUT 5N) >> Reverb (Time)\n- Just Friends (OUT 6N) >> VCA (CV)"
     },
     {
+      "essential": true,
       "name": "Harmonic chord oscillator",
       "patch": "CYCLE + SOUND + INTONE full CW stacks IDENTITY + overtones into a just-intoned chord oscillator — mix chosen OUTs for the voicing.",
       "steps": [

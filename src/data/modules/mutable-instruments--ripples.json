@@ -145,16 +145,19 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Clean voice + drive send",
       "patch": "VCO saw → IN 2 (clean path) · same VCO → IN 1 via attenuator → IN 1 GAIN high (drive path) · envelope → VCA CV · slope to 4-pole · play with the IN 1 attenuator to blend clean and overdriven tones through one filter without leaving Ripples.",
       "diagram": "Ripples (2020):\n* Slope: 4-pole\n\nVCO:\nEnvelope:\nAttenuator:\n\n- VCO (Saw) -> Ripples (2020) (IN 2)\n- VCO (Saw) -> Attenuator (In)\n- Attenuator (Out) -> Ripples (2020) (IN 1)\n- Envelope (Out) >> Ripples (2020) (VCA CV)\n- Ripples (2020) (LP) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Self-oscillating sine VCO",
       "patch": "No audio input · RES full CW · V/OCT from sequencer · FREQ sets octave · LP out is a pure sine · use Ripples as a second VCO for kick drums or sub layers · VCA CV from envelope to gate the sine on and off.",
       "diagram": "Ripples (2020):\n* RES: full CW (self-oscillating)\n* Slope: 4-pole\n\nSequencer:\nEnvelope:\n\n- Sequencer (Pitch) p> Ripples (2020) (V/OCT)\n- Sequencer (Gate) g> Envelope (Trig)\n- Envelope (Out) >> Ripples (2020) (VCA CV)\n- Ripples (2020) (LP) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Parallel HP + LP split",
       "patch": "Drum loop → IN 2 · HP → stereo L (transients, hats, cymbals) · LP → stereo R (body, kick) · independent effects on each bus · slope to 2-pole so both bands stay wide · the HP's resonance-dependent slope lets RES sculpt how much mid leaks into the HP channel.",
       "diagram": "Ripples (2020):\n* Slope: 2-pole\n* RES: ~11 o'clock\n\n- Drum Loop (Out) -> Ripples (2020) (IN 2)\n- Ripples (2020) (HP) -> Reverb L (In)\n- Ripples (2020) (LP) -> Delay R (In)"

@@ -124,6 +124,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "808-style kick drum",
       "patch": "Use the analog bass drum model as a self-contained 808-style kick — pitch via HARMONICS, click via TIMBRE, decay via MORPH.",
       "steps": [
@@ -140,6 +141,7 @@
       "diagram": "Plaits:\n* Model: 14 (Analog bass drum)\n* HARMONICS: ~9 o'clock\n* TIMBRE: ~9 o'clock\n* MORPH: ~10 o'clock\n\n- Sequencer (Trig) t> Plaits (Trigger)\n- Plaits (OUT) -> Mixer (In 1)\n- Plaits (AUX) -> Mixer (In 2) // alt bass drum layer"
     },
     {
+      "essential": true,
       "name": "DX7 electric piano",
       "patch": "The 2-op FM model is Plaits' DX7 core — set carrier/modulator ratio with TIMBRE, modulation index with HARMONICS, and let the internal LPG provide the EP decay.",
       "steps": [
@@ -157,6 +159,7 @@
       "diagram": "Plaits:\n* Model: 3 (2-op FM)\n* HARMONICS: noon\n* TIMBRE: ~11 o'clock (FM index)\n* MORPH: below noon\n\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- Keyboard (Gate) g> Plaits (Trigger) // activates internal LPG\n- Plaits (OUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Drum machine from one module",
       "patch": "Plaits's MODEL CV is sampled on every trigger — cycle through three drum models with one CV track to play kick, snare, and hi-hat from a single module.",
       "steps": [
@@ -237,6 +240,7 @@
       "diagram": "Plaits:\n* Model: 13 (Modal resonator, TRIG unpatched)\n* MORPH: ~3 o'clock\n\n- Keyboard (Pitch) p> Plaits (V/Oct)\n- LFO (Out) >> Plaits (Level) // breathing bow pressure\n- Plaits (OUT) -> Mixer (L)\n- Plaits (AUX) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Supersaw / unison lead",
       "patch": "The granular cloud model at audio rate is effectively 8 detuned sawtooth oscillators — with HARMONICS low and TIMBRE high, you get a rich supersaw swarm from one Plaits.",
       "steps": [

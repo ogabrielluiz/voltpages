@@ -118,11 +118,13 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Internal-oscillator ring-mod voice",
       "patch": "INT. OSC ON (sine) · Algorithm 3 (diode RM) or 4 (digital RM) · external VCO into IN 1 (carrier, external) — or use internal osc and patch the melodic VCO into IN 2 as modulator · V/Oct (from sequencer) into LEVEL 1 CV tracks the internal osc · TIMBRE adds drive · OUT = classic ring-mod bells",
       "diagram": "Warps:\n* Algorithm: 3 (diode RM)\n* INT. OSC: ON (sine)\n\n- Melodic VCO (Out) -> Warps (IN 2)\n- Sequencer (Pitch) p> Warps (LEVEL 1 CV)\n- Warps (OUT) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Modular vocoder",
       "patch": "Algorithm 7 (vocoder, knob fully CW) · chord VCO into IN 1 (carrier) · drum loop or speech into IN 2 (modulator) · TIMBRE shifts formants · OUT = talking chords. Nudging ALGORITHM back from full CW reduces the freeze time.",
       "diagram": "Warps:\n* Algorithm: 7 (vocoder)\n* INT. OSC: OFF\n\n- Chord VCO (Out) -> Warps (IN 1)\n- Drum Loop (Out) -> Warps (IN 2)\n- Keyboard (Pitch) p> Chord VCO (V/Oct)\n- Warps (OUT) -> Reverb (In) -> Output (In)"
@@ -153,6 +155,7 @@
       "diagram": "Warps:\n* Algorithm: 6 (comparator)\n\n- Sub VCO (Out) -> Warps (IN 1)\n- VCO 2 (Out) -> Warps (IN 2)\n- Warps (OUT) -> Filter (In) -> Output (In)\n- Warps (AUX) -> Mixer (In) // carrier+modulator mix"
     },
     {
+      "essential": true,
       "name": "Warps as a dual VCO (AUX trick)",
       "patch": "INT. OSC ON · Algorithm 1 (crossfade) · no external inputs · LEVEL 1 sets internal-osc pitch, LEVEL 1 CV is V/Oct · OUT delivers the processed/crossfaded signal while AUX carries the raw internal oscillator — one module, two usable voices",
       "diagram": "Warps:\n* Algorithm: 1 (crossfade)\n* INT. OSC: ON (saw)\n\n- Sequencer (Pitch) p> Warps (LEVEL 1 CV)\n- Warps (AUX) -> Filter A (In) // raw osc\n- Warps (OUT) -> Filter B (In) // processed voice"

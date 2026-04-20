@@ -162,6 +162,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Locked generative melody",
       "patch": "Deja Vu full CW over an 8-step loop turns X1 into a repeatable in-key melody that can be unlocked by easing Deja Vu back.",
       "steps": [
@@ -180,6 +181,7 @@
       "diagram": "Marbles:\n* Scale: user slot 2 (major)\n* Deja Vu: full CW\n* Length: 8\n\n- Marbles (X1) p> VCO (V/Oct)\n- Marbles (T1) t> Envelope (Trig)\n- Envelope (Out) >> VCA (CV)\n- VCO (Out) -> VCA (In) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Bernoulli drum split",
       "patch": "Bernoulli t-mode with bias at noon splits kick/snare as coin flips while T2 keeps a steady hat.",
       "steps": [
@@ -252,6 +254,7 @@
       "diagram": "Marbles:\n* t Mode: Clusters (orange)\n* t Bias: ~2 o'clock\n* t Jitter: CCW\n\n- Marbles (T1) t> Kick (Trig)\n- Marbles (T2) c> Sequencer (Clock)\n- Marbles (T3) t> Tom (Trig)"
     },
     {
+      "essential": true,
       "name": "Quantized random bass + lead",
       "patch": "X1 as a low-register bass and X3 as a high-register lead, each with its own gate, for an independent two-voice ostinato.",
       "steps": [

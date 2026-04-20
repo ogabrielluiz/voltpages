@@ -129,6 +129,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Karplus pluck sequencer",
       "patch": "Sympathetic-strings mode plucks a mono sequence on every gate, with an envelope shaping the timbre.",
       "steps": [
@@ -208,6 +209,7 @@
       "diagram": "Rings:\n* Resonator: Inharmonic (red)\n* Structure: ~3 o'clock\n* Polyphony: 1\n\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Sequencer (Gate) t> Rings (STRUM)\n- Envelope (Out) >> Rings (BRIGHTNESS CV)\n- LFO (Out) >> Rings (POSITION CV)\n- Rings (ODD) -> Mixer (L)\n- Rings (EVEN) -> Mixer (R)"
     },
     {
+      "essential": true,
       "name": "Polyphonic piano chords",
       "patch": "Polyphony 4 + sympathetic mode + an arp source = a tempo-synced plucked-piano chord machine.",
       "steps": [
@@ -239,6 +241,7 @@
       "diagram": "Rings:\n* Resonator: Modal\n\n- Clock (Out) t> Rings (STRUM)\n- Sequencer (Pitch) p> Rings (V/OCT)\n- Rings (ODD) -> Reverb (In)\n- Reverb (Out) -> Attenuator (In) // ~10 o'clock, avoid runaway\n- Attenuator (Out) -> Rings (IN) // feedback excitation\n- Rings (EVEN) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Tuneable resonant reverb",
       "patch": "With audio into IN and DAMPING near max, Rings works as a tuned stereo resonator reverb.",
       "steps": [

@@ -163,6 +163,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Karplus-Strong string",
       "patch": "Zone 0 self-oscillates as a plucked string. Short MATHS bursts excite it; pitch CV into microRate tracks 1V/oct in Zone 0.",
       "steps": [
@@ -181,6 +182,7 @@
       "diagram": "MIMEOPHON:\n* Zone: 0\n* Repeats: 1:00\n* Halo: full CCW\n* Color: 12:00\n* Mix: 1:00\n\n- MATHS (CH1 Out) -> Mimeophon (L In) // short burst excites string\n- Keys (Pitch) p> Mimeophon (microRate) // 1V/oct in Zone 0\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Tempo-synced dub delay",
       "patch": "External clock at TEMPO locks Rate to musical divisions. Skew produces stereo polyrhythmic echoes.",
       "steps": [
@@ -200,6 +202,7 @@
       "diagram": "MIMEOPHON:\n* Zone: 4\n* Color: 3:00\n* Mix: 11:00\n* Repeats: 12:00\n* SKEW: ON\n\n- Source (Out) -> Mimeophon (L In)\n- Clock (Out) c> Mimeophon (TEMPO In)\n- Mimeophon (L Out) -> Output (L)\n- Mimeophon (R Out) -> Output (R)"
     },
     {
+      "essential": true,
       "name": "Stereo chorus",
       "patch": "Slow LFO into microRate modulates delay time for chorus/flange. Skew inverts the right channel response for stereo width.",
       "steps": [

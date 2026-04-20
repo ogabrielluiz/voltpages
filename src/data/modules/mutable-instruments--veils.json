@@ -87,6 +87,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four-voice submixer",
       "patch": "Four voices into IN 1–4, daisy-chained out of OUT 4 as a free 4-into-1 mixer.",
       "steps": [
@@ -102,6 +103,7 @@
       "diagram": "Veils:\n* CH 1-4: Response CW (linear), Offset CCW, Gain noon\n\n- VCO 1 (Out) -> Veils (IN 1)\n- VCO 2 (Out) -> Veils (IN 2)\n- VCO 3 (Out) -> Veils (IN 3)\n- VCO 4 (Out) -> Veils (IN 4)\n- Veils (OUT 4) -> Output (In)"
     },
     {
+      "essential": true,
       "name": "Drum bus with sidechain ducking",
       "patch": "Three drums summed; bass on channel 4 ducked by an inverted kick envelope.",
       "steps": [
@@ -135,6 +137,7 @@
       "diagram": "Veils:\n* CH 1-2: Response CCW (expo), Offset CCW\n* CH 3-4: Response CW (linear)\n\n- Synth (L) -> Veils (IN 1)\n- Synth (R) -> Veils (IN 2)\n- Envelope (Out) >> Veils (CV 1)\n- Envelope (Out) >> Veils (CV 2)\n- LFO (Out) -> Veils (IN 3)\n- S&H (Out) -> Veils (IN 4)\n- Veils (OUT 1) -> Output (L)\n- Veils (OUT 2) -> Output (R)\n- Veils (OUT 3) >> Filter (Cutoff)\n- Veils (OUT 4) >> VCO (FM)"
     },
     {
+      "essential": true,
       "name": "Line-level / pedal-return amplifier",
       "patch": "Use exponential mode + Offset to boost a quiet external signal up to modular level.",
       "steps": [

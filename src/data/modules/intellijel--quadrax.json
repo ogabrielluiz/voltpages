@@ -107,6 +107,7 @@
   ],
   "patchIdeas": [
     {
+      "essential": true,
       "name": "Four-stage ADSR chain",
       "patch": "CH1 AD · CH2–4 AD · CH2 EOR-linked to CH1, CH3 EOF-linked to CH2, CH4 EOF-linked to CH3 · one trigger cascades through all four.",
       "diagram": "QUADRAX:\n* CH 1: AD, EOR link\n* CH 2-4: AD, EOF link\n- Gate Source (OUT) t> QUADRAX (TRIG 1)\n- QUADRAX (OUT 1) >> VCA 1 (CV)\n- QUADRAX (OUT 2) >> VCA 2 (CV)\n- QUADRAX (OUT 3) >> Filter (Cutoff)\n- QUADRAX (OUT 4) >> VCA Final (CV)",
@@ -123,6 +124,7 @@
       "hear": "A single gate produces a multi-stage swell: fast attack, layered decays, and a long evolving tail as each channel takes over from the last."
     },
     {
+      "essential": true,
       "name": "Polyrhythmic envelope farm",
       "patch": "CH1 slow CYCLE LFO seeds the rhythm · CH2 EOR-linked fires at each cycle peak · CH3 EOF-linked fires at each cycle bottom.",
       "diagram": "QUADRAX:\n* CH 1: CYCLE (slow)\n* CH 2: AD, EOR link\n* CH 3: AD, EOF link\n- QUADRAX (OUT 1) >> Filter (Cutoff)\n- QUADRAX (OUT 2) >> VCA A (CV)\n- QUADRAX (OUT 3) >> VCA B (CV)",
@@ -169,6 +171,7 @@
       "hear": "Organic, wandering modulation that never repeats. Low variance is a drunken walk; high variance is wide random jumps."
     },
     {
+      "essential": true,
       "name": "Sidechain duck envelope",
       "patch": "CH1 AD on kick trigger for kick VCA · CH2 AD longer on same trigger · CH2 OUT through inverter → bass VCA so bass ducks each kick hit.",
       "diagram": "QUADRAX:\n* CH 1: AD (kick env)\n* CH 2: AD long (duck env)\n- Kick Trig (Out) t> QUADRAX (TRIG 1)\n- Kick Trig (Out) t> QUADRAX (TRIG 2)\n- QUADRAX (OUT 1) >> Kick VCA (CV)\n- QUADRAX (OUT 2) >> Inverter (In)\n- Inverter (Out) >> Bass VCA (CV) // bass ducks on each kick\n- Kick VCO (Out) -> Kick VCA (In) -> Mixer (In 1)\n- Bass VCO (Out) -> Bass VCA (In) -> Mixer (In 2)",
